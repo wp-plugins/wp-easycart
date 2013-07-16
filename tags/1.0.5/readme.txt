@@ -114,6 +114,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 * Minor admin bug fixes relating to store name repo having a dash in it.
 = 1.0.4 =
 * Minor admin bug fixes relating to store name repo having a dash in it.
+= 1.0.5 =
+* Updated process for backup of connection settings.
 
 
 == Upgrade Notice ==
