@@ -19,13 +19,10 @@
 }
 
 #wp-easycart .plugin-version-author-uri{
-	background-color: #E9E9E9;
+	background-color: #e3fde7;
 	padding-left: 5px;
 	height: 20px;
 	line-height: 20px;
-	-webkit-box-shadow: 0 8px 6px -6px #333;
-	-moz-box-shadow: 0 8px 6px -6px #333;
-	box-shadow: 0 8px 6px -6px #333;
 	margin-bottom: 5px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
