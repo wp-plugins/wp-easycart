@@ -107,7 +107,7 @@ class ec_cartwidget extends WP_Widget{
 		else														$permalink_divider = "?";
 		
 		$cart = new ec_cart( session_id() );
-		include("wp-content/plugins/wpeasycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_widget.php");
+		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_widget.php");
 		
 		echo $after_widget;
 	}

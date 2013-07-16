@@ -83,7 +83,7 @@ class ec_categorywidget extends WP_Widget{
 			$categories[] = array( $category_items[$i]->menu_id, $category_items[$i]->menu_name, $category_items[$i]->product_count );
 		}
 		
-		include("wp-content/plugins/wpeasycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_category_widget.php");
+		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_category_widget.php");
 		
 		
 		

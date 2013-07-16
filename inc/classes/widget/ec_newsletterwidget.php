@@ -46,7 +46,7 @@ class ec_newsletterwidget extends WP_Widget{
 		if( substr_count( $store_page, '?' ) )						$permalink_divider = "&";
 		else														$permalink_divider = "?";
 		
-		include("wp-content/plugins/wpeasycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_newsletter_widget.php");
+		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_newsletter_widget.php");
 		
 		echo $after_widget;
 	}

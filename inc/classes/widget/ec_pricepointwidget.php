@@ -67,7 +67,7 @@ class ec_pricepointwidget extends WP_Widget{
 		
 		$pricepoints = $mysqli->get_pricepoints( $level, $menu_id, $man_id );
 		
-		include("wp-content/plugins/wpeasycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_pricepoint_widget.php");
+		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_pricepoint_widget.php");
 		
 		echo $after_widget;
 	}
