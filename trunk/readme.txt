@@ -36,36 +36,29 @@ WP EasyCart provides administrative software, so there is no need to use WordPre
 
 == Frequently Asked Questions ==
 
-= Can I use your software to display, but not sell products? =
+= Where can I get documentation or demos? =
+We offer a full service website with online documentation, video tutorials, community support forums as well as demonstration sites running our various templates at [WP EasyCart](http://www.wpeasycart.com/ "WP EasyCart website") .
 
+= Can I use your software to display, but not sell products? =
 Absolutely! If you do not need to sell anything, but would like to leverage our software to display products, please feel free to do just that!
 
 = How does a license work with your software? =
+The free plugin is the full software version; however, the administrative software that is downloaded from our website is licensed software. The administrative software will allow a certain number of products and features to be used in the software. You may continue to run the WordPress plugin, but must purchase a license to use our administrative software.
+Each license is good for one website URL or WordPress installation. You may transfer a license from a development environment to a production environment at any time; it is your license once you purchase one.
+Licensing gives you features such as coupons, promotions, live shipping rate calculators and more. Plus you will receive support from our staff individually rather than through our community open support systems. For more information on licensing, you can view our website.
 
-The free plugin is the full software version, however, the administrative software that is downloaded from our website is licensed software.  The administrative software will allow a certain number of products and features to be used in the software.  You may continue to run th WordPress plugin, but must purchase a license to use our administrative software.
-
-Each license is good for one website url or wordpress installation.  You may transfer a license from a development environment to a production environment at anytime, it is your license once you purchase one.
-
-Licensing gives you features such as coupons, promotions, live shipping rate calcuators and more.  Plus you will receive support from our staff individually rather than through our community open support systems.  For more information on licensing, you can view our website.
-
-=  Do I have to pay monthly? =
-
-Not to us.  Our standard plugin is a one time purchase.  Your payment gateway provider such as PayPal, Authorize.net, FirstData or others may or may not have monthly fees, but nothing through EasyCart.
-
+= Do I have to pay monthly? =
+Not to us. Our standard plugin is a one-time purchase. Your payment gateway provider such as PayPal, Authorize.net, FirstData or others may or may not have monthly fees, but nothing through EasyCart.
 If you purchase a monthly hosted plan, then we do have a monthly charge program for those who prefer this method.
 
 = Can I display specials on any page? =
-
-Yes you can! Simply go to the widgets page, and drag over the specials widget to any widget area. You can then check a box
-on the product you want to display in the specials area.
+Yes you can! Simply go to the widgets page, and drag over the specials widget to any widget area. You can then check a box on the product you want to display in the specials area.
 
 = How do I add a vertical or horizontal store menu to my WordPress site? =
-
 Simply go to the widgets page, and drag over the store menu widget to any widget area.
 
 = How do I add categories, manufacturers, or price range filters to my WordPress site? =
-
-Simply go to the widgets page, and drag over the widget cooresponding to the filter you wish to display to any widget area.
+Simply go to the widgets page, and drag over the widget corresponding to the filter you wish to display to any widget area.
 
 == Screenshots ==
 
