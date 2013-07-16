@@ -18,7 +18,7 @@
  */
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
-define( 'EC_PLUGIN_DIRECTORY', 'wpeasycart');
+define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
 define( 'EC_CURRENT_VERSION', '1_0' );
 define( 'EC_CURRENT_DB', '1_0' );
 
