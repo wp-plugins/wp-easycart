@@ -454,6 +454,12 @@ function wpeasycart_backup(){
 		error_log( $err_message );
 		exit( $err_message );
 	}
+	$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+	if( !$success ){
+		$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
+		error_log( $err_message );
+		exit( $err_message );
+	}
 	
 }
 
@@ -538,6 +544,16 @@ function wpeasycart_recover( ){
 		exit( $err_message );	
 	}
 	
+	$success = false;
+	if( is_dir( $to . "connection" ) ) {
+        $success = recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
+    }
+	if( !$success ){
+		$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
+		error_log( $err_message );
+		exit( $err_message );	
+	}
+	
 	// COPY OVER THE BACKED UP DIRECTORIES
 	$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
 	if( !$success ){
@@ -548,6 +564,12 @@ function wpeasycart_recover( ){
 	$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
 	if( !$success ){
 		$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
+		error_log( $err_message );
+		exit( $err_message );	
+	}
+	$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+	if( !$success ){
+		$err_message = "wpeasycart - error recovering the connection folder. Updated halted.";
 		error_log( $err_message );
 		exit( $err_message );	
 	}
