@@ -186,7 +186,7 @@ if(isset($_POST['isupdate'])){
         <td colspan="2" height="10"></td>
       </tr>
       <tr>
-        <td width="600" align="center"><a href="https://play.google.com/store/search?q=ec+administration&amp;c=apps&amp;feature=spelling" target="_blank"><img src="<?php echo plugins_url('images/android_tablet_phone.png', __FILE__); ?>" width="550" height="450" /></a></td>
+        <td width="600" align="center"><a href="https://play.google.com/store/search?q=wp+easycart&amp;c=apps&amp;feature=spelling" target="_blank"><img src="<?php echo plugins_url('images/android_tablet_phone.png', __FILE__); ?>" width="550" height="450" /></a></td>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
       </tr>
       <tr>
