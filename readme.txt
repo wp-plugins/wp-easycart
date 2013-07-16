@@ -12,11 +12,43 @@ WP EasyCart lets you integrate eCommerce with a click of a button.
 
 == Description ==
 
-WP EasyCart eCommerce Plugin is a simple install into new or existing WordPress blogs. 
+WP EasyCart eCommerce plugin is a simple install into new or existing WordPress blogs and websites. 
 Get a full eCommerce and shopping cart system in WordPress within minutes! Sell products, downloadable goods, gift cards, 
 clothing and more!  And now with WordPress, the powerful features are still very easy to administrate! 
 
-WP EasyCart provides administrative software, so there is no need to use WordPress as a slow management system for your products. Desktop PC, Mac, iPad, and Android software is available to download and allows you to control the myriad of options the software has to offer.
+WP EasyCart provides administrative software, so there is no need to use WordPress as a management system for your products. Desktop PC, Mac, iPad, and Android software is available to download and allows you to control the myriad of options the software has to offer.
+
+* __[WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") __
+* __[Online Demos and Themes]( http://www.wpeasycart.com/portfolio_entries/featuredthemes/ "WP EasyCart Themes") __
+* __[Online Documentation]( http://www.wpeasycart.com "WP EasyCart Documentation") __
+
+
+= PREDESIGNED THEMES AVAILABLE =
+WP EasyCart offers a variety of popular themes pre-designed and integrated with the shopping system.  These professionally designed themes give you a complete package of WordPress design and eCommerce design to match.
+
+We offer complete demos of our integrated themes where you browse our catalog of designs.  Visit our [featured demo themes]( http://www.wpeasycart.com/portfolio_entries/featuredthemes/ "WP EasyCart themed demos") for more information.
+
+= MENUS, WIDGETS, AND MORE =
+WP EasyCart gives you many pre-built widgets ready to integrate into your website from the start.  Get horizontal and vertical menus widgets, breadcrumb widgets, price and category filtering widgets, newsletter signup widgets, and more.
+
+= FEATURES =
+Whether you are a large scale business or a startup looking to leverage WordPress as your website, WP EasyCart has you covered.  Our feature list is large and proven, with the help of years of eCommerce experience and development making it a solid performer.  For a full feature list, please visit the [WP EasyCart website]( http://www.wpeasycart.com/features/ "WP EasyCart Shopping Cart Plugin") for more information.
+
+Key EasyCart features:
+
+* __Popular Payment Gateways__ – Accept PayPal standard, pro, authorize.net, FirstData, and many others.
+* __Internationalization__ – Set language, currency configurations, VAT, and payment gateways for seven continent coverage.
+* __Live Shipping__ – UPS, FedEx, and USPS all pre-integrated!
+* __Coupons and Promotions – Setup and run your marketing strategies with built in tools.
+* __Administrative Software__ – Run desktop PC and Mac software, or use our iPad and Android device software.
+* __Google Analytics__ – Integrated eCommerce conversion tracking of orders, for unbelievable analytics data.
+* __Social Sharing__ – Every product is set to have social sharing icons.
+
+
+= CUSTOM DEVELOPMENT = 
+Don’t see what you are looking for?  Perhaps you want a custom design or integration into your existing site and need professional EasyCart developers or designers to get you quickly up and running?
+WP EasyCart is a full service agency and offers custom services such as design, development, payment gateway integration, you name it.  Even if you have a small need such as a custom button somewhere, let our team help get your eCommerce package right for you.  For more information, please visit the [WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") for more information.
+
 
 == Installation ==
 
