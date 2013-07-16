@@ -49,6 +49,7 @@ Key EasyCart features:
 
 = CUSTOM DEVELOPMENT = 
 Don't see what you are looking for?  Perhaps you want a custom design or integration into your existing site and need professional EasyCart developers or designers to get you quickly up and running?
+
 WP EasyCart is a full service agency and offers custom services such as design, development, payment gateway integration, you name it.  Even if you have a small need such as a custom button somewhere, let our team help get your eCommerce package right for you.  For more information, please visit the [WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") for more information.
 
 
