@@ -183,7 +183,7 @@ function rmdir_recursive($dir) {
                 <span class="itemsubheading">(This will become default design for all sections)</span></td>
               <td scope="row"><select name="ec_option_base_theme" id="ec_option_base_theme" onchange="theme_change();">
 		          <?php
-						$dir = '../wp-content/plugins/wpeasycart/design/theme/';
+						$dir = '../wp-content/plugins/' . EC_PLUGIN_DIRECTORY . '/design/theme/';
 						$scan = scandir( $dir );
 						foreach( $scan as $key => $val ) {
 							
@@ -218,7 +218,7 @@ When you upload a new theme to your site, you will see them appear here.  This s
               <span class="itemsubheading">(This will become default layout for all sections)</span></td>
               <td scope="row"><select name="ec_option_base_layout" id="ec_option_base_layout" onchange="layout_change();">
 		          <?php
-						$dir = '../wp-content/plugins/wpeasycart/design/layout/';
+						$dir = '../wp-content/plugins/' . EC_PLUGIN_DIRECTORY . '/design/layout/';
 						$scan = scandir( $dir );
 						foreach( $scan as $key => $val ) {
 							
