@@ -22,7 +22,7 @@ WP EasyCart provides administrative software, so there is no need to use WordPre
 
 * [WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") 
 * [Online Demos and Themes]( http://www.wpeasycart.com/portfolio_entries/featuredthemes/ "WP EasyCart Themes") 
-* [Online Documentation]( http://www.wpeasycart.com "WP EasyCart Documentation") 
+* [Online Documentation]( http://www.wpeasycart.com/docs "WP EasyCart Documentation") 
 
 
 = PREDESIGNED THEMES AVAILABLE =
