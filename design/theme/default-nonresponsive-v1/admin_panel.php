@@ -48,9 +48,9 @@ if(isset($_POST['isupdate'])){
 <div class="ribbon">This banner appears when you have a WordPress EasyCart trial installed. To unlock the full version and to remove this banner, you must purchase a license at <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a></div>
 <?php }?>
 
-<img src="<?php echo plugins_url( 'wpeasycart/inc/admin/images/WP-Easy-Cart-Logo.png' ); ?>" />
-<script src="<?php echo plugins_url( 'wpeasycart/inc/admin/colorpicker.js'); ?>"></script>
-<script src="<?php echo plugins_url( 'wpeasycart/inc/admin/eye.js'); ?>"></script>
+<img src="<?php echo plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/images/WP-Easy-Cart-Logo.png' ); ?>" />
+<script src="<?php echo plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/colorpicker.js'); ?>"></script>
+<script src="<?php echo plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/eye.js'); ?>"></script>
 <script>
 jQuery( document ).ready(
 	function( ){
@@ -87,7 +87,7 @@ jQuery( document ).ready(
             <tr valign="top">
               <td width="27%" class="platformheading" scope="row">Custom Theme Color Options</td>
               <td width="73%" class="platformheadingimage" scope="row">
-              	<img src="<?php echo plugins_url( 'wpeasycart/inc/admin/images/settings_icon.png' ); ?>" alt="" width="25" height="25" />
+              	<img src="<?php echo plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/images/settings_icon.png' ); ?>" alt="" width="25" height="25" />
               </td>
             </tr>
             <?php 
@@ -164,7 +164,7 @@ jQuery( document ).ready(
            <tr valign="top">
               <td width="27%" class="platformheading" scope="row">Custom Theme Font Family Options</td>
               <td width="73%" class="platformheadingimage" scope="row">
-              	<img src="<?php echo plugins_url( 'wpeasycart/inc/admin/images/settings_icon.png' ); ?>" alt="" width="25" height="25" />
+              	<img src="<?php echo plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/images/settings_icon.png' ); ?>" alt="" width="25" height="25" />
               </td>
             </tr>
            
@@ -229,7 +229,7 @@ jQuery( document ).ready(
             <tr valign="top">
               <td width="27%" class="platformheading" scope="row">Custom Theme Image Options</td>
               <td width="73%" class="platformheadingimage" scope="row">
-              	<img src="<?php echo plugins_url( 'wpeasycart/inc/admin/images/settings_icon.png' ); ?>" alt="" width="25" height="25" />
+              	<img src="<?php echo plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/images/settings_icon.png' ); ?>" alt="" width="25" height="25" />
               </td>
             </tr>
              
