@@ -449,7 +449,7 @@ class ec_product{
 			for( $i=0; $i<count( $optionset->optionset ); $i++ ){
 				
 				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionset->optionset[$i]->optionitem_icon );
-				$test_src = ABSPATH . "wp-content/plugins/wpeasycart/products/swatches/" . $optionset->optionset[$i]->optionitem_icon;
+				$test_src = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionset->optionset[$i]->optionitem_icon;
 				if( !file_exists( $test_src ) || is_dir( $test_src ) )
 				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
 				
