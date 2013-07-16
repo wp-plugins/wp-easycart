@@ -161,7 +161,7 @@ class ec_prodimages{
 			/////////////////////////////////////////////////////////////
 			
 			$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img );
-			$test_src = ABSPATH . "wp-content/plugins/wpeasycart/products/pics" . $level . "/" . $img;
+			$test_src = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img;
 			if( !file_exists( $test_src ) )
 			$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
 			
