@@ -35,7 +35,7 @@ class ec_breadcrumbwidget extends WP_Widget{
 		echo $before_widget;
 		
 		// WIDGET CODE GOES HERE
-		include("wp-content/plugins/wpeasycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_breadcrumb_widget.php");
+		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_breadcrumb_widget.php");
 		
 		echo $after_widget;
 	}

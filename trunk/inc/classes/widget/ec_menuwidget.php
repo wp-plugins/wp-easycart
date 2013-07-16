@@ -91,9 +91,9 @@ class ec_menuwidget extends WP_Widget{
 		$menu = new ec_menu( $menu_array );
 		
 		if($menutype == "1")
-			include("wp-content/plugins/wpeasycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_menu_horizontal_widget.php");
+			include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_menu_horizontal_widget.php");
 		else
-			include("wp-content/plugins/wpeasycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_menu_vertical_widget.php");
+			include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_menu_vertical_widget.php");
 		
 		echo $after_widget;
 	}
