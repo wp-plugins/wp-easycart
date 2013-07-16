@@ -1,0 +1,252 @@
+@charset "utf-8";
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//All Code and Design is copyrighted by Level Four Development, llc
+//
+//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
+//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
+//
+//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
+//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
+//contact Level Four Development, llc and EasyCart prior to use.
+//
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+/* Base Theme - EC Account Login CSS Document */
+.ec_account_login_page_visible {
+	display: block;
+}
+.ec_account_login_page_hidden {
+	display: none;
+}
+.ec_account_login {
+	display: block;
+}
+.ec_account_login_hidden {
+	display: none;
+}
+.ec_account_login_title {
+	width: 90%;
+	float: left;
+	color: [title_color];
+	font-family:[title_font];
+	border-bottom:solid 3px [main_color];
+	padding-bottom: 5px;
+	text-align: left;
+	margin-bottom: 4px;
+	font-size: 20px;
+}
+.ec_account_login_subtitle {
+	width: 90%;
+	float: left;
+	color: [text_color];
+	font-size: 12px;
+	font-family: [subtitle_font];
+	text-align: left;
+	margin-top: 5px;
+	margin-bottom: 30px;
+	margin-right: 10px;
+	padding-bottom: 10px;
+}
+.ec_account_login_holder {
+	width: 100%;
+	float: left;
+	margin-top: 20px;
+}
+.ec_account_login_left {
+	width: 50%;
+	float: left;
+	padding-top: 15px;
+}
+.ec_account_login_right {
+	width: 50%;
+	float: right;
+	padding-top: 15px;
+	text-align: left;
+}
+.ec_account_login_row {
+	width: 100%;
+	float: left;
+	margin-bottom: 5px;
+	font-size: 12px;
+	font-family: [content_font];
+}
+.ec_account_login_row_label {
+	width: 115px;
+	float: left;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color: #333;
+	line-height:28px;
+}
+.ec_account_login_row_input {
+	width: 250px;
+	float: left;
+	text-align: left;
+}
+.ec_account_login_row_input a{
+	margin-top:10px; font-family:[content_font]; color:[link_color];
+}
+.ec_account_login_row_input a:hover{
+	color:[link_hover_color]; text-decoration:none;
+}
+.ec_account_login_row_input input[type="text"] {
+	width: 250px;
+	padding: 2px;
+	height: 21px;
+	margin: 0;
+}
+.ec_account_login_row_input input[type="email"] {
+	width: 250px;
+	padding: 1px;
+	height: 21px;
+	margin: 0;
+}
+.ec_account_login_row_input input[type="password"] {
+	width: 250px;
+	padding: 1px;
+	height: 21px;
+	margin: 0;
+}
+
+.ec_account_login_button {
+	-webkit-appearance:none;
+	-webkit-border-radius: 0;
+	display: block;
+	float: left;
+	text-indent: 0;
+	text-decoration: none!important;
+	text-transform: uppercase;
+	white-space: nowrap;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	font-family: [content_font]!important;
+	font-size:11px;
+	font-weight:bold;
+	outline: 0;
+	min-width:159px;
+	background-color:[main_color];
+	border:solid 1px #cccccc !important;
+	color:#ffffff;
+	font-weight:bold;
+	text-align:center;
+	border:none;
+	padding:6px 18px;
+}
+.ec_account_login_button:hover {
+	cursor: pointer;
+	color:[main_color];
+	background-color: #f7f7f7;
+}
+
+/* LOGIN COMPLETE STYLES*/
+.ec_account_login_complete {
+	display: block;
+	margin-top: 30px;
+}
+.ec_account_login_complete_hidden {
+	display: none;
+}
+.ec_account_login_complete_holder {
+	width: 100%;
+	float: left;
+	text-align: left;
+	margin-top: 30px;
+}
+.ec_account_login_complete_title {
+	width: 100%;
+	float: left;
+	color: #333;
+	font-size: 28px;
+	text-align: left;
+	margin-bottom: 7px;
+}
+.ec_account_login_complete_subtitle {
+	width: 100%;
+	float: left;
+	color: #666;
+	font-size: 12px;
+	font-family: [subtitle_font];
+	text-align: left;
+}
+.ec_account_login_complete_logout_link {
+	font-size: 12px;
+	font-family: [content_font];
+	color: [link_color];
+}
+.ec_account_login_complete_logout_link:hover {
+	text-decoration: none;
+	color: [link_hover_color];
+}
+.ec_account_login_create_account_button {
+	display: block;
+	float: left;
+	text-indent: 0;
+	text-decoration: none!important;
+	text-transform: uppercase;
+	white-space: nowrap;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	font-family: [title_font]!important;
+	font-size:11px;
+	font-weight:bold;
+	outline: 0;
+	width:165px;
+	height:28px;
+	line-height:28px;
+	background-color:[main_color];
+	border: 1px solid #CCC !important;
+	color:#ffffff;
+	font-weight:bold;
+	text-align:center;
+	border:none;
+	margin-top:10px;
+}
+.ec_account_login_create_account_button:hover {
+	cursor: pointer;
+	color:[main_color];
+	background-color: #f7f7f7;
+}
+.ec_account_login_row_error {
+	width: 100%;
+	float: left;
+	height: 35px;
+}
+.ec_account_login_row_error .ec_account_login_label {
+	color: [error_text];
+}
+.ec_account_login_row_error .ec_account_login_input_field {
+	background-color: [error_color];
+	border: 2px solid [error_color2];
+}
+.ec_account_login_row_error input[type="text"] {
+	width: 250px;
+	padding: 2px;
+	height: 21px;
+	margin: 0;
+}
+.ec_account_login_row_error input[type="email"] {
+	width: 250px;
+	padding: 2px;
+	height: 21px;
+	margin: 0;
+}
+.ec_account_login_row_error input[type="password"] {
+	width: 250px;
+	padding: 2px;
+	height: 21px;
+	margin: 0;
+}
+/* END EC ACCOUNT LOGIN STYLE*/
