@@ -71,6 +71,11 @@ WP EasyCart is a full service agency and offers custom services such as design, 
 
 **We have full documentation at [WP EasyCart](http://www.wpeasycart.com/ "WP EasyCart website") including an online users manual, video tutorials, and community forums.**
 
+= Watch our Installation Video =
+[youtube http://www.youtube.com/watch?v=OYqWP5SNsoA]
+
+More videos can be found at our website!
+
 == Frequently Asked Questions ==
 
 = Where can I get documentation or demos? =
