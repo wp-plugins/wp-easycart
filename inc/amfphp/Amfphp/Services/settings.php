@@ -103,10 +103,31 @@ class settings
 				  }
 				  return($returnArray); //return array results if there are some
 			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+				  //fallback and load settings without wordpress data.
+				  //Create SQL Query
+				  $query= mysql_query("SELECT 
+					  ec_setting.*
+					FROM
+					  ec_setting
+					WHERE
+					  ec_setting.setting_id = 1 ");
+				  $totalquery=mysql_query("SELECT FOUND_ROWS()");
+				  $totalrows = mysql_fetch_object($totalquery);
+				  //if results, convert to an array for use in flash
+				  if(mysql_num_rows($query) > 0) {
+					  while ($row=mysql_fetch_object($query)) {
+						  $row->totalrows=$totalrows;
+						  $returnArray[] = $row;
+					  }
+					  return($returnArray); //return array results if there are some
+				  } else {
+					  $returnArray[] = "noresults";
+					  return $returnArray; //return noresults if there are no results
+				  }
 			  }
 		}
+		
+		
 		function updatesitesettings($settings) {
 			//convert object to array
 			  $settings = (array)$settings;
