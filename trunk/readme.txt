@@ -18,6 +18,8 @@ clothing and more!  And now with WordPress, the powerful features are still very
 
 WP EasyCart provides administrative software, so there is no need to use WordPress as a management system for your products. Desktop PC, Mac, iPad, and Android software is available to download and allows you to control the myriad of options the software has to offer.
 
+[youtube http://www.youtube.com/watch?v=OYqWP5SNsoA]
+
 = POPULAR LINKS =
 
 * [WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") 
@@ -69,6 +71,11 @@ WP EasyCart is a full service agency and offers custom services such as design, 
 
 **We have full documentation at [WP EasyCart](http://www.wpeasycart.com/ "WP EasyCart website") including an online users manual, video tutorials, and community forums.**
 
+= Watch our Installation Video =
+[youtube http://www.youtube.com/watch?v=OYqWP5SNsoA]
+
+More videos can be found at our website!
+
 == Frequently Asked Questions ==
 
 = Where can I get documentation or demos? =
@@ -115,7 +122,7 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 = 1.0.4 =
 * Minor admin bug fixes relating to store name repo having a dash in it.
 = 1.0.5 =
-* Updated backup during update of connection data.
+* Updated process for backup of connection settings.
 
 
 == Upgrade Notice ==
