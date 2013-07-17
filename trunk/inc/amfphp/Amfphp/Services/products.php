@@ -383,10 +383,10 @@ class products
 				$row_getprodid = mysql_fetch_assoc($result_getprodid);
 				$newproductid = $row_getprodid['product_id'];
 				
-				$updatequantities = sprintf("UPDATE ec_optionitemquantity SET ec_optionitemquantity.product_id = '%s' WHERE ec_optionitemquantity.product_id = '%s'", $newproductid, $product['productid']);
+				$updatequantities = sprintf("UPDATE ec_optionitemquantity SET ec_optionitemquantity.product_id = '%s' WHERE ec_optionitemquantity.product_id = '%s'", $newproductid, $product['product_id']);
 				mysql_query($updatequantities);
 	
-				$updateimages = sprintf("UPDATE ec_optionitemimage SET ec_optionitemimage.product_id = '%s' WHERE ec_optionitemimage.product_id = '%s'", $newproductid, $product['productid']);
+				$updateimages = sprintf("UPDATE ec_optionitemimage SET ec_optionitemimage.product_id = '%s' WHERE ec_optionitemimage.product_id = '%s'", $newproductid, $product['product_id']);
 				mysql_query($updateimages);
 
 				
