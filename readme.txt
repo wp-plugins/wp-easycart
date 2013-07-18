@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.5.2
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -125,6 +125,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 * Updated process for backup of connection settings.
 = 1.0.6 =
 * Admin console update for some product option quantity and imagery bugs.  Also updated database calls to fallback if wordpress is not setup completely.
+= 1.0.7 =
+* Added refunding to the paypal IPN listener.
 
 
 == Upgrade Notice ==
@@ -142,4 +144,6 @@ Be sure to backup all files and database before completing an upgrade of any kin
 =1.0.5 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
 =1.0.6 =
+Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
+=1.0.7 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
