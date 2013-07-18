@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.5.2
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -69,6 +69,8 @@ WP EasyCart is a full service agency and offers custom services such as design, 
 
 3.  Select the pages you just created in the select boxes below. The will help the WP EasyCart link your store up correctly. That's it! Now you can configure your store or access the admin console area.
 
+4.  Download the administrative console by visiting your administration menu link.  This software lets you manage orders, update products and images, setup customer accounts, promotions, and more.
+
 **We have full documentation at [WP EasyCart](http://www.wpeasycart.com/ "WP EasyCart website") including an online users manual, video tutorials, and community forums.**
 
 = Watch our Installation Video =
@@ -127,6 +129,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 * Admin console update for some product option quantity and imagery bugs.  Also updated database calls to fallback if wordpress is not setup completely.
 = 1.0.7 =
 * Added refunding to the paypal IPN listener.
+= 1.0.8 =
+* Updating linking to the admin console and download instructions.
 
 
 == Upgrade Notice ==
@@ -146,4 +150,6 @@ Be sure to backup all files and database before completing an upgrade of any kin
 =1.0.6 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
 =1.0.7 =
+Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
+=1.0.8 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
