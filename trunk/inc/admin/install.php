@@ -160,7 +160,7 @@ if(isset($_POST['isupdate'])){
       </p>
       <table width="100%" cellpadding="0" cellspacing="0" class="form-table">
             <tr valign="top">
-                <td bgcolor="#F2FFF2" class="platformheading"><b>3 Easy Steps to Install the WP EasyCart:</b></td>
+                <td bgcolor="#F2FFF2" class="platformheading"><b>4 Easy Steps to Install the WP EasyCart:</b></td>
                 <td bgcolor="#F2FFF2" class="platformheadingimage"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
             </tr>
             <tr valign="top">
@@ -171,16 +171,17 @@ if(isset($_POST['isupdate'])){
                       <li>Open the 'Store' page and type <strong>[ec_store] </strong>in the page text editor.</li>
                       <li>Open 'Shopping Cart' page and type <strong>[ec_cart]</strong><strong> </strong>in the page text editor.</li>
                       <li>Open 'My Account' page and type <strong>[ec_account] </strong><strong> </strong>in the page text editor.</li>
-                    </ol>
+                    </ol> 
                     </li>
                     <li>Select the pages you just created in the select boxes below. The will help the WP EasyCart link your store up correctly. That's it! Now you can configure your store or access the admin console area.</li>
+                    <li>Download the Administrative Console for your PC, Mac, Laptop, iPad, or Android devices by visiting the<a href="admin.php?page=ec_adminconsole"> admin console</a> menu on the left. This small download will install  using Adobe technology and lets you view orders, manage products and images, control your customer accounts, promotions, and more!</li>
                     </ol>
 				</td>
             </tr>
             <tr valign="top">
                 <td colspan="2" align="left" scope="row">
-                <div class="ec_info_note"><strong>Additional Information</strong>: You can view a full installation manual at <a href="http://www.wpeasycart.com/docs" target="_blank">www.wpeasycart.com/docs</a>. We recommend you take 5 minutes and look through the various options below and in our other menus to the left. If you are unable to install the WordPress EasyCart system, you may want to visit our support center and public discussion forums. We are ready to help get your system running, so feel free to contact us or chat with us via our website at <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a>.</div>
-                <div class="ec_special_note"><strong>Permalink Settings</strong>: Please check your permalink settings in the admin under <strong>"Settings"->"Permalinks"</strong>. The WP EasyCart system currently only accepts <strong>default</strong> permalinks or <strong>post name</strong> permalinks.</div>
+                <div class="ec_info_note"><strong>Helpful Links</strong>: You can view a full installation manual at <a href="http://www.wpeasycart.com/docs" target="_blank">www.wpeasycart.com/docs</a>. We also offer full video tutorials and walk-throughs of various capablilities of the store, installation, and product setup; just view our <a href="http://www.wpeasycart.com/video-tutorials/" target="_blank">video library</a> for more information. If you would like to purchase a licensed version of our software, you can check our <a href="http://www.wpeasycart.com/wordpress-ecommerce-plugin/" target="_blank">pricing here.</a> We do custom design and development and are here to support the software, so don't hesitate to ask us questions.</div>
+                <div class="ec_special_note"><strong>Permalink Settings</strong>: Please check your permalink settings in the admin under <strong>"Settings"->"Permalinks"</strong>. The WP EasyCart system currently works best with the <strong>post name</strong> permalink method.</div>
                 </td>
             </tr>
             
