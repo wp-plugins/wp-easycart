@@ -239,7 +239,7 @@ class users
 				
 			 //add billing address
 			 $billingsql = sprintf("INSERT into ec_address(ec_address.address_id, ec_address.user_id, ec_address.first_name, ec_address.last_name, ec_address.address_line_1, ec_address.address_line_2, ec_address.city, ec_address.state, ec_address.zip, ec_address.country, ec_address.phone)
-				values(Null, '".$clientid."', '%s', '%s', '%s',  '%s', '%s', '%s', '%s', '%s', '%s')",
+				values(Null, '".$user_id."', '%s', '%s', '%s',  '%s', '%s', '%s', '%s', '%s', '%s')",
 			  mysql_real_escape_string($client['billname']),
 			  mysql_real_escape_string($client['billlastname']),
 			  mysql_real_escape_string($client['billaddress']),
@@ -255,7 +255,7 @@ class users
 				
 			  //add shipping address
 			  $shippingsql = sprintf("INSERT into ec_address(ec_address.address_id, ec_address.user_id, ec_address.first_name, ec_address.last_name, ec_address.address_line_1, ec_address.address_line_2, ec_address.city, ec_address.state, ec_address.zip, ec_address.country, ec_address.phone)
-				values(Null, '".$clientid."', '%s', '%s', '%s',  '%s', '%s', '%s', '%s', '%s', '%s')",	
+				values(Null, '".$user_id."', '%s', '%s', '%s',  '%s', '%s', '%s', '%s', '%s', '%s')",	
 			  mysql_real_escape_string($client['shipname']),
 			  mysql_real_escape_string($client['shiplastname']),
 			  mysql_real_escape_string($client['shipaddress']),
