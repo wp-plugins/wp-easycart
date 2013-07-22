@@ -41,7 +41,7 @@ function ec_activate(){
 	$mysqli->install( $install_sql_array );
 	
 	// NOW LETS CHECK TO SEE IF WE NEED TO UPGRADE THE DB
-	if( get_option( 'ec_option_db_version' ) && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
+	if( get_option( 'ec_option_db_version' ) != "1_1" ){// && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
 		$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . get_option( 'ec_option_db_version') . '_to_' . EC_CURRENT_DB . '.sql';
 		$f = fopen( $update_sql_url, "r+") or die("CANNOT OPEN UPGRADE SQL SCRIPT");
 		$upgrade_sql = fread( $f, filesize( $update_sql_url ) );
