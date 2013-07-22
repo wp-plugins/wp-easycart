@@ -40,16 +40,6 @@ function ec_activate(){
 	$install_sql_array = explode(';', $install_sql);
 	$mysqli->install( $install_sql_array );
 	
-	// NOW LETS CHECK TO SEE IF WE NEED TO UPGRADE THE DB
-	if( get_option( 'ec_option_db_version' ) != "1_1" ){// && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
-		$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . get_option( 'ec_option_db_version') . '_to_' . EC_CURRENT_DB . '.sql';
-		$f = fopen( $update_sql_url, "r+") or die("CANNOT OPEN UPGRADE SQL SCRIPT");
-		$upgrade_sql = fread( $f, filesize( $update_sql_url ) );
-		$upgrade_sql_array = explode(';', $upgrade_sql);
-		$mysqli->upgrade( $upgrade_sql_array );
-		update_option( 'ec_option_db_version', EC_CURRENT_DB );
-	}
- 
 	//UPDATE SITE URL
 	$site = explode( "://", url( ) );
 	$site = $site[1];
@@ -93,6 +83,16 @@ register_activation_hook( __FILE__, 'ec_activate' );
 register_uninstall_hook( __FILE__, 'ec_uninstall' );
 
 function load_ec_pre(){
+	
+	// NOW LETS CHECK TO SEE IF WE NEED TO UPGRADE THE DB
+	if( get_option( 'ec_option_db_version' ) && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
+		$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . get_option( 'ec_option_db_version') . '_to_' . EC_CURRENT_DB . '.sql';
+		$f = fopen( $update_sql_url, "r+") or die("CANNOT OPEN UPGRADE SQL SCRIPT");
+		$upgrade_sql = fread( $f, filesize( $update_sql_url ) );
+		$upgrade_sql_array = explode(';', $upgrade_sql);
+		$mysqli->upgrade( $upgrade_sql_array );
+		update_option( 'ec_option_db_version', EC_CURRENT_DB );
+	}
 	
 	$storepageid = get_option('ec_option_storepage');
 	$cartpageid = get_option('ec_option_cartpage');
