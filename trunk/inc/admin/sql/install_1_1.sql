@@ -82,7 +82,7 @@ CREATE TABLE `ec_customfield` (
   `field_label` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`customfield_id`),
   UNIQUE KEY `customfield_id` (`customfield_id`)
-) ENGINE=MyISAM 
+)ENGINE=MyISAM 
 AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=0
 ;
 CREATE TABLE `ec_customfielddata` (
@@ -91,7 +91,7 @@ CREATE TABLE `ec_customfielddata` (
   `table_id` int(11) NOT NULL,
   `data` blob NOT NULL,
   PRIMARY KEY (`customfielddata_id`)
-) ENGINE=MyISAM 
+)ENGINE=MyISAM 
 AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci PACK_KEYS=0
 ;
 CREATE TABLE IF NOT EXISTS `ec_dblog` (
