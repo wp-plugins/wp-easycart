@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* CSS Document */
+.ec_menu_horizontal{
+   	background-color: [main_color];
+	font-family: [content_font];
+	font-size:12px;
+	margin-bottom:15px;
+	padding-left:30px; padding-right:30px; padding-top:10px; padding-bottom:10px;  
+    list-style:none;
+	height:28px;
+	position:relative;
+	z-index:45;
+}
+.ec_menu_horizontal li{
+    float:left;
+    padding: 0px 10px;
+	position:relative;
+	min-width:100px;
+}
+.ec_menu_horizontal a{
+    display:block;
+    font-weight: bold;
+	color: #FFFFFF;
+	text-align: center;
+	padding: 8px;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+.ec_menu_horizontal a:hover{
+    color:#efefef;
+    text-decoration:none;
+}
+
+.ec_menu_horizontal ul li ul{
+   	background:[main_color];
+	list-style:none;
+    position:absolute;
+    left:-9999px;
+}
+.ec_menu_horizontal ul li ul li{
+    padding-top:1px;
+	float:none;
+}
+.ec_menu_horizontal ul li ul a{
+    white-space:nowrap;
+}
+.ec_menu_horizontal ul li:hover ul{
+	left:0;
+}
+.ec_menu_horizontal ul li:hover a{
+	background:[main_color];
+    text-decoration:none;
+}
+.ec_menu_horizontal ul li:hover ul a{
+	text-decoration:none;
+}
+.ec_menu_horizontal ul li:hover ul li a:hover{
+	background:[second_color];
+}
+
+/***************************/
+.ec_menu_horizontal ul li ul li ul{ display:none; position:absolute; background-color:[second_color];}
+.ec_menu_horizontal ul li ul li:hover ul { display:block; position:absolute; top:0px; left:140px; background-color:#fff;}
+.ec_menu_horizontal ul li ul li:hover ul li { list-style:none; float:none; margin-left:1px; padding:0px; position:relative;background-color:#fff;}
+.ec_menu_horizontal ul li ul li ul li a:hover{ background-color: rgba(28,28,240,0.5); }​
