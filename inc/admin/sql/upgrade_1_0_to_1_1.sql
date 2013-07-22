@@ -1,4 +1,5 @@
-﻿CREATE TABLE `ec_customfield` (
+﻿;
+CREATE TABLE `ec_customfield` (
   `customfield_id` int(11) NOT NULL AUTO_INCREMENT,
   `table_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `field_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
