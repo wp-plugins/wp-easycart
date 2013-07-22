@@ -39,9 +39,19 @@ class ec_db{
 				ec_orderdetail.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
-				ec_orderdetail.download_timelimit_seconds
+				ec_orderdetail.download_timelimit_seconds,
 				
-				FROM ec_orderdetail, ec_order, ec_user 
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
+				
+				FROM ec_orderdetail
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_orderdetail'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id, 
+				
+				ec_order, ec_user
 				
 				WHERE 
 				ec_user.email = '%s' AND ec_user.password = '%s' AND 
@@ -80,9 +90,17 @@ class ec_db{
 				ec_orderdetail.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
-				ec_orderdetail.download_timelimit_seconds
+				ec_orderdetail.download_timelimit_seconds,
 				
-				FROM ec_orderdetail, ec_order 
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
+				
+				FROM ec_orderdetail, ec_order
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_orderdetail'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id  
 				
 				WHERE 
 				ec_order.order_id = ec_orderdetail.order_id AND 
@@ -172,7 +190,9 @@ class ec_db{
 				
 				product.views,
 				
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', pricetier.price, pricetier.quantity) ORDER BY pricetier.quantity ASC SEPARATOR '---') as pricetier_data
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', pricetier.price, pricetier.quantity) ORDER BY pricetier.quantity ASC SEPARATOR '---') as pricetier_data,
+				
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
 				FROM ec_product as product 
 				
@@ -215,7 +235,13 @@ class ec_db{
 				ON review.product_id = product.product_id
 				
 				LEFT JOIN ec_pricetier as pricetier
-				ON pricetier.product_id = product.product_id ";
+				ON pricetier.product_id = product.product_id 
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_product'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = product.product_id ";
 				
 				$group_query = " GROUP BY 
 				product.product_id,
@@ -1659,13 +1685,21 @@ class ec_db{
 				ec_order.payment_method, 
 				
 				ec_order.paypal_email_id, 
-				ec_order.paypal_payer_id 
+				ec_order.paypal_payer_id,
+				
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
 				FROM 
 				ec_order
 				
 				LEFT JOIN ec_orderstatus ON
 				ec_order.orderstatus_id = ec_orderstatus.status_id
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_order'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id
 				
 				WHERE ec_order.order_id = %d";
 				
@@ -1722,13 +1756,21 @@ class ec_db{
 				ec_order.payment_method, 
 				
 				ec_order.paypal_email_id, 
-				ec_order.paypal_payer_id 
+				ec_order.paypal_payer_id,
+				
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data 
 				
 				FROM 
 				ec_order
 				
 				LEFT JOIN ec_orderstatus ON
-				ec_order.orderstatus_id = ec_orderstatus.status_id, 
+				ec_order.orderstatus_id = ec_orderstatus.status_id
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_order'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id, 
 				
 				ec_user
 				
@@ -1781,7 +1823,9 @@ class ec_db{
 				shipping.state as shipping_state, 
 				shipping.zip as shipping_zip, 
 				shipping.country as shipping_country, 
-				shipping.phone as shipping_phone 
+				shipping.phone as shipping_phone,
+				
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
 				FROM 
 				ec_user 
@@ -1791,6 +1835,12 @@ class ec_db{
 				
 				LEFT JOIN ec_address as shipping 
 				ON ec_user.default_shipping_address_id = shipping.address_id 
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_user'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_user.user_id
 				
 				WHERE 
 				ec_user.email = '%s' AND 
@@ -1922,6 +1972,24 @@ class ec_db{
 	public function get_ios3_country_code( $iso2 ){
 		$sql = "SELECT iso3_cnt FROM ec_country WHERE iso2_cnt = '%s'";
 		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $iso2 ) );
+	}
+	
+	public function get_manufacturer_row( $manufacturer_id ){
+		$sql = "SELECT ec_manufacturer.name FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = %d";
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $manufacturer_id ) );	
+	}
+	
+	public function get_menu_row( $menu_id, $level ){
+		if( $level == 1 ){
+			$sql = "SELECT ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.order, ec_menulevel1.clicks, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image FROM ec_menulevel1 WHERE ec_menulevel1.menulevel1_id = %d";
+			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $menu_id ) );
+		}else if( $level == 2 ){
+			$sql = "SELECT ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.order, ec_menulevel2.clicks, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = %d";
+			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $menu_id ) );
+		}else if( $level == 3 ){
+			$sql = "SELECT ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.order, ec_menulevel3.clicks, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d";
+			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $menu_id ) );
+		}
 	}
 	
 }

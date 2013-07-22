@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.0.8
+ * Version: 1.0.9
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.0.8
+ * @version 1.0.9
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,8 +19,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_0' );
-define( 'EC_CURRENT_DB', '1_0' );
+define( 'EC_CURRENT_VERSION', '1_9' );
+define( 'EC_CURRENT_DB', '1_1' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
 
@@ -161,8 +161,9 @@ function ec_custom_headers( ){
 	
 	if( isset( $_GET['ec_page'] ) && ( $_GET['ec_page'] == "checkout_payment" || $_GET['ec_page'] == "checkout_shipping" || $_GET['ec_page'] == "checkout_info" ) ){
 		ob_start();
-		header("Cache-Control: no-cache, must-revalidate");
-		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+		header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
+		header('Pragma: no-cache'); // HTTP 1.0.
+		header('Expires: 0'); // Proxies.
 		ob_end_clean();
 	}
 }
@@ -999,6 +1000,89 @@ function ec_ajax_insert_customer_review( ){
 	
 	die(); // this is required to return a proper result
 	
+}
+
+add_filter( 'wp_title', 'ec_custom_title', 20 );
+
+function ec_custom_title( $title ) {
+	
+	$page_id = get_the_ID();
+	$store_id = get_option( 'ec_option_storepage' );
+	
+	if( $page_id == $store_id && isset( $_GET['model_number'] ) ){
+		$db = new ec_db( );
+		$products = $db->get_product_list( " WHERE product.model_number = '" . $_GET['model_number'] . "'", "", "", "" );
+		if( count( $products ) > 0 ){
+			$custom_title = $products[0]['title'] . " |" . $title;
+			return $custom_title;
+		}else{
+			return $title;
+		}
+	}else if( $page_id == $store_id ){
+		
+		$additional_title = "";
+		
+		if( isset( $_GET['manufacturer'] ) ){
+			$db = new ec_db( );
+			$manufacturer = $db->get_manufacturer_row( $_GET['manufacturer'] );
+			
+			$additional_title .= $manufacturer->name . " |";
+		}
+		
+		if( isset( $_GET['menu'] ) ){
+			$custom_title = $_GET['menu'] . " |" . $additional_title . $title;
+			return $custom_title;
+		}else if( isset( $_GET['submenu'] ) ){
+			$custom_title = $_GET['submenu'] . " |" . $additional_title . $title;
+			return $custom_title;
+		}else if( isset( $_GET['subsubmenu'] ) ){
+			$custom_title = $_GET['subsubmenu'] . " |" . $additional_title . $title;
+			return $custom_title;
+		}else{
+			return $additional_title . $title;
+		}	
+	}else{
+		return $title;
+	}
+	
+}
+
+add_action('wp_head', 'ec_store_meta', 0);
+
+function ec_store_meta( ){
+	$page_id = get_the_ID();
+	$store_id = get_option( 'ec_option_storepage' );
+	
+	if( $page_id == $store_id && isset( $_GET['model_number'] ) ){
+		$db = new ec_db( );
+		$products = $db->get_product_list( " WHERE product.model_number = '" . $_GET['model_number'] . "'", "", "", "" );
+		if( count( $products ) > 0){
+			echo "<meta name=\"description\" content=\"" . $products[0]['seo_description'] . "\"/>";
+			echo "<meta name=\"keywords\" content=\"" . $products[0]['seo_keywords'] . "\" />";
+		}
+		
+	}else if( $page_id == $store_id ){
+		
+		if( isset( $_GET['menuid'] ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $_GET['menuid'], 1 );
+			echo "<meta name=\"description\" content=\"" . $menu_row->seo_description . "\"/>\n";
+			echo "<meta name=\"keywords\" content=\"" . $menu_row->seo_keywords . "\" />\n";
+			
+		}else if( isset( $_GET['submenuid'] ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $_GET['submenuid'], 2 );
+			echo "<meta name=\"description\" content=\"" . $menu_row->seo_description . "\"/>\n";
+			echo "<meta name=\"keywords\" content=\"" . $menu_row->seo_keywords . "\" />\n";
+			
+		}else if( isset( $_GET['subsubmenuid'] ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $_GET['subsubmenuid'], 3 );
+			echo "<meta name=\"description\" content=\"" . $menu_row->seo_description . "\"/>\n";
+			echo "<meta name=\"keywords\" content=\"" . $menu_row->seo_keywords . "\" />\n";
+			
+		}
+	}
 }
 
 /////////////////////////////////////////////////////////////////////

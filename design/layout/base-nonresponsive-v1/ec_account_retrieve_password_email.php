@@ -1,12 +1,3 @@
---==MIME_BOUNDRY_alt_main_message
-Content-Type: text/plain; charset=utf-8
-
-
-This email is html, please switch to this view
-
-
---==MIME_BOUNDRY_alt_main_message
-Content-Type: text/html; charset=utf-8
 <html>
     <head>
     <title>Your New Password</title>

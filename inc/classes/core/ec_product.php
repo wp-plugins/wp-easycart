@@ -67,6 +67,8 @@ class ec_product{
 	private $promotion;							// ec_promotion structure
 	private $promotion_text;					// TEXT
 	
+	private $customfields = array();			// array of ec_customfield objects
+	
 	function __construct($product_data, $is_featured_product=0, $is_product_details=0, $is_widget=0 ){
 		$this->mysqli = new ec_db();
 		$this->is_featured_product = $is_featured_product;
@@ -139,6 +141,8 @@ class ec_product{
 		$this->views = $product_data['views'];
 		
 		$this->pricetiers = $product_data['pricetier_data'];
+		
+		$this->customfields = $product_data['customfield_data'];
 		
 		$this->update_stock_quantity( session_id() );
 		
@@ -662,6 +666,36 @@ class ec_product{
 			$Price = $GLOBALS['currency']->get_currency_display( $this->pricetiers[$i][0] );
 			$Quantity = $this->pricetiers[$i][1];
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_price_tier.php' );	
+		}
+	}
+	
+	public function display_product_custom_fields( $divider, $spacer ){
+		for( $i=0; $i<count( $this->customfields ) && count( $this->customfields[$i] ) == 3; $i++ ){
+			$field_name = $this->customfields[$i][0];
+			$field_label = $this->customfields[$i][1];
+			$field_data = $this->customfields[$i][2];
+			
+			echo $field_label . $divider . " " . $field_data . $spacer;
+		}
+	}
+	
+	public function display_product_custom_field_label( $field_name_input ){
+		for( $i=0; $i<count( $this->customfields ) && count( $this->customfields[$i] ) == 3; $i++ ){
+			$field_name = $this->customfields[$i][0];
+			if( $field_name_input == $field_name ){
+				$field_label = $this->customfields[$i][1];
+				echo $field_label;
+			}
+		}
+	}
+	
+	public function display_product_custom_field_data( $field_name_input ){
+		for( $i=0; $i<count( $this->customfields ) && count( $this->customfields[$i] ) == 3; $i++ ){
+			$field_name = $this->customfields[$i][0];
+			if( $field_name_input == $field_name ){
+			$field_data = $this->customfields[$i][2];
+				echo $field_data;
+			}
 		}
 	}
 	

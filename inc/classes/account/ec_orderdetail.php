@@ -37,6 +37,8 @@ class ec_orderdetail{
 	
 	private $currency;									// ec_currency structure
 	
+	public $customfields = array();						// array of ec_customfield objects
+	
 	function __construct( $orderdetail_row, $download_now = 0 ){
 		$this->mysqli = new ec_db( );
 		
@@ -86,6 +88,12 @@ class ec_orderdetail{
 			
 			$this->start_download( );
 			
+		}
+		
+		$customfield_data_array = explode( "---", $orderdetail_row->customfield_data );
+		for( $i=0; $i<count( $customfield_data_array ); $i++ ){
+			$temp_arr = explode("***", $customfield_data_array[$i]);
+			array_push($this->customfields, $temp_arr);
 		}
 	}
 	
@@ -249,6 +257,12 @@ class ec_orderdetail{
 	
 	public function display_item_total( ){
 		echo $this->currency->get_currency_display( $this->total_price );
+	}
+	
+	public function display_custom_fields( $divider, $seperator ){
+		for( $i=0; $i<count( $this->customfields ) && count( $this->customfields[$i] ) == 3; $i++ ){
+			echo $this->customfields[$i][1] . $divider . " " . $this->customfields[$i][2] . $seperator;
+		}
 	}
 	
 	public function has_download_link( ){

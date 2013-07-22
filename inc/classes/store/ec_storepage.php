@@ -215,6 +215,25 @@ class ec_storepage{
 		echo $link_text;
 	}
 	
+	public function display_optional_banner( ){
+		if( isset( $_GET['menuid'] ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $_GET['menuid'], 1 );
+		}else if( isset( $_GET['submenuid'] ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $_GET['submenuid'], 2 );
+		}else if( isset( $_GET['subsubmenuid'] ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $_GET['subsubmenuid'], 3 );
+		}
+		
+		if( isset( $menu_row ) ){
+			if( $menu_row->banner_image != "" ){
+				echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/banners/" . $menu_row->banner_image ) . "\" alt=\"" . $menu_row->name . "\" />";	
+			}
+		}
+	}
+	
 	////////////////////////////////////////////////////////
 	// MAIN HELPER FUNCTIONS
 	////////////////////////////////////////////////////////

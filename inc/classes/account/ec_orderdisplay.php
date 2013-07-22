@@ -287,4 +287,34 @@ class ec_orderdisplay{
 		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&amp;order_id=". $this->order_id ."\">" . $link_text . "</a>";
 	}
 	
+	public function send_email_receipt(){
+		
+		$total = $GLOBALS['currency']->get_currency_display( $this->grand_total );
+		$subtotal = $GLOBALS['currency']->get_currency_display( $this->sub_total );
+		$tax = $GLOBALS['currency']->get_currency_display( $this->tax_total );
+		$vat = $GLOBALS['currency']->get_currency_display( $this->vat_total );
+		$tax = new ec_tax();
+		$vat_rate = number_format( $tax->vat_rate, 0, '', '' );
+		$shipping = $GLOBALS['currency']->get_currency_display( $this->shipping_total );
+		$discount = $GLOBALS['currency']->get_currency_display( $this->discount_total );
+		
+		$email_logo_url = get_option( 'ec_option_email_logo' );
+	 	
+		// Get receipt
+		ob_start();
+        include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_receipt.php';
+        $message = ob_get_clean();
+	
+		$headers = "From: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
+		$headers .= "Reply-To: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
+		$headers .= "X-Mailer: PHP4\n";
+		$headers .= "X-Priority: 3\n";
+		$headers .= "MIME-Version: 1.0\n";
+		$headers .= "Return-Path: " . get_option( 'ec_option_order_from_email' ) . "\r\n"; 
+		$headers .= "Content-type: text/html\r\n"; 
+	
+		mail( $this->user->email, "Order Confirmation -- #" . $this->order_id, $message, $headers);
+		
+	}
+	
 }
