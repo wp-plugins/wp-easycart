@@ -19,6 +19,8 @@ class ec_user{
 	
 	private $password;									// VARCHAR 255
 	
+	public $customfields = array();						// array of customfield objects
+	
 	function __construct( $email ){ 
 		
 		$this->mysqli = new ec_db();
@@ -80,6 +82,12 @@ class ec_user{
 			$this->shipping = new ec_address( "", "", "", "", "", "", "", "", "" );
 		}
 		
+		$customfield_data_array = explode( "---", $user->customfield_data );
+		for( $i=0; $i<count( $customfield_data_array ); $i++ ){
+			$temp_arr = explode("***", $customfield_data_array[$i]);
+			array_push($this->customfields, $temp_arr);
+		}
+		
 	}
 	
 	private function setup_billing_info(){
@@ -136,6 +144,26 @@ class ec_user{
 	
 	public function display_email( ){
 		echo $this->email;	
+	}
+	
+	public function display_custom_input_fields( $divider, $seperator ){
+		for( $i=0; $i<count( $this->customfields ) && $this->customfields[$i][0] != ""; $i++ ){
+			echo $this->customfields[$i][1] . $divider . " <input type=\"text\" name=\"ec_user_custom_field_" . $this->customfields[$i][0] . "\" id=\"ec_user_custom_field_" . $this->customfields[$i][0] . "\" value=\"" . $this->customfields[$i][2] . "\" />" . $seperator;
+		}
+	}
+	
+	public function display_custom_fields( $divider, $seperator ){
+		for( $i=0; $i<count( $this->customfields ) && $this->customfields[$i][0] != ""; $i++ ){
+			echo $this->customfields[$i][1] . $divider . " " . $this->customfields[$i][2] . $seperator;
+		}
+	}
+	
+	public function display_custom_input_label_single( $i ){
+		echo $this->customfields[$i][1];
+	}
+	
+	public function display_custom_input_field_single( $i ){
+		echo "<input type=\"text\" name=\"ec_user_custom_field_" . $this->customfields[$i][0] . "\" id=\"ec_user_custom_field_" . $this->customfields[$i][0] . "\" value=\"" . $this->customfields[$i][2] . "\" />" . $seperator;
 	}
 	
 }

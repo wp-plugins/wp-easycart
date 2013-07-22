@@ -621,6 +621,13 @@ class ec_accountpage{
 		
 		$success = $this->mysqli->update_personal_information( $old_email, $password, $first_name, $last_name, $email, $is_subscriber );
 		
+		//Update Custom Fields if They Exist
+		if( count( $this->user->customfields ) > 0 ){
+			for( $i=0; $i<count( $this->user->customfields ); $i++ ){
+				$this->mysqli->update_customfield_data( $this->user->customfields[$i][0], $_POST['ec_user_custom_field_' . $this->user->customfields[$i][0]] );
+			}
+		}
+		
 		if( $success >= 0 ){
 			$_SESSION['ec_email'] = $email;
 			$_SESSION['ec_username'] = $first_name . " " . $last_name;

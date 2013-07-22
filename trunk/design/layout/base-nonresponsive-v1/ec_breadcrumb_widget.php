@@ -70,7 +70,7 @@ $ec_filter = new ec_filter( 1 );
             ?>
             <?php esc_html_e('Posts by '); echo ' ', $curauth->nickname; ?>
         <?php } elseif (is_page()) { 
-            echo '<a href="'; the_permalink(); echo '">'; wp_title(''); echo '</a>';	
+            echo '<a href="'; the_permalink(); echo '">'; the_title( ); echo '</a>';	
         }; ?>
 		<?php } 
 		$post_id = get_the_ID();
