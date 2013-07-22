@@ -132,6 +132,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 = 1.0.8 =
 * Updating linking to the admin console and download instructions.
 = 1.0.9 =
+* svn issues, skipping this version.
+= 1.0.10 =
 * DB Upgrades - Added ec_customfield table, added ec_customfielddata table, ec_menulevel1 - added seo_keywords, seo_description, and banner_image to table, ec_menulevel2 - added seo_keywords, seo_description, and banner_image to table, ec_menulevel3 - added seo_keywords, seo_description, and banner_image to table
 * New Feature - Added custom fields to the core. Soon to release a matching admin. Custom fields allow developers to add fields like to a product for display purposes. This will allow developers to customize an install to best fit their clients needs. Custom fields will be available for products, users, orders, and order details.
 * Improvement - Added custom title functionality on the store page for products, categories, and manufacturers. 
@@ -163,4 +165,6 @@ Be sure to backup all files and database before completing an upgrade of any kin
 =1.0.8 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
 =1.0.9 =
+Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
+=1.0.10 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
