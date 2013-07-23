@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.0.12
+ * Version: 1.0.13
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.0.12
+ * @version 1.0.13
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_12' );
+define( 'EC_CURRENT_VERSION', '1_13' );
 define( 'EC_CURRENT_DB', '1_1' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -93,6 +93,15 @@ function load_ec_pre(){
 		$db = new ec_db();
 		$db->upgrade( $upgrade_sql_array );
 		update_option( 'ec_option_db_version', EC_CURRENT_DB );
+	}
+	
+	// DO a version check, if before version 14 we can assume they don't have specific files.
+	$plugin_version = plugin_get_version( );
+	$explode_version = explode( ".", $plugin_version );
+	if( count( $explode_version == 3 ) && $explode_version[0] == 1 && $explode_version[2] < 14 ){
+		// Any version before 13 needs the banner folder.
+		$products_folder = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/products';
+		if( !mkdir( $products_folder . "/banners", 0757 ) ) die( "CANNOT CREATE BANNERS FOLDER" );
 	}
 	
 	$storepageid = get_option('ec_option_storepage');
@@ -1102,9 +1111,13 @@ function url(){
   return $protocol .  $baseurl . $folder;
 }
 
-
-
-
-
+function plugin_get_version() {
+	if ( ! function_exists( 'get_plugins' ) )
+		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+	
+	$plugin_folder = get_plugins( '/' . plugin_basename( dirname( __FILE__ ) ) );
+	$plugin_file = basename( ( __FILE__ ) );
+	return $plugin_folder[$plugin_file]['Version'];
+}
 
 ?>
