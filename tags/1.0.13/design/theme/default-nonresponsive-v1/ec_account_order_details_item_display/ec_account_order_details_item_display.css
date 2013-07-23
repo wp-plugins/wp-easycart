@@ -1,0 +1,131 @@
+@charset "utf-8";
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//All Code and Design is copyrighted by Level Four Development, llc
+//
+//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
+//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
+//
+//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
+//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
+//contact Level Four Development, llc and EasyCart prior to use.
+//
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+/* Base Theme - EC Cart Item CSS Document */
+.ec_account_order_details_item_display {
+	width: 100%;
+	border-bottom: 1px solid #999;
+	float: left;
+	padding: 10px 0px;
+}
+.ec_account_order_details_item_display_column1 {
+	float: left;
+	text-align: left;
+	width: 15%;
+}
+.ec_account_order_details_item_display_column2 {
+	float: left;
+	text-align: left;
+	width: 38%;
+}
+.ec_account_order_details_item_display_column3 {
+	float: left;
+	text-align: center;
+	width: 13%;
+}
+.ec_account_order_details_item_display_column4 {
+	float: left;
+	text-align: center;
+	width: 8%;
+}
+.ec_account_order_details_item_display_column5 {
+	float: right;
+	text-align: right;
+	padding-right: 8px;
+	width: 14%;
+}
+.ec_account_order_details_item_display_column2 div {
+	width: 100%;
+	float: left;
+}
+.ec_account_order_details_item_display_column4 input[type="text"] {
+	width: 50px;
+	text-align: center;
+}
+.ec_account_order_details_item_display_title {
+	font-size: 12px;
+	font-weight: bold;
+	text-align: left;
+}
+.ec_account_order_details_item_display_option {
+	font-size: 11px;
+	color: #333;
+	line-height: 15px;
+	text-align: left;
+}
+.ec_account_order_details_item_display_unit_price {
+	font-size: 12px;
+}
+.ec_account_order_details_item_display_total_price {
+	font-size: 12px;
+	font-weight: bold;
+	padding-right: 5px;
+}
+.ec_account_order_details_item_display_quantity_box {
+}
+.ec_account_order_details_item_display_update_button input[type="submit"] {
+	margin-right: 10px;
+	display: block;
+	float: right;
+	background-color: #1c486b;
+	background-image: -moz-linear-gradient(top, #2e8cd6, #1c486b);
+	background-image: -webkit-linear-gradient(top, #2e8cd6, #1c486b);
+	background-image: linear-gradient(top, #2e8cd6, #1c486b);
+	color: #fff;
+	padding: 6px 12px;
+	text-indent: 0;
+	text-decoration: none!important;
+	text-transform: uppercase;
+	white-space: nowrap;
+	text-align: center;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.6), inset 0 0 5px rgba(107,151,30,1);
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.6), inset 0 0 5px rgba(107,151,30,1);
+	box-shadow: 1px 1px 2px rgba(0,0,0,.6), inset 0 0 5px rgba(107,151,30,1);
+	font: bold 11px/1.2 Arial, Helvetica, sans-serif!important;
+	outline: 0;
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+.ec_account_order_details_item_display_delete_button input[type="submit"] {
+	margin-right: 10px;
+	display: block;
+	float: right;
+	background-color: #1c486b;
+	background-image: -moz-linear-gradient(top, #2e8cd6, #1c486b);
+	background-image: -webkit-linear-gradient(top, #2e8cd6, #1c486b);
+	background-image: linear-gradient(top, #2e8cd6, #1c486b);
+	color: #fff;
+	padding: 6px 12px;
+	text-indent: 0;
+	text-decoration: none!important;
+	text-transform: uppercase;
+	white-space: nowrap;
+	text-align: center;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.6), inset 0 0 5px rgba(107,151,30,1);
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.6), inset 0 0 5px rgba(107,151,30,1);
+	box-shadow: 1px 1px 2px rgba(0,0,0,.6), inset 0 0 5px rgba(107,151,30,1);
+	font: bold 11px/1.2 Arial, Helvetica, sans-serif!important;
+	outline: 0;
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+/* END EC CART ITEM STYLE*/
