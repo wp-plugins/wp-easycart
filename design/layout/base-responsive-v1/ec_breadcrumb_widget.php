@@ -99,34 +99,34 @@ $ec_filter = new ec_filter( 1 );
 			
 			$ec_breadcrumbs = $db->get_breadcrumb_data( $model_number, $menuid, $submenuid, $subsubmenuid );
 			
-			if( $ec_breadcrumbs->menulevel1_name )
+			if( isset( $ec_breadcrumbs->menulevel1_name ) )
 				echo "<span class=\"raquo\">$divider</span>" . '<a href="' . $store_page . $permalink_divider . 'menuid=' . $ec_breadcrumbs->menulevel1_id . '&amp;menu=' . htmlentities($ec_breadcrumbs->menulevel1_name ) . '">' . $ec_breadcrumbs->menulevel1_name . '</a>';
 				
 			
-			if( $ec_breadcrumbs->menulevel2_name )
+			if( isset( $ec_breadcrumbs->menulevel2_name ) )
 				echo "<span class=\"raquo\">$divider</span>" . '<a href="' . $store_page . $permalink_divider . 'submenuid=' . $ec_breadcrumbs->menulevel2_id . '&amp;submenu=' . htmlentities($ec_breadcrumbs->menulevel2_name ) . '">' . $ec_breadcrumbs->menulevel2_name . '</a>';
 			
 			
-			if( $ec_breadcrumbs->menulevel3_name )
+			if( isset( $ec_breadcrumbs->menulevel3_name ) )
 				echo "<span class=\"raquo\">$divider</span>" . '<a href="' . $store_page . $permalink_divider . 'subsubmenuid=' . $ec_breadcrumbs->menulevel3_id . '&amp;subsubmenu=' . htmlentities($ec_breadcrumbs->menulevel3_name ) . '">' . $ec_breadcrumbs->menulevel3_name . '</a>';
 				
 			if( isset( $_GET['ec_search'] ) )
 				echo "<span class=\"raquo\">$divider</span>" . '<a href="' . $store_page . $permalink_divider . 'ec_search=' . $_GET['ec_search'] . '">' . $_GET['ec_search'] . '</a>';
 				
 			
-			if( $ec_breadcrumbs->title )
+			if( isset( $ec_breadcrumbs->title ) )
 				echo "<span class=\"raquo\">$divider</span>" . '<a href="' . $store_page . $permalink_divider . 'model_number=' . $ec_breadcrumbs->model_number . '">' . $ec_breadcrumbs->title . '</a>';
 		}else if( $ec_filter->menulevel1->menu_name ){
 			
-			if( $ec_filter->menulevel1->menu_name )
+			if( isset( $ec_filter->menulevel1->menu_name ) )
 				echo "<span class=\"raquo\">$divider</span>" . '<a href="' . $store_page . $permalink_divider . 'menuid=' . $ec_filter->menulevel1->menu_id . '&amp;menu=' . htmlentities($ec_filter->menulevel1->menu_name ) . '">' . $ec_filter->menulevel1->menu_name . '</a>';
 				
 			
-			if( $ec_filter->menulevel2->menu_name )
+			if( isset( $ec_filter->menulevel2->menu_name ) )
 				echo "<span class=\"raquo\">$divider</span>" . '<a href="' . $store_page . $permalink_divider . 'submenuid=' . $ec_filter->menulevel2->menu_id . '&amp;submenu=' . htmlentities($ec_filter->menulevel2->menu_name ) . '">' . $ec_filter->menulevel2->menu_name . '</a>';
 			
 			
-			if( $ec_filter->menulevel3->menu_name )
+			if( isset( $ec_filter->menulevel3->menu_name ) )
 				echo "<span class=\"raquo\">$divider</span>" . '<a href="' . $store_page . $permalink_divider . 'subsubmenuid=' . $ec_filter->menulevel3->menu_id . '&amp;subsubmenu=' . htmlentities($ec_filter->menulevel3->menu_name ) . '">' . $ec_filter->menulevel3->menu_name . '</a>';
 					
 		}

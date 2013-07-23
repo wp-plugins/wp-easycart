@@ -280,7 +280,7 @@ class ec_filter{
 	private function has_filters( ){
 		
 		if(	$this->get_menu_level() != 0 || 
-			$this->manufacturer->manufacturer_id != 0 || 
+			( isset( $this->manufacturer ) && $this->manufacturer->manufacturer_id && $this->manufacturer->manufacturer_id != 0 ) || 
 			$this->pricepoint_id != 0 || 
 			$this->model_number != "" || 
 			$this->search != ""  ||

@@ -328,9 +328,7 @@ class ec_product{
 	/* Display the product price */
 	public function display_price( ){
 		
-		if( $promotion->get_){
-			
-		}else if( $this->list_price != "0.00" )
+		if( $this->list_price != "0.00" )
 			echo "<span class=\"ec_product_sale_price\">";
 		else
 			echo "<span class=\"ec_product_price\">";
@@ -544,7 +542,11 @@ class ec_product{
 	
 	/* Print Out Customer Review Form Tag */
 	public function display_product_customer_review_form_start( ){
-		echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $_GET['model_number'] . "&optionitem_id=" . $_GET['optionitem_id'] . "\" method=\"post\" id=\"customer_review_form\">";
+		if( isset( $_GET['optionitem_id'] ) ){
+			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $_GET['model_number'] . "&optionitem_id=" . $_GET['optionitem_id'] . "\" method=\"post\" id=\"customer_review_form\">";
+		}else{
+			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $_GET['model_number'] . "\" method=\"post\" id=\"customer_review_form\">";
+		}
 	}
 	
 	/* Print Out Customer Review Closing Form Tag */
