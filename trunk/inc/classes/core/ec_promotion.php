@@ -78,10 +78,13 @@ class ec_promotion{
 			}
 		}
 		
-		if( $shipping_discount_total > $shipping_total )
+		if( isset( $shipping_discount_total ) && isset( $shipping_total ) && $shipping_discount_total > $shipping_total )
 			$shipping_discount_total = $shipping_total;
-			
-		return $shipping_discount_total;
+		
+		if( isset( $shipping_discount_total ) )
+			return $shipping_discount_total;
+		else
+			return 0;
 		
 	}
 	

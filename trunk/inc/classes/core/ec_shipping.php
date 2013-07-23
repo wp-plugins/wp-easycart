@@ -63,7 +63,9 @@ class ec_shipping{
 		$this->subtotal = $subtotal;
 		$this->weight = $weight;
 		$this->express_price = $this->ec_setting->get_setting( "shipping_expedite_rate" );
-		$this->ship_express = $_SESSION['ec_ship_express'];
+		if( isset( $_SESSION['ec_ship_express'] ) ){
+			$this->ship_express = $_SESSION['ec_ship_express'];
+		}
 		
 		$this->display_type = $display_type;
 	}
@@ -345,6 +347,7 @@ class ec_shipping{
 	
 	public function get_shipping_promotion_text( ){
 		$promotion = new ec_promotion( );
+		$rate = 0;
 		$promotion->get_shipping_discounts( $this->subtotal, $rate, $this->shipping_promotion_text );
 		return $this->shipping_promotion_text;
 	}
