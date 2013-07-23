@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.0.14
+ * Version: 1.0.15
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.0.14
+ * @version 1.0.15
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_14' );
+define( 'EC_CURRENT_VERSION', '1_15' );
 define( 'EC_CURRENT_DB', '1_1' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -99,7 +99,7 @@ function load_ec_pre(){
 	$banners_folder = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/products' . "/banners";
 	if( !file_exists( $banners_folder  ) ){
 		// Any version before 13 needs the banner folder.
-		if( !mkdir( $banners_folder . "/banners", 0757 ) );
+		if( !mkdir( $banners_folder, 0757 ) );
 	}
 	
 	$storepageid = get_option('ec_option_storepage');
