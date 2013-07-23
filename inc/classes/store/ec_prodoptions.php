@@ -23,7 +23,7 @@ class ec_prodoptions{
 		$this->optionset4 = new ec_optionset( $option4_data );
 		$this->optionset5 = new ec_optionset( $option5_data );
 		
-		$this->quantity_array = $this->mysqli->get_quantity_data( $this->product_id, &$this->optionset1, &$this->optionset2, &$this->optionset3, &$this->optionset4, &$this->optionset5);
+		$this->quantity_array = $this->mysqli->get_quantity_data( $this->product_id, $this->optionset1, $this->optionset2, $this->optionset3, $this->optionset4, $this->optionset5 );
 	
 	}
 	
