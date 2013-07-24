@@ -152,7 +152,7 @@ function rmdir_recursive($dir) {
 
 <img src="<?php echo plugins_url('images/WP-Easy-Cart-Logo.png', __FILE__); ?>" />
 
-<?php if($_GET['settings-updated'] == true) { ?>
+<?php if( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == true) { ?>
 <div id='setting-error-settings_updated' class='updated settings-error'><p><strong>Settings saved.</strong></p></div>
 <?php }?>  
 
@@ -269,7 +269,7 @@ When you upload a new theme to your site, you will see them appear here.  This s
             </tr>  
             <tr valign="top">
               <td class="itemheading" scope="row"></td>
-              <td scope="row" class="ec_upload_success"><?php if($message) echo "<p>$theme_message</p>"; ?>
+              <td scope="row" class="ec_upload_success"><?php if( isset( $message ) ) echo "<p>$theme_message</p>"; ?>
               </td>
             </tr> 
             <tr valign="top">
@@ -281,7 +281,7 @@ When you upload a new theme to your site, you will see them appear here.  This s
             </tr>  
             <tr valign="top">
               <td class="itemheading" scope="row"></td>
-              <td scope="row" class="ec_upload_success"><?php if($message) echo "<p>$layout_message</p>"; ?>
+              <td scope="row" class="ec_upload_success"><?php if( isset( $message ) ) echo "<p>$layout_message</p>"; ?>
               </td>
             </tr>   
             </table>

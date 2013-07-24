@@ -91,7 +91,7 @@ class ec_language{
 	/************************************************************/
 	
 	public function update_language_data( ){
-		if( $_POST['isupdate'] ){
+		if( isset( $_POST['isupdate'] ) ){
 			foreach( $this->languages as $language ){
 				$key1 = $language;
 				foreach( $this->language_data->{$language}->options as $language_section ){

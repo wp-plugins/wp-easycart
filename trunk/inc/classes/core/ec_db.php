@@ -94,13 +94,15 @@ class ec_db{
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
-				FROM ec_orderdetail, ec_order
+				FROM ec_orderdetail
 				
 				LEFT JOIN ec_customfield
 				ON ec_customfield.table_name = 'ec_orderdetail'
 				
 				LEFT JOIN ec_customfielddata
-				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id  
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id, 
+				
+				ec_order 
 				
 				WHERE 
 				ec_order.order_id = ec_orderdetail.order_id AND 

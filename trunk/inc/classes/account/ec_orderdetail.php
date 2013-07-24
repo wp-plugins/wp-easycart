@@ -102,7 +102,7 @@ class ec_orderdetail{
 	}
 	
 	public function display_image( $size ){
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/images.php?max_width=" . get_option( 'ec_option_' . $size . '_width' ) . "&max_height=" . get_option( 'ec_option_' . $size . '_height' ) . "&imgfile=" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
 	}
 	
 	public function display_title( ){

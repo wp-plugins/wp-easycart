@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.5.2
-Stable tag: 1.0.17
+Stable tag: 1.0.18
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -154,9 +154,17 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 * Improvement - Added a function to send an email receipt from the order display. This is useful for third party ipn listener sending out emails when order payment is successful.
 * Improvement - Fixed the extra MIME text at the top of forgot password emailers.
 = 1.0.16 =
-* Bux Fix - Pass by reference into a function was deprecated in PHP 5.3, issue in one file resolved.
+* Bug Fix - Pass by reference into a function was deprecated in PHP 5.3, issue in one file resolved.
 = 1.0.17 =
-* Bux Fixes - When WordPress was in debug mode, notices appearing everywhere. Cleaned up the code to prevent notices in debug mode.
+* Bug Fix - When WordPress was in debug mode, notices appearing everywhere. Cleaned up the code to prevent notices in debug mode.
+= 1.0.18 =
+* Bug Fix - Store WordPress - Admin pages had notices appearing with debugging on. These notices were corrected.
+* Bug Fix - Admin Console - Bug fix for those who have a non wp_ prefix in their database. Admin console was erroring for these customers.
+* Bug Fix - Account Order Details - Some servers do not like our resizer, tim thumb, script, so changed to use css image resizing instead.
+* Bug Fix - Cart Item - Some servers do not like our resizer, tim thumb, script, so changed to use css image resizing instead.
+* Bug Fix - DB Class - Guest checkout sql script had a bug in it. Now fixed.
+* Bug Fix - Language Class - WordPress debugging was causing a notice. This is removed.
+* Bug Fix - Store Design Files - Fixes were made to ensure image sizes were correct. Buttons were being overridden in Twenty Twelve theme, corrections made. Width of cart item button column fixed in responsive base.
 
 == Upgrade Notice ==
 
@@ -195,4 +203,6 @@ Be sure to backup all files and database before completing an upgrade of any kin
 =1.0.16 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
 =1.0.17 =
+Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
+=1.0.18 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.

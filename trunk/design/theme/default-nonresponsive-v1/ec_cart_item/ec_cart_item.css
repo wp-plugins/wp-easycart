@@ -12,6 +12,9 @@
 	text-align: left;
 	margin-left: 10px;
 }
+.ec_cart_item_column1 img{
+	max-width:100px !important;
+}
 .ec_cart_item_column2 {
 	width: 27%;
 	float: left;
@@ -114,6 +117,7 @@
 	text-align: center;
 	font: bold 11px/1.2 [content_font]!important;
 	outline: 0;
+	background-image: none;
 }
 .ec_cart_item_update_button input[type="submit"]:hover {
 	cursor: pointer;
@@ -136,6 +140,7 @@
 	text-align: center;
 	font: bold 11px/1.2 [content_font]!important;
 	outline: 0;
+	background-image: none;
 }
 .ec_cart_item_delete_button input[type="submit"]:hover {
 	cursor: pointer;

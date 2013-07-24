@@ -74,6 +74,7 @@
 	border:none;
 	margin-top:0px;
 	padding:6px 14px;
+	background-image: none;
 }
 .ec_cart_item_update_button input[type="submit"]:hover {
 	cursor: pointer;
@@ -106,6 +107,7 @@
 	border:none;
 	margin-top:0px;
 	padding:6px 14px;
+	background-image: none;
 }
 .ec_cart_item_delete_button input[type="submit"]:hover {
 	cursor: pointer;
@@ -125,6 +127,9 @@
 	float: left;
 	text-align: left;
 	margin-left: 10px;
+}
+.ec_cart_item_column1 img{
+	max-width:100px !important;
 }
 .ec_cart_item_column2 {
 	width: 27%;

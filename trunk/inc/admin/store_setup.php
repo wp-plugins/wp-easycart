@@ -28,7 +28,7 @@ if(isset($_POST['isupdate'])){
 <?php }?>
 <img src="<?php echo plugins_url('images/WP-Easy-Cart-Logo.png', __FILE__); ?>" />
 
-<?php if($_GET['settings-updated'] == true) { ?>
+<?php if( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == true ){ ?>
 <div id='setting-error-settings_updated' class='updated settings-error'><p><strong>Settings saved.</strong></p></div>
 <?php }?>  
 
