@@ -86,6 +86,10 @@
 /******************************************/
 /* LEFT SIDE CLASSES                      */
 /******************************************/
+.ec_product_details_images img {
+	max-width: 350px;
+	max-height: 350px;
+}
 @media only screen and ( min-width: [size_level4_low]px ) {
 .ec_product_details_magbox {
 	position: absolute;
@@ -607,6 +611,9 @@
 	width: 100%;
 	margin-top: 15px;
 }
+.ec_product_details_option1_combo{
+	width:100%; float:left;	
+}
 .ec_product_details_option2_swatches {
 	float: left;
 	width: 100%;
@@ -614,6 +621,9 @@
 .ec_product_details_option2_option {
 	float: left;
 	width: 100%;
+}
+.ec_product_details_option2_combo{
+	width:100%; float:left;	
 }
 .ec_product_details_option3_swatches {
 	float: left;
@@ -623,6 +633,9 @@
 	float: left;
 	width: 100%;
 }
+.ec_product_details_option3_combo{
+	width:100%; float:left;	
+}
 .ec_product_details_option4_swatches {
 	float: left;
 	width: 100%;
@@ -631,6 +644,9 @@
 	float: left;
 	width: 100%;
 }
+.ec_product_details_option4_combo{
+	width:100%; float:left;	
+}
 .ec_product_details_option5_swatches {
 	float: left;
 	width: 100%;
@@ -638,6 +654,9 @@
 .ec_product_details_option5_option {
 	float: left;
 	width: 100%;
+}
+.ec_product_details_option5_combo{
+	width:100%; float:left;	
 }
 @media only screen and ( min-width: [size_level5_low]px ) {
 	.ec_product_details_option_combo, .ec_product_details_option_combo_error{
