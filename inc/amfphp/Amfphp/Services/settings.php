@@ -70,85 +70,45 @@ class settings
 		
 		//site settings functions
 		function getsitesettings() {
-			  //Create SQL Query
-			  $query= mysql_query("SELECT 
-				  ec_setting.*,
-				  wp_options.option_value AS WPstorepage,
-				  wp_options1.option_value AS WP_currency_seperator,
-				  wp_options2.option_value AS WP_decimal_symbol,
-				  wp_options3.option_value AS WP_decimal_places,
-				  wp_options4.option_value AS WP_currency_symbol
+			//Create SQL Query
+			$query_settings = mysql_query( "SELECT ec_setting.* FROM ec_setting WHERE ec_setting.setting_id = 1" );
+			$query_options = mysql_query( "
+				SELECT 
+				wp_options.option_value AS WPstorepage,
+				wp_options1.option_value AS WP_currency_seperator,
+				wp_options2.option_value AS WP_decimal_symbol,
+				wp_options3.option_value AS WP_decimal_places,
+				wp_options4.option_value AS WP_currency_symbol
+				
 				FROM
-				  ec_setting,
-				  wp_options,
-				  wp_options wp_options1,
-				  wp_options wp_options2,
-				  wp_options wp_options3,
-				  wp_options wp_options4
+				wp_options, wp_options wp_options1, wp_options wp_options2, wp_options wp_options3, wp_options wp_options4 
+				
 				WHERE
-				  ec_setting.setting_id = 1 AND 
-				  wp_options.option_name = 'ec_option_storepage' AND 
-				  wp_options1.option_name = 'ec_option_currency_thousands_seperator' AND 
-				  wp_options2.option_name = 'ec_option_currency_decimal_symbol' AND 
-				  wp_options3.option_name = 'ec_option_currency_decimal_places' AND 
-				  wp_options4.option_name = 'ec_option_currency'");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
-			  
-			  //if results, convert to an array for use
-			  if(mysql_num_rows($query)) {
-				  if(mysql_num_rows($query) > 0) {
-					  while ($row=mysql_fetch_object($query)) {
-						  $row->totalrows=$totalrows;
-						  $returnArray[] = $row;
-					  }
-					  return($returnArray); //return array results if there are some
-				  } else {
-					  //fallback and load settings without wordpress data.
-					  //Create SQL Query
-					  $query= mysql_query("SELECT 
-						  ec_setting.*
-						FROM
-						  ec_setting
-						WHERE
-						  ec_setting.setting_id = 1 ");
-					  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-					  $totalrows = mysql_fetch_object($totalquery);
-					  //if results, convert to an array for use in flash
-					  if(mysql_num_rows($query) > 0) {
-						  while ($row=mysql_fetch_object($query)) {
-							  $row->totalrows=$totalrows;
-							  $returnArray[] = $row;
-						  }
-						  return($returnArray); //return array results if there are some
-					  } else {
-						  $returnArray[] = "noresults";
-						  return $returnArray; //return noresults if there are no results
-					  }
-				  }
-			  } else {
-				  //fallback and load settings without wordpress data.
-				  //Create SQL Query
-				  $query= mysql_query("SELECT 
-					  ec_setting.*
-					FROM
-					  ec_setting
-					WHERE
-					  ec_setting.setting_id = 1 ");
-				  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-				  $totalrows = mysql_fetch_object($totalquery);
-				  //if results, convert to an array for use in flash
-				  if(mysql_num_rows($query) > 0) {
-					  while ($row=mysql_fetch_object($query)) {
-						  $row->totalrows=$totalrows;
-						  $returnArray[] = $row;
-					  }
-					  return($returnArray); //return array results if there are some
-				  } else {
-					  $returnArray[] = "noresults";
-					  return $returnArray; //return noresults if there are no results
-				  }
-			  }
+				wp_options.option_name = 'ec_option_storepage' AND
+				wp_options1.option_name = 'ec_option_currency_thousands_seperator' AND
+				wp_options2.option_name = 'ec_option_currency_decimal_symbol' AND
+				wp_options3.option_name = 'ec_option_currency_decimal_places' AND
+				wp_options4.option_name = 'ec_option_currency'");
+			
+			$row = mysql_fetch_object( $query_settings );
+			if( $query_options && mysql_num_rows( $query_options ) > 0 ){
+				$row2 = mysql_fetch_object( $query_options );
+				$row->WPstorepage = $row2->WPstorepage;
+				$row->WP_currency_seperator = $row2->WP_currency_seperator;
+				$row->WP_decimal_symbol = $row2->WP_decimal_symbol;
+				$row->WP_decimal_places = $row2->WP_decimal_places;
+				$row->WP_currency_symbol = $row2->WP_currency_symbol;
+				$returnArray[] = $row;
+				return($returnArray);
+			} else {
+				$row->WPstorepage = "";
+				$row->WP_currency_seperator = "";
+				$row->WP_decimal_symbol = "";
+				$row->WP_decimal_places = "";
+				$row->WP_currency_symbol = "";
+				$returnArray[] = $row;
+				return($returnArray);
+			}
 		}
 		
 		

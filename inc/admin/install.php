@@ -5,7 +5,7 @@ $license = new ec_license;
 
 //set our datapack location
 $datapack_url = '';
-if ($_POST['datapack']) {
+if( isset( $_POST['datapack'] ) ){
 	if($_POST['datapack'] == 'standard_data') {
 		$datapack_url = 'http://www.wpeasycart.com/sampledata/standard_demo';	
 	}

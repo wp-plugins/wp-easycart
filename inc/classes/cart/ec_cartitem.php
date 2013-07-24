@@ -243,9 +243,9 @@ class ec_cartitem{
 		echo "<a href=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
 		
 		if( $this->image1_optionitem )
-			echo "&optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/images.php?max_width=" . get_option( 'ec_option_' . $size . '_width' ) . "&max_height=" . get_option( 'ec_option_' . $size . '_height' ) . "&imgfile=" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
+			echo "&optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
 		else
-			echo "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/images.php?max_width=" . get_option( 'ec_option_' . $size . '_width' ) . "&max_height=" . get_option( 'ec_option_' . $size . '_height' ) . "&imgfile=" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
+			echo "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
 			
 		echo "</a>";
 		
