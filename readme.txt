@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.5.2
-Stable tag: 1.0.19
+Stable tag: 1.0.20
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -167,6 +167,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 * Bug Fix - Store Design Files - Fixes were made to ensure image sizes were correct. Buttons were being overridden in Twenty Twelve theme, corrections made. Width of cart item button column fixed in responsive base.
 = 1.0.19 =
 * Bug Fix - Default and Base themes, improvements to css to work out of the box in more browsers and themes. Manual copy of the design/theme/{theme name}/product_details_page/product_details_page.css files will need to be copied to see the changes on an update. Good for new installs.
+= 1.0.20 =
+* Bug FIx - Authorize.net script, needed to remove the line items for live accounts. Line items bring a lot of errors into play, so for now we will leave it out.
 
 == Upgrade Notice ==
 
@@ -209,4 +211,6 @@ Be sure to backup all files and database before completing an upgrade of any kin
 =1.0.18 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
 =1.0.19 =
+Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
+=1.0.20 =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
