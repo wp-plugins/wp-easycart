@@ -141,7 +141,7 @@ if( $verified ) {
 			
 			// send email
 			$order_row = $mysqli->get_order_row( $order_id, "guest", "" );
-			$order_display = new ec_orderdisplay( $order_row );
+			$order_display = new ec_orderdisplay( $order_row, true );
 			$order_display->send_email_receipt( );
 			
 		} else if( $_POST['payment_status'] == 'Refunded' ){ 

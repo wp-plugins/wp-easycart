@@ -789,8 +789,7 @@ class ec_accountpage{
 		
 		$user = $this->mysqli->get_user( $email, md5( $new_password ) );
 		
-		$email_logo_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emaillogo.jpg");
-		$email_footer_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emailfooter.jpg");
+		$email_logo_url = get_option( 'ec_option_email_logo' );
 	 	
 		// Get receipt
 		ob_start();
