@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.5.2
-Stable tag: 1.0.20
+Stable tag: 1.0.21
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -113,36 +113,26 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
-= 1.0 =
-* First Release store version 1.0
-= 1.0.1 =
-* Minor bug fixes relating to store name repo having a dash in it.
-= 1.0.2 =
-* Minor bug fixes relating to store name repo having a dash in it.
-= 1.0.3 =
-* Minor admin bug fixes relating to store name repo having a dash in it.
-= 1.0.4 =
-* Minor admin bug fixes relating to store name repo having a dash in it.
-= 1.0.5 =
-* Updated process for backup of connection settings.
-= 1.0.6 =
-* Admin console update for some product option quantity and imagery bugs.  Also updated database calls to fallback if wordpress is not setup completely.
-= 1.0.7 =
-* Added refunding to the paypal IPN listener.
-= 1.0.8 =
-* Updating linking to the admin console and download instructions.
-= 1.0.9 =
-* svn issues, skipping this version.
-= 1.0.10 =
-* getting DB updater corrected, no testing environment means live testing, sorry everyone! Skipping this version.
-= 1.0.11 =
-* getting DB updater corrected, this time the sql needed updating, no testing environment means live testing, sorry everyone! Skipping this version.
-= 1.0.12 =
-* getting DB updater corrected, this time the script was not creating an important new folder in the core. No testing environment means live testing, sorry everyone! Skipping this version.
-= 1.0.13 =
-* getting DB updater corrected, this time the script was erroring after the first creation. No testing environment means live testing, sorry everyone! Skipping this version.
-= 1.0.14 =
-* getting DB updater corrected, issue with the reference to the banners folder. No testing environment means live testing, sorry everyone! Skipping this version.
+= 1.0.21 =
+* Bug Fix - PalPal IPN Listener fix, emailer was broken, now emails customer order receipt on completed payment.
+* Bug Fix - Removed footer image from retrieve email in base and default themes.
+* Bug Fix - Connections file for administration console now connects for users with a dollar sign in their password.
+= 1.0.20 =
+* Bug FIx - Authorize.net script, needed to remove the line items for live accounts. Line items bring a lot of errors into play, so for now we will leave it out.
+= 1.0.19 =
+* Bug Fix - Default and Base themes, improvements to css to work out of the box in more browsers and themes. Manual copy of the design/theme/{theme name}/product_details_page/product_details_page.css files will need to be copied to see the changes on an update. Good for new installs.
+= 1.0.18 =
+* Bug Fix - Store WordPress - Admin pages had notices appearing with debugging on. These notices were corrected.
+* Bug Fix - Admin Console - Bug fix for those who have a non wp_ prefix in their database. Admin console was erroring for these customers.
+* Bug Fix - Account Order Details - Some servers do not like our resizer, tim thumb, script, so changed to use css image resizing instead.
+* Bug Fix - Cart Item - Some servers do not like our resizer, tim thumb, script, so changed to use css image resizing instead.
+* Bug Fix - DB Class - Guest checkout sql script had a bug in it. Now fixed.
+* Bug Fix - Language Class - WordPress debugging was causing a notice. This is removed.
+* Bug Fix - Store Design Files - Fixes were made to ensure image sizes were correct. Buttons were being overridden in Twenty Twelve theme, corrections made. Width of cart item button column fixed in responsive base.
+= 1.0.17 =
+* Bug Fix - When WordPress was in debug mode, notices appearing everywhere. Cleaned up the code to prevent notices in debug mode.
+= 1.0.16 =
+* Bug Fix - Pass by reference into a function was deprecated in PHP 5.3, issue in one file resolved.
 = 1.0.15 =
 * DB Upgrades - Added ec_customfield table, added ec_customfielddata table, ec_menulevel1 - added seo_keywords, seo_description, and banner_image to table, ec_menulevel2 - added seo_keywords, seo_description, and banner_image to table, ec_menulevel3 - added seo_keywords, seo_description, and banner_image to table
 * New Feature - Added custom fields to the core. Soon to release a matching admin. Custom fields allow developers to add fields like to a product for display purposes. This will allow developers to customize an install to best fit their clients needs. Custom fields will be available for products, users, orders, and order details.
@@ -153,64 +143,38 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 * New Feature - Added an option to upload a banner for each category. Can be displayed above the product list.
 * Improvement - Added a function to send an email receipt from the order display. This is useful for third party ipn listener sending out emails when order payment is successful.
 * Improvement - Fixed the extra MIME text at the top of forgot password emailers.
-= 1.0.16 =
-* Bug Fix - Pass by reference into a function was deprecated in PHP 5.3, issue in one file resolved.
-= 1.0.17 =
-* Bug Fix - When WordPress was in debug mode, notices appearing everywhere. Cleaned up the code to prevent notices in debug mode.
-= 1.0.18 =
-* Bug Fix - Store WordPress - Admin pages had notices appearing with debugging on. These notices were corrected.
-* Bug Fix - Admin Console - Bug fix for those who have a non wp_ prefix in their database. Admin console was erroring for these customers.
-* Bug Fix - Account Order Details - Some servers do not like our resizer, tim thumb, script, so changed to use css image resizing instead.
-* Bug Fix - Cart Item - Some servers do not like our resizer, tim thumb, script, so changed to use css image resizing instead.
-* Bug Fix - DB Class - Guest checkout sql script had a bug in it. Now fixed.
-* Bug Fix - Language Class - WordPress debugging was causing a notice. This is removed.
-* Bug Fix - Store Design Files - Fixes were made to ensure image sizes were correct. Buttons were being overridden in Twenty Twelve theme, corrections made. Width of cart item button column fixed in responsive base.
-= 1.0.19 =
-* Bug Fix - Default and Base themes, improvements to css to work out of the box in more browsers and themes. Manual copy of the design/theme/{theme name}/product_details_page/product_details_page.css files will need to be copied to see the changes on an update. Good for new installs.
-= 1.0.20 =
-* Bug FIx - Authorize.net script, needed to remove the line items for live accounts. Line items bring a lot of errors into play, so for now we will leave it out.
+= 1.0.14 =
+* getting DB updater corrected, issue with the reference to the banners folder. No testing environment means live testing, sorry everyone! Skipping this version.
+= 1.0.13 =
+* getting DB updater corrected, this time the script was erroring after the first creation. No testing environment means live testing, sorry everyone! Skipping this version.
+= 1.0.12 =
+* getting DB updater corrected, this time the script was not creating an important new folder in the core. No testing environment means live testing, sorry everyone! Skipping this version.
+= 1.0.11 =
+* getting DB updater corrected, this time the sql needed updating, no testing environment means live testing, sorry everyone! Skipping this version.
+= 1.0.10 =
+* getting DB updater corrected, no testing environment means live testing, sorry everyone! Skipping this version.
+= 1.0.9 =
+* svn issues, skipping this version.
+= 1.0.8 =
+* Updating linking to the admin console and download instructions.
+= 1.0.7 =
+* Added refunding to the paypal IPN listener.
+= 1.0.6 =
+* Admin console update for some product option quantity and imagery bugs.  Also updated database calls to fallback if wordpress is not setup completely.
+= 1.0.5 =
+* Updated process for backup of connection settings.
+= 1.0.4 =
+* Minor admin bug fixes relating to store name repo having a dash in it.
+= 1.0.3 =
+* Minor admin bug fixes relating to store name repo having a dash in it.
+= 1.0.2 =
+* Minor bug fixes relating to store name repo having a dash in it.
+= 1.0.1 =
+* Minor bug fixes relating to store name repo having a dash in it.
+= 1.0 =
+* First Release store version 1.0
 
 == Upgrade Notice ==
 
-= 1.0 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.1 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.2 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.3 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.4 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.5 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.6 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.7 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.8 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.9 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.10 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.11 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.12 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.13 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.14 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.15 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.16 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.17 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.18 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.19 =
-Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
-=1.0.20 =
+= 1.0.* =
 Be sure to backup all files and database before completing an upgrade of any kind.  In the event an upgrade causes a conflict, you may revert back to this backup.
