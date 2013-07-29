@@ -18,6 +18,7 @@ class ec_authorize extends ec_gateway{
 		$transaction_type = "AUTH_CAPTURE";
 		$expiration_date = $this->credit_card->expiration_month . '/' . $this->credit_card->get_expiration_year( 4 );
 		
+		/*
 		$line_items = "";
 		for( $i=0; $i<count($this->cart->cart); $i++ ){
 			
@@ -30,6 +31,7 @@ class ec_authorize extends ec_gateway{
 							$this->cart->cart[$i]->unit_price . "<|>" . 
 							$this->cart->cart[$i]->is_taxable; 	
 		}
+		*/
 		
 		$authorize_values = array(
 		  "x_login"							=> $authorize_login_id,
@@ -67,8 +69,8 @@ class ec_authorize extends ec_gateway{
 		  "x_ship_to_state"					=> $this->user->shipping->state,
 		  "x_ship_to_zip"					=> $this->user->shipping->zip,
 		  "x_ship_to_country"				=> $this->user->shipping->country,
-		  "x_ship_to_phone"					=> $this->user->shipping->phone,
-		  "x_line_item"						=> $line_items
+		  "x_ship_to_phone"					=> $this->user->shipping->phone//,
+		 // "x_line_item"						=> $line_items
 		);
 		
 		return $authorize_values;
