@@ -117,6 +117,7 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 * Bug Fix - PalPal IPN Listener fix, emailer was broken, now emails customer order receipt on completed payment.
 * Bug Fix - Removed footer image from retrieve email in base and default themes.
 * Bug Fix - Connections file for administration console now connects for users with a dollar sign in their password.
+* Bug Fix - Retrieve password emailer was not showing uploaded logo file from the custom theme admin. This is now fixed.
 = 1.0.20 =
 * Bug FIx - Authorize.net script, needed to remove the line items for live accounts. Line items bring a lot of errors into play, so for now we will leave it out.
 = 1.0.19 =

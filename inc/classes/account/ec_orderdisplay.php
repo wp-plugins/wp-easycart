@@ -49,12 +49,15 @@ class ec_orderdisplay{
 	public $shipping_country;  					// VARCHAR 255
 	public $shipping_phone;  					// VARCHAR 32
 	
+	public $user;								// ec_user class
+	
 	public $payment_method; 					// VARCHAR 64
 	
 	public $paypal_email_id; 					// VARCHAR 255
 	public $paypal_payer_id;					// VARCHAR 255
 	
 	public $orderdetails = array();				// array of ec_orderdetail items
+	public $cart;
 	
 	private $account_page;						// VARCHAR
 	private $permalink_divider;					// CHAR
@@ -109,15 +112,21 @@ class ec_orderdisplay{
 		$this->shipping_country = $order_row->shipping_country; 
 		$this->shipping_phone = $order_row->shipping_phone; 
 		
+		$this->user = new ec_user( $this->user_email );
+		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1 , $this->billing_city, $this->billing_state, $this->billing_zip, $this->billing_country, $this->billing_phone );
+		$this->user->setup_shipping_info_data( $this->shipping_first_name, $this->shipping_last_name, $this->shipping_address_line_1 , $this->shipping_city, $this->shipping_state, $this->shipping_zip, $this->shipping_country, $this->shipping_phone );
+		
 		$this->payment_method = $order_row->payment_method; 
 		
 		$this->paypal_email_id = $order_row->paypal_email_id; 
 		$this->paypal_payer_id = $order_row->paypal_payer_id;
 		
 		if( $is_order_details ){
+			$this->cart =(object) array('cart' => array( ) );
 			$result = $this->mysqli->get_order_details( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
 			foreach( $result as $item ){
 				array_push( $this->orderdetails, new ec_orderdetail( $item ) );
+				array_push( $this->cart->cart, array( "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity ) );
 			}
 		}
 		
@@ -294,7 +303,6 @@ class ec_orderdisplay{
 		$tax = $GLOBALS['currency']->get_currency_display( $this->tax_total );
 		$vat = $GLOBALS['currency']->get_currency_display( $this->vat_total );
 		$shipping = $GLOBALS['currency']->get_currency_display( $this->shipping_total );
-		$tax = new ec_tax( $subtotal, "", "", $vat, $shipping );
 		$vat_rate = number_format( $tax->vat_rate, 0, '', '' );
 		$discount = $GLOBALS['currency']->get_currency_display( $this->discount_total );
 		
@@ -313,7 +321,7 @@ class ec_orderdisplay{
 		$headers .= "Return-Path: " . get_option( 'ec_option_order_from_email' ) . "\r\n"; 
 		$headers .= "Content-type: text/html\r\n"; 
 	
-		mail( $this->user->email, "Order Confirmation -- #" . $this->order_id, $message, $headers);
+		mail( $this->user_email, "Order Confirmation -- #" . $this->order_id, $message, $headers);
 		
 	}
 	
