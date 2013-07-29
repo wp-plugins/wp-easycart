@@ -293,9 +293,9 @@ class ec_orderdisplay{
 		$subtotal = $GLOBALS['currency']->get_currency_display( $this->sub_total );
 		$tax = $GLOBALS['currency']->get_currency_display( $this->tax_total );
 		$vat = $GLOBALS['currency']->get_currency_display( $this->vat_total );
-		$tax = new ec_tax();
-		$vat_rate = number_format( $tax->vat_rate, 0, '', '' );
 		$shipping = $GLOBALS['currency']->get_currency_display( $this->shipping_total );
+		$tax = new ec_tax( $subtotal, "", "", $vat, $shipping );
+		$vat_rate = number_format( $tax->vat_rate, 0, '', '' );
 		$discount = $GLOBALS['currency']->get_currency_display( $this->discount_total );
 		
 		$email_logo_url = get_option( 'ec_option_email_logo' );

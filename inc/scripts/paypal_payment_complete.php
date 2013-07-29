@@ -92,12 +92,6 @@ if( $verified ) {
 		$charset = $_POST['charset'];
 		$verify_sign = $_POST['verify_sign'];
 		
-		// send email
-		$db = new ec_db( );
-		$order_row = $db->get_order_row( $order_id, "guest", "" );
-		$order_display = new ec_orderdisplay( $order_row );
-		$order_display->send_email( );
-		
 		$paypal_response_string = 	"order_id = " . $order_id . 
 									"; receiver_email = " . $receiver_email . 
 									"; receiver_id = " . $receiver_id . 
@@ -142,7 +136,14 @@ if( $verified ) {
 		$mysqli->insert_response( $order_id, 0, "PayPal", $paypal_response_string );
 		
 		if( $_POST['payment_status'] == 'Completed' ){ 
+			
 			$mysqli->update_order_status( $order_id, "10" );
+			
+			// send email
+			$order_row = $mysqli->get_order_row( $order_id, "guest", "" );
+			$order_display = new ec_orderdisplay( $order_row );
+			$order_display->send_email_receipt( );
+			
 		} else if( $_POST['payment_status'] == 'Refunded' ){ 
 			$mysqli->update_order_status( $order_id, "16" );
 		} else {
