@@ -31,9 +31,6 @@
             Thank You Very much!</p>
           <p>&nbsp;</p></td>
       </tr>
-      <tr>
-        <td colspan='4'><p class='style22'><img src='<?php echo $email_footer_url; ?>'></p></td>
-      </tr>
     </table>
 </body>
 </html>
