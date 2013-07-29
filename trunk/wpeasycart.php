@@ -49,12 +49,12 @@ function ec_activate(){
 	$language = new ec_language( );
 	
 	//WRITE OUR EC_CONN FILE FOR AMFPHP
-	$ec_conn_php = '<?php
-						define ("HOSTNAME","' . DB_HOST . '"); 	
-						define ("DATABASE","' . DB_NAME . '"); 		
-						define ("USERNAME","' . DB_USER . '"); 	
-						define ("PASSWORD","' . DB_PASSWORD . '"); 	
-					?>'; 
+	$ec_conn_php = "<?php
+						define ('HOSTNAME','" . DB_HOST . "'); 	
+						define ('DATABASE','" . DB_NAME . "'); 		
+						define ('USERNAME','" . DB_USER . "'); 	
+						define ('PASSWORD','" . DB_PASSWORD . "'); 	
+					?>"; 
 
 	$ec_conn_filename = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php";
 	$ec_conn_filehandler = fopen($ec_conn_filename, 'w');
