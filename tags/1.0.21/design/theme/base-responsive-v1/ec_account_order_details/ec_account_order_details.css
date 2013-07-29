@@ -1,0 +1,273 @@
+@charset "utf-8";
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//All Code and Design is copyrighted by Level Four Development, llc
+//
+//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
+//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
+//
+//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
+//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
+//contact Level Four Development, llc and EasyCart prior to use.
+//
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+/* Base Theme - EC Account Order Details CSS Document */
+.ec_account_order_details_main_holder {
+	width: 100%;
+	float: left;
+}
+.ec_account_order_details_right {
+	width: 70%;
+	float: right;
+}
+.ec_account_order_details_left {
+	width: 25%;
+	margin-right: 5%;
+	float: left;
+}
+.ec_account_order_details_title {
+	width: 100%;
+	float: left;
+	padding-top: 15px;
+	padding-bottom: 7px;
+	margin-bottom: 7px;
+	border-bottom: 3px solid [main_color];
+	color: [title_color];
+	font-size: 20px;
+	text-align: left;
+	font-family: [title_font];
+}
+.ec_account_order_details_title .left {
+	float: left;
+}
+.ec_account_order_details_title .right {
+	float: right;
+	position: relative;
+	top: 3px;
+}
+.ec_account_order_details_holder {
+	width: 100%;
+	float: left;
+	font-size: 12px;
+	font-family: [content_font];
+	color: #333;
+	font-weight: normal;
+}
+.ec_account_order_details_row {
+	width: 100%;
+	float: left;
+	padding: 2px 0px;
+}
+.ec_account_order_details_header_row {
+	width: 100%;
+	float: left;
+	background-color: #f7f7f7;
+	color:[main_color];
+	font-weight: bold;
+	padding: 4px 0px;
+}
+.ec_account_order_details_column1_header {
+	width: 112px;
+	float: left;
+	text-align: left;
+	padding: 4px 0px 4px 8px;
+}
+.ec_account_order_details_column2_header {
+	width: 265px;
+	float: left;
+	text-align: left;
+	padding: 4px 0px;
+}
+.ec_account_order_details_column3_header {
+	width: 110px;
+	float: left;
+	text-align: center;
+	padding: 4px 0px;
+}
+.ec_account_order_details_column4_header {
+	width: 80px;
+	float: left;
+	text-align: center;
+	padding: 4px 0px;
+}
+.ec_account_order_details_column5_header {
+	width: 85px;
+	float: right;
+	text-align: right;
+	padding: 4px 8px 4px 0px;
+}
+.ec_account_order_details_column1 {
+	width: 155px;
+	float: left;
+	text-align: left;
+}
+.ec_account_order_details_column2 {
+	width: 220px;
+	float: left;
+	text-align: left;
+}
+.ec_account_order_details_column3 {
+	width: 110px;
+	float: left;
+}
+.ec_account_order_details_column4 {
+	width: 80px;
+	float: left;
+}
+.ec_account_order_details_column5 {
+	width: 85px;
+	float: right;
+}
+.ec_account_order_details_column_payment_label {
+	width: 80%;
+	float: left;
+	text-align: right;
+}
+.ec_account_order_details_column_payment_price {
+	width: 15%;
+	margin-left: 5%;
+	float: right;
+	text-align: right;
+}
+.ec_account_order_details_item_display_column1 img{
+	max-width:100px !important;
+}
+ @media only screen and ( min-width: [size_level5_low]px ) {
+.ec_account_order_details_column1_header {
+	width: 112px;
+}
+.ec_account_order_details_item_display_column1 {
+	width: 120px;
+}
+.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
+	width: 265px;
+}
+.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
+	width: 110px;
+}
+.ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
+	width: 80px;
+}
+.ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
+	width: 85px;
+}
+}
+ @media only screen and ( min-width: [size_level4_low]px ) and ( max-width: [size_level4_high]px ) {
+.ec_account_order_details_column1_header {
+	width: 112px;
+}
+.ec_account_order_details_item_display_column1 {
+	width: 120px;
+}
+.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
+	width: 179px;
+}
+.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
+	width: 110px;
+}
+.ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
+	width: 80px;
+}
+.ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
+	width: 85px;
+}
+}
+ @media only screen and ( min-width: [size_level3_low]px ) and ( max-width: [size_level3_high]px ) {
+.ec_account_order_details_right {
+	width: 100%;
+	float: none;
+}
+.ec_account_order_details_left {
+	width: 100%;
+	margin-right: 0;
+	float: none;
+}
+.ec_account_order_details_column1_header {
+	width: 112px;
+}
+.ec_account_order_details_item_display_column1 {
+	width: 120px;
+}
+.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
+	width: 240px;
+}
+.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
+	width: 100px;
+}
+.ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
+	width: 54px;
+}
+.ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
+	width: 61px;
+}
+}
+ @media only screen and ( max-width: [size_level2_high]px ) {
+.ec_account_order_details_right {
+	width: 100%;
+	float: none;
+}
+.ec_account_order_details_left {
+	width: 100%;
+	margin-right: 0;
+	float: none;
+}
+.ec_account_order_details_column1_header {
+	width: 112px;
+}
+.ec_account_order_details_item_display_column1 {
+	width: 120px;
+}
+.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
+	width: 102px;
+}
+.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
+	width: 70px;
+	display: none;
+}
+.ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
+	width: 54px;
+	display: none;
+}
+.ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
+	width: 61px;
+}
+}
+ @media only screen and ( max-width: [size_level1_high]px ) {
+.ec_account_order_details_right {
+	width: 100%;
+	float: none;
+}
+.ec_account_order_details_left {
+	width: 100%;
+	margin-right: 0;
+	float: none;
+}
+.ec_account_order_details_column1_header {
+	width: 112px;
+}
+.ec_account_order_details_item_display_column1 {
+	width: 120px;
+}
+.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
+	width: 375px;
+	display: none;
+}
+.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
+	width: 110px;
+	display: none;
+}
+.ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
+	width: 80px;
+	display: none;
+}
+.ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
+	width: 71px;
+}
+}
+
+/* END EC ACCOUNT ORDER DETAILS STYLE*/
