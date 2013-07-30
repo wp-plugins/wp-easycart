@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.5.2
-Stable tag: 1.0.21
+Stable tag: 1.0.22
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -113,6 +113,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.0.22 =
+* Bug Fix - PayPal IPN Listener upgrade, emailer products were not displaying correctly from the IPN.
+* Bug Fix - Incorrect model number in product details now shows the default WordPress 404 error.
+* Bug Fix - The error checking for the cart account information page was not ensuring an email was entered for the order. This was fixed in all themes.
 = 1.0.21 =
 * Bug Fix - PalPal IPN Listener fix, emailer was broken, now emails customer order receipt on completed payment.
 * Bug Fix - Removed footer image from retrieve email in base and default themes.

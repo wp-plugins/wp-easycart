@@ -695,7 +695,7 @@ class ec_product{
 		for( $i=0; $i<count( $this->customfields ) && count( $this->customfields[$i] ) == 3; $i++ ){
 			$field_name = $this->customfields[$i][0];
 			if( $field_name_input == $field_name ){
-			$field_data = $this->customfields[$i][2];
+				$field_data = $this->customfields[$i][2];
 				echo $field_data;
 			}
 		}
