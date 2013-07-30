@@ -190,7 +190,7 @@ class ec_prodimages{
 				$ret_string .= " style=\"display: none !important;\" ";
 				
 			
-				$ret_string .= " id=\"" . $id_prefix . $this->model_number . "_" . $level . "_" . $i . "\" >";
+				$ret_string .= "  id=\"" . $id_prefix . $this->model_number . "_" . $level . "_" . $i . "\" >";
 				
 				$ret_string .= "<img src=\"" . $image_src . "\"";
 				
@@ -213,7 +213,7 @@ class ec_prodimages{
 				if( !$active )
 				$ret_string .= " style=\"display: none !important;\" ";
 				
-				$ret_string .= "  id=\"" . $id_prefix . $this->model_number . "_" . $level . "_" . $i . "\" >";
+				$ret_string .= "   rel = lightbox[".$this->model_number."] id=\"" . $id_prefix . $this->model_number . "_" . $level . "_" . $i . "\" >";
 				
 				$ret_string .= "<img src=\"" . $image_src . "\"";
 				
