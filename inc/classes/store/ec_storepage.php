@@ -49,25 +49,39 @@ class ec_storepage{
 	private function setup_details( ){
 		
 		$this->product_list = new ec_productlist();
-		
-		$this->previous_model_number = "";
-		$this->number_in_product_list = 0;
-		$this->count_of_product_list = count( $this->product_list->products );
-		$this->next_model_number = "";
-		
-		// Find current product
-		for( $i=0; $i< count( $this->product_list->products ); $i++ ){
-			if( $this->product_list->products[$i]->model_number == $this->model_number )
-				$this->number_in_product_list = $i+1;
-			else if( $this->number_in_product_list == 0 )
-				$this->previous_model_number = $this->product_list->products[$i]->model_number;
+		if( $this->product_list->num_products > 0 ){
 			
-			if( $this->number_in_product_list > 0 && ($i+1) != $this->number_in_product_list && $this->next_model_number == ""  )
-				$this->next_model_number = $this->product_list->products[$i]->model_number;
+			$this->previous_model_number = "";
+			$this->number_in_product_list = 0;
+			$this->count_of_product_list = count( $this->product_list->products );
+			$this->next_model_number = "";
+			
+			// Find current product
+			for( $i=0; $i< count( $this->product_list->products ); $i++ ){
+				if( $this->product_list->products[$i]->model_number == $this->model_number )
+					$this->number_in_product_list = $i+1;
+				else if( $this->number_in_product_list == 0 )
+					$this->previous_model_number = $this->product_list->products[$i]->model_number;
+				
+				if( $this->number_in_product_list > 0 && ($i+1) != $this->number_in_product_list && $this->next_model_number == ""  )
+					$this->next_model_number = $this->product_list->products[$i]->model_number;
+					
+			}
+			
+			$this->product = $this->product_list->products[$this->number_in_product_list-1];
+		
+		}else{
+			
+			global $wp_query;
+			$wp_query->is_404 = true;
+			$wp_query->is_single = false;
+			$wp_query->is_page = false;
+			
+			include( get_query_template( '404' ) );
+			exit();
 				
 		}
 		
-		$this->product = $this->product_list->products[$this->number_in_product_list-1];
 	}
 	
 	////////////////////////////////////////////////////////

@@ -6,11 +6,11 @@ function ec_cart_validate_checkout_info( ){
 	var last_name = document.getElementById('ec_contact_last_name').value;
 	
 	var create_account = false;
-	
+	var email = document.getElementById('ec_contact_email').value;
+	var retype_email = document.getElementById('ec_contact_email_retype').value;
+		
 	if( document.getElementById('ec_contact_create_account') && document.getElementById('ec_contact_create_account').checked ){
 		create_account = true;
-		var email = document.getElementById('ec_contact_email').value;
-		var retype_email = document.getElementById('ec_contact_email_retype').value;
 		var password = document.getElementById('ec_contact_password').value;
 		var retype_password = document.getElementById('ec_contact_password_retype').value;
 	}
@@ -70,23 +70,23 @@ function ec_cart_validate_checkout_info( ){
 		document.getElementById('ec_contact_last_name_row').className = "ec_cart_contact_information_row";
 	}
 	
+	if( !ec_validation( "validate_email", email, country_code ) ){
+		errors++;
+		document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row_error";
+	}else{
+		document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row";
+	}
 	
+	if( retype_email.length == 0 || email != retype_email ){
+		errors++;
+		document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row_error";
+	}else{
+		document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row";
+	}
 	
 	if( create_account ){
 		
-		if( !ec_validation( "validate_email", email, country_code ) ){
-			errors++;
-			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row_error";
-		}else{
-			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row";
-		}
 		
-		if( retype_email.length == 0 || email != retype_email ){
-			errors++;
-			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row_error";
-		}else{
-			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row";
-		}
 		
 		if( !ec_validation( "validate_password", password, country_code ) ){
 			errors++;

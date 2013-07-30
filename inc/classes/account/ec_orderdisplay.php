@@ -123,10 +123,15 @@ class ec_orderdisplay{
 		
 		if( $is_order_details ){
 			$this->cart =(object) array('cart' => array( ) );
-			$result = $this->mysqli->get_order_details( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			if( isset( $_SESSION['ec_email'] ) )
+				$result = $this->mysqli->get_order_details( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			else
+				$result = $this->mysqli->get_order_details( $this->order_id, "guest", "" );
+				
 			foreach( $result as $item ){
+				array_push( $this->cart->cart, (object) array( "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity ) );
 				array_push( $this->orderdetails, new ec_orderdetail( $item ) );
-				array_push( $this->cart->cart, array( "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity ) );
+				
 			}
 		}
 		
