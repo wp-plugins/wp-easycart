@@ -206,67 +206,74 @@
 	width: 61px;
 }
 }
- @media only screen and ( max-width: [size_level2_high]px ) {
+@media only screen and ( max-width: [size_level2_high]px ) {
 .ec_account_order_details_right {
-	width: 100%;
-	float: none;
+ width: 100%;
+ float: none;
 }
 .ec_account_order_details_left {
-	width: 100%;
-	margin-right: 0;
-	float: none;
+ width: 100%;
+ margin-right: 0;
+ float: none;
 }
 .ec_account_order_details_column1_header {
-	width: 112px;
+ width: 112px;
 }
 .ec_account_order_details_item_display_column1 {
-	width: 120px;
+ width: 120px;
 }
 .ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
-	width: 102px;
+ width: 202px;
 }
 .ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
-	width: 70px;
-	display: none;
+ width: 70px;
+ display: none;
 }
 .ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
-	width: 54px;
-	display: none;
+ width: 54px;
+ display: none;
 }
 .ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
-	width: 61px;
+ width: 61px;
 }
 }
  @media only screen and ( max-width: [size_level1_high]px ) {
 .ec_account_order_details_right {
-	width: 100%;
-	float: none;
+ width: 100%;
+ float: none;
 }
 .ec_account_order_details_left {
-	width: 100%;
-	margin-right: 0;
-	float: none;
+ width: 100%;
+ margin-right: 0;
+ float: none;
 }
 .ec_account_order_details_column1_header {
-	width: 112px;
+ width: 112px;
 }
 .ec_account_order_details_item_display_column1 {
-	width: 120px;
+ width: 120px;
 }
-.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
-	width: 375px;
-	display: none;
+.ec_account_order_details_column2_header {
+display:none; 
+}
+.ec_account_order_details_item_display_column2 {
+ width: 120px;
+ float:left;
 }
 .ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
-	width: 110px;
-	display: none;
+ width: 110px;
+ display: none;
 }
 .ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
-	width: 80px;
-	display: none;
+ width: 80px;
+ display: none;
 }
-.ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
-	width: 71px;
+.ec_account_order_details_column5_header {
+ display:none;
+}
+.ec_account_order_details_item_display_column5 {
+ width: 71px;
+ margin-top: 20px;
 }
 }
 
