@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.0.22
+ * Version: 1.0.23
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.0.22
+ * @version 1.0.23
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,8 +19,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_22' );
-define( 'EC_CURRENT_DB', '1_1' );
+define( 'EC_CURRENT_VERSION', '1_23' );
+define( 'EC_CURRENT_DB', '1_2' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
 
