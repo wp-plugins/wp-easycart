@@ -11,7 +11,7 @@ class ec_productlist{
 	function __construct( ){
 		$this->mysqli = new ec_db();
 		
-		$this->filter = new ec_filter( 1 );
+		$this->filter = new ec_filter( );
 		$this->paging = new ec_paging( $this->filter->perpage->selected );
 		$this->get_products( );	
 		if( count( $this->products ) > 0 )
