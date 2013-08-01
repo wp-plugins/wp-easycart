@@ -14,6 +14,7 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_password_from_email', $_POST['ec_option_password_from_email'] );
 	update_option( 'ec_option_use_state_dropdown', $_POST['ec_option_use_state_dropdown'] );
 	update_option( 'ec_option_use_country_dropdown', $_POST['ec_option_use_country_dropdown'] );
+	update_option( 'ec_option_default_store_filter', $_POST['ec_option_default_store_filter'] );
 
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
 
@@ -137,6 +138,22 @@ if(isset($_POST['isupdate'])){
             <span class="itemsubheading">(The group seperator, usually a period, comma, or a space)</span></td>
           <td valign="top"><input name="ec_option_currency_thousands_seperator" type="text" value="<?php echo get_option('ec_option_currency_thousands_seperator'); ?>" size="1" style="width:40px;" />
           <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Grouping Symbol</em>You may choose what symbol reprsents your thousands seperator.  Most countries represent this with a comma, but you can enter another value depending on your countries typical format.</span></a>
+          </td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Default Product Sort:<br />
+          <span class="itemsubheading">This is in the filter bar on the products list page and is the default first selection.</span></td>
+          <td valign="top">
+              <select name="ec_option_default_store_filter" id="ec_option_default_store_filter">
+                <option value="1" <?php if (get_option('ec_option_default_store_filter') == '1') echo ' selected'; ?>>Price Low-High</option>
+                <option value="2" <?php if (get_option('ec_option_default_store_filter') == '2') echo ' selected'; ?>>Price High-Low</option>
+                <option value="3" <?php if (get_option('ec_option_default_store_filter') == '3') echo ' selected'; ?>>Title A-Z</option>
+                <option value="4" <?php if (get_option('ec_option_default_store_filter') == '4') echo ' selected'; ?>>Title Z-A</option>
+                <option value="5" <?php if (get_option('ec_option_default_store_filter') == '5') echo ' selected'; ?>>Newest</option>
+                <option value="6" <?php if (get_option('ec_option_default_store_filter') == '6') echo ' selected'; ?>>Best Rating</option>
+                <option value="7" <?php if (get_option('ec_option_default_store_filter') == '7') echo ' selected'; ?>>Most Viewed</option>
+              </select>
+              a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Default Product Sort</em>This will set the default sort technique for the products page. For example, changing to Title A-Z will have the products sorted this way by default.</span></a>
           </td>
         </tr>
         <tr valign="top">

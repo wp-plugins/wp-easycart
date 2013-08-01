@@ -22,10 +22,10 @@ class ec_filter{
 	private $store_page;										// VARCHAR
 	private $permalink_divider;									// CHAR
 	
-	function __construct($default_first_filter){
+	function __construct( ){
 		$this->mysqli = new ec_db();
 		
-		$this->default_first_filter = $default_first_filter;
+		$this->default_first_filter = get_option( 'ec_option_default_store_filter' );
 		$this->current_filter = $this->get_current_filter();
 		$this->perpage = new ec_perpage();
 		

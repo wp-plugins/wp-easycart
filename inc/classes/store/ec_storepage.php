@@ -137,8 +137,8 @@ class ec_storepage{
 		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_filter_bar.php' );	
 	}
 	
-	private function product_filter_combo( $default_selection ){
-		$this->product_list->display_filter_combo();
+	private function product_filter_combo( ){
+		$this->product_list->display_filter_combo( );
 	}
 	
 	private function product_items_per_page( $divider ){

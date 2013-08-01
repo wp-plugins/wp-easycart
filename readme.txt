@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.5.2
-Stable tag: 1.0.23
+Stable tag: 1.0.24
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -113,6 +113,11 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.0.24 =
+* Improvement - Added option to change the default product page filter. You can now set the default to something like Sort Title A-Z.
+* Improvement - Changed no-cache from meta tag to http header. Should solve some random issues for customers.
+* Bug Fix - Do not allow minicart to appear on the cart page. Messes with tier based unit price updating. No need for a mini cart on the cart page anyways.
+* Bug Fix - Admin upgrade, various improvements.
 = 1.0.23 =
 * Bug Fix - DB shipping rate override rate needed to allow NULL values.
 = 1.0.22 =

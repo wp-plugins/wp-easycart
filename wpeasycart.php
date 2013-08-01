@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.0.23
+ * Version: 1.0.24
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.0.23
+ * @version 1.0.24
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_23' );
+define( 'EC_CURRENT_VERSION', '1_24' );
 define( 'EC_CURRENT_DB', '1_2' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -168,11 +168,9 @@ function ec_custom_headers( ){
 	}
 	
 	if( isset( $_GET['ec_page'] ) && ( $_GET['ec_page'] == "checkout_payment" || $_GET['ec_page'] == "checkout_shipping" || $_GET['ec_page'] == "checkout_info" ) ){
-		ob_start();
 		header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
 		header('Pragma: no-cache'); // HTTP 1.0.
 		header('Expires: 0'); // Proxies.
-		ob_end_clean();
 	}
 }
 
@@ -250,16 +248,6 @@ function ec_facebook_metadata() {
 		echo "<meta property=\"og:image\" content=\"" .  plugin_dir_url(__DIR__) . "wpeasycart/products/pics1/" . $prod_image . "\" />\n"; 
 		echo "<meta property=\"og:url\" content=\"" . curPageURL() . "\" /> \n";
 	}
-}
-
-function ec_head_data( ){
-	if( isset( $_GET['ec_page'] ) && ( $_GET['ec_page'] == "checkout_payment" || $_GET['ec_page'] == "checkout_shipping" || $_GET['ec_page'] == "checkout_info" ) ){
-		echo "<meta http-equiv=\"cache-control\" content=\"max-age=0\" />\n";
-		echo "<meta http-equiv=\"cache-control\" content=\"no-cache\" />\n";
-		echo "<meta http-equiv=\"expires\" content=\"0\" />\n";
-		echo "<meta http-equiv=\"expires\" content=\"Tue, 01 Jan 1980 1:00:00 GMT\" />\n";
-		echo "<meta http-equiv=\"pragma\" content=\"no-cache\" />\n";
-	}	
 }
 	
 function curPageURL() {
@@ -370,7 +358,6 @@ add_action( 'wp_enqueue_scripts', 'ec_load_css' );
 add_action( 'wp_enqueue_scripts', 'ec_load_js' );
 add_action( 'widgets_init', 'wpeasycart_register_widgets' );
 add_action( 'send_headers', 'ec_custom_headers' );
-add_action( 'wp_head', 'ec_head_data' );
 add_action( 'admin_init', 'ec_register_settings' );
 add_action( 'admin_enqueue_scripts', 'ec_admin_style');
 add_action( 'admin_menu', 'ec_create_menu' );
