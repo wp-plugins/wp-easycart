@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.5.2
-Stable tag: 1.0.26
+Stable tag: 1.0.27
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -113,6 +113,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.0.27 =
+* Bug Fix - Installation script improved. Many issues relating to file permissions on linux servers resolved.
+* Bug Fix - Admin console connection file can now be written via FTP if required. More installs will work correctly without help.
+* Bug Fix - Demo data installer and uninstaller can now be done via FTP if required. Should allow more people to get imagery successfully without help.
+* Improvement - Design, install, db install, and more. Should be compatable with more servers.
+* Bug Fix - Bug fixes made to the administration console through the admin console connection scripts in the plugin.
 = 1.0.26 =
 * Bug Fix - Google Fonts were not loading securely when using https. This is resolved.
 = 1.0.25 =

@@ -289,8 +289,7 @@
 	float:left;
 	border-right:1px solid #999;
 	padding-right:75px;
-	height:100px;
-	text-align:center;
+	text-align:left;
 	padding-top:65px;
 }
 
@@ -299,9 +298,9 @@
 }
 
 .ec_install_right{
-	width:50%;
+	width:42%;
 	float:right;
-	text-align:center;
+	text-align:left;
 	margin-top:70px;
 }
 
