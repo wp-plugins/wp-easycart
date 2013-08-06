@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.0.26
+ * Version: 1.0.27
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.0.26
+ * @version 1.0.27
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_26' );
+define( 'EC_CURRENT_VERSION', '1_27' );
 define( 'EC_CURRENT_DB', '1_2' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -35,7 +35,8 @@ function ec_activate(){
 	
 	// FIRST ATTEMPT TO INSTALL THE INITIAL VERSION.
 	$install_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/install_' . EC_CURRENT_DB . '.sql';
-	$f = fopen( $install_sql_url, "r+" ) or die( "CANNOT OPEN INSTALL SQL SCRIPT" );
+	$f = fopen( $install_sql_url, "r" ) or die( "Could not open the install sql script. Likely the permissions on the file when copied from WordPress are preventing our activation script from accessing the install script. To fix this issue, look in your default wordpress plugins folder, then change the permissions on the following file to 775: wp-easycart/inc/admin/sql/install_x_x.sql (look for the highest version). Please submit a support ticket at www.wpeasycart.com with FTP access if you wish to have the WP EasyCart staff help you get up and running." );
+	
 	$install_sql = fread( $f, filesize( $install_sql_url ) );
 	$install_sql_array = explode(';', $install_sql);
 	$mysqli->install( $install_sql_array );
@@ -57,6 +58,7 @@ function ec_activate(){
 					?>"; 
 
 	$ec_conn_filename = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php";
+	
 	$ec_conn_filehandler = fopen($ec_conn_filename, 'w');
 	fwrite($ec_conn_filehandler, $ec_conn_php);
 	fclose($ec_conn_filehandler);
@@ -68,7 +70,7 @@ function ec_uninstall(){
 	$mysqli = new ec_db();
 	
 	$uninstall_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/uninstall_' .  get_option( 'ec_option_db_version' ) . '.sql';
-	$f = fopen( $uninstall_sql_url, "r+" ) or die( "CANNOT OPEN INSTALL SQL SCRIPT" );
+	$f = fopen( $uninstall_sql_url, "r" ) or die( "The plugin could not uninstall properly. This is most likely because the permissions set on the database plugin removal script does not allow us to access it. To fix this problem go to your default WordPress plugins folder and change the permissions on the following file to 775: wp-easycart/inc/admin/sql/uninstall_x_x.sql (look for the latest version). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance." );
 	$uninstall_sql = fread( $f, filesize( $uninstall_sql_url ) );
 	$uninstall_sql_array = explode(';', $uninstall_sql);
 	$mysqli->uninstall( $uninstall_sql_array );
@@ -87,7 +89,7 @@ function load_ec_pre(){
 	// NOW LETS CHECK TO SEE IF WE NEED TO UPGRADE THE DB
 	if( get_option( 'ec_option_db_version' ) && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
 		$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . get_option( 'ec_option_db_version') . '_to_' . EC_CURRENT_DB . '.sql';
-		$f = fopen( $update_sql_url, "r+") or die("CANNOT OPEN UPGRADE SQL SCRIPT");
+		$f = fopen( $update_sql_url, "r") or die("The Wp EasyCart plugin was unable to access the database upgrade script. Upgrade halted. To fix this problem, change the permissions on the following files to 775 and try again: wp-easycart/inc/admin/sql/upgrade_x_x_to_x_x (change all upgrade files unless you know what plugin DB version you have and which you are upgrading to). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.");
 		$upgrade_sql = fread( $f, filesize( $update_sql_url ) );
 		$upgrade_sql_array = explode(';', $upgrade_sql);
 		$db = new ec_db();
@@ -99,7 +101,8 @@ function load_ec_pre(){
 	$banners_folder = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/products' . "/banners";
 	if( !file_exists( $banners_folder  ) ){
 		// Any version before 13 needs the banner folder.
-		if( !mkdir( $banners_folder, 0757 ) );
+		if( !mkdir( $banners_folder, 0757 ) )
+			echo "The WP EasyCart plugin could not add a folder to your install on upgrade. You will need to manually add this folder on your server to access future features. To solve this issue add a folder called 'banners' to the following directory: wp-easycart/products/ (so wp-easycart/products/banners needs to exist). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.";
 	}
 	
 	$storepageid = get_option('ec_option_storepage');
@@ -157,7 +160,6 @@ function load_ec_pre(){
 		$ec_db = new ec_db();
 		$ec_db->insert_subscriber( $_POST['ec_newsletter_email'], "", "" );
 	}
-	
 }
 
 function ec_custom_headers( ){
