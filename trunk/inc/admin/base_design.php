@@ -54,7 +54,7 @@ if( $_FILES && $_FILES["theme_file"]["name"] ) {
 	$targetdir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/". $filenoext; // target directory
 	$targetzip = $path . $filename; // target zip file
 	
-	if( is_writable( $install_dir ) ){ // If we can create the dir, do it, otherwise ftp it.
+	if( is_writable( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/" ) ){ // If we can create the dir, do it, otherwise ftp it.
 		if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
 		mkdir($targetdir, 0777);
 		if( is_dir( $targetdir ) )
@@ -94,8 +94,6 @@ if( $_FILES && $_FILES["theme_file"]["name"] ) {
 		if( $x === true ) {
 			$zip->extractTo( $targetdir ); // place in the directory with same name  
 			$zip->close();
-			
-			unlink($targetzip);
 			$theme_message .= "Your EasyCart theme file was uploaded and unpacked. You may select from the Base Design above.";
 		}else{
 			$theme_message .= "Could not open the uploaded zip file. Please try again.";
@@ -134,7 +132,7 @@ if( $_FILES && $_FILES["layout_file"]["name"] ) {
 	$targetdir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/". $filenoext; // target directory
 	$targetzip = $path . $filename; // target zip file
 	
-	if( is_writable( $install_dir ) ){ // If we can create the dir, do it, otherwise ftp it.
+	if( is_writable(  WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" ) ){ // If we can create the dir, do it, otherwise ftp it.
 		if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
 		mkdir($targetdir, 0777);
 		if( is_dir( $targetdir ) )
@@ -174,8 +172,6 @@ if( $_FILES && $_FILES["layout_file"]["name"] ) {
 		if( $x === true ) {
 			$zip->extractTo( $targetdir ); // place in the directory with same name  
 			$zip->close();
-			
-			unlink($targetzip);
 			$layout_message .= "Your EasyCart layout file was uploaded and unpacked. You may select from the Base Design above.";
 		}else{
 			$layout_message .= "Could not open the uploaded zip file. Please try again.";
