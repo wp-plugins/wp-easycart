@@ -253,6 +253,9 @@ if(isset($_POST['isupdate'])){
 				$f1 = fopen( $wp_server_sql, "r" );
 				$f2 = fopen( $wp_server_zip, "r" );
 				
+				// Sometimes helps to try and change the wp-easycart permissions
+				ftp_site( $conn_id, 'CHMOD 0777 ' . $install_dir );
+				
 				// Copy the sql script from wp servers
 				if( !ftp_fput( $conn_id, $local_install_sql, $f1, FTP_BINARY ) ){
 					// clean up the directory if anything remains
@@ -384,9 +387,11 @@ if(isset($_POST['isupdate'])){
 		}
 		
 		ftp_site( $conn_id, 'CHMOD 0755 ' . $install_dir );
-		if( substr( sprintf( '%o', fileperms( $install_dir ) ), -4 ) == "0777" ){
-			echo "Could not reset the wp-easycart plugin folder permissions to 0755, currently set at 0777. Please manually fix the permissions.";
-		}
+		
+	}
+	
+	if( substr( sprintf( '%o', fileperms( $install_dir ) ), -4 ) == "0777" ){
+		echo "Could not reset the wp-easycart plugin folder permissions to 0755, currently set at 0777. Please manually fix the permissions.";
 	}
 	
 //////////////////////////////////////////////////////////////
@@ -554,10 +559,11 @@ if(isset($_POST['isupdate'])){
 		
 		// Try to change back the dir permissions.
 		ftp_site( $conn_id, 'CHMOD 0755 ' . $install_dir );
-		if( substr( sprintf( '%o', fileperms( $install_dir ) ), -4 ) == "0777" ){
-			echo "Could not reset the wp-easycart plugin folder permissions to 0755, currently set at 0777. Please manually fix the permissions.";
-		}
 		
+	}
+	
+	if( substr( sprintf( '%o', fileperms( $install_dir ) ), -4 ) == "0777" ){
+		echo "Could not reset the wp-easycart plugin folder permissions to 0755, currently set at 0777. Please manually fix the permissions.";
 	}
 	
 //////////////////////////////////////////////////////////////
