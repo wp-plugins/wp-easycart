@@ -26,122 +26,162 @@ function rmdir_recursive($dir) {
 //////////////////////////////////////////////////////
 //theme uploader
 //////////////////////////////////////////////////////
-	if($_FILES) {
-		if($_FILES["theme_file"]["name"]) {
-			$filename = $_FILES["theme_file"]["name"];
-			$source = $_FILES["theme_file"]["tmp_name"];
-			$type = $_FILES["theme_file"]["type"];
-		 
-			$name = explode(".", $filename);
-			$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
-			foreach($accepted_types as $mime_type) {
-				if($mime_type == $type) {
-					$okay = true;
-					break;
-				} 
-			}
-		 
-			$continue = strtolower($name[1]) == 'zip' ? true : false;
-			if(!$continue) {
-				$theme_message = "The theme file you are trying to upload is not a .zip file. Please try again.";
-			}
-		 
-		  /* PHP current path */
-		  $path = dirname(__FILE__).'/';  // absolute path to the directory where zipper.php is in
-		  $filenoext = basename ($filename, '.zip');  // absolute path to the directory where zipper.php is in (lowercase)
-		  $filenoext = basename ($filenoext, '.ZIP');  // absolute path to the directory where zipper.php is in (when uppercase)
-		 
-		  $targetdir = plugin_dir_path(__FILE__) . '../../design/theme/'. $filenoext; // target directory
-		  $targetzip = $path . $filename; // target zip file
-		 
-		  /* create directory if not exists', otherwise overwrite */
-		  /* target directory is same as filename without extension */
-		 
-		  if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
-		 
+if( $_FILES && $_FILES["theme_file"]["name"] ) {
+	
+	$filename = $_FILES["theme_file"]["name"];
+	$source = $_FILES["theme_file"]["tmp_name"];
+	$type = $_FILES["theme_file"]["type"];
+	
+	$theme_message = "";
+	
+	$name = explode(".", $filename);
+	$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
+	foreach($accepted_types as $mime_type) {
+		if($mime_type == $type) {
+			$okay = true;
+			break;
+		} 
+	}
+	
+	$continue = strtolower($name[1]) == 'zip' ? true : false;
+	if(!$continue) {
+		$theme_message .= " The theme file you are trying to upload is not a .zip file. Please try again.<br>";
+	}
+	/* PHP current path */
+	$path = dirname(__FILE__).'/';
+	$filenoext = basename ($filename, '.zip');  // absolute path to the directory where zipper.php is in (lowercase)
+	$filenoext = basename ($filenoext, '.ZIP');  // absolute path to the directory where zipper.php is in (when uppercase)
+	$targetdir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/". $filenoext; // target directory
+	$targetzip = $path . $filename; // target zip file
+	
+	if( is_writable( $install_dir ) ){ // If we can create the dir, do it, otherwise ftp it.
+		if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
+		mkdir($targetdir, 0777);
+		if( is_dir( $targetdir ) )
+			$theme_message .= " The theme directory was created successfully.<br>";
+		else
+			$theme_message .= " The theme directory was NOT created, please try again.<br>";
+	  
+	}else{
+		// Could not open the file, lets write it via ftp!
+		$ftp_server = $_SERVER['HTTP_HOST'];
+		$ftp_user_name = $_POST['ec_ftp_user1'];
+		$ftp_user_pass = $_POST['ec_ftp_pass1'];
 		
+		// set up basic connection
+		$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
 		
-		  mkdir($targetdir, 0777);
-		  //echo $targetzip . '<br>';
-		  //echo $targetdir;
-		  /* here it is really happening */
-		 
-			if(move_uploaded_file($source, $targetzip)) {
-				$zip = new ZipArchive();
-				$x = $zip->open($targetzip);  // open the zip file to extract 
-				if ($x === true) {
-					$zip->extractTo($targetdir); // place in the directory with same name  
-					$zip->close();
-		 
-					unlink($targetzip);
-				}
-				$theme_message = "Your EasyCart theme file was uploaded and unpacked.  You may select from the Base Design above.";
-			} else {	
-				$theme_message = "There was a problem with the uploader. Please try again.";
-			}
+		// login with username and password
+		$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+		
+		if( !$login_result ){
+			$theme_message .= "The plugin could not connect to your server via FTP. Please enter your FTP info and try again.<br>";
+		}else{
+			ftp_mkdir( $conn_id, $targetdir );
+			ftp_site( $conn_id, "CHMOD 0777 " . $targetdir );
+			if( is_dir( $targetdir ) )
+				$theme_message .= " The theme directory was created successfully via FTP.<br>";
+			else
+				$theme_message .= " The theme directory was NOT created, failed via FTP, please try again.<br>";
 		}
 	}
+  	
+	if( !is_dir( $targetdir ) ){
+		// Already added message about the dir.
+	}else{
+		$zip = new ZipArchive();
+		$x = $zip->open( $_FILES["theme_file"]["tmp_name"] );  // open the zip file to extract 
+		if( $x === true ) {
+			$zip->extractTo( $targetdir ); // place in the directory with same name  
+			$zip->close();
+			
+			unlink($targetzip);
+			$theme_message .= "Your EasyCart theme file was uploaded and unpacked. You may select from the Base Design above.";
+		}else{
+			$theme_message .= "Could not open the uploaded zip file. Please try again.";
+		}
+	}
+}
 	
 //////////////////////////////////////////////////////
 //layout uploader
 //////////////////////////////////////////////////////
-	if($_FILES) {
-		if($_FILES["layout_file"]["name"]) {
-			$filename = $_FILES["layout_file"]["name"];
-			$source = $_FILES["layout_file"]["tmp_name"];
-			$type = $_FILES["layout_file"]["type"];
-		 
-			$name = explode(".", $filename);
-			$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
-			foreach($accepted_types as $mime_type) {
-				if($mime_type == $type) {
-					$okay = true;
-					break;
-				} 
-			}
-		 
-			$continue = strtolower($name[1]) == 'zip' ? true : false;
-			if(!$continue) {
-				$layout_message = "The theme file you are trying to upload is not a .zip file. Please try again.";
-			}
-		 
-		  /* PHP current path */
-		  $path = dirname(__FILE__).'/';  // absolute path to the directory where zipper.php is in
-		  $filenoext = basename ($filename, '.zip');  // absolute path to the directory where zipper.php is in (lowercase)
-		  $filenoext = basename ($filenoext, '.ZIP');  // absolute path to the directory where zipper.php is in (when uppercase)
-		 
-		  $targetdir = plugin_dir_path(__FILE__) . '../../design/layout/'. $filenoext; // target directory
-		  $targetzip = $path . $filename; // target zip file
-		 
-		  /* create directory if not exists', otherwise overwrite */
-		  /* target directory is same as filename without extension */
-		 
-		  if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
-		 
+if( $_FILES && $_FILES["layout_file"]["name"] ) {
+	
+	$filename = $_FILES["layout_file"]["name"];
+	$source = $_FILES["layout_file"]["tmp_name"];
+	$type = $_FILES["layout_file"]["type"];
+	
+	$layout_message = "";
+	
+	$name = explode(".", $filename);
+	$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
+	foreach($accepted_types as $mime_type) {
+		if($mime_type == $type) {
+			$okay = true;
+			break;
+		} 
+	}
+	
+	$continue = strtolower($name[1]) == 'zip' ? true : false;
+	if(!$continue) {
+		$layout_message .= " The layout file you are trying to upload is not a .zip file. Please try again.<br>";
+	}
+	/* PHP current path */
+	$path = dirname(__FILE__).'/';
+	$filenoext = basename ($filename, '.zip');  // absolute path to the directory where zipper.php is in (lowercase)
+	$filenoext = basename ($filenoext, '.ZIP');  // absolute path to the directory where zipper.php is in (when uppercase)
+	$targetdir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/". $filenoext; // target directory
+	$targetzip = $path . $filename; // target zip file
+	
+	if( is_writable( $install_dir ) ){ // If we can create the dir, do it, otherwise ftp it.
+		if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
+		mkdir($targetdir, 0777);
+		if( is_dir( $targetdir ) )
+			$layout_message .= " The layout directory was created successfully.<br>";
+		else
+			$layout_message .= " The layout directory was NOT created, please try again.<br>";
+	  
+	}else{
+		// Could not open the file, lets write it via ftp!
+		$ftp_server = $_SERVER['HTTP_HOST'];
+		$ftp_user_name = $_POST['ec_ftp_user2'];
+		$ftp_user_pass = $_POST['ec_ftp_pass2'];
 		
+		// set up basic connection
+		$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
 		
-		  mkdir($targetdir, 0777);
-		  //echo $targetzip . '<br>';
-		  //echo $targetdir;
-		  /* here it is really happening */
-		 
-			if(move_uploaded_file($source, $targetzip)) {
-				$zip = new ZipArchive();
-				$x = $zip->open($targetzip);  // open the zip file to extract
-				if ($x === true) {
-					$zip->extractTo($targetdir); // place in the directory with same name  
-					$zip->close();
-		 
-					unlink($targetzip);
-				}
-				$layout_message = "Your EasyCart layout file was uploaded and unpacked.  You may select from the Base Layout above.";
-			} else {	
-				$layout_message = "There was a problem with the uploader. Please try again.";
-			}
+		// login with username and password
+		$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+		
+		if( !$login_result ){
+			$layout_message .= "The plugin could not connect to your server via FTP. Please enter your FTP info and try again.<br>";
+		}else{
+			ftp_mkdir( $conn_id, $targetdir );
+			ftp_site( $conn_id, "CHMOD 0777 " . $targetdir );
+			if( is_dir( $targetdir ) )
+				$layout_message .= " The layout directory was created successfully via FTP.<br>";
+			else
+				$layout_message .= " The layout directory was NOT created, failed via FTP, please try again.<br>";
 		}
 	}
-
-
+  	
+	if( !is_dir( $targetdir ) ){
+		// Already added message about the dir.
+	}else{
+		$zip = new ZipArchive();
+		$x = $zip->open( $_FILES["layout_file"]["tmp_name"] );  // open the zip file to extract 
+		if( $x === true ) {
+			$zip->extractTo( $targetdir ); // place in the directory with same name  
+			$zip->close();
+			
+			unlink($targetzip);
+			$layout_message .= "Your EasyCart layout file was uploaded and unpacked. You may select from the Base Design above.";
+		}else{
+			$layout_message .= "Could not open the uploaded zip file. Please try again.";
+		}
+	}
+}
 
 ?>
 
@@ -264,24 +304,54 @@ When you upload a new theme to your site, you will see them appear here.  This s
               <td class="itemheading" scope="row">Choose EasyCart Plugin <em>Theme</em> File:</td>
               <td scope="row">
                 <input type="file" name="theme_file" />
-                    <input type="submit" name="submit" value="Upload" />
+                    
               <a href="#" class="ec_tooltip"> <img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /> <span class="ec_custom ec_help"> <img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /> <em>EasyCart Themes</em> To get more EasyCart themes, you can visit www.wpeasycart.com and browser our catalog of WordPress and EasyCart themes.</span> </a>              </td>
-            </tr>  
+            </tr>
+            <tr valign="top">
+              <td class="itemheading" scope="row" colspan="2">Some servers require FTP access</td>
+            </tr>
+            <tr valign="top">
+              <td class="itemheading" scope="row">FTP User Name:</td>
+              <td scope="row"><input type="text" name="ec_ftp_user1" /></td>
+            </tr>
+            <tr valign="top">
+              <td class="itemheading" scope="row">FTP Password:</td>
+              <td scope="row"><input type="password" name="ec_ftp_pass1" /></td>
+            </tr>
             <tr valign="top">
               <td class="itemheading" scope="row"></td>
-              <td scope="row" class="ec_upload_success"><?php if( isset( $message ) ) echo "<p>$theme_message</p>"; ?>
+              <td scope="row"><input type="submit" name="submit" value="Upload" /></td>
+            </tr>
+            <tr valign="top">
+              <td class="itemheading" scope="row"></td>
+              <td scope="row" class="ec_upload_success"><?php if( isset( $theme_message ) && $theme_message != "") echo "<p>$theme_message</p>"; ?>
               </td>
             </tr> 
             <tr valign="top">
               <td class="itemheading" scope="row">Choose EasyCart Plugin<em> Layout</em> File:</td>
               <td scope="row">
                     <input type="file" name="layout_file" />
-                    <input type="submit" name="submit" value="Upload" /><a href="#" class="ec_tooltip"> <img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /> <span class="ec_custom ec_help"> <img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /> <em>EasyCart Layouts</em> To get more EasyCart themes, you can visit www.wpeasycart.com and browser our catalog of WordPress and EasyCart themes.</span> </a> 
+                    <a href="#" class="ec_tooltip"> <img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /> <span class="ec_custom ec_help"> <img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /> <em>EasyCart Layouts</em> To get more EasyCart themes, you can visit www.wpeasycart.com and browser our catalog of WordPress and EasyCart themes.</span> </a> 
               </td>
             </tr>  
             <tr valign="top">
+              <td class="itemheading" scope="row" colspan="2">Some servers require FTP access</td>
+            </tr>
+            <tr valign="top">
+              <td class="itemheading" scope="row">FTP User Name:</td>
+              <td scope="row"><input type="text" name="ec_ftp_user2" /></td>
+            </tr>
+            <tr valign="top">
+              <td class="itemheading" scope="row">FTP Password:</td>
+              <td scope="row"><input type="password" name="ec_ftp_pass2" /></td>
+            </tr>
+            <tr valign="top">
               <td class="itemheading" scope="row"></td>
-              <td scope="row" class="ec_upload_success"><?php if( isset( $message ) ) echo "<p>$layout_message</p>"; ?>
+              <td scope="row"><input type="submit" name="submit" value="Upload" /></td>
+            </tr>
+            <tr valign="top">
+              <td class="itemheading" scope="row"></td>
+              <td scope="row" class="ec_upload_success"><?php if( isset( $layout_message ) && $layout_message != "" ) echo "<p>$layout_message</p>"; ?>
               </td>
             </tr>   
             </table>

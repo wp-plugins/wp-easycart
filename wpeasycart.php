@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.0.28
+ * Version: 1.0.29
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.0.28
+ * @version 1.0.29
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_28' );
+define( 'EC_CURRENT_VERSION', '1_29' );
 define( 'EC_CURRENT_DB', '1_2' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -429,40 +429,75 @@ function wpeasycart_copyr( $source, $dest ){
     return true;
 }
 
-function wpeasycart_backup(){
+function wpeasycart_backup( ){
 	
-    $to = dirname( __FILE__ ) . "/../ec-back-up-directory/"; // <------- this back up directory will be made
-    $from = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
-    
-	 // Make destination directory
-    if( !is_dir( $to )) {
-		$success = mkdir( $to, 0755 );
-    	if( !$success ){
-			$err_message = "wpeasycart - error creating backup directory. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
+	if( $_GET['action'] != "upload-theme" ){
+	
+		if( !is_writable( WP_PLUGIN_DIR ) ){
+			
+			wpeasycart_backup_ftp( );
+			
+		}else{
+		
+			$to = dirname( __FILE__ ) . "/../ec-back-up-directory/"; // <------- this back up directory will be made
+			$from = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
+			
+			 // Make destination directory
+			if( !is_dir( $to )) {
+				$success = mkdir( $to, 0755 );
+				if( !$success ){
+					$err_message = "wpeasycart - error creating backup directory. Updated halted.";
+					error_log( $err_message );
+					exit( $err_message );	
+				}
+			}
+			
+			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );
+			}
+			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );
+			}
 		}
 	}
+}
+
+function wpeasycart_backup_ftp( ){
+	// Could not open the file, lets write it via ftp!
+	$ftp_server = $_POST['hostname'];
+	$ftp_user_name = $_POST['username'];
+	$ftp_user_pass = $_POST['password'];
 	
-	$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
-	if( !$success ){
-		$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );	
-	}
-	$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-	if( !$success ){
-		$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );
-	}
-	$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-	if( !$success ){
-		$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );
-	}
+	// set up basic connection
+	$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
 	
+	// login with username and password
+	$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+	
+	if( !$login_result ){
+		
+		die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your informaiton and try again." );
+		
+	}else{
+		
+		ftp_rename( $conn_id, WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY, WP_PLUGIN_DIR . "/wp-easycart-backup" );
+		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-backup" ) ){
+			die( "Could not move your wp-easycart plugin (to backup), process halted to save your data. If the problem persists you can either change the permissions of your wp-easycart plugin folder OR manually back this folder up and install the latest version manually." );	
+		}
+		
+	}
 }
 
 function recursive_remove_directory( $directory, $empty=FALSE ) {
@@ -522,71 +557,134 @@ function recursive_remove_directory( $directory, $empty=FALSE ) {
 
 function wpeasycart_recover( ){
 	
-    $from = dirname(__FILE__) . "/../ec-back-up-directory/"; // <------- this back up directory will be made
-    $to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
-    
-	// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
-	$success = false;
-	if( is_dir( $to . "products" ) ) {
-        $success = recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
-    }
-	if( !$success ){
-		$err_message = "wpeasycart - error removing the products folder from the upgraded plugin. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );	
-	}
+	if( $_GET['action'] != "upload-theme" ){
 	
-	$success = false;
-	if( is_dir( $to . "design" ) ) {
-        $success = recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
-    }
-	if( !$success ){
-		$err_message = "wpeasycart - error removing the design folder from the upgraded plugin. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );	
+		if( !is_writable( WP_PLUGIN_DIR ) ){
+			
+			wpeasycart_recover_ftp( );
+			
+		}else{
+		
+			$from = dirname(__FILE__) . "/../ec-back-up-directory/"; // <------- this back up directory will be made
+			$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
+			
+			// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
+			$success = false;
+			if( is_dir( $to . "products" ) ) {
+				$success = recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the products folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			$success = false;
+			if( is_dir( $to . "design" ) ) {
+				$success = recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the design folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			$success = false;
+			if( is_dir( $to . "connection" ) ) {
+				$success = recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			// COPY OVER THE BACKED UP DIRECTORIES
+			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the products folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the connection folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
+			$success = false;
+			if( is_dir( $from ) ) {
+				$success = recursive_remove_directory( $from ); //<------- deletes the backup directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+		}
 	}
+}
+
+function wpeasycart_recover_ftp( ){
+	// Could not open the file, lets write it via ftp!
+	$ftp_server = $_POST['hostname'];
+	$ftp_user_name = $_POST['username'];
+	$ftp_user_pass = $_POST['password'];
 	
-	$success = false;
-	if( is_dir( $to . "connection" ) ) {
-        $success = recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
-    }
-	if( !$success ){
-		$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );	
-	}
+	// set up basic connection
+	$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
 	
-	// COPY OVER THE BACKED UP DIRECTORIES
-	$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
-	if( !$success ){
-		$err_message = "wpeasycart - error recovering the products folder. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );	
-	}
-	$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-	if( !$success ){
-		$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );	
-	}
-	$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-	if( !$success ){
-		$err_message = "wpeasycart - error recovering the connection folder. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );	
-	}
+	// login with username and password
+	$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
 	
-	// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
-    $success = false;
-	if( is_dir( $from ) ) {
-        $success = recursive_remove_directory( $from ); //<------- deletes the backup directory
-    }
-	if( !$success ){
-		$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
-		error_log( $err_message );
-		exit( $err_message );	
+	if( !$login_result ){
+		
+		die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your informaiton and try again." );
+		
+	}else{
+		
+		$res = ftp_rename( $conn_id, WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY, WP_PLUGIN_DIR . "/wp-easycart-backup" );
+		if( !$res ){
+			die( "Could not move your wp-easycart plugin (to backup), process halted to save your data. If the problem persists you can either change the permissions of your wp-easycart plugin folder OR manually back this folder up and install the latest version manually." );	
+		}
+		
+		$wp_new = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
+		$wp_backup = WP_PLUGIN_DIR . "/wp-easycart-backup/";
+		
+		// Recover products images
+		ftp_rename( $conn_id, $wp_new . "products", $wp_backup . "products_new" );
+		$res = ftp_rename( $conn_id, $wp_backup . "products" . $wp_new . "products" );
+		if( !$res ){
+			die( "Could not recover your products folder. Process halted. Your products are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
+		}
+		
+		// Recover Design Files
+		ftp_rename( $conn_id, $wp_new . "design", $wp_backup . "design_new" );
+		$res = ftp_rename( $conn_id, $wp_backup . "design" . $wp_new . "design" );
+		if( !$res ){
+			die( "Could not recover your design folder. Process halted. Your designs are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
+		}
+		
+		// Recover Connection Files
+		ftp_rename( $conn_id, $wp_new . "connection", $wp_backup . "connection_new" );
+		$res = ftp_rename( $conn_id, $wp_backup . "connection" . $wp_new . "connection" );
+		if( !$res ){
+			die( "Could not recover your connection folder. Process halted. Your connection are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
+		}
+		
+		// Change the name of the backup to a particular time in case it needs to be recoverd!
+		$date = date_create();
+		$time_stamp = date_timestamp_get($date);
+		ftp_rename( $conn_id, $wp_backup, WP_PLUGIN_DIR . "/wp-easycart-backup-" . $time_stamp );
 	}
-	
 }
 
 add_filter( 'upgrader_pre_install', 'wpeasycart_backup', 10, 2 ); // <------- adds the wpeasycart_backup filter
