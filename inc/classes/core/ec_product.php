@@ -140,8 +140,10 @@ class ec_product{
 		$this->use_optionitem_quantity_tracking = $product_data['use_optionitem_quantity_tracking'];
 		$this->views = $product_data['views'];
 		
+		if( isset( $product_data['pricetier_data'] ) )
 		$this->pricetiers = $product_data['pricetier_data'];
 		
+		if( isset( $product_data['customfield_data'] ) )
 		$this->customfields = $product_data['customfield_data'];
 		
 		$this->update_stock_quantity( session_id() );
