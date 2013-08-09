@@ -24,7 +24,7 @@ $dbname = DB_NAME;
 $dbuser = DB_USER;
 $dbpass = DB_PASSWORD;	
 //make a connection to our database
-mysql_pconnect($dbhost, $dbuser, $dbpass);
+mysql_connect($dbhost, $dbuser, $dbpass);
 mysql_select_db ($dbname);
 
 
