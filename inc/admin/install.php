@@ -604,6 +604,8 @@ if(isset($_POST['isupdate'])){
 	//Close the temp file to finish process
 	fclose( $temp );
 	
+	ftp_site( $conn_id, 'CHMOD 0644 ' . $ec_conn_filename );
+	
 	if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php" ) ){
 		$admin_conn_config = "complete";
 	}else{
