@@ -613,6 +613,10 @@ if(isset($_POST['isupdate'])){
 	}
 }
 
+if( isset( $_GET['dismiss_lite_banner'] ) ){
+	update_option( 'ec_option_show_lite_message', '0' );	
+}
+
 ?>
 <script type="text/javascript">
 	function install_alert() {
@@ -637,9 +641,10 @@ if(isset($_POST['isupdate'])){
 
 
 <div class="wrap">
-
-<?php if(!$license->is_registered()) {; ?>
-<div class="ribbon">This banner appears when you have a WordPress EasyCart FREE version installed. To purchase the FULL version, you must purchase a license at <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a></div>
+<?php if( !$license->is_registered() && !$license->is_lite_version() ) { ?>
+<div class="ribbon">You are running the WP EasyCart FREE version. To purchase the LITE or FULL version and unlock the full selling potential visit <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a> and purchase a license.</div>
+<?php }else if( $license->is_lite_version() && $license->show_lite_message() ) { ?>
+<div class="ribbon">You are running the WP EasyCart Lite version. To learn more about what you are missing with the Full version visit <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a>. To dismiss this banner <a href="?page=ec_install&dismiss_lite_banner=true">click here.</a></div>
 <?php }?>
 
 <img src="<?php echo plugins_url('images/WP-Easy-Cart-Logo.png', __FILE__); ?>" />

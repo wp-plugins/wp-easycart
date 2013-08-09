@@ -102,11 +102,17 @@ if(isset($_POST['isupdate'])){
 	
 }
 
+if( isset( $_GET['dismiss_lite_banner'] ) ){
+	update_option( 'ec_option_show_lite_message', '0' );	
+}
+
 ?>
 
 <div class="wrap">
-<?php if(!$license->is_registered()) {; ?>
-<div class="ribbon">This banner appears when you have a WordPress EasyCart FREE version installed. To purchase the FULL version, you must purchase a license at <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a></div>
+<?php if( !$license->is_registered() && !$license->is_lite_version() ) { ?>
+<div class="ribbon">You are running the WP EasyCart FREE version. To purchase the LITE or FULL version and unlock the full selling potential visit <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a> and purchase a license.</div>
+<?php }else if( $license->is_lite_version() && $license->show_lite_message() ) { ?>
+<div class="ribbon">You are running the WP EasyCart Lite version. To learn more about what you are missing with the Full version visit <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a>. To dismiss this banner <a href="?page=ec_payment&dismiss_lite_banner=true">click here.</a></div>
 <?php }?>
 
 <img src="<?php echo plugins_url('images/WP-Easy-Cart-Logo.png', __FILE__); ?>" />
@@ -130,11 +136,11 @@ if(isset($_POST['isupdate'])){
               <td width="77%" class="platformheadingimage"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
             </tr>
             <tr valign="top">
-                <td colspan="2" scope="row"><p>This section lets you enable or disable the visual credit cards and payment methods customers will see during checkout. For example, you may use a gateway such as Authorize.net AND PayPal together, therefore giving customers a choice on how to pay. Authorize.net may accept Visa, Discover, and Mastercard, plus you wish to enable PayPal, so by setting them up here, customers will see their options during checkout. There are three main categories you can choose from for payment methods.</p>
-                  <ul>
-                    <li><strong>Manual or Direct Deposit</strong> - Customer orders are placed, but receipt of payment is manual and must be verified by you the business owner.</li>
-                    <li><strong>Live Payment Processor</strong> - Customer orders are verified immediately using a gateway. Customers will never leave your website and pay directly via your EasyCart payment page.</li>
-                    <li><strong>3rd Party Processor</strong> - Customers orders are placed and the customer is redirected to the payment page. Customers will leave your website and pay, business owners should verify payment before shipping.</li>
+              <td colspan="2" scope="row"><p>This section lets you enable or disable the visual credit cards and payment methods customers will see during checkout. For example, you may use a gateway such as Authorize.net AND PayPal together, therefore giving customers a choice on how to pay. Authorize.net may accept Visa, Discover, and Mastercard, plus you wish to enable PayPal, so by setting them up here, customers will see their options during checkout. There are three main categories you can choose from for payment methods.</p>
+                <ul>
+                  <li><strong>Manual or Direct Deposit (Free, Lite, and Full Versions)</strong> - Customer orders are placed, but receipt of payment is manual and must be verified by you the business owner.</li>
+                  <li><strong>3rd Party Processor (Lite and Full Versions)</strong> - Customers orders are placed and the customer is redirected to the payment page. Customers will leave your website and pay, business owners should verify payment before shipping.</li>
+                  <li><strong>Live Payment Processor (Full Version Only)</strong> - Customer orders are verified immediately using a gateway. Customers will never leave your website and pay directly via your EasyCart payment page.</li>
                 </ul></td>
             </tr>
             
@@ -266,7 +272,7 @@ if(isset($_POST['isupdate'])){
             
             
             
-          <?php if($license->is_registered()) { ?> 
+         	<?php if($license->is_registered() && !$license->is_lite_version() ) { ?>
             
             <tr valign="top">
               <td class="platformheading" scope="row">Live Payment Processor:</td>
@@ -1007,9 +1013,41 @@ if(isset($_POST['isupdate'])){
 					
 				}
 			</script>
+            <tr valign="top">
+              <td height="19" class="platformheading" scope="row">Use Payment Proxy</td>
+              <td height="19" class="platformheadingimage" scope="row"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
+            </tr>
+            <tr valign="top">
+              <td colspan="2" scope="row">Some hosting environments require a proxy server to use payment SSL requests. If you have been instructed to enter a proxy by your host or by EasyCart staff, please enter it below.</td>
+            </tr>
+		
+            <tr valign="top">
+                <td class="itemheading" scope="row">Use Proxy:</td>
             
+                <td>
+                <select name="ec_option_use_proxy" id="ec_option_use_proxy"> 
+                  <option value="1" <?php if (get_option('ec_option_use_proxy') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_use_proxy') == 0) echo ' selected'; ?>>No</option>
+              	</select>
+                
+                <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Use Proxy Address</em>Most webservers will allow payments to be processed without a proxy server, however, you may be instructed by an EasyCart staff to enter a proxy address here.  Otherwise, this option can be disabled and left blank.</span></a>
+                
+                </td>
+            </tr>
             
+            <tr valign="top">
+                <td class="itemheading" scope="row">Proxy Address:</td>
             
+                <td><input name="ec_option_proxy_address"  id="ec_option_proxy_address" type="text" value="<?php echo get_option('ec_option_proxy_address'); ?>" style="width:250px;" /></td>
+            </tr>
+          	<tr valign="top">
+              <td height="19" colspan="2" scope="row"><span class="submit">
+                <input type="hidden" name="isupdate3" value="1" />
+                <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+              </span></td>
+            </tr>
+            
+            <?php }else if( $license->is_registered() && $license->is_lite_version() ){?>
             
             <tr valign="top">
               <td height="19" class="platformheading" scope="row">Third Party Payment Processing</td>
@@ -1307,50 +1345,22 @@ if(isset($_POST['isupdate'])){
               <td height="19" scope="row">&nbsp;</td>
               <td height="19" scope="row">&nbsp;</td>
             </tr>
-            <tr valign="top">
-              <td height="19" class="platformheading" scope="row">Use Payment Proxy</td>
-              <td height="19" class="platformheadingimage" scope="row"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
-            </tr>
-            <tr valign="top">
-              <td colspan="2" scope="row">Some hosting environments require a proxy server to use payment SSL requests. If you have been instructed to enter a proxy by your host or by EasyCart staff, please enter it below.</td>
-            </tr>
-		
-            <tr valign="top">
-                <td class="itemheading" scope="row">Use Proxy:</td>
             
-                <td>
-                <select name="ec_option_use_proxy" id="ec_option_use_proxy"> 
-                  <option value="1" <?php if (get_option('ec_option_use_proxy') == 1) echo ' selected'; ?>>Yes</option>
-                  <option value="0" <?php if (get_option('ec_option_use_proxy') == 0) echo ' selected'; ?>>No</option>
-              	</select>
-                
-                <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Use Proxy Address</em>Most webservers will allow payments to be processed without a proxy server, however, you may be instructed by an EasyCart staff to enter a proxy address here.  Otherwise, this option can be disabled and left blank.</span></a>
-                
-                </td>
-            </tr>
-            
-            <tr valign="top">
-                <td class="itemheading" scope="row">Proxy Address:</td>
-            
-                <td><input name="ec_option_proxy_address"  id="ec_option_proxy_address" type="text" value="<?php echo get_option('ec_option_proxy_address'); ?>" style="width:250px;" /></td>
-            </tr>
-          	<tr valign="top">
-              <td height="19" colspan="2" scope="row"><span class="submit">
-                <input type="hidden" name="isupdate3" value="1" />
-                <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-              </span></td>
-            </tr>
-          
-          
-          
            <?php } else { ?>
            <tr>
            <td colspan="2"> <div class='info_note'>
-             <p><strong>To access live payment gateways such as PayPal Pro, Authorize.net, FirstData, PayPal Standard, and other payment gateways, you must purchase a license and upgrade to our standard edition plugin.  Plus we offer lots of themes stores and designs.  For more information, please visit <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a> to learn more.</strong></p></div>  
+             <p><strong>To access live payment gateways such as PayPal Pro, Authorize.net, FirstData, PayPal Standard, and other payment gateways, you must purchase a license and upgrade to our FULL edition plugin. Third party gateways like PayPal Free and Skrill are available on both the LITE and FULL versions. For more information, please visit <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a>.</strong></p></div>  
            </td>
            </tr>
            <?php } ?>
            
+           <?php if( $license->is_lite_version() ){ ?>
+           <tr>
+           <td colspan="2"> <div class='info_note'>
+             <p><strong>To access live payment gateways such as PayPal Pro, Authorize.net, FirstData, PayPal Standard, and other payment gateways, you must upgrade to our FULL edition plugin. For more information, please visit <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a> .</strong></p></div>  
+           </td>
+           </tr>
+           <?php }?>
            
            
       </table>

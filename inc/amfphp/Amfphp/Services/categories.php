@@ -32,7 +32,7 @@ class categories
 			$dbpass = PASSWORD;	
 
 			//make a connection to our database
-			$this->conn = mysql_pconnect($dbhost, $dbuser, $dbpass);
+			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
 			mysql_select_db ($dbname);	
 
 		}	

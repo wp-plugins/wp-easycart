@@ -28,6 +28,8 @@ class ec_wpoptionset{
 		//Use this to track the db																					
 		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
+		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		
 		//store basic setup settings
 		array_push($this->wp_option_names, 'ec_option_currency');							array_push($this->wp_option_defaults, '&#36;' );
@@ -68,13 +70,13 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_direct_deposit_message');				array_push($this->wp_option_defaults, 'You have selected a manual payment method.' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
-		array_push($this->wp_option_names, 'ec_option_use_visa');							array_push($this->wp_option_defaults, '0' );
+		array_push($this->wp_option_names, 'ec_option_use_visa');							array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
-		array_push($this->wp_option_names, 'ec_option_use_discover');						array_push($this->wp_option_defaults, '0' );
+		array_push($this->wp_option_names, 'ec_option_use_discover');						array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
-		array_push($this->wp_option_names, 'ec_option_use_mastercard');						array_push($this->wp_option_defaults, '0' );
+		array_push($this->wp_option_names, 'ec_option_use_mastercard');						array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
-		array_push($this->wp_option_names, 'ec_option_use_amex');							array_push($this->wp_option_defaults, '0' );
+		array_push($this->wp_option_names, 'ec_option_use_amex');							array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_use_jcb');							array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');

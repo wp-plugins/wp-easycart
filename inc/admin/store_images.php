@@ -20,6 +20,10 @@ if(isset($_POST['isupdate'])){
 		
 }
 
+if( isset( $_GET['dismiss_lite_banner'] ) ){
+	update_option( 'ec_option_show_lite_message', '0' );	
+}
+
 ?>
 
 <div class="wrap">
