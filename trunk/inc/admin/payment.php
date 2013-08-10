@@ -193,82 +193,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
               <td>&nbsp;</td>
             </tr>
             
-            <script language="javascript" type="application/javascript">
-			function toggle_live_cards( ) {
-				var usevisa = document.getElementById("ec_option_use_visa").value;
-				var usediscover = document.getElementById("ec_option_use_discover").value;
-				var usemastercard = document.getElementById("ec_option_use_mastercard").value;
-				var useamex = document.getElementById("ec_option_use_amex").value;
-				var usejcb = document.getElementById("ec_option_use_jcb").value;
-				var usediners = document.getElementById("ec_option_use_diners").value;
-				var uselaser = document.getElementById("ec_option_use_laser").value;
-				var usemaestro = document.getElementById("ec_option_use_maestro").value;
-				
-				document.getElementById("live_gateways").style.display = 'none';
-
-				if( usevisa == '1' || usediscover == '1' || usemastercard == '1' || useamex == '1' || usejcb == '1' || usediners == '1' || uselaser == '1' || usemaestro == '1' )
-				   document.getElementById( "live_gateways" ).style.display = "";
-
-			}
-			
-			function toggle_live_card_display( visa, discover, mastercard, amex, jcb, diners, laser, maestro ){
-				if( visa )
-					document.getElementById( "visa" ).style.display = "";
-				else{
-					document.getElementById( "visa" ).style.display = "none";
-					document.getElementById( "ec_option_use_visa" ).value = "0";
-				}
-				
-				if( discover )
-					document.getElementById( "discover" ).style.display = "";
-				else{
-					document.getElementById( "discover" ).style.display = "none";
-					document.getElementById( "ec_option_use_discover" ).value = "0";
-				}
-					
-				if( mastercard )
-					document.getElementById( "mastercard" ).style.display = "";
-				else{
-					document.getElementById( "mastercard" ).style.display = "none";
-					document.getElementById( "ec_option_use_mastercard" ).value = "0";
-				}
-					
-				if( amex )
-					document.getElementById( "amex" ).style.display = "";
-				else{
-					document.getElementById( "amex" ).style.display = "none";
-					document.getElementById( "ec_option_use_amex" ).value = "0";
-				}
-					
-				if( jcb )
-					document.getElementById( "jcb" ).style.display = "";
-				else{
-					document.getElementById( "jcb" ).style.display = "none";
-					document.getElementById( "ec_option_use_jcb" ).value = "0";
-				}
-					
-				if( diners )
-					document.getElementById( "diners" ).style.display = "";
-				else{
-					document.getElementById( "diners" ).style.display = "none";
-					document.getElementById( "ec_option_use_diners" ).value = "0";
-				}
-					
-				if( laser )
-					document.getElementById( "laser" ).style.display = "";
-				else{
-					document.getElementById( "laser" ).style.display = "none";
-					document.getElementById( "ec_option_use_laser" ).value = "0";
-				}
-					
-				if( maestro )
-					document.getElementById( "maestro" ).style.display = "";
-				else{
-					document.getElementById( "maestro" ).style.display = "none";
-					document.getElementById( "ec_option_use_maestro" ).value = "0";
-				}
-			}
-			</script>
+            
             
             
             
@@ -343,87 +268,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
             </tr>
             
             
-            <script language="javascript" type="application/javascript">
-			function toggle_live_gateways() {
-				var paymentmethod = document.getElementById("paymentmethod").value;
-				
-				document.getElementById("authorize").style.display = 'none';
-				document.getElementById("paypal_pro").style.display = 'none';
-				document.getElementById("realex").style.display = 'none';
-				document.getElementById("sagepay").style.display = 'none';
-				document.getElementById("firstdata").style.display = 'none';
-				document.getElementById("paymentexpress").style.display = 'none';
-				document.getElementById("chronopay").style.display = 'none';
-				document.getElementById("versapay").style.display = 'none';
-				document.getElementById("eway").style.display = 'none';
-				document.getElementById("paypoint").style.display = 'none';
-				document.getElementById("securepay").style.display = 'none';
-				document.getElementById("psigate").style.display = 'none';
-			   
-			   	//toggle_live_card_display( visa, discover, mastercard, amex, jcb, diners, laser, maestro );
-				if( paymentmethod == "authorize" ){
-				   	document.getElementById( "authorize" ).style.display = "";
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
-				}
-				
-				else if(paymentmethod == "paypal_pro"){
-					document.getElementById('paypal_pro').style.display = "";
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
-				}
-				
-				else if(paymentmethod == "realex"){
-					document.getElementById('realex').style.display = "";
-					toggle_live_card_display( 1, 0, 1, 1, 0, 1, 1, 1 );
-				}
-				
-				else if(paymentmethod == "sagepay"){
-					document.getElementById('sagepay').style.display = "";
-					toggle_live_card_display( 1, 1, 1, 1, 1, 0, 1, 1 );
-				}
-				
-				else if( paymentmethod == "firstdata" ){
-				   document.getElementById( "firstdata").style.display = '';
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
-				}
-				
-				else if( paymentmethod == 'paymentexpress' ){
-				   document.getElementById( "paymentexpress" ).style.display = '';
-					toggle_live_card_display( 1, 0, 1, 1, 0, 1, 0, 0 );
-				}
-				
-				else if( paymentmethod == 'chronopay' ){
-				   document.getElementById( "chronopay" ).style.display = '';
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 1, 1 );
-				}
-				
-				else if( paymentmethod == 'versapay' ){
-				   document.getElementById( "versapay" ).style.display = '';
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
-				}
-				
-				else if( paymentmethod == 'eway' ){
-				   document.getElementById( "eway" ).style.display = '';
-					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 0, 0 );
-				}
-				
-				else if( paymentmethod == 'paypoint' ){
-				   document.getElementById( "paypoint" ).style.display = '';
-					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 1, 1 );
-				}
-				
-				else if( paymentmethod == 'securepay' ){
-				   document.getElementById( "securepay" ).style.display = '';
-					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 0, 0 );
-				}
-				
-				else if( paymentmethod == 'psigate' ){
-				   document.getElementById( "psigate" ).style.display = '';
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
-				}
-				
-			}
-			
-			</script>
+            
             
             
             
@@ -994,61 +839,20 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
               <td height="19" scope="row">&nbsp;</td>
               <td height="19" scope="row">&nbsp;</td>
             </tr> 
+            
+            
+            
+            
+            
+			<?php 
+			}  
+			//if we are registered and not lite version, show teh full gateways
+			//here, if we are just registered, both lite and full get 3rd party payments
+			if($license->is_registered()) { 
+			?>
 			
 			
 			
-			<script language="javascript" type="application/javascript">
-				function toggle_third_party() {
-					
-					var paymentmethod = document.getElementById("ec_option_payment_third_party").value;
-					
-					document.getElementById("paypal").style.display = 'none';
-					document.getElementById("skrill").style.display = 'none';
-				   
-					if( paymentmethod == 'paypal' ) {
-					   document.getElementById( "paypal" ).style.display = "";
-					}else if( paymentmethod == 'skrill' ){
-						document.getElementById( "skrill" ).style.display = "";	
-					}
-					
-				}
-			</script>
-            <tr valign="top">
-              <td height="19" class="platformheading" scope="row">Use Payment Proxy</td>
-              <td height="19" class="platformheadingimage" scope="row"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
-            </tr>
-            <tr valign="top">
-              <td colspan="2" scope="row">Some hosting environments require a proxy server to use payment SSL requests. If you have been instructed to enter a proxy by your host or by EasyCart staff, please enter it below.</td>
-            </tr>
-		
-            <tr valign="top">
-                <td class="itemheading" scope="row">Use Proxy:</td>
-            
-                <td>
-                <select name="ec_option_use_proxy" id="ec_option_use_proxy"> 
-                  <option value="1" <?php if (get_option('ec_option_use_proxy') == 1) echo ' selected'; ?>>Yes</option>
-                  <option value="0" <?php if (get_option('ec_option_use_proxy') == 0) echo ' selected'; ?>>No</option>
-              	</select>
-                
-                <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Use Proxy Address</em>Most webservers will allow payments to be processed without a proxy server, however, you may be instructed by an EasyCart staff to enter a proxy address here.  Otherwise, this option can be disabled and left blank.</span></a>
-                
-                </td>
-            </tr>
-            
-            <tr valign="top">
-                <td class="itemheading" scope="row">Proxy Address:</td>
-            
-                <td><input name="ec_option_proxy_address"  id="ec_option_proxy_address" type="text" value="<?php echo get_option('ec_option_proxy_address'); ?>" style="width:250px;" /></td>
-            </tr>
-          	<tr valign="top">
-              <td height="19" colspan="2" scope="row"><span class="submit">
-                <input type="hidden" name="isupdate3" value="1" />
-                <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-              </span></td>
-            </tr>
-            
-            <?php }else if( $license->is_registered() && $license->is_lite_version() ){?>
-            
             <tr valign="top">
               <td height="19" class="platformheading" scope="row">Third Party Payment Processing</td>
               <td height="19" class="platformheadingimage" scope="row"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
@@ -1345,8 +1149,53 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
               <td height="19" scope="row">&nbsp;</td>
               <td height="19" scope="row">&nbsp;</td>
             </tr>
+            <?php } ?>
             
-           <?php } else { ?>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <tr valign="top">
+              <td height="19" class="platformheading" scope="row">Use Payment Proxy</td>
+              <td height="19" class="platformheadingimage" scope="row"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
+            </tr>
+            <tr valign="top">
+              <td colspan="2" scope="row">Some hosting environments require a proxy server to use payment SSL requests. If you have been instructed to enter a proxy by your host or by EasyCart staff, please enter it below.</td>
+            </tr>
+		
+            <tr valign="top">
+                <td class="itemheading" scope="row">Use Proxy:</td>
+            
+                <td>
+                <select name="ec_option_use_proxy" id="ec_option_use_proxy"> 
+                  <option value="1" <?php if (get_option('ec_option_use_proxy') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_use_proxy') == 0) echo ' selected'; ?>>No</option>
+              	</select>
+                
+                <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Use Proxy Address</em>Most webservers will allow payments to be processed without a proxy server, however, you may be instructed by an EasyCart staff to enter a proxy address here.  Otherwise, this option can be disabled and left blank.</span></a>
+                
+                </td>
+            </tr>
+            
+            <tr valign="top">
+                <td class="itemheading" scope="row">Proxy Address:</td>
+            
+                <td><input name="ec_option_proxy_address"  id="ec_option_proxy_address" type="text" value="<?php echo get_option('ec_option_proxy_address'); ?>" style="width:250px;" /></td>
+            </tr>
+          	<tr valign="top">
+              <td height="19" colspan="2" scope="row"><span class="submit">
+                <input type="hidden" name="isupdate3" value="1" />
+                <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+              </span></td>
+            </tr>
+
+            
+           <?php if(!$license->is_registered()) { ?>
            <tr>
            <td colspan="2"> <div class='info_note'>
              <p><strong>To access live payment gateways such as PayPal Pro, Authorize.net, FirstData, PayPal Standard, and other payment gateways, you must purchase a license and upgrade to our FULL edition plugin. Third party gateways like PayPal Free and Skrill are available on both the LITE and FULL versions. For more information, please visit <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a>.</strong></p></div>  
@@ -1370,11 +1219,199 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
     </form>
     </div>
 </div>
+<script language="javascript" type="application/javascript">
+			function toggle_live_gateways() {
+				var paymentmethod = document.getElementById("paymentmethod").value;
+				
+				document.getElementById("authorize").style.display = 'none';
+				document.getElementById("paypal_pro").style.display = 'none';
+				document.getElementById("realex").style.display = 'none';
+				document.getElementById("sagepay").style.display = 'none';
+				document.getElementById("firstdata").style.display = 'none';
+				document.getElementById("paymentexpress").style.display = 'none';
+				document.getElementById("chronopay").style.display = 'none';
+				document.getElementById("versapay").style.display = 'none';
+				document.getElementById("eway").style.display = 'none';
+				document.getElementById("paypoint").style.display = 'none';
+				document.getElementById("securepay").style.display = 'none';
+				document.getElementById("psigate").style.display = 'none';
+			   
+			   	//toggle_live_card_display( visa, discover, mastercard, amex, jcb, diners, laser, maestro );
+				if( paymentmethod == "authorize" ){
+				   	document.getElementById( "authorize" ).style.display = "";
+					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+				}
+				
+				else if(paymentmethod == "paypal_pro"){
+					document.getElementById('paypal_pro').style.display = "";
+					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+				}
+				
+				else if(paymentmethod == "realex"){
+					document.getElementById('realex').style.display = "";
+					toggle_live_card_display( 1, 0, 1, 1, 0, 1, 1, 1 );
+				}
+				
+				else if(paymentmethod == "sagepay"){
+					document.getElementById('sagepay').style.display = "";
+					toggle_live_card_display( 1, 1, 1, 1, 1, 0, 1, 1 );
+				}
+				
+				else if( paymentmethod == "firstdata" ){
+				   document.getElementById( "firstdata").style.display = '';
+					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+				}
+				
+				else if( paymentmethod == 'paymentexpress' ){
+				   document.getElementById( "paymentexpress" ).style.display = '';
+					toggle_live_card_display( 1, 0, 1, 1, 0, 1, 0, 0 );
+				}
+				
+				else if( paymentmethod == 'chronopay' ){
+				   document.getElementById( "chronopay" ).style.display = '';
+					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 1, 1 );
+				}
+				
+				else if( paymentmethod == 'versapay' ){
+				   document.getElementById( "versapay" ).style.display = '';
+					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+				}
+				
+				else if( paymentmethod == 'eway' ){
+				   document.getElementById( "eway" ).style.display = '';
+					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 0, 0 );
+				}
+				
+				else if( paymentmethod == 'paypoint' ){
+				   document.getElementById( "paypoint" ).style.display = '';
+					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 1, 1 );
+				}
+				
+				else if( paymentmethod == 'securepay' ){
+				   document.getElementById( "securepay" ).style.display = '';
+					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 0, 0 );
+				}
+				
+				else if( paymentmethod == 'psigate' ){
+				   document.getElementById( "psigate" ).style.display = '';
+					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+				}
+				
+			}
+			
+			</script>
+            
+<script language="javascript" type="application/javascript">
+				function toggle_third_party() {
+					
+					var paymentmethod = document.getElementById("ec_option_payment_third_party").value;
+					
+					document.getElementById("paypal").style.display = 'none';
+					document.getElementById("skrill").style.display = 'none';
+				   
+					if( paymentmethod == 'paypal' ) {
+					   document.getElementById( "paypal" ).style.display = "";
+					}else if( paymentmethod == 'skrill' ){
+						document.getElementById( "skrill" ).style.display = "";	
+					}
+					
+				}
+			</script>
+            <script language="javascript" type="application/javascript">
+			function toggle_live_cards( ) {
+				var usevisa = document.getElementById("ec_option_use_visa").value;
+				var usediscover = document.getElementById("ec_option_use_discover").value;
+				var usemastercard = document.getElementById("ec_option_use_mastercard").value;
+				var useamex = document.getElementById("ec_option_use_amex").value;
+				var usejcb = document.getElementById("ec_option_use_jcb").value;
+				var usediners = document.getElementById("ec_option_use_diners").value;
+				var uselaser = document.getElementById("ec_option_use_laser").value;
+				var usemaestro = document.getElementById("ec_option_use_maestro").value;
+				
+				document.getElementById("live_gateways").style.display = 'none';
+
+				if( usevisa == '1' || usediscover == '1' || usemastercard == '1' || useamex == '1' || usejcb == '1' || usediners == '1' || uselaser == '1' || usemaestro == '1' )
+				   document.getElementById( "live_gateways" ).style.display = "";
+
+			}
+			
+			function toggle_live_card_display( visa, discover, mastercard, amex, jcb, diners, laser, maestro ){
+				if( visa )
+					document.getElementById( "visa" ).style.display = "";
+				else{
+					document.getElementById( "visa" ).style.display = "none";
+					document.getElementById( "ec_option_use_visa" ).value = "0";
+				}
+				
+				if( discover )
+					document.getElementById( "discover" ).style.display = "";
+				else{
+					document.getElementById( "discover" ).style.display = "none";
+					document.getElementById( "ec_option_use_discover" ).value = "0";
+				}
+					
+				if( mastercard )
+					document.getElementById( "mastercard" ).style.display = "";
+				else{
+					document.getElementById( "mastercard" ).style.display = "none";
+					document.getElementById( "ec_option_use_mastercard" ).value = "0";
+				}
+					
+				if( amex )
+					document.getElementById( "amex" ).style.display = "";
+				else{
+					document.getElementById( "amex" ).style.display = "none";
+					document.getElementById( "ec_option_use_amex" ).value = "0";
+				}
+					
+				if( jcb )
+					document.getElementById( "jcb" ).style.display = "";
+				else{
+					document.getElementById( "jcb" ).style.display = "none";
+					document.getElementById( "ec_option_use_jcb" ).value = "0";
+				}
+					
+				if( diners )
+					document.getElementById( "diners" ).style.display = "";
+				else{
+					document.getElementById( "diners" ).style.display = "none";
+					document.getElementById( "ec_option_use_diners" ).value = "0";
+				}
+					
+				if( laser )
+					document.getElementById( "laser" ).style.display = "";
+				else{
+					document.getElementById( "laser" ).style.display = "none";
+					document.getElementById( "ec_option_use_laser" ).value = "0";
+				}
+					
+				if( maestro )
+					document.getElementById( "maestro" ).style.display = "";
+				else{
+					document.getElementById( "maestro" ).style.display = "none";
+					document.getElementById( "ec_option_use_maestro" ).value = "0";
+				}
+			}
+			</script>
+            
+<?php if(!$license->is_registered()) { ?>            
+            
+	<script type="application/javascript" language="javascript">
+        toggle_direct_deposit();
+    
+    </script>
+<?php } else if( $license->is_lite_version() ){ ?>
 
 <script type="application/javascript" language="javascript">
-	toggle_direct_deposit();
- 	toggle_live_cards();
-	toggle_live_gateways();
-	toggle_third_party();
-
-</script>
+        toggle_direct_deposit();
+        toggle_third_party();
+    
+    </script>
+ <?php } else { ?><script type="application/javascript" language="javascript">
+        toggle_direct_deposit();
+        toggle_live_cards();
+        toggle_live_gateways();
+        toggle_third_party();
+    
+    </script>
+ <?php } ?>
