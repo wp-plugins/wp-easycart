@@ -3,17 +3,17 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.0.31
+Stable tag: 1.1.0
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
 
-WP EasyCart lets you integrate eCommerce with a click of a button.
+WP EasyCart lets you have a WordPress Shopping Cart with only a few clicks!
 
 == Description ==
 
 WP EasyCart eCommerce plugin is a simple install into new or existing WordPress blogs and websites. 
-Get a full eCommerce and shopping cart system in WordPress within minutes! Sell products, downloadable goods, gift cards, 
+Get a full WordPress Shopping Cart system within minutes! Sell products, downloadable goods, gift cards, 
 clothing and more!  And now with WordPress, the powerful features are still very easy to administrate! 
 
 WP EasyCart provides administrative software, so there is no need to use WordPress as a management system for your products. Desktop PC, Mac, iPad, and Android software is available to download and allows you to control the myriad of options the software has to offer.
@@ -85,6 +85,9 @@ We offer a full service website with online documentation, video tutorials, comm
 
 = Can I use your software to display, but not sell products? =
 Absolutely! If you do not need to sell anything, but would like to leverage our software to display products, please feel free to do just that!
+
+= What is the FREE, Lite, and Standard Versions? =
+FREE version comes from wordpress and offers limited features for you test.  Manual payments is accepted, but coupons, live shipping rates, promotions are not included.  Lite version jumps up to 3rd party processing (paypal standard).  The Full version jumps up to coupons, promotions, live shipping, and full payment gateways.
 
 = How does a license work with your software? =
 The free plugin is the full software version; however, the administrative software that is downloaded from our website is licensed software. The administrative software will allow a certain number of products and features to be used in the software. You may continue to run the WordPress plugin, but must purchase a license to use our administrative software.
