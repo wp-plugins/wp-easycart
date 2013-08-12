@@ -311,6 +311,7 @@ When you upload a new theme to your site, you will see them appear here.  This s
                     
               <a href="#" class="ec_tooltip"> <img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /> <span class="ec_custom ec_help"> <img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /> <em>EasyCart Themes</em> To get more EasyCart themes, you can visit www.wpeasycart.com and browser our catalog of WordPress and EasyCart themes.</span> </a>              </td>
             </tr>
+            <?php if( !is_writable( $install_dir ) ){?>
             <tr valign="top">
               <td class="itemheading" scope="row" colspan="2">Some servers require FTP access</td>
             </tr>
@@ -322,6 +323,7 @@ When you upload a new theme to your site, you will see them appear here.  This s
               <td class="itemheading" scope="row">Optional: FTP Password:</td>
               <td scope="row"><input type="password" name="ec_ftp_pass1" /></td>
             </tr>
+            <?php }?>
             <tr valign="top">
               <td class="itemheading" scope="row"></td>
               <td scope="row"><input type="submit" name="submit" value="Upload" /></td>
@@ -337,7 +339,8 @@ When you upload a new theme to your site, you will see them appear here.  This s
                     <input type="file" name="layout_file" />
                     <a href="#" class="ec_tooltip"> <img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /> <span class="ec_custom ec_help"> <img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /> <em>EasyCart Layouts</em> To get more EasyCart themes, you can visit www.wpeasycart.com and browser our catalog of WordPress and EasyCart themes.</span> </a> 
               </td>
-            </tr>  
+            </tr>
+            <?php if( !is_writable( $install_dir ) ){?>
             <tr valign="top">
               <td class="itemheading" scope="row" colspan="2">Some servers require FTP access</td>
             </tr>
@@ -349,6 +352,7 @@ When you upload a new theme to your site, you will see them appear here.  This s
               <td class="itemheading" scope="row">Optional: FTP Password:</td>
               <td scope="row"><input type="password" name="ec_ftp_pass2" /></td>
             </tr>
+            <?php }?>
             <tr valign="top">
               <td class="itemheading" scope="row"></td>
               <td scope="row"><input type="submit" name="submit" value="Upload" /></td>
