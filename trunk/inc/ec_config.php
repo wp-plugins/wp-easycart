@@ -1,9 +1,21 @@
 <?php
 // Level Four Storefront Configuration File
 
+// Some servers do not set session path to a writable location. Fix this sometimes.
+if( !is_writable( session_save_path( ) ) ){
+	ini_set( 'session.save_path', '/tmp' );  
+}
+
 // Start the session
 session_start();
 
+// If register globals is on we need to do some custom work to fix session problems
+if( ini_get( 'register_globals' ) ){
+    foreach( $_SESSION as $key=>$value ){
+        if( isset( $GLOBALS[$key] ) )
+            unset( $GLOBALS[$key] );
+    }
+}
 
 // INCLUDE GATEWAY CLASSES
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_gateway.php' );

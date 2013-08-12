@@ -785,6 +785,8 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                             </select> 
                         </td>
                     </tr>
+                    
+                    <?php if( !is_writable( $install_dir ) ){?>
                     <tr>
                     	<td colspan="2">FTP Information is required for some servers. If you see an error try entering your ftp access information.</td>
                     </tr>
@@ -796,6 +798,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                     	<td>Optional: FTP Pass:</td>
                         <td><input type="password" name="ec_ftp_pass" /></td>
                     </tr>
+                    <?php }?>
                     <tr>
                     	<td></td>
                         <td><input type="submit" class="button-primary" value="Install Sample Data" onclick="return install_alert()" /></td>
@@ -811,6 +814,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
     				<form method="post" action="#" name="deletedataform" id="deletedataform">
                     <input type="hidden" name="isdeletedemodata" id="isdeletedemodata" value="1" />
                     <table>
+                    <?php if( !is_writable( $install_dir ) ){?>
                     <tr>
                     	<td colspan="2">FTP Information is required for some servers. If you see an error try entering your ftp access information.</td>
                     </tr>
@@ -822,6 +826,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                     	<td>Optional: FTP Pass:</td>
                         <td><input type="password" name="ec_ftp_pass" /></td>
                     </tr>
+                    <?php }?>
                     <tr>
                     	<td></td>
                         <td><input type="submit" class="button-primary" value="Un-Install Sample Data" onclick="return uninstall_alert()" /></td>
