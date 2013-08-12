@@ -736,6 +736,10 @@ class ec_product{
 				$link_text .= "&amp;featured=true";
 			}
 			
+			if( isset( $_GET['manufacturer'] ) ){
+				$link_text .= "&amp;manufacturer=" . $_GET['manufacturer'];	
+			}
+			
 		}
 		
 		return $link_text;
