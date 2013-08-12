@@ -315,11 +315,11 @@ When you upload a new theme to your site, you will see them appear here.  This s
               <td class="itemheading" scope="row" colspan="2">Some servers require FTP access</td>
             </tr>
             <tr valign="top">
-              <td class="itemheading" scope="row">FTP User Name:</td>
+              <td class="itemheading" scope="row">Optional: FTP User Name:</td>
               <td scope="row"><input type="text" name="ec_ftp_user1" /></td>
             </tr>
             <tr valign="top">
-              <td class="itemheading" scope="row">FTP Password:</td>
+              <td class="itemheading" scope="row">Optional: FTP Password:</td>
               <td scope="row"><input type="password" name="ec_ftp_pass1" /></td>
             </tr>
             <tr valign="top">
@@ -342,11 +342,11 @@ When you upload a new theme to your site, you will see them appear here.  This s
               <td class="itemheading" scope="row" colspan="2">Some servers require FTP access</td>
             </tr>
             <tr valign="top">
-              <td class="itemheading" scope="row">FTP User Name:</td>
+              <td class="itemheading" scope="row">Optional: FTP User Name:</td>
               <td scope="row"><input type="text" name="ec_ftp_user2" /></td>
             </tr>
             <tr valign="top">
-              <td class="itemheading" scope="row">FTP Password:</td>
+              <td class="itemheading" scope="row">Optional: FTP Password:</td>
               <td scope="row"><input type="password" name="ec_ftp_pass2" /></td>
             </tr>
             <tr valign="top">
