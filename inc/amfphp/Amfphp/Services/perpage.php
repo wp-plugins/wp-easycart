@@ -33,6 +33,8 @@ class perpage
 			//make a connection to our database
 			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
 			mysql_select_db ($dbname);	
+			mysql_query("SET CHARACTER SET utf8", $this->conn); 
+			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
 			
