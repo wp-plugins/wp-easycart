@@ -789,11 +789,11 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                     	<td colspan="2">FTP Information is required for some servers. If you see an error try entering your ftp access information.</td>
                     </tr>
                     <tr>
-                    	<td>FTP User:</td>
+                    	<td>Optional: FTP User:</td>
                         <td><input type="text" name="ec_ftp_user" /></td>
                     </tr>
                     <tr>
-                    	<td>FTP Pass:</td>
+                    	<td>Optional: FTP Pass:</td>
                         <td><input type="password" name="ec_ftp_pass" /></td>
                     </tr>
                     <tr>
@@ -815,11 +815,11 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                     	<td colspan="2">FTP Information is required for some servers. If you see an error try entering your ftp access information.</td>
                     </tr>
                     <tr>
-                    	<td>FTP User:</td>
+                    	<td>Optional: FTP User:</td>
                         <td><input type="text" name="ec_ftp_user" /></td>
                     </tr>
                     <tr>
-                    	<td>FTP Pass:</td>
+                    	<td>Optional: FTP Pass:</td>
                         <td><input type="password" name="ec_ftp_pass" /></td>
                     </tr>
                     <tr>
