@@ -183,8 +183,6 @@ class ec_order{
 		if( isset( $_SESSION['ec_create_account'] ) ){
 			unset( $_SESSION['ec_first_name'] );
 			unset( $_SESSION['ec_last_name'] );
-			unset( $_SESSION['ec_email'] );
-			unset( $_SESSION['ec_password'] );
 		}
 		
 		unset( $_SESSION['ec_create_account'] );

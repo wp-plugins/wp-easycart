@@ -57,7 +57,10 @@ class ec_db{
 				ec_user.email = '%s' AND ec_user.password = '%s' AND 
 				ec_order.order_id = ec_orderdetail.order_id AND 
 				ec_user.user_id = ec_order.user_id AND 
-				ec_orderdetail.order_id = %d";
+				ec_orderdetail.order_id = %d
+				
+				GROUP BY
+				ec_user.user_id";
 				
 		$this->orderdetail_guest_sql = "SELECT 
 				ec_orderdetail.orderdetail_id, 
@@ -106,7 +109,10 @@ class ec_db{
 				
 				WHERE 
 				ec_order.order_id = ec_orderdetail.order_id AND 
-				ec_orderdetail.order_id = %d";
+				ec_orderdetail.order_id = %d
+				
+				GROUP BY
+				ec_order.order_id";
 	}
 	
 	public function get_breadcrumb_data( $model_number, $menuid, $submenuid, $subsubmenuid ){
@@ -1703,7 +1709,10 @@ class ec_db{
 				LEFT JOIN ec_customfielddata
 				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id
 				
-				WHERE ec_order.order_id = %d";
+				WHERE ec_order.order_id = %d
+				
+				GROUP BY
+				ec_order.order_id";
 				
 				return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $order_id ) );
 				
@@ -1776,7 +1785,9 @@ class ec_db{
 				
 				ec_user
 				
-				WHERE ec_user.email = '%s' AND ec_user.password = '%s' AND ec_user.user_id = ec_order.user_id AND ec_order.order_id = %d";
+				WHERE ec_user.email = '%s' AND ec_user.password = '%s' AND ec_user.user_id = ec_order.user_id AND ec_order.order_id = %d
+				
+				GROUP BY ec_order.order_id";
 				
 				return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $email, $password, $order_id ) );
 				
@@ -1846,7 +1857,10 @@ class ec_db{
 				
 				WHERE 
 				ec_user.email = '%s' AND 
-				ec_user.password = '%s'";
+				ec_user.password = '%s'
+				
+				GROUP BY
+				ec_user.user_id";
 		
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $email, $password ) );
 		
