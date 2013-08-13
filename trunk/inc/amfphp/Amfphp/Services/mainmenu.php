@@ -128,12 +128,13 @@ class mainmenu
 			  $menulevel1 = (array)$menulevel1;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_menulevel1 (ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.clicks, ec_menulevel1.order, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description) values ('".$keyfield."', '%s', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Replace into ec_menulevel1 (ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.clicks, ec_menulevel1.order, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image) values ('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($menulevel1['menuname']),
 				mysql_real_escape_string($menulevel1['clicks']),
 				mysql_real_escape_string($menulevel1['menu1order']),
 				mysql_real_escape_string($menulevel1['seokeywords']),
-				mysql_real_escape_string($menulevel1['seodescription']));
+				mysql_real_escape_string($menulevel1['seodescription']),
+				mysql_real_escape_string($menulevel1['bannerimage']));
 			//Run query on database;
 			mysql_query($sql);
 			//if no errors, return their current Client ID
@@ -151,13 +152,14 @@ class mainmenu
 			  $menulevel1 = (array)$menulevel1;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_menulevel1(ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.clicks, ec_menulevel1.order, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description)
-				values(Null, '%s', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Insert into ec_menulevel1(ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.clicks, ec_menulevel1.order, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image)
+				values(Null, '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($menulevel1['menuname']),
 				mysql_real_escape_string($menulevel1['clicks']),
 				mysql_real_escape_string($menulevel1['menu1order']),
 				mysql_real_escape_string($menulevel1['seokeywords']),
-				mysql_real_escape_string($menulevel1['seodescription']));
+				mysql_real_escape_string($menulevel1['seodescription']),
+				mysql_real_escape_string($menulevel1['bannerimage']));
 			  mysql_query($sql);
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
@@ -230,14 +232,15 @@ class mainmenu
 			  $menulevel2 = (array)$menulevel2;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_menulevel2(ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.clicks, ec_menulevel2.order, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description)
-				values('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Replace into ec_menulevel2(ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.clicks, ec_menulevel2.order, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image)
+				values('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($menulevel2['menuparentid']),
 				mysql_real_escape_string($menulevel2['menuname']),
 				mysql_real_escape_string($menulevel2['clicks']),
 				mysql_real_escape_string($menulevel2['menu2order']),
 				mysql_real_escape_string($menulevel2['seokeywords']),
-				mysql_real_escape_string($menulevel2['seodescription']));
+				mysql_real_escape_string($menulevel2['seodescription']),
+				mysql_real_escape_string($menulevel2['bannerimage']));
 			//Run query on database;
 			mysql_query($sql);
 			//if no errors, return their current Client ID
@@ -255,14 +258,15 @@ class mainmenu
 			  $menulevel2 = (array)$menulevel2;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_menulevel2(ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.clicks, ec_menulevel2.order, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description)
-				values(Null, '%s', '%s', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Insert into ec_menulevel2(ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.clicks, ec_menulevel2.order, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image)
+				values(Null, '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($menulevel2['menuparentid']),
 				mysql_real_escape_string($menulevel2['menuname']),
 				mysql_real_escape_string($menulevel2['clicks']),
 				mysql_real_escape_string($menulevel2['menu2order']),
 				mysql_real_escape_string($menulevel2['seokeywords']),
-				mysql_real_escape_string($menulevel2['seodescription']));
+				mysql_real_escape_string($menulevel2['seodescription']),
+				mysql_real_escape_string($menulevel2['bannerimage']));
 			  mysql_query($sql);
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
@@ -331,14 +335,15 @@ class mainmenu
 			  $menulevel3 = (array)$menulevel3;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_menulevel3(ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.clicks, ec_menulevel3.order, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description)
-				values('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Replace into ec_menulevel3(ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.clicks, ec_menulevel3.order, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image)
+				values('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($menulevel3['menuparentid']),
 				mysql_real_escape_string($menulevel3['menuname']),
 				mysql_real_escape_string($menulevel3['clicks']),
 				mysql_real_escape_string($menulevel3['menu3order']),
 				mysql_real_escape_string($menulevel3['seokeywords']),
-				mysql_real_escape_string($menulevel3['seodescription']));
+				mysql_real_escape_string($menulevel3['seodescription']),
+				mysql_real_escape_string($menulevel3['bannerimage']));
 			//Run query on database;
 			mysql_query($sql);
 			//if no errors, return their current Client ID
@@ -356,14 +361,15 @@ class mainmenu
 			  $menulevel3 = (array)$menulevel3;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_menulevel3(ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.clicks, ec_menulevel3.order, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description)
-				values(Null,  '%s', '%s', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Insert into ec_menulevel3(ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.clicks, ec_menulevel3.order, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image)
+				values(Null,  '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($menulevel3['menuparentid']),
 				mysql_real_escape_string($menulevel3['menuname']),
 				mysql_real_escape_string($menulevel3['clicks']),
 				mysql_real_escape_string($menulevel3['menu3order']),
 				mysql_real_escape_string($menulevel3['seokeywords']),
-				mysql_real_escape_string($menulevel3['seodescription']));
+				mysql_real_escape_string($menulevel3['seodescription']),
+				mysql_real_escape_string($menulevel3['bannerimage']));
 			  mysql_query($sql);
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
