@@ -141,6 +141,8 @@
 	text-align:center;
 	border:none;
 	padding:6px 18px;
+	background-image:none;
+	box-shadow:none;
 }
 .ec_account_login_button:hover {
 	cursor: pointer;
@@ -213,6 +215,8 @@
 	text-align:center;
 	border:none;
 	margin-top:10px;
+	background-image:none;
+	box-shadow:none;
 }
 .ec_account_login_create_account_button:hover {
 	cursor: pointer;

@@ -107,6 +107,8 @@
 	text-transform: uppercase;
 	outline: 0;
 	border: 1px solid [main_color];
+	background-image:none;
+	box-shadow:none;
 }
 .ec_account_personal_information_button:hover {
 	cursor: pointer;
