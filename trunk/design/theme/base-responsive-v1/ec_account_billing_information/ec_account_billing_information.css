@@ -105,6 +105,8 @@
 	border:none;
 	margin-top:10px;
 	margin-left:0px;
+	background-image:none;
+	box-shadow:none;
 }
 .ec_account_billing_information_button:hover {
 	cursor: pointer;

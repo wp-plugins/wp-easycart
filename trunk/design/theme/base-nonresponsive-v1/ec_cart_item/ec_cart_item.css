@@ -74,7 +74,8 @@
 	border:none;
 	margin-top:0px;
 	padding:6px 14px;
-	background-image: none;
+	background-image:none;
+	box-shadow:none;
 }
 .ec_cart_item_update_button input[type="submit"]:hover {
 	cursor: pointer;
@@ -107,7 +108,8 @@
 	border:none;
 	margin-top:0px;
 	padding:6px 14px;
-	background-image: none;
+	background-image:none;
+	box-shadow:none;
 }
 .ec_cart_item_delete_button input[type="submit"]:hover {
 	cursor: pointer;

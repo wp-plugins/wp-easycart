@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.4 =
+* Key design fixes to the base and default designs. Made them more campatible with more themes. Replacing design folders manually is required to see upgrades.
+* Bug Fix - order details for multiple items not displaying, fixed.
 = 1.1.3 =
 * Fix for servers with php.ini settings where sessions folder is not writable.
 * Fix for servers with register_globals on.

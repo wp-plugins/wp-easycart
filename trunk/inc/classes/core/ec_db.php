@@ -60,7 +60,7 @@ class ec_db{
 				ec_orderdetail.order_id = %d
 				
 				GROUP BY
-				ec_user.user_id";
+				ec_orderdetail.orderdetail_id";
 				
 		$this->orderdetail_guest_sql = "SELECT 
 				ec_orderdetail.orderdetail_id, 
@@ -112,7 +112,7 @@ class ec_db{
 				ec_orderdetail.order_id = %d
 				
 				GROUP BY
-				ec_order.order_id";
+				ec_orderdetail.orderdetail_id";
 	}
 	
 	public function get_breadcrumb_data( $model_number, $menuid, $submenuid, $subsubmenuid ){

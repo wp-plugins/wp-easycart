@@ -115,6 +115,8 @@
 	text-align:center;
 	border:none;
 	margin-top:10px;
+	background-image:none;
+	box-shadow:none;
 }
 .ec_cart_login_button:hover {
 	cursor: pointer;

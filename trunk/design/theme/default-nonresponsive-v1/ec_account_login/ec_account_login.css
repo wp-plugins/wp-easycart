@@ -139,6 +139,8 @@
 	text-transform: uppercase;
 	outline: 0;
 	border: 1px solid #CCC;
+	background-image:none;
+	box-shadow:none;
 }
 .ec_account_login_button:hover {
 	cursor: pointer;
@@ -200,6 +202,8 @@
 	text-transform: uppercase;
 	outline: 0;
 	border: 1px solid #CCC;
+	background-image:none;
+	box-shadow:none;
 }
 .ec_account_login_create_account_button:hover {
 	cursor: pointer;
