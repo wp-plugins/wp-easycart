@@ -2,15 +2,15 @@
 class ec_categorywidget extends WP_Widget{
 	
 	function ec_categorywidget(){
-		$widget_ops = array('classname' => 'ec_categorywidget', 'description' => 'Displays the Categories For Your WP EasyCart' );
-		$this->WP_Widget('ec_categorywidget', 'WP EasyCart Category Filter', $widget_ops);
+		$widget_ops = array('classname' => 'ec_categorywidget', 'description' => 'Displays the Top Level Menu For Your WP EasyCart' );
+		$this->WP_Widget('ec_categorywidget', 'WP EasyCart Top Level Menu Filter', $widget_ops);
 	}
 	
 	function form($instance){
 		if( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
 		}else {
-			$title = __( 'Shop by Category', 'text_domain' );
+			$title = __( 'Shop by Menu', 'text_domain' );
 		}
 		
 		if( isset( $instance[ 'up_level_text' ] ) ) {
