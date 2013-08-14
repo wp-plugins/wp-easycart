@@ -30,8 +30,11 @@
 	position: relative;
 }
 
-.ec_product_widget_images .ec_product_image{
+.ec_product_widget_images .ec_product_image img{
 	max-width:175px;	
+	max-height:175px;
+	width:175px;
+	height:175px;
 }
 
 .ec_product_widget_image {

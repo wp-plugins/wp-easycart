@@ -116,6 +116,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.5 =
+* New Feature - Menu item banner images are here! Upload an optional banner image to go along with each menu item for promotions or just overall design improvement.
+* Improvement - Improved the base design and default design for the store for better compatability with more themes.
+* Bug Fix - Search feature bug fixed.
 = 1.1.4 =
 * Key design fixes to the base and default designs. Made them more campatible with more themes. Replacing design folders manually is required to see upgrades.
 * Bug Fix - order details for multiple items not displaying, fixed.

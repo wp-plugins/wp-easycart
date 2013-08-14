@@ -283,6 +283,12 @@
 	width: 100%;
 	margin-top: 15px;
 }
+.ec_product_details_option1_swatches img{
+	max-width:25px;
+	max-height:25px;
+	width:25px;
+	height:25px;	
+}
 .ec_product_details_option1_option {
 	float: left;
 	width: 100%;
@@ -295,6 +301,12 @@
 	float: left;
 	width: 100%;
 }
+.ec_product_details_option2_swatches img{
+	max-width:25px;
+	max-height:25px;
+	width:25px;
+	height:25px;	
+}
 .ec_product_details_option2_option {
 	float: left;
 	width: 100%;
@@ -305,6 +317,12 @@
 .ec_product_details_option3_swatches {
 	float: left;
 	width: 100%;
+}
+.ec_product_details_option3_swatches img{
+	max-width:25px;
+	max-height:25px;
+	width:25px;
+	height:25px;	
 }
 .ec_product_details_option3_option {
 	float: left;
@@ -317,6 +335,12 @@
 	float: left;
 	width: 100%;
 }
+.ec_product_details_option4_swatches img{
+	max-width:25px;
+	max-height:25px;
+	width:25px;
+	height:25px;	
+}
 .ec_product_details_option4_option {
 	float: left;
 	width: 100%;
@@ -327,6 +351,12 @@
 .ec_product_details_option5_swatches {
 	float: left;
 	width: 100%;
+}
+.ec_product_details_option5_swatches img{
+	max-width:25px;
+	max-height:25px;
+	width:25px;
+	height:25px;	
 }
 .ec_product_details_option5_option {
 	float: left;

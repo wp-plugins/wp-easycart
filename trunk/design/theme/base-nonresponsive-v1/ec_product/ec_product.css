@@ -325,6 +325,12 @@
 	margin-left: 3px;
 	margin-right: 3px;
 }
+.ec_product_swatches img{
+	max-width: 25px;
+	max-height:25px;
+	width:25px;
+	height:25px;
+}
 .ec_product_swatch_out_of_stock {
 	float: left;
 	margin: 1px;
@@ -547,6 +553,12 @@
 .ec_product_quick_view_box_content_option_row {
 	width: 100%;
 	float: left;
+}
+.ec_product_quick_view_box_content_option_row img{
+	max-width:25px;
+	max-height:25px;
+	width:25px;
+	height:25px;	
 }
 .ec_product_quick_view_box_content_row .title {
 	font-size: 20px;

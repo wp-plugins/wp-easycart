@@ -411,7 +411,7 @@ class ec_db{
 	}
 	
 	public function clean_search( $string ){
-		return $this->mysqli->prepare( $string );	
+		return mysql_real_escape_string( $string );		
 	}
 	
 	public function get_tempcart_product_quantity( $session_id, $product_id ){
