@@ -1,0 +1,1 @@
+<div>Buy <?php echo $Quantity; ?> at <?php echo $Price; ?> each</div>
