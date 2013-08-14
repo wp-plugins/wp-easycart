@@ -167,7 +167,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
         <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
       </tr>
       <tr>
-        <td height="37" align="center"><strong>Problems Downloading?</strong> Try manually installing by following these <a href="http://www.wpeasycart.com/air" target="_blank">2 steps to install.</a></td>
+        <td height="37" align="center"><strong>Problems Downloading?</strong> Try manually installing by following these <a href="http://www.wpeasycart.com/air_install" target="_blank">2 steps to install.</a></td>
         <td>&nbsp;</td>
       </tr>
       <tr>
