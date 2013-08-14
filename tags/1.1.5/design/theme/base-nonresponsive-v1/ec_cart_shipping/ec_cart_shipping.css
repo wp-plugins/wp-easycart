@@ -1,0 +1,70 @@
+@charset "utf-8";
+/* Base Theme - EC Cart shipping CSS Document */
+.ec_cart_shipping_holder {
+	width: 100%;
+	float: left;
+	margin-top: 30px;
+}
+.ec_cart_shipping_title {
+	width: 100%;
+	float: left;
+	color: [title_color];
+	font-size: 20px;
+	font-family: [title_font];
+	text-align: left;
+	margin-bottom: 7px;
+}
+.ec_cart_shipping_row {
+	width: 100%;
+	float: left;
+	margin-top: 10px;
+}
+.ec_cart_shipping_row .ec_cart_shipping_label {
+	width: 100px;
+	float: left;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color: #333;
+}
+.ec_cart_shipping_row .ec_cart_shipping_input {
+	float: left;
+	text-align: left;
+}
+
+.ec_cart_shipping_row .ec_cart_shipping_input {
+	width: 220px;
+}
+
+.ec_cart_shipping_row .ec_cart_shipping_input_text {
+	width: 200px;
+	border: 1px solid #c4c4c4;
+}
+
+.ec_cart_shipping_row_error {
+	width: 100%;
+	float: left;
+	margin-top: 5px;
+}
+.ec_cart_shipping_row_error .ec_cart_shipping_label {
+	width: 100px;
+	float: left;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	margin-top: 12px;
+	color: [error_text];
+}
+.ec_cart_shipping_row_error .ec_cart_shipping_input {
+	width: 220px;
+	float: left;
+	text-align: left;
+}
+.ec_cart_shipping_row_error .ec_cart_shipping_input_text {
+	width: 200px;
+	background-color: [error_color];
+	border: 2px solid [error_color2];
+}
+/* END EC CART shipping STYLE*/
