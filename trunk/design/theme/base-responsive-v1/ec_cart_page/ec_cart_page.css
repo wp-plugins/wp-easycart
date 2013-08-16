@@ -58,6 +58,7 @@
 	font-weight:bold;
 	outline: 0;
 	width:150px;
+	height:35px;
 	background-color:[main_color];
 	border:solid 1px #cccccc !important;
 	color:#ffffff;
@@ -97,6 +98,7 @@
 	font-weight:bold;
 	outline: 0;
 	width:150px;
+	height:35px;
 	background-color:[main_color];
 	border:solid 1px #cccccc !important;
 	color:#ffffff;
@@ -144,6 +146,7 @@
 	font-weight:bold;
 	outline: 0;
 	width:150px;
+	height:35px;
 	background-color:[main_color];
 	border:solid 1px #cccccc !important;
 	color:#ffffff;

@@ -116,6 +116,17 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.7 =
+* Bug Fix - Option to use lightbox with product details images now available and working.
+* Bug Fix - Linking issues with second pages and special filters combined. Should link correctly now for all combinations.
+* Bug Fix - Easy Cart was breaking the WordPress serach feature, old code slipped in. Issue corrected.
+* Bug Fix - Error response not showing in cart during login if login failed. Issue fixed.
+* Bug Fix - Base and Default store themes cart widget images now more compatible with more themes. Download the cart_widget folder manually to your current theme to fix issues you may have.
+* New Feature - Added group widget. Create a group of items like Fall Specials or Hot Items and apply products to the group. You can then display a list of these groups or link them directly with the next listed improvement.
+* New Feature - Short code improvement. [ec_store] can now be used with options menuid, submenuid, subsubmenuid, manufacturerid, and groupid. Use any of these options as [ec_store menuid="13"] to display only that menu item.
+* New Feature - Right to Left text support. Select the option from the Basic Setup wp-admin page to enable.
+* Bug Fix - AJAX calls for shipping values were wrong with one-time handling fee. AJAX call return pricing is stabalized.
+* Bug Fix - ec_cart_success page, in Firefox the receipt is off to the side, this is corrected in latest css file.
 = 1.1.6 =
 * Bug Fix - USPS live shipping, was not working correctly, now fixed.
 = 1.1.5 =

@@ -249,7 +249,11 @@ class ec_db{
 				ON ec_customfield.table_name = 'ec_product'
 				
 				LEFT JOIN ec_customfielddata
-				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = product.product_id ";
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = product.product_id 
+				
+				LEFT JOIN ec_categoryitem
+				ON ec_categoryitem.product_id = product.product_id 
+				";
 				
 				$group_query = " GROUP BY 
 				product.product_id,
@@ -547,6 +551,13 @@ class ec_db{
 			$sql = "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product WHERE ec_product.activate_in_store = 1 AND ec_product.show_on_startup = 1 AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id) as product_count FROM ec_manufacturer ORDER BY name ASC";
 		else
 			$sql = $this->mysqli->prepare( "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product WHERE ec_product.activate_in_store = 1 AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id AND ( ec_product.menulevel1_id_%d = %d OR ec_product.menulevel2_id_%d = %d OR ec_product.menulevel3_id_%d = %d ) ) as product_count FROM ec_manufacturer ORDER BY name ASC", $level, $menuid, $level, $menuid, $level, $menuid );
+		
+		return $this->mysqli->get_results( $sql );	
+	}
+	
+	public function get_groups( ){
+		
+		$sql = $this->mysqli->prepare( "SELECT ec_category.category_id, ec_category.category_name FROM ec_category ORDER BY ec_category.category_name ASC", $level, $menuid, $level, $menuid, $level, $menuid );
 		
 		return $this->mysqli->get_results( $sql );	
 	}

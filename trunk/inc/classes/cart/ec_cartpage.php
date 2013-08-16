@@ -95,13 +95,16 @@ class ec_cartpage{
 	}
 	
 	public function display_cart_error(){
-		$error_notes = array( "email_exists" => $GLOBALS['language']->get_text( "ec_errors", "email_exists_error" ) );
+		$error_notes = array( "email_exists" => $GLOBALS['language']->get_text( "ec_errors", "email_exists_error" ),
+							  "login_failed" => $GLOBALS['language']->get_text( "ec_errors", "login_failed" ) 
+							);
 		if( isset( $_GET['ec_cart_error'] ) ){
-			echo "<div class=\"ec_cart_error\"><div>" . $error_notes[$_GET['ec_cart_error']] . "</div></div>";
+			echo "<div class=\"ec_cart_error\"><div>" . $error_notes[ $_GET['ec_cart_error'] ] . "</div></div>";
 		}
 	}
 	
 	public function display_cart_page(){
+		echo "<div class=\"ec_cart_page\">";
 		if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" ){
 			$order_id = $_GET['order_id'];
 			$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
@@ -152,6 +155,7 @@ class ec_cartpage{
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_page.php' );
 			echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
 		}
+		echo "</div>";
 	}
 	
 	public function display_cart( $empty_cart_string ){
@@ -1065,7 +1069,7 @@ class ec_cartpage{
 				
 				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
 			}else{
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login&cart_error=Login Failed");
+				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login&ec_cart_error=login_failed");
 			}
 		}
 	}

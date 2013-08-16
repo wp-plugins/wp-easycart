@@ -8,10 +8,11 @@ class ec_productlist{
 	public $paging;									// ec_paging structure
 	public $num_products;							// INT
 	
-	function __construct( ){
+	function __construct( $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP" ){
 		$this->mysqli = new ec_db();
 		
 		$this->filter = new ec_filter( );
+		$this->set_shortcode_vals( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
 		$this->paging = new ec_paging( $this->filter->perpage->selected );
 		$this->get_products( );	
 		if( count( $this->products ) > 0 )
@@ -118,6 +119,28 @@ class ec_productlist{
 		
 		echo $this->paging->display_paging_links( $divider, $this->filter->get_link_string( 0 ) );
 	}
+	
+	public function set_shortcode_vals( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid ){
+		
+		if( $menuid != "NOMENU" ){
+			$this->filter->menulevel1 = new ec_menuitem( $menuid, 1 );
+			$this->filter->forced_menu_level = 1;
+		}else if( $submenuid != "NOSUBMENU" ){
+			$this->filter->menulevel2 = new ec_menuitem( $submenuid, 2 );
+			$this->filter->forced_menu_level = 2;
+		}else if( $subsubmenuid != "NOSUBSUBMENU" ){
+			$this->filter->menulevel3 = new ec_menuitem( $subsubmenuid, 3 );
+			$this->filter->forced_menu_level = 3;
+		}
+		
+		if( $manufacturerid != "NOMANUFACTURER" )
+			$this->filter->manufacturer = new ec_manufacturer( $manufacturerid, "" );
+			
+		if( $groupid != "NOGROUP" )
+			$this->filter->group_id = $groupid;
+			
+	}
+	
 }
 
 ?>

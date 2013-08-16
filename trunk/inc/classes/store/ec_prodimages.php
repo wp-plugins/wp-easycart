@@ -58,7 +58,7 @@ class ec_prodimages{
 	
 	public function get_product_images( $size, $selected, $id_prefix, $js_function_name ){
 		
-		if( $this->use_optionitem_images )				return $this->get_image_set_html( $size, $selected, false, $id_prefix, $js_function_name );
+		if( $this->use_optionitem_images )				return $this->get_image_set_html( $size, $selected, false, $id_prefix, $js_function_name, true );
 		else{
 														$ret_string = $this->get_image_html( 1, $this->image1, true, 0, $size, true, "", false, $id_prefix );
 														return $ret_string;
@@ -67,7 +67,7 @@ class ec_prodimages{
 	
 	public function get_product_details_images( $size, $selected, $id_prefix, $js_function_name ){
 		
-		if( $this->use_optionitem_images )				return $this->get_image_set_html( $size, $selected, true, $id_prefix, $js_function_name );
+		if( $this->use_optionitem_images )				return $this->get_image_set_html( $size, $selected, true, $id_prefix, $js_function_name, false );
 		else if( $this->image1 ){
 														$ret_string  = $this->get_image_html( 1, $this->image1, true,  0, $size, false, "return " . $js_function_name . "('" . $this->model_number . "', 0, 1);", true, $id_prefix );
 														$ret_string .= $this->get_image_html( 2, $this->image2, false, 0, $size, false, "return " . $js_function_name . "('" . $this->model_number . "', 0, 2);", true, $id_prefix );
@@ -103,28 +103,28 @@ class ec_prodimages{
 		
 	}
 	
-	private function get_image_set_html( $size, $selected, $allow_popup, $id_prefix, $js_function_name ){
+	private function get_image_set_html( $size, $selected, $allow_popup, $id_prefix, $js_function_name, $islink ){
 		
 		$ret_string = "";
 		for( $i=0; $i<count( $this->imageset ); $i++ ){
 			
 			if( $i == $selected )	
-				$ret_string .= $this->get_image_html( 1, $this->imageset[$i]->image1, true,  $i, $size, true, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 1);", $allow_popup, $id_prefix );
+				$ret_string .= $this->get_image_html( 1, $this->imageset[$i]->image1, true,  $i, $size, $islink, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 1);", $allow_popup, $id_prefix );
 			
 			else
-				$ret_string .= $this->get_image_html( 1, $this->imageset[$i]->image1, false, $i, $size, true, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 1);", $allow_popup, $id_prefix );
+				$ret_string .= $this->get_image_html( 1, $this->imageset[$i]->image1, false, $i, $size, $islink, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 1);", $allow_popup, $id_prefix );
 			
 			if( $this->imageset[$i]->image2 != "" )
-			$ret_string .= $this->get_image_html( 2, $this->imageset[$i]->image2, false, $i, $size, true, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 2);", $allow_popup, $id_prefix );
+			$ret_string .= $this->get_image_html( 2, $this->imageset[$i]->image2, false, $i, $size, $islink, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 2);", $allow_popup, $id_prefix );
 			
 			if( $this->imageset[$i]->image3 != "" )
-			$ret_string .= $this->get_image_html( 3, $this->imageset[$i]->image3, false, $i, $size, true, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 3);", $allow_popup, $id_prefix );
+			$ret_string .= $this->get_image_html( 3, $this->imageset[$i]->image3, false, $i, $size, $islink, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 3);", $allow_popup, $id_prefix );
 			
 			if( $this->imageset[$i]->image4 != "" )
-			$ret_string .= $this->get_image_html( 4, $this->imageset[$i]->image4, false, $i, $size, true, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 4);", $allow_popup, $id_prefix );
+			$ret_string .= $this->get_image_html( 4, $this->imageset[$i]->image4, false, $i, $size, $islink, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 4);", $allow_popup, $id_prefix );
 			
 			if( $this->imageset[$i]->image5 != "" )
-			$ret_string .= $this->get_image_html( 5, $this->imageset[$i]->image5, false, $i, $size, true, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 5);", $allow_popup, $id_prefix );
+			$ret_string .= $this->get_image_html( 5, $this->imageset[$i]->image5, false, $i, $size, $islink, "return " . $js_function_name . "('" . $this->model_number . "', " . $i . ", 5);", $allow_popup, $id_prefix );
 				
 		}
 		

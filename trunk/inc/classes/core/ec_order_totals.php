@@ -8,6 +8,7 @@ class ec_order_totals{
 	public $shipping_total;												// FLOAT 11,2
 	public $duty_total;													// FLOAT 11,2
 	public $vat_total;													// FLOAT 11,2
+	public $discount_total;												// FLOAT 11,2
 	public $grand_total;												// FLOAT 11,2
 	
 	function __construct( $cart, $user, $shipping, $tax, $discount ){

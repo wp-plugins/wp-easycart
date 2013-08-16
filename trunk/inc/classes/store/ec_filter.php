@@ -8,12 +8,15 @@ class ec_filter{
 	public $menulevel1;											// ec_menuitem structure
 	public $menulevel2;											// ec_menuitem structure
 	public $menulevel3;											// ec_menuitem structure
+	public $forced_menu_level = 0;								// menu level can be forced for shortcodes, INT
+	
 	public $show_on_startup;									// BOOL
 	public $product_only;										// BOOL
 	
 	public $search;												// VARCHAR
 	
 	public $menufacturer;										// ec_manufacturer structure
+	public $group_id;											// INT
 	public $model_number;										// VARCHAR
 	public $pricepoint_id;										// INT
 	public $current_filter;										// INT
@@ -38,6 +41,7 @@ class ec_filter{
 		$this->search = $this->get_search( );
 		
 		$this->manufacturer = new ec_manufacturer( $this->get_manufacturer_id(), "" );
+		$this->group_id = $this->get_group_id();
 		$this->pricepoint_id = $this->get_pricepoint_id();
 		$this->model_number = $this->get_model_number();
 		
@@ -86,7 +90,8 @@ class ec_filter{
 	}
 	
 	public function get_menu_level(){
-		if(isset($_GET['menuid']))								return 1;
+		if($this->forced_menu_level != 0)						return $this->forced_menu_level;
+		else if(isset($_GET['menuid']))							return 1;
 		else if(isset($_GET['submenuid']))						return 2;
 		else if(isset($_GET['subsubmenuid']))					return 3;
 		else													return 0;
@@ -114,6 +119,11 @@ class ec_filter{
 	
 	private function get_pricepoint_id(){
 		if(isset($_GET['pricepoint']))							return $_GET['pricepoint'];
+		else													return 0;	
+	}
+	
+	public function get_group_id(){
+		if( isset( $_GET['group_id'] ) )						return $_GET['group_id'];
 		else													return 0;	
 	}
 	
@@ -207,9 +217,9 @@ class ec_filter{
 		$ret_string = $this->store_page . $this->permalink_divider;
 		
 		if( $leave_out != 1){
-			if( $this->get_menu_level() == 1 )						$ret_string .= "menuid=" . $this->get_menu_id() . "&amp;menu=" . $this->get_menu_name();
-			else if( $this->get_menu_level() == 2 ) 				$ret_string .= "submenuid=" . $this->get_submenu_id() . "&amp;submenu=" . $this->get_submenu_name();
-			else if( $this->get_menu_level() == 3 )					$ret_string .= "subsubmenuid=" . $this->get_subsubmenu_id() . "&amp;subsubmenu=" . $this->get_subsubmenu_name();
+			if( $this->get_menu_level() == 1 )						$ret_string .= "menuid=" . $this->menulevel1->menu_id . "&amp;menu=" . $this->get_menu_name();
+			else if( $this->get_menu_level() == 2 ) 				$ret_string .= "submenuid=" . $this->menulevel2->menu_id . "&amp;submenu=" . $this->get_submenu_name();
+			else if( $this->get_menu_level() == 3 )					$ret_string .= "subsubmenuid=" . $this->menulevel3->menu_id . "&amp;subsubmenu=" . $this->get_subsubmenu_name();
 		}
 		
 		if( $leave_out != 2 )										$ret_string .= "&amp;perpage=" . $this->perpage->selected;
@@ -256,6 +266,8 @@ class ec_filter{
 			if( $this->product_only )								$ret_string .= " AND product.model_number = '" . $this->model_number . "' ";
 			
 			if( $this->manufacturer->manufacturer_id != 0 )			$ret_string .= " AND product.manufacturer_id = ".$this->manufacturer->manufacturer_id;
+			
+			if( $this->group_id != 0 )								$ret_string .= " AND ec_categoryitem.category_id = ".$this->group_id;
 																	
 			if( $this->pricepoint_id != 0 )							$ret_string .= $this->get_price_point_where( );
 			
@@ -281,6 +293,7 @@ class ec_filter{
 		
 		if(	$this->get_menu_level() != 0 || 
 			( isset( $this->manufacturer ) && $this->manufacturer->manufacturer_id && $this->manufacturer->manufacturer_id != 0 ) || 
+			$this->group_id != 0 ||
 			$this->pricepoint_id != 0 || 
 			$this->model_number != "" || 
 			$this->search != ""  ||
