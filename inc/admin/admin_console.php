@@ -130,14 +130,14 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 // these parameters are required for badge install:
                 so.addVariable("airversion", "3.7"); // version of AIR runtime required
                 so.addVariable("appname", "WP EasyCart Admin Console"); // application name to display to the user
-                so.addVariable("appurl", "http://www.wpeasycart.com/air/wpadmin_v1_0_38.air"); // absolute URL (beginning with http or https) of the application ".air" file
+                so.addVariable("appurl", "http://www.wpeasycart.com/air/wpadmin_v1_0_39.air"); // absolute URL (beginning with http or https) of the application ".air" file
                 
                 // these parameters are required to support launching apps from the badge (but optional for install):
                 so.addVariable("appid", "com.wpeasycart.admin"); // the qualified application ID (ex. com.gskinner.air.MyApplication)
                 so.addVariable("pubid", ""); // publisher id
                 
                 // this parameter is required in addition to the above to support upgrading from the badge:
-                so.addVariable("appversion", "1.0.38"); // AIR application version
+                so.addVariable("appversion", "1.0.39"); // AIR application version
                 
                 // these parameters are optional:
                 so.addVariable("image", "<?php echo plugins_url('AIR_badge/DemoImage.jpg', __FILE__); ?>"); // URL for an image (JPG, PNG, GIF) or SWF to display in the badge (205px wide, 170px high)
