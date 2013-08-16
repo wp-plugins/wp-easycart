@@ -43,6 +43,7 @@ class ec_accountpage{
 	}
 	
 	public function display_account_page( ){
+		echo "<div class=\"ec_account_page\">";
 		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_page.php' );
 		echo "<input type=\"hidden\" name=\"ec_account_base_path\" id=\"ec_account_base_path\" value=\"" . plugins_url( ) . "\" />";
 		echo "<input type=\"hidden\" name=\"ec_account_session_id\" id=\"ec_account_session_id\" value=\"" . session_id() . "\" />";
@@ -53,6 +54,7 @@ class ec_accountpage{
 			$page_name = $_GET['ec_page'];
 		
 		echo "<input type=\"hidden\" name=\"ec_account_start_page\" id=\"ec_account_start_page\" value=\"" . $page_name . "\" />";
+		echo "</div>";
 	}
 	
 	public function display_account_error(){

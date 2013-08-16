@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.1.6
+ * Version: 1.1.7
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.1.6
+ * @version 1.1.7
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_1_6' );
+define( 'EC_CURRENT_VERSION', '1_1_7' );
 define( 'EC_CURRENT_DB', '1_2' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -277,21 +277,18 @@ function short_string($text, $length){
 	return $text;
 }
 
-//load search
-function load_ec_search($content){
-	global $wp_query;
-	if( $wp_query->is_search )
-		include( 'search.php' );
-	else
-		return $content;
-}
-
-
 //[ecstore]
 function load_ec_store( $atts ){
+	extract( shortcode_atts( array(
+		'menuid' => 'NOMENU',
+		'submenuid' => 'NOSUBMENU',
+		'subsubmenuid' => 'NOSUBSUBMENU',
+		'manufacturerid' => 'NOMANUFACTURER',
+		'groupid' => 'NOGROUP'
+	), $atts ) );
 	
 	ob_start();
-    $store_page = new ec_storepage();
+    $store_page = new ec_storepage( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
 	$store_page->display_store_page();
     return ob_get_clean();
 
@@ -350,6 +347,7 @@ function wpeasycart_register_widgets( ) {
 	register_widget( 'ec_breadcrumbwidget' );
 	register_widget( 'ec_categorywidget' );
 	register_widget( 'ec_cartwidget' );
+	register_widget( 'ec_groupwidget' );
 	register_widget( 'ec_manufacturerwidget' );
 	register_widget( 'ec_menuwidget' );
 	register_widget( 'ec_newsletterwidget' );
@@ -374,7 +372,6 @@ add_shortcode( 'ec_account', 'load_ec_account' );
 add_shortcode( 'ec_product', 'load_ec_product' );
 
 add_filter( 'widget_text', 'do_shortcode');
-add_filter( 'the_content', 'load_ec_search' );
 
 add_action('wp_head', 'ec_facebook_metadata');
 
@@ -579,6 +576,43 @@ function wpeasycart_recover( ){
 				exit( $err_message );	
 			}
 			
+			/**********************************************************
+			 * ANYONE PRIOR TO 1.1.7 WILL RUN THIS UPGRADE TO GET THEIR
+			 * THEMES UP TO SPEED WITH THE LATEST SOFTWARE
+			 **********************************************************/
+			
+			/* We are adding a few new files to every theme. Lets do this by copying from the new folder to backup IF IT DOESN"T EXIST */
+			$group_layout = $to . "design/layout/base-responsive-v1/ec_group_widget.php";
+			$group_css = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.css";
+			$group_js = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.js";
+			$rtl_file = $to . "design/theme/base-responsive-v1/rtl_support.css";
+			
+			//Cycle through design folders, add dir and files
+			$layout_list = array_filter( glob($from . 'design/layout/*'), 'is_dir' );
+			$theme_list = array_filter( glob($from . 'design/theme/*'), 'is_dir' );
+			
+			//Loop through the layout folders
+			for( $i=0; $i<count( $layout_list ); $i++ ){
+				if( !file_exists( $layout_list[$i] . "/ec_group_widget.php" ) )
+					copy( $group_layout, $layout_list[$i] . "/ec_group_widget.php" );
+			}
+			
+			//Loop through the theme folders
+			for( $i=0; $i<count( $theme_list ); $i++ ){
+				if( !is_dir( $theme_list[$i] . "/ec_group_widget" ) )
+					mkdir( $theme_list[$i] . "/ec_group_widget" );
+				if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" ) )
+					copy( $group_css, $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" );
+				if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" ) )
+					copy( $group_js, $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" );
+				if( !file_exists( $theme_list[$i] . "/rtl_support.css" ) )
+					copy( $rtl_file, $theme_list[$i] . "/rtl_support.css" );
+				
+			}
+			/**********************************************************
+			 * END 1.1.7 UPGRADE
+			 **********************************************************/
+			
 			$success = false;
 			if( is_dir( $to . "design" ) ) {
 				$success = recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
@@ -647,7 +681,7 @@ function wpeasycart_recover_ftp( ){
 	
 	if( !$login_result ){
 		
-		die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your informaiton and try again." );
+		die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your information and try again." );
 		
 	}else{
 		
@@ -852,12 +886,14 @@ function ec_ajax_cartitem_update( ){
 	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
 	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
 	
-	$sub_total = $cart->subtotal;
-	$tax_total = $tax->tax_total;
-	$shipping_total = $shipping->get_shipping_price( );
-	$discounts_total = $discount->discount_total;
-	$duty_total = $tax->duty_total;
-	$vat_total = $tax->vat_total;
+	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
+	
+	$sub_total = $order_totals->sub_total;
+	$tax_total = $order_totals->tax_total;
+	$shipping_total = $order_totals->shipping_total;
+	$discounts_total = $order_totals->discount_total;
+	$duty_total = $order_totals->duty_total;
+	$vat_total = $order_totals->vat_total;
 	
 	$unit_price = 0;
 	$total_price = 0;
@@ -894,12 +930,14 @@ function ec_ajax_cartitem_delete( ){
 	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
 	$discount = new ec_discount( $cart, $cart->cart_subtotal, $shipping->get_shipping_price( ), $_SESSION['ec_couponcode'], $_SESSION['ec_giftcard'], $grand_total );
 	
-	$sub_total = $cart->subtotal;
-	$tax_total = $tax->tax_total;
-	$shipping_total = $shipping->get_shipping_price( );
-	$discounts_total = $discount->discount_total;
-	$duty_total = $tax->duty_total;
-	$vat_total = $tax->vat_total;
+	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
+	
+	$sub_total = $order_totals->sub_total;
+	$tax_total = $order_totals->tax_total;
+	$shipping_total = $order_totals->shipping_total;
+	$discounts_total = $order_totals->discount_total;
+	$duty_total = $order_totals->duty_total;
+	$vat_total = $order_totals->vat_total;
 	
 	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
 	
@@ -938,12 +976,14 @@ function ec_ajax_redeem_coupon_code( ){
 	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
 	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
 	
-	$sub_total = $cart->subtotal;
-	$tax_total = $tax->tax_total;
-	$shipping_total = $shipping->get_shipping_price( );
-	$discounts_total = $discount->discount_total;
-	$duty_total = $tax->duty_total;
-	$vat_total = $tax->vat_total;
+	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
+	
+	$sub_total = $order_totals->sub_total;
+	$tax_total = $order_totals->tax_total;
+	$shipping_total = $order_totals->shipping_total;
+	$discounts_total = $order_totals->discount_total;
+	$duty_total = $order_totals->duty_total;
+	$vat_total = $order_totals->vat_total;
 	
 	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
 	
@@ -996,12 +1036,14 @@ function ec_ajax_redeem_gift_card( ){
 	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
 	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
 	
-	$sub_total = $cart->subtotal;
-	$tax_total = $tax->tax_total;
-	$shipping_total = $shipping->get_shipping_price( );
-	$discounts_total = $discount->discount_total;
-	$duty_total = $tax->duty_total;
-	$vat_total = $tax->vat_total;
+	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
+	
+	$sub_total = $order_totals->sub_total;
+	$tax_total = $order_totals->tax_total;
+	$shipping_total = $order_totals->shipping_total;
+	$discounts_total = $order_totals->discount_total;
+	$duty_total = $order_totals->duty_total;
+	$vat_total = $order_totals->vat_total;
 	
 	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
 	
@@ -1049,12 +1091,14 @@ function ec_ajax_estimate_shipping( ){
 	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
 	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
 	
-	$sub_total = $cart->subtotal;
-	$tax_total = $tax->tax_total;
-	$shipping_total = $shipping->get_shipping_price( );
-	$discounts_total = $discount->discount_total;
-	$duty_total = $tax->duty_total;
-	$vat_total = $tax->vat_total;
+	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
+	
+	$sub_total = $order_totals->sub_total;
+	$tax_total = $order_totals->tax_total;
+	$shipping_total = $order_totals->shipping_total;
+	$discounts_total = $order_totals->discount_total;
+	$duty_total = $order_totals->duty_total;
+	$vat_total = $order_totals->vat_total;
 	
 	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
 	

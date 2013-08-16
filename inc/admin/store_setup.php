@@ -162,6 +162,10 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
           </td>
         </tr>
         <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Use RTL Support (Right to Left Text):</td>
+          <td valign="top"><select name="ec_option_use_rtl" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_rtl') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_rtl') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>RTL Support</em>RTL support is the method of setting all items in the store to be viewed with RTL direction text. We have also done some custom css to specific parts of the store to look more correct for RTL languages. In no way is this perfect though, or available in all themes. Please contact WP EasyCart with questions if you have any issues with our RTL support option.</span></a></td>
+        </tr>
+        <tr valign="top">
           <td align="left" class="itemheading" scope="row"><span class="submit">
             <input type="hidden" name="isupdate2" value="1" />
             <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />

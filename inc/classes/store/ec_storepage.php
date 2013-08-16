@@ -18,9 +18,10 @@ class ec_storepage{
 	////////////////////////////////////////////////////////
 	// CONSTUCTOR FUNCTION
 	////////////////////////////////////////////////////////
-	function __construct( ){
+	function __construct( $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP" ){
+		
 		$this->is_details = $this->get_is_details( );
-		if(	!$this->is_details )											$this->setup_products( );
+		if(	!$this->is_details )											$this->setup_products(  $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
 		else{												
 																			$this->model_number = $_GET['model_number'];
 			if( isset( $_GET['optionitem_id'] ) )
@@ -40,9 +41,9 @@ class ec_storepage{
 	////////////////////////////////////////////////////////
 	// STORE PAGE SETUP FUNCTIONS
 	////////////////////////////////////////////////////////
-	private function setup_products( ){
+	private function setup_products( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid ){
 		
-		$this->product_list = new ec_productlist();
+		$this->product_list = new ec_productlist( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
 	
 	}
 	
@@ -230,15 +231,16 @@ class ec_storepage{
 	}
 	
 	public function display_optional_banner( ){
-		if( isset( $_GET['menuid'] ) ){
+		$menu_level = $this->product_list->filter->get_menu_level( );
+		if( $menu_level == 1 && isset( $this->product_list->filter->menulevel1->menu_id ) ){
 			$db = new ec_db( );
-			$menu_row = $db->get_menu_row( $_GET['menuid'], 1 );
-		}else if( isset( $_GET['submenuid'] ) ){
+			$menu_row = $db->get_menu_row( $this->product_list->filter->menulevel1->menu_id, 1 );
+		}else if( $menu_level == 2 && isset( $this->product_list->filter->menulevel2->menu_id ) ){
 			$db = new ec_db( );
-			$menu_row = $db->get_menu_row( $_GET['submenuid'], 2 );
-		}else if( isset( $_GET['subsubmenuid'] ) ){
+			$menu_row = $db->get_menu_row( $this->product_list->filter->menulevel2->menu_id, 2 );
+		}else if( $menu_level == 3 && isset( $this->product_list->filter->menulevel3->menu_id ) ){
 			$db = new ec_db( );
-			$menu_row = $db->get_menu_row( $_GET['subsubmenuid'], 3 );
+			$menu_row = $db->get_menu_row( $this->product_list->filter->menulevel3->menu_id, 3 );
 		}
 		
 		if( isset( $menu_row ) ){

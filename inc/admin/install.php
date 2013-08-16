@@ -786,7 +786,10 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                         </td>
                     </tr>
                     
-                    <?php if( !is_writable( $install_dir ) ){?>
+                    <?php 
+					$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
+					if( !is_writable( $install_dir ) ){
+					?>
                     <tr>
                     	<td colspan="2">FTP Information is required for some servers. If you see an error try entering your ftp access information.</td>
                     </tr>
@@ -814,7 +817,10 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
     				<form method="post" action="#" name="deletedataform" id="deletedataform">
                     <input type="hidden" name="isdeletedemodata" id="isdeletedemodata" value="1" />
                     <table>
-                    <?php if( !is_writable( $install_dir ) ){?>
+                    <?php 
+					$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
+					if( !is_writable( $install_dir ) ){
+					?>
                     <tr>
                     	<td colspan="2">FTP Information is required for some servers. If you see an error try entering your ftp access information.</td>
                     </tr>
