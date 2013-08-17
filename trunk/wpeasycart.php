@@ -199,7 +199,8 @@ function ec_load_css( ){
 				$temp[1] != "Lucida Sans Unicode, Lucida Grande, sans-serif" && 
 				$temp[1] != "MS Serif, New York, serif" && 
 				$temp[1] != "Lucida Console, Monaco, monospace" && 
-				$temp[1] != "Comic Sans MS, cursive" 
+				$temp[1] != "Comic Sans MS, cursive" &&
+				$temp[1] != ""
 		){
 			if( $fonts_added > 0 )
 				$gfont_list .= "|";
