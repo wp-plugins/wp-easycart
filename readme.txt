@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.8 =
+* Base and Default CSS Enhancements - Massive overhaul of the base and default store templates. Should work out of the box for more browsers, more WordPress themes, more often.
+* Bug Fix - IE cancel buttons were not working, corrected with javascript addition in core.
+* Bug Fix - Continued improvement to the filter features. Should not be failing now.
 = 1.1.7 =
 * Bug Fix - Option to use lightbox with product details images now available and working.
 * Bug Fix - Linking issues with second pages and special filters combined. Should link correctly now for all combinations.

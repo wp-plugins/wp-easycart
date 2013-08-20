@@ -71,7 +71,7 @@
 	display: block;
 	float: right;
 	text-indent: 0;
-	text-decoration: none!important;
+	text-decoration: none !important;
 	text-transform: uppercase;
 	white-space: nowrap;
 	text-align: center;
@@ -79,14 +79,15 @@
 	-webkit-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-	font-family: [content_font]!important;
+	font-family: [content_font] !important;
 	font-size:8px;
 	font-weight:bold;
 	outline: 0;
 	width:80px;
-	background-color: [main_color];
+	background-color: [main_color] !important;
+	background: [main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -94,8 +95,8 @@
 }
 .ec_account_order_line_column5 a:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 @media only screen and ( min-width: [size_level5_low]px ) {
 	.ec_account_order_line_column1 {

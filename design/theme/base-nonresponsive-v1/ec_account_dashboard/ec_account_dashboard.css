@@ -57,7 +57,7 @@
 	font-size: 12px;
 	font-family: [content_font];
 	font-weight: bold;
-	color: [link_color];
+	color: [link_color] !important;
 }
 
 .ec_account_dashboard_right .ec_account_dashboard_holder a:hover {
@@ -69,11 +69,11 @@
 	font-size: 12px;
 	font-family: [content_font];
 	font-weight: bold;
-	color: [main_color];
+	color: [main_color] !important;
 }
 .ec_account_dashboard_holder a:hover {
 	text-decoration: none;
-	color: #666666;
+	color: #666666 !important;
 }
 .ec_account_dashboard_row {
 	width: 100%;
@@ -131,9 +131,10 @@
 	height:28px;
 	line-height:28px;
 	background-repeat:no-repeat;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border: 1px solid #CCC !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -141,8 +142,8 @@
 }
 .ec_account_dashboard_row_divider a:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 .ec_account_order_line_header {
 	width: 100%;

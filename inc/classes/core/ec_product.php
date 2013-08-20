@@ -749,6 +749,8 @@ class ec_product{
 			}else if( isset( $_GET['ec_search'] ) ){
 				$link_text .= "&amp;ec_search=" . $_GET['ec_search'];
 			}else if( !isset( $_GET['manufacturer'] ) && !isset( $_GET['group_id'] ) ){
+				$link_text .= "&amp;featured=true";
+				
 				if( isset( $_GET['pagenum'] ) )
 					$link_text .= "&amp;pagenum=" . $_GET['pagenum'];
 			}

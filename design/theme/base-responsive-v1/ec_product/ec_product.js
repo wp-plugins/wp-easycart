@@ -176,7 +176,7 @@ function resize_product_layout( ){
 	var product_width = jQuery( "#ec_product_item1" ).width( );
 	var num_products_per_row = Math.floor( content_width / product_width );
 	var remaining_space = content_width - ( num_products_per_row * product_width );
-	var margin_between_product = remaining_space / ( ( ( num_products_per_row - 2 ) * 2 ) + 2 );
+	var margin_between_product = remaining_space / ( ( ( num_products_per_row - 1 ) * 2 ) );
 	
 	if( Number(margin_between_product) < 1 )
 		margin_between_product = 0;
@@ -203,7 +203,7 @@ function resize_product_layout( ){
 	jQuery( ".ec_product.middle" ).css( "margin-right", margin_between_product + "px" );
 	
 	// Change class for right products so margins are correct
-	jQuery( ".ec_product.right" ).css( "margin-left", margin_between_product + "px" );
+	jQuery( ".ec_product.right" ).css( "margin-left", "0px" );
 	jQuery( ".ec_product.right" ).css( "margin-right", "0px" );
 	
 }

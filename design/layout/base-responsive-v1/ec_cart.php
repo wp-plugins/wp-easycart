@@ -62,50 +62,38 @@ if( $this->should_display_cart( ) ){
   <div class="ec_cart_lower_right">
     <div class="ec_cart_lower_right_title"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_title' )?></div>
     <div class="ec_cart_lower_right_row">
-      <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_subtotal' )?></div>
-      <div class="right">
-        <?php $this->display_subtotal(); ?>
-      </div>
+        <div class="left"><?php $this->display_subtotal(); ?></div>
+        <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_subtotal' )?></div>
     </div>
     <?php if( !$this->tax->vat_enabled || $this->tax->tax_total ){ ?>
     <div class="ec_cart_lower_right_row">
-      <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_tax' )?></div>
-      <div class="right">
-        <?php $this->display_tax_total(); ?>
-      </div>
+        <div class="left"><?php $this->display_tax_total(); ?></div>
+        <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_tax' )?></div>
     </div>
     <?php } ?>
     <div class="ec_cart_lower_right_row">
-      <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_shipping' )?></div>
-      <div class="right">
-        <?php $this->display_shipping_total(); ?>
-      </div>
+        <div class="left"><?php $this->display_shipping_total(); ?></div>
+        <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_shipping' )?></div>
     </div>
     <div class="ec_cart_lower_right_row">
-      <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_discounts' )?></div>
-      <div class="right">-
-        <?php $this->display_discount_total(); ?>
-      </div>
+        <div class="left">-<?php $this->display_discount_total(); ?></div>
+        <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_discounts' )?></div>
     </div>
     <?php if( $this->has_duty( ) ){ ?>
     <div class="ec_cart_lower_right_row">
-      <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_duty' )?></div>
-      <div class="right">
-        <?php $this->display_duty_total( ); ?>
-      </div>
+        <div class="left"><?php $this->display_duty_total( ); ?></div>
+        <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_duty' )?></div>
     </div>
     <?php }?>
     <?php if( $this->tax->vat_enabled ){ ?>
     <div class="ec_cart_lower_right_row">
-      <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_vat' )?> </div>
-      <div class="right"><?php echo $this->display_vat_total( ); ?></div>
+        <div class="left"><?php echo $this->display_vat_total( ); ?></div>
+        <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_vat' )?></div>
     </div>
     <?php } ?>
     <div class="ec_cart_lower_right_row">
-      <div class="left"><span class="grandTotalTxt"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_grand_total' )?></span></div>
-      <div class="right">
-        <?php $this->display_grand_total(); ?>
-      </div>
+        <div class="left"><?php $this->display_grand_total(); ?></div>
+        <div class="right"><span class="grandTotalTxt"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_grand_total' )?></span></div>
     </div>
   </div>
   <div class="ec_cart_bottom_divider_line"></div>

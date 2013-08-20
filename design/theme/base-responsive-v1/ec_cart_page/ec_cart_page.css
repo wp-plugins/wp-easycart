@@ -45,7 +45,7 @@
 	display: block;
 	float: left;
 	text-indent: 0;
-	text-decoration: none!important;
+	text-decoration: none !important;
 	text-transform: uppercase;
 	white-space: nowrap;
 	text-align: center;
@@ -53,15 +53,16 @@
 	-webkit-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-	font-family: [content_font]!important;
+	font-family: [content_font] !important;
 	font-size:11px;
 	font-weight:bold;
 	outline: 0;
 	width:150px;
 	height:35px;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -72,8 +73,8 @@
 }
 .ec_cart_continue_to_shipping_button:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 .ec_cart_page_continue_to_payment_button {
 	width: 100%;
@@ -85,7 +86,7 @@
 	display: block;
 	float: left;
 	text-indent: 0;
-	text-decoration: none!important;
+	text-decoration: none !important;
 	text-transform: uppercase;
 	white-space: nowrap;
 	text-align: center;
@@ -93,15 +94,16 @@
 	-webkit-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-	font-family: [content_font]!important;
+	font-family: [content_font] !important;
 	font-size:11px;
 	font-weight:bold;
 	outline: 0;
 	width:150px;
 	height:35px;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -112,8 +114,8 @@
 }
 .ec_cart_continue_to_payment_button:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 .ec_cart_submit_order_message {
 	width: 100%;
@@ -133,7 +135,7 @@
 	display: block;
 	float: left;
 	text-indent: 0;
-	text-decoration: none!important;
+	text-decoration: none !important;
 	text-transform: uppercase;
 	white-space: nowrap;
 	text-align: center;
@@ -141,15 +143,16 @@
 	-webkit-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-	font-family: [content_font]!important;
+	font-family: [content_font] !important;
 	font-size:11px;
 	font-weight:bold;
 	outline: 0;
 	width:150px;
 	height:35px;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -160,8 +163,8 @@
 }
 .ec_cart_submit_order_button:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 @media only screen and ( min-width: [size_level4_low]px ) {
 	.ec_cart_page_left {

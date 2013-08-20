@@ -141,8 +141,7 @@
         <br>
         <?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_bottom_line_2" ); ?></p>
       <p>&nbsp;</p></td>
-  </tr>
-  
+  </tr> 
 </table>
 </body>
 </html>

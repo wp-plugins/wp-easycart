@@ -78,7 +78,7 @@
 	padding: 4px 0px 4px 8px;
 }
 .ec_account_order_details_column2_header {
-	width: 375px;
+	width: 250px;
 	float: left;
 	text-align: left;
 	padding: 4px 0px;
@@ -142,7 +142,7 @@
 	width: 120px;
 }
 .ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
-	width: 375px;
+	width: 250px;
 }
 .ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
 	width: 110px;
@@ -251,7 +251,7 @@
 	width: 120px;
 }
 .ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
-	width: 375px;
+	width: 250px;
 	display: none;
 }
 .ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {

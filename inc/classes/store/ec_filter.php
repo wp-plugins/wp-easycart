@@ -271,6 +271,8 @@ class ec_filter{
 																	
 			if( $this->pricepoint_id != 0 )							$ret_string .= $this->get_price_point_where( );
 			
+			if( $this->show_on_startup )							$ret_string .= " AND product.show_on_startup = 1";
+			
 																	return $ret_string;
 			
 		}else														return " WHERE product.show_on_startup = 1 AND product.activate_in_store = 1";

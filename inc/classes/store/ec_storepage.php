@@ -43,13 +43,13 @@ class ec_storepage{
 	////////////////////////////////////////////////////////
 	private function setup_products( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid ){
 		
-		$this->product_list = new ec_productlist( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
+		$this->product_list = new ec_productlist( false, $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
 	
 	}
 	
 	private function setup_details( ){
 		
-		$this->product_list = new ec_productlist();
+		$this->product_list = new ec_productlist( true );
 		if( $this->product_list->num_products > 0 ){
 			
 			$this->previous_model_number = "";

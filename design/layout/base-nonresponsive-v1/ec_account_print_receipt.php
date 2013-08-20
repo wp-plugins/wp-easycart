@@ -142,9 +142,6 @@
         <?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_bottom_line_2" ); ?></p>
       <p>&nbsp;</p></td>
   </tr>
-  <tr>
-    <td colspan='4'><p class='style22'><img src='<?php echo $email_footer_url; ?>'></p></td>
-  </tr>
 </table>
 </body>
 </html>

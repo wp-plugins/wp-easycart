@@ -54,16 +54,17 @@
 .ec_account_orders_row {
 	width: 100%;
 	text-align: left;
+	padding:5px 0;
 }
 .ec_account_orders_holder a {
 	font-size: 12px;
 	font-family: [content_font];
 	font-weight: bold;
-	color: [link_color];
+	color: [link_color] !important;
 	line-height:16px;
 }
 .ec_account_orders_holder a:hover {
 	text-decoration: none;
-	color: [link_hover_color];
+	color: [link_hover_color] !important;
 }
 /* END EC ACCOUNT ORDERS STYLE*/

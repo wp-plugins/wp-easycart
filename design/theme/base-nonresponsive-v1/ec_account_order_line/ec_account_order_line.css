@@ -84,9 +84,10 @@
 	font-weight:bold;
 	outline: 0;
 	width:80px;
-	background-color: [main_color];
+	background-color: [main_color] !important;
+	background: [main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -94,8 +95,8 @@
 }
 .ec_account_order_line_column5 a:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 .ec_account_order_line_column1 {
 	width: 75px;

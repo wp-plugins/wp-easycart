@@ -176,7 +176,7 @@ function resize_product_layout( ){
 	var product_width = jQuery( "#ec_product_item1" ).width( );
 	var num_products_per_row = Math.floor( content_width / product_width );
 	var remaining_space = content_width - ( num_products_per_row * product_width );
-	var margin_between_product = remaining_space / ( ( ( num_products_per_row - 2 ) * 2 ) + 2 );
+	var margin_between_product = remaining_space / ( ( ( num_products_per_row - 1 ) * 2 ) );
 	
 	
 	var i = 0;

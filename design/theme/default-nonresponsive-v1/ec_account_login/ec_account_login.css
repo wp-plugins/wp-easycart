@@ -98,35 +98,36 @@
 }
 .ec_account_login_row_input a{
 	font-family:[content_font];
-	color:[link_color];	
+	color:[link_color] !important;	
 }
 .ec_account_login_row_input a:hover{
-	color:[link_hover_color];	
+	color:[link_hover_color] !important;	
 }
 .ec_account_login_row_input input[type="text"] {
 	width: 225px;
 	padding: 2px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_account_login_row_input input[type="email"] {
 	width: 225px;
 	padding: 1px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_account_login_row_input input[type="password"] {
 	width: 225px;
 	padding: 1px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_account_login_button {
 	-webkit-appearance:none;
 	margin-top: 4px;
 	min-width: 100px;
-	background-color: [third_color];
-	color: [text_color];
+	background-color: [third_color] !important;
+	background: [third_color] !important;
+	color: [text_color] !important;
 	padding: 6px 12px;
 	text-indent: 0;
 	text-decoration: none!important;
@@ -138,13 +139,15 @@
 	font: bold 12px/1.2 [content_font]!important;
 	text-transform: uppercase;
 	outline: 0;
-	border: 1px solid #CCC;
+	border: 1px solid #CCC !important;
 	background-image:none;
 	box-shadow:none;
+	height:28px;
+	padding:0 !important;
 }
 .ec_account_login_button:hover {
 	cursor: pointer;
-	color: [link_hover_color];
+	color: [link_hover_color] !important;
 }
 /* LOGIN COMPLETE STYLES*/
 .ec_account_login_complete {
@@ -188,8 +191,9 @@
 .ec_account_login_create_account_button {
 	margin-top: 10px;
 	min-width: 100px;
-	background-color: [third_color];
-	color: [text_color];
+	background-color: [third_color] !important;
+	background: [third_color] !important;
+	color: [text_color] !important;
 	padding: 6px 12px;
 	text-indent: 0;
 	text-decoration: none!important;
@@ -201,13 +205,13 @@
 	font: bold 12px/1.2 [content_font]!important;
 	text-transform: uppercase;
 	outline: 0;
-	border: 1px solid #CCC;
+	border: 1px solid #CCC !important;
 	background-image:none;
 	box-shadow:none;
 }
 .ec_account_login_create_account_button:hover {
 	cursor: pointer;
-	color: [link_color];
+	color: [link_color] !important;
 }
 .ec_account_login_row_error {
 	width: 100%;
