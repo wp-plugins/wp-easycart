@@ -1,0 +1,120 @@
+@charset "utf-8";
+/* Base Theme - EC Cart Address Review CSS Document */
+.ec_cart_address_review_holder {
+	width: 100%;
+	float: left;
+	margin-top: 30px;
+}
+.ec_cart_address_review_title {
+	width: 100%;
+	float: left;
+	color: [title_color];
+	font-size: 28px;
+	text-align: left;
+	margin-bottom: 7px;
+	font-family:[title_font];
+}
+.ec_cart_address_review_left {
+	height: 175px;
+	float: left;
+	background-color: [third_color];
+	text-align: left;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-top: 2px solid [main_color];
+	border-bottom: 2px solid [main_color];
+}
+.ec_cart_address_review_middle {
+	height: 175px;
+	float: left;
+	background-color: [third_color];
+	text-align: left;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-top: 2px solid [main_color];
+	border-bottom: 2px solid [main_color];
+}
+.ec_cart_address_review_right {
+	height: 175px;
+	float: left;
+	background-color: [third_color];
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-top: 2px solid [main_color];
+	border-bottom: 2px solid [main_color];
+	display: table-cell;
+	vertical-align: center;
+}
+@media only screen and ( min-width: [size_level3_low]px ) {
+.ec_cart_address_review_left {
+	width: 30%;
+}
+.ec_cart_address_review_middle {
+	width: 30%;
+}
+.ec_cart_address_review_right {
+	width: 40%;
+}
+}
+ @media only screen and ( min-width: [size_level2_low]px ) and ( max-width: [size_level2_high]px ) {
+.ec_cart_address_review_left {
+	width: 340px;
+}
+.ec_cart_address_review_middle {
+	width: 340px;
+}
+.ec_cart_address_review_right {
+	width: 340px;
+}
+}
+ @media only screen and ( max-width: [size_level1_high]px ) { 
+.ec_cart_address_review_left {
+	width: 220px;
+}
+.ec_cart_address_review_middle {
+	width: 220px;
+}
+.ec_cart_address_review_right {
+	width: 220px;
+}
+}
+.ec_cart_address_review_row_title {
+	width: 100%;
+	float: left;
+	text-align: left;
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 4px;
+	margin-left: 20px;
+	font-family: [title_font];
+	color:[title_color];
+}
+.ec_cart_address_review_row {
+	width: 100%;
+	float: left;
+	margin-left: 20px;
+	font-family: [content_font];
+	font-size: 14px;
+	padding: 2px;
+	color: [text_color];
+}
+.ec_cart_address_review_right_row {
+	width: 100%;
+	float: left;
+	margin-top: 23px;
+	color:[text_color];
+	font-family:[content_font];
+}
+.ec_cart_address_review_right_row a {
+	font-size: 16px;
+	font-family: [content_font];
+	color: [link_color] !important;
+	margin-top: 15px;
+}
+.ec_cart_address_review_right_row a:hover {
+	color: [link_hover_color] !important;
+	text-decoration: none;
+}
+
+/* END EC CART ADDRESS REVIEW STYLE*/
