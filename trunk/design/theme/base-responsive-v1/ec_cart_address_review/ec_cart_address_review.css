@@ -17,7 +17,7 @@
 	margin-bottom: 7px;
 }
 .ec_cart_address_review_left {
-	height: 100px;
+	height: 175px;
 	float: left;
 	background-color: #f7f7f7;
 	text-align: left;
@@ -27,7 +27,7 @@
 	border-bottom: 2px solid #eeeeee;
 }
 .ec_cart_address_review_middle {
-	height: 100px;
+	height: 175px;
 	float: left;
 	background-color: #f7f7f7;
 	text-align: left;
@@ -37,7 +37,7 @@
 	border-bottom: 2px solid #eeeeee;
 }
 .ec_cart_address_review_right {
-	height: 100px;
+	height: 175px;
 	float: left;
 	background-color: #f7f7f7;
 	text-align: left;
@@ -77,7 +77,7 @@
 }
 .ec_cart_address_review_right_row a {
 	text-indent: 0;
-	text-decoration: none!important;
+	text-decoration: none !important;
 	text-transform: uppercase;
 	white-space: nowrap;
 	text-align: center;
@@ -85,16 +85,17 @@
 	-webkit-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-	font-family: [content_font]!important;
+	font-family: [content_font] !important;
 	font-size:11px;
 	font-weight:bold;
 	outline: 0;
 	width:230px;
 	height:28px;
 	line-height:28px;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -102,8 +103,8 @@
 	padding:8px 14px;
 }
 .ec_cart_address_review_right_row a:hover {
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 	text-decoration: none;
 }
 @media only screen and ( min-width: [size_level4_low]px ) {
@@ -139,7 +140,7 @@
 		width: 100%;
 	}
 	.ec_cart_address_review_right {
-		height:60px;
+		height:130px;
 		float: left;
 		background-color: #ffffff;
 		text-align: left;
@@ -162,7 +163,7 @@
 		width: 260px;
 	}
 	.ec_cart_address_review_right {
-		height:60px;
+		height:130px;
 		float: left;
 		background-color: #ffffff;
 		text-align: left;

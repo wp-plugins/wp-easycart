@@ -13,7 +13,8 @@
 	margin-left: 10px;
 }
 .ec_cart_item_column1 img{
-	max-width:100px !important;
+	max-width:95% !important;
+	margin-bottom:5px;
 }
 .ec_cart_item_column2 {
 	width: 27%;
@@ -65,10 +66,10 @@
 	margin-bottom: 5px;
 }
 .ec_cart_item_title a {
-	color: #444;
+	color: #444 !important;
 }
 .ec_cart_item_title a:hover {
-	color: #222;
+	color: #222 !important;
 	text-decoration: none;
 }
 .ec_cart_item_option {
@@ -105,9 +106,10 @@
 	margin-right: 10px;
 	display: block;
 	float: right;
-	background-color: [third_color];
-	border: 1px solid #CCC;
-	color: [link_color];
+	background-color: [third_color] !important;
+	background: [third_color] !important;
+	border: 1px solid #CCC !important;
+	color: [link_color] !important;
 	padding: 6px 0;
 	width: 80px;
 	text-indent: 0;
@@ -121,16 +123,19 @@
 }
 .ec_cart_item_update_button input[type="submit"]:hover {
 	cursor: pointer;
-	color: [link_hover_color];
+	color: [link_hover_color] !important;
+}
+.ec_cart_item_update_button input[type="submit"]:active{
+	padding:6px 14px;
 }
 .ec_cart_item_delete_button input[type="submit"] {
 	-webkit-appearance:none;
 	margin-right: 10px;
 	display: block;
 	float: right;
-	background-color: [third_color];
-	border: 1px solid #CCC;
-	color: [link_color];
+	background-color: [third_color] !important;
+	border: 1px solid #CCC !important;
+	color: [link_color] !important;
 	padding: 6px 0;
 	width: 80px;
 	text-indent: 0;
@@ -144,7 +149,10 @@
 }
 .ec_cart_item_delete_button input[type="submit"]:hover {
 	cursor: pointer;
-	color: [link_hover_color];
+	color: [link_hover_color] !important;
+}
+.ec_cart_item_delete_button input[type="submit"]:active{
+	padding:6px 14px;
 }
 .ec_cart_item_loader {
 	display: none;

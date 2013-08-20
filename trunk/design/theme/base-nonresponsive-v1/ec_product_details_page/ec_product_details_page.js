@@ -26,7 +26,7 @@ jQuery(document).ready(
 						var hasTouch = ("ontouchstart" in window);
 						if( !hasTouch ){
 							jQuery('#ec_product_details_mag_viewer').fadeIn(100); 
-							jQuery("#ec_product_details_mag_viewer").html('<img src="' + this.src + '" class="ec_product_details_mag_viewer_image" width="800" height="800">');
+							jQuery("#ec_product_details_mag_viewer").html('<img src="' + this.src + '" class="ec_product_details_mag_viewer_image" style="width:800px; height:800px;" width="800" height="800">');
 						}
 					}
 				}, 

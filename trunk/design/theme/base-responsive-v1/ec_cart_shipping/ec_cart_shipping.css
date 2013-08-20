@@ -20,28 +20,27 @@
 	margin-top: 5px;
 }
 .ec_cart_shipping_row .ec_cart_shipping_label {
-	width: 100px;
+	width: 120px;
+	line-height:28px;
 	float: left;
 	text-align: left;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: [content_font];
-	margin-top: 12px;
 	color: #333;
 }
 .ec_cart_shipping_row .ec_cart_shipping_input {
 	float: left;
 	text-align: left;
 }
-
 .ec_cart_shipping_row .ec_cart_shipping_input {
+}
+.ec_cart_shipping_row .ec_cart_shipping_input_text {
 	width: 220px;
 }
-
-.ec_cart_shipping_row .ec_cart_shipping_input_text {
-	width: 200px;
+.ec_cart_shipping_row .ec_cart_shipping_input select{
+	width:225px;	
 }
-
 .ec_cart_shipping_row_error {
 	width: 100%;
 	float: left;

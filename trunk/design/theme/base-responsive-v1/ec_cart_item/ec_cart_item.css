@@ -13,10 +13,10 @@
 	margin-bottom: 5px;
 }
 .ec_cart_item_title a {
-	color: [link_color];
+	color: [link_color] !important;
 }
 .ec_cart_item_title a:hover {
-	color: [link_hover_color];
+	color: [link_hover_color] !important;
 	text-decoration: none;
 }
 .ec_cart_item_option {
@@ -66,9 +66,10 @@
 	font-size:11px;
 	font-weight:bold;
 	outline: 0;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -79,8 +80,11 @@
 }
 .ec_cart_item_update_button input[type="submit"]:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
+}
+.ec_cart_item_update_button input[type="submit"]:active{
+	padding:6px 14px;
 }
 .ec_cart_item_delete_button input[type="submit"] {
 	-webkit-appearance:none;
@@ -100,9 +104,10 @@
 	font-size:11px;
 	font-weight:bold;
 	outline: 0;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -113,8 +118,11 @@
 }
 .ec_cart_item_delete_button input[type="submit"]:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
+}
+.ec_cart_item_delete_button input[type="submit"]:active{
+	padding:6px 14px;
 }
 .ec_cart_item_loader {
 	display: none;
@@ -125,7 +133,8 @@
 	color:[second_color];
 }
 .ec_cart_item_column1 img{
-	max-width:100px !important;
+	max-width:95% !important;
+	margin-bottom:5px;
 }
 @media only screen and ( min-width: [size_level5_low]px ) {
 	
@@ -330,7 +339,7 @@
 		margin-top: 5px;
 	}
 	.ec_cart_item_column6 {
-		width: 100%;
+		width: 70%;
 		float: right;
 		text-align: right;
 		margin-top: 5px;
@@ -350,6 +359,10 @@
 		float: left;
 		text-align: center;
 		margin-top: 5px;
+	}
+	.ec_cart_item_column1 img{
+		max-width:150px !important;
+		margin-bottom:5px;
 	}
 	.ec_cart_item_column2 {
 		width: 100%;

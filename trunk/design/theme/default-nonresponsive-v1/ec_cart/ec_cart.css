@@ -22,8 +22,8 @@
 .ec_cart_continue_shopping_button a {
 	margin-left: 5px;
 	display: block;
-	background-color: [third_color];
-	color: [link_color];
+	background-color: [third_color] !important;
+	color: [link_color] !important;
 	padding: 6px 12px;
 	text-indent: 0;
 	text-decoration: none!important;
@@ -42,7 +42,7 @@
 }
 
 .ec_cart_continue_shopping_button a:hover {
-	color: [link_hover_color];
+	color: [link_hover_color] !important;
 }
 .ec_cart_title_bar {
 	width: 100%;
@@ -225,7 +225,7 @@
 	font-family:[content_font];
 }
 .ec_cart_lower_right_row .left, .ec_cart_lower_right_row .right {
-	width: 138px;
+	width: 46%;
 	float: left;
 	border: 1px solid #CCC;
 	padding: 5px 5px;

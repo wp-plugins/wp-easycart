@@ -20,13 +20,13 @@
 	margin-top: 5px;
 }
 .ec_cart_billing_row .ec_cart_billing_label {
-	width: 100px;
+	width: 120px;
+	line-height:28px;
 	float: left;
 	text-align: left;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: [content_font];
-	margin-top: 12px;
 	color: [text_color];
 }
 .ec_cart_billing_row .ec_cart_billing_input {
@@ -35,12 +35,10 @@
 }
 
 .ec_cart_billing_row .ec_cart_billing_input {
-	width: 220px;
 }
 
-
 .ec_cart_billing_row .ec_cart_billing_input_text {
-	width: 200px;
+	width: 220px;
 }
 
 .ec_cart_shipping_selector_row {
@@ -49,6 +47,9 @@
 	text-align: left;
 	font-size: 12px;
 	font-family: [content_font];
+}
+.ec_cart_shipping_selector_row input[type="radio"]{
+	-webkit-appearance:radio !important;	
 }
 @media only screen and ( min-width: [size_level4_low]px ) {
 .ec_cart_shipping_selector_row {

@@ -82,11 +82,11 @@
 	font-size: 12px;
 	font-family: [content_font];
 	font-weight: bold;
-	color: [link_color];
+	color: [link_color] !important;
 }
 .ec_account_dashboard_holder a:hover {
 	text-decoration: none;
-	color: [link_hover_color];
+	color: [link_hover_color] !important;
 }
 .ec_account_dashboard_row {
 	width: 100%;
@@ -126,7 +126,7 @@
 .ec_account_dashboard_row_divider a {
 	margin-top: 4px;
 	min-width: 80px;
-	color: #FFF;
+	color: #FFF !important;
 	padding: 3px 6px;
 	text-indent: 0;
 	text-decoration: none!important;
@@ -140,7 +140,7 @@
 }
 .ec_account_dashboard_row_divider a:hover {
 	cursor: pointer;
-	color: #EEE;
+	color: #EEE !important;
 }
 .ec_account_order_line_header {
 	width: 100%;

@@ -74,27 +74,28 @@
 .ec_cart_login_input[type="text"] {
 	width: 225px;
 	padding: 2px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_cart_login_input[type="email"] {
 	width: 225px;
 	padding: 1px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_cart_login_input[type="password"] {
 	width: 225px;
 	padding: 1px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_cart_login_button {
 	-webkit-appearance:none;
 	margin-top: 4px;
 	min-width: 100px;
-	background-color: [third_color];
-	color: [main_color];
+	background-color: [third_color] !important;
+	background: [third_color] !important;
+	color: [main_color] !important;
 	padding: 6px 12px;
 	text-indent: 0;
 	text-decoration: none!important;
@@ -106,11 +107,11 @@
 	font: bold 12px/1.2 [content_font]!important;
 	text-transform: uppercase;
 	outline: 0;
-	border: 1px solid #CCC;
+	border: 1px solid #CCC !important;
 }
 .ec_cart_login_button:hover {
 	cursor: pointer;
-	color: #333;
+	color: #333 !important;
 }
 /* LOGIN COMPLETE STYLES*/
 .ec_cart_login_complete {
@@ -146,10 +147,10 @@
 .ec_cart_login_complete_logout_link {
 	font-size: 12px;
 	font-family: [content_font];
-	color: #999;
+	color: #999 !important;
 }
 .ec_cart_login_complete_logout_link:hover {
 	text-decoration: none;
-	color: #333;
+	color: #333 !important;
 }
 /* END EC CART LOGIN STYLE*/

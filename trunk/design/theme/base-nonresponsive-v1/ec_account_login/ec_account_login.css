@@ -91,27 +91,27 @@
 	text-align: left;
 }
 .ec_account_login_row_input a{
-	margin-top:10px; font-family:[content_font]; color:[link_color];
+	margin-top:10px; font-family:[content_font]; color:[link_color] !important;
 }
 .ec_account_login_row_input a:hover{
-	color:[link_hover_color]; text-decoration:none;
+	color:[link_hover_color] !important; text-decoration:none;
 }
 .ec_account_login_row_input input[type="text"] {
 	width: 250px;
 	padding: 2px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_account_login_row_input input[type="email"] {
 	width: 250px;
 	padding: 1px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_account_login_row_input input[type="password"] {
 	width: 250px;
 	padding: 1px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 
@@ -134,20 +134,23 @@
 	font-weight:bold;
 	outline: 0;
 	min-width:159px;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
 	padding:6px 18px;
 	background-image:none;
 	box-shadow:none;
+	height:28px;
+	padding:0 !important;
 }
 .ec_account_login_button:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 
 /* LOGIN COMPLETE STYLES*/
@@ -208,9 +211,10 @@
 	width:165px;
 	height:28px;
 	line-height:28px;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border: 1px solid #CCC !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -220,16 +224,18 @@
 }
 .ec_account_login_create_account_button:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 .ec_account_login_row_error {
 	width: 100%;
 	float: left;
-	height: 35px;
 }
 .ec_account_login_row_error .ec_account_login_label {
 	color: [error_text];
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
 }
 .ec_account_login_row_error .ec_account_login_input_field {
 	background-color: [error_color];
@@ -238,19 +244,19 @@
 .ec_account_login_row_error input[type="text"] {
 	width: 250px;
 	padding: 2px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_account_login_row_error input[type="email"] {
 	width: 250px;
 	padding: 2px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 .ec_account_login_row_error input[type="password"] {
 	width: 250px;
 	padding: 2px;
-	height: 21px;
+	height: 28px;
 	margin: 0;
 }
 /* END EC ACCOUNT LOGIN STYLE*/

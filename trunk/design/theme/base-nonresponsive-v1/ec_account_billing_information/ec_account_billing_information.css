@@ -39,12 +39,12 @@
 }
 .ec_account_billing_information_label {
 	width: 140px;
+	line-height:28px;
 	text-align: left;
 	float: left;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: [content_font];
-	margin-top: 7px;
 }
 .ec_account_billing_information_input {
 	width: 400px;
@@ -56,19 +56,19 @@
 .ec_account_billing_information_input input[type="text"] {
 	margin: 0;
 	width: 400px;
-	height: 20px;
+	height: 28px;
 	padding: 1px 6px;
 }
 .ec_account_billing_information_input input[type="email"] {
 	margin: 0;
 	width: 400px;
-	height: 20px;
+	height: 28px;
 	padding: 1px 6px;
 }
 .ec_account_billing_information_input input[type="password"] {
 	margin: 0;
 	width: 400px;
-	height: 20px;
+	height: 28px;
 	padding: 1px 6px;
 }
 .ec_account_billing_information_input select {
@@ -96,10 +96,10 @@
 	outline: 0;
 	width:159px;
 	height:28px;
-	line-height:28px;
-	background-color:[main_color];
+	background-color:[main_color] !important;
+	background:[main_color] !important;
 	border:solid 1px #cccccc !important;
-	color:#ffffff;
+	color:#ffffff !important;
 	font-weight:bold;
 	text-align:center;
 	border:none;
@@ -107,11 +107,12 @@
 	margin-left:0px;
 	background-image:none;
 	box-shadow:none;
+	padding:0 !important;
 }
 .ec_account_billing_information_button:hover {
 	cursor: pointer;
-	color:[main_color];
-	background-color: #f7f7f7;
+	color:[main_color] !important;
+	background-color: #f7f7f7 !important;
 }
 .ec_account_billing_information_row_error {
 	width: 100%;

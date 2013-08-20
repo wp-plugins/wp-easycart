@@ -309,7 +309,7 @@ class ec_accountpage{
 		echo "<input type=\"submit\" name=\"ec_account_personal_information_button\" id=\"ec_account_personal_information_button\" class=\"ec_account_personal_information_button\" value=\"" . $button_text . "\" onclick=\"return ec_account_personal_information_update_click();\" />";
 	}
 	public function display_account_personal_information_cancel_link( $button_text ){
-		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=dashboard\" class=\"ec_account_personal_information_link\"><input type=\"button\" name=\"ec_account_personal_information_button\" id=\"ec_account_personal_information_button\" class=\"ec_account_personal_information_button\" value=\"" . $button_text . "\"  /></a>";
+		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=dashboard\" class=\"ec_account_personal_information_link\"><input type=\"button\" name=\"ec_account_personal_information_button\" id=\"ec_account_personal_information_button\" class=\"ec_account_personal_information_button\" value=\"" . $button_text . "\" onclick=\"window.location='" . $this->account_page . $this->permalink_divider . "ec_page=dashboard'\" /></a>";
 	}
 	
 
@@ -346,7 +346,7 @@ class ec_accountpage{
 		echo "<input type=\"submit\" name=\"ec_account_password_button\" id=\"ec_account_password_button\" class=\"ec_account_password_button\" value=\"" . $button_text . "\" onclick=\"return ec_account_password_button_click();\" />";
 	}
 	public function display_account_password_cancel_link( $button_text ){
-		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=dashboard\" class=\"ec_account_password_link\"><input type=\"button\" name=\"ec_account_password_button\" id=\"ec_account_password_button\" class=\"ec_account_password_button\" value=\"" . $button_text . "\" /></a>";
+		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=dashboard\" class=\"ec_account_password_link\"><input type=\"button\" name=\"ec_account_password_button\" id=\"ec_account_password_button\" class=\"ec_account_password_button\" value=\"" . $button_text . "\" onclick=\"window.location='" . $this->account_page . $this->permalink_divider . "ec_page=dashboard'\" /></a>";
 	}
 
 	/* END PASSWORD FUNCTIONS */
@@ -432,7 +432,7 @@ class ec_accountpage{
 		echo "<input type=\"submit\" name=\"ec_account_billing_information_button\" id=\"ec_account_billing_information_button\" class=\"ec_account_billing_information_button\" value=\"" . $button_text . "\" onclick=\"return ec_account_billing_information_update_click();\" />";
 	}
 	public function display_account_billing_information_cancel_link( $button_text ){
-		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=dashboard\" class=\"ec_account_billing_information_link\">" . "<input type=\"button\" name=\"ec_account_billing_information_button\" id=\"ec_account_billing_information_button\" class=\"ec_account_billing_information_button\" value=\"" . $button_text . "\" /></a>";
+		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=dashboard\" class=\"ec_account_billing_information_link\">" . "<input type=\"button\" name=\"ec_account_billing_information_button\" id=\"ec_account_billing_information_button\" class=\"ec_account_billing_information_button\" value=\"" . $button_text . "\" onclick=\"window.location='" . $this->account_page . $this->permalink_divider . "ec_page=dashboard'\" /></a>";
 	}
 	
 
@@ -520,7 +520,7 @@ class ec_accountpage{
 	}
 	
 	public function display_account_shipping_information_cancel_link( $button_text ){
-		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=dashboard\" class=\"ec_account_shipping_information_link\">" ."<input type=\"button\" name=\"ec_account_shipping_information_button\" id=\"ec_account_shipping_information_button\" class=\"ec_account_shipping_information_button\" value=\"" . $button_text . "\" /></a>";
+		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=dashboard\" class=\"ec_account_shipping_information_link\">" ."<input type=\"button\" name=\"ec_account_shipping_information_button\" id=\"ec_account_shipping_information_button\" class=\"ec_account_shipping_information_button\" value=\"" . $button_text . "\" onclick=\"window.location='" . $this->account_page . $this->permalink_divider . "ec_page=dashboard'\" /></a>";
 	}
 	
 

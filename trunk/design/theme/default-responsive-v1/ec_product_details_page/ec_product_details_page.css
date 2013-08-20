@@ -774,7 +774,8 @@
 	-webkit-appearance: none;
 	margin-top: 4px;
 	min-width: 100px;
-	background-color: [third_color];
+	background-color: [third_color] !important;
+	background: [third_color] !important;
 	color: [link_color];
 	padding: 6px 12px;
 	text-indent: 0;
@@ -784,11 +785,12 @@
 	font: bold 12px/1.2 [content_font]!important;
 	text-transform: uppercase;
 	outline: 0;
-	border: 1px solid [main_color];
+	border: 1px solid [main_color] !important;
 }
 .ec_product_details_add_to_cart_button:hover {
 	cursor: pointer;
 	color: [link_hover_color];
+	background-color:[third_color] !important;
 }
 .ec_product_details_social_media_icons {
 	float: left;
@@ -846,16 +848,16 @@
 	font-weight: bold;
 	font-family:[content_font];
 	font-size:13px;
-	color: white;
+	color: white !important;
 	margin-right:2px;
 }
 
 .ec_product_details_tab_selected a{
-	color:#FFF;	
+	color:#FFF !important;
 }
 
 .ec_product_details_tab_selected a:hover{
-	color:#FFF;	
+	color:#FFF !important;
 	text-decoration:none;
 }
 
@@ -930,7 +932,7 @@
 	display: block;
 	width: 100px;
 	background-color: [third_color];
-	color: [link_color];
+	color: [link_color] !important;
 	padding: 6px 12px;
 	text-indent: 0;
 	text-decoration: none!important;
@@ -946,7 +948,7 @@
 	outline: 0;
 }
 .ec_product_details_customer_reviews_button a:hover {
-	color: [link_hover_color];
+	color: [link_hover_color] !important;
 }
 
  @media only screen and ( min-width: [size_level3_low]px ) {
@@ -979,7 +981,7 @@
 
 .ec_product_details_customer_reviews_button div{
 	display: none;
-	width: 100px;
+	min-width: 140px;
 	background-color: #e9ffde;
 	color: #686868;
 	padding: 6px 12px;
@@ -1111,12 +1113,13 @@
 	width: 100%;
 }
 .ec_product_details_customer_reviews_popup_close_button a {
-	color: #DDD;
+	color: #DDD !important;
 	font-size: 11px;
 	text-transform: uppercase;
 }
 .ec_product_details_customer_reviews_popup_close_button a:hover {
-	color: #FFF;
+	color: #FFF !important;
+	text-decoration:none;
 }
 .ec_product_details_customer_reviews_popup_content {
 	float: left;
@@ -1142,6 +1145,8 @@
 	float: left;
 	padding-left: 10px;
 	font-size: 16px;
+	margin-left:5px;
+	margin-top: -3px;
 }
 .ec_product_details_customer_reviews_popup_rating_stars {
 	float: left;
@@ -1151,11 +1156,19 @@
 	float: left;
 	width: 100%;
 	padding-top: 10px;
+	font-family:[content_font];
+	font-size: 13px;
+	margin-left:5px;
+	margin-bottom:5px;
 }
 .ec_product_details_customer_reviews_popup_label_row_error {
 	float: left;
 	width: 100%;
 	padding-top: 10px;
+	font-family:[content_font];
+	font-size: 13px;
+	margin-left:5px;
+	margin-bottom:5px;
 }
 .ec_product_details_customer_reviews_popup_label_row span {
 	float: left;

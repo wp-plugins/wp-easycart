@@ -28,6 +28,9 @@
 	text-align: left;
 	width: 15%;
 }
+.ec_account_order_details_item_display_column1 img{
+	max-width:100%;
+}
 .ec_account_order_details_item_display_column2 {
 	float: left;
 	text-align: left;

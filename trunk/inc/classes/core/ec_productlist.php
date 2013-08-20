@@ -4,16 +4,18 @@ class ec_productlist{
 	private $mysqli;								// ec_db structure
 
 	public $products = array();						// array of ec_product structures
+	public $is_product_details;						// BOOL
 	public $filter;									// ec_filter structure
 	public $paging;									// ec_paging structure
 	public $num_products;							// INT
 	
-	function __construct( $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP" ){
+	function __construct( $is_product_details = false, $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP" ){
 		$this->mysqli = new ec_db();
 		
 		$this->filter = new ec_filter( );
 		$this->set_shortcode_vals( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
 		$this->paging = new ec_paging( $this->filter->perpage->selected );
+		$this->is_product_details = $is_product_details;
 		$this->get_products( );	
 		if( count( $this->products ) > 0 )
 			$this->paging->update_product_count( $this->products[0]->total_products );
@@ -29,7 +31,11 @@ class ec_productlist{
 	
 	private function get_products( ){
 		//First get number of products without the limit query
-		$result = $this->mysqli->get_product_list( $this->filter->get_where_query(), $this->filter->get_order_by_query(), $this->paging->get_limit_query(), session_id() );
+		if( !$this->is_product_details )
+			$result = $this->mysqli->get_product_list( $this->filter->get_where_query(), $this->filter->get_order_by_query(), $this->paging->get_limit_query(), session_id() );
+		else
+			$result = $this->mysqli->get_product_list( $this->filter->get_where_query(), $this->filter->get_order_by_query(), "", session_id() );
+			
 		if( count( $result ) > 0 )
 			$this->num_products = $result[0]["product_count"];
 		else
