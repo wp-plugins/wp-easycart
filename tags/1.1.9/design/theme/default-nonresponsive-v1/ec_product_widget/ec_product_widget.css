@@ -1,0 +1,213 @@
+@charset "utf-8";
+/* Base Theme - Product CSS Document */
+.widget.ec_productwidget h4.widgettitle, .widget.ec_productwidget widgettitle{
+	color: [title_color] !important;
+	font-weight: bold !important;
+	font-size: 14px !important;
+	border-bottom: 5px solid [main_color];
+	padding: 15px 20px;
+	font-family:[title_font];
+}
+
+.ec_product_widget {
+	font-size: 12px;
+	margin-top: 10px;
+	float:left;
+	max-width:175px;
+	color:[text_color];
+	font-family:[content_font];
+}
+
+.ec_product_widget_left{
+	float:left; width:65%;	
+}
+
+/* Start Product Image Styles */
+.ec_product_widget_images {
+	width: 100%;
+	float: left;
+	position: relative;
+}
+
+.ec_product_widget_images .ec_product_image img{
+	max-width:175px;	
+	max-height:175px;
+	width:175px;
+	height:175px;
+}
+
+.ec_product_widget_image {
+	float: left;
+	padding: 2px;
+	display: block;
+	border: 1px #eeeeee solid;
+	z-index: 4;
+	max-width:175px;
+}
+
+.ec_product_widget_image:hover {
+	border: 1px #cccccc solid;
+}
+
+.ec_product_widget_image_inactive {
+	float: left;
+	padding: 2px;
+	display: none;
+	border: 1px #eeeeee solid;
+	z-index: 4;
+	
+}
+.ec_product_widget_image_inactive:hover {
+	border: 1px #cccccc solid;
+}
+.ec_product_widget_images .ec_product_widget_image_inactive img {
+	max-width: 175px;
+	max-height: 175px;
+	outline:none !important;
+}
+/* END PRODUCT IMAGE STYLES */
+
+/* Start Product Rating Styles */
+.ec_product_widget_rating {
+	width: 100%;
+	float: left;
+	margin-top: 12px;
+	margin-left: 3px;
+}
+.ec_product_widget_stars {
+	float: left;
+}
+.ec_product_widget_num_reviews {
+	float: left;
+	margin-left: 5px;
+	margin-top: 2px;
+	font-weight: bold;
+	font-size: 11px;
+	letter-spacing: 1px;
+	color: [text_color];
+}
+.ec_product_widget_star_on {
+	float: left;
+}
+.ec_product_widget_star_off {
+	float: left;
+}
+/* END PRODUCT RATING STYLES */
+
+/* Start Product Title Styles */
+.ec_product_widget_title {
+	width: 100%;
+	float: left;
+	font-family: [title_font];
+	margin-top: 8px;
+	margin-left: 3px;
+}
+.ec_product_widget_title a {
+	font-weight: bold;
+	color: [link_color];
+	text-decoration: none;
+font-family:
+}
+.ec_product_widget_title a:hover {
+	font-weight: bold;
+	color: [link_hover_color];
+	text-decoration: none;
+}
+/* END PRODUCT TITLE STYLES */
+
+/* Start Product Pricing Styles */
+.ec_product_widget_pricing {
+	width: 100%;
+
+	float: right;
+	margin-top: 8px;
+	margin-right: 3px;
+}
+/* Start Price */
+.ec_product_widget_price {
+	font-size: 12px;
+	width: 100%;
+	float: right;
+	text-align: right;
+}
+/* Allow for detailed styling of price */
+.ec_product_widget_price .currency {
+	font-size: 12px;
+	vertical-align: super;
+}
+.ec_product_widget_price .dollar {
+	font-size: 16px;
+	font-weight: bold;
+}
+.ec_product_widget_price .cent {
+	font-size: 12px;
+	vertical-align: super;
+}
+/* end, end */
+
+/* Start Old Price */
+.ec_product_widget_old_price {
+	font-size: 10px;
+	color: #c2e2b2;
+	width: 100%;
+	float: right;
+	text-align: right;
+	text-decoration: line-through;
+}
+/* Start Sale Price */
+.ec_product_widget_sale_price {
+	font-size: 16px;
+	width: 100%;
+	float: right;
+	text-align: right;
+	color: #669c4b;
+	margin-top: 2px;
+}
+/* Allow for detailed styling of sale price */
+.ec_product_widget_sale_price .currency {
+	font-size: 16px;
+	
+}
+.ec_product_widget_sale_price .dollar {
+	font-size: 16px;
+	font-weight: bold;
+}
+.ec_product_widget_sale_price .cent {
+	font-size: 16px;
+	
+}
+/* end, end */
+/* END PRODUCT PRICING STYLES */
+
+/* Start Product Swatches Styles */
+.ec_product_widget_swatches {
+	width: 100%;
+	float: left;
+	margin-top: 16px;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+.ec_product_widget_swatch_out_of_stock {
+	float: left;
+	margin: 1px;
+	opacity: 0.4;
+	filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+.ec_product_widget_swatch_selected {
+	float: left;
+	margin: 1px;
+	-moz-box-shadow: 0 0 5px #555;
+	-webkit-box-shadow: 0 0 5px #555;
+	box-shadow: 0 0 5px #555;
+}
+.ec_product_widget_swatch {
+	float: left;
+	margin: 1px;
+}
+.ec_product_widget_swatch:hover {
+	cursor: pointer;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px #888;
+	box-shadow: 0 0 5px #888;
+}
+/* END PRODUCT SWATCHES STYLES */
