@@ -187,3 +187,7 @@
     <?php }?>
   	<div class="ec_product_details_clear"></div>
 </div>
+<script>
+jQuery("#customer_review_popup_background").appendTo("#top");
+jQuery("#customer_review_popup_box").appendTo("#top");
+</script>
