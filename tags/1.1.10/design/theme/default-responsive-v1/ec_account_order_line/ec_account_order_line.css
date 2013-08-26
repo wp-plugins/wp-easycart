@@ -1,0 +1,191 @@
+@charset "utf-8";
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//All Code and Design is copyrighted by Level Four Development, llc
+//
+//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
+//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
+//
+//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
+//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
+//contact Level Four Development, llc and EasyCart prior to use.
+//
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+/* Base Theme - EC Account Order Line CSS Document */
+
+.ec_account_order_line_0 {
+	width: 100%;
+	float: left;
+	background-color: #CCC;
+	padding: 8px 0px;
+	margin: 0 0 4px 0;
+	font-family:[content_font];
+	color:[text_color];
+}
+.ec_account_order_line_1 {
+	width: 100%;
+	float: left;
+	background-color: #FFF;
+	padding: 4px 0px;
+	margin: 0 0 4px 0;
+	font-family:[content_font];
+	color:[text_color];
+}
+.ec_account_order_line_column1 {
+	float: left;
+	padding-left: 20px;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: normal;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.ec_account_order_line_column2 {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.ec_account_order_line_column3 {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: normal;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.ec_account_order_line_column4 {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: normal;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.ec_account_order_line_column5 {
+	float: right;
+	text-align: right;
+}
+ @media only screen and ( min-width: [size_level5_low]px ) {
+.ec_account_order_line_column1 {
+	width: 75px;
+}
+.ec_account_order_line_column2 {
+	width: 210px;
+}
+.ec_account_order_line_column3 {
+	width: 125px;
+}
+.ec_account_order_line_column4 {
+	width: 135px;
+}
+.ec_account_order_line_column5 {
+	width: 125px;
+}
+}
+ @media only screen and ( min-width: [size_level4_low]px ) and ( max-width: [size_level4_high]px ) {
+.ec_account_order_line_column1 {
+	width: 63px;
+}
+.ec_account_order_line_column2 {
+	width: 173px;
+}
+.ec_account_order_line_column3 {
+	width: 90px;
+}
+.ec_account_order_line_column4 {
+	width: 135px;
+}
+.ec_account_order_line_column5 {
+	width: 100px;
+}
+}
+ @media only screen and ( min-width: [size_level3_low]px ) and ( max-width: [size_level3_high]px ) {
+.ec_account_order_line_column1 {
+	width: 73px;
+}
+.ec_account_order_line_column2 {
+	width: 177px;
+}
+.ec_account_order_line_column3 {
+	width: 81px;
+}
+.ec_account_order_line_column4 {
+	width: 135px;
+}
+.ec_account_order_line_column5 {
+	width: 95px;
+}
+}
+ @media only screen and ( max-width: [size_level2_high]px ) {
+.ec_account_order_line_column1 {
+	padding-left: 20px;
+	width: 81px;
+}
+.ec_account_order_line_column2 {
+	width: 135px;
+	margin-right: 20px;
+	font-size: 11px;
+}
+.ec_account_order_line_column3 {
+}
+.ec_account_order_line_column4 {
+	display: none;
+}
+.ec_account_order_line_column5 {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+}
+}
+ @media only screen and ( max-width: [size_level1_high]px ) {
+.ec_account_order_line_column1 {
+	padding-left: 10px;
+	width: 53px;
+}
+.ec_account_order_line_column2 {
+	width: 120px;
+	margin-right: 10px;
+	font-size: 11px;
+}
+.ec_account_order_line_column3 {
+	display: none;
+}
+.ec_account_order_line_column4 {
+	display: none;
+}
+.ec_account_order_line_column5 {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+}
+}
+.ec_account_order_line_column5 a {
+	margin-top: 4px;
+	min-width: 80px;
+	background-color: [third_color] !important;
+	background: [third_color] !important;
+	color: [link_color] !important;
+	padding: 3px 6px;
+	text-indent: 0;
+	text-decoration: none!important;
+	white-space: nowrap;
+	text-align: center;
+	font: bold 12px/1.2 [content_font]!important;
+	text-transform: uppercase;
+	outline: 0;
+	border: 1px solid [main_color] !important;
+}
+.ec_account_order_line_column5 a:hover {
+	cursor: pointer;
+	color: [link_hover_color] !important;
+}
+
+/* END ACCOUNT ORDER LINE STYLES */
