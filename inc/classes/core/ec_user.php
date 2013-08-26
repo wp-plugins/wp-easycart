@@ -82,10 +82,12 @@ class ec_user{
 			$this->shipping = new ec_address( "", "", "", "", "", "", "", "", "" );
 		}
 		
-		$customfield_data_array = explode( "---", $user->customfield_data );
-		for( $i=0; $i<count( $customfield_data_array ); $i++ ){
-			$temp_arr = explode("***", $customfield_data_array[$i]);
-			array_push($this->customfields, $temp_arr);
+		if( $user && $user->customfield_data ){
+			$customfield_data_array = explode( "---", $user->customfield_data );
+			for( $i=0; $i<count( $customfield_data_array ); $i++ ){
+				$temp_arr = explode("***", $customfield_data_array[$i]);
+				array_push($this->customfields, $temp_arr);
+			}
 		}
 		
 	}

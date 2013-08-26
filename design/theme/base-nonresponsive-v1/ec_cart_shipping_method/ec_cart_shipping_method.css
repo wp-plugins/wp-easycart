@@ -5,7 +5,7 @@
 }
 
 .ec_cart_shipping_method_title{
-	width:100%; float:left; color:[title_color]; font-size:20px; font-family:[font_title]; text-align:left; margin-bottom:7px; font-family:[title_font];
+	width:100%; float:left; color:[title_color]; font-size:20px; text-align:left; margin-bottom:7px; font-family:[title_font];
 }
 
 .ec_cart_shipping_method_row{

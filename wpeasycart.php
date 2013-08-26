@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.1.9
+ * Version: 1.1.10
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.1.9
+ * @version 1.1.10
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_1_9' );
+define( 'EC_CURRENT_VERSION', '1_1_10' );
 define( 'EC_CURRENT_DB', '1_2' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -138,17 +138,18 @@ function load_ec_pre(){
 	if( isset( $_POST['ec_cart_form_action'] ) ){
 		$ec_cartpage = new ec_cartpage();
 		$ec_cartpage->process_form_action( $_POST['ec_cart_form_action'] );
-	
 	}else if( isset( $_GET['ec_cart_action'] ) ){
 		$ec_cartpage = new ec_cartpage();
 		$ec_cartpage->process_form_action( $_GET['ec_cart_action'] );	
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "3dsecure" ){
+		$ec_cartpage = new ec_cartpage();
+		$ec_cartpage->process_form_action( "3dsecure" );
 	}
 	
 	/* Account Form Actions, Process Prior to WP Loading */
 	if( isset( $_POST['ec_account_form_action'] ) ){
 		$ec_accountpage = new ec_accountpage();
 		$ec_accountpage->process_form_action( $_POST['ec_account_form_action'] );
-	
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "logout" ){
 		$ec_accountpage = new ec_accountpage();
 		$ec_accountpage->process_form_action( "logout" );
@@ -224,7 +225,19 @@ function ec_load_css( ){
 function ec_load_js( ){
 	wp_register_script( 'wpeasycart_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_js_loader.php' ), array( 'jquery' ) );
 	wp_enqueue_script( 'wpeasycart_js' );
-	wp_localize_script( 'wpeasycart_js', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+	
+	$https_link = "";
+	if( class_exists( "WordPressHTTPS" ) ){
+		$https_class = new WordPressHTTPS( );
+		$https_link = $https_class->getHttpsUrl() . '/wp-admin/admin-ajax.php';
+	}else{
+		$https_link = str_replace( "http://", "https://", admin_url( 'admin-ajax.php' ) );
+	}
+	
+	if( isset( $_SERVER['HTTPS'] ) )
+		wp_localize_script( 'wpeasycart_js', 'ajax_object', array( 'ajax_url' => $https_link ) );
+	else
+		wp_localize_script( 'wpeasycart_js', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 }	
 	
 function ec_facebook_metadata() {
@@ -358,7 +371,7 @@ function wpeasycart_register_widgets( ) {
 	register_widget( 'ec_specialswidget' );
 }
 
-add_action( 'init', 'load_ec_pre' );
+add_action( 'wp', 'load_ec_pre' );
 add_action( 'wp_enqueue_scripts', 'ec_load_css' );
 add_action( 'wp_enqueue_scripts', 'ec_load_js' );
 add_action( 'widgets_init', 'wpeasycart_register_widgets' );
@@ -429,7 +442,7 @@ function wpeasycart_copyr( $source, $dest ){
 
 function wpeasycart_backup( ){
 	
-	if( $_GET['action'] != "upload-theme" ){
+	if( $_GET['action'] == "install-plugin" && $_GET['plugin'] == "wp-easycart" ){
 	
 		if( !is_writable( WP_PLUGIN_DIR ) ){
 			
@@ -555,7 +568,7 @@ function recursive_remove_directory( $directory, $empty=FALSE ) {
 
 function wpeasycart_recover( ){
 	
-	if( $_GET['action'] != "upload-theme" ){
+	if( $_GET['action'] == "install-plugin" && $_GET['plugin'] == "wp-easycart" ){
 	
 		if( !is_writable( WP_PLUGIN_DIR ) ){
 			

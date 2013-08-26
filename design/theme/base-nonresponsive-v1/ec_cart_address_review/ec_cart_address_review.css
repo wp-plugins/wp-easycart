@@ -46,7 +46,6 @@
 	border-top: 2px solid #eeeeee;
 	border-bottom: 2px solid #eeeeee;
 	display: table-cell;
-	vertical-align: center;
 }
 .ec_cart_address_review_row_title {
 	width: 100%;
@@ -66,7 +65,7 @@
 	font-family: [content_font];
 	font-size: 14px;
 	padding: 0px;
-	color: [content_color];
+	color: [text_color];
 	line-height:18px;
 }
 .ec_cart_address_review_right_row {

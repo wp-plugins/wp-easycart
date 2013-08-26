@@ -988,7 +988,7 @@ class ec_db{
 		// IF    1. using option item quantity tracking
 		//       2. quantity + item in cart with same options quantity > amount available for this option
 		// THEN     use max for that option item set
-		if( $product->use_optionitem_quantity_tracking == 1 && $quantity + $tempcart_optionitem->quantity > $stock_quantity ){			
+		if( $product->use_optionitem_quantity_tracking == 1 && isset( $tempcart_optionitem ) && $quantity + $tempcart_optionitem->quantity > $stock_quantity ){			
 			$quantity = $stock_quantity;
 		
 		// OPTION ITEM QUANTITY TRACKING AND AMOUNT ENTERED IS TOO MUCH
@@ -1036,7 +1036,8 @@ class ec_db{
 		// NO QUANITTY TRACKING
 		// THEN     use the quantity entered + the quantity for this option item in cart
 		}else{																		
-			$quantity = $quantity + $tempcart_optionitem->quantity;
+			if( isset( $tempcart_optionitem ) )
+				$quantity = $quantity + $tempcart_optionitem->quantity;
 		}
 		
 		// First check for an item with the same option items IF NOT a gift card

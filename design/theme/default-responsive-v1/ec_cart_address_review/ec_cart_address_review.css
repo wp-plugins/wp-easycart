@@ -44,7 +44,6 @@
 	border-top: 2px solid [main_color];
 	border-bottom: 2px solid [main_color];
 	display: table-cell;
-	vertical-align: center;
 }
 @media only screen and ( min-width: [size_level3_low]px ) {
 .ec_cart_address_review_left {

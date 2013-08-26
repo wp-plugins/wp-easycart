@@ -18,6 +18,16 @@ class ec_gateway{
 	protected $error_message;											// TEXT
 	protected $is_success;												// BOOL
 	
+	public $is_3d_auth = false;											// If 3D Auth
+	
+	//3d auth values
+	public $post_url = "";												// Used for 3D Auth
+	public $post_id_input_name = "";									// Used for 3D Auth
+	public $post_id = "";												// Used for 3D Auth
+	public $post_message_input_name = "";								// Used for 3D Auth
+	public $post_message = "";											// Used for 3D Auth
+	public $post_return_url_input_name = "";							// Used for 3D Auth
+	
 	function __construct( ){ 
 		$this->mysqli = new ec_db( );
 	}

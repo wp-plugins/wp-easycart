@@ -85,7 +85,7 @@
     </div>
 </div>
 <script>
-jQuery("#ec_product_quick_view_box_<?php echo $product->model_number; ?>").appendTo("#top");
+jQuery("#ec_product_quick_view_box_<?php echo $product->model_number; ?>").appendTo("body");
 </script>
 <div id="ec_product_item<?php echo $i+1; ?>" class="ec_product">
     <div class="ec_product_quick_view_holder"><?php $product->display_product_quick_view( $GLOBALS['language']->get_text( 'product_page', 'product_quick_view' ) ); ?></div>

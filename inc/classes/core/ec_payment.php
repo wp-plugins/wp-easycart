@@ -13,6 +13,16 @@ class ec_payment{
 	
 	public $payment_type;
 	
+	public $is_3d_auth = false;											// If 3D Auth
+	
+	//3d auth values
+	public $post_url = "";												// Used for 3D Auth
+	public $post_id_input_name = "";									// Used for 3D Auth
+	public $post_id = "";												// Used for 3D Auth
+	public $post_message_input_name = "";								// Used for 3D Auth
+	public $post_message = "";											// Used for 3D Auth
+	public $post_return_url_input_name = "";								// Used for 3D Auth
+	
 	function __construct( $credit_card, $payment_type ){
 		$this->mysqli = new ec_db();
 		
@@ -57,6 +67,7 @@ class ec_payment{
 		else if($this->proccess_method == "firstdata"		)			$gateway = new ec_firstdata();
 		else if($this->proccess_method == "realex"			)			$gateway = new ec_realex();
 		else if($this->proccess_method == "sagepay"			)			$gateway = new ec_sagepay();
+		else if($this->proccess_method == "sagepay3d"		)			$gateway = new ec_sagepay3d();
 		else if($this->proccess_method == "psigate"			)			$gateway = new ec_psigate();
 		else if($this->proccess_method == "securepay"		)			$gateway = new ec_securepay();
 		else{
@@ -67,6 +78,15 @@ class ec_payment{
 		$gateway->initialize( $cart, $user, $shipping, $tax, $discount, $this->credit_card, $order_totals, $order_id );
 		
 		if( $gateway->process_credit_card( ) ){
+			if( $gateway->is_3d_auth ){
+				$this->is_3d_auth = true;	
+				$this->post_url = $gateway->post_url;
+				$this->post_id_input_name = $gateway->post_id_input_name;
+				$this->post_id = $gateway->post_id;
+				$this->post_message_input_name = $gateway->post_message_input_name;
+				$this->post_message = $gateway->post_message;
+				$this->post_return_url_input_name = $gateway->post_return_url_input_name;
+			}
 			return "1";
 		}else
 			return $gateway->get_response_message( );

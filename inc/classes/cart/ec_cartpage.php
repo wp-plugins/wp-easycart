@@ -81,6 +81,13 @@ class ec_cartpage{
 		$account_page_id = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $account_page_id );
 		
+		if( class_exists( "WordPressHTTPS" ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->getHttpsUrl( ) . substr( $this->store_page, strlen( get_settings('home') ) );
+			$this->cart_page = $https_class->getHttpsUrl( ) . substr( $this->cart_page, strlen( get_settings('home') ) );
+			$this->account_page = $https_class->getHttpsUrl( ) . substr( $this->account_page, strlen( get_settings('home') ) );
+		}
+		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
 		
@@ -96,7 +103,11 @@ class ec_cartpage{
 	
 	public function display_cart_error(){
 		$error_notes = array( "email_exists" => $GLOBALS['language']->get_text( "ec_errors", "email_exists_error" ),
-							  "login_failed" => $GLOBALS['language']->get_text( "ec_errors", "login_failed" ) 
+							  "login_failed" => $GLOBALS['language']->get_text( "ec_errors", "login_failed" ),
+							  "3dsecure_failed" => $GLOBALS['language']->get_text( "ec_errors", "3dsecure_failed" ),
+							  "manualbill_failed" => $GLOBALS['language']->get_text( "ec_errors", "manualbill_failed"),
+							  "thirdparty_failed" => $GLOBALS['language']->get_text( "ec_errors", "thirdparty_failed"),
+							  "payment_failed" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed")   
 							);
 		if( isset( $_GET['ec_cart_error'] ) ){
 			echo "<div class=\"ec_cart_error\"><div>" . $error_notes[ $_GET['ec_cart_error'] ] . "</div></div>";
@@ -104,58 +115,64 @@ class ec_cartpage{
 	}
 	
 	public function display_cart_page(){
-		echo "<div class=\"ec_cart_page\">";
-		if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" ){
-			$order_id = $_GET['order_id'];
-			$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-			$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-			
-			$this->user->setup_billing_info_data( $order->billing_first_name, $order->billing_last_name, $order->billing_address_line_1, $order->billing_city, $order->billing_state, $order->billing_country, $order->billing_zip, $order->billing_phone );
-			
-			$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone );
-			
-			$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );
-			$subtotal = $GLOBALS['currency']->get_currency_display( $order->sub_total );
-			$tax = $GLOBALS['currency']->get_currency_display( $order->tax_total );
-			$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
-			if( ( $order->grand_total - $order->vat_total ) > 0 )
-			$vat_rate = number_format( ( $order->vat_total / ( $order->grand_total - $order->vat_total ) ) * 100, 0, '', '' );
-			else
-			$vat_rate = number_format( 0, 0, '', '' );
-			$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
-			$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
-			
-			$email_logo_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emaillogo.jpg");
-			$email_footer_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emailfooter.jpg");
-			
-			//google analytics
-			$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
-			$google_urchin_code = get_option('ec_option_googleanalyticsid');
-			$google_wp_url = $_SERVER['SERVER_NAME'];
-			$google_transaction = $this->analytics->get_transaction_js();
-			$google_items = $this->analytics->get_item_js();
-			//end google analytics
-			
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
-			
-		}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "third_party" ){
-			$order_id = $_GET['order_id'];
-			$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-			$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-			//google analytics
-			$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
-			$google_urchin_code = get_option('ec_option_googleanalyticsid');
-			$google_wp_url = $_SERVER['SERVER_NAME'];
-			$google_transaction = $this->analytics->get_transaction_js();
-			$google_items = $this->analytics->get_item_js();
-			//end google analytics
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_third_party.php' );
-			
+		
+		// CHECK FOR 3D AUTH
+		if( $this->order->payment->is_3d_auth ){
+			$this->auth_3d_form( );
 		}else{
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_page.php' );
-			echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
+			echo "<div class=\"ec_cart_page\">";
+			if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
+				$order_id = $_GET['order_id'];
+				$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+				$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+				
+				$this->user->setup_billing_info_data( $order->billing_first_name, $order->billing_last_name, $order->billing_address_line_1, $order->billing_city, $order->billing_state, $order->billing_country, $order->billing_zip, $order->billing_phone );
+				
+				$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone );
+				
+				$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );
+				$subtotal = $GLOBALS['currency']->get_currency_display( $order->sub_total );
+				$tax = $GLOBALS['currency']->get_currency_display( $order->tax_total );
+				$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
+				if( ( $order->grand_total - $order->vat_total ) > 0 )
+				$vat_rate = number_format( ( $order->vat_total / ( $order->grand_total - $order->vat_total ) ) * 100, 0, '', '' );
+				else
+				$vat_rate = number_format( 0, 0, '', '' );
+				$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
+				$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
+				
+				$email_logo_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emaillogo.jpg");
+				$email_footer_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emailfooter.jpg");
+				
+				//google analytics
+				$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
+				$google_urchin_code = get_option('ec_option_googleanalyticsid');
+				$google_wp_url = $_SERVER['SERVER_NAME'];
+				$google_transaction = $this->analytics->get_transaction_js();
+				$google_items = $this->analytics->get_item_js();
+				//end google analytics
+				$this->display_cart_error();
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
+				
+			}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "third_party" ){
+				$order_id = $_GET['order_id'];
+				$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+				$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+				//google analytics
+				$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
+				$google_urchin_code = get_option('ec_option_googleanalyticsid');
+				$google_wp_url = $_SERVER['SERVER_NAME'];
+				$google_transaction = $this->analytics->get_transaction_js();
+				$google_items = $this->analytics->get_item_js();
+				//end google analytics
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_third_party.php' );
+				
+			}else{
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_page.php' );
+				echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
+			}
+			echo "</div>";
 		}
-		echo "</div>";
 	}
 	
 	public function display_cart( $empty_cart_string ){
@@ -955,7 +972,10 @@ class ec_cartpage{
 	// Process the cart page form action
 	public function process_form_action( $action ){
 		if( $action == "add_to_cart" )						$this->process_add_to_cart();
+		else if( $action == "ec_update_action" )			$this->process_update_cartitem( $_POST['ec_update_cartitem_id'], $_POST['ec_cartitem_quantity_' . $_POST['ec_update_cartitem_id'] ] );
+		else if( $action == "ec_delete_action" )			$this->process_delete_cartitem( $_POST['ec_delete_cartitem_id'] );
 		else if( $action == "submit_order" )				$this->process_submit_order();
+		else if( $action == "3dsecure" )					$this->process_3dsecure_response();
 		else if( $action == "login_user" )					$this->process_login_user();
 		else if( $action == "save_checkout_info" )			$this->process_save_checkout_info();
 		else if( $action == "save_checkout_shipping" )		$this->process_save_checkout_shipping();
@@ -1016,6 +1036,24 @@ class ec_cartpage{
 		
 	}
 	
+	private function process_update_cartitem( $cartitem_id, $new_quantity ){
+		$this->mysqli->update_cartitem( $cartitem_id, session_id(), $new_quantity );
+		
+		if( isset( $_GET['ec_page'] ) )
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] );	
+		else
+			header( "location: " . $this->cart_page );
+	}
+	
+	private function process_delete_cartitem( $cartitem_id ){
+		$this->mysqli->delete_cartitem( $cartitem_id, session_id() );
+		
+		if( isset( $_GET['ec_page'] ) )
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] );	
+		else
+			header( "location: " . $this->cart_page );
+	}
+	
 	private function process_submit_order(){
 		$payment_type = $_POST['ec_cart_payment_selection'];
 		$submit_return_val = $this->order->submit_order( $payment_type );
@@ -1027,24 +1065,88 @@ class ec_cartpage{
 			if( $submit_return_val == "1" )
 				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );
 			else
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&cart_error=MANBILL, " . $submit_return_val );
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&cart_error=manualbill_failed" );
 			
 		}else if( $payment_type == "third_party" ){ // Show the third party landing page
 			if( $submit_return_val == "1" )
 				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=third_party&order_id=" . $this->order->order_id );
 			else
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&cart_error=3rdPARTY, " . $submit_return_val );
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=thirdparty_failed" );
 				
 		}else{ // Either show the success landing page
 			
-			if( $submit_return_val == "TESTING" )
-				break; //STOP HERE!
-			else if($submit_return_val == "1" )
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );	
-			else
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&cart_error=" . $submit_return_val );
+			if( $submit_return_val == "1" ){
+				if( $this->order->payment->is_3d_auth ){
+					$this->auth_3d_form( );
+				}else{
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );	
+				}
+			}else
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=payment_failed" );
 			
 		}
+	}
+	
+	public function process_3dsecure_response( ){
+		
+		if( get_option( 'ec_option_payment_process_method' ) == "sagepay" ){
+			
+			if( get_option( 'ec_option_sagepay_simulator' ) )
+				$gateway_url = "https://test.sagepay.com/Simulator/VSPDirectCallback.asp";
+			else if( get_option( 'ec_option_sagepay_testmode' ) )
+				$gateway_url = "https://test.sagepay.com/gateway/service/direct3dcallback.vsp";
+			else
+				$gateway_url = "https://live.sagepay.com/gateway/service/direct3dcallback.vsp";
+			
+			if( isset( $_POST['MD'] ) && isset( $_POST['PaRes'] ) )
+				$gateway_data = array( "MD" => $_POST['MD'], "PARes" => $_POST['PaRes'] );
+		
+		
+			if( isset( $gateway_url ) && isset( $gateway_data ) ){
+				$request = new WP_Http;
+				$response = $request->request( $gateway_url, array( 'method' => 'POST', 'body' => $gateway_data, 'headers' => "" ) );
+				$response_body = $response["body"];
+				
+				//Format response data in form key=val&key2=val2&...
+				$response_array = explode( "\r\n", $response_body );
+				$response_vals = array();
+				
+				for( $i=0; $i<count($response_array); $i++){
+					$split = explode( "=", $response_array[$i] );
+					if( count( $split ) >= 2 )
+						$response_vals[$split[0]] = $split[1]; 
+				}
+				
+				if( isset( $response_vals['Status'] ) )
+					$status = $response_vals['Status'];
+				else
+					$status = "error";
+				
+				if( $status == "OK" )
+					$this->mysqli->update_order_status( $_GET['order_id'], "6" );
+				else
+					$this->mysqli->update_order_status( $_GET['order_id'], "7" );
+					
+				if( $status == "OK" )
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $_GET['order_id'] );
+				else
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $_GET['order_id'] . "&ec_cart_error=3dsecure_failed" );
+			}else{
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id . "&ec_cart_error=3dsecure_failed" );
+			}
+			
+		}else{
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id . "&ec_cart_error=3dsecure_failed" );
+		}
+	}
+	
+	public function auth_3d_form( ){
+		echo "<form name=\"ec_cart_3dauth_form\" method=\"POST\" action=\"" . $this->order->payment->post_url . "\">";
+		echo "<input type=\"hidden\" name=\"" . $this->order->payment->post_id_input_name . "\" value=\"" . $this->order->payment->post_id . "\">";
+		echo "<input type=\"hidden\" name=\"" . $this->order->payment->post_message_input_name . "\" value=\"" . $this->order->payment->post_message . "\">";
+		echo "<input type=\"hidden\" name=\"" . $this->order->payment->post_return_url_input_name . "\" value=\"" . $this->cart_page . $this->permalink_divider . "ec_page=3dsecure&order_id=" . $this->order->order_id . "\">";
+		echo "</form>";
+		echo "<SCRIPT LANGUAGE=\"Javascript\">document.ec_cart_3dauth_form.submit();</SCRIPT>";
 	}
 	
 	private function process_login_user( ){
@@ -1055,7 +1157,6 @@ class ec_cartpage{
 			$_SESSION['ec_email'] = "guest";
 			$_SESSION['ec_username'] = "guest";
 			$_SESSION['ec_password'] = "guest";
-			
 			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
 		}else{
 			$user = $this->mysqli->get_user( $email, $password );
@@ -1181,7 +1282,7 @@ class ec_cartpage{
 			$shipping_id = $this->mysqli->insert_address( $shipping_first_name, $shipping_last_name, $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country, $shipping_phone );
 			
 			$user_level = "shopper";
-			if( $_POST['ec_contact_is_subscriber'] )
+			if( isset( $_POST['ec_contact_is_subscriber'] ) )
 				$is_subscriber = true;
 			else
 				$is_subscriber = false;
@@ -1207,8 +1308,14 @@ class ec_cartpage{
 	}
 	
 	private function process_save_checkout_shipping( ){
-		$shipping_method = $_POST['ec_cart_shipping_method'];
-		$ship_express = $_POST['ec_cart_ship_express'];
+		if( isset( $_POST['ec_cart_shipping_method'] ) )
+			$shipping_method = $_POST['ec_cart_shipping_method'];
+		else
+			$shipping_method = "";
+		if( isset( $_POST['ec_cart_ship_express'] ) )
+			$ship_express = $_POST['ec_cart_ship_express'];
+		else
+			$ship_express = "";
 		
 		$_SESSION['ec_shipping_method'] = $shipping_method;
 		$_SESSION['ec_ship_express'] = $ship_express;
