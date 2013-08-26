@@ -1341,6 +1341,22 @@
 				"email_exists_error":{
 					"title":"Cart, create account on checkout, email exists",
 					"value":"This email already has an account. Please login or use a different email address to continue."
+				},
+				"3dsecure_failed":{
+					"title":"Cart, Optional, Error message when 3D Secure Fails, Gateway Dependent",
+					"value":"Your payment could not completed because the 3D Secure method failed. We will contact you shortly to resolve the issue."
+				},
+				"manualbill_failed":{
+					"title":"Cart, Optional, Manual billing failed, Gateway Dependent",
+					"value":"Your payment could not completed, manual billing failed. Please try again."
+				},
+				"thirdparty_failed":{
+					"title":"Cart, Optional, Third Party Failed, Gateway Dependent",
+					"value":"Your payment could not completed, third party failed. Please try again."
+				},
+				"payment_failed":{
+					"title":"Cart, Optional, Credit Card Failed, Gateway Dependent",
+					"value":"Your payment could not completed because your credit card could not be verified. Please check your credit card information and try again. If your problem persists, please contact us to complete payment."
 				}
 			}
 		},

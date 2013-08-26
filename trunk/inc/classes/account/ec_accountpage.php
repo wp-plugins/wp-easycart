@@ -38,6 +38,11 @@ class ec_accountpage{
 		$accountpageid = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $accountpageid );
 		
+		if( class_exists( "WordPressHTTPS" ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->account_page = $https_class->getHttpsUrl( ) . substr( $this->account_page, strlen( get_settings('home') ) );
+		}
+		
 		if( substr_count( $this->account_page, '?' ) )				$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
 	}

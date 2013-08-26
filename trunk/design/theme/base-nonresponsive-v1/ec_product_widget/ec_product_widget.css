@@ -107,7 +107,7 @@
 	font-weight: bold;
 	color: [link_color];
 	text-decoration: none;
-font-family:
+	font-family:[content_font];
 }
 .ec_product_widget_title a:hover {
 	font-weight: bold;

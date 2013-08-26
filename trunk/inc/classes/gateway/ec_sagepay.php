@@ -16,25 +16,25 @@ class ec_sagepay extends ec_gateway{
 		$sagepay_currency = get_option( 'ec_option_sagepay_currency' );
 		$sagepay_simulator = get_option( 'ec_option_sagepay_simulator' );
 		
-		if( $this->payment_method == "visa" )
+		if( $this->credit_card->payment_method == "visa" )
 			$card_type = "VISA";
-		else if( $this->payment_method == "mastercard" )
+		else if( $this->credit_card->payment_method == "mastercard" )
 			$card_type = "MC";
-		else if( $this->payment_method == "mcdebit" )
+		else if( $this->credit_card->payment_method == "mcdebit" )
 			$card_type = "MCDEBIT";
-		else if( $this->payment_method == "delta" )
+		else if( $this->credit_card->payment_method == "delta" )
 			$card_type = "DELTA";
-		else if( $this->payment_method == "maestro" )
+		else if( $this->credit_card->payment_method == "maestro" )
 			$card_type = "MAESTRO";
-		else if( $this->payment_method == "uke" )
+		else if( $this->credit_card->payment_method == "uke" )
 			$card_type = "UKE";
-		else if( $this->payment_method == "amex" )
+		else if( $this->credit_card->payment_method == "amex" )
 			$card_type = "AMEX";
-		else if( $this->payment_method == "discover" )
+		else if( $this->credit_card->payment_method == "discover" )
 			$card_type = "DC";
-		else if( $this->payment_method == "jcb" )
+		else if( $this->credit_card->payment_method == "jcb" )
 			$card_type = "JCB";
-		else if( $this->payment_method == "laser" )
+		else if( $this->credit_card->payment_method == "laser" )
 			$card_type = "LASER";
 		
 		if( $sagepay_simulator )
@@ -49,7 +49,6 @@ class ec_sagepay extends ec_gateway{
 			$this->permalink_divider = "&";
 		else
 			$this->permalink_divider = "?";
-		
 		
 		$sagepay_data = array(	"VPSProtocol" => $VPS_Protocol,
 								"TxType" => "PAYMENT", // PAYMENT, DEFERRED, OR AUTHENTICATE
@@ -93,7 +92,7 @@ class ec_sagepay extends ec_gateway{
 		$sagepay_test_mode = get_option( 'ec_option_sagepay_testmode' );
 		
 		if( $sagepay_simulator )
-			return "https://test.sagepay.com/Simulator/VSPServerGateway.asp?Service=VendorRegisterTx";
+			return "https://test.sagepay.com/Simulator/VSPDirectGateway.asp";
 		else if( $sagepay_test_mode )
 			return "https://test.sagepay.com/gateway/service/vspdirect-register.vsp";
 		else
@@ -110,19 +109,47 @@ class ec_sagepay extends ec_gateway{
 		$response_vals = array();
 		for( $i=0; $i<count($response_array); $i++){
 			$split = explode( "=", $response_array[$i] );
-			$response_vals[$split[0]] = $split[1]; 
+			if( count( $split ) >= 2 )
+				$response_vals[$split[0]] = $split[1]; 
 		}
 		
 		$status = $response_vals["Status"];
-		$status_detail = $response_vals["StatusDetail"];
+		if( isset( $response_vals["StatusDetail"] ) )
+			$status_detail = $response_vals["StatusDetail"];
+		else
+			$status_detail = "";
+			
+		//3D Secure Specific Variables
+		if( isset( $response_vals['3DSecureStatus'] ) )
+			$secure_status = $response_vals['3DSecureStatus'];
+		if( isset( $response_vals['MD'] ) )
+			$secure_id = $response_vals['MD'];
+		if( isset( $response_vals['ACSURL'] ) )
+			$post_url = $response_vals['ACSURL'];
+		if( isset( $response_vals['PAReq'] ) )
+			$post_message = $response_vals['PAReq'];
+			
 		$response_text = print_r( $response_vals, true );
 		
-		if( $status == "OK" )
+		if( $status == "3DAUTH" ){
+			if( $secure_status == "OK" ){
+				$this->is_3d_auth = true;
+				$this->post_url = $post_url;
+				$this->post_id_input_name = "MD";
+				$this->post_id = $secure_id;
+				$this->post_message_input_name = "PaReq";
+				$this->post_message = $post_message;
+				$this->post_return_url_input_name = "TermUrl";
+				$this->is_success = 1;
+			}else{
+				$this->is_success = 0;	
+			}
+		}else if( $status == "OK" )
 			$this->is_success = 1;
 		else
 			$this->is_success = 0;
 		
-		$this->mysqli->insert_response( $this->order_id, $this->temp_order_id, !$this->is_success, "Sagepay", $response_text );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Sagepay", $response_text );
 		
 		if( !$this->is_success )
 			$this->error_message = $status_detail;

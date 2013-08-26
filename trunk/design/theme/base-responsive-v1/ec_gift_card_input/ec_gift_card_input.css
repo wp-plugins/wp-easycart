@@ -10,7 +10,7 @@
 	float:left;
 }
 
-.ec_gift_card_input_row input["type=text"]{
+.ec_gift_card_input_row input[type="text"]{
 	width:350px;	
 }
 
@@ -19,7 +19,7 @@
 	height:80px;
 }
 @media only screen and ( min-width: [size_level3_low]px ) and ( max-width: [size_level3_high]px ) {
-	.ec_gift_card_input_row input["type=text"]{
+	.ec_gift_card_input_row input[type="text"]{
 	width:300px;	
 }
 
@@ -29,7 +29,7 @@
 }
 }
 @media only screen and ( max-width: [size_level1_high]px ) {
-.ec_gift_card_input_row input["type=text"]{
+.ec_gift_card_input_row input[type="text"]{
 	width:260px;	
 }
 

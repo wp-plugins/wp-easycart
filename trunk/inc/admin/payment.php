@@ -425,6 +425,9 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 </tr>
                 <tr valign="top" class="form-table" id="sagepay">
                   <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                  	<tr valign="top" class="form-table">
+                      <td width="100%" class="itemheading" scope="row" colspan="2">3D Secure can be enabled in your Sagepay account. Once enabled, if the customer uses Visa or MasterCard AND their bank uses the Verified by Visa or MasterCard SecureCode systems, the customer will be redirected to their bank to complete the verification process. If this part fails, order will still be visible in their account and in your EasyCart Admin Console, but will say "Card Denied". If this happens you will need to follow up with your customer to process their payment again.</td>
+                    </tr>
                     <tr valign="top" class="form-table">
                       <td width="26%" class="itemheading" scope="row">Sagepay Vendor:</td>
                       <td width="74%"><input name="ec_option_sagepay_vendor" id="ec_option_sagepay_vendor" type="text" value="<?php echo get_option('ec_option_sagepay_vendor'); ?>" style="width:250px;" /></td>

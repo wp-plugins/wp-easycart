@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.9
+Stable tag: 1.1.10
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,14 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.10 =
+* New Feature! - Sagepay 3D Secure is now available, structure in place to add 3D Secure for any gateway.
+* Number of HTTPS Improvements and checks for live gateway users.
+* Improvement - If you have WP HTTPS installed the plugin will leverage to ensure proper form submission and ajax calls.
+* Bug Fix - HTTPS admin-ajax linking through WordPress was incorrect.
+* Bug Fix - Non-AJAX users can now use the update and delete buttons for cart items.
+* Bug Fix - Debug mode notices removed from many files.
+* Bug Fix - CSS bugs removed throughout file system.
 = 1.1.9 =
 * Base and Default CSS Enhancement - popups for quick view and customer review now more compatable by moving the popup window to the root body tag with jQuery.
 * Improvement - Some servers force www, admin console was failing, added an .htaccess to the amfphp folder to force NO www as a fix.

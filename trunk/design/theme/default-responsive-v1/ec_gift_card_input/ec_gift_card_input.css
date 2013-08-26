@@ -10,7 +10,7 @@
 	float:left;
 }
 
-.ec_gift_card_input_row input["type=text"]{
+.ec_gift_card_input_row input[type="text"]{
 	width:350px;	
 }
 

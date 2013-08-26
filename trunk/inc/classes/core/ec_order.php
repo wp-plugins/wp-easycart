@@ -9,7 +9,8 @@ class ec_order{
 	private $tax;														// ec_tax structure
 	private $discount;													// ec_discounts structure
 	private $order_totals;												// ec_order_totals structure
-	private $payment;													// ec_payment structure
+	
+	public $payment;													// ec_payment structure
 	
 	public $order_id;													// INT
 	
@@ -31,7 +32,7 @@ class ec_order{
 	
 	public function submit_order( $payment_type ){
 		if( $payment_type == "credit_card" )
-		$payment_type = $this->payment->credit_card->payment_method;
+			$payment_type = $this->payment->credit_card->payment_method;
 		
 		$this->order_id = $this->mysqli->insert_order( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->payment, $payment_type, "5" );
 		
@@ -71,6 +72,7 @@ class ec_order{
 			}else
 				$this->mysqli->remove_order( $this->order_id );
 			
+			
 			return $process_result;
 			
 		}else{
@@ -104,9 +106,9 @@ class ec_order{
 			
 			}
 		
-		}else{
-			$this->mysqli->insert_order_detail( $this->order_id, $giftcard_id, $download_id, $cart_item );
-		}
+		}else
+			$this->mysqli->insert_order_detail( $this->order_id, 0, 0, $cart_item );
+		
 		
 		if($cart_item->use_optionitem_quantity_tracking)	
 			$this->mysqli->update_quantity_value( 		$cart_item->quantity, 

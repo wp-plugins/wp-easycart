@@ -66,9 +66,9 @@ class ec_cartitem{
 	
 	public $promotions;												// array of promtions
 	
-	private $store_page;											// VARCHAR
-	private $cart_page;												// VARCHAR
-	private $permalink_divider;										// CHAR
+	public $store_page;												// VARCHAR
+	public $cart_page;												// VARCHAR
+	public $permalink_divider;										// CHAR
 	
 	private $currency;												// ec_currency structure
 	
@@ -371,15 +371,15 @@ class ec_cartitem{
 	}
 	
 	public function display_update_form_start( ){
-		$cartpageid = get_option('ec_option_cartpage');
-		$cartpage = get_permalink( $cartpageid );
-		
-		echo "<form action=\"" . $cartpage . "\">";	
+		if( isset( $_GET['ec_page'] ) )
+			echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] . "\" method=\"post\">";
+		else
+			echo "<form action=\"" . $this->cart_page . "\" method=\"post\">";
 	}
 	
 	public function display_update_form_end( ){
 		echo "<input type=\"hidden\" name=\"ec_update_cartitem_id\" id=\"ec_update_cartitem_id_" . $this->cartitem_id . "\" value=\"" . $this->cartitem_id . "\" />";
-		echo "<input type=\"hidden\" name=\"ec_action\" id=\"ec_update_action\" />";
+		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" id=\"ec_cart_form_action\" value=\"ec_update_action\" />";
 		echo "</form>";	
 	}
 	
@@ -392,12 +392,14 @@ class ec_cartitem{
 	}
 	
 	public function display_delete_button( $remove_text ){
-		$cartpageid = get_option('ec_option_cartpage');
-		$cartpage = get_permalink( $cartpageid );
-		
-		echo "<form action=\"" . $cartpage . "\">";
+		if( isset( $_GET['ec_page'] ) )
+			echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] . "\" method=\"post\">";
+		else
+			echo "<form action=\"" . $this->cart_page . "\" method=\"post\">";
+			
 		echo "<input type=\"submit\" id=\"remove_" . $this->cartitem_id . "\" name=\"remove_" . $this->cartitem_id . "\" value=\"" . $remove_text . "\" onclick=\"ec_cart_item_delete( '" . $this->cartitem_id . "' ); return false;\"/>";
-		echo "<input type=\"hidden\" name=\"ec_action\" id=\"ec_delete_action\" />";
+		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" id=\"ec_cart_form_action\" value=\"ec_delete_action\" />";
+		echo "<input type=\"hidden\" name=\"ec_delete_cartitem_id\" id=\"ec_delete_cartitem_id_" . $this->cartitem_id . "\" value=\"" . $this->cartitem_id . "\" />";
 		echo "</form>";
 	}
 	
