@@ -22,7 +22,7 @@
 </script>
 
 <div class="top_link_bar"><a href="<?php echo $this->account_page . $this->permalink_divider; ?>ec_page=order_details&amp;order_id=<?php echo $order_id; ?>">
-  <?php if( $this->user->email != "guest" ){?>
+  <?php if( $_SESSION['ec_password'] != "guest" ){?>
   <input value="<?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_payment_receipt_order_details_link' ); ?>" type="button" class="top_link_button" id="cart_success_details_button"/>
   <?php }?>
   </a></div>

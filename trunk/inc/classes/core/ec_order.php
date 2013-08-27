@@ -148,6 +148,7 @@ class ec_order{
 	
 		$headers = "From: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
 		$headers .= "Reply-To: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
+		$headers .= "BCC: " . get_option( 'ec_option_bcc_email_addresses' ) . "\r\n";
 		$headers .= "X-Mailer: PHP4\n";
 		$headers .= "X-Priority: 3\n";
 		$headers .= "MIME-Version: 1.0\n";

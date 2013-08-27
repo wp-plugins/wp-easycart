@@ -12,6 +12,7 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_currency_thousands_seperator', $_POST['ec_option_currency_thousands_seperator'] );
 	update_option( 'ec_option_order_from_email', $_POST['ec_option_order_from_email'] );
 	update_option( 'ec_option_password_from_email', $_POST['ec_option_password_from_email'] );
+	update_option( 'ec_option_bcc_email_addresses', $_POST['ec_option_bcc_email_addresses'] );
 	update_option( 'ec_option_use_state_dropdown', $_POST['ec_option_use_state_dropdown'] );
 	update_option( 'ec_option_use_country_dropdown', $_POST['ec_option_use_country_dropdown'] );
 	update_option( 'ec_option_default_store_filter', $_POST['ec_option_default_store_filter'] );
@@ -68,6 +69,15 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
           come from)</span></p></td>
           <td valign="top"><input name="ec_option_password_from_email" type="text"  value="<?php echo get_option('ec_option_password_from_email'); ?>" size="10" style="width:300px;" />
           <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Password Recovery From Email</em>Emails are sent to customers when they request a password reset.  This email represents where that email comes from and if a customer hits reply, this email is where they will respond to.</span></a>
+          
+          
+          </td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row"><p>BCC Email Addresses for Orders:<br />
+              <span class="itemsubheading">(These are the email addresses that will receive a copy of customer orders.)</span></p></td>
+          <td valign="top"><input name="ec_option_bcc_email_addresses" type="text"  value="<?php echo get_option('ec_option_bcc_email_addresses'); ?>" size="10" style="width:300px;" />
+          <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>BCC Order Email Addresses</em>Copies of every order will be sent to these email addresses as a BCC, meaning the customer will not see these email addresses. You can add multiple addresses seperated by commas.</span></a>
           
           
           </td>
