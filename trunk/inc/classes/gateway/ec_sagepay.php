@@ -50,6 +50,18 @@ class ec_sagepay extends ec_gateway{
 		else
 			$this->permalink_divider = "?";
 		
+		// create baseket array, NOT USUABLE IN SIMULATOR
+		$basket = "";
+		
+		if( !$sagepay_simulator ){
+			$basket = "<basket>
+				";
+			for( $i=0; $i<count( $this->cart->cart ); $i++ ){
+				$basket .= "<item><description>" . $this->cart->cart[$i]->title . "</description><productSku>" . $this->cart->cart[$i]->model_number . "</productSku><quantity>" . $this->cart->cart[$i]->quantity . "</quantity><unitNetAmount>" . number_format( $this->cart->cart[$i]->unit_price / ( 1 + ( $this->cart->cart[$i]->vat_rate / 100 ) ), 2 ) . "</unitNetAmount><unitTaxAmount>" . number_format( $this->cart->cart[$i]->unit_price - ( $this->cart->cart[$i]->unit_price / ( 1 + ( $this->cart->cart[$i]->vat_rate / 100 ) ) ), 2 ) . "</unitTaxAmount><unitGrossAmount>" . $this->cart->cart[$i]->unit_price . "</unitGrossAmount><totalGrossAmount>" . number_format( $this->cart->cart[$i]->unit_price * $this->cart->cart[$i]->quantity, 2 ) . "</totalGrossAmount></item>";
+			}
+			$basket .= "</basket>";
+		}
+		
 		$sagepay_data = array(	"VPSProtocol" => $VPS_Protocol,
 								"TxType" => "PAYMENT", // PAYMENT, DEFERRED, OR AUTHENTICATE
 								"Vendor" => $sagepay_vendor,
@@ -79,9 +91,15 @@ class ec_sagepay extends ec_gateway{
 								"DeliveryState" => $this->user->shipping->state,
 								"DeliveryPhone" => $this->user->shipping->phone,
 								"CustomerEMail" => $this->user->email,
-								"NotificationURL" => $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $this->order_id
+								"ClientIPAddress" => $_SERVER['REMOTE_ADDR'],
+								//"ReferrerID" => "wpeasycart here"
+								"NotificationURL" => $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $this->order_id,
+								
 					 );
 					 
+		if( !$sagepay_simulator )
+			$sagepay_data["BasketXML"] = $basket;
+		
 		return $sagepay_data;
 		
 	}
@@ -111,6 +129,8 @@ class ec_sagepay extends ec_gateway{
 			$split = explode( "=", $response_array[$i] );
 			if( count( $split ) >= 2 )
 				$response_vals[$split[0]] = $split[1]; 
+			if( count( $split ) >= 3 )
+				$response_vals[$split[0]] .= "=" . $split[2]; 
 		}
 		
 		$status = $response_vals["Status"];
@@ -128,7 +148,7 @@ class ec_sagepay extends ec_gateway{
 			$post_url = $response_vals['ACSURL'];
 		if( isset( $response_vals['PAReq'] ) )
 			$post_message = $response_vals['PAReq'];
-			
+		
 		$response_text = print_r( $response_vals, true );
 		
 		if( $status == "3DAUTH" ){
