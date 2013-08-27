@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin, Wordpress shopping cart, Wordpress cart, Wordpress PayPal
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.10
+Stable tag: 1.1.11
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.11 =
+* SagePay Full integration complete. Basket contents, 3D Secure checks, and quick setup. Fully tested and integrated with live account.
 = 1.1.10 =
 * New Feature! - Sagepay 3D Secure is now available, structure in place to add 3D Secure for any gateway.
 * Number of HTTPS Improvements and checks for live gateway users.
