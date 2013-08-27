@@ -1655,7 +1655,7 @@ class ec_db{
 	}
 	
 	public function get_order_row( $order_id, $email, $password ){
-		if( $email == "guest" ){
+		if( $password == "guest" ){
 			$sql = "SELECT 
 				ec_order.order_id, 
 				ec_order.order_date, 
@@ -1808,7 +1808,7 @@ class ec_db{
 	}
 	
 	public function get_order_details( $order_id, $email, $password ){
-		if( $email == "guest" ){
+		if( $password == "guest" ){
 			return $this->mysqli->get_results( $this->mysqli->prepare( $this->orderdetail_guest_sql, $order_id ) );	
 		}else{
 			return $this->mysqli->get_results( $this->mysqli->prepare( $this->orderdetail_sql, $email, $password, $order_id ) );

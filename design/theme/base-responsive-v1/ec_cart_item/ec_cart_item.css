@@ -74,7 +74,7 @@
 	text-align:center;
 	border:none;
 	margin-top:0px;
-	padding:6px 14px;
+	padding:6px 10px;
 	background-image:none;
 	box-shadow:none;
 }
@@ -84,7 +84,7 @@
 	background-color: #f7f7f7 !important;
 }
 .ec_cart_item_update_button input[type="submit"]:active{
-	padding:6px 14px;
+	padding:6px 10px;
 }
 .ec_cart_item_delete_button input[type="submit"] {
 	-webkit-appearance:none;
@@ -112,7 +112,7 @@
 	text-align:center;
 	border:none;
 	margin-top:0px;
-	padding:6px 14px;
+	padding:6px 10px;
 	background-image:none;
 	box-shadow:none;
 }
@@ -122,7 +122,7 @@
 	background-color: #f7f7f7 !important;
 }
 .ec_cart_item_delete_button input[type="submit"]:active{
-	padding:6px 14px;
+	padding:6px 10px;
 }
 .ec_cart_item_loader {
 	display: none;

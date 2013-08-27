@@ -80,7 +80,7 @@ class ec_accountpage{
 	
 	public function is_page_visible( $page_name ){
 		if( isset( $_GET['ec_page'] ) ){ //Check for a ec_page variable, act differently if set.
-			if( isset( $_SESSION['ec_email'] ) && $_SESSION['ec_email'] != "guest" ){ //If logged in we can show any page accept login
+			if( isset( $_SESSION['ec_password'] ) && $_SESSION['ec_password'] != "guest" ){ //If logged in we can show any page accept login
 				if ( $page_name == 'login' )															return false;
 				else if( $page_name == $_GET['ec_page'] )												return true;
 				else if( $_GET['ec_page'] == 'login' && $page_name == 'dashboard')						return true;
@@ -93,7 +93,7 @@ class ec_accountpage{
 				else																					return false;
 			}
 		}else{ //ec_page variable is not set
-			if( isset( $_SESSION['ec_email'] ) && $_SESSION['ec_email'] != "guest" ){ //If logged in we should only show dashboard here
+			if( isset( $_SESSION['ec_password'] ) && $_SESSION['ec_password'] != "guest" ){ //If logged in we should only show dashboard here
 				if( $page_name == 'dashboard' )										return true;
 				else																return false;
 			}else{ //If not logged in we should only show login here

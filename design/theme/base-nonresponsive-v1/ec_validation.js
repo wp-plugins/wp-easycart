@@ -145,6 +145,11 @@ function ec_validation( function_name, input, country_code ){
 				return true;
 			else
 				return false;
+		}else if( country_code == "maestro" ){
+			if( /(^(5[0678]\d{11,18}$))|(^(6[^0357])\d{11,18}$)/.test( input ) )
+				return true;
+			else
+				return false;	
 		}
 		
 	}else if( function_name == "validate_expiration_month" ){

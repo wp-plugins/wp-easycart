@@ -79,7 +79,6 @@ class ec_sagepay extends ec_gateway{
 								"BillingAddress1" => $this->user->billing->address_line_1,
 								"BillingCity" => $this->user->billing->city,
 								"BillingPostCode" => $this->user->billing->zip,
-								"BillingState" => $this->user->billing->state,
 								"BillingCountry" => $this->user->billing->country,
 								"BillingPhone" => $this->user->billing->phone,
 								"DeliverySurname" => $this->user->shipping->last_name,
@@ -88,15 +87,16 @@ class ec_sagepay extends ec_gateway{
 								"DeliveryCity" => $this->user->shipping->city,
 								"DeliveryPostCode" => $this->user->shipping->zip,
 								"DeliveryCountry" => $this->user->shipping->country,
-								"DeliveryState" => $this->user->shipping->state,
 								"DeliveryPhone" => $this->user->shipping->phone,
-								"CustomerEMail" => $this->user->email,
 								"ClientIPAddress" => $_SERVER['REMOTE_ADDR'],
 								//"ReferrerID" => "wpeasycart here"
 								"NotificationURL" => $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $this->order_id,
 								
 					 );
-					 
+		
+		if( $this->user->email != "guest" )
+			$sagepay_data["CustomerEMail"] = $this->user->email;
+						 
 		if( !$sagepay_simulator )
 			$sagepay_data["BasketXML"] = $basket;
 		

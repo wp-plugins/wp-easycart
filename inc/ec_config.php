@@ -2,8 +2,11 @@
 // Level Four Storefront Configuration File
 
 // Some servers do not set session path to a writable location. Fix this sometimes.
-if( !is_writable( session_save_path( ) ) ){
-	ini_set( 'session.save_path', '/tmp' );  
+if( strtoupper(substr(PHP_OS, 0, 3)) != 'WIN' && !is_writable( session_save_path( ) ) ){ // Linux
+	ini_set( 'session.save_path', '/tmp' );
+
+}else if( !is_writable( session_save_path( ) ) ){ // Windows
+	ini_set( 'session.save_path', 'c:/temp' );
 }
 
 // Start the session

@@ -83,9 +83,7 @@ class ec_cartpage{
 		
 		if( class_exists( "WordPressHTTPS" ) ){
 			$https_class = new WordPressHTTPS( );
-			$this->store_page = $https_class->getHttpsUrl( ) . substr( $this->store_page, strlen( get_settings('home') ) );
 			$this->cart_page = $https_class->getHttpsUrl( ) . substr( $this->cart_page, strlen( get_settings('home') ) );
-			$this->account_page = $https_class->getHttpsUrl( ) . substr( $this->account_page, strlen( get_settings('home') ) );
 		}
 		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
@@ -152,6 +150,11 @@ class ec_cartpage{
 				$google_items = $this->analytics->get_item_js();
 				//end google analytics
 				$this->display_cart_error();
+				
+				//Backwards compatibility for an error... Don't want the button showing if user didn't create an account.
+				if( $_SESSION['ec_password'] == "guest" )
+					$_SESSION['ec_email'] = "guest";
+					
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
 				
 			}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "third_party" ){
@@ -1271,6 +1274,11 @@ class ec_cartpage{
 		$next_page = "checkout_shipping";
 		if( $this->cart->weight == 0 )
 			$next_page = "checkout_payment";
+			
+		if( $_SESSION['ec_email'] == "guest" ){
+			$email = $_POST['ec_contact_email'];
+			$_SESSION['ec_email'] = $email;
+		}
 		
 		if( $create_account ){
 			$email = $_POST['ec_contact_email'];
