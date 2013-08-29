@@ -293,6 +293,12 @@ if (@$row_orderdetails['billing_address_line_1'] == "" && @$row_orderdetails['bi
           <td class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['order_weight']); ?></span></td>
         </tr>
         <tr>
+          <td colspan="5" class="sizemediumfont"> <span class="fontstyle"><strong>&nbsp;Customer Notes:</strong>&nbsp;&nbsp;<span class="sizesmallfont"><?php echo utf8_decode($row_orderdetails['order_customer_notes']); ?></span></span></td>
+        </tr>
+        <tr>
+          <td colspan="5">&nbsp;</td>
+        </tr>
+        <tr>
           <td colspan="5">&nbsp;</td>
         </tr>
       </table></td>
