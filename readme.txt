@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.13
+Stable tag: 1.1.14
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.14 =
+* URGENT BUG FIX - for users who went with 1.1.13, please upgrade to fix the currency symbol on the site.
 = 1.1.13 =
 * Added MasterCard Debit, Visa Debit/Delta, and Visa Electron as credit card options (currently only Sagepay).
 * Added default payment selected method - Select the default method from the admin basic settings and that box will automatically appear on load on the final checkout page.

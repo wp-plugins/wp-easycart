@@ -32,7 +32,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		
 		//store basic setup settings
-		array_push($this->wp_option_names, 'ec_option_currency');							array_push($this->wp_option_defaults, '&#36;' );
+		array_push($this->wp_option_names, 'ec_option_currency');							array_push($this->wp_option_defaults, '$' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_currency_symbol_location');			array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
