@@ -52,7 +52,7 @@ class ec_order{
 			
 			}else{
 				$process_result = $this->payment->process_payment( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->order_id );
-				if( $process_result == "1" )
+				if( $process_result == "1" && !$this->payment->is_3d_auth )
 					$this->mysqli->update_order_status( $this->order_id, "6" );
 				
 			}
@@ -60,15 +60,17 @@ class ec_order{
 			if( $process_result == "1" ){
 				$this->insert_details();
 				$this->update_user_addresses();
-				if ($payment_type != 'third_party') {
-					$this->send_email_receipt(); //leave it to third party to send email
+				
+				if( !$this->payment->is_3d_auth ){
+					if ($payment_type != 'third_party') {
+						$this->send_email_receipt(); //leave it to third party to send email
+					}
+					$this->clear_session();
+					$this->mysqli->clear_tempcart( session_id() );
+					
+					if( $this->discount->giftcard_code )
+						$this->mysqli->update_giftcard_total( $this->discount->giftcard_code, $this->discount->giftcard_discount );
 				}
-				$this->clear_session();
-				$this->mysqli->clear_tempcart( session_id() );
-				
-				if( $this->discount->giftcard_code )
-					$this->mysqli->update_giftcard_total( $this->discount->giftcard_code, $this->discount->giftcard_discount );
-				
 			}else
 				$this->mysqli->remove_order( $this->order_id );
 			
@@ -146,20 +148,20 @@ class ec_order{
         include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_receipt.php';
         $message = ob_get_clean();
 	
-		$headers = "From: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
-		$headers .= "Reply-To: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
-		$headers .= "BCC: " . get_option( 'ec_option_bcc_email_addresses' ) . "\r\n";
-		$headers .= "X-Mailer: PHP4\n";
-		$headers .= "X-Priority: 3\n";
-		$headers .= "MIME-Version: 1.0\n";
-		$headers .= "Return-Path: " . get_option( 'ec_option_order_from_email' ) . "\r\n"; 
-		$headers .= "Content-type: text/html\r\n"; 
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = "Content-type: text/html; charset=utf-8";
+		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "Subject: Order Confirmation - #" . $this->order_id;
+		$headers[] = "X-Mailer: PHP/".phpversion();
 	
-		mail( $this->user->email, "Order Confirmation -- #" . $this->order_id, $message, $headers);
+		mail( $this->user->email, "Order Confirmation -- #" . $this->order_id, $message, implode("\r\n", $headers) );
+		mail( get_option( 'ec_option_bcc_email_addresses' ), "Order Confirmation -- #" . $this->order_id, $message, implode("\r\n", $headers) );
 		
 	}
 	
-	private function clear_session(){
+	public function clear_session(){
 		
 		unset( $_SESSION['ec_billing_first_name'] );
 		unset( $_SESSION['ec_billing_last_name'] );

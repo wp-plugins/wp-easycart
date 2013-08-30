@@ -16,6 +16,7 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_use_state_dropdown', $_POST['ec_option_use_state_dropdown'] );
 	update_option( 'ec_option_use_country_dropdown', $_POST['ec_option_use_country_dropdown'] );
 	update_option( 'ec_option_default_store_filter', $_POST['ec_option_default_store_filter'] );
+	update_option( 'ec_option_default_payment_type', $_POST['ec_option_default_payment_type'] );
 
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
 
@@ -74,10 +75,10 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
           </td>
         </tr>
         <tr valign="top">
-          <td align="left" class="itemheading" scope="row"><p>BCC Email Addresses for Orders:<br />
+          <td align="left" class="itemheading" scope="row"><p>Admin Email Addresses for Orders:<br />
               <span class="itemsubheading">(These are the email addresses that will receive a copy of customer orders.)</span></p></td>
           <td valign="top"><input name="ec_option_bcc_email_addresses" type="text"  value="<?php echo get_option('ec_option_bcc_email_addresses'); ?>" size="10" style="width:300px;" />
-          <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>BCC Order Email Addresses</em>Copies of every order will be sent to these email addresses as a BCC, meaning the customer will not see these email addresses. You can add multiple addresses seperated by commas.</span></a>
+          <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Admin Order Email Addresses</em>Copies of every order will be sent to these email addresses as a second email, meaning the customer will not see these email addresses. You can add multiple addresses seperated by commas.</span></a>
           
           
           </td>
@@ -106,7 +107,67 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
         <tr valign="top">
           <td align="left" class="itemheading" scope="row">Currency Symbol:<br />
             <span class="itemsubheading">(The currency symbol to represent throughout your store)</span></td>
-          <td valign="top"><input name="ec_option_currency" type="text" value="<?php echo get_option('ec_option_currency'); ?>" size="1" style="width:40px;" />
+          <td valign="top">
+          <select name="ec_option_currency">
+          	<option value="&#36;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#36;' ) ){ echo " selected=\"selected\""; }?>>&#36;</option>
+          	<option value="&#163;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#163;' ) ){ echo " selected=\"selected\""; }?>>&#163;</option>
+          	<option value="&#164;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#164;' ) ){ echo " selected=\"selected\""; }?>>&#164;</option>
+          	<option value="&#162;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#162;' ) ){ echo " selected=\"selected\""; }?>>&#162;</option>
+          	<option value="&#165;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#165;' ) ){ echo " selected=\"selected\""; }?>>&#165;</option>
+          	<option value="&#402;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#402;' ) ){ echo " selected=\"selected\""; }?>>&#402;</option>
+            
+          	<option value="&#8352;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8352;' ) ){ echo " selected=\"selected\""; }?>>&#8352;</option>
+          	<option value="&#8353;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8353;' ) ){ echo " selected=\"selected\""; }?>>&#8353;</option>
+          	<option value="&#8354;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8354;' ) ){ echo " selected=\"selected\""; }?>>&#8354;</option>
+          	<option value="&#8355;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8355;' ) ){ echo " selected=\"selected\""; }?>>&#8355;</option>
+          	<option value="&#8356;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8356;' ) ){ echo " selected=\"selected\""; }?>>&#8356;</option>
+          	<option value="&#8357;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8357;' ) ){ echo " selected=\"selected\""; }?>>&#8357;</option>
+          	<option value="&#8358;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8358;' ) ){ echo " selected=\"selected\""; }?>>&#8358;</option>
+          	<option value="&#8359;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8359;' ) ){ echo " selected=\"selected\""; }?>>&#8359;</option>
+          	<option value="&#8360;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8360;' ) ){ echo " selected=\"selected\""; }?>>&#8360;</option>
+          	<option value="&#8361;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8361;' ) ){ echo " selected=\"selected\""; }?>>&#8361;</option>
+          	<option value="&#8362;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8362;' ) ){ echo " selected=\"selected\""; }?>>&#8362;</option>
+          	<option value="&#8363;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8363;' ) ){ echo " selected=\"selected\""; }?>>&#8363;</option>
+            
+          	<option value="&#8364;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8364;' ) ){ echo " selected=\"selected\""; }?>>&#8364;</option>
+          	<option value="&#8365;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8365;' ) ){ echo " selected=\"selected\""; }?>>&#8365;</option>
+          	<option value="&#8366;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8366;' ) ){ echo " selected=\"selected\""; }?>>&#8366;</option>
+          	<option value="&#8367;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8367;' ) ){ echo " selected=\"selected\""; }?>>&#8367;</option>
+          	<option value="&#8368;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8368;' ) ){ echo " selected=\"selected\""; }?>>&#8368;</option>
+          	<option value="&#8369;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8369;' ) ){ echo " selected=\"selected\""; }?>>&#8369;</option>
+          	<option value="&#8370;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8370;' ) ){ echo " selected=\"selected\""; }?>>&#8370;</option>
+          	<option value="&#8371;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8371;' ) ){ echo " selected=\"selected\""; }?>>&#8371;</option>
+          	<option value="&#8372;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8372;' ) ){ echo " selected=\"selected\""; }?>>&#8372;</option>
+          	<option value="&#8373;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8373;' ) ){ echo " selected=\"selected\""; }?>>&#8373;</option>
+          	<option value="&#8374;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8374;' ) ){ echo " selected=\"selected\""; }?>>&#8374;</option>
+          	<option value="&#8375;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8375;' ) ){ echo " selected=\"selected\""; }?>>&#8375;</option>
+          	<option value="&#8376;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8376;' ) ){ echo " selected=\"selected\""; }?>>&#8376;</option>
+          	<option value="&#8377;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8377;' ) ){ echo " selected=\"selected\""; }?>>&#8377;</option>
+          	
+            <option value="&#1423;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#1423;' ) ){ echo " selected=\"selected\""; }?>>&#1423;</option>
+          	<option value="&#2546;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#2546;' ) ){ echo " selected=\"selected\""; }?>>&#2546;</option>
+          	<option value="&#2547;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#2547;' ) ){ echo " selected=\"selected\""; }?>>&#2547;</option>
+          	<option value="&#2801;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#2801;' ) ){ echo " selected=\"selected\""; }?>>&#2801;</option>
+          	<option value="&#3065;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#3065;' ) ){ echo " selected=\"selected\""; }?>>&#3065;</option>
+          	<option value="&#3647;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#3647;' ) ){ echo " selected=\"selected\""; }?>>&#3647;</option>
+          	<option value="&#6107;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#6107;' ) ){ echo " selected=\"selected\""; }?>>&#6107;</option>
+          	<option value="&#13136;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#13136;' ) ){ echo " selected=\"selected\""; }?>>&#13136;</option>
+          	<option value="&#20803;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#20803;' ) ){ echo " selected=\"selected\""; }?>>&#20803;</option>
+          	<option value="&#20870;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#20870;' ) ){ echo " selected=\"selected\""; }?>>&#20870;</option>
+          	<option value="&#22278;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#22278;' ) ){ echo " selected=\"selected\""; }?>>&#22278;</option>
+          	<option value="&#22286;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#22286;' ) ){ echo " selected=\"selected\""; }?>>&#22286;</option>
+          	<option value="&#22291;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#22291;' ) ){ echo " selected=\"selected\""; }?>>&#22291;</option>
+          	<option value="&#22300;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#22300;' ) ){ echo " selected=\"selected\""; }?>>&#22300;</option>
+          	<option value="&#43064;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#43064;' ) ){ echo " selected=\"selected\""; }?>>&#43064;</option>
+          	<option value="&#65020;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65020;' ) ){ echo " selected=\"selected\""; }?>>&#65020;</option>
+          	<option value="&#65284;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65284;' ) ){ echo " selected=\"selected\""; }?>>&#65284;</option>
+          	<option value="&#65504;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65504;' ) ){ echo " selected=\"selected\""; }?>>&#65504;</option>
+          	<option value="&#65505;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65505;' ) ){ echo " selected=\"selected\""; }?>>&#65505;</option>
+          	<option value="&#65509;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65509;' ) ){ echo " selected=\"selected\""; }?>>&#65509;</option>
+          	<option value="&#65510;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65510;' ) ){ echo " selected=\"selected\""; }?>>&#65510;</option>
+          	<option value="&#128178;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#128178;' ) ){ echo " selected=\"selected\""; }?>>&#128178;</option>
+          </select>
+          
           <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Currency Symbol</em>All currency symbols can easily be changed here.  Please note that all payment processors determine the actual payment currency, not this symbol.  Check with your payment processor to ensure you are processing in the proper currency that you need, then apply the currency symbol here to align your store.</span></a>
           
           </td>
@@ -167,6 +228,18 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 <option value="5" <?php if (get_option('ec_option_default_store_filter') == '5') echo ' selected'; ?>>Newest</option>
                 <option value="6" <?php if (get_option('ec_option_default_store_filter') == '6') echo ' selected'; ?>>Best Rating</option>
                 <option value="7" <?php if (get_option('ec_option_default_store_filter') == '7') echo ' selected'; ?>>Most Viewed</option>
+              </select>
+              <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Default Product Sort</em>This will set the default sort technique for the products page. For example, changing to Title A-Z will have the products sorted this way by default.</span></a>
+          </td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Default Selected Payment Type:<br />
+          <span class="itemsubheading">This is the payment type that is automatically selected and open on the final cart page.</span></td>
+          <td valign="top">
+              <select name="ec_option_default_payment_type" id="ec_option_default_payment_type">
+                <option value="manual_bill" <?php if (get_option('ec_option_default_payment_type') == 'manual_bill') echo ' selected'; ?>>Manual Billing</option>
+                <option value="third_party" <?php if (get_option('ec_option_default_payment_type') == 'third_party') echo ' selected'; ?>>Third Party</option>
+                <option value="credit_card" <?php if (get_option('ec_option_default_payment_type') == 'credit_card') echo ' selected'; ?>>Credit Card</option>
               </select>
               <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Default Product Sort</em>This will set the default sort technique for the products page. For example, changing to Title A-Z will have the products sorted this way by default.</span></a>
           </td>

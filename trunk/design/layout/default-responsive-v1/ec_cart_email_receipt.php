@@ -1,10 +1,13 @@
 <html>
 <head>
     <title><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . $this->order_id; ?></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type='text/css'>
     <!--
 		.style20 {font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12px; }
         .style22 {font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+		.ec_option_label{font-family:[content_font]; font-size:11px; font-weight:bold; }
+		.ec_option_name{font-family:[content_font]; font-size:11px; }
 	-->
     </style>
 </head>
@@ -79,7 +82,34 @@
 		?>
 		
         <tr>
-        	<td width='269' class='style22'><?php echo $this->cart->cart[$i]->title; ?></td>
+        	<td width='269' class='style22'>
+				<table>
+                	<tr><td>
+                    <?php echo $this->cart->cart[$i]->title; ?>
+                    </td></tr>
+                    <?php 
+                    if( $this->cart->cart[$i]->optionitem1_name ){
+                        echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem1_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem1_name . "</span></td></tr>";
+                    }
+                    
+                    if( $this->cart->cart[$i]->optionitem2_name ){
+                        echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem2_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem2_name . "</span></td></tr>";
+                    }
+                    
+                    if( $this->cart->cart[$i]->optionitem3_name ){
+                        echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem3_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem3_name . "</span></td></tr>";
+                    }
+                    
+                    if( $this->cart->cart[$i]->optionitem4_name ){
+                        echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem4_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem4_name . "</span></td></tr>";
+                    }
+                    
+                    if( $this->cart->cart[$i]->optionitem5_name ){
+                        echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem5_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem5_name . "</span></td></tr>";
+                    }
+                    ?>
+                </table>
+            </td>
             <td width='80' align='center' class='style22'><?php echo $this->cart->cart[$i]->quantity; ?></td>
             <td width='91' align='center' class='style22'><?php echo $unit_price; ?></td>
             <td align='center' class='style22'><?php echo $total_price; ?></td>

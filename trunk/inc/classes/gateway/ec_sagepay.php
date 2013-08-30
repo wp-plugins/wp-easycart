@@ -50,44 +50,32 @@ class ec_sagepay extends ec_gateway{
 		else
 			$this->permalink_divider = "?";
 		
-		// create baseket array, NOT USUABLE IN SIMULATOR
-		$basket = "";
-		
-		if( !$sagepay_simulator ){
-			$basket = "<basket>
-				";
-			for( $i=0; $i<count( $this->cart->cart ); $i++ ){
-				$basket .= "<item><description>" . $this->cart->cart[$i]->title . "</description><productSku>" . $this->cart->cart[$i]->model_number . "</productSku><quantity>" . $this->cart->cart[$i]->quantity . "</quantity><unitNetAmount>" . number_format( $this->cart->cart[$i]->unit_price / ( 1 + ( $this->cart->cart[$i]->vat_rate / 100 ) ), 2 ) . "</unitNetAmount><unitTaxAmount>" . number_format( $this->cart->cart[$i]->unit_price - ( $this->cart->cart[$i]->unit_price / ( 1 + ( $this->cart->cart[$i]->vat_rate / 100 ) ) ), 2 ) . "</unitTaxAmount><unitGrossAmount>" . $this->cart->cart[$i]->unit_price . "</unitGrossAmount><totalGrossAmount>" . number_format( $this->cart->cart[$i]->unit_price * $this->cart->cart[$i]->quantity, 2 ) . "</totalGrossAmount></item>";
-			}
-			$basket .= "</basket>";
-		}
-		
 		$sagepay_data = array(	"VPSProtocol" => $VPS_Protocol,
 								"TxType" => "PAYMENT", // PAYMENT, DEFERRED, OR AUTHENTICATE
 								"Vendor" => $sagepay_vendor,
 								"VendorTxCode" => $this->order_id,
-								"Amount" => $this->order_totals->grand_total,
+								"Amount" => number_format( $this->order_totals->grand_total, 2, ".", "," ),
 								"Currency" => $sagepay_currency,
 								"Description" => "Online Sale",
-								"CardHolder" => $this->credit_card->card_holder_name,
+								"CardHolder" => substr( $this->credit_card->card_holder_name, 0, 50 ),
 								"CardNumber" => $this->credit_card->card_number,
 								"ExpiryDate" => $this->credit_card->expiration_month . $this->credit_card->get_expiration_year( 2 ),
 								"CV2" => $this->credit_card->security_code,
 								"CardType" => $card_type,
-								"BillingSurname" => $this->user->billing->last_name,
-								"BillingFirstnames" => $this->user->billing->first_name,
-								"BillingAddress1" => $this->user->billing->address_line_1,
-								"BillingCity" => $this->user->billing->city,
-								"BillingPostCode" => $this->user->billing->zip,
+								"BillingSurname" => substr( $this->user->billing->last_name, 0, 20 ),
+								"BillingFirstnames" => substr( $this->user->billing->first_name, 0, 20 ),
+								"BillingAddress1" => substr( $this->user->billing->address_line_1, 0, 100 ),
+								"BillingCity" => substr( $this->user->billing->city, 0, 40 ),
+								"BillingPostCode" => substr( $this->user->billing->zip, 0, 10 ),
 								"BillingCountry" => $this->user->billing->country,
-								"BillingPhone" => $this->user->billing->phone,
-								"DeliverySurname" => $this->user->shipping->last_name,
-								"DeliveryFirstnames" => $this->user->shipping->first_name,
-								"DeliveryAddress1" => $this->user->shipping->address_line_1,
-								"DeliveryCity" => $this->user->shipping->city,
-								"DeliveryPostCode" => $this->user->shipping->zip,
+								"BillingPhone" => substr( $this->user->billing->phone, 0, 20 ),
+								"DeliverySurname" => substr( $this->user->shipping->last_name, 0, 20 ),
+								"DeliveryFirstnames" => substr( $this->user->shipping->first_name, 0, 20 ),
+								"DeliveryAddress1" => substr( $this->user->shipping->address_line_1, 0, 100 ),
+								"DeliveryCity" => substr( $this->user->shipping->city, 0, 40 ),
+								"DeliveryPostCode" => substr( $this->user->shipping->zip, 0, 10 ),
 								"DeliveryCountry" => $this->user->shipping->country,
-								"DeliveryPhone" => $this->user->shipping->phone,
+								"DeliveryPhone" => substr( $this->user->shipping->phone, 0, 20 ),
 								"ClientIPAddress" => $_SERVER['REMOTE_ADDR'],
 								//"ReferrerID" => "wpeasycart here"
 								"NotificationURL" => $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $this->order_id,
@@ -96,9 +84,12 @@ class ec_sagepay extends ec_gateway{
 		
 		if( $this->user->email != "guest" )
 			$sagepay_data["CustomerEMail"] = $this->user->email;
-						 
-		if( !$sagepay_simulator )
-			$sagepay_data["BasketXML"] = $basket;
+			
+		if( $this->user->billing->country == "US" )
+			$sagepay_data["BillingState"] = $this->user->billing->state;
+		
+		if( $this->user->shipping->country == "US" )
+			$sagepay_data["DeliveryState"] = $this->user->shipping->state;
 		
 		return $sagepay_data;
 		
@@ -127,10 +118,13 @@ class ec_sagepay extends ec_gateway{
 		$response_vals = array();
 		for( $i=0; $i<count($response_array); $i++){
 			$split = explode( "=", $response_array[$i] );
-			if( count( $split ) >= 2 )
-				$response_vals[$split[0]] = $split[1]; 
-			if( count( $split ) >= 3 )
-				$response_vals[$split[0]] .= "=" . $split[2]; 
+			$val = "";
+			for( $j=1; $j<count($split); $j++){
+				if( $j > 1 )
+					$val .= "=";
+				$val .= $split[$j];
+			}
+			$response_vals[$split[0]] = $val; 
 		}
 		
 		$status = $response_vals["Status"];
@@ -176,6 +170,59 @@ class ec_sagepay extends ec_gateway{
 			
 	}
 	
+	public function secure_3d_auth( ){
+		
+		if( get_option( 'ec_option_sagepay_simulator' ) )
+			$gateway_url = "https://test.sagepay.com/Simulator/VSPDirectCallback.asp";
+		else if( get_option( 'ec_option_sagepay_testmode' ) )
+			$gateway_url = "https://test.sagepay.com/gateway/service/direct3dcallback.vsp";
+		else
+			$gateway_url = "https://live.sagepay.com/gateway/service/direct3dcallback.vsp";
+			
+		if( isset( $_POST['MD'] ) && isset( $_POST['PaRes'] ) )
+			$gateway_data = array( "MD" => $_POST['MD'], "PARes" => $_POST['PaRes'] );
+		
+		
+		if( isset( $gateway_url ) && isset( $gateway_data ) ){
+			$request = new WP_Http;
+			$response = $request->request( $gateway_url, array( 'method' => 'POST', 'body' => $gateway_data, 'headers' => "" ) );
+			$response_body = $response["body"];
+			
+			//Format response data in form key=val&key2=val2&...
+			$response_array = explode( "\r\n", $response_body );
+			$response_vals = array();
+			
+			for( $i=0; $i<count($response_array); $i++){
+				$split = explode( "=", $response_array[$i] );
+				$val = "";
+				for( $j=1; $j<count($split); $j++){
+					if( $j > 1 )
+						$val .= "=";
+					$val .= $split[$j];
+				}
+				$response_vals[$split[0]] = $val; 
+			}
+			
+			if( isset( $response_vals['Status'] ) )
+				$status = $response_vals['Status'];
+			else
+				$status = "error";
+			
+			if( $status == "OK" ){
+				$this->mysqli->update_order_status( $_GET['order_id'], "6" );
+				// send email
+				$order_row = $this->mysqli->get_order_row( $_GET['order_id'], "guest", "guest" );
+				$order_display = new ec_orderdisplay( $order_row, true );
+				$order_display->send_email_receipt( );
+				$this->mysqli->clear_tempcart( session_id() );
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+	
 }
-
 ?>

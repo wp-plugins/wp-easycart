@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.12
+Stable tag: 1.1.13
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,17 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.13 =
+* Added MasterCard Debit, Visa Debit/Delta, and Visa Electron as credit card options (currently only Sagepay).
+* Added default payment selected method - Select the default method from the admin basic settings and that box will automatically appear on load on the final checkout page.
+* Added drop down menu for currency - This will allow a customer to select their currency instead of entering manually, preventing user errors.
+* Added Javascript validation code for MasterCard Debit, Visa Debit/Delta, Visa Electron, and Maestro International.
+* Added product options in the display of the success page in the card (must update theme files manually to see new addition).
+* Added product options to the receipt email (must update theme files manually to see new addition).
+* Bug Fix - Order status and method during Sagepay 3D Secure checkout now functions properly. Orders are deleted if not authorized. On return emails are sent, etc...
+* Bug Fix - BCC email address for admin emails switched to a second email.
+* Bug Fix - Currency symbol for non U.S. customers fixed to appear without extra content in emailers.
+* Improvement - updated headers for better emailers.
 = 1.1.12 =
 * New Feature - Add BCC email addresses for customer orders in the Store Settings -> Basic Setup section of the wp-admin.
 * Improvement - Guest checkout was not saving the email address, this is fixed.

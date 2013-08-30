@@ -115,7 +115,7 @@ function ec_validation( function_name, input, country_code ){
 	}else if( function_name == "validate_card_number" ){
 		if( country_code == "paypal" )
 			return true;
-		else if( country_code == "visa" ){
+		else if( country_code == "visa" || country_code == "delta" || country_code == "uke" ){
 			if( /^4[0-9]{12}(?:[0-9]{3})?$/.test( input ) )
 				return true;
 			else
@@ -125,7 +125,7 @@ function ec_validation( function_name, input, country_code ){
 				return true;
 			else
 				return false;
-		}else if( country_code == "mastercard" ){
+		}else if( country_code == "mastercard" || country_code == "mcdebit" ){
 			if( /^5[1-5]\d{14}$/.test( input ) )
 				return true;
 			else
@@ -146,7 +146,7 @@ function ec_validation( function_name, input, country_code ){
 			else
 				return false;
 		}else if( country_code == "maestro" ){
-			if( /(^(5[0678]\d{11,18}$))|(^(6[^0357])\d{11,18}$)/.test( input ) )
+			if( /(^(5[0678]\d{11,18}$))|(^(6[^0357])\d{11,18}$)|(^(3)\d{13,20}$)/.test( input ) )
 				return true;
 			else
 				return false;	

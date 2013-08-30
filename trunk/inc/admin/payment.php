@@ -9,11 +9,16 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_direct_deposit_message', $_POST['ec_option_direct_deposit_message'] );
 	//payment choices
 	update_option( 'ec_option_use_visa', $_POST['ec_option_use_visa'] );
+	update_option( 'ec_option_use_delta', $_POST['ec_option_use_delta'] );
+	update_option( 'ec_option_use_uke', $_POST['ec_option_use_uke'] );
 	update_option( 'ec_option_use_discover', $_POST['ec_option_use_discover'] );
 	update_option( 'ec_option_use_mastercard', $_POST['ec_option_use_mastercard'] );
+	update_option( 'ec_option_use_mcdebit', $_POST['ec_option_use_mcdebit'] );
 	update_option( 'ec_option_use_amex', $_POST['ec_option_use_amex'] );
 	update_option( 'ec_option_use_jcb', $_POST['ec_option_use_jcb'] );
 	update_option( 'ec_option_use_diners', $_POST['ec_option_use_diners'] );
+	update_option( 'ec_option_use_delta', $_POST['ec_option_use_delta'] );
+	update_option( 'ec_option_use_uke', $_POST['ec_option_use_uke'] );
 	update_option( 'ec_option_use_paypal', $_POST['ec_option_use_paypal'] );
 	//payment method
 	update_option( 'ec_option_payment_process_method', $_POST['ec_option_payment_process_method'] );
@@ -213,6 +218,20 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 <option value="0" <?php if (get_option('ec_option_use_visa') == 0) echo ' selected'; ?>>No</option>
               </select></td>
             </tr>
+            <tr valign="top" id="delta">
+              <td valign="middle" class="itemheading" scope="row"><img width="25" height="25" src="<?php echo plugins_url('images/visa.png', __FILE__); ?>" alt="" /> Show Visa Debit / Delta to Customers:</td>
+              <td valign="middle"><select name="ec_option_use_delta" id="ec_option_use_delta" onchange="toggle_live_cards();">
+                <option value="1" <?php if (get_option('ec_option_use_delta') == 1) echo ' selected'; ?>>Yes</option>
+                <option value="0" <?php if (get_option('ec_option_use_delta') == 0) echo ' selected'; ?>>No</option>
+              </select></td>
+            </tr>
+            <tr valign="top" id="uke">
+              <td valign="middle" class="itemheading" scope="row"><img width="25" height="25" src="<?php echo plugins_url('images/visa.png', __FILE__); ?>" alt="" /> Show Visa Electron to Customers:</td>
+              <td valign="middle"><select name="ec_option_use_uke" id="ec_option_use_uke" onchange="toggle_live_cards();">
+                <option value="1" <?php if (get_option('ec_option_use_uke') == 1) echo ' selected'; ?>>Yes</option>
+                <option value="0" <?php if (get_option('ec_option_use_uke') == 0) echo ' selected'; ?>>No</option>
+              </select></td>
+            </tr>
             <tr valign="top" id="discover">
               <td valign="middle" class="itemheading" scope="row"><img  width="25" height="25" src="<?php echo plugins_url('images/discover.png', __FILE__); ?>" alt="" /> Show Discover to Customers:</td>
               <td valign="middle"><select name="ec_option_use_discover" id="ec_option_use_discover" onchange="toggle_live_cards();">
@@ -225,6 +244,13 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
               <td valign="middle"><select name="ec_option_use_mastercard" id="ec_option_use_mastercard" onchange="toggle_live_cards();">
                 <option value="1" <?php if (get_option('ec_option_use_mastercard') == 1) echo ' selected'; ?>>Yes</option>
                 <option value="0" <?php if (get_option('ec_option_use_mastercard') == 0) echo ' selected'; ?>>No</option>
+              </select></td>
+            </tr>
+            <tr valign="top" id="mcdebit">
+              <td valign="middle" class="itemheading" scope="row"><img  width="25" height="25" src="<?php echo plugins_url('images/mastercard.png', __FILE__); ?>" alt="" /> Show Mastercard Debit to Customers:</td>
+              <td valign="middle"><select name="ec_option_use_mcdebit" id="ec_option_use_mcdebit" onchange="toggle_live_cards();">
+                <option value="1" <?php if (get_option('ec_option_use_mcdebit') == 1) echo ' selected'; ?>>Yes</option>
+                <option value="0" <?php if (get_option('ec_option_use_mcdebit') == 0) echo ' selected'; ?>>No</option>
               </select></td>
             </tr>
             <tr valign="top" id="amex">
@@ -1239,65 +1265,65 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 				document.getElementById("securepay").style.display = 'none';
 				document.getElementById("psigate").style.display = 'none';
 			   
-			   	//toggle_live_card_display( visa, discover, mastercard, amex, jcb, diners, laser, maestro );
+			   	//toggle_live_card_display( visa, delta, uke, discover, mastercard, mcdebit, amex, jcb, diners, laser, maestro );
 				if( paymentmethod == "authorize" ){
 				   	document.getElementById( "authorize" ).style.display = "";
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0 );
 				}
 				
 				else if(paymentmethod == "paypal_pro"){
 					document.getElementById('paypal_pro').style.display = "";
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0 );
 				}
 				
 				else if(paymentmethod == "realex"){
 					document.getElementById('realex').style.display = "";
-					toggle_live_card_display( 1, 0, 1, 1, 0, 1, 1, 1 );
+					toggle_live_card_display( 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1 );
 				}
 				
 				else if(paymentmethod == "sagepay"){
 					document.getElementById('sagepay').style.display = "";
-					toggle_live_card_display( 1, 1, 1, 1, 1, 0, 1, 1 );
+					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1 );
 				}
 				
 				else if( paymentmethod == "firstdata" ){
 				   document.getElementById( "firstdata").style.display = '';
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0 );
 				}
 				
 				else if( paymentmethod == 'paymentexpress' ){
 				   document.getElementById( "paymentexpress" ).style.display = '';
-					toggle_live_card_display( 1, 0, 1, 1, 0, 1, 0, 0 );
+					toggle_live_card_display( 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0 );
 				}
 				
 				else if( paymentmethod == 'chronopay' ){
 				   document.getElementById( "chronopay" ).style.display = '';
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 1, 1 );
+					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1 );
 				}
 				
 				else if( paymentmethod == 'versapay' ){
 				   document.getElementById( "versapay" ).style.display = '';
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0 );
 				}
 				
 				else if( paymentmethod == 'eway' ){
 				   document.getElementById( "eway" ).style.display = '';
-					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 0, 0 );
+					toggle_live_card_display( 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0 );
 				}
 				
 				else if( paymentmethod == 'paypoint' ){
 				   document.getElementById( "paypoint" ).style.display = '';
-					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 1, 1 );
+					toggle_live_card_display( 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1 );
 				}
 				
 				else if( paymentmethod == 'securepay' ){
 				   document.getElementById( "securepay" ).style.display = '';
-					toggle_live_card_display( 1, 0, 1, 1, 1, 1, 0, 0 );
+					toggle_live_card_display( 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0 );
 				}
 				
 				else if( paymentmethod == 'psigate' ){
 				   document.getElementById( "psigate" ).style.display = '';
-					toggle_live_card_display( 1, 1, 1, 1, 1, 1, 0, 0 );
+					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0 );
 				}
 				
 			}
@@ -1323,8 +1349,11 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
             <script language="javascript" type="application/javascript">
 			function toggle_live_cards( ) {
 				var usevisa = document.getElementById("ec_option_use_visa").value;
+				var usedelta = document.getElementById("ec_option_use_delta").value;
+				var useuke = document.getElementById("ec_option_use_uke").value;
 				var usediscover = document.getElementById("ec_option_use_discover").value;
 				var usemastercard = document.getElementById("ec_option_use_mastercard").value;
+				var usemcdebit = document.getElementById("ec_option_use_mcdebit").value;
 				var useamex = document.getElementById("ec_option_use_amex").value;
 				var usejcb = document.getElementById("ec_option_use_jcb").value;
 				var usediners = document.getElementById("ec_option_use_diners").value;
@@ -1333,17 +1362,31 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 				
 				document.getElementById("live_gateways").style.display = 'none';
 
-				if( usevisa == '1' || usediscover == '1' || usemastercard == '1' || useamex == '1' || usejcb == '1' || usediners == '1' || uselaser == '1' || usemaestro == '1' )
+				if( usevisa == '1' || usedelta == '1' || useuke == '1' || usediscover == '1' || usemastercard == '1' || usemcdebit == '1' || useamex == '1' || usejcb == '1' || usediners == '1' || uselaser == '1' || usemaestro == '1' )
 				   document.getElementById( "live_gateways" ).style.display = "";
 
 			}
 			
-			function toggle_live_card_display( visa, discover, mastercard, amex, jcb, diners, laser, maestro ){
+			function toggle_live_card_display( visa, delta, uke, discover, mastercard, mcdebit, amex, jcb, diners, laser, maestro ){
 				if( visa )
 					document.getElementById( "visa" ).style.display = "";
 				else{
 					document.getElementById( "visa" ).style.display = "none";
 					document.getElementById( "ec_option_use_visa" ).value = "0";
+				}
+				
+				if( delta )
+					document.getElementById( "delta" ).style.display = "";
+				else{
+					document.getElementById( "delta" ).style.display = "none";
+					document.getElementById( "ec_option_use_delta" ).value = "0";
+				}
+				
+				if( uke )
+					document.getElementById( "uke" ).style.display = "";
+				else{
+					document.getElementById( "uke" ).style.display = "none";
+					document.getElementById( "ec_option_use_uke" ).value = "0";
 				}
 				
 				if( discover )
@@ -1358,6 +1401,13 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 				else{
 					document.getElementById( "mastercard" ).style.display = "none";
 					document.getElementById( "ec_option_use_mastercard" ).value = "0";
+				}
+					
+				if( mcdebit )
+					document.getElementById( "mcdebit" ).style.display = "";
+				else{
+					document.getElementById( "mcdebit" ).style.display = "none";
+					document.getElementById( "ec_option_use_mcdebit" ).value = "0";
 				}
 					
 				if( amex )

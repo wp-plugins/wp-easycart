@@ -37,6 +37,15 @@
 	font-family:[content_font];	
 	text-align: left;
 }
+.ec_option_label{
+	font-family:[content_font];
+	font-size:11px;
+	font-weight:bold;	
+}
+.ec_option_name{
+	font-family:[content_font];
+	font-size:11px;
+}
 .top_link_bar {
 	width: 100%;
 	float: left;
