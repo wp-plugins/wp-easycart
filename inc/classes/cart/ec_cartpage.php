@@ -83,7 +83,7 @@ class ec_cartpage{
 		
 		if( class_exists( "WordPressHTTPS" ) ){
 			$https_class = new WordPressHTTPS( );
-			$this->cart_page = $https_class->getHttpsUrl( ) . substr( $this->cart_page, strlen( get_settings('home') ) );
+			$this->cart_page = $https_class->getHttpsUrl( ) . substr( $this->cart_page, strlen( get_settings('home') ) + 1 );
 		}
 		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
@@ -114,68 +114,63 @@ class ec_cartpage{
 	
 	public function display_cart_page(){
 		
-		// CHECK FOR 3D AUTH
-		if( $this->order->payment->is_3d_auth ){
-			$this->auth_3d_form( );
+		echo "<div class=\"ec_cart_page\">";
+		if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
+			$order_id = $_GET['order_id'];
+			$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			
+			$this->user->setup_billing_info_data( $order->billing_first_name, $order->billing_last_name, $order->billing_address_line_1, $order->billing_city, $order->billing_state, $order->billing_country, $order->billing_zip, $order->billing_phone );
+			
+			$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone );
+			
+			$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );
+			$subtotal = $GLOBALS['currency']->get_currency_display( $order->sub_total );
+			$tax = $GLOBALS['currency']->get_currency_display( $order->tax_total );
+			$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
+			if( ( $order->grand_total - $order->vat_total ) > 0 )
+			$vat_rate = number_format( ( $order->vat_total / ( $order->grand_total - $order->vat_total ) ) * 100, 0, '', '' );
+			else
+			$vat_rate = number_format( 0, 0, '', '' );
+			$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
+			$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
+			
+			$email_logo_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emaillogo.jpg");
+			$email_footer_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emailfooter.jpg");
+			
+			//google analytics
+			$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
+			$google_urchin_code = get_option('ec_option_googleanalyticsid');
+			$google_wp_url = $_SERVER['SERVER_NAME'];
+			$google_transaction = $this->analytics->get_transaction_js();
+			$google_items = $this->analytics->get_item_js();
+			//end google analytics
+			$this->display_cart_error();
+			
+			//Backwards compatibility for an error... Don't want the button showing if user didn't create an account.
+			if( $_SESSION['ec_password'] == "guest" )
+				$_SESSION['ec_email'] = "guest";
+				
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
+			
+		}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "third_party" ){
+			$order_id = $_GET['order_id'];
+			$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			//google analytics
+			$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
+			$google_urchin_code = get_option('ec_option_googleanalyticsid');
+			$google_wp_url = $_SERVER['SERVER_NAME'];
+			$google_transaction = $this->analytics->get_transaction_js();
+			$google_items = $this->analytics->get_item_js();
+			//end google analytics
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_third_party.php' );
+			
 		}else{
-			echo "<div class=\"ec_cart_page\">";
-			if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
-				$order_id = $_GET['order_id'];
-				$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-				$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-				
-				$this->user->setup_billing_info_data( $order->billing_first_name, $order->billing_last_name, $order->billing_address_line_1, $order->billing_city, $order->billing_state, $order->billing_country, $order->billing_zip, $order->billing_phone );
-				
-				$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone );
-				
-				$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );
-				$subtotal = $GLOBALS['currency']->get_currency_display( $order->sub_total );
-				$tax = $GLOBALS['currency']->get_currency_display( $order->tax_total );
-				$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
-				if( ( $order->grand_total - $order->vat_total ) > 0 )
-				$vat_rate = number_format( ( $order->vat_total / ( $order->grand_total - $order->vat_total ) ) * 100, 0, '', '' );
-				else
-				$vat_rate = number_format( 0, 0, '', '' );
-				$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
-				$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
-				
-				$email_logo_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emaillogo.jpg");
-				$email_footer_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emailfooter.jpg");
-				
-				//google analytics
-				$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
-				$google_urchin_code = get_option('ec_option_googleanalyticsid');
-				$google_wp_url = $_SERVER['SERVER_NAME'];
-				$google_transaction = $this->analytics->get_transaction_js();
-				$google_items = $this->analytics->get_item_js();
-				//end google analytics
-				$this->display_cart_error();
-				
-				//Backwards compatibility for an error... Don't want the button showing if user didn't create an account.
-				if( $_SESSION['ec_password'] == "guest" )
-					$_SESSION['ec_email'] = "guest";
-					
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
-				
-			}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "third_party" ){
-				$order_id = $_GET['order_id'];
-				$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-				$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-				//google analytics
-				$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
-				$google_urchin_code = get_option('ec_option_googleanalyticsid');
-				$google_wp_url = $_SERVER['SERVER_NAME'];
-				$google_transaction = $this->analytics->get_transaction_js();
-				$google_items = $this->analytics->get_item_js();
-				//end google analytics
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_third_party.php' );
-				
-			}else{
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_page.php' );
-				echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
-			}
-			echo "</div>";
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_page.php' );
+			echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
 		}
+		echo "</div>";
 	}
 	
 	public function display_cart( $empty_cart_string ){
@@ -732,9 +727,19 @@ class ec_cartpage{
 	
 	/* START PAYMENT INFORMATION FUNCTIONS */
     public function display_payment_information( ){
-    	if(	$this->cart->total_items > 0 && $this->order_totals->grand_total > 0 )
+    	if(	$this->cart->total_items > 0 && $this->order_totals->grand_total > 0 ){
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_payment_information.php' );
-    }
+			echo "<script>jQuery(\"input[name=ec_cart_payment_selection][value='" . get_option( 'ec_option_default_payment_type' ) . "']\").attr('checked', 'checked');";
+			if( get_option( 'ec_option_default_payment_type' ) == "manual_bill" ){
+				echo "jQuery('#ec_cart_pay_by_manual_payment').show();";
+			}else if( get_option( 'ec_option_default_payment_type' ) == "third_party" ){
+				echo "jQuery('#ec_cart_pay_by_third_party').show();";
+			}else if( get_option( 'ec_option_default_payment_type' ) == "credit_card" ){
+				echo "jQuery('#ec_cart_pay_by_credit_card_holder').show();";
+			}
+			echo "</script>";
+		}
+	}
 	
 	public function use_manual_payment( ){
 		if( get_option( 'ec_option_use_direct_deposit' ) )
@@ -832,11 +837,20 @@ class ec_cartpage{
 		if( get_option('ec_option_use_visa') )
 		echo "<option value=\"visa\">Visa</option>";
 		
+		if( get_option('ec_option_use_delta') )
+		echo "<option value=\"delta\">Visa Debit/Delta</option>";
+		
+		if( get_option('ec_option_use_uke') )
+		echo "<option value=\"uke\">Visa Electron</option>";
+		
 		if( get_option('ec_option_use_discover') )
 		echo "<option value=\"discover\">Discover</option>";
 		
 		if( get_option('ec_option_use_mastercard') )
 		echo "<option value=\"mastercard\">Mastercard</option>";
+		
+		if( get_option('ec_option_use_mcdebit') )
+		echo "<option value=\"mcdebit\">Debit Mastercard</option>";
 		
 		if( get_option('ec_option_use_amex') )
 		echo "<option value=\"amex\">American Express</option>";
@@ -1079,67 +1093,14 @@ class ec_cartpage{
 		}else{ // Either show the success landing page
 			
 			if( $submit_return_val == "1" ){
-				if( $this->order->payment->is_3d_auth ){
-					$this->auth_3d_form( );
-				}else{
+				if( $this->order->payment->is_3d_auth )
+					$this->auth_3d_form();
+				else
 					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );	
-				}
-			}else
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=payment_failed" );
-			
-		}
-	}
-	
-	public function process_3dsecure_response( ){
-		
-		if( get_option( 'ec_option_payment_process_method' ) == "sagepay" ){
-			
-			if( get_option( 'ec_option_sagepay_simulator' ) )
-				$gateway_url = "https://test.sagepay.com/Simulator/VSPDirectCallback.asp";
-			else if( get_option( 'ec_option_sagepay_testmode' ) )
-				$gateway_url = "https://test.sagepay.com/gateway/service/direct3dcallback.vsp";
-			else
-				$gateway_url = "https://live.sagepay.com/gateway/service/direct3dcallback.vsp";
-			
-			if( isset( $_POST['MD'] ) && isset( $_POST['PaRes'] ) )
-				$gateway_data = array( "MD" => $_POST['MD'], "PARes" => $_POST['PaRes'] );
-		
-		
-			if( isset( $gateway_url ) && isset( $gateway_data ) ){
-				$request = new WP_Http;
-				$response = $request->request( $gateway_url, array( 'method' => 'POST', 'body' => $gateway_data, 'headers' => "" ) );
-				$response_body = $response["body"];
-				
-				//Format response data in form key=val&key2=val2&...
-				$response_array = explode( "\r\n", $response_body );
-				$response_vals = array();
-				
-				for( $i=0; $i<count($response_array); $i++){
-					$split = explode( "=", $response_array[$i] );
-					if( count( $split ) >= 2 )
-						$response_vals[$split[0]] = $split[1]; 
-				}
-				
-				if( isset( $response_vals['Status'] ) )
-					$status = $response_vals['Status'];
-				else
-					$status = "error";
-				
-				if( $status == "OK" )
-					$this->mysqli->update_order_status( $_GET['order_id'], "6" );
-				else
-					$this->mysqli->update_order_status( $_GET['order_id'], "7" );
 					
-				if( $status == "OK" )
-					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $_GET['order_id'] );
-				else
-					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $_GET['order_id'] . "&ec_cart_error=3dsecure_failed" );
-			}else{
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id . "&ec_cart_error=3dsecure_failed" );
-			}
+			}else
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=payment_failed&reason=" . $submit_return_val );
 			
-		}else{
-			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id . "&ec_cart_error=3dsecure_failed" );
 		}
 	}
 	
@@ -1151,6 +1112,33 @@ class ec_cartpage{
 		echo "</form>";
 		echo "<SCRIPT LANGUAGE=\"Javascript\">document.ec_cart_3dauth_form.submit();</SCRIPT>";
 	}
+	
+	public function process_3dsecure_response( ){
+		
+		$success = false;
+		
+		if( get_option( 'ec_option_payment_process_method' ) == "sagepay" ){
+			$gateway = new ec_sagepay( );
+		}
+		
+		if( isset( $gateway ) ){
+			$success = $gateway->secure_3d_auth( );
+			if( $success ){
+				$this->order->clear_session();
+				if( $this->discount->giftcard_code )
+					$this->mysqli->update_giftcard_total( $this->discount->giftcard_code, $this->discount->giftcard_discount );
+						
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $_GET['order_id'] );
+			}
+		}
+		
+		if( !$success ){
+			$this->mysqli->remove_order( $_GET['order_id'] );
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=3dsecure_failed" );
+		}	
+	}
+	
+	
 	
 	private function process_login_user( ){
 		$email = $_POST['ec_cart_login_email'];
@@ -1274,7 +1262,7 @@ class ec_cartpage{
 		$next_page = "checkout_shipping";
 		if( $this->cart->weight == 0 )
 			$next_page = "checkout_payment";
-			
+		
 		if( $_SESSION['ec_email'] == "guest" ){
 			$email = $_POST['ec_contact_email'];
 			$_SESSION['ec_email'] = $email;

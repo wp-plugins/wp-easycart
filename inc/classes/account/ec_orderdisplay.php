@@ -129,7 +129,7 @@ class ec_orderdisplay{
 				$result = $this->mysqli->get_order_details( $this->order_id, "guest", "" );
 				
 			foreach( $result as $item ){
-				array_push( $this->cart->cart, (object) array( "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity ) );
+				array_push( $this->cart->cart, (object) array( "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity, "optionitem1_name"=>$item->optionitem_name_1, "optionitem2_name"=>$item->optionitem_name_2, "optionitem3_name"=>$item->optionitem_name_3, "optionitem4_name"=>$item->optionitem_name_4, "optionitem5_name"=>$item->optionitem_name_5, "optionitem1_label"=>$item->optionitem_label_1, "optionitem2_label"=>$item->optionitem_label_2, "optionitem3_label"=>$item->optionitem_label_3, "optionitem4_label"=>$item->optionitem_label_4, "optionitem5_label"=>$item->optionitem_label_5 ) );
 				array_push( $this->orderdetails, new ec_orderdetail( $item ) );
 				
 			}
@@ -318,15 +318,16 @@ class ec_orderdisplay{
         include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_receipt.php';
         $message = ob_get_clean();
 	
-		$headers = "From: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
-		$headers .= "Reply-To: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
-		$headers .= "X-Mailer: PHP4\n";
-		$headers .= "X-Priority: 3\n";
-		$headers .= "MIME-Version: 1.0\n";
-		$headers .= "Return-Path: " . get_option( 'ec_option_order_from_email' ) . "\r\n"; 
-		$headers .= "Content-type: text/html\r\n"; 
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = "Content-type: text/html; charset=utf-8";
+		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "Subject: Order Confirmation - #" . $this->order_id;
+		$headers[] = "X-Mailer: PHP/".phpversion();
 	
-		mail( $this->user_email, "Order Confirmation -- #" . $this->order_id, $message, $headers);
+		mail( $this->user->email, "Order Confirmation -- #" . $this->order_id, $message, implode("\r\n", $headers) );
+		mail( get_option( 'ec_option_bcc_email_addresses' ), "Order Confirmation -- #" . $this->order_id, $message, implode("\r\n", $headers) );
 		
 	}
 	

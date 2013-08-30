@@ -94,7 +94,34 @@
 		
 		?>
     <tr>
-      <td class='ec_cart_success_style22'><?php echo $order_details[$i]->title; ?></td>
+      <td class='ec_cart_success_style22'>
+	  <table>
+        <tr><td>
+	  	<?php echo $order_details[$i]->title; ?>
+        </td></tr>
+	  	<?php 
+		if( $order_details[$i]->optionitem_name_1 ){
+			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_1 . "</span>: <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_1 . "</span></td></tr>";
+		}
+		
+		if( $order_details[$i]->optionitem_name_2 ){
+			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_2 . "</span>: <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_2 . "</span></td></tr>";
+		}
+		
+		if( $order_details[$i]->optionitem_name_3 ){
+			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_3 . "</span>: <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_3 . "</span></td></tr>";
+		}
+		
+		if( $order_details[$i]->optionitem_name_4 ){
+			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_4 . "</span>: <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_4 . "</span></td></tr>";
+		}
+		
+		if( $order_details[$i]->optionitem_name_5 ){
+			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_5 . "</span>: <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_5 . "</span></td></tr>";
+		}
+		?>
+        </table>
+      </td>
       <td align='center' class='ec_cart_success_style22'><?php echo $order_details[$i]->quantity; ?></td>
       <td align='center' class='ec_cart_success_style22'><?php echo $unit_price; ?></td>
       <td align='center' class='ec_cart_success_style22'><?php echo $total_price; ?></td>

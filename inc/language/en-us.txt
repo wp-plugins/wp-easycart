@@ -1344,7 +1344,7 @@
 				},
 				"3dsecure_failed":{
 					"title":"Cart, Optional, Error message when 3D Secure Fails, Gateway Dependent",
-					"value":"Your payment could not completed because the 3D Secure method failed. We will contact you shortly to resolve the issue."
+					"value":"Your payment could not completed because the 3D Secure method failed. Please try your payment again. If your problem persists, please contact us to have the issue resolved."
 				},
 				"manualbill_failed":{
 					"title":"Cart, Optional, Manual billing failed, Gateway Dependent",

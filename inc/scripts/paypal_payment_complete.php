@@ -140,7 +140,7 @@ if( $verified ) {
 			$mysqli->update_order_status( $order_id, "10" );
 			
 			// send email
-			$order_row = $mysqli->get_order_row( $order_id, "guest", "" );
+			$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
 			$order_display = new ec_orderdisplay( $order_row, true );
 			$order_display->send_email_receipt( );
 			
