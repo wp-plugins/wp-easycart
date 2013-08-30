@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.15
+Stable tag: 1.1.16
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.16 =
+* URGENT BUG FIX - Upgrader was not saving products or connections file. Please do not use past version upgrades.
 = 1.1.15 =
 * URGENT BUG FIX - Upgrader was not saving products or connections file. Please do not use past version upgrades.
 = 1.1.14 =
