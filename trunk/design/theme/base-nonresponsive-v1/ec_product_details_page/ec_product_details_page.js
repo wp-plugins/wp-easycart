@@ -207,7 +207,8 @@ function ec_swatch_click( modelnum, level, num ){
 }//close ec_product_details_swatch_change
 
 // Run when the combo box changes
-function ec_product_details_combo_change( level ){
+function ec_product_details_combo_change( level, modelnum ){
+	model_number = modelnum;
 	
 	// Only update stock stuff if this product uses that option.
 	if( ec_uses_stock_quantities( model_number ) ){
