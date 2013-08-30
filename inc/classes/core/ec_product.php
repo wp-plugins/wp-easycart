@@ -493,7 +493,7 @@ class ec_product{
 	/* Display product option combo box */
 	public function display_product_option_combo( &$optionset, $level, $id_prefix, $js_function_name ){
 		if( count( $optionset->optionset ) > 0 && $optionset->option_name != "" ){
-			echo "<select name=\"ec_option" . $level . "\" id=\"ec_option" . $level . "_" . $this->model_number . "\" class=\"ec_product_details_option_combo\" onchange=\"ec_product_details_combo_change(" . $level . ");\">";
+			echo "<select name=\"ec_option" . $level . "\" id=\"ec_option" . $level . "_" . $this->model_number . "\" class=\"ec_product_details_option_combo\" onchange=\"ec_product_details_combo_change(" . $level . ", '" . $this->model_number . "');\">";
 			echo "<option value=\"0\" data-quantitystring=\"" . $this->stock_quantity . "\">" . $optionset->option_label . "</option>";
 			for( $i=0; $i<count( $optionset->optionset ); $i++ ){
 				echo "<option data-quantitystring=\"" . $this->options->get_quantity_string( $level, $i ) . "\" value=\"" . $optionset->optionset[$i]->optionitem_id . "\">" . $optionset->optionset[$i]->get_optionitem_label() . "</option>";
