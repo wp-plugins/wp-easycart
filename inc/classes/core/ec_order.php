@@ -198,6 +198,7 @@ class ec_order{
 		unset( $_SESSION['ec_create_account'] );
 		unset( $_SESSION['ec_couponcode'] );
 		unset( $_SESSION['ec_giftcard'] );
+		unset( $_SESSION['ec_order_notes'] );
 	
 	}
 	

@@ -1227,6 +1227,8 @@ class ec_cartpage{
 		
 		unset( $_SESSION['ec_create_account'] );
 		
+		unset( $_SESSION['ec_order_notes'] );
+		
 		header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login");
 	
 	}
