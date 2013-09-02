@@ -23,6 +23,11 @@ class ec_orderdetail{
 	public $optionitem_label_3;    						// VARCHAR 128
 	public $optionitem_label_4;    						// VARCHAR 128
 	public $optionitem_label_5;    						// VARCHAR 128
+	public $optionitem_price_1;   						// FLOAT 13,3
+	public $optionitem_price_2;    						// FLOAT 13,3
+	public $optionitem_price_3;    						// FLOAT 13,3
+	public $optionitem_price_4;    						// FLOAT 13,3
+	public $optionitem_price_5;    						// FLOAT 13,3
 	public $giftcard_id;    							// VARCHAR 20
 	public $gift_card_message;     						// TEXT
 	public $gift_card_from_name;     					// VARCHAR 255
@@ -34,8 +39,6 @@ class ec_orderdetail{
 	public $download_id;      							// VARCHAR 255
 	public $maximum_downloads_allowed;       			// INT
 	public $download_timelimit_seconds;      			// INT
-	
-	private $currency;									// ec_currency structure
 	
 	public $customfields = array();						// array of ec_customfield objects
 	
@@ -62,6 +65,11 @@ class ec_orderdetail{
 		$this->optionitem_label_3 = $orderdetail_row->optionitem_label_3; 
 		$this->optionitem_label_4 = $orderdetail_row->optionitem_label_4; 
 		$this->optionitem_label_5 = $orderdetail_row->optionitem_label_5; 
+		$this->optionitem_price_1 = $orderdetail_row->optionitem_price_1; 
+		$this->optionitem_price_2 = $orderdetail_row->optionitem_price_2; 
+		$this->optionitem_price_3 = $orderdetail_row->optionitem_price_3; 
+		$this->optionitem_price_4 = $orderdetail_row->optionitem_price_4; 
+		$this->optionitem_price_5 = $orderdetail_row->optionitem_price_5; 
 		$this->giftcard_id = $orderdetail_row->giftcard_id; 
 		$this->gift_card_message = $orderdetail_row->gift_card_message; 
 		$this->gift_card_from_name = $orderdetail_row->gift_card_from_name; 
@@ -79,8 +87,6 @@ class ec_orderdetail{
 		
 		if( substr_count( $this->account_page, '?' ) )				$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
-		
-		$this->currency = new ec_currency( );
 		
 		if( isset( $_GET['orderdetail_id'] ) && $_GET['orderdetail_id'] == $this->orderdetail_id && 
 			isset( $_GET['download_id'] ) && $_GET['download_id'] == $this->download_id && 
@@ -126,6 +132,17 @@ class ec_orderdetail{
 			echo $this->optionitem_label_1;	
 	}
 	
+	public function has_option1_price( ){
+		if( $this->optionitem_price_1 != "0.00" )
+			return true;
+		else
+			return false;
+	}
+	
+	public function display_option1_price( ){
+		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_1 );
+	}
+	
 	public function has_option2( ){
 		if( $this->optionitem_name_2 != "" )
 			return true;
@@ -141,6 +158,17 @@ class ec_orderdetail{
 	public function display_option2_label( ){
 		if( $this->optionitem_label_2 != "" )
 			echo $this->optionitem_label_2;	
+	}
+	
+	public function has_option2_price( ){
+		if( $this->optionitem_price_2 != "0.00" )
+			return true;
+		else
+			return false;
+	}
+	
+	public function display_option2_price( ){
+		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_2 );
 	}
 	
 	public function has_option3( ){
@@ -160,6 +188,17 @@ class ec_orderdetail{
 			echo $this->optionitem_label_3;	
 	}
 	
+	public function has_option3_price( ){
+		if( $this->optionitem_price_3 != "0.00" )
+			return true;
+		else
+			return false;
+	}
+	
+	public function display_option3_price( ){
+		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_3 );
+	}
+	
 	public function has_option4( ){
 		if( $this->optionitem_name_4 != "" )
 			return true;
@@ -177,6 +216,17 @@ class ec_orderdetail{
 			echo $this->optionitem_label_4;	
 	}
 	
+	public function has_option4_price( ){
+		if( $this->optionitem_price_4 != "0.00" )
+			return true;
+		else
+			return false;
+	}
+	
+	public function display_option4_price( ){
+		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_4 );
+	}
+	
 	public function has_option5( ){
 		if( $this->optionitem_name_5 != "" )
 			return true;
@@ -192,6 +242,17 @@ class ec_orderdetail{
 	public function display_option5_label( ){
 		if( $this->optionitem_label_5 != "" )
 			echo $this->optionitem_label_5;	
+	}
+	
+	public function has_option5_price( ){
+		if( $this->optionitem_price_5 != "0.00" )
+			return true;
+		else
+			return false;
+	}
+	
+	public function display_option5_price( ){
+		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_5 );
 	}
 	
 	public function has_gift_card_message( ){
@@ -248,7 +309,7 @@ class ec_orderdetail{
 	}
 	
 	public function display_unit_price( ){
-		echo $this->currency->get_currency_display( $this->unit_price );
+		echo $GLOBALS['currency']->get_currency_display( $this->unit_price );
 	}
 	
 	public function display_quantity( ){
@@ -256,7 +317,7 @@ class ec_orderdetail{
 	}
 	
 	public function display_item_total( ){
-		echo $this->currency->get_currency_display( $this->total_price );
+		echo $GLOBALS['currency']->get_currency_display( $this->total_price );
 	}
 	
 	public function display_custom_fields( $divider, $seperator ){

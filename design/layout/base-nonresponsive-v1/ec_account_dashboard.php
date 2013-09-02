@@ -61,6 +61,7 @@
         <div class="ec_account_dashboard_row_content">
           <?php $this->display_billing_information_link( $GLOBALS['language']->get_text( 'account_dashboard', 'account_dashboard_billing_link' ) ); ?>
         </div>
+        <?php if( get_option( 'ec_option_use_shipping' ) ){ ?>
         <div class="ec_account_dashboard_row_bold"><b><?php echo $GLOBALS['language']->get_text( 'account_dashboard', 'account_dashboard_shipping_title' )?></b></div>
         <?php if( $this->user->shipping->first_name || $this->user->shipping->last_name ){ ?>
         <div class="ec_account_dashboard_row_content" id="ec_account_dashboard_shipping_name">
@@ -94,6 +95,7 @@
         <div class="ec_account_dashboard_row_content">
           <?php $this->display_shipping_information_link( $GLOBALS['language']->get_text( 'account_dashboard', 'account_dashboard_shipping_link' )); ?>
         </div>
+        <?php }?>
       </div>
     </div>
     <div class="ec_account_dashboard_right">

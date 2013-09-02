@@ -29,6 +29,11 @@ class ec_db{
 				ec_orderdetail.optionitem_label_3, 
 				ec_orderdetail.optionitem_label_4, 
 				ec_orderdetail.optionitem_label_5,
+				ec_orderdetail.optionitem_price_1, 
+				ec_orderdetail.optionitem_price_2, 
+				ec_orderdetail.optionitem_price_3, 
+				ec_orderdetail.optionitem_price_4, 
+				ec_orderdetail.optionitem_price_5,
 				ec_orderdetail.giftcard_id, 
 				ec_orderdetail.gift_card_message, 
 				ec_orderdetail.gift_card_from_name, 
@@ -83,6 +88,11 @@ class ec_db{
 				ec_orderdetail.optionitem_label_3, 
 				ec_orderdetail.optionitem_label_4, 
 				ec_orderdetail.optionitem_label_5,
+				ec_orderdetail.optionitem_price_1, 
+				ec_orderdetail.optionitem_price_2, 
+				ec_orderdetail.optionitem_price_3, 
+				ec_orderdetail.optionitem_price_4, 
+				ec_orderdetail.optionitem_price_5,
 				ec_orderdetail.giftcard_id, 
 				ec_orderdetail.gift_card_message, 
 				ec_orderdetail.gift_card_from_name, 
@@ -1282,7 +1292,7 @@ class ec_db{
 		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT shipping_label FROM ec_shippingrate WHERE shippingrate_id = '%s'", $ship_id ) );	
 	}
 	
-	public function insert_order( $cart, $user, $shipping, $tax, $discount, $order_totals, $payment, $payment_type, $orderstatus_id ){
+	public function insert_order( $cart, $user, $shipping, $tax, $discount, $order_totals, $payment, $payment_type, $orderstatus_id, $order_notes ){
 		
 		// Get Payment Method to Save
 		if( $payment_type == "manual_bill" )
@@ -1355,7 +1365,8 @@ class ec_db{
 										'shipping_zip'					=> $user->shipping->zip,
 										'shipping_phone'				=> $user->shipping->phone,
 										
-										'payment_method'				=> $payment_type
+										'payment_method'				=> $payment_type,
+										'order_customer_notes'			=> $order_notes
 								), 
 								array( 	'%d', '%s', '%d', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
@@ -1364,7 +1375,7 @@ class ec_db{
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
-										'%s' 
+										'%s', '%s'
 								)
 							);	
 									
@@ -1477,18 +1488,25 @@ class ec_db{
 										'total_price'					=> $cart_item->total_price,
 										'quantity'						=> $cart_item->quantity,
 										'image1'						=> $image1,
+										
 										'optionitem_name_1'				=> $cart_item->optionitem1_name,
 										'optionitem_name_2'				=> $cart_item->optionitem2_name,
-										
 										'optionitem_name_3'				=> $cart_item->optionitem3_name,
 										'optionitem_name_4'				=> $cart_item->optionitem4_name,
 										'optionitem_name_5'				=> $cart_item->optionitem5_name,
+										
 										'optionitem_label_1'			=> $cart_item->optionitem1_label,
 										'optionitem_label_2'			=> $cart_item->optionitem2_label,
-										
 										'optionitem_label_3'			=> $cart_item->optionitem3_label,
 										'optionitem_label_4'			=> $cart_item->optionitem4_label,
 										'optionitem_label_5'			=> $cart_item->optionitem5_label,
+										
+										'optionitem_price_1'			=> $cart_item->optionitem1_price,
+										'optionitem_price_2'			=> $cart_item->optionitem2_price,
+										'optionitem_price_3'			=> $cart_item->optionitem3_price,
+										'optionitem_price_4'			=> $cart_item->optionitem4_price,
+										'optionitem_price_5'			=> $cart_item->optionitem5_price,
+										
 										'giftcard_id'					=> $giftcard_id,
 										'gift_card_message'				=> $cart_item->gift_card_message,
 										
@@ -1634,7 +1652,9 @@ class ec_db{
 				ec_order.payment_method, 
 				
 				ec_order.paypal_email_id, 
-				ec_order.paypal_payer_id 
+				ec_order.paypal_payer_id,
+				
+				ec_order.order_customer_notes
 				
 				FROM 
 				ec_order
@@ -1706,6 +1726,8 @@ class ec_db{
 				
 				ec_order.paypal_email_id, 
 				ec_order.paypal_payer_id,
+				
+				ec_order.order_customer_notes,
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
@@ -1780,6 +1802,8 @@ class ec_db{
 				
 				ec_order.paypal_email_id, 
 				ec_order.paypal_payer_id,
+				
+				ec_order.order_customer_notes,
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data 
 				

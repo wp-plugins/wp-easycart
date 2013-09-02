@@ -46,6 +46,7 @@ if( $this->should_display_cart( ) ){
       <?php $this->display_coupon_message( ); ?>
     </div>
     <?php if( $this->is_cart_type_three( ) ){ ?>
+    <?php if( get_option( 'ec_option_use_shipping' ) ){?>
     <div class="ec_cart_lower_left_title"><?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_title' )?></div>
     <div class="ec_cart_lower_left_subtitle"><?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_sub_title' )?></div>
     <div class="ec_cart_shipping_costs_row">
@@ -55,6 +56,7 @@ if( $this->should_display_cart( ) ){
     <div class="ec_cart_shipping_methods" id="ec_cart_shipping_methods">
       <?php $this->ec_cart_display_shipping_methods( $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_standard' ), $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_express' ), "RADIO" ); ?>
     </div>
+    <?php }?>
     <?php }?>
   </div>
   <?php }?>
@@ -71,10 +73,12 @@ if( $this->should_display_cart( ) ){
         <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_tax' )?></div>
     </div>
     <?php } ?>
+    <?php if( get_option( 'ec_option_use_shipping' ) ){?>
     <div class="ec_cart_lower_right_row">
         <div class="left"><?php $this->display_shipping_total(); ?></div>
         <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_shipping' )?></div>
     </div>
+    <?php }?>
     <div class="ec_cart_lower_right_row">
         <div class="left">-<?php $this->display_discount_total(); ?></div>
         <div class="right"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_discounts' )?></div>

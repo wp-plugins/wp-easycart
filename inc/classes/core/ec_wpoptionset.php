@@ -70,6 +70,12 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_use_rtl');							array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_allow_guest');						array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_use_shipping');						array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_user_order_notes');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
 		array_push($this->wp_option_names, 'ec_option_use_direct_deposit');					array_push($this->wp_option_defaults, '1' );

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.17
+Stable tag: 1.1.18
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.18 =
+* Addition - Guest checkout is now an option to disable. Change this in the store settings.
+* Addition - Shipping can be disabled site wide. New Users Only! Update design files manually to use this option.
+* Addition - Optional customer order notes on checkout. This can be turned on in the basic settings for the store in the wp-admin. A manual update of the design files is necessary for this change to work properly.
+* Improvement - Option item prices are passed through in the database, appear in emailers, success, and account order details. New Users Only! Update design files manually to use this option.
+* Bug Fix - People with HTTPS Plugin installed sometimes saw random force to HTTPS. Fixed.
 = 1.1.17 =
 * Bug Fix - Multiple combo only products with quantity tracking was not working. Please manually update the ec_product_details_page.js file in your design files.
 * Bug Fix - Future users will have a solid updater. Those with FTP access may still fail. Please backup everytime before updating.

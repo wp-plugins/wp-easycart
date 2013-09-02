@@ -81,7 +81,7 @@ class ec_cartpage{
 		$account_page_id = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $account_page_id );
 		
-		if( class_exists( "WordPressHTTPS" ) ){
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
 			$https_class = new WordPressHTTPS( );
 			$this->cart_page = $https_class->getHttpsUrl( ) . substr( $this->cart_page, strlen( get_settings('home') ) + 1 );
 		}
@@ -222,7 +222,7 @@ class ec_cartpage{
 	
 	public function display_page_one_form_start(){
 		$next_page = "checkout_shipping";
-		if( $this->cart->weight == 0 )
+		if( !get_option( 'ec_option_use_shipping' ) || $this->cart->weight == 0 )
 			$next_page = "checkout_payment";
 		
 		echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page . "\" method=\"POST\">";
@@ -532,16 +532,20 @@ class ec_cartpage{
 		echo " onchange=\"ec_cart_use_billing_for_shipping_change(); return false;\" />" . $first_opt;
 		echo "</div>";
 		
-		if( $this->cart->shipping_subtotal > 0 )
-			echo "<div class=\"ec_cart_shipping_selector_row\">";
-		else
-			echo "<div class=\"ec_cart_shipping_selector_row_hidden\">";
-		
-		echo "<input type=\"radio\" name=\"ec_shipping_selector\" id=\"ec_cart_use_shipping_for_shipping\" value=\"true\"";
-		if( isset( $_SESSION['ec_shipping_selector'] ) && $_SESSION['ec_shipping_selector'] == "true" )
-		echo " checked=\"checked\"";
-		echo " onchange=\"ec_cart_use_shipping_for_shipping_change(); return false;\" />" . $second_opt;
-		echo "</div>";
+		if( get_option( 'ec_option_use_shipping' ) ){
+			if( $this->cart->shipping_subtotal > 0 )
+				echo "<div class=\"ec_cart_shipping_selector_row\">";
+			else
+				echo "<div class=\"ec_cart_shipping_selector_row_hidden\">";
+			
+			echo "<input type=\"radio\" name=\"ec_shipping_selector\" id=\"ec_cart_use_shipping_for_shipping\" value=\"true\"";
+			if( isset( $_SESSION['ec_shipping_selector'] ) && $_SESSION['ec_shipping_selector'] == "true" )
+			echo " checked=\"checked\"";
+			echo " onchange=\"ec_cart_use_shipping_for_shipping_change(); return false;\" />" . $second_opt;
+			echo "</div>";
+		}else{
+			echo "<script>jQuery('.ec_cart_shipping_selector_row').hide();</script>";	
+		}
 	}
 	
 	public function display_shipping_input( $name ){
@@ -706,6 +710,9 @@ class ec_cartpage{
 	public function display_address_review(){
 		if(	$this->cart->total_items > 0 )
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_address_review.php' );
+			
+		if( !get_option( 'ec_option_use_shipping' ) )
+			echo "<script>jQuery('.ec_cart_address_review_middle').html('');</script>";
 	}
 	
 	public function display_edit_address_link( $link_text ){
@@ -963,6 +970,11 @@ class ec_cartpage{
 		if( isset( $_SESSION['ec_create_account'] ) )
 			echo " checked=\checked\"";
 		echo " />";
+		
+		if( !get_option( 'ec_option_allow_guest' ) ){
+			echo "<script>jQuery('#ec_contact_create_account').hide(); jQuery('#ec_contact_create_account').attr('checked', true);
+</script>";
+		}
 	}
 	
 	public function ec_cart_display_contact_password_input( ){
@@ -982,6 +994,18 @@ class ec_cartpage{
     public function display_submit_order(){
 		if(	$this->cart->total_items > 0 )
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_submit_order.php' );
+	}
+	
+	public function display_customer_order_notes( ){
+		if( get_option( 'ec_option_user_order_notes' ) ){
+			echo "<div class=\"ec_cart_payment_information_title\">" . $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_title' ) . "</div>";
+			echo "<div class=\"ec_cart_submit_order_message\">" . $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_message' ) . "</div>";	
+			echo "<div class=\"ec_cart_payment_information_row\"><textarea name=\"ec_order_notes\">";
+			if( isset( $_SESSION['ec_order_notes'] ) )
+				echo $_SESSION['ec_order_notes'];
+			
+			echo "</textarea></div>";
+		}
 	}
 	/* END SUBMIT ORDER DISPLAY FUNCTIONS */
 	
@@ -1073,6 +1097,9 @@ class ec_cartpage{
 	
 	private function process_submit_order(){
 		$payment_type = $_POST['ec_cart_payment_selection'];
+		if( isset( $_POST['ec_order_notes'] ) )
+			$_SESSION['ec_order_notes'] = $_POST['ec_order_notes'];
+			
 		$submit_return_val = $this->order->submit_order( $payment_type );
 		
 		if( $this->order_totals->grand_total <= 0 ){
@@ -1260,7 +1287,7 @@ class ec_cartpage{
 		$_SESSION['ec_last_name'] = $last_name;
 		
 		$next_page = "checkout_shipping";
-		if( $this->cart->weight == 0 )
+		if( !get_option( 'ec_option_use_shipping' ) || $this->cart->weight == 0 )
 			$next_page = "checkout_payment";
 		
 		if( $_SESSION['ec_email'] == "guest" ){

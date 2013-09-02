@@ -12,10 +12,12 @@
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_order_status' )?></b>
           <?php $this->order->display_order_status( ); ?>
         </div>
+        <?php if( get_option( 'ec_option_use_shipping' ) ){?>
         <?php if( $this->order->shipping_method ){ ?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_shipping_method' )?></b>
           <?php $this->order->display_order_shipping_method( ); ?>
         </div>
+        <?php }?>
         <?php }?>
         <?php if( $this->order->promo_code ){ ?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_coupon_code' )?></b>
@@ -54,6 +56,7 @@
           <?php $this->order->display_order_billing_phone( ); ?>
         </div>
         <div class="ec_account_order_details_row">&nbsp;&nbsp;&nbsp;</div>
+        <?php if( get_option( 'ec_option_use_shipping' ) ){?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_shipping_label' )?></b></div>
         <div class="ec_account_order_details_row">
           <?php $this->order->display_order_shipping_first_name( ); ?>
@@ -75,6 +78,7 @@
           <?php $this->order->display_order_shipping_phone( ); ?>
         </div>
         <div class="ec_account_order_details_row">&nbsp;&nbsp;&nbsp;</div>
+        <?php }?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_payment_method' )?></b>
           <?php $this->order->display_payment_method( ); ?>
         </div>
@@ -82,9 +86,11 @@
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_subtotal' )?></b>
           <?php $this->order->display_sub_total( ); ?>
         </div>
+        <?php if( get_option( 'ec_option_use_shipping' ) ){?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_shipping_total' )?></b>
           <?php $this->order->display_shipping_total( ); ?>
         </div>
+        <?php }?>
         <?php if( !$this->order->has_vat( ) ){?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_tax_total' )?></b>
           <?php $this->order->display_tax_total( ); ?>
@@ -124,6 +130,14 @@
           <div class="ec_account_order_details_column5_header"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_5' )?></div>
         </div>
         <?php $this->display_order_detail_product_list( ); ?>
+        <?php if( get_option( 'ec_option_user_order_notes' ) ){ ?>
+            <div class="ec_account_order_notes">
+                <h4><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_title' ); ?></h4>
+                <p><?php echo nl2br( $this->order->order_customer_notes ); ?></p>
+                <br>
+                <hr />
+            </div>
+        <?php }?>
       </div>
     </div>
   </div>

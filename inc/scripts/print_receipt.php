@@ -23,6 +23,13 @@
 		$vat_rate = number_format( ( $vat / ( $total - $vat ) ) * 100, 0, '', '' );
 		$shipping = number_format( $order->shipping_total, 2, '.', ',' );
 		$discount = number_format( $order->discount_total, 2, '.', ',' );
+		
+		$total = $GLOBALS['currency']->get_currency_display( $total );
+		$subtotal = $GLOBALS['currency']->get_currency_display( $subtotal );
+		$tax = $GLOBALS['currency']->get_currency_display( $tax );
+		$vat = $GLOBALS['currency']->get_currency_display( $vat );
+		$shipping = $GLOBALS['currency']->get_currency_display( $shipping );
+		$discount = $GLOBALS['currency']->get_currency_display( $discount );
 	
 		$email_logo_url = get_option( 'ec_option_email_logo' );
 	

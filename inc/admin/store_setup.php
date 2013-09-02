@@ -17,6 +17,9 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_use_country_dropdown', $_POST['ec_option_use_country_dropdown'] );
 	update_option( 'ec_option_default_store_filter', $_POST['ec_option_default_store_filter'] );
 	update_option( 'ec_option_default_payment_type', $_POST['ec_option_default_payment_type'] );
+	update_option( 'ec_option_allow_guest', $_POST['ec_option_allow_guest'] );
+	update_option( 'ec_option_use_shipping', $_POST['ec_option_use_shipping'] );
+	update_option( 'ec_option_user_order_notes', $_POST['ec_option_user_order_notes'] );
 
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
 
@@ -108,65 +111,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
           <td align="left" class="itemheading" scope="row">Currency Symbol:<br />
             <span class="itemsubheading">(The currency symbol to represent throughout your store)</span></td>
           <td valign="top">
-          <select name="ec_option_currency">
-          	<option value="&#36;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#36;' ) ){ echo " selected=\"selected\""; }?>>&#36;</option>
-          	<option value="&#163;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#163;' ) ){ echo " selected=\"selected\""; }?>>&#163;</option>
-          	<option value="&#164;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#164;' ) ){ echo " selected=\"selected\""; }?>>&#164;</option>
-          	<option value="&#162;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#162;' ) ){ echo " selected=\"selected\""; }?>>&#162;</option>
-          	<option value="&#165;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#165;' ) ){ echo " selected=\"selected\""; }?>>&#165;</option>
-          	<option value="&#402;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#402;' ) ){ echo " selected=\"selected\""; }?>>&#402;</option>
-            
-          	<option value="&#8352;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8352;' ) ){ echo " selected=\"selected\""; }?>>&#8352;</option>
-          	<option value="&#8353;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8353;' ) ){ echo " selected=\"selected\""; }?>>&#8353;</option>
-          	<option value="&#8354;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8354;' ) ){ echo " selected=\"selected\""; }?>>&#8354;</option>
-          	<option value="&#8355;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8355;' ) ){ echo " selected=\"selected\""; }?>>&#8355;</option>
-          	<option value="&#8356;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8356;' ) ){ echo " selected=\"selected\""; }?>>&#8356;</option>
-          	<option value="&#8357;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8357;' ) ){ echo " selected=\"selected\""; }?>>&#8357;</option>
-          	<option value="&#8358;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8358;' ) ){ echo " selected=\"selected\""; }?>>&#8358;</option>
-          	<option value="&#8359;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8359;' ) ){ echo " selected=\"selected\""; }?>>&#8359;</option>
-          	<option value="&#8360;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8360;' ) ){ echo " selected=\"selected\""; }?>>&#8360;</option>
-          	<option value="&#8361;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8361;' ) ){ echo " selected=\"selected\""; }?>>&#8361;</option>
-          	<option value="&#8362;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8362;' ) ){ echo " selected=\"selected\""; }?>>&#8362;</option>
-          	<option value="&#8363;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8363;' ) ){ echo " selected=\"selected\""; }?>>&#8363;</option>
-            
-          	<option value="&#8364;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8364;' ) ){ echo " selected=\"selected\""; }?>>&#8364;</option>
-          	<option value="&#8365;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8365;' ) ){ echo " selected=\"selected\""; }?>>&#8365;</option>
-          	<option value="&#8366;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8366;' ) ){ echo " selected=\"selected\""; }?>>&#8366;</option>
-          	<option value="&#8367;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8367;' ) ){ echo " selected=\"selected\""; }?>>&#8367;</option>
-          	<option value="&#8368;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8368;' ) ){ echo " selected=\"selected\""; }?>>&#8368;</option>
-          	<option value="&#8369;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8369;' ) ){ echo " selected=\"selected\""; }?>>&#8369;</option>
-          	<option value="&#8370;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8370;' ) ){ echo " selected=\"selected\""; }?>>&#8370;</option>
-          	<option value="&#8371;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8371;' ) ){ echo " selected=\"selected\""; }?>>&#8371;</option>
-          	<option value="&#8372;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8372;' ) ){ echo " selected=\"selected\""; }?>>&#8372;</option>
-          	<option value="&#8373;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8373;' ) ){ echo " selected=\"selected\""; }?>>&#8373;</option>
-          	<option value="&#8374;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8374;' ) ){ echo " selected=\"selected\""; }?>>&#8374;</option>
-          	<option value="&#8375;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8375;' ) ){ echo " selected=\"selected\""; }?>>&#8375;</option>
-          	<option value="&#8376;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8376;' ) ){ echo " selected=\"selected\""; }?>>&#8376;</option>
-          	<option value="&#8377;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#8377;' ) ){ echo " selected=\"selected\""; }?>>&#8377;</option>
-          	
-            <option value="&#1423;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#1423;' ) ){ echo " selected=\"selected\""; }?>>&#1423;</option>
-          	<option value="&#2546;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#2546;' ) ){ echo " selected=\"selected\""; }?>>&#2546;</option>
-          	<option value="&#2547;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#2547;' ) ){ echo " selected=\"selected\""; }?>>&#2547;</option>
-          	<option value="&#2801;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#2801;' ) ){ echo " selected=\"selected\""; }?>>&#2801;</option>
-          	<option value="&#3065;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#3065;' ) ){ echo " selected=\"selected\""; }?>>&#3065;</option>
-          	<option value="&#3647;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#3647;' ) ){ echo " selected=\"selected\""; }?>>&#3647;</option>
-          	<option value="&#6107;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#6107;' ) ){ echo " selected=\"selected\""; }?>>&#6107;</option>
-          	<option value="&#13136;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#13136;' ) ){ echo " selected=\"selected\""; }?>>&#13136;</option>
-          	<option value="&#20803;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#20803;' ) ){ echo " selected=\"selected\""; }?>>&#20803;</option>
-          	<option value="&#20870;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#20870;' ) ){ echo " selected=\"selected\""; }?>>&#20870;</option>
-          	<option value="&#22278;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#22278;' ) ){ echo " selected=\"selected\""; }?>>&#22278;</option>
-          	<option value="&#22286;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#22286;' ) ){ echo " selected=\"selected\""; }?>>&#22286;</option>
-          	<option value="&#22291;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#22291;' ) ){ echo " selected=\"selected\""; }?>>&#22291;</option>
-          	<option value="&#22300;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#22300;' ) ){ echo " selected=\"selected\""; }?>>&#22300;</option>
-          	<option value="&#43064;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#43064;' ) ){ echo " selected=\"selected\""; }?>>&#43064;</option>
-          	<option value="&#65020;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65020;' ) ){ echo " selected=\"selected\""; }?>>&#65020;</option>
-          	<option value="&#65284;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65284;' ) ){ echo " selected=\"selected\""; }?>>&#65284;</option>
-          	<option value="&#65504;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65504;' ) ){ echo " selected=\"selected\""; }?>>&#65504;</option>
-          	<option value="&#65505;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65505;' ) ){ echo " selected=\"selected\""; }?>>&#65505;</option>
-          	<option value="&#65509;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65509;' ) ){ echo " selected=\"selected\""; }?>>&#65509;</option>
-          	<option value="&#65510;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#65510;' ) ){ echo " selected=\"selected\""; }?>>&#65510;</option>
-          	<option value="&#128178;"<?php if( get_option('ec_option_currency') == html_entity_decode( '&#128178;' ) ){ echo " selected=\"selected\""; }?>>&#128178;</option>
-          </select>
+          <input type="text" name="ec_option_currency" value="<?php echo get_option('ec_option_currency'); ?>">
           
           <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Currency Symbol</em>All currency symbols can easily be changed here.  Please note that all payment processors determine the actual payment currency, not this symbol.  Check with your payment processor to ensure you are processing in the proper currency that you need, then apply the currency symbol here to align your store.</span></a>
           
@@ -243,6 +188,18 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
               </select>
               <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Default Product Sort</em>This will set the default sort technique for the products page. For example, changing to Title A-Z will have the products sorted this way by default.</span></a>
           </td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Enable Guest Checkout:</td>
+          <td valign="top"><select name="ec_option_allow_guest" style="width:100px;"><option value="0"<?php if( get_option('ec_option_allow_guest') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_allow_guest') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Enable Guest Checkout</em>When guest checkout is enabled a user has the option complete the checkout process without entering a password for an account. All the same information is recorded when a user checks out as a guest, but no user is created for that order. In addition, the customer cannot return to the site to see their past orders.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Enable Shipping in Store:</td>
+          <td valign="top"><select name="ec_option_use_shipping" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_shipping') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_shipping') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Enable Shipping in Store</em>Disabling this option will hide shipping on checkout, addres review, receipts, and in the account from the user. It will also override any shipping options you may have setup previously. The customer will only be able to enter billing information on checkout if this is disabled. NOTE: users who had first install prior to 1.1.18 will need to upgrade their layout files in order to leverage this option.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Enable Customer Notes on Checkout:</td>
+          <td valign="top"><select name="ec_option_user_order_notes" style="width:100px;"><option value="0"<?php if( get_option('ec_option_user_order_notes') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_user_order_notes') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Enable Customer Notes on Checkout</em>Enabling this option will allow customers to enter custom notes on the last step of checkout. NOTE: users for had a first install prior to 1.1.18 will need to update their layout and theme fiiles manually in order to use this option.</span></a></td>
         </tr>
         <tr valign="top">
           <td align="left" class="itemheading" scope="row">Use RTL Support (Right to Left Text):</td>
