@@ -651,6 +651,14 @@
 				"cart_payment_information_submit_order_button":{
 					"title":"Cart, Payment Information, Submit Order Button",
 					"value":"SUBMIT ORDER"
+				},
+				"cart_payment_information_order_notes_title":{
+					"title":"Cart, Payment Information, Customer Notes Title",
+					"value":"Special Notes"
+				},
+				"cart_payment_information_order_notes_message":{
+					"title":"Cart, Payment Information, Customer Notes Message",
+					"value":"If you have any special requests for your order please enter them here."
 				}
 			}
 		},

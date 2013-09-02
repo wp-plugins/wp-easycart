@@ -33,41 +33,43 @@ class ec_shipping{
 		$this->user = new ec_user( $email_user );
 		$this->shipper = new ec_shipper( );
 		
-		$this->shipping_method = $this->ec_setting->get_shipping_method( );
-		$shipping_rows = $this->mysqli->get_shipping_data( );
-		
-		// Set the destination zip code
-		if( isset( $_SESSION['ec_shipping_zip'] ) )
-			$this->destination_zip = $_SESSION['ec_shipping_zip'];
-		
-		else if( isset( $_SESSION['ec_temp_zipcode'] ) )
-			$this->destination_zip = $_SESSION['ec_temp_zipcode'];
-		
-		else if( $this->user && $this->user->shipping && $this->user->shipping->zip )
-			$this->destination_zip = $this->user->shipping->zip;
-		
-		
-		foreach( $shipping_rows as $shipping_row ){
+		if( get_option( 'ec_option_use_shipping' ) ){
+			$this->shipping_method = $this->ec_setting->get_shipping_method( );
+			$shipping_rows = $this->mysqli->get_shipping_data( );
 			
-			if( $shipping_row->is_price_based )					
-				array_push( $this->price_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
-			else if( $shipping_row->is_weight_based )			
-				array_push( $this->weight_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
-			else if( $shipping_row->is_method_based )			
-				array_push( $this->method_based, array( $shipping_row->shipping_rate, $shipping_row->shipping_label, $shipping_row->shippingrate_id ) );
-			else if( $this->is_live_based( $shipping_row ) ){	
-				array_push( $this->live_based, array( $shipping_row->shipping_code, $shipping_row->shipping_label, $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ) ) );
+			// Set the destination zip code
+			if( isset( $_SESSION['ec_shipping_zip'] ) )
+				$this->destination_zip = $_SESSION['ec_shipping_zip'];
+			
+			else if( isset( $_SESSION['ec_temp_zipcode'] ) )
+				$this->destination_zip = $_SESSION['ec_temp_zipcode'];
+			
+			else if( $this->user && $this->user->shipping && $this->user->shipping->zip )
+				$this->destination_zip = $this->user->shipping->zip;
+			
+			
+			foreach( $shipping_rows as $shipping_row ){
+				
+				if( $shipping_row->is_price_based )					
+					array_push( $this->price_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
+				else if( $shipping_row->is_weight_based )			
+					array_push( $this->weight_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
+				else if( $shipping_row->is_method_based )			
+					array_push( $this->method_based, array( $shipping_row->shipping_rate, $shipping_row->shipping_label, $shipping_row->shippingrate_id ) );
+				else if( $this->is_live_based( $shipping_row ) ){	
+					array_push( $this->live_based, array( $shipping_row->shipping_code, $shipping_row->shipping_label, $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ) ) );
+				}
 			}
+			
+			$this->subtotal = $subtotal;
+			$this->weight = $weight;
+			$this->express_price = $this->ec_setting->get_setting( "shipping_expedite_rate" );
+			if( isset( $_SESSION['ec_ship_express'] ) ){
+				$this->ship_express = $_SESSION['ec_ship_express'];
+			}
+			
+			$this->display_type = $display_type;
 		}
-		
-		$this->subtotal = $subtotal;
-		$this->weight = $weight;
-		$this->express_price = $this->ec_setting->get_setting( "shipping_expedite_rate" );
-		if( isset( $_SESSION['ec_ship_express'] ) ){
-			$this->ship_express = $_SESSION['ec_ship_express'];
-		}
-		
-		$this->display_type = $display_type;
 	}
 	
 	private function is_live_based( $shipping_row ){

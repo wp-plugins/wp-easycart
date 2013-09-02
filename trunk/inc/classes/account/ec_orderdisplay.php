@@ -49,6 +49,8 @@ class ec_orderdisplay{
 	public $shipping_country;  					// VARCHAR 255
 	public $shipping_phone;  					// VARCHAR 32
 	
+	public $order_customer_notes;				// BLOB
+	
 	public $user;								// ec_user class
 	
 	public $payment_method; 					// VARCHAR 64
@@ -112,6 +114,8 @@ class ec_orderdisplay{
 		$this->shipping_country = $order_row->shipping_country; 
 		$this->shipping_phone = $order_row->shipping_phone; 
 		
+		$this->order_customer_notes = $order_row->order_customer_notes;
+		
 		$this->user = new ec_user( $this->user_email );
 		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1 , $this->billing_city, $this->billing_state, $this->billing_zip, $this->billing_country, $this->billing_phone );
 		$this->user->setup_shipping_info_data( $this->shipping_first_name, $this->shipping_last_name, $this->shipping_address_line_1 , $this->shipping_city, $this->shipping_state, $this->shipping_zip, $this->shipping_country, $this->shipping_phone );
@@ -129,7 +133,7 @@ class ec_orderdisplay{
 				$result = $this->mysqli->get_order_details( $this->order_id, "guest", "" );
 				
 			foreach( $result as $item ){
-				array_push( $this->cart->cart, (object) array( "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity, "optionitem1_name"=>$item->optionitem_name_1, "optionitem2_name"=>$item->optionitem_name_2, "optionitem3_name"=>$item->optionitem_name_3, "optionitem4_name"=>$item->optionitem_name_4, "optionitem5_name"=>$item->optionitem_name_5, "optionitem1_label"=>$item->optionitem_label_1, "optionitem2_label"=>$item->optionitem_label_2, "optionitem3_label"=>$item->optionitem_label_3, "optionitem4_label"=>$item->optionitem_label_4, "optionitem5_label"=>$item->optionitem_label_5 ) );
+				array_push( $this->cart->cart, (object) array( "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity, "optionitem1_name"=>$item->optionitem_name_1, "optionitem2_name"=>$item->optionitem_name_2, "optionitem3_name"=>$item->optionitem_name_3, "optionitem4_name"=>$item->optionitem_name_4, "optionitem5_name"=>$item->optionitem_name_5, "optionitem1_label"=>$item->optionitem_label_1, "optionitem2_label"=>$item->optionitem_label_2, "optionitem3_label"=>$item->optionitem_label_3, "optionitem4_label"=>$item->optionitem_label_4, "optionitem5_label"=>$item->optionitem_label_5, "optionitem1_price"=>$item->optionitem_price_1, "optionitem2_price"=>$item->optionitem_price_2, "optionitem3_price"=>$item->optionitem_price_3, "optionitem4_price"=>$item->optionitem_price_4, "optionitem5_price"=>$item->optionitem_price_5 ) );
 				array_push( $this->orderdetails, new ec_orderdetail( $item ) );
 				
 			}

@@ -137,6 +137,11 @@
 .ec_account_order_details_item_display_column1 img{
 	max-width:100px !important;
 }
+.ec_account_order_notes{
+	width:100%;
+	float:left;
+	margin-top:20px;	
+}
 @media only screen and ( min-width: [size_level5_low]px ) {
 	.ec_account_order_details_column1_header {
 		width: 112px;

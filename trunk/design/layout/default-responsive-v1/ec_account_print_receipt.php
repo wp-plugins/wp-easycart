@@ -1,19 +1,15 @@
 <html>
 <head>
-<title><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $order_id; ?></title>
-<style type='text/css'>
-<!--
-.style20 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	font-size: 12px;
-}
-.style22 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-}
--->
-</style>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $order_id; ?></title>
+	<style type='text/css'>
+    <!--
+		.style20 {font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12px; }
+        .style22 {font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+		.ec_option_label{font-family: Arial, Helvetica, sans-serif; font-size:11px; font-weight:bold; }
+		.ec_option_name{font-family: Arial, Helvetica, sans-serif; font-size:11px; }
+	-->
+    </style>
 </head>
 <body>
 <table width='539' border='0' align='center'>
@@ -35,32 +31,32 @@
         <tr>
           <td width='47%' bgcolor='#F3F1ED' class='style20'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_billing_label" ); ?></td>
           <td width='3%'>&nbsp;</td>
-          <td width='50%' bgcolor='#F3F1ED' class='style20'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_shipping_label" ); ?></td>
+          <td width='50%' bgcolor='#F3F1ED' class='style20'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_shipping_label" ); ?><?php }?></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_first_name; ?> <?php echo $order->billing_last_name; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'><?php echo $order->shipping_first_name; ?> <?php echo $order->shipping_last_name; ?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_first_name; ?> <?php echo $order->shipping_last_name; ?><?php }?></span></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_address_line_1; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'><?php echo $order->shipping_address_line_1; ?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_address_line_1; ?><?php }?></span></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_city; ?>, <?php echo $order->billing_state; ?> <?php echo $order->billing_zip; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'><?php echo $order->shipping_city; ?>, <?php echo $order->shipping_state; ?> <?php echo $order->shipping_zip; ?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_city; ?>, <?php echo $order->shipping_state; ?> <?php echo $order->shipping_zip; ?><?php }?></span></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_country; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'><?php echo $order->shipping_country; ?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_country; ?><?php }?></span></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_phone; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'><?php echo $order->shipping_phone; ?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_phone; ?><?php }?></span></td>
         </tr>
       </table></td>
   </tr>
@@ -83,7 +79,49 @@
 		
 		?>
   <tr>
-    <td width='269' class='style22'><?php echo $order_details[$i]->title; ?></td>
+    <td width='269' class='style22'>
+		<table>
+            <tr><td>
+            <?php echo $order_details[$i]->title; ?>
+            </td></tr>
+            <?php 
+			if( $order_details[$i]->optionitem_name_1 ){
+				echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_1 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_1;
+				if( $order_details[$i]->optionitem_price_1 != "0.00" )
+					echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_1 ) . ")";
+				echo "</span></td></tr>";
+			}
+			
+			if( $order_details[$i]->optionitem_name_2 ){
+				echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_2 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_2;
+				if( $order_details[$i]->optionitem_price_2 != "0.00" )
+					echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_2 ) . ")";
+				echo "</span></td></tr>";
+			}
+			
+			if( $order_details[$i]->optionitem_name_3 ){
+				echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_3 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_3;
+				if( $order_details[$i]->optionitem_price_3 != "0.00" )
+					echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_3 ) . ")";
+				echo "</span></td></tr>";
+			}
+			
+			if( $order_details[$i]->optionitem_name_4 ){
+				echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_4 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_4;
+				if( $order_details[$i]->optionitem_price_4 != "0.00" )
+					echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_4 ) . ")";
+				echo "</span></td></tr>";
+			}
+			
+			if( $order_details[$i]->optionitem_name_5 ){
+				echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_5 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_5;
+				if( $order_details[$i]->optionitem_price_5 != "0.00" )
+					echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_5 ) . ")";
+				echo "</span></td></tr>";
+			}
+			?>
+        </table>
+	</td>
     <td width='80' align='center' class='style22'><?php echo $order_details[$i]->quantity; ?></td>
     <td width='91' align='center' class='style22'><?php echo $unit_price; ?></td>
     <td align='center' class='style22'><?php echo $total_price; ?></td>
@@ -101,7 +139,7 @@
     <td width='91' align='center' class='style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_subtotal" ); ?></td>
     <td  align='center'  class='style22'><?php echo $subtotal; ?></td>
   </tr>
-  <?php if( $vat == "0.00" ){ ?>
+  <?php if( $vat_rate == 0 ){ ?>
   <tr>
     <td width='269'>&nbsp;</td>
     <td width='80' align='center' class='style22'>&nbsp;</td>
@@ -109,19 +147,21 @@
     <td align='center' class='style22'><?php echo $tax; ?></td>
   </tr>
   <?php }?>
+  <?php if( get_option( 'ec_option_use_shipping' ) ){?>
   <tr>
     <td width='269'>&nbsp;</td>
     <td width='80' align='center' class='style22'>&nbsp;</td>
     <td width='91' align='center' class='style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_shipping" ); ?></td>
     <td  align='center'  class='style22'><?php echo $shipping; ?></td>
   </tr>
+  <?php }?>
   <tr>
     <td>&nbsp;</td>
     <td align='center' class='style22'>&nbsp;</td>
     <td align='center' class='style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_discount" ); ?></td>
     <td  align='center'  class='style22'>-<?php echo $discount; ?></td>
   </tr>
-  <?php if( $vat != "0.00" ){ ?>
+  <?php if( $vat_rate != 0 ){ ?>
   <tr>
     <td width='269'>&nbsp;</td>
     <td width='80' align='center' class='style22'>&nbsp;</td>
@@ -137,11 +177,18 @@
   </tr>
   <tr>
     <td colspan='4' class='style22'><p><br>
+		<?php if( get_option( 'ec_option_user_order_notes' ) ){ ?>
+            <hr />
+            <h4><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_title' ); ?></h4>
+            <p><?php echo nl2br( $order->order_customer_notes ); ?></p>
+            <br>
+            <hr />
+        <?php }?>
         <?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_bottom_line_1" ); ?><br>
         <br>
         <?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_bottom_line_2" ); ?></p>
       <p>&nbsp;</p></td>
-  </tr> 
+  </tr>
 </table>
 </body>
 </html>

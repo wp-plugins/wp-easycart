@@ -159,7 +159,10 @@
 	text-align: right;
 }
 
-
-
+.ec_account_order_notes{
+	width:100%;
+	float:left;
+	margin-top:20px;	
+}
 
 /* END EC ACCOUNT ORDER DETAILS STYLE*/
