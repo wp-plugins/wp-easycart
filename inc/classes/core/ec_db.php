@@ -729,7 +729,7 @@ class ec_db{
 	}
 	
 	public function get_customer_reviews( $product_id ){
-		return $this->mysqli->get_results( "SELECT review_id, rating, title, description, approved, DATE_FORMAT(date_submitted, '%W, %M %e, %Y') as review_date " . $this->mysqli->prepare( "FROM ec_review WHERE product_id = '%s' AND approved = 1", $product_id ) );
+		return $this->mysqli->get_results( "SELECT review_id, rating, title, description, approved, DATE_FORMAT(date_submitted, '%W, %M %e, %Y') as review_date " . $this->mysqli->prepare( "FROM ec_review WHERE product_id = '%s' AND approved = 1 ORDER BY date_submitted DESC", $product_id ) );
 	}
 	
 	public function get_temp_cart( $session_id ){
