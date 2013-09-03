@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.1.19
+ * Version: 1.1.20
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.1.19
+ * @version 1.1.20
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_1_19' );
+define( 'EC_CURRENT_VERSION', '1_1_20' );
 define( 'EC_CURRENT_DB', '1_3' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -42,7 +42,7 @@ function ec_activate(){
 	$mysqli->install( $install_sql_array );
 	
 	//UPDATE SITE URL
-	$site = explode( "://", url( ) );
+	$site = explode( "://", ec_get_url( ) );
 	$site = $site[1];
 	$mysqli->update_url( $site );
 	
@@ -268,13 +268,13 @@ function ec_facebook_metadata() {
 		//this method places to early, before html tags open
 		echo "<meta property=\"og:title\" content=\"" . $prod_title . "\" />\n"; 
 		echo "<meta property=\"og:type\" content=\"product\" />\n";
-		echo "<meta property=\"og:description\" content=\"" . short_string($prod_description, 300) . "\" />\n";
+		echo "<meta property=\"og:description\" content=\"" . ec_short_string($prod_description, 300) . "\" />\n";
 		echo "<meta property=\"og:image\" content=\"" .  plugin_dir_url(__DIR__) . "wpeasycart/products/pics1/" . $prod_image . "\" />\n"; 
-		echo "<meta property=\"og:url\" content=\"" . curPageURL() . "\" /> \n";
+		echo "<meta property=\"og:url\" content=\"" . ec_curPageURL() . "\" /> \n";
 	}
 }
 	
-function curPageURL() {
+function ec_curPageURL() {
 	$pageURL = 'http';
 	if( isset( $_SERVER["HTTPS"] ) )
 		$pageURL .= "s";
@@ -288,7 +288,7 @@ function curPageURL() {
 	return $pageURL;
 }
 
-function short_string($text, $length){
+function ec_short_string($text, $length){
 	if( strlen( $text ) > $length )
 		$text = substr($text, 0, strpos($text, ' ', $length));
 	
@@ -347,7 +347,7 @@ function load_ec_product( $atts ){
     return ob_get_clean( );
 }
 
-function wp_myplugin_property_title($data){ 
+function ec_wp_myplugin_property_title($data){ 
 	global $post;
 	if( isset($_GET['model_number']) && $post->ID == $storepageid ){
 		$query_productRS = sprintf("SELECT products.Title FROM products WHERE model_number = '%s'", mysql_real_escape_string($_GET['model_number']));
@@ -512,7 +512,7 @@ function wpeasycart_backup_ftp( ){
 	}
 }
 
-function recursive_remove_directory( $directory, $empty=FALSE ) {
+function ec_recursive_remove_directory( $directory, $empty=FALSE ) {
      // if the path has a slash at the end we remove it here
      if( substr( $directory, -1 ) == '/' )
          $directory = substr( $directory, 0, -1);
@@ -542,7 +542,7 @@ function recursive_remove_directory( $directory, $empty=FALSE ) {
                  // if the new path is a directory
                  if( is_dir( $path ) ){
                      // we call this function with the new path
-                    recursive_remove_directory( $path );
+                    ec_recursive_remove_directory( $path );
 
                  // if the new path is a file
                  }else{
@@ -581,7 +581,7 @@ function wpeasycart_recover( ){
 		// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
 		$success = false;
 		if( is_dir( $to . "products" ) ) {
-			$success = recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
+			$success = ec_recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
 		}
 		if( !$success ){
 			$err_message = "wpeasycart - error removing the products folder from the upgraded plugin. Updated halted.";
@@ -628,7 +628,7 @@ function wpeasycart_recover( ){
 		
 		$success = false;
 		if( is_dir( $to . "design" ) ) {
-			$success = recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
+			$success = ec_recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
 		}
 		if( !$success ){
 			$err_message = "wpeasycart - error removing the design folder from the upgraded plugin. Updated halted.";
@@ -638,7 +638,7 @@ function wpeasycart_recover( ){
 		
 		$success = false;
 		if( is_dir( $to . "connection" ) ) {
-			$success = recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
+			$success = ec_recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
 		}
 		if( !$success ){
 			$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
@@ -669,7 +669,7 @@ function wpeasycart_recover( ){
 		// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
 		$success = false;
 		if( is_dir( $from ) ) {
-			$success = recursive_remove_directory( $from ); //<------- deletes the backup directory
+			$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
 		}
 		if( !$success ){
 			$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
@@ -1244,7 +1244,7 @@ function ec_store_meta( ){
 //HELPER FUNCTIONS
 /////////////////////////////////////////////////////////////////////
 //Helper Function, Get URL
-function url(){
+function ec_get_url(){
   if( isset( $_SERVER['HTTPS'] ) )
   	$protocol =  "https";
   else
@@ -1254,15 +1254,6 @@ function url(){
   $strip = explode("/wp-admin", $_SERVER['REQUEST_URI']);
   $folder = $strip[0];
   return $protocol .  $baseurl . $folder;
-}
-
-function plugin_get_version() {
-	if ( ! function_exists( 'get_plugins' ) )
-		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	
-	$plugin_folder = get_plugins( '/' . plugin_basename( dirname( __FILE__ ) ) );
-	$plugin_file = basename( ( __FILE__ ) );
-	return $plugin_folder[$plugin_file]['Version'];
 }
 
 ?>

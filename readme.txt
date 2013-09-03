@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.19
+Stable tag: 1.1.20
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.20 =
+* Bug Fix - Emailer for 3D Secure and Paypal Standard with IPN Listener fixed.
+* Bug Fix - Main wpeasycart file had some functions with no extensions. This is fixed to prevent errors with combining easycart with other plugins.
 = 1.1.19 =
 * Bug Fix - For those users with large number of items in their product option sets, we have improved the speed and removed the automatic check (even when not used) for option item quantity tracking rows.
 * Bug Fix - International live shipping for UPS and FedEx now fixed. Will work for shipping within a country (Canada, UK, USA, etc...) or internationally (US to UK, CA to UK, UK to US, etc...).
