@@ -114,7 +114,7 @@ class ec_product{
 		
 		$this->download_file_name = $product_data['download_file_name'];
 		
-		$this->options = new ec_prodoptions($this->product_id, $product_data['option1'], $product_data['option2'], $product_data['option3'], $product_data['option4'], $product_data['option5']);
+		$this->options = new ec_prodoptions($this->product_id, $product_data['option1'], $product_data['option2'], $product_data['option3'], $product_data['option4'], $product_data['option5'], $product_data['use_optionitem_quantity_tracking']);
 		
 		if( $this->is_featured_product )
 			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], "" );

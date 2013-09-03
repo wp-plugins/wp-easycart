@@ -23,11 +23,14 @@ class ec_ups{
 		$this->shipper_url = "https://www.ups.com/ups.app/xml/Rate";
 	}
 	
-	public function get_rate( $ship_code, $destination_zip, $weight ){
+	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight ){
 		if( $weight == 0 )
 		return "0.00";
 		
-		$shipper_data = $this->get_shipper_data( $ship_code, $destination_zip, $weight );
+		if( !$destination_country )
+			$destination_country = $this->ups_country_code;
+		
+		$shipper_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
 		$request = new WP_Http;
 		$response = $request->request( $this->shipper_url, array( 'method' => 'POST', 'body' => $shipper_data ) );
 		if( is_wp_error( $response ) ){
@@ -39,7 +42,7 @@ class ec_ups{
 		
 	}
 	
-	private function get_shipper_data( $ship_code, $destination_zip, $weight ){
+	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight ){
 		$shipper_data = "<?xml version=\"1.0\"?>
 			<AccessRequest xml:lang=\"en-US\">
 				<AccessLicenseNumber>$this->ups_access_license_number</AccessLicenseNumber>
@@ -70,7 +73,7 @@ class ec_ups{
 				<ShipTo>
 					<Address>
 						<PostalCode>$destination_zip</PostalCode>
-						<CountryCode>$this->ups_country_code</CountryCode>
+						<CountryCode>$destination_country</CountryCode>
 					<ResidentialAddressIndicator/>
 					</Address>
 				</ShipTo>

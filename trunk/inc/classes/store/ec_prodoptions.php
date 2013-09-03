@@ -12,7 +12,7 @@ class ec_prodoptions{
 	
 	public $quantity_array = array();							// up to a 5d array of quantities
 	
-	function __construct( $product_id, $option1_data, $option2_data, $option3_data, $option4_data, $option5_data ){
+	function __construct( $product_id, $option1_data, $option2_data, $option3_data, $option4_data, $option5_data, $use_quantity_tracking ){
 		
 		$this->mysqli = new ec_db();
 		
@@ -23,7 +23,10 @@ class ec_prodoptions{
 		$this->optionset4 = new ec_optionset( $option4_data );
 		$this->optionset5 = new ec_optionset( $option5_data );
 		
-		$this->quantity_array = $this->mysqli->get_quantity_data( $this->product_id, $this->optionset1, $this->optionset2, $this->optionset3, $this->optionset4, $this->optionset5 );
+		if( $use_quantity_tracking )
+			$this->quantity_array = $this->mysqli->get_quantity_data( $this->product_id, $this->optionset1, $this->optionset2, $this->optionset3, $this->optionset4, $this->optionset5 );
+		else
+			$this->quantity_array = array();
 	
 	}
 	

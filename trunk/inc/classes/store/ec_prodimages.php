@@ -40,7 +40,6 @@ class ec_prodimages{
 		if( $this->use_optionitem_images ){
 			
 			for( $i=0; $i<count( $image_data ); $i++ ){
-				if( $image_data[$i][0] )
 				array_push( $this->imageset, new ec_prodimageset( $product_id, $image_data[$i] ) );
 			}
 			
