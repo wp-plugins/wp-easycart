@@ -143,8 +143,50 @@ class ec_db{
 		return $this->mysqli->get_row( $sql );	
 	}
 	
+	public function get_optionitem_list( ){
+		$sql = "SELECT 
+				optionitem.option_id,
+				optionitem.optionitem_id, 
+				optionitem.optionitem_name, 
+				optionitem.optionitem_price, 
+				optionitem.optionitem_icon
+				
+				FROM ec_optionitem as optionitem
+				
+				ORDER BY
+				optionitem.option_id, 
+				optionitem.optionitem_order";
+				
+		return $this->mysqli->get_results( $sql );
+	}
+	
+	public function get_optionitem_image_list( ){
+		$sql = "SELECT 
+				optionitemimage.optionitemimage_id,
+				optionitemimage.optionitem_id, 
+				optionitemimage.product_id, 
+				optionitemimage.image1, 
+				optionitemimage.image2, 
+				optionitemimage.image3, 
+				optionitemimage.image4, 
+				optionitemimage.image5,
+				optionitem.optionitem_order
+				
+				FROM ec_optionitemimage as optionitemimage, ec_optionitem as optionitem
+
+				WHERE optionitem.optionitem_id = optionitemimage.optionitem_id
+				
+                GROUP BY optionitemimage.optionitemimage_id
+				
+				ORDER BY
+				optionitemimage.product_id,
+				optionitem.optionitem_order";
+				
+		return $this->mysqli->get_results( $sql );
+	}
+	
 	public function get_product_list( $where_query, $order_query, $limit_query, $session_id ){
-		$query = "SET SESSION group_concat_max_len = 8192";
+		$query = "SET SESSION group_concat_max_len = 20000";
 		$update = $this->mysqli->query($query);
 		
 		//Setup the Product Query
@@ -182,12 +224,6 @@ class ec_db{
 				CONCAT_WS('***', option4.option_id, option4.option_name, option4.option_label) as option_data_4,
 				CONCAT_WS('***', option5.option_id, option5.option_name, option5.option_label) as option_data_5,
 				
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', optionitem1.optionitem_id, optionitem1.optionitem_name, optionitem1.optionitem_price, optionitem1.optionitem_icon) ORDER BY optionitem1.optionitem_order SEPARATOR '---') as optionitem_data_1,
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', optionitem2.optionitem_id, optionitem2.optionitem_name, optionitem2.optionitem_price, optionitem2.optionitem_icon) ORDER BY optionitem2.optionitem_order SEPARATOR '---') as optionitem_data_2,
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', optionitem3.optionitem_id, optionitem3.optionitem_name, optionitem3.optionitem_price, optionitem3.optionitem_icon) ORDER BY optionitem3.optionitem_order SEPARATOR '---') as optionitem_data_3,
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', optionitem4.optionitem_id, optionitem4.optionitem_name, optionitem4.optionitem_price, optionitem4.optionitem_icon) ORDER BY optionitem4.optionitem_order SEPARATOR '---') as optionitem_data_4,
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', optionitem5.optionitem_id, optionitem5.optionitem_name, optionitem5.optionitem_price, optionitem5.optionitem_icon) ORDER BY optionitem5.optionitem_order SEPARATOR '---') as optionitem_data_5,
-				
 				product.use_optionitem_images,
 				
 				product.image1,
@@ -195,8 +231,6 @@ class ec_db{
 				product.image3,
 				product.image4,
 				product.image5,
-				
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', optionitemimage.optionitem_id, optionitemimage.image1, optionitemimage.image2, optionitemimage.image3, optionitemimage.image4, optionitemimage.image5) ORDER BY optionitemimage.optionitem_order SEPARATOR '---') as optionitemimage_data,
 				
 				product.featured_product_id_1,
 				product.featured_product_id_2,
@@ -228,23 +262,6 @@ class ec_db{
 				
 				LEFT JOIN ec_option as option5
 				ON option5.option_id = product.option_id_5
-				
-				LEFT JOIN ec_optionitem as optionitem1
-				ON optionitem1.option_id = product.option_id_1
-				
-				LEFT JOIN ec_optionitem as optionitem2
-				ON optionitem2.option_id = product.option_id_2
-				
-				LEFT JOIN ec_optionitem as optionitem3
-				ON optionitem3.option_id = product.option_id_3
-				
-				LEFT JOIN ec_optionitem as optionitem4
-				ON optionitem4.option_id = product.option_id_4
-				
-				LEFT JOIN ec_optionitem as optionitem5
-				ON optionitem5.option_id = product.option_id_5
-				
-				LEFT JOIN (SELECT optionitemimage.optionitem_id, optionitemimage.product_id, optionitemimage.image1, optionitemimage.image2, optionitemimage.image3, optionitemimage.image4, optionitemimage.image5, optionitem.optionitem_order FROM ec_optionitemimage as optionitemimage, ec_optionitem as optionitem WHERE optionitem.optionitem_id = optionitemimage.optionitem_id ORDER BY optionitem.optionitem_order ) as optionitemimage ON (optionitemimage.optionitem_id = optionitem1.optionitem_id AND optionitemimage.product_id = product.product_id)
 				
 				LEFT JOIN ec_manufacturer as manufacturer
 				ON manufacturer.manufacturer_id = product.manufacturer_id
@@ -280,6 +297,8 @@ class ec_db{
 		$result2 = $this->mysqli->get_results( $this->mysqli->prepare( $sql, $session_id ) . $where_query . $group_query . $order_query . $limit_query );
 		
 		//Process the Result
+		$optionitem_list = $this->get_optionitem_list( );
+		$optionitem_image_list = $this->get_optionitem_image_list( );
 		$product_list = array();
 		
 		foreach($result2 as $row){
@@ -290,48 +309,6 @@ class ec_db{
 			$option4_data_array = explode("***", $row->option_data_4);
 			$option5_data_array = explode("***", $row->option_data_5);
 			
-			$optionitem1_data_array = explode("---", $row->optionitem_data_1);
-			$optionitem1_data_array2 = array();
-			for($i=0; $i<count($optionitem1_data_array); $i++){
-				$temp_arr = explode("***", $optionitem1_data_array[$i]);
-				array_push($optionitem1_data_array2, $temp_arr);
-			}
-			
-			$optionitem2_data_array = explode("---", $row->optionitem_data_2);
-			$optionitem2_data_array2 = array();
-			for($i=0; $i<count($optionitem2_data_array); $i++){
-				$temp_arr = explode("***", $optionitem2_data_array[$i]);
-				array_push($optionitem2_data_array2, $temp_arr);
-			}
-			
-			$optionitem3_data_array = explode("---", $row->optionitem_data_3);
-			$optionitem3_data_array2 = array();
-			for($i=0; $i<count($optionitem3_data_array); $i++){
-				$temp_arr = explode("***", $optionitem3_data_array[$i]);
-				array_push($optionitem3_data_array2, $temp_arr);
-			}
-			
-			$optionitem4_data_array = explode("---", $row->optionitem_data_4);
-			$optionitem4_data_array2 = array();
-			for($i=0; $i<count($optionitem4_data_array); $i++){
-				$temp_arr = explode("***", $optionitem4_data_array[$i]);
-				array_push($optionitem4_data_array2, $temp_arr);
-			}
-			
-			$optionitem5_data_array = explode("---", $row->optionitem_data_5);
-			$optionitem5_data_array2 = array();
-			for($i=0; $i<count($optionitem5_data_array); $i++){
-				$temp_arr = explode("***", $optionitem5_data_array[$i]);
-				array_push($optionitem5_data_array2, $temp_arr);
-			}
-			
-			$optionitemimage_data_array = explode("---", $row->optionitemimage_data);
-			$optionitemimage_data_array2 = array();
-			for($i=0; $i<count($optionitemimage_data_array); $i++){
-				$temp_arr = explode("***", $optionitemimage_data_array[$i]);
-				array_push( $optionitemimage_data_array2, $temp_arr );
-			}
-			
 			$review_data_array = explode(",", $row->review_data);
 			
 			$pricetier_data_array = explode("---", $row->pricetier_data);
@@ -341,22 +318,59 @@ class ec_db{
 				array_push($pricetier_data_array2, $temp_arr);
 			}
 			
+			// Get option items if needed
+			$optionitem1_data = array();
+			$optionitem2_data = array();
+			$optionitem3_data = array();
+			$optionitem4_data = array();
+			$optionitem5_data = array();
+			
+			if( $row->option_data_1 || $row->option_data_2 || $row->option_data_3 || $row->option_data_4 || $row->option_data_5 ){
+				for( $i=0; $i<count( $optionitem_list ); $i++ ){
+					if( $row->option_data_1 && $optionitem_list[$i]->option_id == $option1_data_array[0] )
+						array_push( $optionitem1_data, $optionitem_list[$i] );
+						
+					if( $row->option_data_2 && $optionitem_list[$i]->option_id == $option2_data_array[0] )
+						array_push( $optionitem2_data, $optionitem_list[$i] );
+						
+					if( $row->option_data_3 && $optionitem_list[$i]->option_id == $option3_data_array[0] )
+						array_push( $optionitem3_data, $optionitem_list[$i] );
+						
+					if( $row->option_data_4 && $optionitem_list[$i]->option_id == $option4_data_array[0] )
+						array_push( $optionitem4_data, $optionitem_list[$i] );
+						
+					if( $row->option_data_5 && $optionitem_list[$i]->option_id == $option5_data_array[0] )
+						array_push( $optionitem5_data, $optionitem_list[$i] );
+				
+				}
+			}
+			
+			// Get option item images if needed
+			$optionitemimage_data = array();
+			if( $row->use_optionitem_images ){
+				for( $i=0; $i<count( $optionitem_image_list ); $i++ ){
+					if( $optionitem_image_list[$i]->product_id == $row->product_id )
+						array_push( $optionitemimage_data, $optionitem_image_list[$i] );
+				}
+			}
+			
 			$option1 = ""; $option2 = ""; $option3 = ""; $option4 = ""; $option5 = "";
 			
 			if( $row->option_data_1 )
-				$option1 = array($option1_data_array[0], $option1_data_array[1], $option1_data_array[2], $optionitem1_data_array2);
+				$option1 = array($option1_data_array[0], $option1_data_array[1], $option1_data_array[2], $optionitem1_data);
 			
 			if( $row->option_data_2 )
-				$option2 = array($option2_data_array[0], $option2_data_array[1], $option2_data_array[2], $optionitem2_data_array2);
+				$option2 = array($option2_data_array[0], $option2_data_array[1], $option2_data_array[2], $optionitem2_data);
 			
 			if( $row->option_data_3 )
-				$option3 = array($option3_data_array[0], $option3_data_array[1], $option3_data_array[2], $optionitem3_data_array2);
+				$option3 = array($option3_data_array[0], $option3_data_array[1], $option3_data_array[2], $optionitem3_data);
 			
 			if( $row->option_data_4 )
-				$option4 = array($option4_data_array[0], $option4_data_array[1], $option4_data_array[2], $optionitem4_data_array2);
+				$option4 = array($option4_data_array[0], $option4_data_array[1], $option4_data_array[2], $optionitem4_data);
 			
 			if( $row->option_data_5 )
-				$option5 = array($option5_data_array[0], $option5_data_array[1], $option5_data_array[2], $optionitem5_data_array2);
+				$option5 = array($option5_data_array[0], $option5_data_array[1], $option5_data_array[2], $optionitem5_data);
+			
 			
 			//Setup Return Array
 			$temp_product = array(
@@ -402,7 +416,7 @@ class ec_db{
 						"image4" => $row->image4, 
 						"image5" => $row->image5, 
 						
-						"optionitemimage_data" => $optionitemimage_data_array2,
+						"optionitemimage_data" => $optionitemimage_data,
 						
 						"featured_product_id_1" => $row->featured_product_id_1, 
 						"featured_product_id_2" => $row->featured_product_id_2, 

@@ -14,41 +14,13 @@ class ec_prodimageset{
 		
 		$this->product_id = $product_id;
 		
-		if(count($image_data) > 0){
-			$this->optionitem_id = $image_data[0];
-		}else{
-			$this->optionitem_id = 0;
-		}
+		$this->optionitem_id = $image_data->optionitem_id;
+		$this->image1 = $image_data->image1;
+		$this->image2 = $image_data->image2;
+		$this->image3 = $image_data->image3;
+		$this->image4 = $image_data->image4;
+		$this->image5 = $image_data->image5;
 		
-		if(count($image_data) > 1){
-			$this->image1 = $image_data[1];
-		}else{
-			$this->image1 = "";
-		}
-		
-		if(count($image_data) > 2){
-			$this->image2 = $image_data[2];
-		}else{
-			$this->image2 = "";
-		}
-		
-		if(count($image_data) > 3){
-			$this->image3 = $image_data[3];
-		}else{
-			$this->image3 = "";
-		}
-		
-		if(count($image_data) > 4){
-			$this->image4 = $image_data[4];
-		}else{
-			$this->image4 = "";
-		}
-		
-		if(count($image_data) > 5){
-			$this->image5 = $image_data[5];
-		}else{
-			$this->image5 = "";
-		}
 	}
 	
 }

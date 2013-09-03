@@ -18,6 +18,7 @@ class ec_shipping{
 	private $express_price;										// float 7,2
 	private $ship_express;										// BOOL
 	private $destination_zip;									// VARCHAR
+	private $destination_country;								// VARCHAR(2)
 	
 	public $shipping_method;									// shipping_method option
 	
@@ -46,6 +47,16 @@ class ec_shipping{
 			
 			else if( $this->user && $this->user->shipping && $this->user->shipping->zip )
 				$this->destination_zip = $this->user->shipping->zip;
+				
+			// Set the destination country code
+			if( isset( $_SESSION['ec_shipping_country'] ) )
+				$this->destination_country = $_SESSION['ec_shipping_country'];
+			
+			else if( isset( $_SESSION['ec_temp_country'] ) )
+				$this->destination_country = $_SESSION['ec_temp_country'];
+			
+			else if( $this->user && $this->user->shipping && $this->user->shipping->country )
+				$this->destination_country = $this->user->shipping->country;
 			
 			
 			foreach( $shipping_rows as $shipping_row ){
@@ -151,7 +162,7 @@ class ec_shipping{
 			$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
 		
 		for( $i=0; $i<count( $this->live_based ); $i++){
-			$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->weight );
+			$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
 			
 			//$rate = $GLOBALS['currency']->get_currency_display( $rate );
 			
@@ -271,7 +282,7 @@ class ec_shipping{
 		}else if( $this->shipping_method == "live" ){
 			for( $i=0; $i<count($this->live_based); $i++){
 				if( $this->live_based[$i][2] == $selected_shipping_method_id ){
-					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->weight );
+					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
 					return $this->get_live_based_div( $i, $rate );
 				}
 			}
@@ -325,12 +336,12 @@ class ec_shipping{
 			
 		}else if( $this->shipping_method == "live" ){
 			if( !isset( $_SESSION['ec_shipping_method'] ) )
-				$rate = $this->shipper->get_rate( $this->live_based[0][3], $this->live_based[0][0], $this->destination_zip, $this->weight );
+				$rate = $this->shipper->get_rate( $this->live_based[0][3], $this->live_based[0][0], $this->destination_zip, $this->destination_country, $this->weight );
 				
 			else{
 				for( $i=0; $i<count( $this->live_based ); $i++ ){
 					if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] )
-						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->weight );
+						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
 					
 				}	
 			}

@@ -21,9 +21,12 @@ class ec_fedex{
 		$this->fedex_country_code = $ec_setting->get_fedex_country_code();	
 	}
 		
-	public function get_rate( $ship_code, $destination_zip, $weight ){
+	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight ){
 		if( $weight == 0 )
 			return "0.00";
+			
+		if( !$destination_country )
+			$destination_country = $this->fedex_country_code;
 		
 		$service_type = strtoupper( $ship_code );
 		
@@ -83,7 +86,7 @@ class ec_fedex{
 			$shipper = array( 'Address' => array( 'PostalCode' => $this->fedex_ship_from_zip, 'CountryCode' => $this->fedex_country_code ) );
 			$request['RequestedShipment']['Shipper'] = $shipper;
 			
-			$recipient = array( 'Address' => array( 'PostalCode' => $destination_zip, 'CountryCode' => $this->fedex_country_code ) );
+			$recipient = array( 'Address' => array( 'PostalCode' => $destination_zip, 'CountryCode' => $destination_country ) );
 			$request['RequestedShipment']['Recipient'] = $recipient;
 			
 			$request['RequestedShipment']['RateRequestTypes'] = 'ACCOUNT'; 

@@ -13,13 +13,13 @@
 			$this->fedex = new ec_fedex( $this->ec_setting );
 		}
 		
-		public function get_rate( $ship_company, $ship_code, $destination_zip, $weight ){
+		public function get_rate( $ship_company, $ship_code, $destination_zip, $destination_country, $weight ){
 			if( $ship_company == "ups" )
-				return $this->ups->get_rate( $ship_code, $destination_zip, $weight );	
+				return $this->ups->get_rate( $ship_code, $destination_zip, $destination_country, $weight );	
 			else if( $ship_company == "usps" )
-				return $this->usps->get_rate( $ship_code, $destination_zip, $weight );	
+				return $this->usps->get_rate( $ship_code, $destination_zip, $destination_country, $weight );	
 			else if( $ship_company == "fedex" )
-				return $this->fedex->get_rate( $ship_code, $destination_zip, $weight );	
+				return $this->fedex->get_rate( $ship_code, $destination_zip, $destination_country, $weight );	
 		}
 		
 	}

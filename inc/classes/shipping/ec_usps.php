@@ -16,10 +16,13 @@ class ec_usps{
 			$this->shipper_url = "http://production.shippingapis.com/ShippingAPI.dll";
 	}
 		
-	public function get_rate( $ship_code, $destination_zip, $weight ){
+	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight ){
 		
 		if( $weight == 0 )
-		return "0.00";
+			return "0.00";
+			
+		if( !$destination_country )
+			$destination_country = "US";
 		
 		$rate_codes = array( 	"PRIORITY" => 1, 
 									"PRIORITY COMMERCIAL" => 1, 
@@ -41,7 +44,7 @@ class ec_usps{
 									
 		$rate_type = strtoupper( $ship_code );
 		$rate_code = $rate_codes[$rate_type];
-		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $weight );
+		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
 		
 		$ch = curl_init(); //initiate the curl session 
 		curl_setopt($ch, CURLOPT_URL, $this->shipper_url); //set to url to post to
@@ -57,7 +60,7 @@ class ec_usps{
 		
 	}
 	
-	private function get_shipper_data( $ship_code, $destination_zip, $weight ){
+	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight ){
 		$shipper_data = "<RateV4Request USERID='" . $this->usps_user_name . "' >
 							<Revision>2</Revision>
 							<Package ID='1ST' >
