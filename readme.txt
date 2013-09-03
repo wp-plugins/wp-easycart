@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6
-Stable tag: 1.1.20
+Stable tag: 1.1.21
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.21 =
+* Bug Fix - PayPal IPN Listener slightly off, fixed.
 = 1.1.20 =
 * Bug Fix - Emailer for 3D Secure and Paypal Standard with IPN Listener fixed.
 * Bug Fix - Main wpeasycart file had some functions with no extensions. This is fixed to prevent errors with combining easycart with other plugins.
