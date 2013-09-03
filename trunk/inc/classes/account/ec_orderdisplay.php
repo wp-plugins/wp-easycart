@@ -315,23 +315,22 @@ class ec_orderdisplay{
 		$vat_rate = number_format( $tax->vat_rate, 0, '', '' );
 		$discount = $GLOBALS['currency']->get_currency_display( $this->discount_total );
 		
-		$email_logo_url = get_option( 'ec_option_email_logo' );
+		$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
 	 	
-		// Get receipt
-		ob_start();
-        include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_receipt.php';
-        $message = ob_get_clean();
-	
 		$headers   = array();
 		$headers[] = "MIME-Version: 1.0";
-		$headers[] = "Content-type: text/html; charset=utf-8";
+		$headers[] = "Content-Type: text/html; boundary=\"PHP-mixed-{$sep}\"; charset=utf-8";
 		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
 		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
 		$headers[] = "Subject: Order Confirmation - #" . $this->order_id;
 		$headers[] = "X-Mailer: PHP/".phpversion();
-	
-		mail( $this->user->email, "Order Confirmation -- #" . $this->order_id, $message, implode("\r\n", $headers) );
-		mail( get_option( 'ec_option_bcc_email_addresses' ), "Order Confirmation -- #" . $this->order_id, $message, implode("\r\n", $headers) );
+		
+		ob_start();
+        include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_receipt.php';
+        $message = ob_get_clean();
+		
+		mail( $this->user->email, $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $this->order_id, $message, implode("\r\n", $headers) );
+		mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $this->order_id, $message, implode("\r\n", $headers) );
 		
 	}
 	

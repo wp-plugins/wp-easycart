@@ -144,7 +144,7 @@
             <td  align='center'  class='style22'><?php echo $subtotal; ?></td>
         </tr>
 		
-        <?php if( !$this->tax->vat_enabled ){ ?>
+        <?php if( $vat_rate <= 0 ){ ?>
         <tr>
         	<td width='269'>&nbsp;</td>
             <td width='80' align='center' class='style22'>&nbsp;</td>
@@ -167,7 +167,7 @@
           <td  align='center'  class='style22'>-<?php echo $discount; ?></td>
         </tr>
         
-        <?php if( $this->tax->vat_enabled ){ ?>
+        <?php if( $vat_rate >= 0 ){ ?>
         <tr>
         	<td width='269'>&nbsp;</td>
             <td width='80' align='center' class='style22'>&nbsp;</td>
