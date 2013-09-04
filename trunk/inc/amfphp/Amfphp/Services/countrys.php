@@ -72,9 +72,9 @@ class countrys
 
 		//country list functions
 		//get countries is handled above
-		function updatecountry($id, $name, $iso2, $iso3, $sortorder) {
+		function updatecountry($id, $name, $iso2, $iso3, $vatrate, $sortorder) {
 			//Create SQL Query
-			  $sql = $this->escape("UPDATE countries SET  name_cnt='%s', iso2_cnt='%s', iso3_cnt='%s', sortorder='%s' WHERE countries.id_cnt = '%s'", $name, $iso2, $iso3, $sortorder, $id);
+			  $sql = $this->escape("UPDATE ec_country SET  ec_country.name_cnt='%s', ec_country.iso2_cnt='%s', ec_country.iso3_cnt='%s', ec_country.vat_rate_cnt='%s', ec_country.sort_order='%s' WHERE ec_country.id_cnt = '%s'", $name, $iso2, $iso3, $vatrate, $sortorder, $id);
 			//Run query on database;
 			mysql_query($sql);
 			//if no errors, return their current Client ID
@@ -102,13 +102,14 @@ class countrys
 				return $returnArray; //return noresults if there are no results
 			}
 		}	
-		function addcountry($name, $iso2, $iso3, $sortorder) {
+		function addcountry($name, $iso2, $iso3, $vatrate, $sortorder) {
 			//Create SQL Query
-			  $sql = sprintf("Insert into ec_country(ec_country.id_cnt, ec_country.name_cnt, ec_country.iso2_cnt, ec_country.iso3_cnt, ec_country.sort_order)
-				values(null, '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Insert into ec_country(ec_country.id_cnt, ec_country.name_cnt, ec_country.iso2_cnt, ec_country.iso3_cnt, ec_country.vat_rate_cnt, ec_country.sort_order)
+				values(null, '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($name),
 				mysql_real_escape_string($iso2),
 				mysql_real_escape_string($iso3),
+				mysql_real_escape_string($vatrate),
 				mysql_real_escape_string($sortorder));
 			//Run query on database;
 			mysql_query($sql);
