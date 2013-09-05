@@ -148,7 +148,7 @@ class products
 			
 			while($row = mysql_fetch_assoc($result)){
 				$sql = sprintf("INSERT INTO ec_optionitemimage(ec_optionitemimage.optionitem_id, ec_optionitemimage.image1, ec_optionitemimage.image2, ec_optionitemimage.image3, ec_optionitemimage.image4, ec_optionitemimage.image5, ec_optionitemimage.product_id) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-				mysql_real_escape_string($row['optionitemID']), 
+				mysql_real_escape_string($row['optionitem_id']), 
 				mysql_real_escape_string($row['image1']), 
 				mysql_real_escape_string($row['image2']), 
 				mysql_real_escape_string($row['image3']), 
