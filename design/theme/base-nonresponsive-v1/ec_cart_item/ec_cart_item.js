@@ -17,7 +17,7 @@ function ec_cart_item_update_finished( data, cartitem_id ){
 	
 	ec_cart_item_hide_loader( cartitem_id );
 	
-	document.getElementById('ec_cartitem_total_' + cartitem_id).innerHTML = Number( Number( document.getElementById( 'ec_cartitem_unit_price_' + cartitem_id ).innerHTML ) * Number( document.getElementById( 'ec_cartitem_quantity_' + cartitem_id ).value ) ).toFixed(2);
+	document.getElementById('ec_cartitem_total_' + cartitem_id).innerHTML = Number( Number( document.getElementById( 'ec_cartitem_unit_price_' + cartitem_id ).innerHTML.substring(1) ) * Number( document.getElementById( 'ec_cartitem_quantity_' + cartitem_id ).value ) ).toFixed(2);
 	
 	if( document.getElementById( 'ec_cart_zip_code' ) ){
 		ec_estimate_shipping_click( );

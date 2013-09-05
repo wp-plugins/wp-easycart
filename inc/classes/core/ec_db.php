@@ -1535,10 +1535,12 @@ class ec_db{
 										'maximum_downloads_allowed'		=> $cart_item->maximum_downloads_allowed,
 										'download_timelimit_seconds'	=> $cart_item->download_timelimit_seconds ),
 										
-								array( 	'%d', '%d', '%s', '%s', '%s', 
-										'%s', '%d', '%s', '%s', '%s', 
+								array( 	'%d', '%d', '%s', '%s', '%s',
+										'%s', '%d', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
+										'%s', '%s', '%s', '%s', '%s',
+										'%s', '%s',
 										'%s', '%s', '%d', '%d', 
 										'%d', '%s', '%s', '%d', '%d' ) );
 	}
@@ -1575,7 +1577,7 @@ class ec_db{
 	}
 	
 	public function get_download( $download_id ){
-		return $this->mysqli->get_row( $this->mysqli->prepare( "SELECT download_id, date_created, download_count, order_id, product_id, download_file_name FROM ec_download WHERE download_id = '%s'", $download_id ) );	
+		return $this->mysqli->get_row( $this->mysqli->prepare( "SELECT download_id, date_created, UNIX_TIMESTAMP(date_created) AS date_created_timestamp, download_count, order_id, product_id, download_file_name FROM ec_download WHERE download_id = '%s'", $download_id ) );	
 	}
 	
 	public function update_quantity_value( $quantity, $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5 ){
@@ -1854,7 +1856,66 @@ class ec_db{
 	}
 	
 	public function get_orderdetail_row( $order_id, $orderdetail_id, $email, $password ){
-		$row_sql = $this->orderdetail_sql . " AND ec_orderdetail.orderdetail_id = '%s'";
+		$row_sql = "SELECT 
+				ec_orderdetail.orderdetail_id, 
+				ec_orderdetail.order_id, 
+				ec_orderdetail.product_id, 
+				ec_orderdetail.title, 
+				ec_orderdetail.model_number, 
+				ec_orderdetail.order_date, 
+				ec_orderdetail.unit_price, 
+				ec_orderdetail.total_price, 
+				ec_orderdetail.quantity, 
+				ec_orderdetail.image1, 
+				ec_orderdetail.optionitem_name_1, 
+				ec_orderdetail.optionitem_name_2, 
+				ec_orderdetail.optionitem_name_3, 
+				ec_orderdetail.optionitem_name_4, 
+				ec_orderdetail.optionitem_name_5,
+				ec_orderdetail.optionitem_label_1, 
+				ec_orderdetail.optionitem_label_2, 
+				ec_orderdetail.optionitem_label_3, 
+				ec_orderdetail.optionitem_label_4, 
+				ec_orderdetail.optionitem_label_5,
+				ec_orderdetail.optionitem_price_1, 
+				ec_orderdetail.optionitem_price_2, 
+				ec_orderdetail.optionitem_price_3, 
+				ec_orderdetail.optionitem_price_4, 
+				ec_orderdetail.optionitem_price_5,
+				ec_orderdetail.giftcard_id, 
+				ec_orderdetail.gift_card_message, 
+				ec_orderdetail.gift_card_from_name, 
+				ec_orderdetail.gift_card_to_name,
+				ec_orderdetail.is_download, 
+				ec_orderdetail.is_giftcard, 
+				ec_orderdetail.is_taxable, 
+				ec_orderdetail.download_file_name, 
+				ec_orderdetail.download_key,
+				ec_orderdetail.maximum_downloads_allowed,
+				ec_orderdetail.download_timelimit_seconds,
+				
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
+				
+				FROM ec_orderdetail
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_orderdetail'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id, 
+				
+				ec_order, ec_user
+				
+				WHERE 
+				ec_user.email = '%s' AND ec_user.password = '%s' AND 
+				ec_order.order_id = ec_orderdetail.order_id AND 
+				ec_user.user_id = ec_order.user_id AND 
+				ec_orderdetail.order_id = %d AND 
+				ec_orderdetail.orderdetail_id = %d
+				
+				GROUP BY
+				ec_orderdetail.orderdetail_id";
+		
 		return $this->mysqli->get_row( $this->mysqli->prepare( $row_sql, $_SESSION['ec_email'], $_SESSION['ec_password'], $order_id, $orderdetail_id ) );
 	}
 	
@@ -2021,7 +2082,7 @@ class ec_db{
 	}
 	
 	public function get_countries( ){
-		$sql = "SELECT name_cnt, iso2_cnt FROM ec_country ORDER BY sort_order ASC";
+		$sql = "SELECT name_cnt, iso2_cnt, vat_rate_cnt FROM ec_country ORDER BY sort_order ASC";
 		return $this->mysqli->get_results( $sql );
 	}
 	

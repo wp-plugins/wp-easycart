@@ -51,25 +51,37 @@ class ec_cartpage{
 			$this->gift_card = "";
 		}
 		
+		// Tax (no VAT here)
+		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal, 0, $this->user->shipping->state, $this->user->shipping->country );
+		// Shipping
 		$this->shipping = new ec_shipping( $this->cart->subtotal, $this->cart->weight );
-		$this->tax = new ec_tax( $this->cart->taxable_subtotal, $this->user->shipping->state, $this->user->shipping->country, $this->cart->vat_subtotal, $this->shipping->get_shipping_price( ) );
+		// Duty (Based on Product Price) - already calculated in tax
+		// Get Total Without VAT, used only breifly
+		$total_without_vat_or_discount = $this->cart->vat_subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
+		// Discount for Coupon
+		$this->discount = new ec_discount( $this->cart, $this->cart->subtotal, $this->shipping->get_shipping_price( ), $this->coupon_code, $this->gift_card, $total_without_vat_or_discount );
+		// Amount to Apply VAT on
+		$vatable_subtotal = $total_without_vat_or_discount - $this->discount->coupon_discount;
+		// Get Tax Again For VAT
+		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal, $vatable_subtotal, $this->user->shipping->state, $this->user->shipping->country );
+		// Discount for Gift Card
+		$this->discount = new ec_discount( $this->cart, $this->cart->subtotal, $this->shipping->get_shipping_price( ), $this->coupon_code, $this->gift_card, $GLOBALS['currency']->get_number_only( $total_without_vat_or_discount ) + $GLOBALS['currency']->get_number_only( $this->tax->vat_total ) );
+		// Order Totals
+		$this->order_totals = new ec_order_totals( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount );
 		
-		$grand_total = $this->cart->subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
-		
-		$this->discount = new ec_discount( $this->cart, $this->cart->subtotal, $this->shipping->get_shipping_price( ), $this->coupon_code, $this->gift_card, $grand_total );
-		
+		// Credit Card
 		if( isset( $_POST['ec_cart_payment_type'] ) )
 			$credit_card = new ec_credit_card( $_POST['ec_cart_payment_type'], $_POST['ec_card_holder_name'], $_POST['ec_card_number'], $_POST['ec_expiration_month'], $_POST['ec_expiration_year'], $_POST['ec_security_code'] );
 		else
 			$credit_card = new ec_credit_card( "", "", "", "", "", "" );
-			
-		$this->order_totals = new ec_order_totals( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount );
 		
+		// Payment
 		if( isset( $_POST['ec_cart_payment_selection'] ) )
 			$this->payment = new ec_payment( $credit_card, $_POST['ec_cart_payment_selection'] );
 		else
 			$this->payment = new ec_payment( $credit_card, "" );
 		
+		// Order
 		$this->order = new ec_order( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->payment );
 		
 		$store_page_id = get_option('ec_option_storepage');
@@ -123,10 +135,13 @@ class ec_cartpage{
 			$this->user->setup_billing_info_data( $order->billing_first_name, $order->billing_last_name, $order->billing_address_line_1, $order->billing_city, $order->billing_state, $order->billing_country, $order->billing_zip, $order->billing_phone );
 			
 			$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone );
+		
+			$tax_struct = new ec_tax( 0,0,0, "", "");
 			
 			$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );
 			$subtotal = $GLOBALS['currency']->get_currency_display( $order->sub_total );
 			$tax = $GLOBALS['currency']->get_currency_display( $order->tax_total );
+			$duty = $GLOBALS['currency']->get_currency_display( $order->duty_total );
 			$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
 			if( ( $order->grand_total - $order->vat_total ) > 0 )
 			$vat_rate = number_format( ( $order->vat_total / ( $order->grand_total - $order->vat_total ) ) * 100, 0, '', '' );
@@ -333,10 +348,8 @@ class ec_cartpage{
 	}
 	
 	public function has_duty( ){
-		if ( $this->tax->duty_total != 0 )
-			return true;
-		else
-			return false;	
+		if ( $this->tax->duty_total > 0 )			return true;
+		else										return false;	
 	}
 	
 	public function display_duty_total( ){
@@ -618,7 +631,11 @@ class ec_cartpage{
 	}
 	
 	public function ec_cart_display_shipping_methods( $standard_text, $express_text, $ship_method ){
-		echo $this->shipping->get_shipping_options( $standard_text, $express_text );	
+		$shipping_options = $this->shipping->get_shipping_options( $standard_text, $express_text );	
+		if( $shipping_options )
+			echo $shipping_options;
+		else if( isset( $_SESSION['ec_temp_zipcode'] ) && $_SESSION['ec_temp_zipcode'] )
+			echo "<div class=\"ec_cart_shipping_method_row\">" . $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_error' ) . "</div>";
 	}
 	/* END SHIPPING METHOD FUNCTIONS */
 	
@@ -652,8 +669,10 @@ class ec_cartpage{
 	}
 	
 	public function display_coupon_message( ){
-		if( $this->coupon_code != "" )
+		if( isset( $this->coupon ) )
 			echo $this->coupon->message;
+		else if( $this->coupon_code != "" )
+			echo $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_coupon' );
 	}
 	/* END COUPON FUNCTIONS */
 	
@@ -687,8 +706,10 @@ class ec_cartpage{
 	}
 	
 	public function display_gift_card_message( ){
-		if( $this->gift_card != "" )
+		if( isset( $this->giftcard ) )
 			echo $this->giftcard->message;
+		else if( $this->gift_card != "" )
+			echo $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_giftcard' );
 	}
 	/* END GIFT CARD FUNCTIONS */
 	
@@ -1096,7 +1117,11 @@ class ec_cartpage{
 	}
 	
 	private function process_submit_order(){
-		$payment_type = $_POST['ec_cart_payment_selection'];
+		if( isset( $_POST['ec_cart_payment_selection'] ) )
+			$payment_type = $_POST['ec_cart_payment_selection'];
+		else
+			$payment_type = $GLOBALS['language']->get_text( "ec_success", "cart_account_free_order" );
+			
 		if( isset( $_POST['ec_order_notes'] ) )
 			$_SESSION['ec_order_notes'] = $_POST['ec_order_notes'];
 			

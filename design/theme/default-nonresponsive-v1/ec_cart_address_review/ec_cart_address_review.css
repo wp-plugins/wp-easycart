@@ -17,7 +17,7 @@
 	font-family:[title_font];
 }
 .ec_cart_address_review_left {
-	height: 175px;
+	height: 140px;
 	float: left;
 	background-color: [third_color];
 	text-align: left;
@@ -27,7 +27,7 @@
 	border-bottom: 2px solid rgba(0,0,0,.6);
 }
 .ec_cart_address_review_middle {
-	height: 175px;
+	height: 140px;
 	float: left;
 	background-color: [third_color];
 	text-align: left;
@@ -37,7 +37,7 @@
 	border-bottom: 2px solid rgba(0,0,0,.6);
 }
 .ec_cart_address_review_right {
-	height: 175px;
+	height: 140px;
 	float: left;
 	background-color: [third_color];
 	text-align: center;

@@ -69,7 +69,7 @@ if( $this->should_display_cart( ) ){
         <?php $this->display_subtotal(); ?>
       </div>
     </div>
-    <?php if( !$this->tax->vat_enabled || $this->tax->tax_total ){ ?>
+    <?php if( $this->tax->is_tax_enabled( ) ){ ?>
     <div class="ec_cart_lower_right_row">
       <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_tax' )?></div>
       <div class="right">
@@ -91,7 +91,7 @@ if( $this->should_display_cart( ) ){
         <?php $this->display_discount_total(); ?>
       </div>
     </div>
-    <?php if( $this->has_duty( ) ){ ?>
+    <?php if( $this->tax->is_duty_enabled( ) ){ ?>
     <div class="ec_cart_lower_right_row">
       <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_duty' )?></div>
       <div class="right">
@@ -99,7 +99,7 @@ if( $this->should_display_cart( ) ){
       </div>
     </div>
     <?php }?>
-    <?php if( $this->tax->vat_enabled ){ ?>
+    <?php if( $this->tax->is_vat_enabled( ) ){ ?>
     <div class="ec_cart_lower_right_row">
       <div class="left"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_vat' )?> </div>
       <div class="right"><?php echo $this->display_vat_total( ); ?></div>

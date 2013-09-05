@@ -12,7 +12,7 @@ class ec_order_totals{
 	public $grand_total;												// FLOAT 11,2
 	
 	function __construct( $cart, $user, $shipping, $tax, $discount ){
-		$this->sub_total = number_format( $cart->get_subtotal( $tax->vat_enabled, $tax->vat_country_match ), 2, '.', '' );
+		$this->sub_total = number_format( $cart->subtotal, 2, '.', '' );
 		$this->handling_total = number_format( $cart->get_handling_total( ), 2, '.', '' );
 		$shipping_price = doubleval( $shipping->get_shipping_price( ) ) + $this->handling_total;
 		$this->shipping_total = number_format( $shipping_price, 2, '.', '' );
@@ -24,7 +24,7 @@ class ec_order_totals{
 	}
 	
 	private function get_grand_total( ){
-		 return $this->sub_total + $this->shipping_total + $this->tax_total + $this->duty_total - $this->discount_total;
+		 return $this->sub_total + $this->shipping_total + $this->tax_total + $this->duty_total + $this->vat_total - $this->discount_total;
 	}
 	
 	public function get_grand_total_in_cents( ){

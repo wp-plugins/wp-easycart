@@ -452,8 +452,9 @@ class ec_product{
 	}
 	
 	/* Display product option swatches */
-	public function display_product_option_swatches( &$optionset, $size, $level, $id_prefix, $js_function_name ){
+	public function display_product_option_swatches( &$optionset, $size, $level, $id_prefix, $js_function_name, $show_input=true ){
 		global $language_data;
+		$selected_accepted = 0;
 		if( count( $optionset->optionset ) > 0 && $optionset->optionset[0]->optionitem_icon ){
 			
 			for( $i=0; $i<count( $optionset->optionset ); $i++ ){
@@ -484,8 +485,8 @@ class ec_product{
 			else if( $level == 1 || !$this->use_optionitem_quantity_tracking )
 				$optionitem_id = $optionset->optionset[$this->first_selection]->optionitem_id;
 			
-			
-			echo "<input type=\"hidden\" name=\"ec_option" . $level . "\" id=\"ec_option" . $level . "_" . $this->model_number . "\" value=\"" . $optionitem_id . "\" />";
+			if( $show_input )
+				echo "<input type=\"hidden\" name=\"ec_option" . $level . "\" id=\"ec_option" . $level . "_" . $this->model_number . "\" value=\"" . $optionitem_id . "\" />";
 			
 		}
 	}
@@ -748,7 +749,7 @@ class ec_product{
 			
 			}else if( isset( $_GET['ec_search'] ) ){
 				$link_text .= "&amp;ec_search=" . $_GET['ec_search'];
-			}else if( !isset( $_GET['manufacturer'] ) && !isset( $_GET['group_id'] ) ){
+			}else if( !isset( $_GET['manufacturer'] ) && !isset( $_GET['group_id'] ) && $this->show_on_startup ){
 				$link_text .= "&amp;featured=true";
 				
 				if( isset( $_GET['pagenum'] ) )

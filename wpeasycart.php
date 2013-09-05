@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.1.21
+ * Version: 1.1.22
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.1.21
+ * @version 1.1.22
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,8 +19,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_1_21' );
-define( 'EC_CURRENT_DB', '1_3' );
+define( 'EC_CURRENT_VERSION', '1_1_22' );
+define( 'EC_CURRENT_DB', '1_4' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
 
@@ -866,49 +866,23 @@ add_action( 'wp_ajax_ec_ajax_cartitem_update', 'ec_ajax_cartitem_update' );
 add_action( 'wp_ajax_nopriv_ec_ajax_cartitem_update', 'ec_ajax_cartitem_update' );
 function ec_ajax_cartitem_update( ){
 	
-	//Get the variables from the AJAX call
+	// UPDATE CART ITEM
 	$tempcart_id = $_POST['cartitem_id'];
 	$session_id = $_POST['session_id'];
 	$quantity = $_POST['quantity'];
 	
 	if( is_numeric( $quantity ) ){
-	
-		//Create a new db and submit review
 		$db = new ec_db();
 		$db->update_cartitem( $tempcart_id, $session_id, $quantity );
-	
 	}
+	// UPDATE CART ITEM
 	
-	$user_email = "";
-	if( isset( $_SESSION['ec_email'] ) )
-		$user_email = $_SESSION['ec_email'];
-	
-	$coupon_code = "";
-	if( isset( $_SESSION['ec_couponcode'] ) )
-		$coupon_code = $_SESSION['ec_couponcode'];
-		
-	$gift_card = "";
-	if( isset( $_SESSION['ec_giftcard'] ) )
-		$gift_card = $_SESSION['ec_giftcard'];
-	
+	// GET NEW CART ITEM INFO
 	$cart = new ec_cart( session_id() );
-	$user = new ec_user( $user_email );
-	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
-	$tax = new ec_tax( $cart->taxable_subtotal, $user->shipping->state, $user->shipping->country, $cart->vat_subtotal, $shipping->get_shipping_price( ) );
-	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
-	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
-	
-	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
-	
-	$sub_total = $order_totals->sub_total;
-	$tax_total = $order_totals->tax_total;
-	$shipping_total = $order_totals->shipping_total;
-	$discounts_total = $order_totals->discount_total;
-	$duty_total = $order_totals->duty_total;
-	$vat_total = $order_totals->vat_total;
 	
 	$unit_price = 0;
 	$total_price = 0;
+	$new_quantity = 0;
 	for( $i=0; $i<count( $cart->cart ); $i++ ){
 		if( $cart->cart[$i]->cartitem_id == $tempcart_id ){
 			$unit_price = $cart->cart[$i]->unit_price;
@@ -916,10 +890,19 @@ function ec_ajax_cartitem_update( ){
 			$new_quantity = $cart->cart[$i]->quantity;
 		}
 	}
+	// GET NEW CART ITEM INFO
+	$order_totals = ec_get_order_totals( );
 	
-	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
-	
-	echo $GLOBALS['currency']->get_currency_display( $unit_price ) . "***" . $GLOBALS['currency']->get_currency_display( $total_price ) . "***" . $new_quantity . "***" . $GLOBALS['currency']->get_currency_display( $sub_total ) . "***" . $GLOBALS['currency']->get_currency_display( $tax_total ) . "***" . $GLOBALS['currency']->get_currency_display( $shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $duty_total ) . "***" . $GLOBALS['currency']->get_currency_display( $vat_total ) . '***' . $GLOBALS['currency']->get_currency_display( $discounts_total ) . "***" . $GLOBALS['currency']->get_currency_display( $grand_total );
+	echo $GLOBALS['currency']->get_currency_display( $unit_price ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $total_price ) . "***" . 
+			$new_quantity . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" .  
+			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->discount_total ) . "***" .
+			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	die(); // this is required to return a proper result
 }
 
@@ -931,29 +914,22 @@ function ec_ajax_cartitem_delete( ){
 	$tempcart_id = $_POST['cartitem_id'];
 	$session_id = $_POST['session_id'];
 	
-	//Create a new db and submit review
+	// DELTE CART ITEM
 	$db = new ec_db();
 	$ret_data = $db->delete_cartitem( $tempcart_id, $session_id );
-	
+	// DELETE CART ITEM
 	$cart = new ec_cart( session_id() );
-	$user = new ec_user( $_SESSION['ec_email'] );
-	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
-	$tax = new ec_tax( $cart->taxable_subtotal, $user->shipping->state, $user->shipping->country, $cart->vat_subtotal, $shipping->get_shipping_price( ) );
-	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
-	$discount = new ec_discount( $cart, $cart->cart_subtotal, $shipping->get_shipping_price( ), $_SESSION['ec_couponcode'], $_SESSION['ec_giftcard'], $grand_total );
+	$order_totals = ec_get_order_totals( );
 	
-	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
+	echo $cart->total_items . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" .  
+			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->discount_total ) . "***" .
+			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	
-	$sub_total = $order_totals->sub_total;
-	$tax_total = $order_totals->tax_total;
-	$shipping_total = $order_totals->shipping_total;
-	$discounts_total = $order_totals->discount_total;
-	$duty_total = $order_totals->duty_total;
-	$vat_total = $order_totals->vat_total;
-	
-	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
-	
-	echo $cart->total_items . "***" . $GLOBALS['currency']->get_currency_display( $sub_total ) . "***" . $GLOBALS['currency']->get_currency_display( $tax_total ) . "***" . $GLOBALS['currency']->get_currency_display( $shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $duty_total ) . "***" . $GLOBALS['currency']->get_currency_display( $vat_total ) . '***' . $GLOBALS['currency']->get_currency_display( $discounts_total ) . "***" . $GLOBALS['currency']->get_currency_display( $grand_total );	
 	die(); // this is required to return a proper result
 	
 }
@@ -962,7 +938,7 @@ add_action( 'wp_ajax_ec_ajax_redeem_coupon_code', 'ec_ajax_redeem_coupon_code' )
 add_action( 'wp_ajax_nopriv_ec_ajax_redeem_coupon_code', 'ec_ajax_redeem_coupon_code' );
 function ec_ajax_redeem_coupon_code( ){
 	
-	//Get the variables from the AJAX call
+	//UPDATE COUPON CODE
 	$coupon_code = "";
 	if( isset( $_POST['couponcode'] ) )
 		$coupon_code = $_POST['couponcode'];
@@ -971,46 +947,23 @@ function ec_ajax_redeem_coupon_code( ){
 	
 	$db = new ec_db();
 	$coupon = $db->redeem_coupon_code( $coupon_code );
-	
-	// GET OTHER VARIABLES
-	$user_email = "";
-	if( isset( $_SESSION['ec_email'] ) )
-		$user_email = $_SESSION['ec_email'];
-		
-	$gift_card = "";
-	if( isset( $_SESSION['ec_giftcard'] ) )
-		$gift_card = $_SESSION['ec_giftcard'];
-	
+	// UPDATE COUPON CODE
 	$cart = new ec_cart( session_id() );
-	$user = new ec_user( $user_email );
-	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
-	$tax = new ec_tax( $cart->taxable_subtotal, $user->shipping->state, $user->shipping->country, $cart->vat_subtotal, $shipping->get_shipping_price( ) );
-	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
-	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
-	
-	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
-	
-	$sub_total = $order_totals->sub_total;
-	$tax_total = $order_totals->tax_total;
-	$shipping_total = $order_totals->shipping_total;
-	$discounts_total = $order_totals->discount_total;
-	$duty_total = $order_totals->duty_total;
-	$vat_total = $order_totals->vat_total;
-	
-	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
+	$order_totals = ec_get_order_totals( );
 	
 	echo $cart->total_items . "***" . 
-			$GLOBALS['currency']->get_currency_display( $sub_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $tax_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $shipping_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $discounts_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $duty_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $vat_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $grand_total );
+			$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->discount_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	
-	if($coupon){
+	if( $coupon )
 		echo "***" . $coupon->message;
-	}
+	else
+		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_coupon' );
 	
 	die(); // this is required to return a proper result
 	
@@ -1020,7 +973,7 @@ add_action( 'wp_ajax_ec_ajax_redeem_gift_card', 'ec_ajax_redeem_gift_card' );
 add_action( 'wp_ajax_nopriv_ec_ajax_redeem_gift_card', 'ec_ajax_redeem_gift_card' );
 function ec_ajax_redeem_gift_card( ){
 	
-	//Get the variables from the AJAX call
+	// UPDATE GIFT CARD
 	$gift_card = "";
 	if( isset( $_POST['giftcard'] ) )
 		$gift_card = $_POST['giftcard'];
@@ -1029,48 +982,23 @@ function ec_ajax_redeem_gift_card( ){
 	
 	$db = new ec_db();
 	$giftcard = $db->redeem_gift_card( $gift_card );
-	
-	// GET OTHER VARIABLES
-	$user_email = "";
-	if( isset( $_SESSION['ec_email'] ) )
-		$user_email = $_SESSION['ec_email'];
-		
-	$coupon_code = "";
-	if( isset( $_SESSION['ec_couponcode'] ) )
-		$coupon_code = $_SESSION['ec_couponcode'];
-	
-	
+	// UPDATE GIFT CARD
 	$cart = new ec_cart( session_id() );
-	$user = new ec_user( $user_email );
-	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
-	$tax = new ec_tax( $cart->taxable_subtotal, $user->shipping->state, $user->shipping->country, $cart->vat_subtotal, $shipping->get_shipping_price( ) );
-	$grand_total = $cart->subtotal + $shipping->get_shipping_price( ) + $tax->tax_total + $tax->duty_total;
-	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
-	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
-	
-	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
-	
-	$sub_total = $order_totals->sub_total;
-	$tax_total = $order_totals->tax_total;
-	$shipping_total = $order_totals->shipping_total;
-	$discounts_total = $order_totals->discount_total;
-	$duty_total = $order_totals->duty_total;
-	$vat_total = $order_totals->vat_total;
-	
-	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
+	$order_totals = ec_get_order_totals( );
 	
 	echo $cart->total_items . "***" . 
-			$GLOBALS['currency']->get_currency_display( $sub_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $tax_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $shipping_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $discounts_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $duty_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $vat_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $grand_total );
+			$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->discount_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	
-	if( $giftcard ){
+	if( $giftcard )
 		echo "***" . $giftcard->message;
-	}
+	else
+		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_giftcard' );
 	
 	die(); // this is required to return a proper result
 	
@@ -1083,46 +1011,24 @@ function ec_ajax_estimate_shipping( ){
 	if( isset( $_POST['zipcode'] ) )
 		$_SESSION['ec_temp_zipcode'] = $_POST['zipcode'];
 	
-	$user_email = "";
-	if( isset( $_SESSION['ec_email'] ) )
-		$user_email = $_SESSION['ec_email'];
-	
-	$coupon_code = "";
-	if( isset( $_SESSION['ec_couponcode'] ) )
-		$coupon_code = $_SESSION['ec_couponcode'];
-		
-	$gift_card = "";
-	if( isset( $_SESSION['ec_giftcard'] ) )
-		$gift_card = $_SESSION['ec_giftcard'];
-	
 	$cart = new ec_cart( session_id() );
-	$user = new ec_user( $user_email );
-	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
+	$order_totals = ec_get_order_totals( );
 	$setting = new ec_setting( );
-	$tax = new ec_tax( $cart->taxable_subtotal, $user->shipping->state, $user->shipping->country, $cart->vat_subtotal, $shipping->get_shipping_price( ) );
-	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
-	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
+	$cart = new ec_cart( session_id() );
+	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
 	
-	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
+	$shipping_options = $shipping->get_shipping_options( "", "" );
 	
-	$sub_total = $order_totals->sub_total;
-	$tax_total = $order_totals->tax_total;
-	$shipping_total = $order_totals->shipping_total;
-	$discounts_total = $order_totals->discount_total;
-	$duty_total = $order_totals->duty_total;
-	$vat_total = $order_totals->vat_total;
-	
-	$grand_total = $sub_total + $tax_total + $shipping_total + $duty_total - $discounts_total;
-	
-	if( $setting->get_shipping_method() == "live" )
-		echo $GLOBALS['currency']->get_currency_display( $shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $grand_total ) . "***" . $shipping->get_shipping_options( "", "" );
+	if( $setting->get_shipping_method() == "live" && $shipping_options )
+		echo $GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $order_totals->grand_total ) . "***" . $shipping_options . "***" . $GLOBALS['currency']->get_currency_display( $order_totals->vat_total );
+	else if( $setting->get_shipping_method() == "live" )
+		echo $GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $order_totals->grand_total ) . "***" . "<div class=\"ec_cart_shipping_method_row\">" . $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_error' ) . "</div>";
 	else
-		echo $GLOBALS['currency']->get_currency_display( $shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $grand_total );
+		echo $GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 		
 	die(); // this is required to return a proper result
 	
 }
-
 
 add_action( 'wp_ajax_ec_ajax_update_shipping_method', 'ec_ajax_update_shipping_method' );
 add_action( 'wp_ajax_nopriv_ec_ajax_update_shipping_method', 'ec_ajax_update_shipping_method' );
@@ -1137,7 +1043,6 @@ function ec_ajax_update_shipping_method( ){
 	die(); // this is required to return a proper result
 	
 }
-
 
 add_action( 'wp_ajax_ec_ajax_insert_customer_review', 'ec_ajax_insert_customer_review' );
 add_action( 'wp_ajax_nopriv_ec_ajax_insert_customer_review', 'ec_ajax_insert_customer_review' );
@@ -1156,6 +1061,34 @@ function ec_ajax_insert_customer_review( ){
 	die(); // this is required to return a proper result
 	
 }
+
+// Helper function for AJAX calls in cart.
+function ec_get_order_totals( ){
+	$user_email = "";
+	if( isset( $_SESSION['ec_email'] ) )
+		$user_email = $_SESSION['ec_email'];
+	
+	$coupon_code = "";
+	if( isset( $_SESSION['ec_couponcode'] ) )
+		$coupon_code = $_SESSION['ec_couponcode'];
+		
+	$gift_card = "";
+	if( isset( $_SESSION['ec_giftcard'] ) )
+		$gift_card = $_SESSION['ec_giftcard'];
+	
+	$cart = new ec_cart( session_id() );
+	$user = new ec_user( $user_email );
+	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
+	$tax = new ec_tax( $cart->subtotal, $cart->taxable_subtotal, 0, $user->shipping->state, $user->shipping->country );
+	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
+	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
+	$vatable_subtotal = $grand_total - $discount->coupon_discount;
+	$tax = new ec_tax( $cart->subtotal, $cart->taxable_subtotal, $vatable_subtotal, $user->shipping->state, $user->shipping->country );
+	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $GLOBALS['currency']->get_number_only( $grand_total ) + $GLOBALS['currency']->get_number_only( $tax->vat_total ) );
+	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
+	return $order_totals;
+}
+// End AJAX helper function for cart.
 
 add_filter( 'wp_title', 'ec_custom_title', 20 );
 

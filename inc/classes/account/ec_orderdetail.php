@@ -40,6 +40,10 @@ class ec_orderdetail{
 	public $maximum_downloads_allowed;       			// INT
 	public $download_timelimit_seconds;      			// INT
 	
+	private $download;									// ec_download object
+	public $timecheck;
+	public $download_count;
+	
 	public $customfields = array();						// array of ec_customfield objects
 	
 	function __construct( $orderdetail_row, $download_now = 0 ){
@@ -81,6 +85,12 @@ class ec_orderdetail{
 		$this->download_id = $orderdetail_row->download_key;
 		$this->maximum_downloads_allowed = $orderdetail_row->maximum_downloads_allowed;
 		$this->download_timelimit_seconds = $orderdetail_row->download_timelimit_seconds;
+		
+		if( $this->is_download ){
+			$this->download = $this->mysqli->get_download( $this->download_id );
+			$this->timecheck = date('U') - $this->download->date_created_timestamp;
+			$this->download_count = $this->download->download_count;
+		}
 		
 		$accountpageid = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $accountpageid );
@@ -335,43 +345,56 @@ class ec_orderdetail{
 	
 	public function display_download_link( $link_text ){
 		if( $this->is_download )
-			echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&amp;order_id=" . $this->order_id . "&amp;orderdetail_id=" . $this->orderdetail_id . "&amp;download_id=" . $this->download_id . "\" class=\"ec_account_dashboard_link\">" . $link_text . "</a>";
+			echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&amp;order_id=" . $this->order_id . "&amp;orderdetail_id=" . $this->orderdetail_id . "&amp;download_id=" . $this->download_id . "\" class=\"ec_account_dashboard_link\" onclick=\"update_download_count( '" . $this->orderdetail_id . "' );\">" . $link_text . "</a>";
 	}
 	
 	public function display_download_error( ){
 		if( $this->is_download ){
-			$download = $this->mysqli->get_download( $this->download_id );
-			$timecheck = date('U') - $download->date_created;
-			$download_count = $download->download_count;
-			$download_count++;
-			
-			if( $this->download_timelimit_seconds > 0 && $timecheck >= $this->download_timelimit_seconds )
+			if( $this->download_timelimit_seconds > 0 && $this->timecheck >= $this->download_timelimit_seconds )
 				echo "<div class=\"ec_account_error\"><div>The download has expired because you have exceeded the length of time that you have to access and download this product.</div></div>";
 	
-			else if ($this->maximum_downloads_allowed > 0 && $download_count > $this->maximum_downloads_allowed)
+			else if ($this->maximum_downloads_allowed > 0 && $this->download_count >= $this->maximum_downloads_allowed)
 				echo "<div class=\"ec_account_error\"><div>The download key has expired because you have exceeded your download limit set for this product.</div></div>";	
 		}
 	}
 	
+	public function get_download_expire_date( $date_format ){
+		$date = new DateTime();
+		$seconds_remaining = $this->download_timelimit_seconds - $this->timecheck;
+		if( $seconds_remaining < 0 ){
+			$seconds_remaining = ( $seconds_remaining * -1 );
+			$date->sub( new DateInterval('PT' . $seconds_remaining . 'S' ) );
+		}else
+			$date->add( new DateInterval('PT' . $seconds_remaining . 'S' ) );
+			
+		return $date->format( $date_format );
+	}
+	
 	private function start_download( ){
 		if( $this->is_download ){
-			$download = $this->mysqli->get_download( $this->download_id );
-			$timecheck = date('U') - $download->date_created;
-			$download_count = $download->download_count;
-			$download_count++;
 			
-			if( ( $this->download_timelimit_seconds == 0 || $timecheck <= $this->download_timelimit_seconds ) && 
-				( $this->maximum_downloads_allowed  == 0 || $download_count <= $this->maximum_downloads_allowed  ) ) {
+			$this->download_count++;
+			
+			if( ( $this->download_timelimit_seconds == 0 || $this->timecheck <= $this->download_timelimit_seconds ) && 
+				( $this->maximum_downloads_allowed  == 0 || $this->download_count <= $this->maximum_downloads_allowed  ) ) {
 	
 				ob_start();
 				$mm_type="application/octet-stream";
-				$file = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/" . $download->download_file_name;
-				$ext = substr( $download->download_file_name, strrpos( $download->download_file_name, '.' ) + 1);
+				$file = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/" . $this->download->download_file_name;
+				$ext = substr( $this->download->download_file_name, strrpos( $this->download->download_file_name, '.' ) + 1);
 				
 				$date = new DateTime();
 				$time_stamp = $date->getTimestamp();
 				
-				$filename = "download_" . $time_stamp . "." . $ext;
+				$filename_arr = explode( "_", $this->download->download_file_name );
+				$file_start_name = "";
+				for( $i=0; $i<count($filename_arr)-1; $i++ ){
+					if( $i>0 )
+						$file_start_name .= "_";
+					$file_start_name .= $filename_arr[$i];
+				}
+				
+				$filename = $file_start_name . "_" . $time_stamp . "." . $ext;
 				
 				header( "Cache-Control: public, must-revalidate" );
 				header( "Pragma: no-cache" );
@@ -383,7 +406,7 @@ class ec_orderdetail{
 				
 				readfile( $file );
 				
-				$this->mysqli->update_download_count( $this->download_id, $download_count );
+				$this->mysqli->update_download_count( $this->download_id, $this->download_count );
 	
 			}
 		}

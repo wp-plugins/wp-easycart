@@ -139,9 +139,12 @@ class ec_order{
 	
 	private function send_email_receipt(){
 		
+		$tax_struct = new ec_tax( 0,0,0, "", "");
 		$total = $GLOBALS['currency']->get_currency_display( $this->order_totals->grand_total );
 		$subtotal = $GLOBALS['currency']->get_currency_display( $this->order_totals->sub_total );
 		$tax = $GLOBALS['currency']->get_currency_display( $this->order_totals->tax_total );
+		if( $this->order_totals->duty_total > 0 ){ $has_duty = true; }else{ $has_duty = false; }
+		$duty = $GLOBALS['currency']->get_currency_display( $this->order_totals->duty_total );
 		$vat = $GLOBALS['currency']->get_currency_display( $this->order_totals->vat_total );
 		$vat_rate = number_format( $this->tax->vat_rate, 0, '', '' );
 		$shipping = $GLOBALS['currency']->get_currency_display( $this->order_totals->shipping_total );
@@ -151,7 +154,7 @@ class ec_order{
 	 	
 		$headers   = array();
 		$headers[] = "MIME-Version: 1.0";
-		$headers[] = "Content-Type: text/html; boundary=\"PHP-mixed-{$sep}\"; charset=utf-8";
+		$headers[] = "Content-Type: text/html; charset=utf-8";
 		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
 		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
 		$headers[] = "Subject: Order Confirmation - #" . $this->order_id;

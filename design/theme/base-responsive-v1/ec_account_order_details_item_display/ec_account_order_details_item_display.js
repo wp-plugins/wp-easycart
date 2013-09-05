@@ -14,3 +14,13 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Base Theme - EC Account Order Details Item Display Javascript Document
+function update_download_count( orderdetail_id ){
+	if( document.getElementById( 'ec_download_count_' + orderdetail_id ) ){
+		var count = Number(document.getElementById( 'ec_download_count_' + orderdetail_id ).innerHTML);
+		var max_count = Number(document.getElementById( 'ec_download_count_max_' + orderdetail_id ).innerHTML);
+		if( count < max_count ){
+			count++;
+			document.getElementById( 'ec_download_count_' + orderdetail_id ).innerHTML = count;
+		}
+	}
+}

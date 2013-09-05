@@ -247,7 +247,7 @@
 				},
 				"cart_item_vat_text":{
 					"title":"Cart Item, Included Vat",
-					"value":"Inc. VAT @"
+					"value":"VAT @"
 				},
 				"cart_item_update_button":{
 					"title":"Cart Item, Update Button",
@@ -277,6 +277,14 @@
 				"cart_apply_coupon":{
 					"title":"Cart, Apply Coupon Button",
 					"value":"Apply Coupon"
+				},
+				"cart_invalid_coupon":{
+					"title":"Cart, Invalid Coupon",
+					"value":"Not a valid coupon code"
+				},
+				"cart_invalid_giftcard":{
+					"title":"Cart, Invalid Gift Card",
+					"value":"Not a valid gift card number"
 				}
 			}
 		},
@@ -306,6 +314,10 @@
 				"cart_estimate_shipping_express":{
 					"title":"Cart, Express Shipping Label",
 					"value":"Ship Express"
+				},
+				"cart_estimate_shipping_error":{
+					"title":"Cart, Mismatch Postal Code Error",
+					"value":"Your postal code does not match our store's country. Shipping rates will be determined after you have entered your shipping information"
 				}
 			}
 		},
@@ -334,7 +346,7 @@
 				},
 				"cart_totals_vat":{
 					"title":"Cart, Cart Totals, VAT",
-					"value":"VAT Included"
+					"value":"VAT"
 				},
 				"cart_totals_duty":{
 					"title":"Cart, Cart Totals, Duty",
@@ -646,7 +658,7 @@
 				},
 				"cart_payment_information_checkout_text":{
 					"title":"Cart, Payment Information, Checkout Text",
-					"value":"By submitting your order, you are agreeing to the terms and conditions and privacy policy of our website.  Once you click submit order, the checkout process is complete and no changes can be made to your order. Thank you for shopping with us!"
+					"value":"By submitting your order, you are agreeing to the [terms]terms and conditions[/terms] and [privacy]privacy policy[/privacy] of our website.  Once you click submit order, the checkout process is complete and no changes can be made to your order. Thank you for shopping with us!"
 				},
 				"cart_payment_information_submit_order_button":{
 					"title":"Cart, Payment Information, Submit Order Button",
@@ -731,7 +743,7 @@
 				},
 				"cart_payment_complete_order_totals_vat":{
 					"title":"Cart, Payment Complete, VAT",
-					"value":"Inc. VAT @"
+					"value":"VAT @"
 				},
 				"cart_payment_complete_order_totals_duty":{
 					"title":"Cart, Payment Complete, Duty",
@@ -1304,6 +1316,14 @@
 				"account_orders_details_download":{
 					"title":"Account, Orders Details, Download",
 					"value":"Download"
+				},
+				"account_orders_details_downloads_used":{
+					"title":"Account, Orders Details, Downloads Used",
+					"value":"Downloads Used"
+				},
+				"account_orders_details_downloads_expire_time":{
+					"title":"Account, Orders Details, Download Expiration",
+					"value":"Download Expires On:"
 				}
 			}
 		},
@@ -1394,6 +1414,10 @@
 				"cart_account_created":{
 					"title":"Cart, Create Account, Account Created Success Text",
 					"value":"Your account has been created, all orders will now be associated with your new account."
+				},
+				"cart_account_free_order":{
+					"title":"Cart, Order Type, Gift Card, Free Order",
+					"value":"Free Order"
 				}
 			}
 		},

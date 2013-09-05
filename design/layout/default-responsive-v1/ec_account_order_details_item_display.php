@@ -57,6 +57,16 @@
     <div class="ec_account_order_details_item_display_option">
       <?php $order_item->display_download_link( $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_download' ) ); ?>
     </div>
+    	<?php if( $order_item->maximum_downloads_allowed > 0 ){ ?>
+    <div class="ec_account_order_details_item_display_option">
+      <?php echo "<span id=\"ec_download_count_" . $order_item->orderdetail_id . "\">" . $order_item->download_count . "</span>" . "/" . "<span id=\"ec_download_count_max_" . $order_item->orderdetail_id . "\">" . $order_item->maximum_downloads_allowed . "</span> " . $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_downloads_used' ); ?>
+    </div>
+        <?php }?>
+        <?php if( $order_item->download_timelimit_seconds > 0 ){ ?>
+    <div class="ec_account_order_details_item_display_option">
+      <?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_downloads_expire_time' ) . " " . $order_item->get_download_expire_date( "d M Y" ); ?>
+    </div>
+        <?php }?>
     <?php }?>
   </div>
   <div class="ec_account_order_details_item_display_column3">

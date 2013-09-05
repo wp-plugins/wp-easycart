@@ -82,7 +82,7 @@ class ec_language{
 			isset( $this->language_data->{$this->selected_language}->options->{$lang_section} ) && 
 			isset( $this->language_data->{$this->selected_language}->options->{$lang_section}->options->{$lang_var} ) )
 				
-			return $this->language_data->{$this->selected_language}->options->{$lang_section}->options->{$lang_var}->value;
+			return str_replace( "[terms]", "<a href=\"" . get_option( 'ec_option_terms_link' ) . "\" target=\"_blank\">", str_replace( "[/terms]", "</a>", str_replace( "[privacy]", "<a href=\"" . get_option( 'ec_option_privacy_link' ) . "\" target=\"_blank\">", str_replace( "[/privacy]", "</a>", $this->language_data->{$this->selected_language}->options->{$lang_section}->options->{$lang_var}->value ) ) ) );
 	}
 	
 	
