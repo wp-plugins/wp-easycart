@@ -12,16 +12,13 @@ class ec_cartitem{
 	
 	public $title;													// VARCHAR 255
 	
-	public $unit_price;												// FLOAT 11,2
-	public $total_price;											// FLOAT 11,2
-	public $prev_price;												// FLOAT 11,2
-	public $handling_price;											// FLOAT 11,2
+	public $unit_price;												// FLOAT 15,3
+	public $f;											// FLOAT 15,3
+	public $prev_price;												// FLOAT 15,3
+	public $handling_price;											// FLOAT 15,3
 	public $pricetiers = array();									// Array of rows of ec_pricetier
 	
-	public $vat_rate;												// FLAOT 11,2
-	
-	public $non_vat_unit_price;										// FLOAT 11,2
-	public $non_vat_total_price;									// FLOAT 11,2
+	public $vat_enabled;											// FLAOT 15,3
 	
 	public $is_giftcard;											// BOOL
 	public $is_download;											// BOOL
@@ -69,8 +66,6 @@ class ec_cartitem{
 	public $store_page;												// VARCHAR
 	public $cart_page;												// VARCHAR
 	public $permalink_divider;										// CHAR
-	
-	private $currency;												// ec_currency structure
 	
 	function __construct( $cartitem_data ){
 		$this->cartitem_id = $cartitem_data->cartitem_id;
@@ -179,15 +174,7 @@ class ec_cartitem{
 		$this->total_price = $this->unit_price * $this->quantity;
 		$this->handling_price = $cartitem_data->handling_price;
 		
-		$this->vat_rate = $cartitem_data->vat_rate;
-		
-		$vat_rate = ( $this->vat_rate / 100 );
-		
-		$this->non_vat_unit_price = ( $this->unit_price / ( 1 + $vat_rate ) );
-		$this->vat_unit_price = ( $this->unit_price - $this->non_vat_unit_price );
-		
-		$this->non_vat_total_price = ( $this->total_price / ( 1 + $vat_rate ) );
-		$this->vat_total_price = ( $this->total_price - $this->non_vat_total_price );
+		$this->vat_enabled = $cartitem_data->vat_rate;
 			
 		$store_page_id = get_option('ec_option_storepage');
 		$this->store_page = get_permalink( $store_page_id );
@@ -197,8 +184,6 @@ class ec_cartitem{
 		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
-		
-		$this->currency = new ec_currency( );
 	}
 	
 	public function display_cartitem_id(){
@@ -275,7 +260,7 @@ class ec_cartitem{
 		if( $this->optionitem1_price == "0.00" &&  $this->optionitem1_name)
 			echo $this->optionitem1_label . ": " . $this->optionitem1_name;
 		else if( $this->optionitem1_name )
-			echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( " . $this->currency->get_currency_display( $this->optionitem1_price ) . " )";
+			echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem1_price ) . " )";
 	}
 	
 	public function has_option2( ){
@@ -289,7 +274,7 @@ class ec_cartitem{
 		if( $this->optionitem2_price == "0.00" &&  $this->optionitem2_name )
 			echo $this->optionitem2_label . ": " . $this->optionitem2_name;
 		else if( $this->optionitem2_name )
-			echo $this->optionitem2_label . ": " . $this->optionitem2_name . " ( " . $this->currency->get_currency_display( $this->optionitem2_price ) . " )";
+			echo $this->optionitem2_label . ": " . $this->optionitem2_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem2_price ) . " )";
 	}
 	
 	public function has_option3( ){
@@ -303,7 +288,7 @@ class ec_cartitem{
 		if( $this->optionitem3_price == "0.00" &&  $this->optionitem3_name )
 			echo $this->optionitem3_label . ": " . $this->optionitem3_name;
 		else if( $this->optionitem3_name )
-			echo $this->optionitem3_label . ": " . $this->optionitem3_name . " ( " . $this->currency->get_currency_display( $this->optionitem3_price ) . " )";
+			echo $this->optionitem3_label . ": " . $this->optionitem3_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem3_price ) . " )";
 	}
 	
 	public function has_option4( ){
@@ -317,7 +302,7 @@ class ec_cartitem{
 		if( $this->optionitem4_price == "0.00" &&  $this->optionitem4_name )
 			echo $this->optionitem4_label . ": " . $this->optionitem4_name;
 		else if( $this->optionitem4_name )
-			echo $this->optionitem4_label . ": " . $this->optionitem4_name . " ( " . $this->currency->get_currency_display( $this->optionitem4_price ) . " )";
+			echo $this->optionitem4_label . ": " . $this->optionitem4_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem4_price ) . " )";
 	}
 	
 	public function has_option5( ){
@@ -331,7 +316,7 @@ class ec_cartitem{
 		if( $this->optionitem5_price == "0.00" &&  $this->optionitem5_name )
 			echo $this->optionitem5_label . ": " . $this->optionitem5_name;
 		else if( $this->optionitem5_name )
-			echo $this->optionitem5_label . ": " . $this->optionitem5_name . " ( " . $this->currency->get_currency_display( $this->optionitem5_price ) . " )";
+			echo $this->optionitem5_label . ": " . $this->optionitem5_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem5_price ) . " )";
 	}
 	
 	public function has_gift_card_message( ){
@@ -403,29 +388,26 @@ class ec_cartitem{
 		echo "</form>";
 	}
 	
-	public function display_unit_price( $vat_enabled, $vat_country_match ){
-		if( !$vat_enabled || ( $vat_enabled && $vat_country_match ) )
-			$unit_price = $this->unit_price;
-		else
-			$unit_price = $this->non_vat_unit_price;
-		
-		echo "<span id=\"ec_cartitem_unit_price_" . $this->cartitem_id . "\">" . $this->currency->get_currency_display( $unit_price ) . "</span>";
+	public function display_unit_price( ){
+		echo "<span id=\"ec_cartitem_unit_price_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->unit_price ) . "</span>";
 		
 		if( $this->prev_price )
-			echo "<span id=\"ec_cartitem_prev_price_" . $this->cartitem_id . "\" class=\"ec_product_old_price\">" . $this->currency->get_currency_display( $this->prev_price ) . "</span>";
+			echo "<span id=\"ec_cartitem_prev_price_" . $this->cartitem_id . "\" class=\"ec_product_old_price\">" . $GLOBALS['currency']->get_currency_display( $this->prev_price ) . "</span>";
 		
 	}
 	
-	public function display_item_total( $vat_enabled, $vat_country_match ){
-		if( !$vat_enabled || ( $vat_enabled && $vat_country_match ) )
-			echo "<span id=\"ec_cartitem_total_" . $this->cartitem_id . "\">" . $this->currency->get_currency_display( $this->total_price ) . "</span>";
-		else
-			echo "<span id=\"ec_cartitem_total_" . $this->cartitem_id . "\">" . $this->currency->get_currency_display( $this->non_vat_total_price ) . "</span>";
+	public function display_item_total( ){
+		echo "<span id=\"ec_cartitem_total_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->total_price ) . "</span>";
 	}
 	
-	public function display_vat_rate( $vat_country_match ){
-		if( $vat_country_match )
-			echo number_format( $this->vat_rate, 0 );	
+	public function display_vat_rate( ){
+		if( $this->vat_enabled )
+			if( isset( $GLOBALS['ec_vat_rate'] ) )
+				echo number_format( $GLOBALS['ec_vat_rate'], 0 );	
+			else{
+				$tax_struct = new ec_tax( 0,0,0,"","" );
+				echo number_format( $tax_struct->vat_rate , 0 );
+			}	
 		else
 			echo number_format( 0, 0 );	
 	}

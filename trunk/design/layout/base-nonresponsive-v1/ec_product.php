@@ -106,5 +106,5 @@ jQuery("#ec_product_quick_view_box_<?php echo $product->model_number; ?>").appen
     <div style="width:35%; float:right;">
     	<div class="ec_product_pricing"><?php $product->display_product_list_price(); ?><?php $product->display_price(); ?></div>
     </div>
-    <?php if($product->use_optionitem_images){ ?><div class="ec_product_swatches"><?php $product->display_product_option_swatches( $product->options->optionset1, "small", 1, "ec_swatch_", "ec_swatch_click" ); ?></div><?php }?>
+    <?php if($product->use_optionitem_images){ ?><div class="ec_product_swatches"><?php $product->display_product_option_swatches( $product->options->optionset1, "small", 1, "ec_swatch_", "ec_swatch_click", false ); ?></div><?php }?>
 </div>

@@ -21,7 +21,7 @@
 	
 </script>
 
-<div class="top_link_bar"><a href="<?php echo $this->account_page . $this->permalink_divider; ?>ec_page=order_details&amp;order_id=<?php echo $order_id; ?>">
+<div class="top_link_bar"><a href="<?php echo $this->account_page . $this->permalink_divider; ?>ec_page=order_details&amp;order_id=<?php echo $order_id; ?>" onclick="location.href='<?php echo $this->account_page . $this->permalink_divider; ?>ec_page=order_details&amp;order_id=<?php echo $order_id; ?>'">
   <?php if( $_SESSION['ec_password'] != "guest" ){?>
   <input value="<?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_payment_receipt_order_details_link' ); ?>" type="button" class="top_link_button" id="cart_success_details_button"/>
   <?php }?>
@@ -154,7 +154,7 @@
       <td align='center' class='ec_cart_success_style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_subtotal" ); ?></td>
       <td align='center'  class='ec_cart_success_style22'><?php echo $subtotal; ?></td>
     </tr>
-    <?php if( !$this->tax->vat_enabled ){ ?>
+    <?php if( $this->tax->is_tax_enabled( ) ){ ?>
     <tr>
       <td>&nbsp;</td>
       <td align='center' class='ec_cart_success_style22'>&nbsp;</td>
@@ -176,7 +176,15 @@
       <td align='center' class='ec_cart_success_style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_discount" ); ?></td>
       <td align='center'  class='ec_cart_success_style22'>-<?php echo $discount; ?></td>
     </tr>
-    <?php if( $this->tax->vat_enabled ){ ?>
+    <?php if( $this->tax->is_duty_enabled( ) ){ ?>
+    <tr>
+      <td>&nbsp;</td>
+      <td align='center' class='ec_cart_success_style22'>&nbsp;</td>
+      <td align='center' class='ec_cart_success_style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_duty" ); ?></td>
+      <td align='center'  class='ec_cart_success_style22'><?php echo $duty; ?></td>
+    </tr>
+    <?php }?>
+    <?php if( $this->tax->is_vat_enabled( ) ){ ?>
     <tr>
       <td>&nbsp;</td>
       <td align='center' class='ec_cart_success_style22'>&nbsp;</td>

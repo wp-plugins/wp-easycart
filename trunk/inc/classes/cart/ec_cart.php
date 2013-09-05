@@ -8,7 +8,8 @@ class ec_cart{
 	
 	public $cart = array( ); 								// Array of ec_cartitem structures
 	public $subtotal;										// Float 15,3
-	public $discount_subtotal;								// Float 15,2
+	public $taxable_subtotal;								// FLOAT 15,3
+	public $discount_subtotal;								// Float 15,3
 	public $shipping_subtotal;								// FLOAT 15,3
 	public $vat_subtotal;									// FLOAT 15,3
 	
@@ -63,7 +64,7 @@ class ec_cart{
 		$this->total_items = 0;
 		
 		for($i=0; $i<count( $this->cart ); $i++){
-			$this->subtotal = $this->subtotal + $this->cart[$i]->get_item_total();
+			$this->subtotal = $this->subtotal + $this->cart[$i]->total_price;
 			
 			if( $this->cart[$i]->is_taxable ) 				
 				$this->taxable_subtotal = $this->taxable_subtotal + $this->cart[$i]->total_price;
@@ -71,7 +72,8 @@ class ec_cart{
 			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation )
 				$this->shipping_subtotal = $this->shipping_subtotal + $this->cart[$i]->total_price;
 			
-			$this->vat_subtotal = $this->vat_subtotal + $this->cart[$i]->vat_total_price;
+			if( $this->cart[$i]->vat_enabled > 0 )
+				$this->vat_subtotal = $this->vat_subtotal + $this->cart[$i]->total_price;
 			
 			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation )
 				$this->weight = $this->weight + $this->cart[$i]->get_weight();

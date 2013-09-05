@@ -30,17 +30,14 @@
         
     </div>
     <div class="ec_cart_item_column3">
-    	<?php if( !$cart_item->is_donation ){ ?><div class="ec_cart_item_unit_price"><?php $cart_item->display_unit_price( $vat_enabled, $vat_country_match ); ?></div><?php }?>
+    	<?php if( !$cart_item->is_donation ){ ?><div class="ec_cart_item_unit_price"><?php $cart_item->display_unit_price( ); ?></div><?php }?>
     </div>
 	<?php $cart_item->display_update_form_start( ); ?>
     <div class="ec_cart_item_column4">
     	<div class="ec_cart_item_quantity_box"><?php if( $cart_item->is_donation ){ $cart_item->display_quantity(); }else{ $cart_item->display_quantity_box( ); } ?></div>
     </div>
     <div class="ec_cart_item_column5">
-    	<div class="ec_cart_item_total_price"><?php $cart_item->display_item_total( $vat_enabled, $vat_country_match ); ?></div>
-        <?php if( $vat_enabled ){ ?>
-        <div class="ec_cart_item_total_price"><?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_vat_text' )?><?php $cart_item->display_vat_rate( $vat_country_match ); ?>%</div>
-        <?php } ?>
+    	<div class="ec_cart_item_total_price"><?php $cart_item->display_item_total( ); ?></div>
     	<?php $cart_item->display_item_loader(); ?>
     </div>
     <div class="ec_cart_item_column6">

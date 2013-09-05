@@ -144,7 +144,7 @@
             <td  align='center'  class='style22'><?php echo $subtotal; ?></td>
         </tr>
 		
-        <?php if( $vat_rate <= 0 ){ ?>
+        <?php if( $tax_struct->is_tax_enabled( ) ){ ?>
         <tr>
         	<td width='269'>&nbsp;</td>
             <td width='80' align='center' class='style22'>&nbsp;</td>
@@ -167,7 +167,16 @@
           <td  align='center'  class='style22'>-<?php echo $discount; ?></td>
         </tr>
         
-        <?php if( $vat_rate > 0 ){ ?>
+        <?php if( $has_duty ){ ?>
+        <tr>
+        	<td width='269'>&nbsp;</td>
+            <td width='80' align='center' class='style22'>&nbsp;</td>
+            <td width='91' align='center' class='style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_duty" ); ?></td>
+            <td align='center' class='style22'><?php echo $duty; ?></td>
+        </tr>
+        <?php }?>
+        
+        <?php if( $tax_struct->is_vat_enabled( ) ){ ?>
         <tr>
         	<td width='269'>&nbsp;</td>
             <td width='80' align='center' class='style22'>&nbsp;</td>

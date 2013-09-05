@@ -97,7 +97,7 @@
         </div>
         <?php } ?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_discount_total' )?></b>
-          <?php $this->order->display_discount_total( ); ?>
+          -<?php $this->order->display_discount_total( ); ?>
         </div>
         <?php if( $this->order->has_duty( ) ){?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_duty_total' )?></b>

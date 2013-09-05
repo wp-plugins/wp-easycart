@@ -20,6 +20,8 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_allow_guest', $_POST['ec_option_allow_guest'] );
 	update_option( 'ec_option_use_shipping', $_POST['ec_option_use_shipping'] );
 	update_option( 'ec_option_user_order_notes', $_POST['ec_option_user_order_notes'] );
+	update_option( 'ec_option_terms_link', $_POST['ec_option_terms_link'] );
+	update_option( 'ec_option_privacy_link', $_POST['ec_option_privacy_link'] );
 
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
 
@@ -86,6 +88,28 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
           
           </td>
         </tr>
+        
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row"><p>Site Terms and Conditions Link:<br />
+              <span class="itemsubheading">(This will link on the final cart page message when you enter [terms]terms and conditions[/terms] in the text).</span></p></td>
+          <td valign="top"><input name="ec_option_terms_link" type="text"  value="<?php echo get_option('ec_option_terms_link'); ?>" size="10" style="width:300px;" />
+          <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Site Terms and Conditions Link</em>This will only work on the final checkout page. The Cart, Payment Information, Checkout Text item in the advanced language editor allows for [terms]Terms and Conditions[/terms] which will be replaced with an a link around the word between [terms] and [/terms]. It will also open into a new window.</span></a>
+          
+          
+          </td>
+        </tr>
+        
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row"><p>Site Privacy Policy Link:<br />
+              <span class="itemsubheading">(This will link on the final cart page message when you enter [privacy]privacy policy[/privacy] in the text).</span></p></td>
+          <td valign="top"><input name="ec_option_privacy_link" type="text"  value="<?php echo get_option('ec_option_privacy_link'); ?>" size="10" style="width:300px;" />
+          <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Site Privacy Policy Link</em>This will only work on the final checkout page. The Cart, Payment Information, Checkout Text item in the advanced language editor allows for [privacy]Privacy Policy[/privacy] which will be replaced with an a link around the word between [privacy] and [/privacy]. It will also open into a new window.</span></a>
+          
+          
+          </td>
+        </tr>
+        
+        
         <tr valign="top">
           <td align="left" class="itemheading" scope="row">Use State Drop Down List for Addresses:<br />
             <span class="itemsubheading">(You may edit the list using our admin console)</span></td>
