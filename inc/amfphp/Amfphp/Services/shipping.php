@@ -59,7 +59,7 @@ class shipping
 		
 		function getups() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_ups_based = 1 ORDER BY ec_shippingrate.shipping_code ASC");
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_ups_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
 			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
 			  $totalrows = mysql_fetch_object($totalquery);
 			  
@@ -98,16 +98,18 @@ class shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based)
-					values('".$keyfield."', '%s', '%s','%s', 1)",
+				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based)
+					values('".$keyfield."', '%s', '%s','%s', '%s', 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  } else {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based)
-					values('".$keyfield."', '%s', '%s', null, 1)",
+				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based)
+					values('".$keyfield."', '%s', '%s', '%s', null, 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  }
 			//Run query on database;
@@ -135,16 +137,18 @@ class shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based)
-					values(null, '%s', '%s','%s', 1)",
+				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based)
+					values(null, '%s', '%s','%s','%s', 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  } else {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based)
-					values(null, '%s', '%s', null, 1)",
+				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based)
+					values(null, '%s', '%s', '%s', null, 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  }
 			//Run query on database;
@@ -173,7 +177,7 @@ class shipping
 		
 		function getusps() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_usps_based = 1 ORDER BY ec_shippingrate.shipping_code ASC");
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_usps_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
 			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
 			  $totalrows = mysql_fetch_object($totalquery);
 			  
@@ -212,16 +216,18 @@ class shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based)
-					values('".$keyfield."', '%s', '%s','%s', 1)",
+				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based)
+					values('".$keyfield."', '%s', '%s','%s','%s', 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  } else {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based)
-					values('".$keyfield."', '%s', '%s', null, 1)",
+				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based)
+					values('".$keyfield."', '%s','%s', '%s', null, 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  }
 			//Run query on database;
@@ -249,16 +255,18 @@ class shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-					$sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based)
-					values(null, '%s', '%s','%s', 1)",
+					$sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based)
+					values(null, '%s', '%s','%s','%s', 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  } else {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based)
-					values(null, '%s', '%s', null, 1)",
+				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based)
+					values(null, '%s', '%s', '%s', null, 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  }
 			//Run query on database;
@@ -287,7 +295,7 @@ class shipping
 		
 		function getfedex() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_fedex_based = 1 ORDER BY ec_shippingrate.shipping_code ASC");
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_fedex_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
 			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
 			  $totalrows = mysql_fetch_object($totalquery);
 			  
@@ -326,16 +334,18 @@ class shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based)
-					values('".$keyfield."', '%s', '%s','%s', 1)",
+				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order,ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based)
+					values('".$keyfield."', '%s', '%s', '%s','%s', 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  } else {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based)
-					values('".$keyfield."', '%s', '%s', null, 1)",
+				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based)
+					values('".$keyfield."', '%s', '%s',  '%s', null, 1)",
 					mysql_real_escape_string($info['shippinglabel']),
 					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
 					mysql_real_escape_string($info['shippingoverride']));
 			  }
 			//Run query on database;
@@ -363,16 +373,18 @@ class shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-			 	 $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based)
-				values(null, '%s', '%s', '%s', 1)",
+			 	 $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order,ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based)
+				values(null, '%s', '%s','%s', '%s', 1)",
 				mysql_real_escape_string($info['shippinglabel']),
 				mysql_real_escape_string($info['shippingcode']),
+				mysql_real_escape_string($info['shipping_order']),
 				mysql_real_escape_string($info['shippingoverride']));
 			  } else {
-				$sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based)
-				values(null, '%s', '%s', null, 1)",
+				$sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based)
+				values(null, '%s','%s', '%s', null, 1)",
 				mysql_real_escape_string($info['shippinglabel']),
 				mysql_real_escape_string($info['shippingcode']),
+				mysql_real_escape_string($info['shipping_order']),
 				mysql_real_escape_string($info['shippingoverride']));  
 			  }
 			//Run query on database;
