@@ -75,25 +75,25 @@
 
 
 .ec_account_order_details_column1_header {
-	width: 24%;
+	width: 15%;
 	float: left;
 	text-align: left;
 	padding: 4px 0px 4px 8px;
 }
 .ec_account_order_details_column2_header {
-	width: 34%;
+	width: 38%;
 	float: left;
 	text-align: left;
 	padding: 4px 0px;
 }
 .ec_account_order_details_column3_header {
-	width: 12%;
+	width: 11%;
 	float: left;
 	text-align: center;
 	padding: 4px 0px;
 }
 .ec_account_order_details_column4_header {
-	width: 10%;
+	width: 22%;
 	float: left;
 	text-align: center;
 	padding: 4px 0px;
@@ -112,7 +112,8 @@
 	text-align: left;
 }
 .ec_account_order_details_column2 {
-	width: 34%;
+	width: 36%;
+	margin-left:2%;
 	float: left;
 	text-align: left;
 }
@@ -121,7 +122,7 @@
 	float: left;
 }
 .ec_account_order_details_column4 {
-	width: 10%;
+	width: 22%;
 	float: left;
 }
 .ec_account_order_details_column5 {
@@ -140,7 +141,7 @@
 	width: 12%;
 }
 .ec_account_order_details_item_display_column4 {
-	width: 10%;
+	width: 21%;
 }
 .ec_account_order_details_item_display_column5 {
 	width: 10%;
