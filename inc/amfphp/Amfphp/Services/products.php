@@ -408,27 +408,53 @@ class products
 			  if ($imagelocation == 1) {
 					//Create SQL Query
 					$sql = $this->escape("UPDATE ec_product SET image1='' WHERE ec_product.product_id = '%s'", $productid);
-					if (file_exists("../../../products/pics1/".$imagename)) unlink("../../../products/pics1/".$imagename);
+					//look for duplicate
+					$duplicatesql = sprintf("SELECT product_id from ec_product WHERE ec_product.image1 = '%s'", $imagename);
+					$duplicateresult = mysql_query($duplicatesql);
+					if (!$duplicateresult) {
+						if (file_exists("../../../products/pics1/".$imagename)) unlink("../../../products/pics1/".$imagename);
+					}
 			  }
 			  if ($imagelocation == 2) {
 					//Create SQL Query
 					$sql = $this->escape("UPDATE ec_product SET image2='' WHERE ec_product.product_id = '%s'", $productid);
-					if (file_exists("../../../products/pics2/".$imagename)) unlink("../../../products/pics2/".$imagename);
+					//look for duplicate
+					$duplicatesql = sprintf("SELECT product_id from ec_product WHERE ec_product.image2 = '%s'", $imagename);
+					$duplicateresult = mysql_query($duplicatesql);
+					if (!$duplicateresult) {
+						if (file_exists("../../../products/pics2/".$imagename)) unlink("../../../products/pics2/".$imagename);
+					}
+		
 			  }
 			  if ($imagelocation == 3) {
 					//Create SQL Query
 					$sql = $this->escape("UPDATE ec_product SET image3='' WHERE ec_product.product_id = '%s'", $productid);
-					if (file_exists("../../../products/pics3/".$imagename)) unlink("../../../products/pics3/".$imagename);
+					//look for duplicate
+					$duplicatesql = sprintf("SELECT product_id from ec_product WHERE ec_product.image3 = '%s'", $imagename);
+					$duplicateresult = mysql_query($duplicatesql);
+					if (!$duplicateresult) {
+						if (file_exists("../../../products/pics3/".$imagename)) unlink("../../../products/pics3/".$imagename);
+					}
 			  }
 			  if ($imagelocation == 4) {
 					//Create SQL Query
 					$sql = $this->escape("UPDATE ec_product SET image4='' WHERE ec_product.product_id = '%s'",  $productid);
-					if (file_exists("../../../products/pics4/".$imagename)) unlink("../../../products/pics4/".$imagename);
+					//look for duplicate
+					$duplicatesql = sprintf("SELECT product_id from ec_product WHERE ec_product.image4 = '%s'", $imagename);
+					$duplicateresult = mysql_query($duplicatesql);
+					if (!$duplicateresult) {
+						if (file_exists("../../../products/pics4/".$imagename)) unlink("../../../products/pics4/".$imagename);
+					}
 			  }
 			  if ($imagelocation == 5) {
 					//Create SQL Query
 					$sql = $this->escape("UPDATE ec_product SET image5='' WHERE ec_product.product_id = '%s'", $productid);
-					if (file_exists("../../../products/pics5/".$imagename)) unlink("../../../products/pics5/".$imagename);
+					//look for duplicate
+					$duplicatesql = sprintf("SELECT product_id from ec_product WHERE ec_product.image5 = '%s'", $imagename);
+					$duplicateresult = mysql_query($duplicatesql);
+					if (!$duplicateresult) {
+						if (file_exists("../../../products/pics5/".$imagename)) unlink("../../../products/pics5/".$imagename);
+					}
 			  }
 
 			  //Run query on database;
