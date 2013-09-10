@@ -581,9 +581,7 @@ class ec_db{
 	
 	public function get_groups( ){
 		
-		$sql = $this->mysqli->prepare( "SELECT ec_category.category_id, ec_category.category_name FROM ec_category ORDER BY ec_category.category_name ASC", $level, $menuid, $level, $menuid, $level, $menuid );
-		
-		return $this->mysqli->get_results( $sql );	
+		return $this->mysqli->get_results( "SELECT ec_category.category_id, ec_category.category_name FROM ec_category ORDER BY ec_category.category_name ASC" );	
 	}
 	
 	public function get_pricepoint_row( $pricepoint_id ){

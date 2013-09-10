@@ -322,10 +322,9 @@ class ec_orderdisplay{
 	 	
 		$headers   = array();
 		$headers[] = "MIME-Version: 1.0";
-		$headers[] = "Content-Type: text/html; boundary=\"PHP-mixed-{$sep}\"; charset=utf-8";
+		$headers[] = "Content-Type: text/html; charset=utf-8";
 		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
 		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
-		$headers[] = "Subject: Order Confirmation - #" . $this->order_id;
 		$headers[] = "X-Mailer: PHP/".phpversion();
 		
 		ob_start();

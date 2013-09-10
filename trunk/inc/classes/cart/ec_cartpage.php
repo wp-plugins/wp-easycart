@@ -1338,6 +1338,8 @@ class ec_cartpage{
 				$is_subscriber = false;
 			
 			$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, $shipping_id, $user_level, $is_subscriber );
+			$this->mysqli->update_address_user_id( $billing_id, $user_id );
+			$this->mysqli->update_address_user_id( $shipping_id, $user_id );
 			
 			if( $user_id != 0 ){
 			
