@@ -198,7 +198,7 @@ class orders
 
 
 				//get order admin email
-				$fromsql = sprintf("SELECT wp_options.option_value FROM  wp_options WHERE  wp_options.option_name = 'admin_email'");
+				$fromsql = sprintf("SELECT wp_options.option_value FROM  wp_options WHERE  wp_options.option_name = 'ec_option_order_from_email'");
 				$fromresult = mysql_query($fromsql);
 				$fromrow = mysql_fetch_assoc($fromresult);
 				
