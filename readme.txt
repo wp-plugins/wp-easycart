@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
-Tested up to: 3.6
-Stable tag: 1.1.23
+Tested up to: 3.6.1
+Stable tag: 1.1.24
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,6 +116,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 
+= 1.1.24 =
+* Bug Fix - When cart item totals went over 1k in price, javascript updater failed. Fixed.
+* Addition - For VAT users, enter a vat coupon by typing VATxxx, where xxx is anything after vat. Also check the free item box and this coupon will be detected and used as a VAT free order coupon.
+* Addition - Store owners can now turn on a required and visible billing address section for registering users. Available to new theme installs only.
+* Improvement - Instead of showing country 2 digit code, now showing full name throughout store. Available to new theme installs only.
+* Note: Testing completed for users wanting to use wp-super-cache. You should just add the store, cart, and account page names to the exclude box in the wp-super-cache settings. Works Perfect this way.
+* Addition - Added a new Dark Non-Responsive theme to the download, for users with dark backgrounds on their themes.
 = 1.1.23 =
 * Bug Fix - Emailers are improved
 * Improvement - Admin upgrades, shipping method ordering improved for live shipping

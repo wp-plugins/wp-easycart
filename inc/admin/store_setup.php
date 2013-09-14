@@ -22,6 +22,7 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_user_order_notes', $_POST['ec_option_user_order_notes'] );
 	update_option( 'ec_option_terms_link', $_POST['ec_option_terms_link'] );
 	update_option( 'ec_option_privacy_link', $_POST['ec_option_privacy_link'] );
+	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
 
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
 
@@ -224,6 +225,10 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
         <tr valign="top">
           <td align="left" class="itemheading" scope="row">Enable Customer Notes on Checkout:</td>
           <td valign="top"><select name="ec_option_user_order_notes" style="width:100px;"><option value="0"<?php if( get_option('ec_option_user_order_notes') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_user_order_notes') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Enable Customer Notes on Checkout</em>Enabling this option will allow customers to enter custom notes on the last step of checkout. NOTE: users for had a first install prior to 1.1.18 will need to update their layout and theme fiiles manually in order to use this option.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Add Billing Input on Account Registration Page:</td>
+          <td valign="top"><select name="ec_option_require_account_address" style="width:100px;"><option value="0"<?php if( get_option('ec_option_require_account_address') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_require_account_address') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Add Billing Address Input on Account Registration Page</em>Enabling this option adds and requires the user to enter a billing address when creating a new account through the account page.</span></a></td>
         </tr>
         <tr valign="top">
           <td align="left" class="itemheading" scope="row">Use RTL Support (Right to Left Text):</td>

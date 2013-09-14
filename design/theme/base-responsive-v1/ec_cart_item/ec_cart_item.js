@@ -17,7 +17,12 @@ function ec_cart_item_update_finished( data, cartitem_id ){
 	
 	ec_cart_item_hide_loader( cartitem_id );
 	
-	document.getElementById('ec_cartitem_total_' + cartitem_id).innerHTML = Number( Number( document.getElementById( 'ec_cartitem_unit_price_' + cartitem_id ).innerHTML.substring(1) ) * Number( document.getElementById( 'ec_cartitem_quantity_' + cartitem_id ).value ) ).toFixed(2);
+	var currency = document.getElementById( 'ec_cartitem_unit_price_' + cartitem_id ).innerHTML.substring(0,1);
+	var item_unit_price = parseFloat( document.getElementById( 'ec_cartitem_unit_price_' + cartitem_id ).innerHTML.substring(1).replace( /,/g,'') );
+	var item_quantity = Number( document.getElementById( 'ec_cartitem_quantity_' + cartitem_id ).value ).toFixed(2);
+	var item_total_price = currency + (item_unit_price * item_quantity).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	
+	document.getElementById('ec_cartitem_total_' + cartitem_id).innerHTML = item_total_price;
 	
 	if( document.getElementById( 'ec_cart_zip_code' ) ){
 		ec_estimate_shipping_click( );

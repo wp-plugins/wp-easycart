@@ -108,13 +108,13 @@ class ec_user{
 	
 	public function setup_billing_info_data( $bname, $blastname, $baddress, $bcity, $bstate, $bcountry, $bzip, $bphone ){
 		
-		$this->billing = new ec_address( $bname, $blastname, $baddress, "", $bcity, $bstate, $bcountry, $bzip, $bphone );
+		$this->billing = new ec_address( $bname, $blastname, $baddress, "", $bcity, $bstate, $bzip, $bcountry, $bphone );
 		
 	}
 	
 	public function setup_shipping_info_data( $sname, $slastname, $saddress, $scity, $sstate, $scountry, $szip, $sphone ){
 		
-		$this->shipping = new ec_address( $sname, $slastname, $saddress, "", $scity, $sstate, $scountry, $szip, $sphone );
+		$this->shipping = new ec_address( $sname, $slastname, $saddress, "", $scity, $sstate, $szip, $scountry, $sphone );
 		
 	}
 	

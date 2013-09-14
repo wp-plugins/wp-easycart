@@ -19,6 +19,14 @@ class ec_order_totals{
 		$this->tax_total = number_format( $tax->tax_total, 2, '.', '' );
 		$this->duty_total = number_format( $tax->duty_total, 2, '.', '' );
 		$this->vat_total = number_format( $tax->vat_total, 2, '.', '' );
+		if( strtolower(substr( $discount->coupon_code, 0, 3 ) ) == "vat" ){
+			// Found a likely VAT Free Coupon, do a check to make sure it is valid
+			$mysqli = new ec_db( );
+			$promocode_row = $mysqli->redeem_coupon_code( $discount->coupon_code );
+			if( $promocode_row && $promocode_row->is_free_item_based ){
+				$this->vat_total = number_format( 0, 2, '.', '' );
+			}
+		}
 		$this->discount_total = number_format( $discount->discount_total, 2, '.', '' );
 		$this->grand_total = number_format( $this->get_grand_total( ), 2, '.', '' );	
 	}

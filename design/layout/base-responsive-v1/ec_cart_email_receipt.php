@@ -48,9 +48,9 @@
                         <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->city; ?>, <?php echo $this->user->shipping->state; ?> <?php echo $this->user->shipping->zip; ?><?php }?></span></td>
                     </tr>
                     <tr>
-                    	<td><span class='style22'><?php echo $this->user->billing->country; ?></span></td>
+                    	<td><span class='style22'><?php echo $this->user->billing->country_name; ?></span></td>
                         <td>&nbsp;</td>
-                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->country; ?><?php }?></span></td>
+                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->country_name; ?><?php }?></span></td>
                     </tr>
                     <tr>
                     	<td><span class='style22'><?php echo $this->user->billing->phone; ?></span></td>
