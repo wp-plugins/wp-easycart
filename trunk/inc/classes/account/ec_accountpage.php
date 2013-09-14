@@ -208,7 +208,10 @@ class ec_accountpage{
 	}
 	
 	public function display_account_register_button( $button_text ){
-		echo "<input type=\"submit\" name=\"ec_account_register_button\" id=\"ec_account_register_button\" class=\"ec_account_register_button\" value=\"" . $button_text . "\" onclick=\"return ec_account_register_button_click();\">";
+		if( get_option( 'ec_option_require_account_address' ) )
+			echo "<input type=\"submit\" name=\"ec_account_register_button\" id=\"ec_account_register_button\" class=\"ec_account_register_button\" value=\"" . $button_text . "\" onclick=\"return ec_account_register_button_click2( );\">";
+		else
+			echo "<input type=\"submit\" name=\"ec_account_register_button\" id=\"ec_account_register_button\" class=\"ec_account_register_button\" value=\"" . $button_text . "\" onclick=\"return ec_account_register_button_click( );\">";
 	}
 	/* END REGISTER FUNCTIONS */
 	
@@ -580,8 +583,30 @@ class ec_accountpage{
 		$email = $_POST['ec_account_register_email'];
 		$password = md5( $_POST['ec_account_register_password'] );
 		$is_subscriber = $_POST['ec_account_register_is_subscriber'];
+		$billing_id = 0;
 		
-		$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, 0, 0, "shopper", $is_subscriber );
+		// Insert billing address if enabled
+		if( get_option( 'ec_option_require_account_address' ) ){
+			$billing = array( "first_name" 	=> $_POST['ec_account_billing_information_first_name'],
+							  "last_name"	=> $_POST['ec_account_billing_information_last_name'],
+							  "address"		=> $_POST['ec_account_billing_information_address'],
+							  "city"		=> $_POST['ec_account_billing_information_city'],
+							  "state"		=> $_POST['ec_account_billing_information_state'],
+							  "zip_code"	=> $_POST['ec_account_billing_information_zip'],
+							  "country"		=> $_POST['ec_account_billing_information_country'],
+							  "phone"		=> $_POST['ec_account_billing_information_phone']
+							);
+			
+			$billing_id = $this->mysqli->insert_address( $billing["first_name"], $billing["last_name"], $billing["address"], $billing["city"], $billing["state"], $billing["zip_code"], $billing["country"], $billing["phone"] );
+		}
+		
+		// Insert the user
+		$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, "shopper", $is_subscriber );
+		
+		// Update the address user_id
+		if( get_option( 'ec_option_require_account_address' ) ){
+			$this->mysqli->update_address_user_id( $billing_id, $user_id );
+		}
 		
 		if( $user_id ){
 			$_SESSION['ec_user_id'] = $user_id;

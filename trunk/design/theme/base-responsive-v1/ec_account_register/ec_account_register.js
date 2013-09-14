@@ -66,3 +66,13 @@ function ec_account_register_button_click( ){
 		return true;
 	
 }
+
+function ec_account_register_button_click2( ){
+	var top_half = ec_account_register_button_click( );
+	var bottom_half = ec_account_billing_information_update_click( );
+	if( top_half && bottom_half ){
+		return true;
+	}else{
+		return false;
+	}
+}

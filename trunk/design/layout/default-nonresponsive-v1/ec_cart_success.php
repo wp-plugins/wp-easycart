@@ -64,9 +64,9 @@
             <td class='ec_cart_success_style22'><?php if( get_option( 'ec_option_use_shipping' ) ){ ?><?php echo $this->user->shipping->city; ?>, <?php echo $this->user->shipping->state; ?> <?php echo $this->user->shipping->zip; ?><?php }?></td>
           </tr>
           <tr>
-            <td class='ec_cart_success_style22'><?php echo $this->user->billing->country; ?></td>
+            <td class='ec_cart_success_style22'><?php echo $this->user->billing->country_name; ?></td>
             <td>&nbsp;</td>
-            <td class='ec_cart_success_style22'><?php if( get_option( 'ec_option_use_shipping' ) ){ ?><?php echo $this->user->shipping->country; ?><?php }?></td>
+            <td class='ec_cart_success_style22'><?php if( get_option( 'ec_option_use_shipping' ) ){ ?><?php echo $this->user->shipping->country_name; ?><?php }?></td>
           </tr>
           <tr>
             <td class='ec_cart_success_style22'><?php echo $this->user->billing->phone; ?></td>

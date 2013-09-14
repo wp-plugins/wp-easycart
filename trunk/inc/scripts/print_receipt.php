@@ -11,6 +11,12 @@
 	$mysqli = new ec_db( );
 	
 	$order = $mysqli->get_order_row( $order_id, $email, $password );
+	$bill_country = $mysqli->get_country_name( $order->billing_country );
+	if( $bill_country )
+		$order->billing_country = $bill_country;
+	$ship_country = $mysqli->get_country_name( $order->shipping_country );
+	if( $ship_country )
+		$order->shipping_country = $ship_country;
 	
 	if( $order ){
 		

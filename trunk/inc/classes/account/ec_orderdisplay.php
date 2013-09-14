@@ -101,7 +101,7 @@ class ec_orderdisplay{
 		$this->billing_city = $order_row->billing_city; 
 		$this->billing_state = $order_row->billing_state; 
 		$this->billing_zip = $order_row->billing_zip; 
-		$this->billing_country = $order_row->billing_country; 
+		$this->billing_country = $this->mysqli->get_country_name( $order_row->billing_country ); 
 		$this->billing_phone = $order_row->billing_phone; 
 		
 		$this->shipping_first_name = $order_row->shipping_first_name; 
@@ -111,7 +111,7 @@ class ec_orderdisplay{
 		$this->shipping_city = $order_row->shipping_city; 
 		$this->shipping_state = $order_row->shipping_state; 
 		$this->shipping_zip = $order_row->shipping_zip; 
-		$this->shipping_country = $order_row->shipping_country; 
+		$this->shipping_country = $this->mysqli->get_country_name( $order_row->shipping_country ); 
 		$this->shipping_phone = $order_row->shipping_phone; 
 		
 		$this->order_customer_notes = $order_row->order_customer_notes;

@@ -1316,7 +1316,7 @@ class ec_db{
 		$shipping_method = "";
 		if( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] != "standard" )
 			$shipping_method = $this->get_shipping_method_name( $_SESSION['ec_shipping_method'] );
-		else if( ( $shipping->shipping_method == "price" || $shipping->shipping_method == "weight" ) && isset( $_SESSION['ec_ship_express'] ) )
+		else if( ( $shipping->shipping_method == "price" || $shipping->shipping_method == "weight" ) && isset( $_SESSION['ec_ship_express'] ) && $_SESSION['ec_ship_express'] != "" )
 			$shipping_method = $GLOBALS['language']->get_text( "cart_estimate_shipping", "cart_estimate_shipping_express" );
 		else
 			$shipping_method = $GLOBALS['language']->get_text( "cart_estimate_shipping", "cart_estimate_shipping_standard" );
@@ -2082,6 +2082,11 @@ class ec_db{
 	public function get_countries( ){
 		$sql = "SELECT name_cnt, iso2_cnt, vat_rate_cnt FROM ec_country ORDER BY sort_order ASC";
 		return $this->mysqli->get_results( $sql );
+	}
+	
+	public function get_country_name( $iso2 ){
+		$sql = "SELECT name_cnt FROM ec_country WHERE iso2_cnt = '%s'";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $iso2 ) );
 	}
 	
 	public function get_states( ){
