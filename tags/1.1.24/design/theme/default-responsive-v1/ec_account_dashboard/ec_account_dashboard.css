@@ -1,0 +1,288 @@
+@charset "utf-8";
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//All Code and Design is copyrighted by Level Four Development, llc
+//
+//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
+//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
+//
+//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
+//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
+//contact Level Four Development, llc and EasyCart prior to use.
+//
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
+
+/* Base Theme - EC Account Dashboard CSS Document */
+.ec_account_dashboard_holder_main {
+	width: 100%;
+	float: left;
+}
+.ec_account_dashboard_left {
+	width: 70%;
+	float: left;
+}
+.ec_account_dashboard_right {
+	width: 25%;
+	margin-left: 5%;
+	float: right;
+}
+ @media only screen and ( min-width: [size_level3_low]px ) and ( max-width: [size_level3_high]px ) {
+.ec_account_dashboard_left {
+	width: 100%;
+}
+.ec_account_dashboard_right {
+	width: 100%;
+	float: left;
+	margin-left: 0;
+}
+}
+ @media only screen and ( max-width: [size_level2_high]px ) {
+.ec_account_dashboard_left {
+	width: 100%;
+}
+.ec_account_dashboard_right {
+	width: 100%;
+	float: left;
+	margin-left: 0;
+}
+}
+ @media only screen and ( max-width: [size_level1_high]px ) {
+.ec_account_dashboard_left {
+	width: 100%;
+}
+.ec_account_dashboard_right {
+	width: 100%;
+	float: left;
+	margin-left: 0;
+}
+}
+.ec_account_dashboard_title {
+	width: 100%;
+	float: left;
+	padding-top: 15px;
+	padding-bottom: 7px;
+	margin-bottom: 7px;
+	border-bottom: 3px solid [main_color];
+	color: [title_color];
+	font-size: 22px;
+	text-align: left;
+	font-family: [title_font];
+}
+.ec_account_dashboard_holder {
+	width: 100%;
+	float: left;
+	font-family: [content_font];
+	font-size: 12px;
+}
+.ec_account_dashboard_holder a {
+	font-size: 12px;
+	font-family: [content_font];
+	font-weight: bold;
+	color: [link_color] !important;
+}
+.ec_account_dashboard_holder a:hover {
+	text-decoration: none;
+	color: [link_hover_color] !important;
+}
+.ec_account_dashboard_row {
+	width: 100%;
+	text-align: left;
+	float: left;
+	font-size: 12px;
+	font-family: [content_font];
+}
+.ec_account_dashboard_row_content {
+	width: 100%;
+	text-align: left;
+	float: left;
+	font-size: 12px;
+	font-family: [content_font];
+	padding: 5px 0;
+	color:[text_color];
+}
+.ec_account_dashboard_row_bold {
+	width: 100%;
+	text-align: left;
+	float: left;
+	font-size: 12px;
+	font-family: [content_font];
+	font-weight: bold;
+	margin-top: 15px;
+	color:[title_color];
+}
+.ec_account_dashboard_row_divider {
+	width: 100%;
+	text-align: center;
+	float: left;
+	background-color: [main_color];
+	margin-top: 3px;
+	margin-bottom: 25px;
+	padding: 7px 0;
+}
+.ec_account_dashboard_row_divider a {
+	margin-top: 4px;
+	min-width: 80px;
+	color: #FFF !important;
+	padding: 3px 6px;
+	text-indent: 0;
+	text-decoration: none!important;
+	white-space: nowrap;
+	text-align: center;
+	font: 14px;
+	font-weight: bold;
+	font-family: [content_font];
+	text-transform: uppercase;
+	outline: 0;
+}
+.ec_account_dashboard_row_divider a:hover {
+	cursor: pointer;
+	color: #EEE !important;
+}
+.ec_account_order_line_header {
+	width: 100%;
+	float: left;
+	background-color: [main_color];
+	padding: 8px 0px;
+	margin: 0 0 4px 0;
+}
+.ec_account_order_line_column1_header {
+	float: left;
+	padding-left: 20px;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color: #FFF;
+}
+.ec_account_order_line_column2_header {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color: #FFF;
+}
+.ec_account_order_line_column3_header {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color: #FFF;
+}
+.ec_account_order_line_column4_header {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color: #FFF;
+}
+.ec_account_order_line_column5_header {
+	float: right;
+	text-align: right;
+}
+ @media only screen and ( min-width: [size_level5_low]px ) {
+.ec_account_order_line_column1_header {
+	width: 75px;
+}
+.ec_account_order_line_column2_header {
+	width: 175px;
+}
+.ec_account_order_line_column3_header {
+	width: 85px;
+}
+.ec_account_order_line_column4_header {
+	width: 135px;
+}
+.ec_account_order_line_column5_header {
+	width: 125px;
+}
+}
+ @media only screen and ( min-width: [size_level4_low]px ) and ( max-width: [size_level4_high]px ) {
+.ec_account_order_line_column1_header {
+	width: 63px;
+}
+.ec_account_order_line_column2_header {
+	width: 173px;
+}
+.ec_account_order_line_column3_header {
+	width: 90px;
+}
+.ec_account_order_line_column4_header {
+	width: 135px;
+}
+.ec_account_order_line_column5_header {
+	width: 100px;
+}
+}
+ @media only screen and ( min-width: [size_level3_low]px ) and ( max-width: [size_level3_high]px ) {
+.ec_account_order_line_column1_header {
+	width: 73px;
+}
+.ec_account_order_line_column2_header {
+	width: 177px;
+}
+.ec_account_order_line_column3_header {
+	width: 81px;
+}
+.ec_account_order_line_column4_header {
+	width: 135px;
+}
+.ec_account_order_line_column5_header {
+	width: 95px;
+}
+}
+ @media only screen and ( max-width: [size_level2_high]px ) {
+.ec_account_order_line_column1_header {
+	padding-left: 20px;
+	width: 81px;
+}
+.ec_account_order_line_column2_header {
+	width: 135px;
+	margin-right: 20px;
+	font-size: 11px;
+}
+.ec_account_order_line_column3_header {
+}
+.ec_account_order_line_column4_header {
+	display: none;
+}
+.ec_account_order_line_column5_header {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+}
+}
+ @media only screen and ( max-width: [size_level1_high]px ) {
+.ec_account_order_line_column1_header {
+	padding-left: 10px;
+	width: 53px;
+}
+.ec_account_order_line_column2_header {
+	width: 120px;
+	margin-right: 10px;
+	font-size: 11px;
+}
+.ec_account_order_line_column3_header {
+	display: none;
+}
+.ec_account_order_line_column4_header {
+	display: none;
+}
+.ec_account_order_line_column5_header {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+}
+}
+
+/* END EC ACCOUNT DASHBOARD STYLE*/
