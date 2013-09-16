@@ -16,7 +16,7 @@ function ec_cart_validate_checkout_info( ){
 	}
 	
 	var shipping_selector = false;
-	if( document.getElementById('ec_cart_use_shipping_for_shipping').checked )
+	if( document.getElementById('ec_cart_use_shipping_for_shipping') && document.getElementById('ec_cart_use_shipping_for_shipping').checked )
 		shipping_selector = true;
 		 
 	var errors = 0;
