@@ -843,6 +843,15 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 </td>
             </tr>
             <tr valign="top">
+                <td align="left" class="platformheading" scope="row">Having Trouble Installing Sample Data?</td>
+                <td valign="top" class="platformheadingimage"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
+        	</tr>
+            <tr valign="top">
+            	<td colspan="2" align="left" scope="row">
+                <p>Some servers have difficulty copying the sample data from the wpeasycart servers, others get the files copied but do not have write access to unzip and copy the files into the products folder. Please read the <a href="http://wpeasycart.com/docs/1.0.0/installation/sample_data.php">docs page here</a> to learn about manual sample data installation/uninstallation.</p>
+                </td>
+            </tr>
+            <tr valign="top">
                 <td align="left" class="platformheading" scope="row">Server Diagnostics and Checklist</td>
                 <td valign="top" class="platformheadingimage"><img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" /></td>
         	</tr>
