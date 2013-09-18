@@ -62,13 +62,13 @@
 	margin-top: 5px;
 }
 .ec_cart_billing_row_error .ec_cart_billing_label {
-	width: 100px;
+	width: 120px;
 	float: left;
 	text-align: left;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: [content_font];
-	margin-top: 12px;
+	line-height:28px;
 	color: [error_text];
 }
 .ec_cart_billing_row_error .ec_cart_billing_input {
@@ -77,9 +77,11 @@
 	text-align: left;
 }
 .ec_cart_billing_row_error .ec_cart_billing_input_text {
-	width: 200px;
+	width: 220px;
 	background-color: [error_color];
-	border: 2px solid [error_color2];
+	border: 1px solid [error_color2];
 }
-
+.ec_cart_billing_row_error .ec_cart_billing_input select{
+	width:225px;	
+}
 /* END EC CART BILLING STYLE*/

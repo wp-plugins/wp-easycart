@@ -473,7 +473,10 @@ class ec_product{
 				}else
 					echo "ec_product_swatch";
 				
-				echo "\" onclick=\"" . $js_function_name . "('" . $this->model_number . "', " . $level . ", " . $i . ");\" id=\"" . $id_prefix . $this->model_number . "_" . $level . "_" . $i . "\" data-optionitemid=\"" . $optionset->optionset[$i]->optionitem_id . "\" data-quantitystring=\"" . $this->options->get_quantity_string( $level, $i ) . "\" width=\"" . get_option( 'ec_option_swatch_' . $size . '_width' ) . "\" height=\"" . get_option( 'ec_option_swatch_' . $size . '_height' ) . "\" \>";
+				if( $this->use_optionitem_quantity_tracking )
+					echo "\" onclick=\"" . $js_function_name . "('" . $this->model_number . "', " . $level . ", " . $i . ");\" id=\"" . $id_prefix . $this->model_number . "_" . $level . "_" . $i . "\" data-optionitemid=\"" . $optionset->optionset[$i]->optionitem_id . "\" data-quantitystring=\"" . $this->options->get_quantity_string( $level, $i ) . "\" width=\"" . get_option( 'ec_option_swatch_' . $size . '_width' ) . "\" height=\"" . get_option( 'ec_option_swatch_' . $size . '_height' ) . "\" \>";
+				else
+					echo "\" onclick=\"" . $js_function_name . "('" . $this->model_number . "', " . $level . ", " . $i . ");\" id=\"" . $id_prefix . $this->model_number . "_" . $level . "_" . $i . "\" data-optionitemid=\"" . $optionset->optionset[$i]->optionitem_id . "\" data-quantitystring=\"9999\" width=\"" . get_option( 'ec_option_swatch_' . $size . '_width' ) . "\" height=\"" . get_option( 'ec_option_swatch_' . $size . '_height' ) . "\" \>";
 					
 			}
 			

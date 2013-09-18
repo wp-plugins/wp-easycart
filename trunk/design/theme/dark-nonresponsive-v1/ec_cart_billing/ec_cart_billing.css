@@ -36,6 +36,10 @@
 .ec_cart_billing_row .ec_cart_billing_input_text {
 	width: 220px;
 	border: 1px solid #c4c4c4;
+	padding:10px;
+}
+.ec_cart_billing_row select.ec_cart_billing_input_text{
+	width:225px;	
 }
 .ec_cart_billing_row select.ec_cart_billing_input_text{
 	width:240px;	
@@ -72,12 +76,14 @@
 	float: left;
 	text-align: left;
 }
-.ec_cart_billing_row_error .ec_cart_billing_input_text {
+.ec_cart_billing_row_error .ec_cart_billing_input_text, .ec_cart_billing_row_error .ec_cart_billing_input_text:focus {
 	width:220px;
 	background-color: #700909;
 	border: 1px solid #c4c4c4;
+	padding:10px;
+	color:#FFF;
 }
-.ec_cart_billing_row_error select.ec_cart_billing_input_text{
+.ec_cart_billing_row_error select.ec_cart_billing_input_text, .ec_cart_billing_row_error select.ec_cart_billing_input_text:focus{
 	width:240px;
 	background-color: #700909;
 	border: 1px solid #c4c4c4;

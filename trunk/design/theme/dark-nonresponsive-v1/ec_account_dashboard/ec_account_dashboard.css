@@ -76,6 +76,12 @@
 	font-family: [content_font];
 	padding: 5px 0;
 }
+.ec_account_dashboard_row_content a{
+	color:#DDD;
+}
+.ec_account_dashboard_row_content a:hover{
+	color:#FFF;
+}
 .ec_account_dashboard_row_bold {
 	width: 100%;
 	text-align: left;

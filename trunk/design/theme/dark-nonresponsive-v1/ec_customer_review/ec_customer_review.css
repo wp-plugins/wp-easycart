@@ -13,7 +13,7 @@
 }
 
 .ec_customer_review_date{
-	float:right; width:28%; font-size:11px; text-align:right; font-family:[content_font];
+	float:right; width:28%; font-size:11px; text-align:right; font-family:[content_font]; margin-right:10px;
 }
 
 div.ec_customer_review_description{
