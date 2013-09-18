@@ -18,13 +18,13 @@ class ec_firstdata extends ec_gateway{
 		//build cart array
 		$firstdatae4_cart = array();	  
 		for( $i=0; $i<count($this->cart->cart); $i++){	
-			$line_item = array(	"commodity_code"		=>	$this->cart->cart[$i]->product_id,
-								"description"			=>	$this->cart->cart[$i]->title,
+			$line_item = array(	"commodity_code"		=>	substr( $this->cart->cart[$i]->product_id, 0, 12 ),
+								"description"			=>	substr( $this->cart->cart[$i]->title, 0, 26 ),
 								"discount_amount"		=>	"0.00",
 								"discount_indicator"	=>	"0",
 								"gross_net_indicator"	=>	"0",
 								"line_item_total"		=>	$this->cart->cart[$i]->total_price,
-								"product_code"			=>	$this->cart->cart[$i]->model_number,
+								"product_code"			=>	substr( $this->cart->cart[$i]->model_number, 0, 12 ),
 								"quantity"				=>	$this->cart->cart[$i]->quantity,
 								"unit_cost"				=>	$this->cart->cart[$i]->unit_price,
 								"unit_of_measure"		=>	"ITM"

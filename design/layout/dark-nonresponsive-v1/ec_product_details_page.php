@@ -144,18 +144,19 @@
     
 	<?php if($this->product->product_has_customer_reviews()){?>
     <div class="ec_product_details_customer_reviews" id="ec_product_details_customer_reviews">
-   		<div class="ec_product_details_customer_reviews_overall_row">
-            <div class="ec_product_details_customer_reviews_button"><?php $this->product->display_product_customer_review_open_button("Write a Review", "Review Submitted"); ?></div>
-            <div class="ec_product_details_customer_reviews_overall_title"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_customer_rating' )?></div>
-            <?php if( $this->product->has_reviews( ) ){ ?>
-            <div class="ec_product_details_customer_reviews_stars"><?php $this->product->display_product_stars(); ?></div>
-            <div class="ec_product_details_customer_reviews_num_reviews"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review_based_on' )?> <?php $this->product->display_product_number_reviews(); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review' )?><?php if($this->product->get_product_number_reviews() != 1) echo "s"; ?></div>
-            <?php }else{ ?>
-            <div class="ec_product_details_customer_reviews_num_reviews"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review_no_reviews' )?></div>
-            <?php }?>
-        </div>
-        
-        <div class="ec_product_details_customer_reviews_list"><?php $this->product->display_product_reviews(); ?></div>
+   		<div class="ec_inner">
+            <div class="ec_product_details_customer_reviews_overall_row">
+                <div class="ec_product_details_customer_reviews_button"><?php $this->product->display_product_customer_review_open_button("Write a Review", "Review Submitted"); ?></div>
+                <div class="ec_product_details_customer_reviews_overall_title"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_customer_rating' )?></div>
+                <?php if( $this->product->has_reviews( ) ){ ?>
+                <div class="ec_product_details_customer_reviews_stars"><?php $this->product->display_product_stars(); ?></div>
+                <div class="ec_product_details_customer_reviews_num_reviews"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review_based_on' )?> <?php $this->product->display_product_number_reviews(); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review' )?><?php if($this->product->get_product_number_reviews() != 1) echo "s"; ?></div>
+                <?php }else{ ?>
+                <div class="ec_product_details_customer_reviews_num_reviews"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review_no_reviews' )?></div>
+                <?php }?>
+            </div>
+        	<div class="ec_product_details_customer_reviews_list"><?php $this->product->display_product_reviews(); ?></div>
+    	</div>
     </div>
     
     <div class="ec_product_details_customer_reviews_popup_background" id="customer_review_popup_background"></div>

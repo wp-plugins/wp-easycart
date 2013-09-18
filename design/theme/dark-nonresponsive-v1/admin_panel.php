@@ -135,7 +135,7 @@ jQuery( document ).ready(
 			$css_split = explode( ",", $css_options );
 			
 			if( count( $css_split ) != 16 ){
-				$css_options = "main_color=#990c0c,second_color=#700909,third_color=#4a0101,title_color=#0f0f0f,text_color=#141414,link_color=#363636,link_hover_color=#4d0606,sale_color=#900,error_text=#900,error_color=#F1D9D9,error_color2=#FF0606,success_text=#333,success_color=#E6FFE6,success_color2=#6FFF47";
+				$css_options = "main_color=#990c0c,second_color=#700909,third_color=#4a0101,title_color=#0f0f0f,text_color=#141414,link_color=#DDD,link_hover_color=#FFF,sale_color=#900,error_text=#900,error_color=#F1D9D9,error_color2=#FF0606,success_text=#333,success_color=#E6FFE6,success_color2=#6FFF47";
 				update_option( 'ec_option_css_replacements', $css_options );
 				$css_split = explode( ",", $css_options );
 			}

@@ -21,11 +21,11 @@
 
 /* Per Page Styles*/
 .ec_per_page_link{
-	font-size:11px; font-weight:normal; color:[link_color];
+	font-size:11px; font-weight:normal; color:#DDD !important;
 }
 
 .ec_per_page_link:hover{
-	font-size:11px; font-weight:normal; color:[link_hover_color]; text-decoration:none;
+	font-size:11px; font-weight:normal; color:#FFF !important; text-decoration:none;
 }
 
 .ec_per_page_selected{

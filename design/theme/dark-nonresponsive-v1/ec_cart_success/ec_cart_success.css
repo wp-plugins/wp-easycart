@@ -39,6 +39,9 @@
 	font-family:[content_font];	
 	text-align: left;
 }
+.ec_cart_success_style22 strong{
+	color:#FFF;	
+}
 .ec_option_label{
 	font-family:[content_font];
 	font-size:11px;

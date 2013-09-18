@@ -28,7 +28,7 @@
 	font-size: 12px;
 	font-weight: bold;
 	font-family: [content_font];
-	margin-top: 12px;
+	line-height:28px;
 	color: #333;
 }
 .ec_cart_contact_information_input {
@@ -45,7 +45,7 @@
 	margin-top: 9px;
 }
 .ec_cart_contact_information_input_text {
-	width: 200px;
+	width: 220px;
 }
 .ec_cart_contact_information_row_error {
 	width: 100%;
@@ -59,18 +59,18 @@
 	font-size: 12px;
 	font-weight: bold;
 	font-family: [content_font];
-	margin-top: 12px;
+	line-height:28px;
 	color: [error_text];
 }
 .ec_cart_contact_information_row_error .ec_cart_contact_information_input {
-	width: 200px;
+	width: 220px;
 	float: left;
 	text-align: left;
 }
 .ec_cart_contact_information_row_error .ec_cart_contact_information_input_text {
-	width: 200px;
+	width: 220px;
 	background-color: [error_color];
-	border: 2px solid [error_color2];
+	border: 1px solid [error_color2];
 }
 
 

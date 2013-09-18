@@ -50,6 +50,7 @@
 	background-color: #f7f7f7;
 	border-bottom: 1px solid #eeeeee;
 	border-top: 1px solid #eeeeee;
+	color:#333;
 }
 .ec_cart_payment_information_payment_type_row.error{
 	color:[error_text];	

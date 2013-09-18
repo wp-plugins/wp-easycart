@@ -589,11 +589,14 @@
 	border: 1px solid #CCC;
 	margin-bottom: 10px;
 	background-color:#f7f7f7;
-	padding: 5px;
+}
+
+.ec_product_details_customer_reviews .ec_inner{
+	padding:5px;
 }
 
 .ec_product_details_customer_reviews div{
-
+	color:#333;
 }
 
 .ec_product_details_customer_reviews_overall_row {
@@ -705,7 +708,7 @@
 	top: 50%;
 	left: 50%;
 	margin: -208px 0 0 -340px; /* [-(height/2)px 0 0 -(width/2)px] */
-	background: #161616;
+	background: #41474D;
 	-webkit-box-shadow: 0 0 25px #666;
 	box-shadow: 0 0 25px #666;
 	filter: alpha(opacity = 100);
@@ -816,6 +819,7 @@
 }
 .ec_product_details_customer_reviews_popup_input_row input[type="text"] {
 	margin-left:5px;
+	padding:10px;
 }
 .ec_product_details_customer_reviews_popup_input_row input[type="text"] {
 	width: 625px;

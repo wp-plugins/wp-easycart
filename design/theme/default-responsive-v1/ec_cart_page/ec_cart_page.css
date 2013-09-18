@@ -17,6 +17,7 @@
 	font-weight: bold;
 	font-family: [content_font];
 	border: thin solid [error_color2];
+	margin-bottom:20px;
 
 }
 .ec_cart_success {
@@ -29,7 +30,8 @@
 	font-size: 14px;
 	font-weight: bold;
 	font-family: [content_font];
-	border:1px solid [success_color2]
+	border:1px solid [success_color2];
+	margin-bottom:20px;
 }
  @media only screen and ( min-width: [size_level3_low]px ) {
 .ec_cart_page_left {
@@ -126,6 +128,7 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 	color:[text_color];
+	line-height: 23px;
 }
 .ec_cart_page_submit_order_button {
 	width: 100%;

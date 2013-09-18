@@ -15,7 +15,7 @@
 	font-weight: bold;
 	font-family: [content_font];
 	border: 1px solid [error_color2];
-
+	margin-bottom:20px;
 }
 .ec_cart_success {
 	width: 100%;
@@ -27,7 +27,7 @@
 	font-weight: bold;
 	font-family: [content_font];
 	border:1px solid [main_color];
-	margin-top: 10px;
+	margin-bottom:20px;
 }
 
 .ec_cart_success div{
@@ -107,6 +107,7 @@
 	text-align: left;
 	margin-top: 10px;
 	margin-bottom: 10px;
+	line-height: 23px;
 }
 .ec_cart_page_submit_order_button {
 	width: 100%;
