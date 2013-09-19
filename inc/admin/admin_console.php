@@ -17,7 +17,7 @@ if (!preg_match('#^http(s)?://#', $input)) {
 }
 $urlParts = parse_url($input);
 // remove www
-$domain = preg_replace('/^www\./', '', $urlParts['host']);
+$domain = $urlParts['host'];
 
 
 //get current wordpress user
