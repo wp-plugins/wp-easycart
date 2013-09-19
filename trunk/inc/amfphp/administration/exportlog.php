@@ -1,40 +1,20 @@
 <?php 
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//All Code and Design is copyrighted by Level Four Storefront, LLC
-
-//Level Four Storefront, LLC provides this code "as is" without     
-
-//warranty of any kind, either express or implied,       
-
-//including but not limited to the implied warranties    
-
-//of merchantability and/or fitness for a particular     
-
-//purpose.         
-
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//All Code and Design is copyrighted by Level Four Development, llc
 //
-
-//Only licnesed users may use this code and storfront for live purposes.
-
-//All other use is prohibited and may be subject to copyright violation laws.
-
-//If you have any questions regarding proper use of this code, please
-
-//contact Level Four Storefront, LLC prior to use.
-
+//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
+//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
 //
-
-//All use of this storefront is subject to our terms of agreement found on
-
-// Level Four Storefront, LLC's official website.
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//Version 8.1.0 -  2011
+//Only licensed users may use this code and storfront for live purposes. All other use is prohibited and may be 
+//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
+//contact Level Four Development, llc and EasyCart prior to use.
+//
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
 
 //load our connection settings
 require_once('../../../../../../wp-config.php');
@@ -68,7 +48,7 @@ $users = mysql_fetch_assoc($userresult);
 
 
 
-if ($users) {
+if ($users || is_user_logged_in()) {
 
 	//create 2 variables for use later on
 
