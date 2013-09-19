@@ -3,83 +3,28 @@
 $validate = new ec_validation; 
 $license = new ec_license;
 
-if(isset($_POST['isupdate'])){
-	
-	//update options
-	update_option( 'ec_option_storepage', $_POST['ec_option_storepage'] );
-	update_option( 'ec_option_cartpage', $_POST['ec_option_cartpage'] );
-	update_option( 'ec_option_accountpage', $_POST['ec_option_accountpage'] );
-	update_option( 'ec_option_currency', $_POST['ec_option_currency'] );
-	update_option( 'ec_option_sideMenuOnProducts', $_POST['ec_option_sideMenuOnProducts'] );
-	update_option( 'ec_option_sideMenuOnProductDetails', $_POST['ec_option_sideMenuOnProductDetails'] );
-	update_option( 'ec_option_stylesheettype', $_POST['ec_option_stylesheettype'] );
-	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
-	update_option( 'ec_option_num_prods_per_row', $_POST['ec_option_num_prods_per_row'] );
-	update_option( 'ec_option_categories_title', $_POST['ec_option_categories_title'] );
-	update_option( 'ec_option_manufacturers_title', $_POST['ec_option_manufacturers_title'] );
-	update_option( 'ec_option_pricepoints_title', $_POST['ec_option_pricepoints_title'] );
-	update_option( 'ec_option_guest_text', $_POST['ec_option_guest_text'] );
-	update_option( 'ec_option_submit_order_text', $_POST['ec_option_submit_order_text'] );
-	
-	
-	//Check and add a shortcode to a page (Simplifies the process!
-	$storepage_data = get_page( $_POST['ec_option_storepage'] );
-	if(!strstr($storepage_data, "[ec_store]")){
-		$storepage_data = "[ec_store]" . $storepage_data;
-		update_page( $_POST['ec_option_storepage'], $storepage_data);
-	}
-	
-	$cartpage_data = get_page( $_POST['ec_option_cartpage'] );
-	if(!strstr($cartpage_data, "[ec_cart]")){
-		$cartpage_data = "[ec_cart]" . $cartpage_data;
-		update_page( $_POST['ec_option_cartpage'], $cartpage_data);
-	}
-	
-	$accountpage_data = get_page( $_POST['ec_option_accountpage'] );
-	if(!strstr($accountpage_data, "[ec_account]")){
-		$accountpage_data = "[ec_account]" . $accountpage_data;
-		update_page( $_POST['ec_option_accountpage'], $accountpage_data);
-	}
-	
-}else if(isset($_POST['isinsertdemodata'])){
-	//INSERT DEMO DATA HERE
-	//Put up the databse for website
-	$url = plugin_dir_path(__FILE__) . 'demo.sql';
-	// Load and explode the sql file
-	$f = fopen($url, "r+") or die("CANNOT OPEN SQL SCRIPT");
-	$sqlFile = fread($f, filesize($url));
-	$sqlArray = explode(';', $sqlFile);
-	   
-	//Process the sql file by statements
-	foreach ($sqlArray as $stmt) {
-	if (strlen($stmt)>3){
-		$result = mysql_query($stmt);
-		  if (!$result){
-			 $sqlErrorCode = mysql_errno();
-			 $sqlErrorText = mysql_error();
-			 $sqlStmt      = $stmt;
-			 break;
-		  }
-	   }
-	} 
-	
-	//COPY PRODUCTS HERE
-	copy("http://www.levelfourstorefront.com/downloads/wordpress/demo.zip", plugin_dir_path(__FILE__) . "/demo.zip");
-	
-	$zip = new ZipArchive;
-	$res = $zip->open(plugin_dir_path(__FILE__) . "/demo.zip");
-	if ($res === TRUE) {
-		$zip->extractTo(plugin_dir_path(__FILE__) . "/");
-		$zip->close();
-	} else {
-		echo 'Unzip Failed';
-	}
-	
-}
-
 if( isset( $_GET['dismiss_lite_banner'] ) ){
 	update_option( 'ec_option_show_lite_message', '0' );	
 }
+
+//get the site url without http:// https:// or www.
+$input = site_url();
+// in case scheme relative URI is passed, e.g., //www.google.com/
+$input = trim($input, '/');
+// If scheme not included, prepend it
+if (!preg_match('#^http(s)?://#', $input)) {
+    $input = 'http://' . $input;
+}
+$urlParts = parse_url($input);
+// remove www
+$domain = preg_replace('/^www\./', '', $urlParts['host']);
+
+
+//get current wordpress user
+global $current_user;
+get_currentuserinfo();
+$userlogin = $current_user->user_login;
+$useremail = $current_user->user_email;
 
 ?>
 
@@ -101,13 +46,47 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
         <p><em><strong>Note:</strong> The administrative console is not downloaded or associated with WordPress and/or it's site. This software is downloaded via 3rd party systems such as Apple iTunes, the Google Play store, and WP Easy Cart.</em></p></td>
       </tr>
       <tr>
+        <td height="25" class="platformheading">WordPress Embedded Adminstration Console</td>
+        <td height="25" class="platformheadingimage"><img src="<?php echo plugins_url('images/wordpress_icon.jpg', __FILE__); ?>" width="38" height="40" /></td>
+      </tr>
+      <tr>
+        <td height="10" colspan="2"></td>
+      </tr>
+      <tr id="ec_wordpress_content">
+      	<?php if( function_exists( "wp_easycart_load_admin" ) ){ ?>
+        <td width="100%" colspan="2" align="center">
+        	 <?php wp_easycart_load_admin( $domain, $userlogin ); ?>
+        </td>
+        <?php }else{ ?>
+        <td width="600" align="center">
+        	<a href="http://wpeasycart.com/air/wp-easycart-admin.zip" target="_blank"><img src="<?php echo plugins_url('images/wordpress_easycart.jpg', __FILE__); ?>" alt="iPad Administration Console" width="600" height="360" /></a>
+        </td>
+        <td  style="padding: 15px;">
+        	&nbsp;&nbsp;&nbsp;&nbsp;
+            <p><strong>How to Install: </strong></p>
+            <p><strong>1. </strong><a href="http://wpeasycart.com/air/wp-easycart-admin.zip">Click this link</a> to download the WP EasyCart Administration Plugin.</p>
+            <p><strong>2. </strong>Click 'Plugins' -> 'Add New' -> 'Upload' -> 'Choose File' and select the plugin from your downloads. Once selected, click install now.</p>
+            <p><strong>3. </strong>Once Installed, this section will be replaced with an embedded version of the WP EasyCart Administration Software.</p>
+            <p>&nbsp;</p>
+            <p><strong>Need More Help?</strong></p>
+            <p><a href="http://www.wpeasycart.com/support-ticket/" target="_blank">Submit a ticket</a> with the url you are using and an agent will get back to you shortly.</p>
+        </td>
+        <?php }?>
+      </tr>
+      
+      <tr>
+        <td width="600">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      
+      <tr>
         <td height="25" class="platformheading">Desktop and Laptop Users</td>
         <td height="25" class="platformheadingimage"><img src="<?php echo plugins_url('images/windows-apple-linux.png', __FILE__); ?>" width="120" height="40" /></td>
       </tr>
       <tr>
         <td height="10" colspan="2"></td>
       </tr>
-      <tr>
+      <tr id="ec_desktop_content">
         <td width="600" align="center">
         
         <script type="text/javascript" src="<?php echo plugins_url('AIR_badge/swfobject.js', __FILE__); ?>"></script>
@@ -168,17 +147,14 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
         <td style="padding: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;
         <p><strong>How to Install: </strong></p>
         <p><strong>1. </strong>Simply click the '<em><strong>Install Now</strong></em>' on the left image and the automatic installer will try to install Adobe AIR and the Administrative Console. Please allow a few moments for it to install.</p>
-        <p>If that process fails or the automatic installer does not work, you can try our second method.</p>
+        <p>Note: If that process fails or the automatic installer does not work, you can try our second method.</p>
         <p><strong>2. </strong> Try manually installing by following these <a href="http://www.wpeasycart.com/air-install" target="_blank">2 steps to install.</a></p>
         <p>&nbsp;</p>
         <p><strong>Need More Help?</strong></p>
         <p>Try visiting our <a href="http://www.wpeasycart.com/video-tutorials/" target="_blank">Video Tutorial</a> on installing and logging into the admin console, or our <a href="http://www.wpeasycart.com/docs/1.0.0/administration/installing_console.php" target="_blank">Online Documentation</a>.</p>
         <p>Still need more help? Simply <a href="http://www.wpeasycart.com/support-ticket/" target="_blank">submit a ticket</a> with the url you are using and an agent will get back to you shortly.</p></td>
       </tr>
-      <tr>
-        <td height="37" align="center">&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
+      
       <tr>
         <td width="600">&nbsp;</td>
         <td>&nbsp;</td>
@@ -190,7 +166,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
       <tr>
         <td height="10" colspan="2"></td>
       </tr>
-      <tr>
+      <tr id="ec_ipad_content">
         <td width="600" align="center"><a href="https://itunes.apple.com/us/app/wp-easycart/id616846878?mt=8" target="_blank"><img src="<?php echo plugins_url('images/ipad_mockup1.png', __FILE__); ?>" alt="iPad Administration Console" width="550" height="432" /></a></td>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
       </tr>
@@ -205,7 +181,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
       <tr>
         <td colspan="2" height="10"></td>
       </tr>
-      <tr>
+      <tr id="ec_android_content">
         <td width="600" align="center"><a href="https://play.google.com/store/search?q=wp+easycart&amp;c=apps&amp;feature=spelling" target="_blank"><img src="<?php echo plugins_url('images/android_tablet_phone.png', __FILE__); ?>" width="550" height="450" /></a></td>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
       </tr>
@@ -217,3 +193,8 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
     <p>&nbsp;</p>
 </div>
 </div>
+<script type="text/javascript">
+function ec_admin_open( panel ){
+	jQuery( '#' + panel + "_content" ).show('blind');
+}
+</script>
