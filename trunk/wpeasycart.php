@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.1.26
+ * Version: 1.1.27
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.1.26
+ * @version 1.1.27
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,7 +19,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_1_26' );
+define( 'EC_CURRENT_VERSION', '1_1_27' );
 define( 'EC_CURRENT_DB', '1_4' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -755,8 +755,8 @@ function ec_create_menu() {
 	
 	//administration menu
 	add_menu_page( 'Administration', 'Administration', 'manage_options', 'ec_admin', 'ec_administration_callback', plugins_url( 'inc/admin/images/wp_16x16_icon.png', __FILE__ ) );
-	add_submenu_page( 'ec_admin', 'Online Demos', 'Online Demos', 'manage_options', 'ec_demos', 'ec_demos_callback' );
 	add_submenu_page( 'ec_admin', 'Admin Console', 'Admin Console', 'manage_options', 'ec_adminconsole', 'ec_admin_console_page_callback' );
+	add_submenu_page( 'ec_admin', 'Online Demos', 'Online Demos', 'manage_options', 'ec_demos', 'ec_demos_callback' );
 	add_submenu_page( 'ec_admin', 'Users Guide', 'Users Guide', 'manage_options', 'ec_users_guide', 'ec_users_guide_callback' );
 	
 	//store design menu

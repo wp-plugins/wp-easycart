@@ -1,106 +1,56 @@
-<?php 
+You are running the WP EasyCart FREE version. To purchase the LITE or FULL version and unlock the full selling potential visit www.wpeasycart.com and purchase a license.
 
-$validate = new ec_validation; 
-$license = new ec_license;
-
-if( isset( $_GET['dismiss_lite_banner'] ) ){
-	update_option( 'ec_option_show_lite_message', '0' );	
-}
-
-//get the site url without http:// https:// or www.
-$input = site_url();
-// in case scheme relative URI is passed, e.g., //www.google.com/
-$input = trim($input, '/');
-// If scheme not included, prepend it
-if (!preg_match('#^http(s)?://#', $input)) {
-    $input = 'http://' . $input;
-}
-$urlParts = parse_url($input);
-// remove www
-$domain = preg_replace('/^www\./', '', $urlParts['host']);
+You are running the WP EasyCart Lite version. To learn more about what you are missing with the Full version visit www.wpeasycart.com. To dismiss this banner click here.
 
 
-//get current wordpress user
-global $current_user;
-get_currentuserinfo();
-$userlogin = $current_user->user_login;
-$useremail = $current_user->user_email;
 
-?>
+Administrative Console 
 
-<div class="wrap">
-<?php if( !$license->is_registered() && !$license->is_lite_version() ) { ?>
-<div class="ribbon">You are running the WP EasyCart FREE version. To purchase the LITE or FULL version and unlock the full selling potential visit <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a> and purchase a license.</div>
-<?php }else if( $license->is_lite_version() && $license->show_lite_message() ) { ?>
-<div class="ribbon">You are running the WP EasyCart Lite version. To learn more about what you are missing with the Full version visit <a href="http://www.wpeasycart.com?ecid=admin_console" target="_blank">www.wpeasycart.com</a>. To dismiss this banner <a href="?page=ec_adminconsole&dismiss_lite_banner=true">click here.</a></div>
-<?php }?>
-<h2>
-  
-  <img src="<?php echo plugins_url('images/WP-Easy-Cart-Logo.png', __FILE__); ?>" /></h2>
-<div class="ec_contentwrap">
-   
-    <h2>Administrative Console </h2>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td height="55" colspan="2"><p>The WordPress EasyCart administrative console software is available for Desktops and popular tablet and phone systems.  The administrative console software allows you to manage day to day operations of your store, including Orders, Products, Users, Marketing, and more!</p>
-        <p><em><strong>Note:</strong> The administrative console is not downloaded or associated with WordPress and/or it's site. This software is downloaded via 3rd party systems such as Apple iTunes, the Google Play store, and WP Easy Cart.</em></p></td>
-      </tr>
-      <tr>
-        <td height="25" class="platformheading">WordPress Embedded Adminstration Console</td>
-        <td height="25" class="platformheadingimage"><img src="<?php echo plugins_url('images/wordpress_icon.jpg', __FILE__); ?>" width="38" height="40" /></td>
-      </tr>
-      <tr>
-        <td height="10" colspan="2"></td>
-      </tr>
-      <tr id="ec_wordpress_content">
-      	<?php if( function_exists( "wp_easycart_load_admin" ) ){ ?>
-        <td width="100%" colspan="2" align="center">
-        	 <?php wp_easycart_load_admin( $domain, $userlogin ); ?>
-        </td>
-        <?php }else{ ?>
-        <td width="600" align="center">
-        	<a href="http://wpeasycart.com/air/wp-easycart-admin.zip" target="_blank"><img src="<?php echo plugins_url('images/wordpress_easycart.jpg', __FILE__); ?>" alt="iPad Administration Console" width="600" height="360" /></a>
-        </td>
-        <td  style="padding: 15px;">
-        	&nbsp;&nbsp;&nbsp;&nbsp;
-            <p><strong>How to Install: </strong></p>
-            <p><strong>1. </strong><a href="http://wpeasycart.com/air/wp-easycart-admin.zip">Click this link</a> to download the WP EasyCart Administration Plugin.</p>
-            <p><strong>2. </strong>Click 'Plugins' -> 'Add New' -> 'Upload' -> 'Choose File' and select the plugin from your downloads. Once selected, click install now.</p>
-            <p><strong>3. </strong>Once Installed, this section will be replaced with an embedded version of the WP EasyCart Administration Software.</p>
-            <p>&nbsp;</p>
-            <p><strong>Need More Help?</strong></p>
-            <p><a href="http://www.wpeasycart.com/support-ticket/" target="_blank">Submit a ticket</a> with the url you are using and an agent will get back to you shortly.</p>
-        </td>
-        <?php }?>
-      </tr>
-      
-      <tr>
-        <td width="600">&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      
-      <tr>
-        <td height="25" class="platformheading">Desktop and Laptop Users</td>
-        <td height="25" class="platformheadingimage"><img src="<?php echo plugins_url('images/windows-apple-linux.png', __FILE__); ?>" width="120" height="40" /></td>
-      </tr>
-      <tr>
-        <td height="10" colspan="2"></td>
-      </tr>
-      <tr id="ec_desktop_content">
-        <td width="600" align="center">
-        
-        <script type="text/javascript" src="<?php echo plugins_url('AIR_badge/swfobject.js', __FILE__); ?>"></script>
-        
-        <!-- BEGIN EMBED CODE -->
-            
-            <!-- IMPORTANT: Make sure you also copy the swfobject script tag from the head above -->
-            
-            <div id="flashcontent" style="width:600px; height:360px;">
-                <strong>Please upgrade your Flash Player</strong>
-                This is the content that would be shown if the user does not have Flash Player 10.0.0 or higher installed.
-            </div>
-        
-          <script type="text/javascript">
+The WordPress EasyCart administrative console software is available for Desktops and popular tablet and phone systems. The administrative console software allows you to manage day to day operations of your store, including Orders, Products, Users, Marketing, and more!
+
+Note: The administrative console is not downloaded or associated with WordPress and/or it's site. This software is downloaded via 3rd party systems such as Apple iTunes, the Google Play store, and WP Easy Cart.
+
+
+
+WordPress Embedded Adminstration Console
+
+
+
+
+
+
+
+
+
+How to Install: 
+
+1. Click this link to download the WP EasyCart Administration Plugin.
+
+2. Click 'Plugins' -> 'Add New' -> 'Upload' -> 'Choose File' and select the plugin from your downloads. Once selected, click install now.
+
+3. Once Installed, this section will be replaced with an embedded version of the WP EasyCart Administration Software.
+
+
+
+Need More Help?
+
+Submit a ticket with the url you are using and an agent will get back to you shortly.
+
+
+
+
+
+
+
+Desktop and Laptop Users
+
+
+
+
+
+Please upgrade your Flash Player This is the content that would be shown if the user does not have Flash Player 10.0.0 or higher installed. 
+
+
                 // <![CDATA[
                 
                 // version 9.0.115 or greater is required for launching AIR apps.
@@ -137,64 +87,59 @@ $useremail = $current_user->user_email;
                 so.write("flashcontent");
                 
                 // ]]>
-            </script>
-        
-        <!-- END EMBED CODE -->
-        
-        
-        
-        </td>
-        <td style="padding: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;
-        <p><strong>How to Install: </strong></p>
-        <p><strong>1. </strong>Simply click the '<em><strong>Install Now</strong></em>' on the left image and the automatic installer will try to install Adobe AIR and the Administrative Console. Please allow a few moments for it to install.</p>
-        <p>Note: If that process fails or the automatic installer does not work, you can try our second method.</p>
-        <p><strong>2. </strong> Try manually installing by following these <a href="http://www.wpeasycart.com/air-install" target="_blank">2 steps to install.</a></p>
-        <p>&nbsp;</p>
-        <p><strong>Need More Help?</strong></p>
-        <p>Try visiting our <a href="http://www.wpeasycart.com/video-tutorials/" target="_blank">Video Tutorial</a> on installing and logging into the admin console, or our <a href="http://www.wpeasycart.com/docs/1.0.0/administration/installing_console.php" target="_blank">Online Documentation</a>.</p>
-        <p>Still need more help? Simply <a href="http://www.wpeasycart.com/support-ticket/" target="_blank">submit a ticket</a> with the url you are using and an agent will get back to you shortly.</p></td>
-      </tr>
-      
-      <tr>
-        <td width="600">&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td height="25" class="platformheading">iPad Users</td>
-        <td height="25" class="platformheadingimage"><img src="<?php echo plugins_url('images/apple.png', __FILE__); ?>" width="40" height="40" /></td>
-      </tr>
-      <tr>
-        <td height="10" colspan="2"></td>
-      </tr>
-      <tr id="ec_ipad_content">
-        <td width="600" align="center"><a href="https://itunes.apple.com/us/app/wp-easycart/id616846878?mt=8" target="_blank"><img src="<?php echo plugins_url('images/ipad_mockup1.png', __FILE__); ?>" alt="iPad Administration Console" width="550" height="432" /></a></td>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-      </tr>
-      <tr>
-        <td width="600">&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td height="25" class="platformheading">Android Tablet and Phone Users</td>
-        <td height="25" class="platformheadingimage"><img src="<?php echo plugins_url('images/android_vector.png', __FILE__); ?>" width="38" height="40" /></td>
-      </tr>
-      <tr>
-        <td colspan="2" height="10"></td>
-      </tr>
-      <tr id="ec_android_content">
-        <td width="600" align="center"><a href="https://play.google.com/store/search?q=wp+easycart&amp;c=apps&amp;feature=spelling" target="_blank"><img src="<?php echo plugins_url('images/android_tablet_phone.png', __FILE__); ?>" width="550" height="450" /></a></td>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-      </tr>
-      <tr>
-        <td width="600">&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-    </table>
-    <p>&nbsp;</p>
-</div>
-</div>
-<script type="text/javascript">
-function ec_admin_open( panel ){
-	jQuery( '#' + panel + "_content" ).show('blind');
-}
-</script>
+            
+
+How to Install: 
+
+1. Simply click the 'Install Now' on the left image and the automatic installer will try to install Adobe AIR and the Administrative Console. Please allow a few moments for it to install.
+
+Note: If that process fails or the automatic installer does not work, you can try our second method.
+
+2. Try manually installing by following these 2 steps to install.
+
+
+
+Need More Help?
+
+Try visiting our Video Tutorial on installing and logging into the admin console, or our Online Documentation.
+
+Still need more help? Simply submit a ticket with the url you are using and an agent will get back to you shortly.
+
+
+
+
+
+
+
+iPad Users
+
+
+
+
+
+
+
+
+
+
+
+
+
+Android Tablet and Phone Users
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
