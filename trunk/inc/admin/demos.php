@@ -21,7 +21,9 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
     <h2>Online Demos</h2>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="55">The WordPress EasyCart software was designed to give you an easy to use eCommerce plugin that can accommodate a lot of looks, designs, and styles with ease. Below are some of our demo shops, click the demo image to view. Try out the demos to get an idea of what the plugin can do. A complete feature list is documented at <a href="http://wpeasycart.com/docs/1.0.0/index/index.php" target="_blank">WP EasyCart Docs</a>.</td>
+        <td height="55"><p>The WordPress EasyCart software was designed to give you an easy to use eCommerce plugin that can accommodate a lot of looks, designs, and styles with ease. Below are some of our themes designed with a matching EasyCart shopping system for a seamless look. All of these themes are available for purchase from EasyCart and are a great compliment to your EasyCart system. <a href="http://www.wpeasycart.com/portfolio_entries/featuredthemes/" target="_blank">Click to View All Themes</a></p>
+        <p>You may also be interested in how WP EasyCart compares to other popular shopping systems. <a href="http://www.wpeasycart.com/wordpress-shopping-cart-comparison/" target="_blank">Click to View Full Comparison Guide.</a></p>
+        <p>&nbsp;</p></td>
       </tr>
       <tr>
         <td height="10"></td>
@@ -29,12 +31,32 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
       <tr>
         <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td align="center"><div class="ec_demo_shadow"><a href="http://base.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-1.png', __FILE__); ?>" width="325" height="211" /></a></div></td>
+            <td align="center"><span class="ec_demo_shadow"><a href="http://base.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-1.png', __FILE__); ?>" width="325" height="211" /></a></span></td>
+            <td align="center"><span class="ec_demo_shadow"><a href="http://basedark.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/basedark.jpg', __FILE__); ?>" width="325" height="211" /></a></span></td>
+            <td align="center"><span class="ec_demo_shadow"><a href="http://choices-fresh.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/choices-fresh.jpg', __FILE__); ?>" width="325" height="211" /></a></span></td>
+          </tr>
+          <tr>
+            <td height="40" align="center"><strong>Standard EasyCart Plugin</strong></td>
+            <td height="40" align="center"><strong>BaseDark</strong></td>
+            <td height="40" align="center"><strong>Choices Fresh</strong></td>
+          </tr>
+          <tr>
+            <td align="center"><span class="ec_demo_shadow"><a href="http://highrise.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/highrise.jpg', __FILE__); ?>" width="325" height="211" /></a></span></td>
+            <td align="center"><span class="ec_demo_shadow"><a href="http://estate.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/estate.jpg', __FILE__); ?>" width="325" height="211" /></a></span></td>
+            <td align="center"><span class="ec_demo_shadow"><a href="http://artsee.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/artsee.jpg', __FILE__); ?>" width="325" height="211" /></a></span></td>
+          </tr>
+          <tr>
+            <td height="40" align="center"><strong>HighRise</strong></td>
+            <td height="40" align="center"><strong>Estate</strong></td>
+            <td height="40" align="center"><strong>ArtSee</strong></td>
+          </tr>
+          <tr>
+            <td align="center"><div class="ec_demo_shadow"><a href="http://whiterock.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/whiterock.png', __FILE__); ?>" width="325" height="211" /></a></div></td>
             <td align="center"><div class="ec_demo_shadow"><a href="http://chameleon.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-2.png', __FILE__); ?>" width="325" height="211" /></a></div></td>
             <td align="center"><div class="ec_demo_shadow"><a href="http://phoenix.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-3.png', __FILE__); ?>" width="325" height="211" /></a></div></td>
           </tr>
           <tr>
-            <td height="40" align="center"><strong>Standard EasyCart Plugin</strong></td>
+            <td height="40" align="center"><strong>WhiteRock</strong></td>
             <td height="40" align="center"><strong>Chameleon</strong></td>
             <td height="40" align="center"><strong>Phoenix</strong></td>
           </tr>
@@ -46,12 +68,12 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
           <tr>
             <td align="center"><div class="ec_demo_shadow"><a href="http://crux.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-4.png', __FILE__); ?>" width="325" height="211" /></a></div></td>
             <td align="center"><div class="ec_demo_shadow"><a href="http://feather.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-5.png', __FILE__); ?>" width="325" height="211" /></a></div></td>
-            <td align="center"><div class="ec_demo_shadow"><a href="http://gemini.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-6.png', __FILE__); ?>" width="325" height="211" /></a></div></td>
+            <td align="center"><div class="ec_demo_shadow"><a href="http://udesign.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/udesign.jpg', __FILE__); ?>" width="325" height="211" /></a></div></td>
           </tr>
           <tr>
             <td height="40" align="center"><strong>Crux</strong></td>
             <td height="40" align="center"><strong>Feather</strong></td>
-            <td height="40" align="center"><strong>Gemini</strong></td>
+            <td height="40" align="center"><strong>U-Design</strong></td>
           </tr>
           <tr>
             <td align="center">&nbsp;</td>
