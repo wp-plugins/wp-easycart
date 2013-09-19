@@ -7,7 +7,7 @@
 //Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
 //including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
 //
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
+//Only licensed users may use this code and storfront for live purposes. All other use is prohibited and may be 
 //subject to copyright violation laws. If you have any questions regarding proper use of this code, please
 //contact Level Four Development, llc and EasyCart prior to use.
 //
@@ -81,7 +81,7 @@ $userresult = mysql_query($usersqlquery);
 $users = mysql_fetch_assoc($userresult);
 
 
-if ($users) {
+if ($users || is_user_logged_in()) {
 
 	//Flash File Data
 
