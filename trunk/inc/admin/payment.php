@@ -17,8 +17,8 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_use_amex', $_POST['ec_option_use_amex'] );
 	update_option( 'ec_option_use_jcb', $_POST['ec_option_use_jcb'] );
 	update_option( 'ec_option_use_diners', $_POST['ec_option_use_diners'] );
-	update_option( 'ec_option_use_delta', $_POST['ec_option_use_delta'] );
-	update_option( 'ec_option_use_uke', $_POST['ec_option_use_uke'] );
+	update_option( 'ec_option_use_laser', $_POST['ec_option_use_laser'] );
+	update_option( 'ec_option_use_maestro', $_POST['ec_option_use_maestro'] );
 	update_option( 'ec_option_use_paypal', $_POST['ec_option_use_paypal'] );
 	//payment method
 	update_option( 'ec_option_payment_process_method', $_POST['ec_option_payment_process_method'] );

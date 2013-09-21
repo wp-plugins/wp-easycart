@@ -20,6 +20,7 @@ class ec_paypal_pro extends ec_gateway{
 									"PARTNER" 			=> $paypal_pro_partner,
 									"USER" 				=> $paypal_pro_user,
 									"PWD" 				=> $paypal_pro_password,
+									"BUTTONSOURCE"		=> "LevelFourDevelopmentLLC_Cart",
 									"VERBOSITY" 		=> "HIGH",
 									"TENDER" 			=> "C",
 									"TRXTYPE" 			=> "S",
