@@ -16,7 +16,7 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"cmd\" id=\"cmd\" type=\"hidden\" value=\"_cart\" />";
 		echo "<input name=\"upload\" id=\"upload\" type=\"hidden\" value=\"1\" />";
 		echo "<input name=\"custom\" id=\"custom\" type=\"hidden\" value=\"" . $this->order_id . "\" />";
-		echo "<input name=\"bn\" id=\"bn\" type=\"hidden\" value=\"WPEasyCart\" />";
+		echo "<input name=\"bn\" id=\"bn\" type=\"hidden\" value=\"LevelFourDevelopmentLLC_Cart\" />";
 		echo "<input name=\"business\" id=\"business\" type=\"hidden\" value=\"" . $paypal_email . "\" />";
 		echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $paypal_currency_code . "\" />";
 		echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
