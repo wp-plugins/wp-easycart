@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.1.29
+Stable tag: 1.1.30
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.1.30 =
+* Addition - Admin Setup Wizard Now Available! Implemented to help users with the complete setup of the store in a step by step process with smart error checking.
+* Bug Fix - Admin bug fixes
+* Other various small bug fixes
 = 1.1.29 =
 * Bug Fix - Payment methods Laser and Maestro were not savable.
 * Addition - Godaddy users especially, but everyone can leverage the wp_mail function from the basic cart settings panel. Just turn it on and it will switch to wp_mail from mail.

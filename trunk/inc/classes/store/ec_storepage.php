@@ -18,16 +18,19 @@ class ec_storepage{
 	////////////////////////////////////////////////////////
 	// CONSTUCTOR FUNCTION
 	////////////////////////////////////////////////////////
-	function __construct( $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP" ){
+	function __construct( $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP", $modelnumber = "NOMODELNUMBER" ){
 		
-		$this->is_details = $this->get_is_details( );
+		if( $modelnumber != "NOMODELNUMBER" )								$this->is_details = true;
+		else																$this->is_details = $this->get_is_details( );
+		
 		if(	!$this->is_details )											$this->setup_products(  $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
 		else{												
-																			$this->model_number = $_GET['model_number'];
-			if( isset( $_GET['optionitem_id'] ) )
-																			$this->optionitem_id = $_GET['optionitem_id'];
-			else
-																			$this->optionitem_id = 0;
+			if( $modelnumber != "NOMODELNUMBER" )							$this->model_number = $modelnumber;
+			else															$this->model_number = $_GET['model_number'];
+			
+			if( isset( $_GET['optionitem_id'] ) )							$this->optionitem_id = $_GET['optionitem_id'];
+			else															$this->optionitem_id = 0;
+																			
 																			$this->setup_details( );
 		}
 		
