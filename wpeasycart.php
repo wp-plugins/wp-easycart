@@ -3,7 +3,7 @@
  * Plugin Name: WP EasyCart
  * Plugin URI: http://www.wpeasycart.com
  * Description: Simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please drop us a line or call, our current contact information is available at www.wpeasycart.com.
- * Version: 1.1.29
+ * Version: 1.1.30
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -11,7 +11,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.1.29
+ * @version 1.1.30
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -19,8 +19,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_1_29' );
-define( 'EC_CURRENT_DB', '1_4' );
+define( 'EC_CURRENT_VERSION', '1_1_30' );
+define( 'EC_CURRENT_DB', '1_5' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
 
@@ -48,6 +48,10 @@ function ec_activate(){
 	
 	//SETUP BASIC LANGUAGE SETTINGS
 	$language = new ec_language( );
+	
+	//WE BLOCK THIS FROM THE ec_config.php TO PREVENT OUTPUT ON ACTIVATION, INCLUDE HERE...
+	update_option( 'ec_option_is_installed', '1' );
+	$GLOBALS['setting'] = new ec_setting( );
 	
 	//WRITE OUR EC_CONN FILE FOR AMFPHP
 	$ec_conn_php = "<?php
@@ -302,11 +306,12 @@ function load_ec_store( $atts ){
 		'submenuid' => 'NOSUBMENU',
 		'subsubmenuid' => 'NOSUBSUBMENU',
 		'manufacturerid' => 'NOMANUFACTURER',
-		'groupid' => 'NOGROUP'
+		'groupid' => 'NOGROUP',
+		'modelnumber' => 'NOMODELNUMBER'
 	), $atts ) );
 	
 	ob_start();
-    $store_page = new ec_storepage( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
+    $store_page = new ec_storepage( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, $modelnumber );
 	$store_page->display_store_page();
     return ob_get_clean();
 
@@ -380,9 +385,6 @@ add_action( 'wp_enqueue_scripts', 'ec_load_css' );
 add_action( 'wp_enqueue_scripts', 'ec_load_js' );
 add_action( 'widgets_init', 'wpeasycart_register_widgets' );
 add_action( 'send_headers', 'ec_custom_headers' );
-add_action( 'admin_init', 'ec_register_settings' );
-add_action( 'admin_enqueue_scripts', 'ec_admin_style');
-add_action( 'admin_menu', 'ec_create_menu' );
 
 add_shortcode( 'ec_store', 'load_ec_store' );
 add_shortcode( 'ec_cart', 'load_ec_cart' );
@@ -740,125 +742,6 @@ add_filter( 'upgrader_post_install', 'wpeasycart_recover', 10, 2 ); //<------- a
 //END UPDATE FUNCTIONS
 //////////////////////////////////////////////
 
-//////////////////////////////////////////////
-//START LEVEL FOUR ADMIN PAGE(S)
-//////////////////////////////////////////////
-
-function ec_create_menu() {
-	//store settings menu
-	add_menu_page( 'Store Settings', 'Store Settings', 'manage_options', 'ec_settings', 'ec_settings_page_callback', plugins_url( 'inc/admin/images/wp_16x16_icon.png', __FILE__ ) );
-	add_submenu_page( 'ec_settings', 'Installation', 'Installation', 'manage_options', 'ec_install', 'ec_install_page_callback' );
-	add_submenu_page( 'ec_settings', 'Basic Setup', 'Basic Setup', 'manage_options', 'ec_setup', 'ec_setup_page_callback' );
-	add_submenu_page( 'ec_settings', 'Payment Info', 'Payment Info', 'manage_options', 'ec_payment', 'ec_payment_page_callback' );
-	add_submenu_page( 'ec_settings', 'Social Icons', 'Social Icons', 'manage_options', 'ec_socialicons', 'ec_social_icons_page_callback' );
-	add_submenu_page( 'ec_settings', 'Language Options', 'Language Options', 'manage_options', 'ec_language', 'ec_language_page_callback' );
-	
-	//administration menu
-	add_menu_page( 'Administration', 'Administration', 'manage_options', 'ec_admin', 'ec_administration_callback', plugins_url( 'inc/admin/images/wp_16x16_icon.png', __FILE__ ) );
-	add_submenu_page( 'ec_admin', 'Admin Console', 'Admin Console', 'manage_options', 'ec_adminconsole', 'ec_admin_console_page_callback' );
-	add_submenu_page( 'ec_admin', 'Online Demos', 'Online Demos', 'manage_options', 'ec_demos', 'ec_demos_callback' );
-	add_submenu_page( 'ec_admin', 'Users Guide', 'Users Guide', 'manage_options', 'ec_users_guide', 'ec_users_guide_callback' );
-	
-	//store design menu
-	add_menu_page( 'Store Design', 'Store Design', 'manage_options', 'ec_design', 'ec_base_design_page_callback', plugins_url( 'inc/admin/images/wp_16x16_icon.png', __FILE__ ) );
-	add_submenu_page( 'ec_design', 'Base Design', 'Base Design', 'manage_options', 'ec_design', 'ec_base_design_page_callback' );
-	add_submenu_page( 'ec_design', 'Theme Options', 'Theme Options', 'manage_options', 'ec_theme_options', 'ec_theme_options_page_callback' );
-	
-	remove_submenu_page('ec_settings', 'ec_settings');
-	remove_submenu_page('ec_admin', 'ec_admin');
-	
-}
-
-
-
-//store settings menu
-function ec_settings_page_callback(){
-	include("inc/admin/install.php");
-}
-
-function ec_install_page_callback(){
-	include("inc/admin/install.php");
-}
-
-function ec_setup_page_callback(){
-	include("inc/admin/store_setup.php");
-}
-
-function ec_payment_page_callback(){
-	include("inc/admin/payment.php");
-}
-
-function ec_social_icons_page_callback(){
-	include("inc/admin/social_icons.php");
-}
-
-function ec_language_page_callback(){
-	include("inc/admin/language.php");
-}
-
-
-//administration menu
-function ec_administration_callback() {
-	include("inc/admin/demos.php");
-}
-function ec_admin_console_page_callback() {
-	include("inc/admin/admin_console.php");
-}
-function ec_demos_callback() {
-	include("inc/admin/demos.php");
-}
-function ec_users_guide_callback() {
-	include("inc/admin/users_guide.php");
-}
-
-//store design menu
-function ec_base_design_page_callback(){
-	include("inc/admin/base_design.php");
-}
-
-function ec_theme_options_page_callback( ){
-	include("design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
-}
-
-function ec_products_page_callback(){
-	include("inc/admin/products_page.php");
-}
-
-function ec_product_details_page_callback(){
-	include("inc/admin/product_details_page.php");
-}
-
-function ec_cart_page_callback(){
-	include("inc/admin/cart_page.php");
-}
-
-function ec_account_page_callback(){
-	include("inc/admin/account_page.php");
-}
-
-
-function ec_register_settings() {
-	
-	//register admin css
-	wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ) );
-	wp_enqueue_style( 'wpeasycart_admin_css' );
-		
-	//register options
-	$wpoptions = new ec_wpoptionset();
-	$wpoptions->register_options();
-	
-}
-
-function ec_admin_style(){
-	include('style.php');
-	
-	wp_enqueue_script('thickbox');  
-	wp_enqueue_style('thickbox');  
-
-	wp_enqueue_script('media-upload'); 
-
-}
-
 /////////////////////////////////////////////////////////////////////
 //AJAX SETUP FUNCTIONS
 /////////////////////////////////////////////////////////////////////
@@ -1173,6 +1056,10 @@ function ec_store_meta( ){
 	}
 }
 
+function ec_theme_options_page_callback( ){
+	include("design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
+}
+
 /////////////////////////////////////////////////////////////////////
 //HELPER FUNCTIONS
 /////////////////////////////////////////////////////////////////////
@@ -1189,4 +1076,11 @@ function ec_get_url(){
   return $protocol .  $baseurl . $folder;
 }
 
+///////////////////HAVING ISSUES WITH OUT DURING ACTIVATION?? PRINT ERRORS!//////////////////
+/*
+add_action( 'activated_plugin','ec_save_error' );
+function ec_save_error(){
+	file_put_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY. '/error_activation.html', ob_get_contents( ) );
+}
+*/
 ?>

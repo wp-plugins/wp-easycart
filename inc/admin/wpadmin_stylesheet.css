@@ -228,7 +228,7 @@
 	-ms-transform: skew(8deg) rotate(3deg);
 	-o-transform: skew(8deg) rotate(3deg);
 	transform: skew(8deg) rotate(3deg);
-	ckground: #111;
+	background: #111;
 }
 
 .info_note {
@@ -476,4 +476,218 @@
 	background: url(images/select.png) center;	
 	float:left;
 	margin-left:10px;
+}
+
+.ec_check_row{
+	margin-bottom:10px;
+	line-height:28px;
+}
+.ec_check_row img{
+	margin-right:10px;
+	float:left;
+	margin-top:5px;
+}
+
+.ec_failed_row{
+	margin-bottom:10px;
+	line-height:28px;
+}
+.ec_failed_row img{
+	margin-right:10px;
+	float:left;
+	margin-top:5px;
+}
+.ec_failed_row input[type="text"]{
+	width:300px;
+}
+
+.ec_payment_gateway_table{	
+	border: 1px solid #585858;
+	width: 100%;
+	background: #EEEEEE;
+}
+
+.ec_payment_gateway_table .itemheading{
+	padding-left:10px !important;
+}
+
+.ec_ajax_loader{
+	position:fixed;
+	width:100%;
+	height:100%;
+	background-color:#000;
+	opacity:0.8;
+	filter:alpha(opacity=80); /* For IE8 and earlier */
+	display:none;
+	z-index:9999;
+}
+
+.ec_ajax_loader_holder{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -15px;
+	margin-left: -15px;
+}
+
+.ec_list_style_0{
+	width:100%;
+	float:left;
+	background-color:#CCC;
+}
+
+.ec_list_style_0 div{
+	padding:5px;
+}
+
+.ec_list_style_1{
+	width:100%;
+	float:left;
+	background-color:#EEE;
+}
+
+.ec_list_style_1 div{
+	padding:5px;
+}
+
+.ec_country_name_column{
+	float:left;
+	width:125px;
+}
+
+.ec_country_rate_column{
+	float:left;
+	width:200px;
+}
+
+.ec_country_buttons_column{
+	float:right;
+	width:250px;
+}
+
+.ec_country_buttons_column input{
+	float:right;
+}
+
+.ec_state_column{
+	float:left;
+	width:125px;
+}
+
+.ec_state_rate_column{
+	float:left;
+	width:200px;
+}
+
+.ec_state_buttons_column{
+	float:right;
+	width:250px;
+}
+
+.ec_state_buttons_column input{
+	float:right;
+}
+
+.ec_price_trigger_rate_column{
+	float:left;
+	width:225px;
+}
+
+.ec_price_rate_column{
+	float:left;
+	width:225px;
+}
+
+.ec_method_label_column{
+	float:left; width:300px;
+}
+
+.ec_method_label_column input[type="text"]{
+	width:220px;
+}
+
+.ec_method_rate_column{
+	float:left; width:225px;
+}
+
+.ec_method_order_column{
+	float:left; width:225px;
+}
+
+.ec_method_buttons_column{
+	float:right; width:180px;
+}
+
+.ec_method_buttons_column input{
+	float:right;
+}
+
+.ec_live_row input[type="text"]{
+	width:150px;
+}
+
+.ec_live_type_column{
+	float:left; width:65px;
+}
+
+.ec_live_label_column{
+	float:left; width:300px;
+}
+
+.ec_live_label_column input[type="text"]{
+	width:220px;
+}
+
+.ec_live_rate_column{
+	float:left; width:225px;
+}
+
+.ec_live_rate_column input[type="text"]{
+	width:150px;
+}
+
+.ec_live_order_column{
+	float:left; width:150px;
+}
+
+.ec_live_order_column input[type="number"]{
+	width:55px;
+}
+
+.ec_live_buttons_column{
+	float:right; width:180px;
+}
+
+.ec_live_buttons_column input{
+	float:right;
+}
+
+.ec_live_ship_grid{
+	float:right !important;
+	display:none;
+}
+
+hr{
+	border-top: 1px solid #DFDFDF;
+}
+
+.platformheading input[type="button"]{
+	background-color: #3D7E0A;
+	color: #FFF;
+	border: none;
+	padding: 10px;
+	margin: 0px;
+}
+
+.platformheading input[type="button"]:hover{
+	cursor:pointer;
+	background-color: #37581D;
+}
+
+.platformheading input.selectedpage[type="button"]{
+	background-color: #333;
+	color: #FFF;
+	border: none;
+	padding: 10px;
+	margin: 0px;
 }

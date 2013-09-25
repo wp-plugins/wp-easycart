@@ -160,6 +160,14 @@ class ec_product{
 		
 		$this->first_selection = $this->get_first_selection();
 		
+		// First we should check if there is a special price for this user
+		if( isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
+			$roleprice = $this->mysqli->get_roleprice( $_SESSION['ec_email'], $_SESSION['ec_password'], $this->product_id );
+			if( isset( $roleprice ) )
+				$this->price = $roleprice;
+		}
+		
+		// Now check promotions, even if special price based on user role, use the promo price!
 		$this->promotion = new ec_promotion( );
 		$promotion_price = $this->promotion->single_product_promotion( $this->product_id, $this->manufacturer_id, $this->price, $this->promotion_text );
 		if( $promotion_price < $this->price ){

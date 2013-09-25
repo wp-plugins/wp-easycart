@@ -2,8 +2,8 @@
 
 class ec_db{
 	
-	private $mysqli;  // holds your mysqli connection
-	private $orderdetail_sql;
+	protected $mysqli;  // holds your mysqli connection
+	protected $orderdetail_sql;
 	function __construct(){
 		global $wpdb;
 		$this->mysqli =& $wpdb;
@@ -2096,7 +2096,7 @@ class ec_db{
 	
 	public function get_settings( ){
 		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code FROM ec_setting WHERE setting_id = 1";
-		return $this->mysqli->get_row( $sql );	
+			return $this->mysqli->get_row( $sql );
 	}
 	
 	public function get_ios3_country_code( $iso2 ){
@@ -2120,6 +2120,11 @@ class ec_db{
 			$sql = "SELECT ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.order, ec_menulevel3.clicks, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d";
 			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $menu_id ) );
 		}
+	}
+	
+	public function get_roleprice( $email, $password, $product_id ){
+		$sql = "SELECT ec_roleprice.role_price FROM ec_roleprice, ec_user WHERE ec_user.email = %s AND ec_user.password = %s AND ec_user.user_level = ec_roleprice.role_label AND ec_roleprice.product_id = %d";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $email, $password, $product_id ) );
 	}
 	
 }

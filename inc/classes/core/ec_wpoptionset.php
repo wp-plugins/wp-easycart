@@ -18,6 +18,8 @@ class ec_wpoptionset{
 	private function generate_wp_option_names_and_defaults(){
 		
 		//Store install page settinngs
+		array_push($this->wp_option_names, 'ec_option_is_installed'); 						array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		array_push($this->wp_option_names, 'ec_option_storepage'); 							array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		array_push($this->wp_option_names, 'ec_option_cartpage'); 							array_push($this->wp_option_defaults, '' );
@@ -260,7 +262,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
 																							
 		// Theme Options
-		array_push($this->wp_option_names, 'ec_option_css_replacements');					array_push($this->wp_option_defaults, "main_color=#6e9e42,second_color=#9ecc8e,third_color=#d0ebca,title_color=#0f0f0f,text_color=#141414,link_color=#363636,link_hover_color=#348539,sale_color=#900,backdrop_color=#333,content_bg=#FFF,error_text=#900,error_color=#F1D9D9,error_color2=#FF0606,success_text=#333,success_color=#E6FFE6,success_color2=#6FFF47"  );
+		array_push($this->wp_option_names, 'ec_option_css_replacements');					array_push($this->wp_option_defaults, "main_color=#242424,second_color=#6b6b6b,third_color=#adadad,title_color=#0f0f0f,text_color=#141414,link_color=#242424,link_hover_color=#121212,sale_color=#900,backdrop_color=#333,content_bg=#FFF,error_text=#900,error_color=#F1D9D9,error_color2=#FF0606,success_text=#333,success_color=#E6FFE6,success_color2=#6FFF47"  );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		array_push($this->wp_option_names, 'ec_option_font_replacements');					array_push($this->wp_option_defaults, "title_font=Arial, Helvetica, sans-serif:::subtitle_font=Arial, Helvetica, sans-serif:::content_font=Arial, Helvetica, sans-serif" );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
@@ -315,6 +317,67 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_use_pinterest_icon');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-social-icons-group');
 																							
+		// Checklist Group																					
+		array_push($this->wp_option_names, 'ec_option_checklist_state');					array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_currency');					array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_default_payment');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_guest');					array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_shipping_enabled');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_checkout_notes');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_billing_registration');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_google_analytics');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_manual_billing');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_third_party_complete');		array_push($this->wp_option_defaults, '' );	
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_third_party');				array_push($this->wp_option_defaults, '' );	
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_has_paypal');				array_push($this->wp_option_defaults, '' );	
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_has_skrill');				array_push($this->wp_option_defaults, '' );	
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																			
+		array_push($this->wp_option_names, 'ec_option_checklist_credit_cart_complete');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_credit_card');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_credit_card_location');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_tax_complete');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_tax_choice');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_shipping_complete');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_shipping_choice');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_checklist_shipping_use_ups');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_checklist_shipping_use_usps');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_checklist_shipping_use_fedex');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_language_complete');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_theme_complete');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_colorization_complete');	array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_logo_added_complete');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_admin_embedded_complete');	array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_admin_consoles_complete');	array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_page');						array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');
 		
 	}
 	

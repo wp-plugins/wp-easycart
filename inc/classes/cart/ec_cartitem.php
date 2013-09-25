@@ -2,6 +2,8 @@
 
 class ec_cartitem{
 	
+	public $mysqli;													// ec_db class
+	
 	public $cartitem_id;											// INT
 	public $product_id;												// INT
 	public $model_number;											// VARCHAR 255
@@ -68,6 +70,8 @@ class ec_cartitem{
 	public $permalink_divider;										// CHAR
 	
 	function __construct( $cartitem_data ){
+		$this->mysqli = new ec_db( );
+		
 		$this->cartitem_id = $cartitem_data->cartitem_id;
 		$this->product_id = $cartitem_data->product_id;
 		$this->model_number = $cartitem_data->model_number;
@@ -158,8 +162,15 @@ class ec_cartitem{
 		
 		$options_price = $this->optionitem1_price + $this->optionitem2_price + $this->optionitem3_price + $this->optionitem4_price + $this->optionitem5_price;
 		
+		// Look for role based pricing
+		if( isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
+			$roleprice = $this->mysqli->get_roleprice( $_SESSION['ec_email'], $_SESSION['ec_password'], $this->product_id );
+		}
+		
 		if( $this->is_donation ){
 			$this->unit_price = $cartitem_data->donation_price;
+		}else if( isset( $roleprice ) ){
+			$this->unit_price = $roleprice + $options_price;
 		}else if( count( $this->pricetiers ) > 0 ){
 			$this->unit_price = $cartitem_data->price + $options_price;
 			for( $i=0; $i<count( $this->pricetiers ); $i++ ){

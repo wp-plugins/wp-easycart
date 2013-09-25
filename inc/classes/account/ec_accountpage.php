@@ -836,8 +836,11 @@ class ec_accountpage{
 		$headers .= "MIME-Version: 1.0\n";
 		$headers .= "Return-Path: " . get_option( 'ec_option_order_from_email' ) . "\r\n"; 
 		$headers .= "Content-type: text/html\r\n"; 
-	
-		mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, $headers);
+		
+		if( get_option( 'ec_option_use_wp_mail' ) )
+			wp_mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, $headers);
+		else
+			mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, $headers);
 	}
 	
 	private function get_random_password( ){

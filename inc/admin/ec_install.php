@@ -699,6 +699,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                     </li>
                     <li>Select the pages you just created in the select boxes below. The will help the WP EasyCart link your store up correctly. That's it! Now you can configure your store or access the admin console area.</li>
                     <li>Download the Administrative Console for your PC, Mac, Laptop, iPad, or Android devices by visiting the<a href="admin.php?page=ec_adminconsole"> admin console</a> menu on the left. This small download will install  using Adobe technology and lets you view orders, manage products and images, control your customer accounts, promotions, and more!</li>
+                    <li>At this point the store is connected and ready to go. If you want to see how it looks, add the demo data below. If you like the plugin and want to go through the complete setup (get your store fully functional and selling to customers) then you should try our <a href="?page=ec_checklist">setup wizard here</a>.</li>
                     </ol>
 				</td>
             </tr>
