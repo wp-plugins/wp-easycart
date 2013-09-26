@@ -288,6 +288,123 @@ class users
 			  }
 		}
 		
+		
+		
+		
+		//user roles
+		function getuserroles() {
+			//Create SQL Query
+			$sql = sprintf("SELECT ec_role.* FROM ec_role ORDER BY ec_role.role_id ASC");
+			
+			$result = mysql_query($sql);
+			  //if results, convert to an array for use in flash
+			  if(mysql_num_rows($result) > 0) {
+				  while ($row=mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		
+		function deleteuserrole($role_id) {
+			//Create SQL Query
+			$sql = $this->escape("DELETE FROM ec_role WHERE ec_role.role_id = %s", $role_id);
+			//Run query on database;
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] = "success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
+		}	
+		function adduserrole($role_label, $admin_access) {
+			
+			$adminok = 0; //default
+			if($admin_access == true) $adminok = 1;
+			if($admin_access == false) $adminok = 0;
+			
+			//Create SQL Query
+			$sql = sprintf("Insert into ec_role(ec_role.role_id, ec_role.role_label, ec_role.admin_access)
+				values(null, '%s', '%s')",
+				mysql_real_escape_string($role_label),
+				mysql_real_escape_string($adminok));
+			//Run query on database;
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] = "success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
+		}
+		
+		
+		
+		
+		//user role prices
+		function getuserroleprices($product_id) {
+			//Create SQL Query
+			$sql = sprintf("SELECT ec_roleprice.* FROM ec_roleprice WHERE ec_roleprice.product_id = '%s' ORDER BY ec_roleprice.role_label ASC", mysql_real_escape_string($product_id));
+			
+			$result = mysql_query($sql);
+			  //if results, convert to an array for use in flash
+			  if(mysql_num_rows($result) > 0) {
+				  while ($row=mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		
+		function deleteuserroleprice($roleprice_id, $product_id) {
+			//Create SQL Query
+			$sql = $this->escape("DELETE FROM ec_roleprice WHERE ec_roleprice.roleprice_id = %s", $roleprice_id);
+			//Run query on database;
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] = $product_id;
+				return($returnArray); //return array results if there are some
+			} else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
+		}	
+		function adduserroleprice($product_id, $role_label, $price) {
+			
+			//Create SQL Query
+			$sql = sprintf("Insert into ec_roleprice(ec_roleprice.roleprice_id, ec_roleprice.product_id, ec_roleprice.role_label, ec_roleprice.role_price)
+				values(null, '%s', '%s', '%s')",
+				mysql_real_escape_string($product_id),
+				mysql_real_escape_string($role_label),
+				mysql_real_escape_string($price));
+			//Run query on database;
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] = $product_id;
+				return($returnArray); //return array results if there are some
+			} else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
+		}
+		
 
 
 	}//close class

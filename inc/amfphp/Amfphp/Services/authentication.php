@@ -59,7 +59,7 @@ class authentication
 		public function login($Email, $Password) {
 
 			  //Create SQL Query
-			  $sql = $this->escape("SELECT ec_user.* FROM ec_user where ec_user.email = '%s' AND ec_user.password = '%s' AND ec_user.user_level = 'admin'", $Email, $Password);
+			  $sql = $this->escape("SELECT  ec_user.*, ec_role.admin_access FROM  ec_user  LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE  ec_user.email = '%s' AND  ec_user.password = '%s' AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)", $Email, $Password);
 			  // Run query on database
 			  $result = mysql_query($sql);
 			  //now get version
