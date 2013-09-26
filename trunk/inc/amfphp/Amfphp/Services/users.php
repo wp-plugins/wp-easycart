@@ -358,7 +358,7 @@ class users
 			
 			$result = mysql_query($sql);
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($result) > 0) {
+			  if($result) {
 				  while ($row=mysql_fetch_object($result)) {
 					  $returnArray[] = $row;
 				  }
