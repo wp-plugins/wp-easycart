@@ -7,6 +7,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 	update_option( 'ec_option_show_lite_message', '0' );	
 }
 
+
 //get the site url without http:// https:// or www.
 $input = site_url();
 // in case scheme relative URI is passed, e.g., //www.google.com/
@@ -16,8 +17,13 @@ if (!preg_match('#^http(s)?://#', $input)) {
     $input = 'http://' . $input;
 }
 $urlParts = parse_url($input);
+
 // remove www
-$domain = $urlParts['host'] . $urlParts['path'];
+if(isset($urlParts['path'])) {
+	$domain = $urlParts['host'] . $urlParts['path'];
+} else {
+	$domain = $urlParts['host'];
+}
 
 
 //get current wordpress user

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.1.31
+Stable tag: 1.1.32
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.1.32 =
+* Bug Fix - Fixed small bug in image uploading from console admin and FireFox.  May resolve more upload image issues from administrative console.  Requires upgrading the WP EasyCart admin plugin to 1.0.4+.
 = 1.1.31 =
 * Bug Fix - Ajax fix for some servers that interpret the HTTPS SERVER var differently.
 * Addition - User roles are now available!!
