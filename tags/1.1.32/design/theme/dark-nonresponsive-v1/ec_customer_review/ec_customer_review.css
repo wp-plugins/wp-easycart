@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* Base Theme - Customer Review CSS Document */
+.ec_customer_review{
+	float:left; width:100%; margin-top:5px; margin-bottom:5px; border-top:1px solid #CCC; padding-top:10px; padding-bottom:10px;
+}
+
+.ec_customer_review_title{
+	float:left; width:70%; font-size:13px; color:[title_color]; font-weight:bold; font-family:[title_font]; margin-bottom:5px; margin-left:5px;
+}
+
+.ec_customer_review_stars{
+	float:left; width:100%; margin-bottom:5px; margin-left:5px;
+}
+
+.ec_customer_review_date{
+	float:right; width:28%; font-size:11px; text-align:right; font-family:[content_font]; margin-right:10px;
+}
+
+div.ec_customer_review_description{
+	float:left; width:100%; font-size:12px; color:#000; font-family:[content_font]; margin-left:5px;
+}
+
+input.ec_customer_review_description{
+	color:#FFF;
+}
+/* END CUSTOMER REVIEW STYLE*/
