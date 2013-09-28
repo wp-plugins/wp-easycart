@@ -53,7 +53,25 @@ class authentication
 				return call_user_func_array('sprintf', $args); 
 		} 
 		
+		//wordpress registered admin request
+		public function getregrequest() {
 
+			  //Create SQL Query
+			  $sql = $this->escape("SELECT  ec_user.password FROM  ec_user  LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)");
+			  // Run query on database
+			  $result = mysql_query($sql);
+
+			  //if results, convert to an array for use in flash
+			  if(mysql_num_rows($result) > 0) {
+				  while ($row = mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
 
 		//login functions
 		public function login($Email, $Password) {
