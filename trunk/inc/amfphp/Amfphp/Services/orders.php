@@ -37,7 +37,19 @@ class orders
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
-			
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getorders') return array('admin');
+		   else if($methodName == 'getorderdetails') return array('admin');
+		   else if($methodName == 'getorderstatus') return array('admin');
+		   else if($methodName == 'updateorderstatus') return array('admin');
+		   else if($methodName == 'updateorderviewed') return array('admin');
+		   else if($methodName == 'deleteorder') return array('admin');
+		   else if($methodName == 'updateshippingstatus') return array('admin');
+		   else if($methodName == 'updateshippingstatus') return array('admin');
+		   else  return null;
+		}
 		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 

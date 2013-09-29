@@ -37,7 +37,15 @@ class taxes
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
-			
+		
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'gettaxes') return array('admin');
+		   else if($methodName == 'savetax') return array('admin');
+		   else if($methodName == 'deletetax') return array('admin');
+		   else  return null;
+		}	
 		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 

@@ -37,6 +37,14 @@ class reviews
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getreviews') return array('admin');
+		   else if($methodName == 'deletereview') return array('admin');
+		   else if($methodName == 'updatereview') return array('admin');
+		   else  return null;
+		}
 			
 		
 		//HELPER - used to escape out SQL calls

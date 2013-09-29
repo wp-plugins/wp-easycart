@@ -39,6 +39,21 @@ class products
 		}	
 			
 		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getfeaturedproducts') return array('admin');
+		   else if($methodName == 'getproductlist') return array('admin');
+		   else if($methodName == 'getproducts') return array('admin');
+		   else if($methodName == 'duplicateproduct') return array('admin');
+		   else if($methodName == 'deleteproduct') return array('admin');
+		   else if($methodName == 'updateproduct') return array('admin');
+		   else if($methodName == 'addproduct') return array('admin');
+		   else if($methodName == 'deleteimage') return array('admin');
+		   else if($methodName == 'deleteoptionitemimage') return array('admin');
+		   else if($methodName == 'deletefiledownload') return array('admin');
+		   else  return null;
+		}
+		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 
 		{ 

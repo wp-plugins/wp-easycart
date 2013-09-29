@@ -53,6 +53,14 @@ class database
 		} 
 		
 		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'restoredb') return array('admin');
+		   else if($methodName == 'deletedbfile') return array('admin');
+		   else if($methodName == 'logdbrestore') return array('admin');
+		   else if($methodName == 'logdbbackup') return array('admin');
+		   else  return null;
+		}
 			
 		
 		//database  functions

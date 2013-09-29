@@ -37,7 +37,16 @@ class perpage
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
-			
+		
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getperpage') return array('admin');
+		   else if($methodName == 'updateperpage') return array('admin');
+		   else if($methodName == 'deleteperpage') return array('admin');
+		   else if($methodName == 'addperpage') return array('admin');
+		   else  return null;
+		}	
 		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 

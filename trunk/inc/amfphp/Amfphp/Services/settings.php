@@ -37,6 +37,18 @@ class settings
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
+		
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'gettimezones') return array('admin');
+		   else if($methodName == 'getsitesettings') return array('admin');
+		   else if($methodName == 'updatesitesettings') return array('admin');
+		   else if($methodName == 'clearmenustatistics') return array('admin');
+		   else if($methodName == 'clearproductstatistics') return array('admin');
+		   else if($methodName == 'insertregcode') return array('admin');
+		   else  return null;
+		}
 			
 		
 		//HELPER - used to escape out SQL calls

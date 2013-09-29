@@ -37,7 +37,16 @@ class giftcards
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
-			
+		
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getgiftcards') return array('admin');
+		   else if($methodName == 'deletegiftcard') return array('admin');
+		   else if($methodName == 'updategiftcard') return array('admin');
+		   else if($methodName == 'addgiftcard') return array('admin');
+		   else  return null;
+		}	
 		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 

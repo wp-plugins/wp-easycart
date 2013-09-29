@@ -37,7 +37,21 @@ class optionitems
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
-			
+		
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getoptionitems') return array('admin');
+		   else if($methodName == 'deleteoptionitem') return array('admin');
+		   else if($methodName == 'updateoptionitem') return array('admin');
+		   else if($methodName == 'addoptionitem') return array('admin');
+		   else if($methodName == 'getproductimages') return array('admin');
+		   else if($methodName == 'getoptionitemquantities') return array('admin');
+		   else if($methodName == 'saveoptionitemquantities') return array('admin');
+		   else if($methodName == 'removealloptionitemquantities') return array('admin');
+		   else if($methodName == 'updateoptionvalues') return array('admin');
+		   else  return null;
+		}	
 		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 

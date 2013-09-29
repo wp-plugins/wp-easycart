@@ -37,6 +37,16 @@ class promotions
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
+		
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getpromotions') return array('admin');
+		   else if($methodName == 'deletepromotion') return array('admin');
+		   else if($methodName == 'updatepromotion') return array('admin');
+		   else if($methodName == 'addpromotion') return array('admin');
+		   else  return null;
+		}
 			
 		
 		//HELPER - used to escape out SQL calls
