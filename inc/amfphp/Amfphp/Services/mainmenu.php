@@ -37,7 +37,26 @@ class mainmenu
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
-			
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getmenulevel1') return array('admin');
+		   else if($methodName == 'getmenulevel1set') return array('admin');
+		   else if($methodName == 'deletemenulevel1') return array('admin');
+		   else if($methodName == 'updatemenulevel1') return array('admin');
+		   else if($methodName == 'addmenulevel1') return array('admin');
+		   else if($methodName == 'getmenulevel2') return array('admin');
+		   else if($methodName == 'getmenulevel2set') return array('admin');
+		   else if($methodName == 'deletemenulevel2') return array('admin');
+		   else if($methodName == 'updatemenulevel2') return array('admin');
+		   else if($methodName == 'addmenulevel2') return array('admin');
+		   else if($methodName == 'getmenulevel3') return array('admin');
+		   else if($methodName == 'getmenulevel3set') return array('admin');
+		   else if($methodName == 'deletemenulevel3') return array('admin');
+		   else if($methodName == 'updatemenulevel3') return array('admin');
+		   else if($methodName == 'addmenulevel3') return array('admin');
+		   else  return null;
+		}	
 		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 

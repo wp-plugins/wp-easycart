@@ -37,7 +37,22 @@ class categories
 			mysql_query("SET CHARACTER SET utf8", $this->conn); 
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
-		}	
+		}	 
+		
+			
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if($methodName == 'getcategories') return array('admin');
+		   else if($methodName == 'getcategorylist') return array('admin');
+		   else if($methodName == 'deletecategory') return array('admin');
+		   else if($methodName == 'updatecategory') return array('admin');
+		   else if($methodName == 'addcategory') return array('admin');
+		   else if($methodName == 'getcategoryitems') return array('admin');
+		   else if($methodName == 'deletecategoryitem') return array('admin');
+		   else if($methodName == 'addcategoryitem') return array('admin');
+		   else if($methodName == 'getcategoryproducts') return array('admin');
+		   else  return null;
+		}
 			
 		
 		//HELPER - used to escape out SQL calls

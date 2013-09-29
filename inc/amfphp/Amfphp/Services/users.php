@@ -37,7 +37,19 @@ class users
 			mysql_query("SET NAMES 'utf8'", $this->conn); 
 
 		}	
-			
+		
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getclients') return array('admin');
+		   else if($methodName == 'deleteclient') return array('admin');
+		   else if($methodName == 'updateclient') return array('admin');
+		   else if($methodName == 'addclient') return array('admin');
+		   else if($methodName == 'getuserroles') return array('admin');
+		   else if($methodName == 'deleteuserrole') return array('admin');
+		   else if($methodName == 'adduserrole') return array('admin');
+		   else  return null;
+		}	
 		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 

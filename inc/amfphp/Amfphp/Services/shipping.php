@@ -39,6 +39,39 @@ class shipping
 		}	
 			
 		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if($methodName == 'getshippingsettings') return array('admin');
+		   else if($methodName == 'updateshippingmethodsetting') return array('admin');
+		   else if($methodName == 'updateshippingsettings') return array('admin');
+		   else if($methodName == 'getups') return array('admin');
+		   else if($methodName == 'deleteups') return array('admin');
+		   else if($methodName == 'updateups') return array('admin');
+		   else if($methodName == 'addups') return array('admin');
+		   else if($methodName == 'getusps') return array('admin');
+		   else if($methodName == 'deleteusps') return array('admin');
+		   else if($methodName == 'updateusps') return array('admin');
+		   else if($methodName == 'addusps') return array('admin');
+		   else if($methodName == 'getfedex') return array('admin');
+		   else if($methodName == 'deletefedex') return array('admin');
+		   else if($methodName == 'updatefedex') return array('admin');
+		   else if($methodName == 'addfedex') return array('admin');
+		   else if($methodName == 'updateexpeditedrates') return array('admin');
+		   else if($methodName == 'getmethodshippingrates') return array('admin');
+		   else if($methodName == 'deleteshippingmethodrate') return array('admin');
+		   else if($methodName == 'updateshippingmethodrate') return array('admin');
+		   else if($methodName == 'addshippingmethodrate') return array('admin');
+		   else if($methodName == 'getweightshippingrates') return array('admin');
+		   else if($methodName == 'deleteshippingweightrate') return array('admin');
+		   else if($methodName == 'updateshippingweightrate') return array('admin');
+		   else if($methodName == 'addshippingweightrate') return array('admin');
+		   else if($methodName == 'getpriceshippingrates') return array('admin');
+		   else if($methodName == 'deleteshippingpricerate') return array('admin');
+		   else if($methodName == 'updateshippingpricerate') return array('admin');
+		   else if($methodName == 'addshippingpricerate') return array('admin');
+		   else  return null;
+		}
+		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 
 		{ 
@@ -53,6 +86,100 @@ class shipping
 		} 
 		
 
+		/////////////////////////////////////////////////////////////////////////////////
+		//Shipping Settings
+		/////////////////////////////////////////////////////////////////////////////////
+		
+		
+		function getshippingsettings() {
+			  //Create SQL Query
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code FROM ec_setting  WHERE ec_setting.setting_id = 1");
+			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
+			  $totalrows = mysql_fetch_object($totalquery);
+			  
+			  //if results, convert to an array for use in flash
+			  if(mysql_num_rows($query) > 0) {
+				  while ($row=mysql_fetch_object($query)) {
+					  $row->totalrows=$totalrows;
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some 
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results 
+			  }
+		}
+		
+		function updateshippingmethodsetting($shippingmethod) {
+			
+			  //Create SQL Query
+			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s' WHERE ec_setting.setting_id = 1", 
+			 mysql_real_escape_string($shippingmethod));
+			//Run query on database;
+			  mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$sqlerror = mysql_error();
+				$error = explode(" ", $sqlerror);
+				if ($error[0] == "Duplicate") {
+					$returnArray[] = "duplicate";
+					return $returnArray; //return noresults if there are no results
+			    } else {  
+					$returnArray[] = "error";
+					return $returnArray; //return noresults if th ere are no results
+				}
+			}
+		}	 
+		
+		
+		function updateshippingsettings($shippingsettings) {
+				//convert object to array
+			  $shippingsettings = (array)$shippingsettings;
+			  //Create SQL Query
+			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s',  ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s' WHERE ec_setting.setting_id = 1", 
+			 mysql_real_escape_string($shippingsettings['shippingmethod']), 
+			 mysql_real_escape_string($shippingsettings['ups_access_license_number']), 
+			 mysql_real_escape_string($shippingsettings['ups_user_id']),  
+			 mysql_real_escape_string($shippingsettings['ups_password']), 
+			 mysql_real_escape_string($shippingsettings['ups_ship_from_zip']), 
+			 mysql_real_escape_string($shippingsettings['ups_shipper_number']), 
+			 mysql_real_escape_string($shippingsettings['ups_country_code']), 
+			 mysql_real_escape_string($shippingsettings['ups_weight_type']),
+			 mysql_real_escape_string($shippingsettings['usps_user_name']), 
+			 mysql_real_escape_string($shippingsettings['usps_ship_from_zip']),
+			 mysql_real_escape_string($shippingsettings['fedex_key']), 
+			 mysql_real_escape_string($shippingsettings['fedex_account_number']), 
+			 mysql_real_escape_string($shippingsettings['fedex_meter_number']), 
+			 mysql_real_escape_string($shippingsettings['fedex_password']), 
+			 mysql_real_escape_string($shippingsettings['fedex_ship_from_zip']),
+			 mysql_real_escape_string($shippingsettings['fedex_weight_units']), 
+			 mysql_real_escape_string($shippingsettings['fedex_country_code']));
+			//Run query on database;
+			  mysql_query($sql);
+			  return mysql_error();
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$sqlerror = mysql_error();
+				$error = explode(" ", $sqlerror);
+				if ($error[0] == "Duplicate") {
+					$returnArray[] = "duplicate";
+					return $returnArray; //return noresults if there are no results
+			    } else {  
+					$returnArray[] = "error";
+					return $returnArray; //return noresults if there are no results
+				}
+			}
+		}	
+		
+		
 		/////////////////////////////////////////////////////////////////////////////////
 		//UPS BASED SHIPPING
 		/////////////////////////////////////////////////////////////////////////////////
@@ -733,98 +860,7 @@ class shipping
 		}
 		
 		
-		/////////////////////////////////////////////////////////////////////////////////
-		//Shipping Settings
-		/////////////////////////////////////////////////////////////////////////////////
-		
-		
-		function getshippingsettings() {
-			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code FROM ec_setting  WHERE ec_setting.setting_id = 1");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
-			  
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some 
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results 
-			  }
-		}
-		
-		function updateshippingmethodsetting($shippingmethod) {
 			
-			  //Create SQL Query
-			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s' WHERE ec_setting.setting_id = 1", 
-			 mysql_real_escape_string($shippingmethod));
-			//Run query on database;
-			  mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$sqlerror = mysql_error();
-				$error = explode(" ", $sqlerror);
-				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
-			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if th ere are no results
-				}
-			}
-		}	 
-		
-		
-		function updateshippingsettings($shippingsettings) {
-				//convert object to array
-			  $shippingsettings = (array)$shippingsettings;
-			  //Create SQL Query
-			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s',  ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s' WHERE ec_setting.setting_id = 1", 
-			 mysql_real_escape_string($shippingsettings['shippingmethod']), 
-			 mysql_real_escape_string($shippingsettings['ups_access_license_number']), 
-			 mysql_real_escape_string($shippingsettings['ups_user_id']),  
-			 mysql_real_escape_string($shippingsettings['ups_password']), 
-			 mysql_real_escape_string($shippingsettings['ups_ship_from_zip']), 
-			 mysql_real_escape_string($shippingsettings['ups_shipper_number']), 
-			 mysql_real_escape_string($shippingsettings['ups_country_code']), 
-			 mysql_real_escape_string($shippingsettings['ups_weight_type']),
-			 mysql_real_escape_string($shippingsettings['usps_user_name']), 
-			 mysql_real_escape_string($shippingsettings['usps_ship_from_zip']),
-			 mysql_real_escape_string($shippingsettings['fedex_key']), 
-			 mysql_real_escape_string($shippingsettings['fedex_account_number']), 
-			 mysql_real_escape_string($shippingsettings['fedex_meter_number']), 
-			 mysql_real_escape_string($shippingsettings['fedex_password']), 
-			 mysql_real_escape_string($shippingsettings['fedex_ship_from_zip']),
-			 mysql_real_escape_string($shippingsettings['fedex_weight_units']), 
-			 mysql_real_escape_string($shippingsettings['fedex_country_code']));
-			//Run query on database;
-			  mysql_query($sql);
-			  return mysql_error();
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$sqlerror = mysql_error();
-				$error = explode(" ", $sqlerror);
-				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
-			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
-				}
-			}
-		}				
 		
 
 

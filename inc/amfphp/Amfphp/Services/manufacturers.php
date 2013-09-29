@@ -39,6 +39,16 @@ class manufacturers
 		}	
 			
 		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getmanufacturers') return array('admin');
+		   else if($methodName == 'getmanufacturerset') return array('admin');
+		   else if($methodName == 'deletemanufacturer') return array('admin');
+		   else if($methodName == 'updatemanufacturer') return array('admin');
+		   else if($methodName == 'addmanufacturer') return array('admin');
+		   else  return null;
+		}
+		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 
 		{ 

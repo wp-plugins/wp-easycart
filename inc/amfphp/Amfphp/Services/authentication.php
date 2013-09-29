@@ -55,7 +55,8 @@ class authentication
 		
 		//wordpress registered admin request
 		public function getregrequest() {
-
+		      //setup authentication for system, establish admin role
+			  AmfphpAuthentication::addRole('admin');
 			  //Create SQL Query
 			  $sql = $this->escape("SELECT  ec_user.password FROM  ec_user  LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)");
 			  // Run query on database
@@ -80,25 +81,14 @@ class authentication
 			  $sql = $this->escape("SELECT  ec_user.*, ec_role.admin_access FROM  ec_user  LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE  ec_user.email = '%s' AND  ec_user.password = '%s' AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)", $Email, $Password);
 			  // Run query on database
 			  $result = mysql_query($sql);
-			  //now get version
-			  $versionsql = $this->escape("select ec_setting.storeversion, ec_setting.storetype FROM ec_setting WHERE ec_setting.settingID = 1");
-			  $versionresult = mysql_query($versionsql); 
-			  //return $versionresult;
-			  if ($versionresult) {
-				 $versionrow = mysql_fetch_array($versionresult); 
-				 $storeversion = $versionrow[storeversion];
-				 $storetype = $versionrow[storetype];
-			  } else {
-				 //return 'not exists';
-			     $storeversion = '7.0.0';
-				 $storetype = 'flash';
-			  }
+			 
 			  //if results, convert to an array for use in flash
 			  if(mysql_num_rows($result) > 0) {
 				  while ($row=mysql_fetch_object($result)) {
 					  //now attach the version if it's there
-					  $row->storeversion = $storeversion;
-					  $row->storetype = $storetype;
+					  //setup authentication for system, establish admin role
+					  AmfphpAuthentication::addRole('admin');
+					  //build return array
 					  $returnArray[] = $row;
 				  }
 				  return($returnArray); //return array results if there are some

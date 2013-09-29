@@ -37,7 +37,16 @@ class countrys
 			mysql_query("SET NAMES 'utf8'", $this->conn); 	
 
 		}	
-			
+		
+		
+		//secure all of the services for logged in authenticated users only	
+		public function _getMethodRoles($methodName){
+		   if ($methodName == 'getcountries') return array('admin');
+		   else if($methodName == 'updatecountry') return array('admin');
+		   else if($methodName == 'deletecountry') return array('admin');
+		   else if($methodName == 'addcountry') return array('admin');
+		   else  return null;
+		}
 		
 		//HELPER - used to escape out SQL calls
 		function escape($sql) 
