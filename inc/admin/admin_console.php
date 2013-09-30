@@ -7,6 +7,14 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 	update_option( 'ec_option_show_lite_message', '0' );	
 }
 
+$db = new ec_db_admin( );
+$users = $db->get_users( );
+$admin_password_hash = "";
+foreach( $users as $user ){
+	if( $user->user_level == "admin" ){
+		$admin_password_hash = $user->password;
+	}
+}
 
 //get the site url without http:// https:// or www.
 $input = site_url();
