@@ -44,6 +44,16 @@ class ec_db_admin extends ec_db{
 		$sql = "UPDATE ec_setting SET " . mysql_real_escape_string( $option_name ) . "=%s WHERE setting_id = 1";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $option_value ) );
 	}
+	
+	public function get_user( $user_id ){
+		$sql = "SELECT ec_user.user_id, ec_user.password, ec_user.email, ec_user.first_name, ec_user.last_name, ec_user.user_level, billing.first_name AS billing_first_name, billing.last_name AS billing_last_name, billing.address_line_1 AS billing_address_line_1, billing.city AS billing_city, billing.state AS billing_state, billing.zip AS billing_zip, billing.country AS billing_country, billing.phone AS billing_phone, shipping.first_name AS shipping_first_name, shipping.last_name AS shipping_last_name, shipping.address_line_1 AS shipping_address_line_1, shipping.city AS shipping_city, shipping.state AS shipping_state, shipping.zip AS shipping_zip, shipping.country AS shipping_country, shipping.phone AS shipping_phone FROM ec_user LEFT JOIN ec_address as billing ON (ec_user.default_billing_address_id = billing.address_id) LEFT JOIN ec_address as shipping ON (ec_user.default_shipping_address_id = shipping.address_id) WHERE ec_user.user_id = %d";
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $user_id ) );
+	}
+	
+	public function get_users( ){
+		$sql = "SELECT ec_user.user_id, ec_user.password, ec_user.email, ec_user.first_name, ec_user.last_name, ec_user.user_level, billing.first_name AS billing_first_name, billing.last_name AS billing_last_name, billing.address_line_1 AS billing_address_line_1, billing.city AS billing_city, billing.state AS billing_state, billing.zip AS billing_zip, billing.country AS billing_country, billing.phone AS billing_phone, shipping.first_name AS shipping_first_name, shipping.last_name AS shipping_last_name, shipping.address_line_1 AS shipping_address_line_1, shipping.city AS shipping_city, shipping.state AS shipping_state, shipping.zip AS shipping_zip, shipping.country AS shipping_country, shipping.phone AS shipping_phone FROM ec_user LEFT JOIN ec_address as billing ON (ec_user.default_billing_address_id = billing.address_id) LEFT JOIN ec_address as shipping ON (ec_user.default_shipping_address_id = shipping.address_id)";
+		return $this->mysqli->get_results( $sql );
+	}
 }
 
 ?>
