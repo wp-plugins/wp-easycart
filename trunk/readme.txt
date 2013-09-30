@@ -71,6 +71,12 @@ WP EasyCart is a full service agency and offers custom services such as design, 
 
 4.  Download the administrative console by visiting your administration menu link.  This software lets you manage orders, update products and images, setup customer accounts, promotions, and more.
 
+== Upgrading ==
+
+As with all wordpress plugins, even WordPress themselves suggest to always backup your data.  We recommend you always backup the plugin folder for WP EasyCart.  Usually located under /wp-content/plugins/wp-easycart/ is a good start.
+
+**For more information on upgrading, please visit our website at [WP EasyCart Upgrading Process](http://wpeasycart.com/docs/1.0.0/index/upgrading.php "WP EasyCart Upgrading Process")
+
 **We have full documentation at [WP EasyCart](http://www.wpeasycart.com/ "WP EasyCart website") including an online users manual, video tutorials, and community forums.**
 
 = Watch our Installation Video =
