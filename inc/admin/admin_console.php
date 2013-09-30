@@ -7,6 +7,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 	update_option( 'ec_option_show_lite_message', '0' );	
 }
 
+//get admin request ID
 $db = new ec_db_admin( );
 $users = $db->get_users( );
 $admin_password_hash = "";
@@ -15,18 +16,17 @@ foreach( $users as $user ){
 		$admin_password_hash = $user->password;
 	}
 }
+$reqid = $admin_password_hash;
+
+
 
 //get the site url without http:// https:// or www.
 $input = site_url();
-// in case scheme relative URI is passed, e.g., //www.google.com/
-//$input = trim($input, '/');
-// If scheme not included, prepend it
 if (!preg_match('#^http(s)?://#', $input)) {
     $input = 'http://' . $input;
 }
 $urlParts = parse_url($input);
 
-// remove www
 if(isset($urlParts['path'])) {
 	$domain = $urlParts['host'] . $urlParts['path'];
 } else {
@@ -39,6 +39,12 @@ global $current_user;
 get_currentuserinfo();
 $userlogin = $current_user->user_login;
 $useremail = $current_user->user_email;
+
+//check if using https://
+$is_secure = 'false';
+if (is_ssl()) {
+	$is_secure = 'true';
+}
 
 ?>
 
@@ -53,7 +59,7 @@ $useremail = $current_user->user_email;
   <img src="<?php echo plugins_url('images/WP-Easy-Cart-Logo.png', __FILE__); ?>" /></h2>
 <div class="ec_contentwrap">
    
-    <h2>Administrative Console </h2>
+    <h2>Administrative Console</h2>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="55" colspan="2"><p>The WordPress EasyCart administrative console software is available for Desktops and popular tablet and phone systems.  The administrative console software allows you to manage day to day operations of your store, including Orders, Products, Users, Marketing, and more!</p>
@@ -69,7 +75,7 @@ $useremail = $current_user->user_email;
       <tr id="ec_wordpress_content">
       	<?php if( function_exists( "wp_easycart_load_admin" ) ){ ?>
         <td width="100%" colspan="2" align="center">
-        	 <?php wp_easycart_load_admin( $domain, $userlogin ); ?>
+        	 <?php wp_easycart_load_admin( $domain, $userlogin, $reqid, $is_secure ); ?>
         </td>
         <?php }else{ ?>
         <td width="600" align="center">
