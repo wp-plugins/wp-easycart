@@ -315,7 +315,11 @@ class ec_orderdisplay{
 		$duty = $GLOBALS['currency']->get_currency_display( $this->duty_total );
 		$vat = $GLOBALS['currency']->get_currency_display( $this->vat_total );
 		$shipping = $GLOBALS['currency']->get_currency_display( $this->shipping_total );
-		$vat_rate = number_format( $tax->vat_rate, 0, '', '' );
+		if( ( $order->grand_total - $this->vat_total ) > 0 )
+			$vat_rate = number_format( ( $this->vat_total / ( $this->grand_total - $this->vat_total ) ) * 100, 0, '', '' );
+		else
+			$vat_rate = number_format( 0, 0, '', '' );
+			
 		$discount = $GLOBALS['currency']->get_currency_display( $this->discount_total );
 		
 		$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
