@@ -49,6 +49,8 @@ class ec_address{
 			return $this->zip;
 		}else if( $name == "country" ){
 			return $this->country_name;
+		}else if( $name == "country2" ){
+			return $this->country;
 		}else if( $name == "phone" ){
 			return $this->phone;
 		}

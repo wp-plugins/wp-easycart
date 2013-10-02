@@ -470,7 +470,7 @@ class ec_cartpage{
 				if( isset( $_SESSION['ec_billing_country'] ) )
 					$selected_country = $_SESSION['ec_billing_country'];
 				else
-					$selected_country = $this->user->billing->get_value( "country" );
+					$selected_country = $this->user->billing->get_value( "country2" );
 				
 				echo "<select name=\"ec_cart_billing_country\" id=\"ec_cart_billing_country\" class=\"ec_cart_billing_input_text\">";
 				echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_billing_information", "cart_billing_information_select_country" ) . "</option>";
@@ -564,12 +564,12 @@ class ec_cartpage{
 	public function display_shipping_input( $name ){
 		if( $name == "country" ){
 			if( get_option( 'ec_option_use_country_dropdown' ) ){
-				// DISPLAY STATE DROP DOWN MENU
+				// DISPLAY COUNTRY DROP DOWN MENU
 				$countries = $this->mysqli->get_countries( );
 				if( isset( $_SESSION['ec_shipping_country'] ) )
 					$selected_country = $_SESSION['ec_shipping_country'];
 				else
-					$selected_country = $this->user->shipping->get_value( "country" );
+					$selected_country = $this->user->shipping->get_value( "country2" );
 				
 				echo "<select name=\"ec_cart_shipping_country\" id=\"ec_cart_shipping_country\" class=\"ec_cart_shipping_input_text\">";
 				echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_shipping_information", "cart_shipping_information_select_country" ) . "</option>";
