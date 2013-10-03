@@ -1067,7 +1067,7 @@ class ec_cartpage{
 			$gift_card_from_name = $_POST['ec_gift_card_from_name'];
 		
 		// Optional Donation Price
-		$donation_price = "";
+		$donation_price = 0.000;
 		if( isset( $_POST['ec_product_input_price'] ) )
 			$donation_price = $_POST['ec_product_input_price'];
 		
