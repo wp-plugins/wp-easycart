@@ -117,8 +117,8 @@ class ec_orderdisplay{
 		$this->order_customer_notes = $order_row->order_customer_notes;
 		
 		$this->user = new ec_user( $this->user_email );
-		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1 , $this->billing_city, $this->billing_state, $this->billing_zip, $this->billing_country, $this->billing_phone );
-		$this->user->setup_shipping_info_data( $this->shipping_first_name, $this->shipping_last_name, $this->shipping_address_line_1 , $this->shipping_city, $this->shipping_state, $this->shipping_zip, $this->shipping_country, $this->shipping_phone );
+		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1, $this->billing_city, $this->billing_state, $this->billing_country, $this->billing_zip, $this->billing_phone );
+		$this->user->setup_shipping_info_data( $this->shipping_first_name, $this->shipping_last_name, $this->shipping_address_line_1, $this->shipping_city, $this->shipping_state, $this->shipping_country, $this->shipping_zip, $this->shipping_phone );
 		
 		$this->payment_method = $order_row->payment_method; 
 		
@@ -315,7 +315,7 @@ class ec_orderdisplay{
 		$duty = $GLOBALS['currency']->get_currency_display( $this->duty_total );
 		$vat = $GLOBALS['currency']->get_currency_display( $this->vat_total );
 		$shipping = $GLOBALS['currency']->get_currency_display( $this->shipping_total );
-		if( ( $order->grand_total - $this->vat_total ) > 0 )
+		if( ( $this->grand_total - $this->vat_total ) > 0 )
 			$vat_rate = number_format( ( $this->vat_total / ( $this->grand_total - $this->vat_total ) ) * 100, 0, '', '' );
 		else
 			$vat_rate = number_format( 0, 0, '', '' );

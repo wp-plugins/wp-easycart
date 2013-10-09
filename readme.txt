@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.1.35
+Stable tag: 1.1.36
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.1.36 = 
+* Bug Fix - Minor fix to address display upon checkout with PayPal Standard or SagePay 3D Secure.
 = 1.1.35 =
 * Bug Fix - Depending on server settings, some users were getting a DB error when adding something to cart based on empty string instead of 0 for donation price. This is corrected.
 = 1.1.34 =
