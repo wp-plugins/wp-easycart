@@ -30,13 +30,13 @@ WP EasyCart provides administrative software, so there is no need to use WordPre
 = PREDESIGNED THEMES AVAILABLE =
 WP EasyCart offers a variety of popular themes pre-designed and integrated with the shopping system.  These professionally designed themes give you a complete package of WordPress design and eCommerce design to match.
 
-We offer complete demos of our integrated themes where you browse our catalog of designs.  Visit our [featured demo themes]( http://www.wpeasycart.com/portfolio_entries/featuredthemes/ "WP EasyCart themed demos") for more information.
+We offer complete demos of our integrated themes where you browse our catalog of designs.  Visit our [featured demo themes]( http://www.wpeasycart.com/wordpress_shopping_cart_demos/ "WP EasyCart themed demos") for more information.
 
 = MENUS, WIDGETS, AND MORE =
 WP EasyCart gives you many pre-built widgets ready to integrate into your website from the start.  Get horizontal and vertical menus widgets, breadcrumb widgets, price and category filtering widgets, newsletter signup widgets, and more.
 
 = FEATURES =
-Whether you are a large scale business or a startup looking to leverage WordPress as your website, WP EasyCart has you covered.  Our feature list is large and proven, with the help of years of eCommerce experience and development making it a solid performer.  For a full feature list, please visit the [WP EasyCart website]( http://www.wpeasycart.com/features/ "WP EasyCart Shopping Cart Plugin") for more information.
+Whether you are a large scale business or a startup looking to leverage WordPress as your website, WP EasyCart has you covered.  Our feature list is large and proven, with the help of years of eCommerce experience and development making it a solid performer.  For a full feature list, please visit the [WP EasyCart website]( http://www.wpeasycart.com/wordpress_shopping_cart_features/ "WP EasyCart Shopping Cart Plugin") for more information.
 
 Key EasyCart features:
 
