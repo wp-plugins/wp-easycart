@@ -195,6 +195,14 @@ class orders
 		}
 		
 		function updateshippingstatus($orderid, $shipcarrier, $shiptrackingcode, $sendemail, $clientemail) {
+			
+			//get table prefix
+			if (WP_PREFIX) {
+				$dbprefix = WP_PREFIX; //use special prefix
+			} else {
+				$dbprefix = 'wp_'; //else use default
+			}
+			
 			  //Create SQL Query
 			$sql = $this->escape("UPDATE ec_order SET ec_order.shipping_carrier='%s', ec_order.tracking_number='%s' WHERE ec_order.order_id = '%s'", $shipcarrier, $shiptrackingcode, $orderid);
 			//Run query on database;
@@ -210,7 +218,7 @@ class orders
 
 
 				//get order admin email
-				$fromsql = sprintf("SELECT wp_options.option_value FROM  wp_options WHERE  wp_options.option_name = 'ec_option_order_from_email'");
+				$fromsql = sprintf("SELECT ".$dbprefix."options.option_value FROM  ".$dbprefix."options WHERE  ".$dbprefix."options.option_name = 'ec_option_order_from_email'");
 				$fromresult = mysql_query($fromsql);
 				$fromrow = mysql_fetch_assoc($fromresult);
 				

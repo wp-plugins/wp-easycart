@@ -29,6 +29,7 @@ class settings
 			$dbname = DATABASE;
 			$dbuser = USERNAME;
 			$dbpass = PASSWORD;	
+			
 
 			//make a connection to our database
 			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
@@ -84,18 +85,24 @@ class settings
 		
 		//site settings functions
 		function getsitesettings() {
+			
+			if (WP_PREFIX) {
+				$dbprefix = WP_PREFIX; //use special prefix
+			} else {
+				$dbprefix = 'wp_'; //else use default
+			}
 			//Create SQL Query
 			$query_settings = mysql_query( "SELECT ec_setting.* FROM ec_setting WHERE ec_setting.setting_id = 1" );
 			$query_options = mysql_query( "
 				SELECT 
-				wp_options.option_value AS WPstorepage,
+				".$dbprefix."options.option_value AS WPstorepage,
 				wp_options1.option_value AS WP_currency_seperator,
 				wp_options2.option_value AS WP_decimal_symbol,
 				wp_options3.option_value AS WP_decimal_places,
 				wp_options4.option_value AS WP_currency_symbol
 				
 				FROM
-				wp_options, wp_options wp_options1, wp_options wp_options2, wp_options wp_options3, wp_options wp_options4 
+				".$dbprefix."options, ".$dbprefix."options wp_options1, ".$dbprefix."options wp_options2, ".$dbprefix."options wp_options3, w".$dbprefix."options wp_options4 
 				
 				WHERE
 				wp_options.option_name = 'ec_option_storepage' AND
