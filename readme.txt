@@ -23,7 +23,7 @@ WP EasyCart provides administrative software, so there is no need to use WordPre
 = POPULAR LINKS =
 
 * [WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") 
-* [Online Demos and Themes]( http://www.wpeasycart.com/portfolio_entries/featuredthemes/ "WP EasyCart Themes") 
+* [Online Demos and Themes]( http://www.wpeasycart.com/wordpress_shopping_cart_demos/ "WP EasyCart Themes") 
 * [Online Documentation]( http://www.wpeasycart.com/docs "WP EasyCart Documentation") 
 
 
