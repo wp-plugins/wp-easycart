@@ -69,6 +69,12 @@ class ec_order{
 				
 				if( !$this->payment->is_3d_auth ){
 					if ($payment_type != 'third_party') {
+						// Quickbooks Hook
+						if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+							$quickbooks = new ec_quickbooks( );
+							$quickbooks->add_order( $this->order_id );
+						}
+						
 						$this->send_email_receipt(); //leave it to third party to send email
 					}
 					$this->clear_session();

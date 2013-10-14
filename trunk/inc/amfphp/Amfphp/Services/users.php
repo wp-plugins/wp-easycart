@@ -23,6 +23,12 @@ class users
 		function users() {
 			//load our connection settings
 			require_once('../../../connection/ec_conn.php');
+			require_once( "../../classes/core/ec_db.php" );
+			
+			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
+				require_once( "../../../../wp-easycart-quickbooks/ec_quickbooks.php" );
+				require_once( "../../../../wp-easycart-quickbooks/QuickBooks.php" );
+			}
 		
 			//set our connection variables
 			$dbhost = HOSTNAME;
@@ -154,7 +160,6 @@ class users
 			  //Run query on database;
 			  mysql_query($deletesql);
 			  
-			  
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
@@ -205,8 +210,7 @@ class users
 				
 				
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_user(ec_user.user_id, ec_user.email, ec_user.password, ec_user.first_name, ec_user.last_name, ec_user.default_billing_address_id, ec_user.default_shipping_address_id, ec_user.user_level, ec_user.is_subscriber)
-				values('".$clientid."', '%s', '%s', '%s',  '%s', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("UPDATE ec_user SET ec_user.email = '%s', ec_user.password = '%s', ec_user.first_name = '%s', ec_user.last_name = '%s', ec_user.default_billing_address_id = %d, ec_user.default_shipping_address_id = %d, ec_user.user_level = '%s', ec_user.is_subscriber = %d WHERE ec_user.user_id = %d",
 				mysql_real_escape_string($client['email']),
 				mysql_real_escape_string($client['password']),
 				mysql_real_escape_string($client['firstname']),
@@ -214,13 +218,19 @@ class users
 				mysql_real_escape_string($default_billing_address_id),
 				mysql_real_escape_string($default_shipping_address_id),
 				mysql_real_escape_string($client['userlevel']),
-				mysql_real_escape_string($client['subscriber']));
+				mysql_real_escape_string($client['subscriber']),
+				mysql_real_escape_string($clientid));
+				
 				//Run query on database;
 			    mysql_query($sql);
 				//return $sql;
 				
 				
-				
+			//Enqueue Quickbooks Update Customer
+			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->update_user_admin( $clientid );	
+			}				
 
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
@@ -288,6 +298,13 @@ class users
 
 			 //Run query on database;
 			 mysql_query($sql);
+			 
+			 
+			 //Enqueue Quickbooks Add Customer
+			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->add_user( $user_id );
+			}
 			  
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash

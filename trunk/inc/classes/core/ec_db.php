@@ -12,6 +12,7 @@ class ec_db{
 				ec_orderdetail.orderdetail_id, 
 				ec_orderdetail.order_id, 
 				ec_orderdetail.product_id, 
+				ec_product.list_id, 
 				ec_orderdetail.title, 
 				ec_orderdetail.model_number, 
 				ec_orderdetail.order_date, 
@@ -49,6 +50,9 @@ class ec_db{
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
 				FROM ec_orderdetail
+				
+				LEFT JOIN ec_product
+				ON ec_product.product_id = ec_orderdetail.product_id
 				
 				LEFT JOIN ec_customfield
 				ON ec_customfield.table_name = 'ec_orderdetail'
@@ -70,7 +74,8 @@ class ec_db{
 		$this->orderdetail_guest_sql = "SELECT 
 				ec_orderdetail.orderdetail_id, 
 				ec_orderdetail.order_id, 
-				ec_orderdetail.product_id, 
+				ec_orderdetail.product_id,
+				ec_product.list_id, 
 				ec_orderdetail.title, 
 				ec_orderdetail.model_number, 
 				ec_orderdetail.order_date, 
@@ -108,6 +113,9 @@ class ec_db{
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
 				FROM ec_orderdetail
+				
+				LEFT JOIN ec_product
+				ON ec_product.product_id = ec_orderdetail.product_id
 				
 				LEFT JOIN ec_customfield
 				ON ec_customfield.table_name = 'ec_orderdetail'
@@ -1203,7 +1211,7 @@ class ec_db{
 	}
 	
 	public function get_shipping_data( ){
-		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.shipping_order";
+		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.shipping_order";
 		return $this->mysqli->get_results( $sql );
 		
 	}
@@ -1692,10 +1700,15 @@ class ec_db{
 		if( $password == "guest" ){
 			$sql = "SELECT 
 				ec_order.order_id, 
+				ec_order.txn_id,
+				ec_order.edit_sequence,
 				ec_order.order_date, 
 				ec_orderstatus.order_status, 
 				ec_order.order_weight, 
 				ec_orderstatus.is_approved,
+				
+				ec_order.user_id,
+				ec_user.list_id,
 				
 				ec_order.sub_total,
 				ec_order.shipping_total,
@@ -1751,6 +1764,9 @@ class ec_db{
 				LEFT JOIN ec_orderstatus ON
 				ec_order.orderstatus_id = ec_orderstatus.status_id
 				
+				LEFT JOIN ec_user ON
+				ec_user.user_id = ec_order.user_id
+				
 				LEFT JOIN ec_customfield
 				ON ec_customfield.table_name = 'ec_order'
 				
@@ -1768,10 +1784,15 @@ class ec_db{
 			
 			$sql = "SELECT 
 				ec_order.order_id, 
+				ec_order.txn_id,
+				ec_order.edit_sequence,
 				ec_order.order_date, 
 				ec_orderstatus.order_status, 
 				ec_order.order_weight, 
 				ec_orderstatus.is_approved,
+				
+				ec_order.user_id,
+				ec_user.list_id,
 				
 				ec_order.sub_total,
 				ec_order.shipping_total,
@@ -1975,6 +1996,11 @@ class ec_db{
 		
 	}
 	
+	public function update_user_quickbooks( $user_id, $list_id, $edit_sequence ){
+		$sql = "UPDATE ec_user SET list_id = %s, edit_sequence = %s WHERE user_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $list_id, $edit_sequence, $user_id ) );
+	}
+	
 	public function reset_password( $email, $new_password ){
 		return $this->mysqli->update( 	'ec_user',
 								array( 'password'	=> $new_password ),
@@ -2095,7 +2121,7 @@ class ec_db{
 	}
 	
 	public function get_settings( ){
-		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code FROM ec_setting WHERE setting_id = 1";
+		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, auspost_api_key, auspost_ship_from_zip FROM ec_setting WHERE setting_id = 1";
 			return $this->mysqli->get_row( $sql );
 	}
 	

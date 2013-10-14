@@ -84,7 +84,7 @@ class ec_shipping{
 	}
 	
 	private function is_live_based( $shipping_row ){
-		if( $shipping_row->is_ups_based || $shipping_row->is_usps_based || $shipping_row->is_fedex_based )
+		if( $shipping_row->is_ups_based || $shipping_row->is_usps_based || $shipping_row->is_fedex_based || $shipping_row->is_auspost_based )
 			return true;
 		else
 			return false;
@@ -97,6 +97,8 @@ class ec_shipping{
 			return "usps";
 		else if( $shipping_row->is_fedex_based )
 			return "fedex";
+		else if( $shipping_row->is_auspost_based )
+			return "auspost";
 		else
 			return "none";
 	}
@@ -335,10 +337,11 @@ class ec_shipping{
 			}
 			
 		}else if( $this->shipping_method == "live" ){
-			if( !isset( $_SESSION['ec_shipping_method'] ) )
-				$rate = $this->shipper->get_rate( $this->live_based[0][3], $this->live_based[0][0], $this->destination_zip, $this->destination_country, $this->weight );
+			if( !isset( $_SESSION['ec_shipping_method'] ) ){
+				if( isset( $this->live_based ) && count( $this->live_based ) > 0 && count( $this->live_based[0] ) > 3 )
+					$rate = $this->shipper->get_rate( $this->live_based[0][3], $this->live_based[0][0], $this->destination_zip, $this->destination_country, $this->weight );
 				
-			else{
+			}else{
 				for( $i=0; $i<count( $this->live_based ); $i++ ){
 					if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] )
 						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.1.36
+Stable tag: 1.2.0
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,14 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.0 =
+* New Release! We are now integrated with Quickbooks! Download and install the plugin extension from www.wpeasycart.com to begin automatically exporting your sale, customer, and product data to Quickbooks.
+* Improved PayPal Standard, now automatically forwarding to PayPal for payment.
+* Improved PayPal Payflow Pro.
+* Added PayPal Payments Pro.
+* Added GoeMerchant payment gateway.
+* Added Australian Post live shipping.
+* Advanced Language Editor Improved! Now you can add your own language editor text files and the store will automatically detect and add to the database.
 = 1.1.36 = 
 * Bug Fix - Minor fix to address display upon checkout with PayPal Standard or SagePay 3D Secure.
 = 1.1.35 =

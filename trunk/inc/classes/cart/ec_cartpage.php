@@ -1038,6 +1038,7 @@ class ec_cartpage{
 		else if( $action == "ec_delete_action" )			$this->process_delete_cartitem( $_POST['ec_delete_cartitem_id'] );
 		else if( $action == "submit_order" )				$this->process_submit_order();
 		else if( $action == "3dsecure" )					$this->process_3dsecure_response();
+		else if( $action == "third_party_forward" )			$this->process_third_party_forward();
 		else if( $action == "login_user" )					$this->process_login_user();
 		else if( $action == "save_checkout_info" )			$this->process_save_checkout_info();
 		else if( $action == "save_checkout_shipping" )		$this->process_save_checkout_shipping();
@@ -1176,6 +1177,13 @@ class ec_cartpage{
 		if( isset( $gateway ) ){
 			$success = $gateway->secure_3d_auth( );
 			if( $success ){
+				
+				// Quickbooks Hook
+				if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+					$quickbooks = new ec_quickbooks( );
+					$quickbooks->add_order( $_GET['order_id'] );
+				}
+				
 				$this->order->clear_session();
 				if( $this->discount->giftcard_code )
 					$this->mysqli->update_giftcard_total( $this->discount->giftcard_code, $this->discount->giftcard_discount );
@@ -1190,7 +1198,10 @@ class ec_cartpage{
 		}	
 	}
 	
-	
+	private function process_third_party_forward( ){
+		$this->payment->third_party->initialize( $_GET['order_id'] );
+		$this->payment->third_party->display_auto_forwarding_form( );
+	}
 	
 	private function process_login_user( ){
 		$email = $_POST['ec_cart_login_email'];
@@ -1340,6 +1351,12 @@ class ec_cartpage{
 			$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, $shipping_id, $user_level, $is_subscriber );
 			$this->mysqli->update_address_user_id( $billing_id, $user_id );
 			$this->mysqli->update_address_user_id( $shipping_id, $user_id );
+			
+			// Quickbooks Hook
+			if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->add_user( $user_id );
+			}
 			
 			if( $user_id != 0 ){
 			

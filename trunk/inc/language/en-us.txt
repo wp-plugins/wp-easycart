@@ -44,6 +44,18 @@
 				"product_no_results":{
 					"title":"Product Page No Results",
 					"value":"No Results Found"
+				},
+				"product_items_per_page":{
+					"title":"Product Page Items per Page",
+					"value":"Items Per Page:"
+				},
+				"product_paging_page":{
+					"title":"Product Page Page in Page a of b",
+					"value":"Page"
+				},
+				"product_paging_of":{
+					"title":"Product Page of in Page a of b",
+					"value":"of"
 				}
 			}
 		},
@@ -199,6 +211,14 @@
 				"customer_review_submit_button":{
 					"title":"Product Details Rating Box Submit Button",
 					"value":"Submit Review"
+				},
+				"product_details_write_a_review":{
+					"title":"Product Details Write a Review Button",
+					"value":"Write a Review"
+				},
+				"product_details_review_submitted":{
+					"title":"Product Details Review Submitted Button",
+					"value":"Review Submitted"
 				}
 			}
 		},
@@ -392,6 +412,10 @@
 				"cart_login_account_information_text":{
 					"title":"Cart, Login Complete Text",
 					"value":"You are currently checking out as "
+				},
+				"cart_login_account_a_guest_text":{
+					"title":"Cart, Login Complete, a guest",
+					"value":"a guest"
 				},
 				"cart_login_account_information_text2":{
 					"title":"Cart, Login Complete Text Part 2",

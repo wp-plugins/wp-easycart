@@ -142,7 +142,8 @@ function toggle_language( ){
 		document.getElementById( language_keys[i] ).style.display = "none";
 	}
 	
-	document.getElementById( document.getElementById('ec_option_language').value ).style.display = "";
+	if( document.getElementById( "enable_editor" ).checked == true)
+		document.getElementById( document.getElementById('ec_option_language').value ).style.display = "";
 }
 
 function toggle_editor(){

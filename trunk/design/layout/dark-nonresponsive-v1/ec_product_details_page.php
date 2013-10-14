@@ -146,8 +146,8 @@
     <div class="ec_product_details_customer_reviews" id="ec_product_details_customer_reviews">
    		<div class="ec_inner">
             <div class="ec_product_details_customer_reviews_overall_row">
-                <div class="ec_product_details_customer_reviews_button"><?php $this->product->display_product_customer_review_open_button("Write a Review", "Review Submitted"); ?></div>
-                <div class="ec_product_details_customer_reviews_overall_title"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_customer_rating' )?></div>
+                <div class="ec_product_details_customer_reviews_button"><?php $this->product->display_product_customer_review_open_button($GLOBALS['language']->get_text( 'customer_review', 'product_details_write_a_review' ), $GLOBALS['language']->get_text( 'customer_review', 'product_details_review_submitted' )); ?></div>
+            	<div class="ec_product_details_customer_reviews_overall_title"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_customer_rating' )?></div>
                 <?php if( $this->product->has_reviews( ) ){ ?>
                 <div class="ec_product_details_customer_reviews_stars"><?php $this->product->display_product_stars(); ?></div>
                 <div class="ec_product_details_customer_reviews_num_reviews"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review_based_on' )?> <?php $this->product->display_product_number_reviews(); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review' )?><?php if($this->product->get_product_number_reviews() != 1) echo "s"; ?></div>

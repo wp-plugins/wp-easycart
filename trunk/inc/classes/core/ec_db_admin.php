@@ -46,13 +46,49 @@ class ec_db_admin extends ec_db{
 	}
 	
 	public function get_user( $user_id ){
-		$sql = "SELECT ec_user.user_id, ec_user.password, ec_user.email, ec_user.first_name, ec_user.last_name, ec_user.user_level, billing.first_name AS billing_first_name, billing.last_name AS billing_last_name, billing.address_line_1 AS billing_address_line_1, billing.city AS billing_city, billing.state AS billing_state, billing.zip AS billing_zip, billing.country AS billing_country, billing.phone AS billing_phone, shipping.first_name AS shipping_first_name, shipping.last_name AS shipping_last_name, shipping.address_line_1 AS shipping_address_line_1, shipping.city AS shipping_city, shipping.state AS shipping_state, shipping.zip AS shipping_zip, shipping.country AS shipping_country, shipping.phone AS shipping_phone FROM ec_user LEFT JOIN ec_address as billing ON (ec_user.default_billing_address_id = billing.address_id) LEFT JOIN ec_address as shipping ON (ec_user.default_shipping_address_id = shipping.address_id) WHERE ec_user.user_id = %d";
+		$sql = "SELECT ec_user.user_id, ec_user.password, ec_user.list_id, ec_user.edit_sequence, ec_user.email, ec_user.first_name, ec_user.last_name, ec_user.user_level, billing.first_name AS billing_first_name, billing.last_name AS billing_last_name, billing.address_line_1 AS billing_address_line_1, billing.city AS billing_city, billing.state AS billing_state, billing.zip AS billing_zip, billing.country AS billing_country, billing.phone AS billing_phone, shipping.first_name AS shipping_first_name, shipping.last_name AS shipping_last_name, shipping.address_line_1 AS shipping_address_line_1, shipping.city AS shipping_city, shipping.state AS shipping_state, shipping.zip AS shipping_zip, shipping.country AS shipping_country, shipping.phone AS shipping_phone FROM ec_user LEFT JOIN ec_address as billing ON (ec_user.default_billing_address_id = billing.address_id) LEFT JOIN ec_address as shipping ON (ec_user.default_shipping_address_id = shipping.address_id) WHERE ec_user.user_id = %d";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $user_id ) );
 	}
 	
 	public function get_users( ){
-		$sql = "SELECT ec_user.user_id, ec_user.password, ec_user.email, ec_user.first_name, ec_user.last_name, ec_user.user_level, billing.first_name AS billing_first_name, billing.last_name AS billing_last_name, billing.address_line_1 AS billing_address_line_1, billing.city AS billing_city, billing.state AS billing_state, billing.zip AS billing_zip, billing.country AS billing_country, billing.phone AS billing_phone, shipping.first_name AS shipping_first_name, shipping.last_name AS shipping_last_name, shipping.address_line_1 AS shipping_address_line_1, shipping.city AS shipping_city, shipping.state AS shipping_state, shipping.zip AS shipping_zip, shipping.country AS shipping_country, shipping.phone AS shipping_phone FROM ec_user LEFT JOIN ec_address as billing ON (ec_user.default_billing_address_id = billing.address_id) LEFT JOIN ec_address as shipping ON (ec_user.default_shipping_address_id = shipping.address_id)";
+		$sql = "SELECT ec_user.user_id, ec_user.password, ec_user.list_id, ec_user.edit_sequence, ec_user.email, ec_user.first_name, ec_user.last_name, ec_user.user_level, billing.first_name AS billing_first_name, billing.last_name AS billing_last_name, billing.address_line_1 AS billing_address_line_1, billing.city AS billing_city, billing.state AS billing_state, billing.zip AS billing_zip, billing.country AS billing_country, billing.phone AS billing_phone, shipping.first_name AS shipping_first_name, shipping.last_name AS shipping_last_name, shipping.address_line_1 AS shipping_address_line_1, shipping.city AS shipping_city, shipping.state AS shipping_state, shipping.zip AS shipping_zip, shipping.country AS shipping_country, shipping.phone AS shipping_phone FROM ec_user LEFT JOIN ec_address as billing ON (ec_user.default_billing_address_id = billing.address_id) LEFT JOIN ec_address as shipping ON (ec_user.default_shipping_address_id = shipping.address_id)";
 		return $this->mysqli->get_results( $sql );
+	}
+	
+	public function update_product_quickbooks( $model_number, $list_id, $edit_sequence ){
+		$sql = "UPDATE ec_product SET list_id = %s, edit_sequence = %s WHERE model_number = %s";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $list_id, $edit_sequence, $model_number ) );
+	}
+	
+	public function get_product( $model_number ){
+		$sql = "SELECT ec_product.list_id, ec_product.edit_sequence, ec_product.title, ec_product.price, ec_product.model_number, ec_product.stock_quantity FROM ec_product WHERE ec_product.model_number = %s";
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $model_number ) );
+	}
+	
+	public function get_products( ){
+		$sql = "SELECT ec_product.list_id, ec_product.edit_sequence, ec_product.title, ec_product.price, ec_product.model_number, ec_product.stock_quantity FROM ec_product";
+		return $this->mysqli->get_results( $sql );
+	}
+	
+	public function get_orders( ){
+		$sql = "SELECT ec_order.order_id FROM ec_order";
+		return $this->mysqli->get_results( $sql );
+	}
+	
+	public function update_order_quickbooks( $order_id, $txn_id, $edit_sequence ){
+		$sql = "UPDATE ec_order SET txn_id = %s, edit_sequence = %s WHERE order_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $txn_id, $edit_sequence, $order_id ) );
+	}
+	
+	public function get_quickbooks_user( ){
+		$sql_quickbooks_user = "SELECT qb_username, qb_password FROM quickbooks_user";
+		return $this->mysqli->get_row( $sql_quickbooks_user );
+	}
+	
+	public function update_quickbooks_user( $username, $password ){
+		$sql_quickbooks_user = "UPDATE quickbooks_user SET qb_username = %s, qb_password = %s";
+		$func = QUICKBOOKS_HASH;
+		$this->mysqli->query( $this->mysqli->prepare( $sql_quickbooks_user, $username, $func( $password . QUICKBOOKS_SALT ) ) );
 	}
 }
 

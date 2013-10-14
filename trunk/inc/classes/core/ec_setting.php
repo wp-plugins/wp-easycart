@@ -135,6 +135,20 @@ class ec_setting{
 		else
 			return "";
 	}
+
+	public function get_auspost_api_key( ){
+		if( isset( $this->setting_row->auspost_api_key ) )
+			return $this->setting_row->auspost_api_key;
+		else
+			return "";
+	}
+
+	public function get_auspost_ship_from_zip( ){
+		if( isset( $this->setting_row->auspost_ship_from_zip ) )
+			return $this->setting_row->auspost_ship_from_zip;
+		else
+			return "";
+	}
 	
 }
 
