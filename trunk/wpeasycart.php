@@ -55,11 +55,13 @@ function ec_activate(){
 	$GLOBALS['setting'] = new ec_setting( );
 	
 	//WRITE OUR EC_CONN FILE FOR AMFPHP
+	global $wpdb;
 	$ec_conn_php = "<?php
 						define ('HOSTNAME','" . DB_HOST . "'); 	
 						define ('DATABASE','" . DB_NAME . "'); 		
 						define ('USERNAME','" . DB_USER . "'); 	
-						define ('PASSWORD','" . DB_PASSWORD . "'); 	
+						define ('PASSWORD','" . DB_PASSWORD . "'); 
+						define ('WP_PREFIX','" . $wpdb->base_prefix . "');
 					?>"; 
 
 	$ec_conn_filename = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php";
