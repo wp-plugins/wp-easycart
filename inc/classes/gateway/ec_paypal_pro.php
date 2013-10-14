@@ -10,13 +10,24 @@ class ec_paypal_pro extends ec_gateway{
 	
 	function get_gateway_data( ){
 		
+		$paypal_pro_test_mode = get_option( 'ec_option_paypal_pro_test_mode' );
+		
+		if( $paypal_pro_test_mode )						$paypal_pro_hostaddress = "pilot-payflowpro.paypal.com";
+		else											$paypal_pro_hostaddress = "payflowpro.paypal.com";
+		
+		$paypal_pro_port = 443;
+		$paypal_pro_timeout = 90;
+		
 		$paypal_pro_vendor = get_option( 'ec_option_paypal_pro_vendor' );
 		$paypal_pro_partner = get_option( 'ec_option_paypal_pro_partner' );
 		$paypal_pro_currency = get_option( 'ec_option_paypal_pro_currency' );
 		$paypal_pro_user = get_option( 'ec_option_paypal_pro_user' );
 		$paypal_pro_password = get_option( 'ec_option_paypal_pro_password' );
 		
-		$paypal_pro_data = array(	"VENDOR" 			=> $paypal_pro_vendor,
+		$paypal_pro_data = array(	"HOSTADDRESS"		=> $paypal_pro_hostaddress,
+									"HOSTPORT"			=> $paypal_pro_port,
+									"TIMEOUT"			=> $paypal_pro_timeout,
+									"VENDOR" 			=> $paypal_pro_vendor,
 									"PARTNER" 			=> $paypal_pro_partner,
 									"USER" 				=> $paypal_pro_user,
 									"PWD" 				=> $paypal_pro_password,
@@ -26,9 +37,9 @@ class ec_paypal_pro extends ec_gateway{
 									"TRXTYPE" 			=> "S",
 									"ACCT" 				=> $this->credit_card->card_number,
 									"EXPDATE" 			=> $this->credit_card->expiration_month . $this->credit_card->get_expiration_year( 2 ),
-									"CVV2" 				=> $this->security_code,
+									"CVV2" 				=> $this->credit_card->security_code,
 									"CURRENCY" 			=> $paypal_pro_currency,
-									"AMT" 				=> $this->order_totals->grand_total,
+									"AMT" 				=> number_format( $this->order_totals->grand_total, 2, '.', '' ),
 									"TAXAMT"			=> $this->order_totals->tax_total,
 									"FREIGHTAMT" 		=> $this->order_totals->shipping_total,
 									"DUTYAMT"			=> $this->order_totals->duty_total,
@@ -56,15 +67,37 @@ class ec_paypal_pro extends ec_gateway{
 			$paypal_pro_data["VATTAXPERCENT"] 			= $this->tax->vat_rate;
 		}
 		
-		return $paypal_pro_data;
+		//Create parmlist
+		$paypal_pro_parmlist = "";
+		$last_parm_i = 0;
+		while( list( $key, $val ) = each( $paypal_pro_data ) ){
+			if( $last_parm_i > 0 )
+				$paypal_pro_parmlist .= "&";
+			$paypal_pro_parmlist .= $key . "=" . $val;
+			$last_parm_i++;
+		}
+		
+		//$paypal_pro_data["PARMLIST"] = $paypal_pro_parmlist;
+		
+		//Create Return Srring from Array
+		$paypal_pro_string = "";
+		$last_i = 0;
+		foreach( $paypal_pro_data as $var=>$val ){
+			if( $last_i > 0 )
+				$paypal_pro_string .= "&";
+			$paypal_pro_string .= $var . "=" . urlencode($val);
+			$last_i++;
+		}
+		
+		return $paypal_pro_string;
 		
 	}
 	
 	function get_gateway_url( ){
 		
-		$paypal_pro_use_sandbox = get_option( 'ec_option_paypal_pro_use_sandbox' );
+		$paypal_pro_test_mode = get_option( 'ec_option_paypal_pro_test_mode' );
 		
-		if( $paypal_pro_use_sandbox )
+		if( $paypal_pro_test_mode )
 			return "https://pilot-payflowpro.paypal.com";
 		else
 			return "https://payflowpro.paypal.com";
@@ -73,7 +106,7 @@ class ec_paypal_pro extends ec_gateway{
 	
 	function handle_gateway_response( $response ){
 		
-		$response_body = $response["body"];
+		$response_body = $response;
 		
 		//Format response data in form key=val&key2=val2&...
 		$response_array = explode( "&", $response_body );
@@ -93,12 +126,28 @@ class ec_paypal_pro extends ec_gateway{
 		else
 			$this->is_success = 0;
 			
-		$this->mysqli->insert_response( $this->order_id, $this->temp_order_id, !$this->is_success, "PayPalPro", $response_text );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "PayPal Payflow Pro", $response_text );
 			
 		if( !$this->is_success )
 			$this->error_message = $response_message;
 			
 	}
+	
+	function get_gateway_response( $gateway_url, $gateway_data, $gateway_headers ){
+		$curl = curl_init();
+		curl_setopt( $curl, CURLOPT_VERBOSE, 1);
+		curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt( $curl, CURLOPT_TIMEOUT, 90);
+		curl_setopt( $curl, CURLOPT_URL, $gateway_url);
+		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt( $curl, CURLOPT_POSTFIELDS, $gateway_data );
+		
+		$result = curl_exec($curl);      
+		curl_close($curl);
+		
+		return $result;
+	}
+	
 	
 }
 

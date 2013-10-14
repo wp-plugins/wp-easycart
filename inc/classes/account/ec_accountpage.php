@@ -608,6 +608,12 @@ class ec_accountpage{
 			$this->mysqli->update_address_user_id( $billing_id, $user_id );
 		}
 		
+		// Quickbooks Hook
+		if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+			$quickbooks = new ec_quickbooks( );
+			$quickbooks->add_user( $user_id );
+		}
+		
 		if( $user_id ){
 			$_SESSION['ec_user_id'] = $user_id;
 			$_SESSION['ec_email'] = $email;

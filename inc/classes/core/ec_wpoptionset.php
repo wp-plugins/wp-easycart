@@ -175,6 +175,12 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_firstdatae4_currency');				array_push($this->wp_option_defaults, 'USD' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_firstdatae4_test_mode');				array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');																				
+		array_push($this->wp_option_names, 'ec_option_goemerchant_gateway_id');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_goemerchant_processor_id');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_goemerchant_trans_center_id');		array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_payment_express_username');			array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
@@ -203,6 +209,16 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_paypal_pro_password');				array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_paypal_pro_currency');				array_push($this->wp_option_defaults, 'USD' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_paypal_payments_pro_test_mode');		array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_paypal_payments_pro_user');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_paypal_payments_pro_password');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_paypal_payments_pro_signature');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_paypal_payments_pro_currency');		array_push($this->wp_option_defaults, 'USD' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_skrill_merchant_id');					array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
@@ -378,6 +394,11 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
 		array_push($this->wp_option_names, 'ec_option_checklist_page');						array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-checklist-group');
+																																												
+		array_push($this->wp_option_names, 'ec_option_quickbooks_user');					array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-quickbooks-group');																					
+		array_push($this->wp_option_names, 'ec_option_quickbooks_password');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-quickbooks-group');
 		
 	}
 	

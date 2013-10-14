@@ -143,6 +143,12 @@ if( $verified ) {
 			$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
 			$order_display = new ec_orderdisplay( $order_row, true );
 			$order_display->send_email_receipt( );
+
+			// Quickbooks Hook
+			if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->add_order( $order_id );
+			}
 			
 		} else if( $_POST['payment_status'] == 'Refunded' ){ 
 			$mysqli->update_order_status( $order_id, "16" );

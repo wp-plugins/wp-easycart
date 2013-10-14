@@ -23,6 +23,12 @@ class products
 		function products() {
 			//load our connection settings
 			require_once('../../../connection/ec_conn.php');
+			require_once( "../../classes/core/ec_db.php" );
+			
+			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
+				require_once( "../../../../wp-easycart-quickbooks/ec_quickbooks.php" );
+				require_once( "../../../../wp-easycart-quickbooks/QuickBooks.php" );
+			}
 		
 			//set our connection variables
 			$dbhost = HOSTNAME;
@@ -190,7 +196,11 @@ class products
  
 			}
 			
-			
+			//Enqueue Quickbooks Update Customer
+			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->add_product( $randmodel );	
+			}
 
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
@@ -305,6 +315,12 @@ class products
 
 			//Run query on database;
 			mysql_query($sql);
+			
+			//Enqueue Quickbooks Update Customer
+			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->update_product( $product['modelnumber'] );	
+			}
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
@@ -406,7 +422,12 @@ class products
 				$updateimages = sprintf("UPDATE ec_optionitemimage SET ec_optionitemimage.product_id = '%s' WHERE ec_optionitemimage.product_id = '%s'", $newproductid, $product['product_id']);
 				mysql_query($updateimages);
 
-				
+			//Enqueue Quickbooks Update Customer
+			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->add_product( $product['modelnumber'] );	
+			}
+
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {

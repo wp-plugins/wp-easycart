@@ -60,8 +60,10 @@ class ec_payment{
 		
 			 if($this->proccess_method == "authorize"		)			$gateway = new ec_authorize();
 		else if($this->proccess_method == "paypal_pro"		)			$gateway = new ec_paypal_pro();
+		else if($this->proccess_method == "paypal_payments_pro"	)		$gateway = new ec_paypal_payments_pro();
 		else if($this->proccess_method == "chronopay"		)			$gateway = new ec_chronopay();
 		else if($this->proccess_method == "eway"			)			$gateway = new ec_eway();
+		else if($this->proccess_method == "goemerchant"		)			$gateway = new ec_goemerchant();
 		else if($this->proccess_method == "paypoint"		)			$gateway = new ec_paypoint();
 		else if($this->proccess_method == "paymentexpress"	)			$gateway = new ec_paymentexpress();
 		else if($this->proccess_method == "firstdata"		)			$gateway = new ec_firstdata();

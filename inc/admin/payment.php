@@ -57,7 +57,11 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_firstdatae4_password', $_POST['ec_option_firstdatae4_password'] );
 	update_option( 'ec_option_firstdatae4_language', $_POST['ec_option_firstdatae4_language'] );
 	update_option( 'ec_option_firstdatae4_currency', $_POST['ec_option_firstdatae4_currency'] ); 
-	update_option( 'ec_option_firstdatae4_test_mode', $_POST['ec_option_firstdatae4_test_mode'] );           
+	update_option( 'ec_option_firstdatae4_test_mode', $_POST['ec_option_firstdatae4_test_mode'] ); 
+	//goEmerchant
+	update_option( 'ec_option_goemerchant_gateway_id', $_POST['ec_option_goemerchant_gateway_id'] ); 
+	update_option( 'ec_option_goemerchant_processor_id', $_POST['ec_option_goemerchant_processor_id'] ); 
+	update_option( 'ec_option_goemerchant_trans_center_id', $_POST['ec_option_goemerchant_trans_center_id'] );          
 	//paymentexpress
 	update_option( 'ec_option_payment_express_username', $_POST['ec_option_payment_express_username'] );
 	update_option( 'ec_option_payment_express_password', $_POST['ec_option_payment_express_password'] );
@@ -68,13 +72,19 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
 	update_option( 'ec_option_paypal_use_sandbox', $_POST['ec_option_paypal_use_sandbox'] );
 	update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );	
-	//paypal pro
+	//paypal payflow pro
 	update_option( 'ec_option_paypal_pro_test_mode', $_POST['ec_option_paypal_pro_test_mode'] );
 	update_option( 'ec_option_paypal_pro_vendor', $_POST['ec_option_paypal_pro_vendor'] );
 	update_option( 'ec_option_paypal_pro_partner', $_POST['ec_option_paypal_pro_partner'] );
 	update_option( 'ec_option_paypal_pro_user', $_POST['ec_option_paypal_pro_user'] );
 	update_option( 'ec_option_paypal_pro_password', $_POST['ec_option_paypal_pro_password'] );
 	update_option( 'ec_option_paypal_pro_currency', $_POST['ec_option_paypal_pro_currency'] );
+	//paypal payments pro
+	update_option( 'ec_option_paypal_payments_pro_test_mode', $_POST['ec_option_paypal_payments_pro_test_mode'] );
+	update_option( 'ec_option_paypal_payments_pro_user', $_POST['ec_option_paypal_payments_pro_user'] );
+	update_option( 'ec_option_paypal_payments_pro_password', $_POST['ec_option_paypal_payments_pro_password'] );
+	update_option( 'ec_option_paypal_payments_pro_signature', $_POST['ec_option_paypal_payments_pro_signature'] );
+	update_option( 'ec_option_paypal_payments_pro_currency', $_POST['ec_option_paypal_payments_pro_currency'] );
 	
 	//Skrill
 	update_option( 'ec_option_skrill_merchant_id', $_POST['ec_option_skrill_merchant_id'] );
@@ -309,10 +319,12 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                   <td width="77%"><select id="paymentmethod" name="ec_option_payment_process_method"  onclick="toggle_live_gateways();" value="<?php echo get_option('ec_option_payment_process_method'); ?>" style="width:250px;">
                     <option value="0" <?php if( get_option('ec_option_payment_process_method') == "0" ){ echo " selected"; } ?>>No Live Payment Processor</option>
                     <option value="authorize" <?php if( get_option('ec_option_payment_process_method') == "authorize" ){ echo " selected"; } ?>>Authorize.net</option>
-                    <option value="paypal_pro" <?php if( get_option('ec_option_payment_process_method') == "paypal_pro" ){ echo " selected"; } ?>>PayPal Pro</option>
+                    <option value="paypal_pro" <?php if( get_option('ec_option_payment_process_method') == "paypal_pro" ){ echo " selected"; } ?>>PayPal PayFlow Pro</option>
+                    <option value="paypal_payments_pro" <?php if( get_option('ec_option_payment_process_method') == "paypal_payments_pro" ){ echo " selected"; } ?>>PayPal Payments Pro</option>
                     <option value="realex" <?php if( get_option('ec_option_payment_process_method') == "realex" ){ echo " selected"; } ?>>Realex</option>
                     <option value="sagepay" <?php if( get_option('ec_option_payment_process_method') == "sagepay" ){ echo " selected"; } ?>>Sagepay</option>
                     <option value="firstdata" <?php if( get_option('ec_option_payment_process_method') == "firstdata" ){ echo " selected"; } ?>>First Data Global Gateway e4</option>
+                    <option value="goemerchant" <?php if( get_option('ec_option_payment_process_method') == "goemerchant" ){ echo " selected"; } ?>>GoeMerchant</option>
                     <option value="paymentexpress" <?php if( get_option('ec_option_payment_process_method') == "paymentexpress" ){ echo " selected"; } ?>>Payment Express</option>
                     <option value="chronopay" <?php if( get_option('ec_option_payment_process_method') == "chronopay" ){ echo " selected"; } ?>>Chronopay</option>
                     <option value="eway" <?php if( get_option('ec_option_payment_process_method') == "eway" ){ echo " selected"; } ?>>Eway</option>
@@ -355,26 +367,28 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                     </tr>
                   </table></td>
                 </tr>
+                
+                
                 <tr valign="top" class="form-table" id="paypal_pro">
                   <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
                     <tr valign="top" class="form-table">
-                      <td width="26%" class="itemheading" scope="row">PayPal Pro Partner:</td>
+                      <td width="26%" class="itemheading" scope="row">PayPal PayFlow Pro Partner:</td>
                       <td width="74%"><input name="ec_option_paypal_pro_partner"  id="ec_option_paypal_pro_partner" type="text" value="<?php echo get_option('ec_option_paypal_pro_partner'); ?>" style="width:250px;" /></td>
                     </tr>
                     <tr valign="top" class="form-table">
-                      <td class="itemheading" scope="row">PayPal Pro User:</td>
+                      <td class="itemheading" scope="row">PayPal PayFlow Pro User:</td>
                       <td><input name="ec_option_paypal_pro_user"  id="ec_option_paypal_pro_user" type="text" value="<?php echo get_option('ec_option_paypal_pro_user'); ?>" style="width:250px;" /></td>
                     </tr>
                     <tr valign="top" class="form-table">
-                      <td width="26%" class="itemheading" scope="row">PayPal Pro Vendor:</td>
+                      <td width="26%" class="itemheading" scope="row">PayPal PayFlow Pro Vendor:</td>
                       <td width="74%"><input name="ec_option_paypal_pro_vendor" id="ec_option_paypal_pro_vendor"  type="text" value="<?php echo get_option('ec_option_paypal_pro_vendor'); ?>" style="width:250px;" /></td>
                     </tr>
                     <tr valign="top" class="form-table">
-                      <td class="itemheading" scope="row">PayPal Pro Password:</td>
+                      <td class="itemheading" scope="row">PayPal PayFlow Pro Password:</td>
                       <td><input name="ec_option_paypal_pro_password"  id="ec_option_paypal_pro_password" type="text" value="<?php echo get_option('ec_option_paypal_pro_password'); ?>" style="width:250px;" /></td>
                     </tr>
                     <tr valign="top" class="form-table">
-                      <td class="itemheading" scope="row">PayPal Pro Currency:</td>
+                      <td class="itemheading" scope="row">PayPal PayFlow Pro Currency:</td>
                       <td>
                       <select name="ec_option_paypal_pro_currency" id="ec_option_paypal_pro_currency">
                         <option value="USD" <?php if (get_option('ec_option_paypal_pro_currency') == 'USD') echo ' selected'; ?>>U.S. Dollar</option>
@@ -405,10 +419,55 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                        </td>
                     </tr>
                     <tr valign="top" class="form-table">
-                      <td class="itemheading" scope="row">PayPal Pro Test Mode:</td>
+                      <td class="itemheading" scope="row">PayPal PayFlow Pro Test Mode:</td>
                       <td><select name="ec_option_paypal_pro_test_mode" id="ec_option_paypal_pro_test_mode">
                         <option value="1" <?php if (get_option('ec_option_paypal_pro_test_mode') == 1) echo ' selected'; ?>>Yes</option>
                         <option value="0" <?php if (get_option('ec_option_paypal_pro_test_mode') == 0) echo ' selected'; ?>>No</option>
+                      </select></td>
+                    </tr>
+                  </table></td>
+                </tr><tr valign="top" class="form-table" id="paypal_payments_pro">
+                  <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                   <tr valign="top" class="form-table">
+                      <td class="itemheading" scope="row">PayPal Payments Pro User:</td>
+                      <td><input name="ec_option_paypal_payments_pro_user"  id="ec_option_paypal_payments_pro_user" type="text" value="<?php echo get_option('ec_option_paypal_payments_pro_user'); ?>" style="width:250px;" /></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td class="itemheading" scope="row">PayPal Payments Pro Password:</td>
+                      <td><input name="ec_option_paypal_payments_pro_password"  id="ec_option_paypal_payments_pro_password" type="text" value="<?php echo get_option('ec_option_paypal_payments_pro_password'); ?>" style="width:250px;" /></td>
+                    </tr>
+                     <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">PayPal Payments Pro Signature:</td>
+                      <td width="74%"><input name="ec_option_paypal_payments_pro_signature" id="ec_option_paypal_payments_pro_signature"  type="text" value="<?php echo get_option('ec_option_paypal_payments_pro_signature'); ?>" style="width:250px;" /></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td class="itemheading" scope="row">PayPal Payments Pro Currency:</td>
+                      <td>
+                      <select name="ec_option_paypal_payments_pro_currency" id="ec_option_paypal_payments_pro_currency">
+                        <option value="USD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'USD') echo ' selected'; ?>>U.S. Dollar</option>
+                        <option value="AUD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'AUD') echo ' selected'; ?>>Australian Dollar</option>
+                        <option value="CAD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'CAD') echo ' selected'; ?>>Canadian Dollar</option>
+                        <option value="CZK" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'CZK') echo ' selected'; ?>>Czech Koruna</option>
+                        <option value="DKK" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'DKK') echo ' selected'; ?>>Danish Krone</option>
+                        <option value="EUR" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'EUR') echo ' selected'; ?>>Euro</option>
+                        <option value="HKD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'HKD') echo ' selected'; ?>>Hong Kong Dollar</option>
+                        <option value="HUF" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'HUF') echo ' selected'; ?>>Hungarian Forint</option>
+                        <option value="JPY" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'JPY') echo ' selected'; ?>>Japanese Yen</option>
+                        <option value="NOK" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'NOK') echo ' selected'; ?>>Norwegian Krone</option>
+                        <option value="NZD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'NZD') echo ' selected'; ?>>New Zealand Dollar</option>
+                        <option value="PLN" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'PLN') echo ' selected'; ?>>Polish Zloty</option>
+                        <option value="GBP" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'GBP') echo ' selected'; ?>>Pound Sterling</option>
+                        <option value="SGD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'SGD') echo ' selected'; ?>>Singapore Dollar</option>
+                        <option value="SEK" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'SEK') echo ' selected'; ?>>Swedish Krona</option>
+                        <option value="CHF" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'CHF') echo ' selected'; ?>>Swiss Franc</option>
+                      </select>
+                      </td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td class="itemheading" scope="row">PayPal Payments Pro Test Mode:</td>
+                      <td><select name="ec_option_paypal_payments_pro_test_mode" id="ec_option_paypal_payments_pro_test_mode">
+                        <option value="1" <?php if (get_option('ec_option_paypal_payments_pro_test_mode') == 1) echo ' selected'; ?>>Yes</option>
+                        <option value="0" <?php if (get_option('ec_option_paypal_payments_pro_test_mode') == 0) echo ' selected'; ?>>No</option>
                       </select></td>
                     </tr>
                   </table></td>
@@ -753,6 +812,23 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                         <option value="1" <?php if (get_option('ec_option_firstdatae4_test_mode') == 1) echo ' selected'; ?>>Yes</option>
                         <option value="0" <?php if (get_option('ec_option_firstdatae4_test_mode') == 0) echo ' selected'; ?>>No</option>
                       </select></td>
+                    </tr>
+                  </table></td>
+                </tr>
+                
+                <tr valign="top" class="form-table" id="goemerchant">
+                  <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">GoeMerchant Transaction Center ID:</td>
+                      <td width="74%"><input name="ec_option_goemerchant_trans_center_id"  id="ec_option_goemerchant_trans_center_id" type="text" value="<?php echo get_option('ec_option_goemerchant_trans_center_id'); ?>" style="width:250px;" /></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td class="itemheading" scope="row">GoeMerchant Gateway ID:</td>
+                      <td><input name="ec_option_goemerchant_gateway_id"  id="ec_option_goemerchant_gateway_id" type="text" value="<?php echo get_option('ec_option_goemerchant_gateway_id'); ?>" style="width:250px;" /></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td class="itemheading" scope="row">GoeMerchant Processor ID:</td>
+                      <td><input name="ec_option_goemerchant_processor_id"  id="ec_option_goemerchant_processor_id" type="text" value="<?php echo get_option('ec_option_goemerchant_processor_id'); ?>" style="width:250px;" /></td>
                     </tr>
                   </table></td>
                 </tr>
@@ -1227,7 +1303,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
            <?php if(!$license->is_registered()) { ?>
            <tr>
            <td colspan="2"> <div class='info_note'>
-             <p><strong>To access live payment gateways such as PayPal Pro, Authorize.net, FirstData, PayPal Standard, and other payment gateways, you must purchase a license and upgrade to our FULL edition plugin. Third party gateways like PayPal Free and Skrill are available on both the LITE and FULL versions. For more information, please visit <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a>.</strong></p></div>  
+             <p><strong>To access live payment gateways such as PayPal PayFlow Pro, Authorize.net, FirstData, PayPal Standard, and other payment gateways, you must purchase a license and upgrade to our FULL edition plugin. Third party gateways like PayPal Free and Skrill are available on both the LITE and FULL versions. For more information, please visit <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a>.</strong></p></div>  
            </td>
            </tr>
            <?php } ?>
@@ -1235,7 +1311,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
            <?php if( $license->is_lite_version() ){ ?>
            <tr>
            <td colspan="2"> <div class='info_note'>
-             <p><strong>To access live payment gateways such as PayPal Pro, Authorize.net, FirstData, PayPal Standard, and other payment gateways, you must upgrade to our FULL edition plugin. For more information, please visit <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a> .</strong></p></div>  
+             <p><strong>To access live payment gateways such as PayPal PayFlow Pro, Authorize.net, FirstData, PayPal Standard, and other payment gateways, you must upgrade to our FULL edition plugin. For more information, please visit <a href="http://www.wpeasycart.com" target="_blank">www.wpeasycart.com</a> .</strong></p></div>  
            </td>
            </tr>
            <?php }?>
@@ -1254,9 +1330,11 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 				
 				document.getElementById("authorize").style.display = 'none';
 				document.getElementById("paypal_pro").style.display = 'none';
+				document.getElementById("paypal_payments_pro").style.display = 'none';
 				document.getElementById("realex").style.display = 'none';
 				document.getElementById("sagepay").style.display = 'none';
 				document.getElementById("firstdata").style.display = 'none';
+				document.getElementById("goemerchant").style.display = 'none';
 				document.getElementById("paymentexpress").style.display = 'none';
 				document.getElementById("chronopay").style.display = 'none';
 				document.getElementById("versapay").style.display = 'none';
@@ -1276,6 +1354,11 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0 );
 				}
 				
+				else if(paymentmethod == "paypal_payments_pro"){
+					document.getElementById('paypal_payments_pro').style.display = "";
+					toggle_live_card_display( 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1 );
+				}
+				
 				else if(paymentmethod == "realex"){
 					document.getElementById('realex').style.display = "";
 					toggle_live_card_display( 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1 );
@@ -1289,6 +1372,12 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 				else if( paymentmethod == "firstdata" ){
 				   document.getElementById( "firstdata").style.display = '';
 					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0 );
+				}
+				
+				//toggle_live_card_display( visa, delta, uke, discover, mastercard, mcdebit, amex, jcb, diners, laser, maestro );
+				else if( paymentmethod == "goemerchant" ){
+				   document.getElementById( "goemerchant").style.display = '';
+					toggle_live_card_display( 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0 );
 				}
 				
 				else if( paymentmethod == 'paymentexpress' ){

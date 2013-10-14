@@ -149,7 +149,7 @@ class ec_language{
 	// Adds a new language file to the language data heap.
 	// Returns: NULL
 	private function add_new_language_file( $file_name ){
-		$language_data[ $file_name ] = $this->get_language_file_decoded( $file_name . ".txt" );	
+		$this->language_data->{$file_name} = $this->get_language_file_decoded( $file_name . ".txt" );	
 	}
 	
 	// Updates the language_data wordpress option
