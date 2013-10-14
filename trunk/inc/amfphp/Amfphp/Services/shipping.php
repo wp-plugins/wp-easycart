@@ -56,6 +56,10 @@ class shipping
 		   else if($methodName == 'deletefedex') return array('admin');
 		   else if($methodName == 'updatefedex') return array('admin');
 		   else if($methodName == 'addfedex') return array('admin');
+		   else if($methodName == 'getauspost') return array('admin');
+		   else if($methodName == 'deleteauspost') return array('admin');
+		   else if($methodName == 'updateauspost') return array('admin');
+		   else if($methodName == 'addauspost') return array('admin');
 		   else if($methodName == 'updateexpeditedrates') return array('admin');
 		   else if($methodName == 'getmethodshippingrates') return array('admin');
 		   else if($methodName == 'deleteshippingmethodrate') return array('admin');
@@ -93,7 +97,7 @@ class shipping
 		
 		function getshippingsettings() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code FROM ec_setting  WHERE ec_setting.setting_id = 1");
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip FROM ec_setting  WHERE ec_setting.setting_id = 1");
 			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
 			  $totalrows = mysql_fetch_object($totalquery);
 			  
@@ -140,7 +144,7 @@ class shipping
 				//convert object to array
 			  $shippingsettings = (array)$shippingsettings;
 			  //Create SQL Query
-			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s',  ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s' WHERE ec_setting.setting_id = 1", 
+			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s',  ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s', ec_settings.auspost_api_key = '%s', ec_settings.auspost_ship_from_zip = '%s' WHERE ec_setting.setting_id = 1", 
 			 mysql_real_escape_string($shippingsettings['shippingmethod']), 
 			 mysql_real_escape_string($shippingsettings['ups_access_license_number']), 
 			 mysql_real_escape_string($shippingsettings['ups_user_id']),  
@@ -157,7 +161,9 @@ class shipping
 			 mysql_real_escape_string($shippingsettings['fedex_password']), 
 			 mysql_real_escape_string($shippingsettings['fedex_ship_from_zip']),
 			 mysql_real_escape_string($shippingsettings['fedex_weight_units']), 
-			 mysql_real_escape_string($shippingsettings['fedex_country_code']));
+			 mysql_real_escape_string($shippingsettings['fedex_country_code']),
+			 mysql_real_escape_string($shippingsettings['auspost_api_key']), 
+			 mysql_real_escape_string($shippingsettings['auspost_ship_from_zip']));
 			//Run query on database;
 			  mysql_query($sql);
 			  return mysql_error();
@@ -179,7 +185,123 @@ class shipping
 			}
 		}	
 		
+		/////////////////////////////////////////////////////////////////////////////////
+		//AUS POST BASED SHIPPING
+		/////////////////////////////////////////////////////////////////////////////////
 		
+		function getauspost() {
+			  //Create SQL Query
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_auspost_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
+			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
+			  $totalrows = mysql_fetch_object($totalquery);
+			  
+			  //if results, convert to an array for use in flash
+			  if(mysql_num_rows($query) > 0) {
+				  while ($row=mysql_fetch_object($query)) {
+					  $row->totalrows=$totalrows;
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		
+		function deleteauspost($keyfield) {
+			  //Create SQL Query	
+			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			  //Run query on database;
+			  mysql_query($deletesql);
+			  
+			  //if no errors, return their current Client ID
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				  $returnArray[] ="success";
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "error";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		function updateauspost($keyfield, $info) {
+			//convert object to array
+			  $info = (array)$info;
+			  
+			  //Create SQL Query
+			  if($info['shippingoverride'] != '') {
+				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based)
+					values('".$keyfield."', '%s', '%s','%s', '%s', 1)",
+					mysql_real_escape_string($info['shippinglabel']),
+					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
+					mysql_real_escape_string($info['shippingoverride']));
+			  } else {
+				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based)
+					values('".$keyfield."', '%s', '%s', '%s', null, 1)",
+					mysql_real_escape_string($info['shippinglabel']),
+					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
+					mysql_real_escape_string($info['shippingoverride']));
+			  }
+			//Run query on database;
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$sqlerror = mysql_error();
+				$error = explode(" ", $sqlerror);
+				if ($error[0] == "Duplicate") {
+					$returnArray[] = "duplicate";
+					return $returnArray; //return noresults if there are no results
+			    } else {  
+					$returnArray[] = "error";
+					return $returnArray; //return noresults if there are no results
+				}
+			}
+		}
+		function addauspost($info) {
+			//convert object to array
+			  $info = (array)$info;
+			  
+			  //Create SQL Query
+			  if($info['shippingoverride'] != '') {
+				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based)
+					values(null, '%s', '%s','%s','%s', 1)",
+					mysql_real_escape_string($info['shippinglabel']),
+					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
+					mysql_real_escape_string($info['shippingoverride']));
+			  } else {
+				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based)
+					values(null, '%s', '%s', '%s', null, 1)",
+					mysql_real_escape_string($info['shippinglabel']),
+					mysql_real_escape_string($info['shippingcode']),
+					mysql_real_escape_string($info['shipping_order']),
+					mysql_real_escape_string($info['shippingoverride']));
+			  }
+			//Run query on database;
+			  mysql_query($sql);
+			  //if no errors, return their current Client ID
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$sqlerror = mysql_error();
+				$error = explode(" ", $sqlerror);
+				if ($error[0] == "Duplicate") {
+					$returnArray[] = "duplicate";
+					return $returnArray; //return noresults if there are no results
+			    } else {  
+					$returnArray[] = mysql_error();
+					return $returnArray; //return noresults if there are no results
+				}
+			}
+		}
 		/////////////////////////////////////////////////////////////////////////////////
 		//UPS BASED SHIPPING
 		/////////////////////////////////////////////////////////////////////////////////
