@@ -102,7 +102,7 @@ class settings
 				wp_options4.option_value AS WP_currency_symbol
 				
 				FROM
-				".$dbprefix."options, ".$dbprefix."options wp_options1, ".$dbprefix."options wp_options2, ".$dbprefix."options wp_options3, w".$dbprefix."options wp_options4 
+				".$dbprefix."options, ".$dbprefix."options wp_options1, ".$dbprefix."options wp_options2, ".$dbprefix."options wp_options3, ".$dbprefix."options wp_options4 
 				
 				WHERE
 				wp_options.option_name = 'ec_option_storepage' AND
