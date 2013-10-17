@@ -335,7 +335,7 @@ class mainmenu
 		}
 		function deletemenulevel3($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_menulevel3 WHERE ec_menulevel3.ec_menulevel3_id = '%s'", $keyfield);
+			  $deletesql = $this->escape("DELETE FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = '%s'", $keyfield);
 			  //Run query on database;
 			  mysql_query($deletesql);
 			  
