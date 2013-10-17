@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.1 =
+* Bug Fix - correction for users that require FTP. Should allow for backup, install, and other plugin updates.
+* Admin Upgrades and Improvements.
+* Upgraded Realex Payment Gateway - Now leverage 3D Secure, choose to only accept payments to prevent charge-backs, and require a minimum acceptable TSS level.
+* Upgraded validation for javascript (US Customers Only) - Phone and Visa upgrades.
+* Added Realex Redirect to third party payment gateway.
 = 1.2.0 =
 * New Release! We are now integrated with Quickbooks! Download and install the plugin extension from www.wpeasycart.com to begin automatically exporting your sale, customer, and product data to Quickbooks.
 * Improved PayPal Standard, now automatically forwarding to PayPal for payment.

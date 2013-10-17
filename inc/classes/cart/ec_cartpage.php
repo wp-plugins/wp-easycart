@@ -95,7 +95,7 @@ class ec_cartpage{
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
 			$https_class = new WordPressHTTPS( );
-			$this->cart_page = $https_class->getHttpsUrl( ) . substr( $this->cart_page, strlen( get_settings('home') ) + 1 );
+			$this->cart_page = $https_class->getHttpsUrl( ) . substr( $this->cart_page, strlen( get_option( 'home' ) ) + 1 );
 		}
 		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
@@ -805,6 +805,8 @@ class ec_cartpage{
 			echo "PayPal";
 		else if( get_option( 'ec_option_payment_third_party' ) == "skrill" )
 			echo "Skrill";
+		else if( get_option( 'ec_option_payment_third_party' ) == "realex_thirdparty" )
+			echo "Realex Payments";
 	}
 	
 	public function ec_cart_get_current_third_party_name( ){
@@ -812,6 +814,8 @@ class ec_cartpage{
 			return "PayPal";
 		else if( get_option( 'ec_option_payment_third_party' ) == "skrill" )
 			return "Skrill";
+		else if( get_option( 'ec_option_payment_third_party' ) == "realex_thirdparty" )
+			return "Realex Payments";
 	}
 	
 	public function ec_cart_display_third_party_logo( ){
@@ -1172,6 +1176,8 @@ class ec_cartpage{
 		
 		if( get_option( 'ec_option_payment_process_method' ) == "sagepay" ){
 			$gateway = new ec_sagepay( );
+		}else if( get_option( 'ec_option_payment_process_method' ) == "realex" ){
+			$gateway = new ec_realex( );
 		}
 		
 		if( isset( $gateway ) ){

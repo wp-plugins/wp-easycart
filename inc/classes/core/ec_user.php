@@ -17,6 +17,8 @@ class ec_user{
 	public $billing;									// ec_address structure
 	public $shipping;									// ec_address structure
 	
+	public $realauth_registered;						// BOOL
+	
 	private $password;									// VARCHAR 255
 	
 	public $customfields = array();						// array of customfield objects
@@ -81,6 +83,9 @@ class ec_user{
 		}else{
 			$this->shipping = new ec_address( "", "", "", "", "", "", "", "", "" );
 		}
+		
+		if( isset( $user ) )
+			$this->realauth_registered = $user->realauth_registered;
 		
 		if( $user && $user->customfield_data ){
 			$customfield_data_array = explode( "---", $user->customfield_data );

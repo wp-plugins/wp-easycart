@@ -85,7 +85,7 @@ function ec_validation( function_name, input, country_code ){
 			return false;
 	}else if( function_name == "validate_phone" ){
 		if( country_code == "US" ){
-			if( /^(?:\(\d{3}\)|\d{3})(?:\s|-)?\d{3}(?:\s|-)?\d{4}$/.test( input ) )
+			if( /^(?:\(\d{3}\)|\d{3})(?:\s|[-,.])?\d{3}(?:\s|[-,.])?\d{4}$/.test( input ) )
 				return true;
 			else
 				return false;
@@ -116,7 +116,7 @@ function ec_validation( function_name, input, country_code ){
 		if( country_code == "paypal" )
 			return true;
 		else if( country_code == "visa" || country_code == "delta" || country_code == "uke" ){
-			if( /^4[0-9]{12}(?:[0-9]{3})?$/.test( input ) )
+			if( /^4[0-9]{12}(?:[0-9]{3}|[0-9]{6})?$/.test( input ) )
 				return true;
 			else
 				return false;

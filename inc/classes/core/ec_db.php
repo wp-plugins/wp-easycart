@@ -1947,6 +1947,7 @@ class ec_db{
 				ec_user.default_billing_address_id,
 				ec_user.default_shipping_address_id,
 				ec_user.is_subscriber,
+				ec_user.realauth_registered,
 				
 				billing.first_name as billing_first_name, 
 				billing.last_name as billing_last_name, 
@@ -2115,6 +2116,11 @@ class ec_db{
 		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $iso2 ) );
 	}
 	
+	public function get_country_code( $country_name ){
+		$sql = "SELECT iso2_cnt FROM ec_country WHERE name_cnt = '%s'";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $country_name ) );
+	}
+	
 	public function get_states( ){
 		$sql = "SELECT name_sta, code_sta FROM ec_state ORDER BY sort_order ASC";
 		return $this->mysqli->get_results( $sql );
@@ -2151,6 +2157,11 @@ class ec_db{
 	public function get_roleprice( $email, $password, $product_id ){
 		$sql = "SELECT ec_roleprice.role_price FROM ec_roleprice, ec_user WHERE ec_user.email = %s AND ec_user.password = %s AND ec_user.user_level = ec_roleprice.role_label AND ec_roleprice.product_id = %d";
 		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $email, $password, $product_id ) );
+	}
+	
+	public function update_user_realvault_registered( $user_id ){
+		$sql = "UPDATE ec_user SET realauth_registered = 1 WHERE user_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $user_id ) );
 	}
 	
 }

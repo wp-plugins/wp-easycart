@@ -40,7 +40,7 @@ class ec_accountpage{
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
 			$https_class = new WordPressHTTPS( );
-			$this->account_page = $https_class->getHttpsUrl( ) . substr( $this->account_page, strlen( get_settings('home') ) );
+			$this->account_page = $https_class->getHttpsUrl( ) . substr( $this->account_page, strlen( get_option( 'home' ) ) );
 		}
 		
 		if( substr_count( $this->account_page, '?' ) )				$this->permalink_divider = "&";
