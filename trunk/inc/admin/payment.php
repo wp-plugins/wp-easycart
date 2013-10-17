@@ -66,7 +66,7 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_payment_express_username', $_POST['ec_option_payment_express_username'] );
 	update_option( 'ec_option_payment_express_password', $_POST['ec_option_payment_express_password'] );
 	update_option( 'ec_option_payment_express_currency', $_POST['ec_option_payment_express_currency'] );
-	//paypal
+	//PayPal
 	update_option( 'ec_option_paypal_email', $_POST['ec_option_paypal_email'] );
 	update_option( 'ec_option_paypal_currency_code', $_POST['ec_option_paypal_currency_code'] );
 	update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
@@ -79,24 +79,28 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_paypal_pro_user', $_POST['ec_option_paypal_pro_user'] );
 	update_option( 'ec_option_paypal_pro_password', $_POST['ec_option_paypal_pro_password'] );
 	update_option( 'ec_option_paypal_pro_currency', $_POST['ec_option_paypal_pro_currency'] );
-	//paypal payments pro
+	//PayPal Payments Pro
 	update_option( 'ec_option_paypal_payments_pro_test_mode', $_POST['ec_option_paypal_payments_pro_test_mode'] );
 	update_option( 'ec_option_paypal_payments_pro_user', $_POST['ec_option_paypal_payments_pro_user'] );
 	update_option( 'ec_option_paypal_payments_pro_password', $_POST['ec_option_paypal_payments_pro_password'] );
 	update_option( 'ec_option_paypal_payments_pro_signature', $_POST['ec_option_paypal_payments_pro_signature'] );
 	update_option( 'ec_option_paypal_payments_pro_currency', $_POST['ec_option_paypal_payments_pro_currency'] );
-	
 	//Skrill
 	update_option( 'ec_option_skrill_merchant_id', $_POST['ec_option_skrill_merchant_id'] );
 	update_option( 'ec_option_skrill_company_name', $_POST['ec_option_skrill_company_name'] );
 	update_option( 'ec_option_skrill_email', $_POST['ec_option_skrill_email'] );
 	update_option( 'ec_option_skrill_language', $_POST['ec_option_skrill_language'] );
 	update_option( 'ec_option_skrill_currency_code', $_POST['ec_option_skrill_currency_code'] );
+	//Realex Third Party
+	update_option( 'ec_option_realex_thirdparty_merchant_id', $_POST['ec_option_realex_thirdparty_merchant_id'] );
+	update_option( 'ec_option_realex_thirdparty_secret', $_POST['ec_option_realex_thirdparty_secret'] );
+	update_option( 'ec_option_realex_thirdparty_currency', $_POST['ec_option_realex_thirdparty_currency'] );
 	//Realex
 	update_option( 'ec_option_realex_merchant_id', $_POST['ec_option_realex_merchant_id'] );
 	update_option( 'ec_option_realex_secret', $_POST['ec_option_realex_secret'] );
-	update_option( 'ec_option_realex_account', $_POST['ec_option_realex_account'] );
 	update_option( 'ec_option_realex_currency', $_POST['ec_option_realex_currency'] );
+	update_option( 'ec_option_realex_3dsecure', $_POST['ec_option_realex_3dsecure'] );
+	update_option( 'ec_option_realex_minimum_tss_score', $_POST['ec_option_realex_minimum_tss_score'] );
 	//Sagepay
 	update_option( 'ec_option_sagepay_vendor', $_POST['ec_option_sagepay_vendor'] );
 	update_option( 'ec_option_sagepay_currency', $_POST['ec_option_sagepay_currency'] );
@@ -484,10 +488,6 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                       <td width="74%"><input name="ec_option_realex_secret"  id="ec_option_realex_secret" type="text" value="<?php echo get_option('ec_option_realex_secret'); ?>" style="width:250px;" /></td>
                     </tr>
                     <tr valign="top" class="form-table">
-                      <td width="26%" class="itemheading" scope="row">Realex Account:</td>
-                      <td width="74%"><input name="ec_option_realex_account"  id="ec_option_realex_account" type="text" value="<?php echo get_option('ec_option_realex_account'); ?>" style="width:250px;" /></td>
-                    </tr>
-                    <tr valign="top" class="form-table">
                       <td width="26%" class="itemheading" scope="row">Realex Currency:</td>
                       <td width="74%"><select name="ec_option_realex_currency" id="ec_option_realex_currency">
                         <option value="GBP" <?php if (get_option('ec_option_realex_currency') == "GBP") echo ' selected'; ?>>GBP</option>
@@ -506,8 +506,21 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                         <option value="SEK" <?php if (get_option('ec_option_realex_currency') == "SEK") echo ' selected'; ?>>SEK</option>
                       </select></td>
                     </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Use 3D Secure (when possible):</td>
+                      <td width="74%"><select name="ec_option_realex_3dsecure" id="ec_option_realex_3dsecure">
+                        <option value="1" <?php if (get_option('ec_option_realex_3dsecure') == 1) echo ' selected'; ?>>Yes, All 3D Secure</option>
+                        <option value="2" <?php if (get_option('ec_option_realex_3dsecure') == 2) echo ' selected'; ?>>Yes, But Only When Liability Shifts to Merchant</option>
+                        <option value="0" <?php if (get_option('ec_option_realex_3dsecure') == 0) echo ' selected'; ?>>No</option>
+                      </select></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Minimum Acceptable TSS Score(0-100):</td>
+                      <td width="74%"><input name="ec_option_realex_minimum_tss_score"  id="ec_option_realex_minimum_tss_score" type="text" value="<?php echo get_option('ec_option_realex_minimum_tss_score'); ?>" style="width:250px;" /></td>
+                    </tr>
                   </table></td>
                 </tr>
+                
                 <tr valign="top" class="form-table" id="sagepay">
                   <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
                   	<tr valign="top" class="form-table">
@@ -973,6 +986,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 	<option value="0" <?php if (get_option('ec_option_payment_third_party') == 0) echo ' selected'; ?>>No Third Party Processor</option>
                 	<option value="paypal" <?php if (get_option('ec_option_payment_third_party') == "paypal") echo ' selected'; ?>>PayPal</option>
                 	<option value="skrill" <?php if (get_option('ec_option_payment_third_party') == "skrill") echo ' selected'; ?>>Skrill</option>
+                	<option value="realex_thirdparty" <?php if (get_option('ec_option_payment_third_party') == "realex_thirdparty") echo ' selected'; ?>>Realex</option>
               	</select>
               </td>
             </tr>
@@ -1106,6 +1120,14 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                     </a>
                   </td>
                 </tr>
+                <tr valign="top" class="form-table">
+                  <td width="26%" class="itemheading" scope="row">To Do:</td>
+                  <td width="74%">We recommend you add the plugin IPN listener to your PayPal account in order to optimize the checkout process for you and your customers.</td>
+                </tr>
+                <tr valign="top" class="form-table">
+                  <td width="26%" class="itemheading" scope="row">PayPal IPN URL:</td>
+                  <td width="74%"><?php echo plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/paypal_payment_complete.php" ); ?></td>
+                </tr>
               </table>
               
               </td>
@@ -1237,6 +1259,50 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                             </span>
                         </a>
                       </td>
+                    </tr>
+                  </table></td>
+                </tr>
+                
+                <tr valign="top" class="form-table" id="realex_thirdparty">
+                  <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Merchant ID:</td>
+                      <td width="74%"><input name="ec_option_realex_thirdparty_merchant_id"  id="ec_option_realex_thirdparty_merchant_id" type="text" value="<?php echo get_option('ec_option_realex_thirdparty_merchant_id'); ?>" style="width:250px;" /></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Secret:</td>
+                      <td width="74%"><input name="ec_option_realex_thirdparty_secret"  id="ec_option_realex_thirdparty_secret" type="text" value="<?php echo get_option('ec_option_realex_thirdparty_secret'); ?>" style="width:250px;" /></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Currency:</td>
+                      <td width="74%"><select name="ec_option_realex_thirdparty_currency" id="ec_option_realex_thirdparty_currency">
+                        <option value="GBP" <?php if (get_option('ec_option_realex_thirdparty_currency') == "GBP") echo ' selected'; ?>>GBP</option>
+                        <option value="EUR" <?php if (get_option('ec_option_realex_thirdparty_currency') == "EUR") echo ' selected'; ?>>EUR</option>
+                        <option value="USD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "USD") echo ' selected'; ?>>USD</option>
+                        <option value="DKK" <?php if (get_option('ec_option_realex_thirdparty_currency') == "DKK") echo ' selected'; ?>>DKK</option>
+                        <option value="NOK" <?php if (get_option('ec_option_realex_thirdparty_currency') == "NOK") echo ' selected'; ?>>NOK</option>
+                        <option value="CHF" <?php if (get_option('ec_option_realex_thirdparty_currency') == "CHF") echo ' selected'; ?>>CHF</option>
+                        <option value="AUD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "AUD") echo ' selected'; ?>>AUD</option>
+                        <option value="CAD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "CAD") echo ' selected'; ?>>CAD</option>
+                        <option value="CZK" <?php if (get_option('ec_option_realex_thirdparty_currency') == "CZK") echo ' selected'; ?>>CZK</option>
+                        <option value="JPY" <?php if (get_option('ec_option_realex_thirdparty_currency') == "JPY") echo ' selected'; ?>>JPY</option>
+                        <option value="NZD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "NZD") echo ' selected'; ?>>NZD</option>
+                        <option value="HKD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "HKD") echo ' selected'; ?>>HKD</option>
+                        <option value="ZAR" <?php if (get_option('ec_option_realex_thirdparty_currency') == "ZAR") echo ' selected'; ?>>ZAR</option>
+                        <option value="SEK" <?php if (get_option('ec_option_realex_thirdparty_currency') == "SEK") echo ' selected'; ?>>SEK</option>
+                      </select></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">To Do:</td>
+                      <td width="74%">You must submit the following URLs to Realex before the redirect method can work completely. You should also add information to your account for your customers to see on the payment page, successful payment page, and the failed payment page.</td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Referring URL:</td>
+                      <td width="74%"><?php $cart_page_id = get_option( 'ec_option_cartpage' ); $cart_page = get_permalink( $cart_page_id ); if( substr_count( $cart_page, '?' ) ){$permalink_divider = "&"; }else{ $permalink_divider = "?"; } echo $cart_page . $permalink_divider . "ec_page=realex_redirect"; ?></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Response URL:</td>
+                      <td width="74%"><?php echo plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/realex_payment_complete.php" ); ?></td>
                     </tr>
                   </table></td>
                 </tr>
@@ -1426,11 +1492,14 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 					
 					document.getElementById("paypal").style.display = 'none';
 					document.getElementById("skrill").style.display = 'none';
+					document.getElementById("realex_thirdparty").style.display = 'none';
 				   
 					if( paymentmethod == 'paypal' ) {
 					   document.getElementById( "paypal" ).style.display = "";
 					}else if( paymentmethod == 'skrill' ){
 						document.getElementById( "skrill" ).style.display = "";	
+					}else if( paymentmethod == 'realex_thirdparty' ){
+						document.getElementById( "realex_thirdparty" ).style.display = "";	
 					}
 					
 				}

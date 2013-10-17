@@ -98,6 +98,7 @@ class ec_payment{
 	private function get_third_party( ){
 			 if( $this->third_party_type == "paypal" )					return new ec_paypal( );
 		else if( $this->third_party_type == "skrill" )					return new ec_skrill( );
+		else if( $this->third_party_type == "realex_thirdparty" )		return new ec_realex_thirdparty( );
 	}
 	
 }

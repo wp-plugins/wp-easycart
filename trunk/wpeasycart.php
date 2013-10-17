@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.0
+ * @version 1.2.1
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_0' );
-define( 'EC_CURRENT_DB', '1_6' );
+define( 'EC_CURRENT_VERSION', '1_2_1' );
+define( 'EC_CURRENT_DB', '1_7' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
 
@@ -41,6 +41,17 @@ function ec_activate(){
 	$install_sql = fread( $f, filesize( $install_sql_url ) );
 	$install_sql_array = explode(';', $install_sql);
 	$mysqli->install( $install_sql_array );
+	
+	// NOW LETS CHECK TO SEE IF WE NEED TO UPGRADE THE DB
+	if( get_option( 'ec_option_db_version' ) && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
+		$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . get_option( 'ec_option_db_version') . '_to_' . EC_CURRENT_DB . '.sql';
+		$f = fopen( $update_sql_url, "r") or die("The Wp EasyCart plugin was unable to access the database upgrade script. Upgrade halted. To fix this problem, change the permissions on the following files to 775 and try again: wp-easycart/inc/admin/sql/upgrade_x_x_to_x_x (change all upgrade files unless you know what plugin DB version you have and which you are upgrading to). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.");
+		$upgrade_sql = fread( $f, filesize( $update_sql_url ) );
+		$upgrade_sql_array = explode(';', $upgrade_sql);
+		$db = new ec_db();
+		$db->upgrade( $upgrade_sql_array );
+		update_option( 'ec_option_db_version', EC_CURRENT_DB );
+	}
 	
 	//UPDATE SITE URL
 	$site = explode( "://", ec_get_url( ) );
@@ -66,9 +77,11 @@ function ec_activate(){
 
 	$ec_conn_filename = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php";
 	
-	$ec_conn_filehandler = fopen($ec_conn_filename, 'w');
-	fwrite($ec_conn_filehandler, $ec_conn_php);
-	fclose($ec_conn_filehandler);
+	if( is_writable( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/" ) ){
+		$ec_conn_filehandler = fopen($ec_conn_filename, 'w');
+		fwrite($ec_conn_filehandler, $ec_conn_php);
+		fclose($ec_conn_filehandler);
+	}
 	
 	if( get_option( 'ec_option_currency' ) == '&#36;' ){
 		update_option( 'ec_option_currency', '$' );	
@@ -110,9 +123,9 @@ function load_ec_pre(){
 	
 	// check for a banners folder, upgrader needs to create this if it doesn't
 	$banners_folder = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/products' . "/banners";
-	if( !file_exists( $banners_folder  ) ){
+	if( !is_dir( $banners_folder  ) ){
 		// Any version before 13 needs the banner folder.
-		if( !mkdir( $banners_folder, 0757 ) )
+		if( !mkdir( $banners_folder, 0755 ) )
 			echo "The WP EasyCart plugin could not add a folder to your install on upgrade. You will need to manually add this folder on your server to access future features. To solve this issue add a folder called 'banners' to the following directory: wp-easycart/products/ (so wp-easycart/products/banners needs to exist). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.";
 	}
 	
@@ -454,42 +467,45 @@ function wpeasycart_copyr( $source, $dest ){
 
 function wpeasycart_backup( ){
 	
-	if( !is_writable( WP_PLUGIN_DIR ) ){
-			
-		wpeasycart_backup_ftp( );
-		
-	}else{
+	if( isset( $_GET['plugin'] ) && $_GET['plugin'] == "wp-easycart/wpeasycart.php" ){
 	
-		$to = dirname( __FILE__ ) . "/../ec-back-up-directory/"; // <------- this back up directory will be made
-		$from = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
+		if( !is_writable( WP_PLUGIN_DIR ) ){
+			
+			wpeasycart_backup_ftp( );
+			
+		}else{
 		
-		 // Make destination directory
-		if( !is_dir( $to )) {
-			$success = mkdir( $to, 0755 );
+			$to = dirname( __FILE__ ) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
+			$from = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
+			
+			 // Make destination directory
+			if( !is_dir( $to )) {
+				$success = mkdir( $to, 0755 );
+				if( !$success ){
+					$err_message = "wpeasycart - error creating backup directory. Updated halted.";
+					error_log( $err_message );
+					exit( $err_message );	
+				}
+			}
+			
+			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
 			if( !$success ){
-				$err_message = "wpeasycart - error creating backup directory. Updated halted.";
+				$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
 				error_log( $err_message );
 				exit( $err_message );	
 			}
-		}
-		
-		$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );
-		}
-		$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );
+			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );
+			}
+			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );
+			}
 		}
 	}
 }
@@ -577,167 +593,207 @@ function ec_recursive_remove_directory( $directory, $empty=FALSE ) {
 
 function wpeasycart_recover( ){
 	
-	if( !is_writable( WP_PLUGIN_DIR ) ){
+	if( isset( $_GET['plugin'] ) && $_GET['plugin'] == "wp-easycart/wpeasycart.php" ){
+		
+		if( !is_writable( WP_PLUGIN_DIR ) ){
 			
-		wpeasycart_recover_ftp( );
-		
-	}else{
-	
-		$from = dirname(__FILE__) . "/../ec-back-up-directory/"; // <------- this back up directory will be made
-		$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
-		
-		// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
-		$success = false;
-		if( is_dir( $to . "products" ) ) {
-			$success = ec_recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
-		}
-		if( !$success ){
-			$err_message = "wpeasycart - error removing the products folder from the upgraded plugin. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		
-		/**********************************************************
-		 * ANYONE PRIOR TO 1.1.7 WILL RUN THIS UPGRADE TO GET THEIR
-		 * THEMES UP TO SPEED WITH THE LATEST SOFTWARE
-		 **********************************************************/
-		
-		/* We are adding a few new files to every theme. Lets do this by copying from the new folder to backup IF IT DOESN"T EXIST */
-		$group_layout = $to . "design/layout/base-responsive-v1/ec_group_widget.php";
-		$group_css = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.css";
-		$group_js = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.js";
-		$rtl_file = $to . "design/theme/base-responsive-v1/rtl_support.css";
-		
-		//Cycle through design folders, add dir and files
-		$layout_list = array_filter( glob($from . 'design/layout/*'), 'is_dir' );
-		$theme_list = array_filter( glob($from . 'design/theme/*'), 'is_dir' );
-		
-		//Loop through the layout folders
-		for( $i=0; $i<count( $layout_list ); $i++ ){
-			if( !file_exists( $layout_list[$i] . "/ec_group_widget.php" ) )
-				copy( $group_layout, $layout_list[$i] . "/ec_group_widget.php" );
-		}
-		
-		//Loop through the theme folders
-		for( $i=0; $i<count( $theme_list ); $i++ ){
-			if( !is_dir( $theme_list[$i] . "/ec_group_widget" ) )
-				mkdir( $theme_list[$i] . "/ec_group_widget" );
-			if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" ) )
-				copy( $group_css, $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" );
-			if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" ) )
-				copy( $group_js, $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" );
-			if( !file_exists( $theme_list[$i] . "/rtl_support.css" ) )
-				copy( $rtl_file, $theme_list[$i] . "/rtl_support.css" );
+			wpeasycart_recover_ftp( );
 			
-		}
-		/**********************************************************
-		 * END 1.1.7 UPGRADE
-		 **********************************************************/
+		}else{
 		
-		$success = false;
-		if( is_dir( $to . "design" ) ) {
-			$success = ec_recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
-		}
-		if( !$success ){
-			$err_message = "wpeasycart - error removing the design folder from the upgraded plugin. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		
-		$success = false;
-		if( is_dir( $to . "connection" ) ) {
-			$success = ec_recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
-		}
-		if( !$success ){
-			$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		
-		// COPY OVER THE BACKED UP DIRECTORIES
-		$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error recovering the products folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error recovering the connection folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		
-		// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
-		$success = false;
-		if( is_dir( $from ) ) {
-			$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
-		}
-		if( !$success ){
-			$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
+			$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
+			$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
+			
+			// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
+			$success = false;
+			if( is_dir( $to . "products" ) ) {
+				$success = ec_recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the products folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			/**********************************************************
+			 * ANYONE PRIOR TO 1.1.7 WILL RUN THIS UPGRADE TO GET THEIR
+			 * THEMES UP TO SPEED WITH THE LATEST SOFTWARE
+			 **********************************************************/
+			
+			/* We are adding a few new files to every theme. Lets do this by copying from the new folder to backup IF IT DOESN"T EXIST */
+			$group_layout = $to . "design/layout/base-responsive-v1/ec_group_widget.php";
+			$group_css = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.css";
+			$group_js = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.js";
+			$rtl_file = $to . "design/theme/base-responsive-v1/rtl_support.css";
+			
+			//Cycle through design folders, add dir and files
+			$layout_list = array_filter( glob($from . 'design/layout/*'), 'is_dir' );
+			$theme_list = array_filter( glob($from . 'design/theme/*'), 'is_dir' );
+			
+			//Loop through the layout folders
+			for( $i=0; $i<count( $layout_list ); $i++ ){
+				if( !file_exists( $layout_list[$i] . "/ec_group_widget.php" ) )
+					copy( $group_layout, $layout_list[$i] . "/ec_group_widget.php" );
+			}
+			
+			//Loop through the theme folders
+			for( $i=0; $i<count( $theme_list ); $i++ ){
+				if( !is_dir( $theme_list[$i] . "/ec_group_widget" ) )
+					mkdir( $theme_list[$i] . "/ec_group_widget" );
+				if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" ) )
+					copy( $group_css, $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" );
+				if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" ) )
+					copy( $group_js, $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" );
+				if( !file_exists( $theme_list[$i] . "/rtl_support.css" ) )
+					copy( $rtl_file, $theme_list[$i] . "/rtl_support.css" );
+				
+			}
+			/**********************************************************
+			 * END 1.1.7 UPGRADE
+			 **********************************************************/
+			
+			$success = false;
+			if( is_dir( $to . "design" ) ) {
+				$success = ec_recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the design folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			$success = false;
+			if( is_dir( $to . "connection" ) ) {
+				$success = ec_recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			// COPY OVER THE BACKED UP DIRECTORIES
+			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the products folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the connection folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
+			$success = false;
+			if( is_dir( $from ) ) {
+				$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
 		}
 	}
 }
 
 function wpeasycart_recover_ftp( ){
-	// Could not open the file, lets write it via ftp!
-	$ftp_server = $_POST['hostname'];
-	$ftp_user_name = $_POST['username'];
-	$ftp_user_pass = $_POST['password'];
 	
-	// set up basic connection
-	$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
-	
-	// login with username and password
-	$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
-	
-	if( !$login_result ){
+	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-backup" ) ){
+		// Could not open the file, lets write it via ftp!
+		$ftp_server = $_POST['hostname'];
+		$ftp_user_name = $_POST['username'];
+		$ftp_user_pass = $_POST['password'];
 		
-		die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your information and try again." );
+		// set up basic connection
+		$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
 		
-	}else{
+		// login with username and password
+		$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
 		
-		$res = ftp_rename( $conn_id, WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY, WP_PLUGIN_DIR . "/wp-easycart-backup" );
-		if( !$res ){
-			die( "Could not move your wp-easycart plugin (to backup), process halted to save your data. If the problem persists you can either change the permissions of your wp-easycart plugin folder OR manually back this folder up and install the latest version manually." );	
+		if( !$login_result ){
+			
+			die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your information and try again." );
+			
+		}else{
+			// Setup your pathing (relative to the plugins folder)
+			$wp_new = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
+			$wp_backup = WP_PLUGIN_DIR . "/wp-easycart-backup/";
+			
+			// Recover products images
+			ftp_rename( $conn_id, $wp_new . "products", $wp_new . "products_new" );
+			ftp_mkdir( $conn_id, $wp_new . "products" );
+			ec_ftp_recursive_copy( $conn_id, $wp_backup . "products",  $wp_new . "products" );
+			if( !is_dir( $wp_new . "products" ) ){
+				die( "Could not recover your products folder. Process halted. Your products are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
+			}else{
+				ec_recursive_ftp_remove_directory( $conn_id, $wp_new . "products_new" );
+			}
+			
+			// Recover Design Files
+			ftp_rename( $conn_id, $wp_new . "design", $wp_new . "design_new" );
+			ftp_mkdir( $conn_id, $wp_new . "design" );
+			ec_ftp_recursive_copy( $conn_id, $wp_backup . "design", $wp_new . "design" );
+			if( !is_dir( $wp_new . "design" ) ){
+				die( "Could not recover your design folder. Process halted. Your designs are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
+			}else{
+				ec_recursive_ftp_remove_directory( $conn_id, $wp_new . "design_new" );
+			}
+			
+			// Recover Connection Files
+			ftp_rename( $conn_id, $wp_new . "connection", $wp_new . "connection_new" );
+			ftp_mkdir( $conn_id, $wp_new . "connection" );
+			ec_ftp_recursive_copy( $conn_id, $wp_backup . "connection", $wp_new . "connection" );
+			if( !is_dir( $wp_new . "connection" ) ){
+				die( "Could not recover your connection folder. Process halted. Your connection are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
+			}else{
+				ec_recursive_ftp_remove_directory( $conn_id, $wp_new . "connection_new" );
+			}
+			
+			// Remove the remaining folder
+			ec_recursive_ftp_remove_directory( $conn_id, $wp_backup );
 		}
-		
-		$wp_new = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
-		$wp_backup = WP_PLUGIN_DIR . "/wp-easycart-backup/";
-		
-		// Recover products images
-		ftp_rename( $conn_id, $wp_new . "products", $wp_backup . "products_new" );
-		$res = ftp_rename( $conn_id, $wp_backup . "products" . $wp_new . "products" );
-		if( !$res ){
-			die( "Could not recover your products folder. Process halted. Your products are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
-		}
-		
-		// Recover Design Files
-		ftp_rename( $conn_id, $wp_new . "design", $wp_backup . "design_new" );
-		$res = ftp_rename( $conn_id, $wp_backup . "design" . $wp_new . "design" );
-		if( !$res ){
-			die( "Could not recover your design folder. Process halted. Your designs are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
-		}
-		
-		// Recover Connection Files
-		ftp_rename( $conn_id, $wp_new . "connection", $wp_backup . "connection_new" );
-		$res = ftp_rename( $conn_id, $wp_backup . "connection" . $wp_new . "connection" );
-		if( !$res ){
-			die( "Could not recover your connection folder. Process halted. Your connection are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
-		}
-		
-		// Change the name of the backup to a particular time in case it needs to be recoverd!
-		$date = date_create();
-		$time_stamp = date_timestamp_get($date);
-		ftp_rename( $conn_id, $wp_backup, WP_PLUGIN_DIR . "/wp-easycart-backup-" . $time_stamp );
+	}
+}
+
+function ec_ftp_recursive_copy( $conn_id, $src_dir, $dst_dir ){
+	$d = dir( $src_dir );
+    while( $file = $d->read( ) ){
+        if( $file != "." && $file != ".." ){
+            if( is_dir( $src_dir . "/" . $file ) ){
+                if( !@ftp_chdir( $conn_id, $dst_dir . "/" . $file ) ){
+                    ftp_mkdir( $conn_id, $dst_dir . "/" . $file );
+                }
+                ec_ftp_recursive_copy( $conn_id, $src_dir . "/" . $file, $dst_dir . "/" . $file );
+            } else {
+                $upload = ftp_put( $conn_id, $dst_dir . "/" . $file, $src_dir . "/" . $file, FTP_BINARY );
+            }
+        }
+    }
+    $d->close( );
+}
+
+function ec_recursive_ftp_remove_directory( $handle, $path ){
+	if( is_dir( $path ) ){
+		if( file_exists( $path . "/.htaccess" ) )
+			ftp_delete( $handle, $path . "/.htaccess" );
+			
+		if( $children = ftp_nlist( $handle, $path ) ){
+			foreach( $children as $p )
+				ec_recursive_ftp_remove_directory( $handle, $p );
+    	}
+		ftp_rmdir( $handle, $path );
+  	}else{
+		ftp_delete( $handle, $path );
 	}
 }
 
