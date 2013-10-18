@@ -188,7 +188,13 @@ if (is_ssl()) {
       </tr>
       <tr id="ec_ipad_content">
         <td width="600" align="center"><a href="https://itunes.apple.com/us/app/wp-easycart/id616846878?mt=8" target="_blank"><img src="<?php echo plugins_url('images/ipad_mockup1.png', __FILE__); ?>" alt="iPad Administration Console" width="550" height="432" /></a></td>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p><strong>How to Install: </strong></p>
+        <p><strong>1. </strong>Simply click the iPad to visit iTunes and download the app from the Apple iTunes store.</p>
+        <p><strong><br />
+          Need More Help?</strong></p>
+        <p>Try visiting our <a href="http://www.wpeasycart.com/video-tutorials/" target="_blank">Video Tutorial</a> on installing and logging into the admin console, or our <a href="http://www.wpeasycart.com/docs/1.0.0/administration/installing_console.php" target="_blank">Online Documentation</a>.</p>
+        <p>Still need more help? Simply <a href="http://www.wpeasycart.com/support-ticket/" target="_blank">submit a ticket</a> with the url you are using and an agent will get back to you shortly.</p></td>
       </tr>
       <tr>
         <td width="600">&nbsp;</td>
@@ -203,7 +209,14 @@ if (is_ssl()) {
       </tr>
       <tr id="ec_android_content">
         <td width="600" align="center"><a href="https://play.google.com/store/search?q=wp+easycart&amp;c=apps&amp;feature=spelling" target="_blank"><img src="<?php echo plugins_url('images/android_tablet_phone.png', __FILE__); ?>" width="550" height="450" /></a></td>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p><strong>How to Install: </strong></p>
+        <p><strong>1. </strong>Simply click the tablet to visit the Google Play network and download the app from the Play app store.</p>
+        <p><br />
+          <strong>Need More Help?</strong></p>
+        <p>Try visiting our <a href="http://www.wpeasycart.com/video-tutorials/" target="_blank">Video Tutorial</a> on installing and logging into the admin console, or our <a href="http://www.wpeasycart.com/docs/1.0.0/administration/installing_console.php" target="_blank">Online Documentation</a>.</p>
+        <p>Still need more help? Simply <a href="http://www.wpeasycart.com/support-ticket/" target="_blank">submit a ticket</a> with the url you are using and an agent will get back to you shortly.</p>
+        <p>&nbsp; </p></td>
       </tr>
       <tr>
         <td width="600">&nbsp;</td>
