@@ -183,7 +183,7 @@ jQuery( document ).ready(
            <?php } 
 		   
 		   		// Get the Google Font Options
-				$response = wp_remote_request( "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAprmWHw-alcYMQ2-7cuUGQ3iWI_IexLQ8" ); 
+				$response = (array)wp_remote_request( "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAprmWHw-alcYMQ2-7cuUGQ3iWI_IexLQ8" ); 
 				$fonts = json_decode( $response['body'] )->items;
 				
 		   ?>
