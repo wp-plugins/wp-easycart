@@ -21,7 +21,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
     <h2>Online Demos</h2>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="55"><p>The WordPress EasyCart software was designed to give you an easy to use eCommerce plugin that can accommodate a lot of looks, designs, and styles with ease. Below are some of our themes designed with a matching EasyCart shopping system for a seamless look. All of these themes are available for purchase from EasyCart and are a great compliment to your EasyCart system. <a href="http://www.wpeasycart.com/portfolio_entries/featuredthemes/" target="_blank">Click to View All Themes</a></p>
+        <td height="55"><p>The WordPress EasyCart software was designed to give you an easy to use eCommerce plugin that can accommodate a lot of looks, designs, and styles with ease. Below are some of our themes designed with a matching EasyCart shopping system for a seamless look. All of these themes are available for purchase from EasyCart and are a great compliment to your EasyCart system. <a href="http://www.wpeasycart.com/wordpress_shopping_cart_demos/" target="_blank">Click to View All Themes</a></p>
         <p>You may also be interested in how WP EasyCart compares to other popular shopping systems. <a href="http://www.wpeasycart.com/wordpress-shopping-cart-comparison/" target="_blank">Click to View Full Comparison Guide.</a></p>
         <p>&nbsp;</p></td>
       </tr>
@@ -81,7 +81,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
             <td align="center">&nbsp;</td>
           </tr>
           <tr> 
-            <td colspan="3" align="center"><div  class='info_note'><p><strong>For a full list of our themed designs and to visit our online gallery of demo shopping systems, please visit <a href="http://www.wpeasycart.com/portfolio_entries/featuredthemes/">www.wpeasycart.com</a></strong></p></div></td>
+            <td colspan="3" align="center"><div  class='info_note'><p><strong>For a full list of our themed designs and to visit our online gallery of demo shopping systems, please visit <a href="http://www.wpeasycart.com/wordpress_shopping_cart_demos/" target="_blank">www.wpeasycart.com</a></strong></p></div></td>
             </tr>
         </table></td>
       </tr>
