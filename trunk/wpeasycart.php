@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.1
+ * @version 1.2.2
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_1' );
-define( 'EC_CURRENT_DB', '1_7' );
+define( 'EC_CURRENT_VERSION', '1_2_2' );
+define( 'EC_CURRENT_DB', '1_8' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
 
@@ -171,6 +171,15 @@ function load_ec_pre(){
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "third_party" ){
 		$ec_cartpage = new ec_cartpage();
 		$ec_cartpage->process_form_action( "third_party_forward" );
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "realex_redirect" ){
+		$ec_cartpage = new ec_cartpage();
+		$ec_cartpage->process_form_action( "realex_redirect" );
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "realex_response" ){
+		$ec_cartpage = new ec_cartpage();
+		$ec_cartpage->process_form_action( "realex_response" );
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "paymentexpress" ){
+		$ec_cartpage = new ec_cartpage();
+		$ec_cartpage->process_form_action( "paymentexpress_thirdparty_response" );
 	}
 	
 	/* Account Form Actions, Process Prior to WP Loading */

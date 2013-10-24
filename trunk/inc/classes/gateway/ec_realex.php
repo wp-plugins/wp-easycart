@@ -50,6 +50,8 @@ class ec_realex extends ec_gateway{
 		
 		if( $realex_payment_method == "AMEX" )
 			$realex_account = "remoteamex";
+		else if( $realex_payment_method == "DINERS" )
+			$realex_account = "remotediners";
 		else
 			$realex_account = "remote";
 		

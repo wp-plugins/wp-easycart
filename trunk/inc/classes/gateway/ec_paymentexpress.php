@@ -53,7 +53,7 @@ class ec_paymentexpress extends ec_gateway{
 		else
 			$this->is_success = 0;
 		
-		$this->mysqli->insert_response( $this->order_id, $this->temp_order_id, !$this->is_success, "PaymentExpress", $response_text );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "PaymentExpress", $response_text );
 		
 		if( !$this->is_success )
 			$this->error_message = $xml->Transaction->MerchantResponseDescription;

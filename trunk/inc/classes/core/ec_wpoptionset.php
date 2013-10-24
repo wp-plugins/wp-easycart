@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_6' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_8' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -130,6 +130,16 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_authorize_currency_code');			array_push($this->wp_option_defaults, 'USD' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_braintree_merchant_id');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_braintree_public_key');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_braintree_private_key');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_braintree_currency');					array_push($this->wp_option_defaults, 'USD' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_braintree_environment');				array_push($this->wp_option_defaults, 'sandbox' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_paypoint_merchant_id');				array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_paypoint_vpn_password');				array_push($this->wp_option_defaults, '0' );
@@ -186,7 +196,13 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_payment_express_password');			array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
-		array_push($this->wp_option_names, 'ec_option_payment_express_currency');			array_push($this->wp_option_defaults, '' );
+		array_push($this->wp_option_names, 'ec_option_payment_express_currency');			array_push($this->wp_option_defaults, 'NZD' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_payment_express_thirdparty_username');array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_payment_express_thirdparty_key');		array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_payment_express_thirdparty_currency');array_push($this->wp_option_defaults, 'NZD' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_paypal_use_sandbox');					array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');

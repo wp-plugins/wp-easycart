@@ -97,7 +97,7 @@ class ec_securepay extends ec_gateway{
 		else
 			$this->is_success = 0;
 		
-		$this->mysqli->insert_response( $this->order_id, $this->temp_order_id, !$this->is_success, "Securepay", $response_text );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Securepay", $response_text );
 		
 		if( !$this->is_success )
 			$this->error_message = $transaction_response_text;

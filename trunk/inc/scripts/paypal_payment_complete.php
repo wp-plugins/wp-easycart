@@ -25,7 +25,7 @@ if( $verified ) {
     $errmsg = '';
     
 
-    if( $_POST['receiver_email'] != get_option( 'ec_option_paypal_email' ) ) {
+    if( strtolower( $_POST['receiver_email'] ) != strtolower( get_option( 'ec_option_paypal_email' ) ) ) {
         $errmsg .= "'receiver_email' does not match: ";
         $errmsg .= $_POST['receiver_email']."\n";
     }

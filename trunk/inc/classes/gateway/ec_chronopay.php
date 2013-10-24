@@ -56,7 +56,7 @@ class ec_chronopay extends ec_gateway{
 		else
 			$this->is_success = false;
 		
-		$this->mysqli->insert_response( $this->order_id, $this->temp_order_id, !$this->is_success, "Chronopay", $response_body );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Chronopay", $response_body );
 		
 		if( !$this->is_success )
 			$this->error_message = $this->response_body;

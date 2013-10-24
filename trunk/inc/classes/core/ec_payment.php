@@ -59,18 +59,19 @@ class ec_payment{
 	public function process_payment( $cart, $user, $shipping, $tax, $discount, $order_totals, $order_id ){
 		
 			 if($this->proccess_method == "authorize"		)			$gateway = new ec_authorize();
-		else if($this->proccess_method == "paypal_pro"		)			$gateway = new ec_paypal_pro();
-		else if($this->proccess_method == "paypal_payments_pro"	)		$gateway = new ec_paypal_payments_pro();
+		else if($this->proccess_method == "braintree"		)			$gateway = new ec_braintree();
 		else if($this->proccess_method == "chronopay"		)			$gateway = new ec_chronopay();
 		else if($this->proccess_method == "eway"			)			$gateway = new ec_eway();
-		else if($this->proccess_method == "goemerchant"		)			$gateway = new ec_goemerchant();
-		else if($this->proccess_method == "paypoint"		)			$gateway = new ec_paypoint();
-		else if($this->proccess_method == "paymentexpress"	)			$gateway = new ec_paymentexpress();
 		else if($this->proccess_method == "firstdata"		)			$gateway = new ec_firstdata();
+		else if($this->proccess_method == "goemerchant"		)			$gateway = new ec_goemerchant();
+		else if($this->proccess_method == "paymentexpress"	)			$gateway = new ec_paymentexpress();
+		else if($this->proccess_method == "paypal_payments_pro"	)		$gateway = new ec_paypal_payments_pro();
+		else if($this->proccess_method == "paypal_pro"		)			$gateway = new ec_paypal_pro();
+		else if($this->proccess_method == "paypoint"		)			$gateway = new ec_paypoint();
+		else if($this->proccess_method == "psigate"			)			$gateway = new ec_psigate();
 		else if($this->proccess_method == "realex"			)			$gateway = new ec_realex();
 		else if($this->proccess_method == "sagepay"			)			$gateway = new ec_sagepay();
 		else if($this->proccess_method == "sagepay3d"		)			$gateway = new ec_sagepay3d();
-		else if($this->proccess_method == "psigate"			)			$gateway = new ec_psigate();
 		else if($this->proccess_method == "securepay"		)			$gateway = new ec_securepay();
 		else{
 			error_log( "Setup error, no payment gateway selected." );
@@ -99,6 +100,7 @@ class ec_payment{
 			 if( $this->third_party_type == "paypal" )					return new ec_paypal( );
 		else if( $this->third_party_type == "skrill" )					return new ec_skrill( );
 		else if( $this->third_party_type == "realex_thirdparty" )		return new ec_realex_thirdparty( );
+		else if( $this->third_party_type == "paymentexpress_thirdparty" )		return new ec_paymentexpress_thirdparty( );
 	}
 	
 }

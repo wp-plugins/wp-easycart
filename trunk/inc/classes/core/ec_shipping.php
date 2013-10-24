@@ -84,7 +84,7 @@ class ec_shipping{
 	}
 	
 	private function is_live_based( $shipping_row ){
-		if( $shipping_row->is_ups_based || $shipping_row->is_usps_based || $shipping_row->is_fedex_based || $shipping_row->is_auspost_based )
+		if( $shipping_row->is_ups_based || $shipping_row->is_usps_based || $shipping_row->is_fedex_based || $shipping_row->is_auspost_based || $shipping_row->is_dhl_based )
 			return true;
 		else
 			return false;
@@ -99,6 +99,8 @@ class ec_shipping{
 			return "fedex";
 		else if( $shipping_row->is_auspost_based )
 			return "auspost";
+		else if( $shipping_row->is_dhl_based )
+			return "dhl";
 		else
 			return "none";
 	}
