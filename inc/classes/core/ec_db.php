@@ -1211,7 +1211,7 @@ class ec_db{
 	}
 	
 	public function get_shipping_data( ){
-		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.shipping_order";
+		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.is_dhl_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.shipping_order";
 		return $this->mysqli->get_results( $sql );
 		
 	}
@@ -1416,7 +1416,7 @@ class ec_db{
 	}
 	
 	public function get_response_from_order_id( $order_id ){
-		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT is_error FROM ec_response WHERE order_id = '%s'" ) );
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT is_error FROM ec_response WHERE order_id = '%s'", $order_id ) );
 	}
 	
 	public function update_reponse_order_id( $order_id, $temp_order_id, $processor ){
@@ -2127,7 +2127,7 @@ class ec_db{
 	}
 	
 	public function get_settings( ){
-		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, auspost_api_key, auspost_ship_from_zip FROM ec_setting WHERE setting_id = 1";
+		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode FROM ec_setting WHERE setting_id = 1";
 			return $this->mysqli->get_row( $sql );
 	}
 	

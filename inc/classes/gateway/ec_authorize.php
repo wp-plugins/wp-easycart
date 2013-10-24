@@ -97,7 +97,7 @@ class ec_authorize extends ec_gateway{
 		else
 			$this->is_success = false;
 		
-		$this->mysqli->insert_response( $this->order_id, $this->temp_order_id, !$this->is_success, "Authorize", $response_body );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Authorize", $response_body );
 		
 		if( !$this->is_success )
 			$this->error_message = $this->get_error_message( $response_code, $response_reason_code );

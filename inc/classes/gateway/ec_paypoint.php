@@ -109,7 +109,7 @@ class ec_paypoint extends ec_gateway{
 		else
 			$this->is_success = 0;
 			
-		$this->mysqli->insert_response( $this->order_id, $this->temp_order_id, !$this->is_success, "PayPalPro", $response_text );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "PayPalPro", $response_text );
 		
 		if( !$this->is_success )
 			$this->error_message = $message;

@@ -150,6 +150,48 @@ class ec_setting{
 			return "";
 	}
 	
+	public function get_dhl_site_id( ){
+		if( isset( $this->setting_row->dhl_site_id ) )
+			return $this->setting_row->dhl_site_id;
+		else
+			return "";
+	}
+	
+	public function get_dhl_password( ){
+		if( isset( $this->setting_row->dhl_password ) )
+			return $this->setting_row->dhl_password;
+		else
+			return "";
+	}
+	
+	public function get_dhl_ship_from_country( ){
+		if( isset( $this->setting_row->dhl_ship_from_country ) )
+			return $this->setting_row->dhl_ship_from_country;
+		else
+			return "";
+	}
+	
+	public function get_dhl_ship_from_zip( ){
+		if( isset( $this->setting_row->dhl_ship_from_zip ) )
+			return $this->setting_row->dhl_ship_from_zip;
+		else
+			return "";
+	}
+	
+	public function get_dhl_weight_unit( ){
+		if( isset( $this->setting_row->dhl_weight_unit ) )
+			return $this->setting_row->dhl_weight_unit;
+		else
+			return "";
+	}
+	
+	public function get_dhl_test_mode( ){
+		if( isset( $this->setting_row->dhl_test_mode ) )
+			return $this->setting_row->dhl_test_mode;
+		else
+			return "";
+	}
+	
 }
 
 ?>

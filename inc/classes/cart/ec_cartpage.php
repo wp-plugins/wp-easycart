@@ -807,6 +807,8 @@ class ec_cartpage{
 			echo "Skrill";
 		else if( get_option( 'ec_option_payment_third_party' ) == "realex_thirdparty" )
 			echo "Realex Payments";
+		else if( get_option( 'ec_option_payment_third_party' ) == "paymentexpress_thirdparty" )
+			echo "Payment Express";
 	}
 	
 	public function ec_cart_get_current_third_party_name( ){
@@ -816,6 +818,8 @@ class ec_cartpage{
 			return "Skrill";
 		else if( get_option( 'ec_option_payment_third_party' ) == "realex_thirdparty" )
 			return "Realex Payments";
+		else if( get_option( 'ec_option_payment_third_party' ) == "paymentexpress_thirdparty" )
+			return "Payment Express";
 	}
 	
 	public function ec_cart_display_third_party_logo( ){
@@ -1037,16 +1041,19 @@ class ec_cartpage{
 	/* START FORM PROCESSING FUNCTIONS */
 	// Process the cart page form action
 	public function process_form_action( $action ){
-		if( $action == "add_to_cart" )						$this->process_add_to_cart();
-		else if( $action == "ec_update_action" )			$this->process_update_cartitem( $_POST['ec_update_cartitem_id'], $_POST['ec_cartitem_quantity_' . $_POST['ec_update_cartitem_id'] ] );
-		else if( $action == "ec_delete_action" )			$this->process_delete_cartitem( $_POST['ec_delete_cartitem_id'] );
-		else if( $action == "submit_order" )				$this->process_submit_order();
-		else if( $action == "3dsecure" )					$this->process_3dsecure_response();
-		else if( $action == "third_party_forward" )			$this->process_third_party_forward();
-		else if( $action == "login_user" )					$this->process_login_user();
-		else if( $action == "save_checkout_info" )			$this->process_save_checkout_info();
-		else if( $action == "save_checkout_shipping" )		$this->process_save_checkout_shipping();
-		else if( $action == "logout" )						$this->process_logout_user();
+		if( $action == "add_to_cart" )								$this->process_add_to_cart();
+		else if( $action == "ec_update_action" )					$this->process_update_cartitem( $_POST['ec_update_cartitem_id'], $_POST['ec_cartitem_quantity_' . $_POST['ec_update_cartitem_id'] ] );
+		else if( $action == "ec_delete_action" )					$this->process_delete_cartitem( $_POST['ec_delete_cartitem_id'] );
+		else if( $action == "submit_order" )						$this->process_submit_order();
+		else if( $action == "3dsecure" )							$this->process_3dsecure_response();
+		else if( $action == "third_party_forward" )					$this->process_third_party_forward();
+		else if( $action == "login_user" )							$this->process_login_user();
+		else if( $action == "save_checkout_info" )					$this->process_save_checkout_info();
+		else if( $action == "save_checkout_shipping" )				$this->process_save_checkout_shipping();
+		else if( $action == "logout" )								$this->process_logout_user();
+		else if( $action == "realex_redirect" )						$this->process_realex_redirect( );
+		else if( $action == "realex_response" )						$this->process_realex_response( );
+		else if( $action == "paymentexpress_thirdparty_response" )	$this->process_paymentexpress_thirdparty_response( );
 	}
 	
 	// Process the add to cart form submission
@@ -1202,6 +1209,24 @@ class ec_cartpage{
 			$this->mysqli->remove_order( $_GET['order_id'] );
 			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=3dsecure_failed" );
 		}	
+	}
+	
+	private function process_realex_redirect( ){
+		// Check response, if success, send to success page. If failed, return to last page of cart
+		if( isset( $_POST['AUTHCODE'] ) && isset( $_POST['ORDER_ID'] ) && $_POST['AUTHCODE'] == "00" )
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $_POST['ORDER_ID'] );
+		else
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=thirdparty_failed" );
+	}
+	
+	private function process_realex_response( ){
+		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/scripts/realex_payment_complete.php" );
+	}
+	
+	private function process_paymentexpress_thirdparty_response( ){
+		$gateway = new ec_paymentexpress_thirdparty( );
+		$gateway->update_order_status( );
+		header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $_GET['order_id'] );
 	}
 	
 	private function process_third_party_forward( ){
