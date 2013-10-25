@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.3 =
+* Bug Fix - Updates causing shipping not to work because of a DB upgrade issue. New DB upgrader script included to solve the problem on many servers.
 = 1.2.2 =
 * Addition: DHL Live Shipping
 * Addition: Brain Tree S2S Payment Gateway
