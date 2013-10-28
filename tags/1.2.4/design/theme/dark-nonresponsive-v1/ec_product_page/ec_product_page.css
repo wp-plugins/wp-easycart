@@ -1,0 +1,11 @@
+@charset "utf-8";
+/* EC Product Page CSS Document */
+.ec_product_page{
+	width:100%;
+}
+
+.filter_bar_bottom{
+	margin-top:50px; float:left; width:100%;	
+}
+/* END EC PRODUCT PAGE CSS DOCUMENT*/
+
