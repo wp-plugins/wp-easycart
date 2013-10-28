@@ -47,6 +47,38 @@ class ec_auspost{
 		
 	}
 	
+	public function get_rate_test( $ship_code, $destination_zip, $destination_country, $weight ){
+		if( $weight == 0 )
+			return "0.00";
+		
+		if( !$destination_country )
+			$destination_country = "AU";
+			
+		if( $destination_country == "AU" )
+			$shipper_url = $this->domestic_shipper_url;
+		else
+			$shipper_url = $this->international_shipper_url;
+		
+		$shipper_url .= "?";
+		if( $destination_country == "AU" )
+			$shipper_url .= "from_postcode=" . $destination_zip . "&to_postcode=" . $this->auspost_ship_from_zip . "&length=10&width=10&height=10";
+		else
+			$shipper_url .= "country_code=" . $destination_country;
+		
+		$shipper_url .= "&service_code=" . $ship_code . "&weight=" . $weight;
+		
+		$request = new WP_Http;
+		$response = $request->request( $shipper_url, array( 'method' => 'GET', 'headers' => "AUTH-KEY:" . $this->auspost_api_key ) );
+		
+		if( is_wp_error( $response ) ){
+			$error_message = $response->get_error_message();
+			error_log( "error in australian post get rate, " . $error_message );
+			return false;
+		}else
+			return $response['body'];
+		
+	}
+	
 	public function get_domestic_list( $zipcode, $length, $height, $width, $weight ){
 		$shipper_url = "https://auspost.com.au/api/postage/parcel/domestic/service.json?from_postcode=" . $this->auspost_ship_from_zip . "&to_postcode=" . $zipcode . "&length=" . $length. "&height=" . $height . "&width=" . $width . "&weight=" . $weight;
 		$request = new WP_Http;

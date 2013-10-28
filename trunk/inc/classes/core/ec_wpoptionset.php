@@ -62,7 +62,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_bcc_email_addresses');				array_push($this->wp_option_defaults, 'youremail@url.com' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
-		array_push($this->wp_option_names, 'ec_option_use_state_dropdown');					array_push($this->wp_option_defaults, '1' );
+		array_push($this->wp_option_names, 'ec_option_use_state_dropdown');					array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_use_country_dropdown');				array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');																																												
@@ -381,6 +381,10 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_checklist_has_paypal');				array_push($this->wp_option_defaults, '' );	
 																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
 		array_push($this->wp_option_names, 'ec_option_checklist_has_skrill');				array_push($this->wp_option_defaults, '' );	
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_has_paymentexpress_thirdparty'); array_push($this->wp_option_defaults, '' );	
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_option_checklist_has_realex_thirdparty');	array_push($this->wp_option_defaults, '' );	
 																							array_push($this->wp_option_groups, 'ec-checklist-group');																			
 		array_push($this->wp_option_names, 'ec_option_checklist_credit_cart_complete');		array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
@@ -401,6 +405,10 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_checklist_shipping_use_usps');				array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
 		array_push($this->wp_option_names, 'ec_checklist_shipping_use_fedex');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_checklist_shipping_use_auspost');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
+		array_push($this->wp_option_names, 'ec_checklist_shipping_use_dhl');				array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-checklist-group');																					
 		array_push($this->wp_option_names, 'ec_option_checklist_language_complete');		array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-checklist-group');																					

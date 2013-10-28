@@ -157,6 +157,8 @@ function ec_ajax_add_shippingrate( ){
 	$is_ups_based = $_POST['is_ups_based'];
 	$is_usps_based = $_POST['is_usps_based'];
 	$is_fedex_based = $_POST['is_fedex_based'];
+	$is_auspost_based = $_POST['is_auspost_based'];
+	$is_dhl_based = $_POST['is_dhl_based'];
 	$trigger_rate = $_POST['trigger_rate'];
 	$shipping_rate = $_POST['shipping_rate'];
 	$shipping_label = $_POST['shipping_label'];
@@ -165,7 +167,7 @@ function ec_ajax_add_shippingrate( ){
 	$shipping_override_rate = $_POST['shipping_override_rate'];
 	
 	$db = new ec_db_admin();
-	$db->add_shippingrate( $is_price_based, $is_weight_based, $is_method_based, $is_ups_based, $is_usps_based, $is_fedex_based, $trigger_rate, $shipping_rate, $shipping_label, $shipping_order, $shipping_code, $shipping_override_rate );
+	$db->add_shippingrate( $is_price_based, $is_weight_based, $is_method_based, $is_ups_based, $is_usps_based, $is_fedex_based, $is_auspost_based, $is_dhl_based, $trigger_rate, $shipping_rate, $shipping_label, $shipping_order, $shipping_code, $shipping_override_rate );
 	
 	$shipping_rates = $db->get_shipping_data( );
 	echo json_encode( $shipping_rates );
@@ -180,6 +182,8 @@ function ec_ajax_update_shippingrate( ){
 	$is_ups_based = $_POST['is_ups_based'];
 	$is_usps_based = $_POST['is_usps_based'];
 	$is_fedex_based = $_POST['is_fedex_based'];
+	$is_auspost_based = $_POST['is_auspost_based'];
+	$is_dhl_based = $_POST['is_dhl_based'];
 	$trigger_rate = $_POST['trigger_rate'];
 	$shipping_rate = $_POST['shipping_rate'];
 	$shipping_label = $_POST['shipping_label'];
@@ -188,7 +192,7 @@ function ec_ajax_update_shippingrate( ){
 	$shipping_override_rate = $_POST['shipping_override_rate'];
 	
 	$db = new ec_db_admin();
-	$db->update_shippingrate( $shippingrate_id, $is_price_based, $is_weight_based, $is_method_based, $is_ups_based, $is_usps_based, $is_fedex_based, $trigger_rate, $shipping_rate, $shipping_label, $shipping_order, $shipping_code, $shipping_override_rate );
+	$db->update_shippingrate( $shippingrate_id, $is_price_based, $is_weight_based, $is_method_based, $is_ups_based, $is_usps_based, $is_fedex_based, $is_auspost_based, $is_dhl_based, $trigger_rate, $shipping_rate, $shipping_label, $shipping_order, $shipping_code, $shipping_override_rate );
 	
 	$shipping_rates = $db->get_shipping_data( );
 	echo json_encode( $shipping_rates );
