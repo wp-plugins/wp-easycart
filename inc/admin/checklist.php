@@ -98,13 +98,21 @@ if( isset( $_POST['ec_action'] ) ){
 		ec_update_option( 'ec_option_checklist_third_party', $_POST['ec_option_checklist_third_party'] );
 		if( $is_lite || $is_full ){
 			ec_update_option( 'ec_option_payment_third_party', $_POST['ec_option_payment_third_party'] );
+			ec_update_option( 'ec_option_checklist_has_paymentexpress_thirdparty', $_POST['ec_option_checklist_has_paymentexpress_thirdparty'] );
 			ec_update_option( 'ec_option_checklist_has_paypal', $_POST['ec_option_checklist_has_paypal'] );
+			ec_update_option( 'ec_option_checklist_has_realex_thirdparty', $_POST['ec_option_checklist_has_realex_thirdparty'] );
 			ec_update_option( 'ec_option_checklist_has_skrill', $_POST['ec_option_checklist_has_skrill'] );
+			ec_update_option( 'ec_option_payment_express_thirdparty_username', $_POST['ec_option_payment_express_thirdparty_username'] );
+			ec_update_option( 'ec_option_payment_express_thirdparty_key', $_POST['ec_option_payment_express_thirdparty_key'] );
+			ec_update_option( 'ec_option_payment_express_thirdparty_currency', $_POST['ec_option_payment_express_thirdparty_currency'] );
 			ec_update_option( 'ec_option_paypal_email', $_POST['ec_option_paypal_email'] );
 			ec_update_option( 'ec_option_paypal_currency_code', $_POST['ec_option_paypal_currency_code'] );
 			ec_update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
 			ec_update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );
 			ec_update_option( 'ec_option_paypal_use_sandbox', $_POST['ec_option_paypal_use_sandbox'] );
+			ec_update_option( 'ec_option_realex_thirdparty_merchant_id', $_POST['ec_option_realex_thirdparty_merchant_id'] );
+			ec_update_option( 'ec_option_realex_thirdparty_secret', $_POST['ec_option_realex_thirdparty_secret'] );
+			ec_update_option( 'ec_option_realex_thirdparty_currency', $_POST['ec_option_realex_thirdparty_currency'] );
 			ec_update_option( 'ec_option_skrill_merchant_id', $_POST['ec_option_skrill_merchant_id'] );
 			ec_update_option( 'ec_option_skrill_company_name', $_POST['ec_option_skrill_company_name'] );
 			ec_update_option( 'ec_option_skrill_email', $_POST['ec_option_skrill_email'] );
@@ -125,13 +133,29 @@ if( isset( $_POST['ec_action'] ) ){
 			ec_update_option( 'ec_option_authorize_test_mode', $_POST['ec_option_authorize_test_mode'] );
 			ec_update_option( 'ec_option_authorize_developer_account', $_POST['ec_option_authorize_developer_account'] );
 			ec_update_option( 'ec_option_authorize_currency_code', $_POST['ec_option_authorize_currency_code'] );
-			//paypal pro
+			//Braintree
+			ec_update_option( 'ec_option_braintree_merchant_id', $_POST['ec_option_braintree_merchant_id'] );
+			ec_update_option( 'ec_option_braintree_public_key', $_POST['ec_option_braintree_public_key'] );
+			ec_update_option( 'ec_option_braintree_private_key', $_POST['ec_option_braintree_private_key'] );
+			ec_update_option( 'ec_option_braintree_currency', $_POST['ec_option_braintree_currency'] );
+			ec_update_option( 'ec_option_braintree_environment', $_POST['ec_option_braintree_environment'] );
+			//goEmerchant
+			ec_update_option( 'ec_option_goemerchant_gateway_id', $_POST['ec_option_goemerchant_gateway_id'] ); 
+			ec_update_option( 'ec_option_goemerchant_processor_id', $_POST['ec_option_goemerchant_processor_id'] ); 
+			ec_update_option( 'ec_option_goemerchant_trans_center_id', $_POST['ec_option_goemerchant_trans_center_id'] ); 
+			//Paypal Payflow Pro
 			ec_update_option( 'ec_option_paypal_pro_test_mode', $_POST['ec_option_paypal_pro_test_mode'] );
 			ec_update_option( 'ec_option_paypal_pro_vendor', $_POST['ec_option_paypal_pro_vendor'] );
 			ec_update_option( 'ec_option_paypal_pro_partner', $_POST['ec_option_paypal_pro_partner'] );
 			ec_update_option( 'ec_option_paypal_pro_user', $_POST['ec_option_paypal_pro_user'] );
 			ec_update_option( 'ec_option_paypal_pro_password', $_POST['ec_option_paypal_pro_password'] );
 			ec_update_option( 'ec_option_paypal_pro_currency', $_POST['ec_option_paypal_pro_currency'] );
+			//PayPal Payments Pro
+			update_option( 'ec_option_paypal_payments_pro_test_mode', $_POST['ec_option_paypal_payments_pro_test_mode'] );
+			update_option( 'ec_option_paypal_payments_pro_user', $_POST['ec_option_paypal_payments_pro_user'] );
+			update_option( 'ec_option_paypal_payments_pro_password', $_POST['ec_option_paypal_payments_pro_password'] );
+			update_option( 'ec_option_paypal_payments_pro_signature', $_POST['ec_option_paypal_payments_pro_signature'] );
+			update_option( 'ec_option_paypal_payments_pro_currency', $_POST['ec_option_paypal_payments_pro_currency'] );
 			//Realex
 			ec_update_option( 'ec_option_realex_merchant_id', $_POST['ec_option_realex_merchant_id'] );
 			ec_update_option( 'ec_option_realex_secret', $_POST['ec_option_realex_secret'] );
@@ -248,6 +272,18 @@ if( isset( $_POST['ec_action'] ) ){
 		$db->update_setting( "fedex_ship_from_zip", $_POST['fedex_ship_from_zip'] );
 		$db->update_setting( "fedex_weight_units", $_POST['fedex_weight_units'] );
 		$db->update_setting( "fedex_country_code", $_POST['fedex_country_code'] );
+	}else if( $_POST['ec_action'] == "update_auspost" ){
+		$db = new ec_db_admin( );
+		$db->update_setting( "auspost_api_key", $_POST['auspost_api_key'] );
+		$db->update_setting( "auspost_ship_from_zip", $_POST['auspost_ship_from_zip'] );
+	}else if( $_POST['ec_action'] == "update_dhl" ){
+		$db = new ec_db_admin( );
+		$db->update_setting( "dhl_site_id", $_POST['dhl_site_id'] );
+		$db->update_setting( "dhl_password", $_POST['dhl_password'] );
+		$db->update_setting( "dhl_ship_from_country", $_POST['dhl_ship_from_country'] );
+		$db->update_setting( "dhl_ship_from_zip", $_POST['dhl_ship_from_zip'] );
+		$db->update_setting( "dhl_weight_unit", $_POST['dhl_weight_unit'] );
+		$db->update_setting( "dhl_test_mode", $_POST['dhl_test_mode'] );
 	}
 }
 
@@ -545,6 +581,15 @@ $usps_error_reason = 0;
 $fedex_has_settings = false;
 $fedex_setup = false;
 $fedex_error_reason = 0;
+
+$auspost_has_settings = false;
+$auspost_setup = false;
+$auspost_error_reason = 0;
+
+$dhl_has_settings = false;
+$dhl_setup = false;
+$dhl_error_reason = 0;
+
 $setting_row = $db->get_settings( );
 $settings = new ec_setting( $setting_row );
 
@@ -596,6 +641,36 @@ if( $setting_row->fedex_key && $setting_row->fedex_account_number && $setting_ro
 		else
 			$fedex_setup = true;
 	}
+}
+
+if( $setting_row->auspost_api_key && $setting_row->auspost_ship_from_zip ){
+	$auspost_has_settings = true;
+	
+	// Run test of the settings
+	$auspost_class = new ec_auspost( $settings );
+	$auspost_response = $auspost_class->get_rate_test( "AUS_PARCEL_EXPRESS", $setting_row->auspost_ship_from_zip, "AU", "1" );
+	
+	if( !$auspost_response )
+		$auspost_error_reason = "1";
+	else
+		$auspost_setup = true;
+}
+
+if( $setting_row->dhl_site_id && $setting_row->dhl_password && $setting_row->dhl_ship_from_country && $setting_row->dhl_ship_from_zip && $setting_row->dhl_weight_unit ){
+	$dhl_has_settings = true;
+	
+	// Run test of the settings
+	$dhl_class = new ec_dhl( $settings );
+	$dhl_response = $dhl_class->get_rate_test( "N", $setting_row->dhl_ship_from_zip, $setting_row->dhl_ship_from_country, "1" );
+	$dhl_xml = new SimpleXMLElement( $dhl_response );
+	
+	if( $dhl_xml && $dhl_xml->Response && $dhl_xml->Response->Status && $dhl_xml->Response->Status->ActionStatus && $dhl_xml->Response->Status->ActionStatus == "Error" ){
+		$dhl_error_code = $dhl_xml->Response->Status->Condition->ConditionCode;
+		$dhl_error_reason = $dhl_xml->Response->Status->Condition->ConditionData;
+	}else if( $dhl_xml && $dhl_xml->Response && $dhl_xml->Response->Note && count( $dhl_xml->Response->Note ) > 0 && $dhl_xml->Response->Note[0]->Status && $dhl_xml->Response->Note[0]->Status->Condition && $dhl_xml->Response->Note[0]->Status->Condition->ConditionData ){
+		$dhl_error_reason = $dhl_xml->Response->Note[0]->Status->Condition->ConditionData;
+	}else
+		$dhl_setup = true;
 }
 
 $correct_basic = 0;
@@ -840,9 +915,9 @@ function ec_show_failed( $fail_text ){
 						?>
                     	
 						<?php if( $has_admin_plugin ){ ?>
-                    		<div class="ec_failed_row"><a href="?ec_adminconsole">Want to add your own products instead?</a></div>
+                    		<div class="ec_failed_row"><a href="?page=ec_adminconsole">Want to add your own products instead?</a></div>
                     	<?php }else{?>
-                    		<div class="ec_failed_row"><a href="?ec_adminconsole">Looks like you don't have the admin plugin installed, go here to get it and add your own products!</a></div>
+                    		<div class="ec_failed_row"><a href="?page=ec_adminconsole">Looks like you don't have the admin plugin installed, go here to get it and add your own products!</a></div>
                     	<?php }?>
                 	<?php }?>
               <?php }?>
@@ -1240,15 +1315,64 @@ function ec_show_failed( $fail_text ){
 				<?php }else{?>
                 <div class="ec_failed_row" id="which_third_party">Which Third Party do you want to use: <select name="ec_option_payment_third_party" id="ec_option_payment_third_party" onchange="update_third_party_form();">
                 	<option value="0" <?php if (get_option('ec_option_payment_third_party') == 0) echo ' selected'; ?>>Select One</option>
+                	<option value="paymentexpress_thirdparty" <?php if (get_option('ec_option_payment_third_party') == "paymentexpress_thirdparty") echo ' selected'; ?>>Payment Express PxPay 2.0</option>
                 	<option value="paypal" <?php if (get_option('ec_option_payment_third_party') == "paypal") echo ' selected'; ?>>PayPal</option>
+                	<option value="realex_thirdparty" <?php if (get_option('ec_option_payment_third_party') == "realex_thirdparty") echo ' selected'; ?>>Realex</option>
                 	<option value="skrill" <?php if (get_option('ec_option_payment_third_party') == "skrill") echo ' selected'; ?>>Skrill</option>
               	</select></div>
+                <div class="ec_failed_row" id="has_paymentexpress_thirdparty">Do you have a Payment Express account: <select name="ec_option_checklist_has_paymentexpress_thirdparty" id="ec_option_checklist_has_paymentexpress_thirdparty" onchange="update_third_party_form();"><option value="0"<?php if( get_option( 'ec_option_checklist_has_paymentexpress_thirdparty' ) == "" || get_option( 'ec_option_checklist_has_paymentexpress_thirdparty' ) == "0" ){ echo " selected=\"selected\""; }?>>Select One</option><option value="yes"<?php if( get_option( 'ec_option_checklist_has_paymentexpress_thirdparty' ) == "yes" ){ echo " selected=\"selected\""; }?>>Yes</option><option value="no"<?php if( get_option( 'ec_option_checklist_has_paymentexpress_thirdparty' ) == "no" ){ echo " selected=\"selected\""; }?>>No</option></select></div>
                 <div class="ec_failed_row" id="has_paypal">Do you have a PayPal account: <select name="ec_option_checklist_has_paypal" id="ec_option_checklist_has_paypal" onchange="update_third_party_form();"><option value="0"<?php if( get_option( 'ec_option_checklist_has_paypal' ) == "" || get_option( 'ec_option_checklist_has_paypal' ) == "0" ){ echo " selected=\"selected\""; }?>>Select One</option><option value="yes"<?php if( get_option( 'ec_option_checklist_has_paypal' ) == "yes" ){ echo " selected=\"selected\""; }?>>Yes</option><option value="no"<?php if( get_option( 'ec_option_checklist_has_paypal' ) == "no" ){ echo " selected=\"selected\""; }?>>No</option></select></div>
+                <div class="ec_failed_row" id="has_realex_thirdparty">Do you have a Realex account: <select name="ec_option_checklist_has_realex_thirdparty" id="ec_option_checklist_has_realex_thirdparty" onchange="update_third_party_form();"><option value="0"<?php if( get_option( 'ec_option_checklist_has_realex_thirdparty' ) == "" || get_option( 'ec_option_checklist_has_realex_thirdparty' ) == "0" ){ echo " selected=\"selected\""; }?>>Select One</option><option value="yes"<?php if( get_option( 'ec_option_checklist_has_realex_thirdparty' ) == "yes" ){ echo " selected=\"selected\""; }?>>Yes</option><option value="no"<?php if( get_option( 'ec_option_checklist_has_realex_thirdparty' ) == "no" ){ echo " selected=\"selected\""; }?>>No</option></select></div>
                 <div class="ec_failed_row" id="has_skrill">Do you have a Skrill account: <select name="ec_option_checklist_has_skrill" id="ec_option_checklist_has_skrill" onchange="update_third_party_form();"><option value="0"<?php if( get_option( 'ec_option_checklist_has_skrill' ) == "" || get_option( 'ec_option_checklist_has_skrill' ) == "0" ){ echo " selected=\"selected\""; }?>>Select One</option><option value="yes"<?php if( get_option( 'ec_option_checklist_has_skrill' ) == "yes" ){ echo " selected=\"selected\""; }?>>Yes</option><option value="no"<?php if( get_option( 'ec_option_checklist_has_skrill' ) == "no" ){ echo " selected=\"selected\""; }?>>No</option></select></div>
+                <div class="ec_failed_row" id="get_paymentexpress_thirdparty">Get Payment Express Here: <a href="https://sec.paymentexpress.com/pxmi/apply" target="_blank">Register for Payment Express!</a></div>
                 <div class="ec_failed_row" id="get_paypal">Get Paypal Here: <a href="https://www.paypal.com/us/home?BN=LevelFourDevelopmentLLC_Cart" target="_blank">Register for PayPal for Free!</a></div>
+                <div class="ec_failed_row" id="get_realex_thirdparty">Get Realex Here: <a href="http://www.realexpayments.com/business-offering" target="_blank">Register for Realex!</a></div>
                 <div class="ec_failed_row" id="get_skrill">Get Skrill Here: <a href="http://www.moneybookers.com/app/?rid=39701782" target="_blank">Register for Skrill for Free!</a></div>
                 
                 <table>
+                   <tr valign="top" class="form-table" id="paymentexpress_thirdparty">
+                      <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                        <tr valign="top" class="form-table">
+                          <td width="26%" class="itemheading" scope="row">Payment Express User Name:</td>
+                          <td width="74%"><input name="ec_option_payment_express_thirdparty_username"  id="ec_option_payment_express_thirdparty_username" type="text" value="<?php echo get_option('ec_option_payment_express_thirdparty_username'); ?>" style="width:250px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">Payment Express Key:</td>
+                          <td><input name="ec_option_payment_express_thirdparty_key"  id="ec_option_payment_express_thirdparty_key" type="text" value="<?php echo get_option('ec_option_payment_express_thirdparty_key'); ?>" style="width:250px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">Payment Express Currency:</td>
+                          <td>
+                          <select name="ec_option_payment_express_thirdparty_currency" id="ec_option_payment_express_thirdparty_currency">
+                            <option value="USD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "USD") echo ' selected'; ?>>U.S. Dollar</option>
+                            <option value="CAD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "CAD") echo ' selected'; ?>>Canadian Dollar</option>
+                            <option value="CHF" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "CHF") echo ' selected'; ?>>Swiss Franc</option>
+                            <option value="DKK" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "DKK") echo ' selected'; ?>>Danish Krone</option>
+                            <option value="EUR" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "EUR") echo ' selected'; ?>>Euro</option>
+                            <option value="FRF" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "FRF") echo ' selected'; ?>>French Franc</option>
+                            <option value="GBP" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "GBP") echo ' selected'; ?>>United Kingdom Pound</option>
+                            <option value="HKD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "HKD") echo ' selected'; ?>>Hong Kong Dollar</option>
+                            <option value="JPY" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "JPY") echo ' selected'; ?>>Japanese Yen</option>
+                            <option value="NZD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "NZD") echo ' selected'; ?>>New Zealand Dollar</option>
+                            <option value="SGD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "SGD") echo ' selected'; ?>>Singapore Dollar</option>
+                            <option value="THB" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "THB") echo ' selected'; ?>>Thai Baht</option>
+                            <option value="ZAR" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "ZAR") echo ' selected'; ?>>Rand</option>
+                            <option value="AUD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "AUD") echo ' selected'; ?>>Australian Dollar</option>
+                            <option value="WST" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "WST") echo ' selected'; ?>>Samoan Tala</option>
+                            <option value="VUV" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "VUV") echo ' selected'; ?>>Vanuatu Vatu</option>
+                            <option value="TOP" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "TOP") echo ' selected'; ?>>Tongan Pa'anga</option>
+                            <option value="SBD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "SBD") echo ' selected'; ?>>Solomon Islands Dollar</option>
+                            <option value="PGK" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "PGK") echo ' selected'; ?>>Papua New Guinea Kina</option>
+                            <option value="MYR" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "MYR") echo ' selected'; ?>>Malaysian Ringgit</option>
+                            <option value="KWD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "KWD") echo ' selected'; ?>>Kuwaiti Dinar</option>
+                            <option value="FJD" <?php if (get_option('ec_option_payment_express_thirdparty_currency') == "FJD") echo ' selected'; ?>>Fiji Dollar</option>
+                            
+                          </select>
+                          </td>
+                        </tr>
+                      </table></td>
+                    </tr>
+                   
                    <tr valign="top" id="paypal">
                       <td colspan="2" class="itemheading" scope="row">
                       	<table width="90%" border="0" cellspacing="0" cellpadding="0">
@@ -1378,6 +1502,50 @@ function ec_show_failed( $fail_text ){
               			</table>
               		</td>
             	</tr>
+                
+                <tr valign="top" class="form-table" id="realex_thirdparty">
+                  <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Merchant ID:</td>
+                      <td width="74%"><input name="ec_option_realex_thirdparty_merchant_id"  id="ec_option_realex_thirdparty_merchant_id" type="text" value="<?php echo get_option('ec_option_realex_thirdparty_merchant_id'); ?>" style="width:250px;" /></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Secret:</td>
+                      <td width="74%"><input name="ec_option_realex_thirdparty_secret"  id="ec_option_realex_thirdparty_secret" type="text" value="<?php echo get_option('ec_option_realex_thirdparty_secret'); ?>" style="width:250px;" /></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Currency:</td>
+                      <td width="74%"><select name="ec_option_realex_thirdparty_currency" id="ec_option_realex_thirdparty_currency">
+                        <option value="GBP" <?php if (get_option('ec_option_realex_thirdparty_currency') == "GBP") echo ' selected'; ?>>GBP</option>
+                        <option value="EUR" <?php if (get_option('ec_option_realex_thirdparty_currency') == "EUR") echo ' selected'; ?>>EUR</option>
+                        <option value="USD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "USD") echo ' selected'; ?>>USD</option>
+                        <option value="DKK" <?php if (get_option('ec_option_realex_thirdparty_currency') == "DKK") echo ' selected'; ?>>DKK</option>
+                        <option value="NOK" <?php if (get_option('ec_option_realex_thirdparty_currency') == "NOK") echo ' selected'; ?>>NOK</option>
+                        <option value="CHF" <?php if (get_option('ec_option_realex_thirdparty_currency') == "CHF") echo ' selected'; ?>>CHF</option>
+                        <option value="AUD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "AUD") echo ' selected'; ?>>AUD</option>
+                        <option value="CAD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "CAD") echo ' selected'; ?>>CAD</option>
+                        <option value="CZK" <?php if (get_option('ec_option_realex_thirdparty_currency') == "CZK") echo ' selected'; ?>>CZK</option>
+                        <option value="JPY" <?php if (get_option('ec_option_realex_thirdparty_currency') == "JPY") echo ' selected'; ?>>JPY</option>
+                        <option value="NZD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "NZD") echo ' selected'; ?>>NZD</option>
+                        <option value="HKD" <?php if (get_option('ec_option_realex_thirdparty_currency') == "HKD") echo ' selected'; ?>>HKD</option>
+                        <option value="ZAR" <?php if (get_option('ec_option_realex_thirdparty_currency') == "ZAR") echo ' selected'; ?>>ZAR</option>
+                        <option value="SEK" <?php if (get_option('ec_option_realex_thirdparty_currency') == "SEK") echo ' selected'; ?>>SEK</option>
+                      </select></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">To Do:</td>
+                      <td width="74%">You must submit the following URLs to Realex before the redirect method can work completely. You should also add information to your account for your customers to see on the payment page, successful payment page, and the failed payment page.</td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Referring URL:</td>
+                      <td width="74%"><?php $cart_page_id = get_option( 'ec_option_cartpage' ); $cart_page = get_permalink( $cart_page_id ); if( substr_count( $cart_page, '?' ) ){$permalink_divider = "&"; }else{ $permalink_divider = "?"; } echo $cart_page . $permalink_divider . "ec_page=realex_redirect"; ?></td>
+                    </tr>
+                    <tr valign="top" class="form-table">
+                      <td width="26%" class="itemheading" scope="row">Realex Response URL:</td>
+                      <td width="74%"><?php echo $cart_page . $permalink_divider . "ec_page=realex_response"; ?></td>
+                    </tr>
+                  </table></td>
+                </tr>
             
             <tr valign="top" class="form-table" id="skrill">
                   <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
@@ -1520,9 +1688,16 @@ function ec_show_failed( $fail_text ){
 						var which_third_party = "0";
 						if( document.getElementById( 'ec_option_payment_third_party' ) )
 							which_third_party = document.getElementById( 'ec_option_payment_third_party' ).value;
+						
+						var has_paymentexpress_thirdparty = "0";
+						if( document.getElementById( 'ec_option_checklist_has_paymentexpress_thirdparty' ) )
+							has_paymentexpress_thirdparty = document.getElementById( 'ec_option_checklist_has_paymentexpress_thirdparty' ).value;
 						var has_paypal = "0";
 						if( document.getElementById( 'ec_option_checklist_has_paypal' ) )
 							has_paypal = document.getElementById( 'ec_option_checklist_has_paypal' ).value;
+						var has_realex_thirdparty = "0";
+						if( document.getElementById( 'ec_option_checklist_has_realex_thirdparty' ) )
+							has_realex_thirdparty = document.getElementById( 'ec_option_checklist_has_realex_thirdparty' ).value;
 						var has_skrill = "0";
 						if( document.getElementById( 'ec_option_checklist_has_skrill' ) )
 							has_skrill = document.getElementById( 'ec_option_checklist_has_skrill' ).value;
@@ -1532,8 +1707,37 @@ function ec_show_failed( $fail_text ){
 								jQuery( '#no_third_party_license' ).show();
 							}else{
 								jQuery('#which_third_party').show();
-								if( which_third_party == "paypal" ){
+								if( which_third_party == "paymentexpress_thirdparty" ){
+									jQuery( '#has_paymentexpress_thirdparty' ).show();
+									jQuery( '#has_paypal' ).hide();
+									jQuery( '#has_realex_thirdparty' ).hide();
+									jQuery( '#has_skrill' ).hide();
+									
+									jQuery( '#get_paypal' ).hide();
+									jQuery( '#paypal' ).hide();
+									jQuery( '#get_realex_thirdparty' ).hide();
+									jQuery( '#realex_thirdparty' ).hide();
+									jQuery( '#get_skrill' ).hide();
+									jQuery( '#skrill' ).hide();
+									
+									if( has_paymentexpress_thirdparty == "yes" ){
+										jQuery( '#get_paymentexpress_thirdparty' ).hide();
+										jQuery( '#paymentexpress_thirdparty' ).show();
+									}else if( has_paymentexpress_thirdparty == "no"){
+										jQuery( '#get_paymentexpress_thirdparty' ).show();
+										jQuery( '#paymentexpress_thirdparty' ).hide();
+									}else{
+										jQuery( '#get_paymentexpress_thirdparty' ).hide();
+										jQuery( '#paymentexpress_thirdparty' ).hide();
+									}
+								}else if( which_third_party == "paypal" ){
+									jQuery( '#has_paymentexpress_thirdparty' ).hide();
+									jQuery( '#get_paymentexpress_thirdparty' ).hide();
+									jQuery( '#paymentexpress_thirdparty' ).hide();
 									jQuery( '#has_paypal ').show();
+									jQuery( '#has_realex_thirdparty' ).hide();
+									jQuery( '#get_realex_thirdparty' ).hide();
+									jQuery( '#realex_thirdparty' ).hide();
 									jQuery( '#has_skrill' ).hide();
 									jQuery( '#get_skrill' ).hide();
 									jQuery( '#skrill' ).hide();
@@ -1548,10 +1752,44 @@ function ec_show_failed( $fail_text ){
 										jQuery( '#get_paypal' ).hide();
 										jQuery( '#paypal' ).hide();
 									}
+								}else if( which_third_party == "realex_thirdparty" ){
+									jQuery( '#has_paymentexpress_thirdparty' ).hide();
+									jQuery( '#get_paymentexpress_thirdparty' ).hide();
+									jQuery( '#paymentexpress_thirdparty' ).hide();
+									
+									jQuery( '#has_paypal' ).hide();
+									jQuery( '#get_paypal' ).hide();
+									jQuery( '#paypal' ).hide();
+									
+									jQuery( '#has_realex_thirdparty' ).show();
+									
+									jQuery( '#has_skrill' ).hide();
+									jQuery( '#get_skrill' ).hide();
+									jQuery( '#skrill' ).hide();
+									
+									if( has_realex_thirdparty == "yes" ){
+										jQuery( '#get_realex_thirdparty' ).hide();
+										jQuery( '#realex_thirdparty' ).show();
+									}else if( has_realex_thirdparty == "no"){
+										jQuery( '#get_realex_thirdparty' ).show();
+										jQuery( '#realex_thirdparty' ).hide();
+									}else{
+										jQuery( '#get_realex_thirdparty' ).hide();
+										jQuery( '#realex_thirdparty' ).hide();
+									}
 								}else if( which_third_party == "skrill" ){
+									jQuery( '#has_paymentexpress_thirdparty' ).hide();
+									jQuery( '#get_paymentexpress_thirdparty' ).hide();
+									jQuery( '#paymentexpress_thirdparty' ).hide();
+									
 									jQuery( '#has_paypal' ).hide();
 									jQuery( '#get_paypal' ).hide();
 									jQuery( '#paypal' ).hide();	
+									
+									jQuery( '#has_realex_thirdparty' ).hide();
+									jQuery( '#get_realex_thirdparty' ).hide();
+									jQuery( '#realex_thirdparty' ).hide();
+									
 									jQuery( '#has_skrill' ).show();
 									if( has_skrill == "yes" ){
 										jQuery( '#get_skrill' ).hide();
@@ -1564,9 +1802,17 @@ function ec_show_failed( $fail_text ){
 										jQuery( '#skrill' ).hide();
 									}
 								}else{
+									jQuery( '#has_paymentexpress_thirdparty' ).hide();
+									jQuery( '#get_paymentexpress_thirdparty' ).hide();
+									jQuery( '#paymentexpress_thirdparty' ).hide();
+									
 									jQuery( '#has_paypal' ).hide();
 									jQuery( '#get_paypal' ).hide();
 									jQuery( '#paypal' ).hide();
+								
+									jQuery(' #has_realex_thirdparty' ).hide();
+									jQuery( '#get_realex_thirdparty' ).hide();
+									jQuery( '#realex_thirdparty' ).hide();
 								
 									jQuery(' #has_skrill' ).hide();
 									jQuery( '#get_skrill' ).hide();
@@ -1575,16 +1821,35 @@ function ec_show_failed( $fail_text ){
 							}
 						}else{
 							jQuery( '#no_third_party_license' ).hide();
+							jQuery('#paymentexpress_thirdparty').hide();
+							jQuery('#paypal').hide();
+							jQuery('#realex_thirdparty').hide();
+							jQuery('#skrill').hide();
+							jQuery('#which_third_party').hide();
+							jQuery('#has_paymentexpress_thirdparty').hide();
+							jQuery('#has_paypal').hide();
+							jQuery('#has_realex_thirdparty').hide();
+							jQuery('#has_skrill').hide();
+							jQuery('#get_paymentexpress_thirdparty').hide();
+							jQuery('#get_paypal').hide();
+							jQuery('#get_realex_thirdparty').hide();
+							jQuery('#get_skrill').hide();
 						}
 					}
 					
 					jQuery( '#no_third_party_license' ).hide();
+					jQuery('#paymentexpress_thirdparty').hide();
 					jQuery('#paypal').hide();
+					jQuery('#realex_thirdparty').hide();
 					jQuery('#skrill').hide();
 					jQuery('#which_third_party').hide();
+					jQuery('#has_paymentexpress_thirdparty').hide();
 					jQuery('#has_paypal').hide();
+					jQuery('#has_realex_thirdparty').hide();
 					jQuery('#has_skrill').hide();
+					jQuery('#get_paymentexpress_thirdparty').hide();
 					jQuery('#get_paypal').hide();
+					jQuery('#get_realex_thirdparty').hide();
 					jQuery('#get_skrill').hide();
 					
 					update_third_party_form( );
@@ -1604,7 +1869,13 @@ function ec_show_failed( $fail_text ){
 				$credit_card = 0;
 				if( get_option( 'ec_option_payment_process_method' ) == "authorize" )
 					$credit_card = "Authorize.net";
+				if( get_option( 'ec_option_payment_process_method' ) == "braintree" )
+					$credit_card = "Braintree S2S";
+				if( get_option( 'ec_option_payment_process_method' ) == "goemerchant" )
+					$credit_card = "GoeMerchant";
 				else if( get_option( 'ec_option_payment_process_method' ) == "paypal_pro" )
+					$credit_card = "PayPal Payflow Pro";
+				else if( get_option( 'ec_option_payment_process_method' ) == "paypal_payments_pro" )
 					$credit_card = "PayPal Payments Pro";
 				else if( get_option( 'ec_option_payment_process_method' ) == "realex" )
 					$credit_card = "Realex Payments";
@@ -1613,7 +1884,7 @@ function ec_show_failed( $fail_text ){
 				else if( get_option( 'ec_option_payment_process_method' ) == "firstdata" )
 					$credit_card = "First Data Global Gateway e4";
 				else if( get_option( 'ec_option_payment_process_method' ) == "paymentexpress" )
-					$credit_card = "PaymentExpress";
+					$credit_card = "PaymentExpress PxPost";
 				else if( get_option( 'ec_option_payment_process_method' ) == "chronopay" )
 					$credit_card = "Chronopay";
 				else if( get_option( 'ec_option_payment_process_method' ) == "eway" )
@@ -1697,28 +1968,276 @@ function ec_show_failed( $fail_text ){
                       </table></td>
                     </tr>
                 </table>
-                <div class="ec_failed_row" id="paypal_pro_row"><input type="radio" name="ec_option_payment_process_method" onchange="update_credit_card_form();" value="paypal_pro" id="paypal_pro_radio"<?php if ( get_option( 'ec_option_payment_process_method') == "paypal_pro" ){ echo " checked=\"checked\""; } ?> /> PayPal Payments Pro - <a href=\"https://www.paypal.com/webapps/mpp/country-worldwide\" target=\"_blank\">Accepted Countries</a> | <a href="https://www.paypal.com/?BN=LevelFourDevelopmentLLC_Cart" target="_blank">Need an Account?</a> </div>
+                
+                <div class="ec_failed_row" id="braintree_row"><input type="radio" name="ec_option_payment_process_method" onchange="update_credit_card_form();" value="braintree" id="braintree_radio"<?php if ( get_option( 'ec_option_payment_process_method') == "braintree" ){ echo " checked=\"checked\""; } ?> /> Braintree S2S - <a href="https://apply.braintreegateway.com" target="_blank">Need an Account?</a></div>
+                <table id="braintree_table" class="ec_payment_gateway_table">
+                    <tr valign="top" class="form-table">
+                      <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                        <tr valign="top" class="form-table">
+                          <td width="26%" class="itemheading" scope="row">Braintree Merchant Account ID:</td>
+                          <td width="74%"><input name="ec_option_braintree_merchant_id" id="ec_option_braintree_merchant_id" type="text" value="<?php echo get_option('ec_option_braintree_merchant_id'); ?>" style="width:250px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">Braintree Public Key:</td>
+                          <td><input name="ec_option_braintree_public_key" id="ec_option_braintree_public_key" type="text" value="<?php echo get_option('ec_option_braintree_public_key'); ?>" style="width:400px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">Braintree Private Key:</td>
+                          <td><input name="ec_option_braintree_private_key" id="ec_option_braintree_private_key" type="text" value="<?php echo get_option('ec_option_braintree_private_key'); ?>" style="width:400px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">Braintree Currency Code:</td>
+                          <td><select name="ec_option_braintree_currency" id="ec_option_braintree_currency">
+                            <option value="USD" <?php if (get_option('ec_option_braintree_currency') == "USD") echo ' selected'; ?>>U.S. Dollar</option>
+                            <option value="CAD" <?php if (get_option('ec_option_braintree_currency') == "CAD") echo ' selected'; ?>>Canadian Dollar</option>
+                            <option value="DEM" <?php if (get_option('ec_option_braintree_currency') == "DEM") echo ' selected'; ?>>German Mark</option>
+                            <option value="CHF" <?php if (get_option('ec_option_braintree_currency') == "CHF") echo ' selected'; ?>>Swiss Franc</option>
+                            <option value="GBP" <?php if (get_option('ec_option_braintree_currency') == "GBP") echo ' selected'; ?>>British Pound</option>
+                            
+                            <option value="AFA" <?php if (get_option('ec_option_braintree_currency') == "AFA") echo ' selected'; ?>>Afghanistan Afghani</option>
+                            <option value="ALL" <?php if (get_option('ec_option_braintree_currency') == "ALL") echo ' selected'; ?>>Albanian Lek</option>
+                            <option value="DZD" <?php if (get_option('ec_option_braintree_currency') == "DZD") echo ' selected'; ?>>Algerian Dinar</option>
+                            <option value="ARS" <?php if (get_option('ec_option_braintree_currency') == "ARS") echo ' selected'; ?>>Argentine Peso</option>
+                            <option value="AMD" <?php if (get_option('ec_option_braintree_currency') == "AMD") echo ' selected'; ?>>Armenian Dram</option>
+                            <option value="AWG" <?php if (get_option('ec_option_braintree_currency') == "AWG") echo ' selected'; ?>>Aruban Florin</option>
+                            <option value="AUD" <?php if (get_option('ec_option_braintree_currency') == "AUD") echo ' selected'; ?>>Australian Dollar</option>
+                            <option value="AZN" <?php if (get_option('ec_option_braintree_currency') == "AZN") echo ' selected'; ?>>Azerbaijani an Manat</option>
+                            
+                            <option value="BSD" <?php if (get_option('ec_option_braintree_currency') == "BSD") echo ' selected'; ?>>Bahamanian Dollar</option>
+                            <option value="BHD" <?php if (get_option('ec_option_braintree_currency') == "BHD") echo ' selected'; ?>>Bahraini Dinar</option>
+                            <option value="BDT" <?php if (get_option('ec_option_braintree_currency') == "BDT") echo ' selected'; ?>>Bangladeshi Taka</option>
+                            <option value="BBD" <?php if (get_option('ec_option_braintree_currency') == "BBD") echo ' selected'; ?>>Barbados Dollar</option>
+                            <option value="BYR" <?php if (get_option('ec_option_braintree_currency') == "BYR") echo ' selected'; ?>>Belarussian Ruble</option>
+                            <option value="BZD" <?php if (get_option('ec_option_braintree_currency') == "BZD") echo ' selected'; ?>>Belize Dollar</option>
+                            <option value="BMD" <?php if (get_option('ec_option_braintree_currency') == "BMD") echo ' selected'; ?>>Bermudian Dollar</option>
+                            <option value="BOB" <?php if (get_option('ec_option_braintree_currency') == "BOB") echo ' selected'; ?>>Bolivian Boliviano</option>
+                            <option value="BWP" <?php if (get_option('ec_option_braintree_currency') == "BWP") echo ' selected'; ?>>Botswana Pula</option>
+                            <option value="BRL" <?php if (get_option('ec_option_braintree_currency') == "BRL") echo ' selected'; ?>>Brazilian Real</option>
+                            <option value="BND" <?php if (get_option('ec_option_braintree_currency') == "BND") echo ' selected'; ?>>Brunei Dollar</option>
+                            <option value="BGN" <?php if (get_option('ec_option_braintree_currency') == "BGN") echo ' selected'; ?>>Bulgarian Lev</option>
+                            <option value="BIF" <?php if (get_option('ec_option_braintree_currency') == "BIF") echo ' selected'; ?>>Burundi Franc</option>
+                            
+                            <option value="KHR" <?php if (get_option('ec_option_braintree_currency') == "KHR") echo ' selected'; ?>>Cambodian Riel</option>
+                            <option value="CVE" <?php if (get_option('ec_option_braintree_currency') == "CVE") echo ' selected'; ?>>Cape Verde Escudo</option>
+                            <option value="KYD" <?php if (get_option('ec_option_braintree_currency') == "KYD") echo ' selected'; ?>>Cayman Islands Dollar</option>
+                            <option value="XAF" <?php if (get_option('ec_option_braintree_currency') == "XAF") echo ' selected'; ?>>Central African Republic Franc BCEAO</option>
+                            <option value="XPF" <?php if (get_option('ec_option_braintree_currency') == "XPF") echo ' selected'; ?>>CFP Franc</option>
+                            <option value="CLP" <?php if (get_option('ec_option_braintree_currency') == "CLP") echo ' selected'; ?>>Chilean Peso</option>
+                            <option value="CNY" <?php if (get_option('ec_option_braintree_currency') == "CNY") echo ' selected'; ?>>Chinese Yuan Renminbi</option>
+                            <option value="COP" <?php if (get_option('ec_option_braintree_currency') == "COP") echo ' selected'; ?>>Colombian Peso</option>
+                            <option value="KMF" <?php if (get_option('ec_option_braintree_currency') == "KMF") echo ' selected'; ?>>Comoros Franc</option>
+                            <option value="BAM" <?php if (get_option('ec_option_braintree_currency') == "BAM") echo ' selected'; ?>>Convertible Marks</option>
+                            <option value="CRC" <?php if (get_option('ec_option_braintree_currency') == "CRC") echo ' selected'; ?>>Costa Rican Colon</option>
+                            <option value="HRK" <?php if (get_option('ec_option_braintree_currency') == "HRK") echo ' selected'; ?>>Croatian Kuna</option>
+                            <option value="CUP" <?php if (get_option('ec_option_braintree_currency') == "CUP") echo ' selected'; ?>>Cuban Peso</option>
+                            <option value="CYP" <?php if (get_option('ec_option_braintree_currency') == "CYP") echo ' selected'; ?>>Cyprus Pound</option>
+                            <option value="CZK" <?php if (get_option('ec_option_braintree_currency') == "CZK") echo ' selected'; ?>>Czech Republic Koruna</option>
+                            
+                            <option value="DKK" <?php if (get_option('ec_option_braintree_currency') == "DKK") echo ' selected'; ?>>Danish Krone</option>
+                            <option value="DJF" <?php if (get_option('ec_option_braintree_currency') == "DJF") echo ' selected'; ?>>Djibouti Franc</option>
+                            <option value="DOP" <?php if (get_option('ec_option_braintree_currency') == "DOP") echo ' selected'; ?>>Dominican Peso</option>
+                            
+                            
+                            <option value="XCD" <?php if (get_option('ec_option_braintree_currency') == "XCD") echo ' selected'; ?>>East Caribbean Dollar</option>
+                            <option value="ECS" <?php if (get_option('ec_option_braintree_currency') == "ECE") echo ' selected'; ?>>Ecuador Sucre</option>
+                            <option value="EGP" <?php if (get_option('ec_option_braintree_currency') == "EGP") echo ' selected'; ?>>Egyptian Pound</option>
+                            <option value="SVC" <?php if (get_option('ec_option_braintree_currency') == "SVC") echo ' selected'; ?>>El Salvador Colon</option>
+                            <option value="ERN" <?php if (get_option('ec_option_braintree_currency') == "ERN") echo ' selected'; ?>>Eritrea Nakfa</option>
+                            <option value="EEK" <?php if (get_option('ec_option_braintree_currency') == "EEK") echo ' selected'; ?>>Estonian Kroon</option>
+                            <option value="ETB" <?php if (get_option('ec_option_braintree_currency') == "ETB") echo ' selected'; ?>>Ethiopian Birr</option>
+                            <option value="EUR" <?php if (get_option('ec_option_braintree_currency') == "EUR") echo ' selected'; ?>>Euro</option>
+                            
+                            <option value="FKP" <?php if (get_option('ec_option_braintree_currency') == "FKP") echo ' selected'; ?>>Falkland Islands Pound</option>
+                            <option value="FJD" <?php if (get_option('ec_option_braintree_currency') == "FJD") echo ' selected'; ?>>Fiji Dollar</option>
+                            <option value="CDF" <?php if (get_option('ec_option_braintree_currency') == "CDF") echo ' selected'; ?>>Franc Congolais</option>
+                            
+                            <option value="GMD" <?php if (get_option('ec_option_braintree_currency') == "GMD") echo ' selected'; ?>>Gambian Dalasi</option>
+                            <option value="GEL" <?php if (get_option('ec_option_braintree_currency') == "GEL") echo ' selected'; ?>>Georgian Lari</option>
+                            <option value="GHS" <?php if (get_option('ec_option_braintree_currency') == "GHS") echo ' selected'; ?>>Ghanaian Cedi</option>
+                            <option value="GIP" <?php if (get_option('ec_option_braintree_currency') == "GIP") echo ' selected'; ?>>Gibraltar Pound</option>
+                            <option value="GTQ" <?php if (get_option('ec_option_braintree_currency') == "GTQ") echo ' selected'; ?>>Guatemalan Quetzal</option>
+                            <option value="GNF" <?php if (get_option('ec_option_braintree_currency') == "GNF") echo ' selected'; ?>>Guinea Franc</option>
+                            <option value="GWP" <?php if (get_option('ec_option_braintree_currency') == "GWP") echo ' selected'; ?>>Guinea-Bissau Peso</option>
+                            <option value="GYD" <?php if (get_option('ec_option_braintree_currency') == "GYD") echo ' selected'; ?>>Guyanan Dollar</option>
+                            
+                            <option value="HTG" <?php if (get_option('ec_option_braintree_currency') == "HTG") echo ' selected'; ?>>Haitian Gourde</option>
+                            <option value="HNL" <?php if (get_option('ec_option_braintree_currency') == "HNL") echo ' selected'; ?>>Honduran Lempira</option>
+                            <option value="HKD" <?php if (get_option('ec_option_braintree_currency') == "HKD") echo ' selected'; ?>>Hong Kong Dollar</option>
+                            <option value="HUF" <?php if (get_option('ec_option_braintree_currency') == "HUF") echo ' selected'; ?>>Hungarian Forint</option>
+                            
+                            <option value="ISK" <?php if (get_option('ec_option_braintree_currency') == "ISK") echo ' selected'; ?>>Iceland Krona</option>
+                            <option value="INR" <?php if (get_option('ec_option_braintree_currency') == "INR") echo ' selected'; ?>>Indian Rupee</option>
+                            <option value="IDR" <?php if (get_option('ec_option_braintree_currency') == "IDR") echo ' selected'; ?>>Indonesian Rupiah</option>
+                            <option value="IRR" <?php if (get_option('ec_option_braintree_currency') == "IRR") echo ' selected'; ?>>Iranian Rial</option>
+                            <option value="IQD" <?php if (get_option('ec_option_braintree_currency') == "IQD") echo ' selected'; ?>>Iraqi Dinar</option>
+                            <option value="ILS" <?php if (get_option('ec_option_braintree_currency') == "ILS") echo ' selected'; ?>>Israeli New Shekel</option>
+                            
+                            <option value="JMD" <?php if (get_option('ec_option_braintree_currency') == "JMD") echo ' selected'; ?>>Jamaican Dollar</option>
+                            <option value="JPY" <?php if (get_option('ec_option_braintree_currency') == "JPY") echo ' selected'; ?>>Japanese Yen</option>
+                            <option value="JOD" <?php if (get_option('ec_option_braintree_currency') == "JOD") echo ' selected'; ?>>Jordanian Dinar</option>
+                            
+                            <option value="KZT" <?php if (get_option('ec_option_braintree_currency') == "KZT") echo ' selected'; ?>>Kazakhstan Tenge</option>
+                            <option value="KES" <?php if (get_option('ec_option_braintree_currency') == "KES") echo ' selected'; ?>>Kenyan Shilling</option>
+                            <option value="KWD" <?php if (get_option('ec_option_braintree_currency') == "KWD") echo ' selected'; ?>>Kuwaiti Dinar</option>
+                            <option value="AOA" <?php if (get_option('ec_option_braintree_currency') == "AOA") echo ' selected'; ?>>Kwanza</option>
+                            <option value="GKS" <?php if (get_option('ec_option_braintree_currency') == "GKS") echo ' selected'; ?>>Kyrgyzstan Som</option>
+                            
+                            <option value="KIP" <?php if (get_option('ec_option_braintree_currency') == "KIP") echo ' selected'; ?>>Laos Kip</option>
+                            <option value="LAK" <?php if (get_option('ec_option_braintree_currency') == "LAK") echo ' selected'; ?>>Laosian Kip</option>
+                            <option value="LVL" <?php if (get_option('ec_option_braintree_currency') == "LVL") echo ' selected'; ?>>Latvian Lat</option>
+                            <option value="LBP" <?php if (get_option('ec_option_braintree_currency') == "LBP") echo ' selected'; ?>>Lebanese Pound</option>
+                            <option value="LRD" <?php if (get_option('ec_option_braintree_currency') == "LRD") echo ' selected'; ?>>Liberian Dollar</option>
+                            <option value="LYD" <?php if (get_option('ec_option_braintree_currency') == "LYD") echo ' selected'; ?>>Libyan Dinar</option>
+                            <option value="LTL" <?php if (get_option('ec_option_braintree_currency') == "LTL") echo ' selected'; ?>>Lithuanian Litas</option>
+                            <option value="LSL" <?php if (get_option('ec_option_braintree_currency') == "LSL") echo ' selected'; ?>>Loti</option>
+                            
+                            <option value="MOP" <?php if (get_option('ec_option_braintree_currency') == "MOP") echo ' selected'; ?>>Macanese Pataca</option>
+                            <option value="MOP" <?php if (get_option('ec_option_braintree_currency') == "MOP") echo ' selected'; ?>>Macao</option>
+                            <option value="MKD" <?php if (get_option('ec_option_braintree_currency') == "MKD") echo ' selected'; ?>>Macedonian Denar</option>
+                            <option value="MGF" <?php if (get_option('ec_option_braintree_currency') == "MGF") echo ' selected'; ?>>Malagasy Franc</option>
+                            <option value="MGA" <?php if (get_option('ec_option_braintree_currency') == "MGA") echo ' selected'; ?>>Malagasy Ariary</option>
+                            <option value="MWK" <?php if (get_option('ec_option_braintree_currency') == "MWK") echo ' selected'; ?>>Malawi Kwacha</option>
+                            <option value="MYR" <?php if (get_option('ec_option_braintree_currency') == "MYR") echo ' selected'; ?>>Malaysian Ringgit</option>
+                            <option value="MVR" <?php if (get_option('ec_option_braintree_currency') == "MVR") echo ' selected'; ?>>Maldive Rufiyaa</option>
+                            <option value="MTL" <?php if (get_option('ec_option_braintree_currency') == "MRL") echo ' selected'; ?>>Maltese Lira</option>
+                            <option value="MRO" <?php if (get_option('ec_option_braintree_currency') == "MRO") echo ' selected'; ?>>Mauritanian Ouguiya</option>
+                            <option value="MUR" <?php if (get_option('ec_option_braintree_currency') == "MUR") echo ' selected'; ?>>Mauritius Rupee</option>
+                            <option value="MXN" <?php if (get_option('ec_option_braintree_currency') == "MXN") echo ' selected'; ?>>Mexican Peso</option>
+                            <option value="MNT" <?php if (get_option('ec_option_braintree_currency') == "MNT") echo ' selected'; ?>>Mongolian Tugrik</option>
+                            <option value="MAD" <?php if (get_option('ec_option_braintree_currency') == "MAD") echo ' selected'; ?>>Moroccan Dirham</option>
+                            <option value="MZM" <?php if (get_option('ec_option_braintree_currency') == "MZM") echo ' selected'; ?>>Mozambique Metical</option>
+                            <option value="MMK" <?php if (get_option('ec_option_braintree_currency') == "MMK") echo ' selected'; ?>>Myanmar Kyat</option>
+                            
+                            <option value="NAD" <?php if (get_option('ec_option_braintree_currency') == "NAD") echo ' selected'; ?>>Namibia Dollar</option>
+                            <option value="NPR" <?php if (get_option('ec_option_braintree_currency') == "NPR") echo ' selected'; ?>>Nepalese Rupee</option>
+                            <option value="ANG" <?php if (get_option('ec_option_braintree_currency') == "ANG") echo ' selected'; ?>>Netherlands Antillean Guilder</option>
+                            <option value="PGK" <?php if (get_option('ec_option_braintree_currency') == "PGK") echo ' selected'; ?>>New Guinea Kina</option>
+                            <option value="TWD" <?php if (get_option('ec_option_braintree_currency') == "TWD") echo ' selected'; ?>>New Taiwan Dollar</option>
+                            <option value="TRY" <?php if (get_option('ec_option_braintree_currency') == "TRY") echo ' selected'; ?>>New Turkish Lira</option>
+                            <option value="NZD" <?php if (get_option('ec_option_braintree_currency') == "NZD") echo ' selected'; ?>>New Zealand Dollar</option>
+                            <option value="NIO" <?php if (get_option('ec_option_braintree_currency') == "NIO") echo ' selected'; ?>>Nicaraguan Cordoba Oro</option>
+                            <option value="NGN" <?php if (get_option('ec_option_braintree_currency') == "NGN") echo ' selected'; ?>>Nigerian Naira</option>
+                            <option value="KPW" <?php if (get_option('ec_option_braintree_currency') == "KPW") echo ' selected'; ?>>North Korea Won</option>
+                            <option value="NOK" <?php if (get_option('ec_option_braintree_currency') == "NOK") echo ' selected'; ?>>Norwegian Kroner</option>
+                            
+                            <option value="PKR" <?php if (get_option('ec_option_braintree_currency') == "PKR") echo ' selected'; ?>>Pakistan Rupee</option>
+                            <option value="PAB" <?php if (get_option('ec_option_braintree_currency') == "PAB") echo ' selected'; ?>>Panamanian Balboa</option>
+                            <option value="PYG" <?php if (get_option('ec_option_braintree_currency') == "PYG") echo ' selected'; ?>>Paraguay Guarani</option>
+                            <option value="PEN" <?php if (get_option('ec_option_braintree_currency') == "PEN") echo ' selected'; ?>>Peruvian Nuevo Sol</option>
+                            <option value="PHP" <?php if (get_option('ec_option_braintree_currency') == "PHP") echo ' selected'; ?>>Philippine Peso</option>
+                            <option value="PLN" <?php if (get_option('ec_option_braintree_currency') == "PLN") echo ' selected'; ?>>Polish Zloty</option>
+                            
+                            <option value="QAR" <?php if (get_option('ec_option_braintree_currency') == "QAR") echo ' selected'; ?>>Qatari Rial</option>
+                            
+                            <option value="OMR" <?php if (get_option('ec_option_braintree_currency') == "OMR") echo ' selected'; ?>>Rial Omani</option>
+                            <option value="RON" <?php if (get_option('ec_option_braintree_currency') == "RON") echo ' selected'; ?>>Romanian Leu</option>
+                            <option value="RUB" <?php if (get_option('ec_option_braintree_currency') == "RUB") echo ' selected'; ?>>Russian Rouble</option>
+                            <option value="RWF" <?php if (get_option('ec_option_braintree_currency') == "RWF") echo ' selected'; ?>>Rwanda Franc</option>
+                            
+                            
+                            <option value="WST" <?php if (get_option('ec_option_braintree_currency') == "WST") echo ' selected'; ?>>Samoan Tala</option>
+                            <option value="STD" <?php if (get_option('ec_option_braintree_currency') == "STD") echo ' selected'; ?>>Sao Tome/Principe Dobra</option>
+                            <option value="SAR" <?php if (get_option('ec_option_braintree_currency') == "SAR") echo ' selected'; ?>>Saudi Riyal</option>
+                            <option value="RSD" <?php if (get_option('ec_option_braintree_currency') == "RSD") echo ' selected'; ?>>Serbian Dinar</option>
+                            <option value="SCR" <?php if (get_option('ec_option_braintree_currency') == "SCR") echo ' selected'; ?>>Seychelles Rupee</option>
+                            <option value="SLL" <?php if (get_option('ec_option_braintree_currency') == "SLL") echo ' selected'; ?>>Sierra Leone Leone</option>
+                            <option value="SGD" <?php if (get_option('ec_option_braintree_currency') == "SGD") echo ' selected'; ?>>Singapore Dollar</option>
+                            <option value="SKK" <?php if (get_option('ec_option_braintree_currency') == "SKK") echo ' selected'; ?>>Slovak Koruna</option>
+                            <option value="SIT" <?php if (get_option('ec_option_braintree_currency') == "SIT") echo ' selected'; ?>>Slovenian Tolar</option>
+                            <option value="SBD" <?php if (get_option('ec_option_braintree_currency') == "SBD") echo ' selected'; ?>>Solomon Islands Dollar</option>
+                            <option value="SOS" <?php if (get_option('ec_option_braintree_currency') == "SOS") echo ' selected'; ?>>Somalia Shilling</option>
+                            <option value="ZAR" <?php if (get_option('ec_option_braintree_currency') == "ZAR") echo ' selected'; ?>>South African Rand</option>
+                            <option value="KRW" <?php if (get_option('ec_option_braintree_currency') == "KRW") echo ' selected'; ?>>South-Korean Won</option>
+                            <option value="LKR" <?php if (get_option('ec_option_braintree_currency') == "LKR") echo ' selected'; ?>>Sri Lanka Rupee</option>
+                            <option value="SHP" <?php if (get_option('ec_option_braintree_currency') == "SHP") echo ' selected'; ?>>St. Helena Pound</option>
+                            <option value="SDD" <?php if (get_option('ec_option_braintree_currency') == "SDD") echo ' selected'; ?>>Sudanese Dollar</option>
+                            <option value="SRD" <?php if (get_option('ec_option_braintree_currency') == "SRD") echo ' selected'; ?>>Suriname Dollar</option>
+                            <option value="SZL" <?php if (get_option('ec_option_braintree_currency') == "SZL") echo ' selected'; ?>>Swaziland Lilangeni</option>
+                            <option value="SEK" <?php if (get_option('ec_option_braintree_currency') == "SEK") echo ' selected'; ?>>Swedish Krona</option>
+                            <option value="CHF" <?php if (get_option('ec_option_braintree_currency') == "CHF") echo ' selected'; ?>>Switzerland Franc</option>
+                            <option value="SYP" <?php if (get_option('ec_option_braintree_currency') == "SYP") echo ' selected'; ?>>Syrian Arab Republic Pound</option>
+                            
+                            <option value="TJS" <?php if (get_option('ec_option_braintree_currency') == "TJS") echo ' selected'; ?>>Tajikistani Somoni</option>
+                            <option value="TZS" <?php if (get_option('ec_option_braintree_currency') == "TZS") echo ' selected'; ?>>Tanzanian Shilling</option>
+                            <option value="THB" <?php if (get_option('ec_option_braintree_currency') == "THB") echo ' selected'; ?>>Thai Baht</option>
+                            <option value="TOP" <?php if (get_option('ec_option_braintree_currency') == "TOP") echo ' selected'; ?>>Tonga Pa'anga</option>
+                            <option value="TTD" <?php if (get_option('ec_option_braintree_currency') == "TTD") echo ' selected'; ?>>Trinidad/Tobago Dollar</option>
+                            <option value="TND" <?php if (get_option('ec_option_braintree_currency') == "TND") echo ' selected'; ?>>Tunisian Dinar</option>
+                            <option value="TMM" <?php if (get_option('ec_option_braintree_currency') == "TMM") echo ' selected'; ?>>Turkmenistan Manat</option>
+                            
+                            <option value="UGX" <?php if (get_option('ec_option_braintree_currency') == "UGX") echo ' selected'; ?>>Uganda Shilling</option>
+                            <option value="UAH" <?php if (get_option('ec_option_braintree_currency') == "UAH") echo ' selected'; ?>>Ukraine Hryvnia</option>
+                            <option value="AED" <?php if (get_option('ec_option_braintree_currency') == "AED") echo ' selected'; ?>>Utd. Arab Emir. Dirham</option>
+                            <option value="UYU" <?php if (get_option('ec_option_braintree_currency') == "UYU") echo ' selected'; ?>>Uruguayo Peso</option>
+                            <option value="UZS" <?php if (get_option('ec_option_braintree_currency') == "UZS") echo ' selected'; ?>>Uzbekistan Som</option>
+                            
+                            <option value="VUV" <?php if (get_option('ec_option_braintree_currency') == "VUV") echo ' selected'; ?>>Vanuatu Vatu</option>
+                            <option value="VEF" <?php if (get_option('ec_option_braintree_currency') == "VEF") echo ' selected'; ?>>Venezuelan Bolivar Fuerte</option>
+                            <option value="VND" <?php if (get_option('ec_option_braintree_currency') == "VND") echo ' selected'; ?>>Vietnamese Dong</option>
+                            <option value="XOF" <?php if (get_option('ec_option_braintree_currency') == "XOF") echo ' selected'; ?>>West African CFA Franc BCEAO</option>
+                            <option value="YER" <?php if (get_option('ec_option_braintree_currency') == "YER") echo ' selected'; ?>>Yemeni Rial</option>
+                            
+                            <option value="YUM" <?php if (get_option('ec_option_braintree_currency') == "YUm") echo ' selected'; ?>>Yugoslav New Dinar</option>
+                            <option value="ZMK" <?php if (get_option('ec_option_braintree_currency') == "ZMK") echo ' selected'; ?>>Zambian Kwacha</option>
+                            <option value="ZWD" <?php if (get_option('ec_option_braintree_currency') == "ZWD") echo ' selected'; ?>>Zimbabwean Dollar</option>
+                          </select></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">Braintree Environment:</td>
+                          <td><select name="ec_option_braintree_environment" id="ec_option_braintree_environment">
+                            <option value="sandbox" <?php if (get_option('ec_option_braintree_environment') == 'sandbox') echo ' selected'; ?>>Sandbox</option>
+                            <option value="development" <?php if (get_option('ec_option_braintree_environment') == 'development') echo ' selected'; ?>>Development</option>
+                            <option value="production" <?php if (get_option('ec_option_braintree_environment') == 'production') echo ' selected'; ?>>Production</option>
+                            <option value="qa" <?php if (get_option('ec_option_braintree_environment') == 'qa') echo ' selected'; ?>>qa</option>
+                          </select></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+                </table>
+                
+                <div class="ec_failed_row" id="goemerchant_row"><input type="radio" name="ec_option_payment_process_method" onchange="update_credit_card_form();" value="goemerchant" id="goemerchant_radio"<?php if ( get_option( 'ec_option_payment_process_method') == "goemerchant" ){ echo " checked=\"checked\""; } ?> /> GoeMerchant - <a href="https://secure.goemerchant.com/secure/application/apply.aspx" target="_blank">Need an Account?</a></div>
+                <table id="goemerchant_table" class="ec_payment_gateway_table">
+                	<tr valign="top" class="form-table">
+                      <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                        <tr valign="top" class="form-table">
+                          <td width="26%" class="itemheading" scope="row">GoeMerchant Transaction Center ID:</td>
+                          <td width="74%"><input name="ec_option_goemerchant_trans_center_id"  id="ec_option_goemerchant_trans_center_id" type="text" value="<?php echo get_option('ec_option_goemerchant_trans_center_id'); ?>" style="width:250px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">GoeMerchant Gateway ID:</td>
+                          <td><input name="ec_option_goemerchant_gateway_id"  id="ec_option_goemerchant_gateway_id" type="text" value="<?php echo get_option('ec_option_goemerchant_gateway_id'); ?>" style="width:250px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">GoeMerchant Processor ID:</td>
+                          <td><input name="ec_option_goemerchant_processor_id"  id="ec_option_goemerchant_processor_id" type="text" value="<?php echo get_option('ec_option_goemerchant_processor_id'); ?>" style="width:250px;" /></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+                </table>
+                
+                
+                <div class="ec_failed_row" id="paypal_pro_row"><input type="radio" name="ec_option_payment_process_method" onchange="update_credit_card_form();" value="paypal_pro" id="paypal_pro_radio"<?php if ( get_option( 'ec_option_payment_process_method') == "paypal_pro" ){ echo " checked=\"checked\""; } ?> /> PayPal Payflow Pro - <a href=\"https://www.paypal.com/webapps/mpp/country-worldwide\" target=\"_blank\">Accepted Countries</a> | <a href="https://www.paypal.com/?BN=LevelFourDevelopmentLLC_Cart" target="_blank">Need an Account?</a> </div>
                 <table id="paypal_pro_table" class="ec_payment_gateway_table">
                 	<tr valign="top" class="form-table">
                       <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
                         <tr valign="top" class="form-table">
-                          <td width="26%" class="itemheading" scope="row">PayPal Pro Partner:</td>
+                          <td width="26%" class="itemheading" scope="row">PayPal Payflow Pro Partner:</td>
                           <td width="74%"><input name="ec_option_paypal_pro_partner"  id="ec_option_paypal_pro_partner" type="text" value="<?php echo get_option('ec_option_paypal_pro_partner'); ?>" style="width:250px;" /></td>
                         </tr>
                         <tr valign="top" class="form-table">
-                          <td class="itemheading" scope="row">PayPal Pro User:</td>
+                          <td class="itemheading" scope="row">PayPal Payflow Pro User:</td>
                           <td><input name="ec_option_paypal_pro_user"  id="ec_option_paypal_pro_user" type="text" value="<?php echo get_option('ec_option_paypal_pro_user'); ?>" style="width:250px;" /></td>
                         </tr>
                         <tr valign="top" class="form-table">
-                          <td width="26%" class="itemheading" scope="row">PayPal Pro Vendor:</td>
+                          <td width="26%" class="itemheading" scope="row">PayPal Payflow Pro Vendor:</td>
                           <td width="74%"><input name="ec_option_paypal_pro_vendor" id="ec_option_paypal_pro_vendor"  type="text" value="<?php echo get_option('ec_option_paypal_pro_vendor'); ?>" style="width:250px;" /></td>
                         </tr>
                         <tr valign="top" class="form-table">
-                          <td class="itemheading" scope="row">PayPal Pro Password:</td>
+                          <td class="itemheading" scope="row">PayPal Payflow Pro Password:</td>
                           <td><input name="ec_option_paypal_pro_password"  id="ec_option_paypal_pro_password" type="text" value="<?php echo get_option('ec_option_paypal_pro_password'); ?>" style="width:250px;" /></td>
                         </tr>
                         <tr valign="top" class="form-table">
-                          <td class="itemheading" scope="row">PayPal Pro Currency:</td>
+                          <td class="itemheading" scope="row">PayPal Payflow Pro Currency:</td>
                           <td>
                           <select name="ec_option_paypal_pro_currency" id="ec_option_paypal_pro_currency">
                             <option value="USD" <?php if (get_option('ec_option_paypal_pro_currency') == 'USD') echo ' selected'; ?>>U.S. Dollar</option>
@@ -1749,7 +2268,7 @@ function ec_show_failed( $fail_text ){
                            </td>
                         </tr>
                         <tr valign="top" class="form-table">
-                          <td class="itemheading" scope="row">PayPal Pro Test Mode:</td>
+                          <td class="itemheading" scope="row">PayPal Payflow Pro Test Mode:</td>
                           <td><select name="ec_option_paypal_pro_test_mode" id="ec_option_paypal_pro_test_mode">
                             <option value="1" <?php if (get_option('ec_option_paypal_pro_test_mode') == 1) echo ' selected'; ?>>Yes</option>
                             <option value="0" <?php if (get_option('ec_option_paypal_pro_test_mode') == 0) echo ' selected'; ?>>No</option>
@@ -1758,6 +2277,57 @@ function ec_show_failed( $fail_text ){
                       </table></td>
                     </tr>
                 </table>
+                <div class="ec_failed_row" id="paypal_payments_pro_row"><input type="radio" name="ec_option_payment_process_method" onchange="update_credit_card_form();" value="paypal_payments_pro" id="paypal_payments_pro_radio"<?php if ( get_option( 'ec_option_payment_process_method') == "paypal_payments_pro" ){ echo " checked=\"checked\""; } ?> /> PayPal Payments Pro - <a href=\"https://www.paypal.com/webapps/mpp/country-worldwide\" target=\"_blank\">Accepted Countries</a> | <a href="https://www.paypal.com/?BN=LevelFourDevelopmentLLC_Cart" target="_blank">Need an Account?</a> </div>
+                <table id="paypal_payments_pro_table" class="ec_payment_gateway_table">
+                    <tr valign="top" class="form-table">
+                      <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+                       <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">PayPal Payments Pro User:</td>
+                          <td><input name="ec_option_paypal_payments_pro_user"  id="ec_option_paypal_payments_pro_user" type="text" value="<?php echo get_option('ec_option_paypal_payments_pro_user'); ?>" style="width:250px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">PayPal Payments Pro Password:</td>
+                          <td><input name="ec_option_paypal_payments_pro_password"  id="ec_option_paypal_payments_pro_password" type="text" value="<?php echo get_option('ec_option_paypal_payments_pro_password'); ?>" style="width:250px;" /></td>
+                        </tr>
+                         <tr valign="top" class="form-table">
+                          <td width="26%" class="itemheading" scope="row">PayPal Payments Pro Signature:</td>
+                          <td width="74%"><input name="ec_option_paypal_payments_pro_signature" id="ec_option_paypal_payments_pro_signature"  type="text" value="<?php echo get_option('ec_option_paypal_payments_pro_signature'); ?>" style="width:250px;" /></td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">PayPal Payments Pro Currency:</td>
+                          <td>
+                          <select name="ec_option_paypal_payments_pro_currency" id="ec_option_paypal_payments_pro_currency">
+                            <option value="USD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'USD') echo ' selected'; ?>>U.S. Dollar</option>
+                            <option value="AUD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'AUD') echo ' selected'; ?>>Australian Dollar</option>
+                            <option value="CAD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'CAD') echo ' selected'; ?>>Canadian Dollar</option>
+                            <option value="CZK" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'CZK') echo ' selected'; ?>>Czech Koruna</option>
+                            <option value="DKK" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'DKK') echo ' selected'; ?>>Danish Krone</option>
+                            <option value="EUR" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'EUR') echo ' selected'; ?>>Euro</option>
+                            <option value="HKD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'HKD') echo ' selected'; ?>>Hong Kong Dollar</option>
+                            <option value="HUF" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'HUF') echo ' selected'; ?>>Hungarian Forint</option>
+                            <option value="JPY" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'JPY') echo ' selected'; ?>>Japanese Yen</option>
+                            <option value="NOK" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'NOK') echo ' selected'; ?>>Norwegian Krone</option>
+                            <option value="NZD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'NZD') echo ' selected'; ?>>New Zealand Dollar</option>
+                            <option value="PLN" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'PLN') echo ' selected'; ?>>Polish Zloty</option>
+                            <option value="GBP" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'GBP') echo ' selected'; ?>>Pound Sterling</option>
+                            <option value="SGD" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'SGD') echo ' selected'; ?>>Singapore Dollar</option>
+                            <option value="SEK" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'SEK') echo ' selected'; ?>>Swedish Krona</option>
+                            <option value="CHF" <?php if (get_option('ec_option_paypal_payments_pro_currency') == 'CHF') echo ' selected'; ?>>Swiss Franc</option>
+                          </select>
+                          </td>
+                        </tr>
+                        <tr valign="top" class="form-table">
+                          <td class="itemheading" scope="row">PayPal Payments Pro Test Mode:</td>
+                          <td><select name="ec_option_paypal_payments_pro_test_mode" id="ec_option_paypal_payments_pro_test_mode">
+                            <option value="1" <?php if (get_option('ec_option_paypal_payments_pro_test_mode') == 1) echo ' selected'; ?>>Yes</option>
+                            <option value="0" <?php if (get_option('ec_option_paypal_payments_pro_test_mode') == 0) echo ' selected'; ?>>No</option>
+                          </select></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+                </table>
+                
+                
                 <div class="ec_failed_row" id="realex_row"><input type="radio" name="ec_option_payment_process_method" onchange="update_credit_card_form();" value="realex" id="realex_radio"<?php if ( get_option( 'ec_option_payment_process_method') == "realex" ){ echo " checked=\"checked\""; } ?> /> Realex Payments - <a href="http://www.realexpayments.com/business-offering" target="_blank">Need an Account?</a></div>
                 <table id="realex_table" class="ec_payment_gateway_table">
                 	<tr valign="top" class="form-table">
@@ -2035,7 +2605,7 @@ function ec_show_failed( $fail_text ){
                       </table></td>
                     </tr>
                 </table>
-                <div class="ec_failed_row" id="paymentexpress_row"><input type="radio" name="ec_option_payment_process_method" onchange="update_credit_card_form();" value="paymentexpress" id="paymentexpress_radio"<?php if ( get_option( 'ec_option_payment_process_method') == "paymentexpress" ){ echo " checked=\"checked\""; } ?> /> PaymentExpress - <a href="https://sec.paymentexpress.com/pxmi/apply" target="_blank">Need an Account?</a></div>
+                <div class="ec_failed_row" id="paymentexpress_row"><input type="radio" name="ec_option_payment_process_method" onchange="update_credit_card_form();" value="paymentexpress" id="paymentexpress_radio"<?php if ( get_option( 'ec_option_payment_process_method') == "paymentexpress" ){ echo " checked=\"checked\""; } ?> /> PaymentExpress PxPost - <a href="https://sec.paymentexpress.com/pxmi/apply" target="_blank">Need an Account?</a></div>
                 <table id="paymentexpress_table" class="ec_payment_gateway_table">
                 	<tr valign="top" class="form-table">
                       <td height="116" colspan="2" scope="row"><table width="90%" border="0" cellspacing="0" cellpadding="0">
@@ -2214,41 +2784,41 @@ function ec_show_failed( $fail_text ){
 							jQuery( "#no_full_license" ).show( );
 						}else{
 							jQuery("#ec_credit_card_location_row").show();
-							// authorize, paypal_pro, realex, sagepay, firstdata, paymentexpress, chronopay, eway, paypoint, securepay 
+							// authorize, paypal_pro, realex, sagepay, firstdata, paymentexpress, chronopay, eway, paypoint, securepay, paypal_payments_pro, braintree, goemerchant 
 							if( location == "us" )
-								ec_update_credit_card_options( 1, 1, 0, 0, 1, 1, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1 );
 							if( location == "ca" )
-								ec_update_credit_card_options( 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 );
 							if( location == "uk" )
-								ec_update_credit_card_options( 1, 1, 1, 1, 0, 1, 1, 1, 1, 0 );
+								ec_update_credit_card_options( 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0 );
 							if( location == "au" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 1, 1, 1, 1, 1 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0 );
 							if( location == "ireland" )
-								ec_update_credit_card_options( 1, 1, 0, 1, 0, 0, 0, 0, 1, 0 );
+								ec_update_credit_card_options( 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0 );
 							if( location == "germany" )
-								ec_update_credit_card_options( 1, 1, 0, 1, 0, 0, 0, 0, 1, 0 );
+								ec_update_credit_card_options( 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0 );
 							if( location == "spain" )
-								ec_update_credit_card_options( 1, 1, 0, 1, 0, 0, 0, 0, 1, 0 );
+								ec_update_credit_card_options( 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0 );
 							if( location == "eu" )
-								ec_update_credit_card_options( 1, 1, 1, 0, 0, 0, 0, 0, 1, 0 );
+								ec_update_credit_card_options( 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0 );
 							if( location == "ru" )
-								ec_update_credit_card_options( 1, 1, 0, 0, 0, 0, 1, 0, 1, 0 );
+								ec_update_credit_card_options( 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0 );
 							if( location == "ch" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 );
 							if( location == "jp" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 							if( location == "central_america" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 							if( location == "south_america" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 							if( location == "af" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 							if( location == "asia" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 );
 							if( location == "middle_east" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 							if( location == "south_pacific" )
-								ec_update_credit_card_options( 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 );
+								ec_update_credit_card_options( 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 );
 							
 							jQuery('#ec_select_cc_label').show();	
 							ec_show_selected_payment_option( );
@@ -2301,9 +2871,21 @@ function ec_show_failed( $fail_text ){
 						jQuery( '#securepay_table' ).show( );
 						ec_show_available_credit_card_types( 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0 );
 					}
+					if( document.getElementById( 'paypal_payments_pro_radio' ).checked ){
+						jQuery( '#paypal_payments_pro_table' ).show( );
+						ec_show_available_credit_card_types( 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0 );
+					}
+					if( document.getElementById( 'braintree_radio' ).checked ){
+						jQuery( '#braintree_table' ).show( );
+						ec_show_available_credit_card_types( 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0 );
+					}
+					if( document.getElementById( 'goemerchant_radio' ).checked ){
+						jQuery( '#goemerchant_table' ).show( );
+						ec_show_available_credit_card_types( 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0 );
+					}
 				}
 				
-				function ec_update_credit_card_options( authorize, paypal_pro, realex, sagepay, firstdata, paymentexpress, chronopay, eway, paypoint, securepay ){
+				function ec_update_credit_card_options( authorize, paypal_pro, realex, sagepay, firstdata, paymentexpress, chronopay, eway, paypoint, securepay, paypal_payments_pro, braintree, goemerchant ){
 					if( authorize )
 						jQuery("#authorize_row").show();
 					else
@@ -2353,6 +2935,21 @@ function ec_show_failed( $fail_text ){
 						jQuery("#securepay_row").show();
 					else
 						document.getElementById( 'securepay_radio' ).checked = false;
+					
+					if( paypal_payments_pro )
+						jQuery("#paypal_payments_pro_row").show();
+					else
+						document.getElementById( 'paypal_payments_pro_radio' ).checked = false;
+					
+					if( braintree )
+						jQuery("#braintree_row").show();
+					else
+						document.getElementById( 'braintree_radio' ).checked = false;
+					
+					if( goemerchant )
+						jQuery("#goemerchant_row").show();
+					else
+						document.getElementById( 'goemerchant_radio' ).checked = false;
 				}
 				
 				function ec_show_available_credit_card_types( visa, delta, uke, discover, mastercard, mcdebit, amex, jcb, diners, laser, maestro ){
@@ -2408,10 +3005,16 @@ function ec_show_failed( $fail_text ){
 					jQuery("#which_gateway_label").hide();
 					jQuery("#authorize_row").hide();
 					jQuery("#authorize_table").hide();
+					jQuery("#braintree_row").hide();
+					jQuery("#braintree_table").hide();
 					jQuery("#paypal_pro_row").hide();
 					jQuery("#paypal_pro_table").hide();
+					jQuery("#paypal_payments_pro_row").hide();
+					jQuery("#paypal_payments_pro_table").hide();
 					jQuery("#realex_row").hide();
 					jQuery("#realex_table").hide();
+					jQuery("#goemerchant_row").hide();
+					jQuery("#goemerchant_table").hide();
 					jQuery("#sagepay_row").hide();
 					jQuery("#sagepay_table").hide();
 					jQuery("#firstdata_row").hide();
@@ -2810,6 +3413,100 @@ function ec_show_failed( $fail_text ){
 						<?php }
 					}?>
                     
+                    <?php 
+					// AUS POST
+					$total_payment++;
+					
+					if( $auspost_has_settings && $auspost_setup ){
+						$correct_payment++;
+						ec_show_check( "Your Australia Post Account is setup correctly. To change the account settings, do so in the admin console -> rates -> manage shipping rates" );
+					}else{
+						if( get_option( 'ec_checklist_shipping_use_auspost' ) == "yes" ){
+							if( !$auspost_has_settings )
+								ec_show_failed( "You have not added your account information for Australia Post, please enter that information below." );
+							else{
+								// Add the error codes here!
+								if( $auspost_error_reason == "1" )
+									ec_show_failed( "Authentication with Australia Post failed. Likely the access key you have entered for Australia Post is invalid or the password is incorrect. This will also fail if you enter an invalid postal code. Please double check your settings and if you still have difficulties please contact WP EasyCart for assistance <a href=\"http://www.wpeasycart.com/support-ticket/\">here</a>." );
+								
+							}
+							?>
+					
+						<form method="post" action="" />
+                            <div class="ec_failed_row">Australia Post API Key: <input type="text" name="auspost_api_key" value="<?php echo $setting->get_setting( 'auspost_api_key' ); ?>" /></div>
+                            <div class="ec_failed_row">Australia Post Ship From Postal Code: <input type="text" name="auspost_ship_from_zip" value="<?php echo $setting->get_setting( 'auspost_ship_from_zip' ); ?>" /></div>
+                            <div class="ec_failed_row"><input type="submit" class="button-primary"  value="Save Australia Post Data" /></div>
+                            <input type="hidden" name="ec_action" value="update_auspost" />
+                        </form>
+					   <?php
+						}else if( get_option( 'ec_checklist_shipping_use_auspost' ) == "no" ){ //Close use auspost IF
+							$correct_payment++;
+							ec_show_check( "You have chosen to not use Australia Post live shipping. This option can be edited further in the EasyCart Admin, under 'rates' and 'manage shipping rates'" );
+						}else{
+							ec_show_failed( "You have not told us if you would like to use Australia Post live shipping rates. Please select yes or no below." );
+							?>
+						<form method="post" action="" />
+                            <div class="ec_failed_row">Would you like to use Australia Post Live Shipping: <select name="ec_checklist_shipping_use_auspost"><option value="0"<?php if( get_option( 'ec_checklist_shipping_use_auspost' ) == "0" || get_option( 'ec_checklist_shipping_use_auspost' ) == "" ){ echo " selected=\"selected\""; }?>>Select One</option><option value="no"<?php if( get_option( 'ec_checklist_shipping_use_auspost' ) == "no" ){ echo " selected=\"selected\""; }?>>No Thank You</option><option value="yes"<?php if( get_option( 'ec_checklist_shipping_use_auspost' ) == "yes" ){ echo " selected=\"selected\""; }?>>Yes Please</option></select><input type="submit" class="button-primary"  value="Save My Answer" /></div>
+                            <input type="hidden" name="ec_action" value="update_option" />
+                            <input type="hidden" name="ec_option_name" value="ec_checklist_shipping_use_auspost" />
+                        </form>
+						<?php }
+					}?>
+                    
+                    <?php 
+					// DHL POST
+					$total_payment++;
+					
+					if( $dhl_has_settings && $dhl_setup ){
+						$correct_payment++;
+						ec_show_check( "Your DHL Account is setup correctly. To change the account settings, do so in the admin console -> rates -> manage shipping rates" );
+					}else{
+						if( get_option( 'ec_checklist_shipping_use_dhl' ) == "yes" ){
+							if( !$dhl_has_settings )
+								ec_show_failed( "You have not added your account information for DHL, please enter that information below." );
+							else{
+								// Add the error codes here!
+								if( $dhl_error_reason == "Validation Failure:Site Id is wrong" )
+									ec_show_failed( "Authentication with DHL failed. The Site ID you have entered is incorrect. Please double check your settings and if you still have difficulties please contact WP EasyCart for assistance <a href=\"http://www.wpeasycart.com/support-ticket/\">here</a>." );
+								else if( $dhl_error_reason == "Validation Failure:Password provided is wrong" )
+									ec_show_failed( "Authentication with DHL failed. The password you have entered is incorrect. Please double check your settings and if you still have difficulties please contact WP EasyCart for assistance <a href=\"http://www.wpeasycart.com/support-ticket/\">here</a>." );
+								else if( $dhl_error_reason == "The payment country could not be found  please check your payment country." )
+									ec_show_failed( "The country code you have entered could not be found. Please double check your settings and if you still have difficulties please contact WP EasyCart for assistance <a href=\"http://www.wpeasycart.com/support-ticket/\">here</a>." );
+								else if( $dhl_error_code == "111" )
+									ec_show_failed( "The country code you entered was an incorrect length or the weight unit is the wrong length. These values should be a 2 digit country code and a 2 digit weight code (LB or KG). Please double check your settings and if you still have difficulties please contact WP EasyCart for assistance <a href=\"http://www.wpeasycart.com/support-ticket/\">here</a>." );
+								else if( $dhl_error_code == "3024" )
+									ec_show_failed( "The postal code you have entered is in the wrong format. Please double check your settings and if you still have difficulties please contact WP EasyCart for assistance <a href=\"http://www.wpeasycart.com/support-ticket/\">here</a>." );
+								else if( $dhl_error_code == "3002" )
+									ec_show_failed( "The postal code you have entered was not found. Please double check your settings and if you still have difficulties please contact WP EasyCart for assistance <a href=\"http://www.wpeasycart.com/support-ticket/\">here</a>." );
+								
+							}
+							?>
+					
+						<form method="post" action="" />
+                            <div class="ec_failed_row">DHL Site ID: <input type="text" name="dhl_site_id" value="<?php echo $setting->get_setting( 'dhl_site_id' ); ?>" /></div>
+                            <div class="ec_failed_row">DHL Password: <input type="text" name="dhl_password" value="<?php echo $setting->get_setting( 'dhl_password' ); ?>" /></div>
+                            <div class="ec_failed_row">DHL Ship From Country (eg US or CA): <input type="text" name="dhl_ship_from_country" value="<?php echo $setting->get_setting( 'dhl_ship_from_country' ); ?>" /></div>
+                            <div class="ec_failed_row">DHL Ship From Postal Code: <input type="text" name="dhl_ship_from_zip" value="<?php echo $setting->get_setting( 'dhl_ship_from_zip' ); ?>" /></div>
+                            <div class="ec_failed_row">DHL Weight Unit (LB or KG): <input type="text" name="dhl_weight_unit" value="<?php echo $setting->get_setting( 'dhl_weight_unit' ); ?>" /></div>
+                            <div class="ec_failed_row">DHL Test Mode: <select name="dhl_test_mode"><option value="0"<?php if( $setting->get_setting( 'dhl_test_mode' ) == "0" ){echo " selected=\"selected\""; } ?>>No</option><option value="1"<?php if( $setting->get_setting( 'dhl_test_mode' ) == "1" ){echo " selected=\"selected\""; } ?>>Yes</option></select></div>
+                            <div class="ec_failed_row"><input type="submit" class="button-primary"  value="Save DHL Data" /></div>
+                            <input type="hidden" name="ec_action" value="update_dhl" />
+                        </form>
+					   <?php
+						}else if( get_option( 'ec_checklist_shipping_use_dhl' ) == "no" ){ //Close use dhl IF
+							$correct_payment++;
+							ec_show_check( "You have chosen to not use DHL live shipping. This option can be edited further in the EasyCart Admin, under 'rates' and 'manage shipping rates'" );
+						}else{
+							ec_show_failed( "You have not told us if you would like to use DHL live shipping rates. Please select yes or no below." );
+							?>
+						<form method="post" action="" />
+                            <div class="ec_failed_row">Would you like to use DHL Live Shipping: <select name="ec_checklist_shipping_use_dhl"><option value="0"<?php if( get_option( 'ec_checklist_shipping_use_dhl' ) == "0" || get_option( 'ec_checklist_shipping_use_dhl' ) == "" ){ echo " selected=\"selected\""; }?>>Select One</option><option value="no"<?php if( get_option( 'ec_checklist_shipping_use_dhl' ) == "no" ){ echo " selected=\"selected\""; }?>>No Thank You</option><option value="yes"<?php if( get_option( 'ec_checklist_shipping_use_dhl' ) == "yes" ){ echo " selected=\"selected\""; }?>>Yes Please</option></select><input type="submit" class="button-primary"  value="Save My Answer" /></div>
+                            <input type="hidden" name="ec_action" value="update_option" />
+                            <input type="hidden" name="ec_option_name" value="ec_checklist_shipping_use_dhl" />
+                        </form>
+						<?php }
+					}?>
+                    
                 	<div class="ec_failed_row ec_live_row"><b>Add a Shipping Rate</b></div>
                     <div class="ec_failed_row ec_live_row">Shipping Label: <input type="text" name="ec_new_live_label" id="ec_new_live_label" value="" />, Rate Code: <select name="ec_new_live_code" id="ec_new_live_code">
                     	<option value="0">Select One</option>
@@ -2859,7 +3556,7 @@ function ec_show_failed( $fail_text ){
 						<option value="FEDEX_GROUND" data-shiptype="fedex">FedEx Ground</option>
 						<option value="FIRST_OVERNIGHT" data-shiptype="fedex">FedEx First Overnight</option>
 						<option value="GROUND_HOME_DELIVERY" data-shiptype="fedex">FedEx Ground Home Delivery</option>
-						<option value="INTERNATIONAL_ECONOMY" data-shiptype="fedex">fedex International Economy</option>
+						<option value="INTERNATIONAL_ECONOMY" data-shiptype="fedex">FedEx International Economy</option>
 						<option value="INTERNATIONAL_ECONOMY_FREIGHT" data-shiptype="fedex">FedEx International Economy Freight</option>
 						<option value="INTERNATIONAL_FIRST" data-shiptype="fedex">FedEx International First</option>
 						<option value="INTERNATIONAL_PRIORITY" data-shiptype="fedex">FedEx International Priority</option>
@@ -2867,6 +3564,48 @@ function ec_show_failed( $fail_text ){
 						<option value="PRIORITY_OVERNIGHT" data-shiptype="fedex">FedEx Priority Overnight</option>
 						<option value="SMART_POST" data-shiptype="fedex">FedEx Smart Post</option>
 						<option value="STANDARD_OVERNIGHT" data-shiptype="fedex">FedEx Standard Overnight</option>
+                    	<option value="0">-----AUSTRALIA POST CODES---</option>
+						<option value="AUS_PARCEL_REGULAR" data-shiptype="auspost">Parcel Post</option>
+						<option value="AUS_PARCEL_REGULAR_SATCHEL_500G" data-shiptype="auspost">Parcel Post Small (500g) Satchel</option>
+						<option value="AUS_PARCEL_EXPRESS" data-shiptype="auspost">Express Post</option>
+						<option value="AUS_PARCEL_EXPRESS_SATCHEL_500G" data-shiptype="auspost">Express Post Small (500g) Satchel</option>
+						<option value="INTL_SERVICE_ECI_PLATINUM" data-shiptype="auspost">Express Courier International Platinum</option>
+						<option value="INTL_SERVICE_ECI_M" data-shiptype="auspost">Express Courier International Merchandise</option>
+						<option value="INTL_SERVICE_ECI_D" data-shiptype="auspost">Express Courier International Documents</option>
+						<option value="INTL_SERVICE_EPI" data-shiptype="auspost">Express Post International</option>
+						<option value="INTL_SERVICE_AIR_MAIL" data-shiptype="auspost">International Air Mail</option>
+						<option value="INTL_SERVICE_SEA_MAIL" data-shiptype="auspost">International Sea Mail</option>
+                    	<option value="0">-----DHL CODES---</option>
+                        <option value="1" data-shiptype="dhl">DOMESTIC EXPRESS 12:00</option>
+                        <option value="2" data-shiptype="dhl">B2C</option>
+                        <option value="4" data-shiptype="dhl">JETLINE</option>
+                        <option value="5" data-shiptype="dhl">SPRINTLINE</option>
+                        <option value="6" data-shiptype="dhl">SECURELINE</option>
+                        <option value="7" data-shiptype="dhl">EXPRESS EASY</option>
+                        <option value="9" data-shiptype="dhl">EUROPACK</option>
+                        <option value="A" data-shiptype="dhl">AUTO REVERSALS</option>
+                        <option value="B" data-shiptype="dhl">BREAK BULK EXPRESS</option>
+                        <option value="C" data-shiptype="dhl">MEDICAL EXPRESS</option>
+                        <option value="D" data-shiptype="dhl">EXPRESS WORLDWIDE</option>
+                        <option value="E" data-shiptype="dhl">EXPRESS 9:00</option>
+                        <option value="F" data-shiptype="dhl">FREIGHT WORLDWIDE</option>
+                        <option value="G" data-shiptype="dhl">DOMESTIC ECONOMY SELECT</option>
+                        <option value="H" data-shiptype="dhl">ECONOMY SELECT</option>
+                        <option value="I" data-shiptype="dhl">BREAK BULK ECONOMY</option>
+                        <option value="J" data-shiptype="dhl">JUMBO BOX</option>
+                        <option value="K" data-shiptype="dhl">EXPRESS 9:00</option>
+                        <option value="L" data-shiptype="dhl">EXPRESS 10:30</option>
+                        <option value="N" data-shiptype="dhl">DOMESTIC EXPRESS</option>
+                        <option value="O" data-shiptype="dhl">DOM EXPRESS 10:30</option>
+                        <option value="R" data-shiptype="dhl">GLOBALMAIL BUSINESS</option>
+                        <option value="S" data-shiptype="dhl">SAME DAY</option>
+                        <option value="T" data-shiptype="dhl">EXPRESS 12:00</option>
+                        <option value="V" data-shiptype="dhl">EUROPACK</option>
+                        <option value="W" data-shiptype="dhl">ECONOMY SELECT</option>
+                        <option value="X" data-shiptype="dhl">EXPRESS ENVELOPE</option>
+                        <option value="Y" data-shiptype="dhl">EXPRESS 12:00</option>
+                        <option value="Z" data-shiptype="dhl">Destination Charges</option>
+                        
                     </select>, Rate Order in List: <input type="number" name="ec_new_live_order" id="ec_new_live_order" value="0"  /></div>
                     <div class="ec_failed_row ec_live_row"><input type="button" class="button-primary" value="Add Rate" onclick="ec_add_shipping_rate( 'live_based' );" /></div>
                 
@@ -2877,7 +3616,7 @@ function ec_show_failed( $fail_text ){
                         $rates = $db->get_shipping_data( );
                         $i=0;
                         foreach( $rates as $rate ){
-                            if( $rate->is_ups_based || $rate->is_usps_based || $rate->is_fedex_based ){
+                            if( $rate->is_ups_based || $rate->is_usps_based || $rate->is_fedex_based || $rate->is_auspost_based || $rate->is_dhl_based ){
                                 $i++;
 								if( $rate->is_ups_based )
 								$type = "UPS";
@@ -2885,6 +3624,10 @@ function ec_show_failed( $fail_text ){
 								$type = "USPS";
 								else if( $rate->is_fedex_based )
 								$type = "FedEx";
+								else if( $rate->is_auspost_based )
+								$type = "AU Post";
+								else if( $rate->is_dhl_based )
+								$type = "DHL";
                         ?>
                     <div class="ec_failed_row ec_list_style_<?php echo $i%2; ?>"><div><span class="ec_live_type_column"><input type="hidden" name="ec_live_code_<?php echo $rate->shippingrate_id; ?>" id="ec_live_code_<?php echo $rate->shippingrate_id; ?>" value="<?php echo $rate->shipping_code; ?>" /><input type="hidden" name="ec_live_type_<?php echo $rate->shippingrate_id; ?>" id="ec_live_type_<?php echo $rate->shippingrate_id; ?>" value="<?php echo $type; ?>" /><?php echo $type; ?></span><span class="ec_live_label_column">Rate Label: <input type="text" value="<?php echo $rate->shipping_label; ?>" id="ec_live_label_<?php echo $rate->shippingrate_id; ?>" /></span><span class="ec_live_order_column">Rate Order: <input type="number" value="<?php echo $rate->shipping_order; ?>" id="ec_live_order_<?php echo $rate->shippingrate_id; ?>" /></span><span class="ec_live_buttons_column"><input type="button" class="button-primary" value="Delete Rate" onclick="ec_delete_shipping_rate( '<?php echo $rate->shippingrate_id; ?>' );" /> <input type="button" class="button-primary" value="Update Rate" onclick="ec_update_shipping_rate( 'live_based', '<?php echo $rate->shippingrate_id; ?>' );" /></span></div></div>
                 
@@ -3017,10 +3760,10 @@ function ec_show_failed( $fail_text ){
               <h3>What is Left?</h3>
               <ol>
                   <li>Uninstall sample data first if you ever installed it. That can be <a href="?page=ec_install">done here</a>.</li>
-                  <li>Add your manufacturer list, even if it is just your own company name, it is required by each product to have one. That can be done by getting on the <a href="?ec_adminconsole">admin console here</a> and clicking 'products' -> 'manage manufacturer list', the submenu is available on the left side of the admin console once you click products.</li>
-                  <li>Add your menu items, submenu items, and subsubmenu items. That can be done by getting on the <a href="?ec_adminconsole">admin console here</a> and clicking 'products' -> 'manage store menu system', the submenu is available on the left side of the admin console once you click products. To read more about this <a href="http://wpeasycart.com/docs/1.0.0/administration/menu_system.php" target="_blank">click here</a></li>
-                  <li>Add your option sets. That can be done by getting on the <a href="?ec_adminconsole">admin console here</a> and clicking 'products' -> 'manage option sets', the submenu is available on the left side of the admin console once you click products. To read more about this <a href="http://wpeasycart.com/docs/1.0.0/administration/option_system.php" target="_blank">click here</a></li>
-                  <li>Start adding your products. That can be done by getting on the <a href="?ec_adminconsole">admin console here</a> and clicking 'products'. To read more about this <a href="http://wpeasycart.com/docs/1.0.0/administration/product_basicinfo.php" target="_blank">click here</a></li>
+                  <li>Add your manufacturer list, even if it is just your own company name, it is required by each product to have one. That can be done by getting on the <a href="?page=ec_adminconsole">admin console here</a> and clicking 'products' -> 'manage manufacturer list', the submenu is available on the left side of the admin console once you click products.</li>
+                  <li>Add your menu items, submenu items, and subsubmenu items. That can be done by getting on the <a href="?page=ec_adminconsole">admin console here</a> and clicking 'products' -> 'manage store menu system', the submenu is available on the left side of the admin console once you click products. To read more about this <a href="http://wpeasycart.com/docs/1.0.0/administration/menu_system.php" target="_blank">click here</a></li>
+                  <li>Add your option sets. That can be done by getting on the <a href="?page=ec_adminconsole">admin console here</a> and clicking 'products' -> 'manage option sets', the submenu is available on the left side of the admin console once you click products. To read more about this <a href="http://wpeasycart.com/docs/1.0.0/administration/option_system.php" target="_blank">click here</a></li>
+                  <li>Start adding your products. That can be done by getting on the <a href="?page=ec_adminconsole">admin console here</a> and clicking 'products'. To read more about this <a href="http://wpeasycart.com/docs/1.0.0/administration/product_basicinfo.php" target="_blank">click here</a></li>
               </ol>
           </td>
         </tr>

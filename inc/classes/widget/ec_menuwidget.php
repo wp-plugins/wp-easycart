@@ -74,6 +74,8 @@ class ec_menuwidget extends WP_Widget{
 			if( $last_menu1 != $menu_item->menulevel1_id ){
 				$i++;
 				$last_menu1 = $menu_item->menulevel1_id;
+				$last_menu2 = 0;
+				$j=-1;
 				$menu_array[] = array(array(), $menu_item->menulevel1_id, $menu_item->menu1_name);
 			}
 			

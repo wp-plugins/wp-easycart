@@ -346,6 +346,8 @@ function ec_add_shipping_rate( type ){
 	var is_ups_based = 0;
 	var is_usps_based = 0;
 	var is_fedex_based = 0;
+	var is_auspost_based = 0;
+	var is_dhl_based = 0;
 	var trigger_rate = "";
 	var shipping_rate = "";
 	var shipping_label = "";
@@ -379,6 +381,10 @@ function ec_add_shipping_rate( type ){
 			is_usps_based = 1;
 		else if( ship_method_type == "fedex" )
 			is_fedex_based = 1;
+		else if( ship_method_type == "auspost" )
+			is_auspost_based = 1;
+		else if( ship_method_type == "dhl" )
+			is_dhl_based = 1;
 	}
 	
 	var data = {
@@ -390,6 +396,8 @@ function ec_add_shipping_rate( type ){
 		is_ups_based: is_ups_based,
 		is_usps_based: is_usps_based,
 		is_fedex_based: is_fedex_based,
+		is_auspost_based: is_auspost_based,
+		is_dhl_based: is_dhl_based,
 		trigger_rate: trigger_rate,
 		shipping_rate: shipping_rate,
 		shipping_label: shipping_label,
@@ -409,6 +417,8 @@ function ec_update_shipping_rate( type, shippingrate_id ){
 	var is_ups_based = 0;
 	var is_usps_based = 0;
 	var is_fedex_based = 0;
+	var is_auspost_based = 0;
+	var is_dhl_based = 0;
 	var trigger_rate = "";
 	var shipping_rate = "";
 	var shipping_label = "";
@@ -442,6 +452,10 @@ function ec_update_shipping_rate( type, shippingrate_id ){
 			is_usps_based = 1;
 		else if( ship_method_type == "FedEx" )
 			is_fedex_based = 1;
+		else if( ship_method_type == "AU Post" )
+			is_auspost_based = 1;
+		else if( ship_method_type == "DHL" )
+			is_dhl_based = 1;
 	}
 	
 	var data = {
@@ -455,6 +469,8 @@ function ec_update_shipping_rate( type, shippingrate_id ){
 		is_ups_based: is_ups_based,
 		is_usps_based: is_usps_based,
 		is_fedex_based: is_fedex_based,
+		is_auspost_based: is_auspost_based,
+		is_dhl_based: is_dhl_based,
 		shipping_rate: shipping_rate,
 		shipping_label: shipping_label,
 		shipping_order: shipping_order,
@@ -495,8 +511,8 @@ function ec_update_shipping_price_list( data ){
 		}else if( data[i]["is_method_based"] == "1" ){
 			j++;
 			method_innerhtml += "<div class=\"ec_failed_row ec_list_style_" + (j%2) + "\"><div><span class=\"ec_method_label_column\">Rate Label: <input type=\"text\" value=\"" + data[i]["shipping_label"] + "\" id=\"ec_method_label_" + data[i]["shippingrate_id"] + "\" /></span><span class=\"ec_method_rate_column\">Shipping Rate: <input type=\"number\" value=\"" + data[i]["shipping_rate"] + "\" id=\"ec_method_shipping_rate_" + data[i]["shippingrate_id"] + "\" /></span><span class=\"ec_method_order_column\">Rate Order: <input type=\"number\" value=\"" + data[i]["shipping_order"] + "\" id=\"ec_method_order_" + data[i]["shippingrate_id"] + "\" /></span><span class=\"ec_method_buttons_column\"><input type=\"button\" class=\"button-primary\" value=\"Delete Rate\" onclick=\"ec_delete_shipping_rate( '" + data[i]["shippingrate_id"] + "' );\" /> <input type=\"button\" class=\"button-primary\" value=\"Update Rate\" onclick=\"ec_update_shipping_rate( 'method_based', '" + data[i]["shippingrate_id"] + "' );\" /></span></div></div>";
-		}else if( data[i]["is_ups_based"] == "1" || data[i]["is_usps_based"] == "1" || data[i]["is_fedex_based"] == "1" ){
-			if( data[i]["is_ups_based"] == "1" ){ type = "UPS"; }else if( data[i]["is_usps_based"] == "1" ){ type = "USPS"; }else if( data[i]["is_fedex_based"] == "1" ){ type = "FedEx"; }
+		}else if( data[i]["is_ups_based"] == "1" || data[i]["is_usps_based"] == "1" || data[i]["is_fedex_based"] == "1" || data[i]["is_auspost_based"] == "1" || data[i]["is_dhl_based"] == "1" ){
+			if( data[i]["is_ups_based"] == "1" ){ type = "UPS"; }else if( data[i]["is_usps_based"] == "1" ){ type = "USPS"; }else if( data[i]["is_fedex_based"] == "1" ){ type = "FedEx"; }else if( data[i]["is_auspost_based"] == "1" ){ type = "AU Post"; }else if( data[i]["is_dhl_based"] == "1" ){ type = "DHL"; }
 			j++;
 			live_innerhtml += "<div class=\"ec_failed_row ec_list_style_" + (j%2) + "\"><div><span class=\"ec_live_type_column\"><input type=\"hidden\" name=\"ec_live_code_" + data[i]["shippingrate_id"] + "\" id=\"ec_live_code_" + data[i]["shippingrate_id"] + "\" value=\"" + data[i]["shipping_code"] + "\" /><input type=\"hidden\" name=\"ec_live_type_" + data[i]["shippingrate_id"] + "\" id=\"ec_live_type_" + data[i]["shippingrate_id"] + "\" value=\"" + type + "\" />" + type + "</span><span class=\"ec_live_label_column\">Rate Label: <input type=\"text\" value=\"" + data[i]["shipping_label"] + "\" id=\"ec_live_label_" + data[i]["shippingrate_id"] + "\" /></span><span class=\"ec_live_order_column\">Rate Order: <input type=\"number\" value=\"" + data[i]["shipping_order"] + "\" id=\"ec_live_order_" + data[i]["shippingrate_id"] + "\" /></span><span class=\"ec_live_buttons_column\"><input type=\"button\" class=\"button-primary\" value=\"Delete Rate\" onclick=\"ec_delete_shipping_rate( '" + data[i]["shippingrate_id"] + "' );\" /> <input type=\"button\" class=\"button-primary\" value=\"Update Rate\" onclick=\"ec_update_shipping_rate( 'live_based', '" + data[i]["shippingrate_id"] + "' );\" /></span></div></div>";
 		}

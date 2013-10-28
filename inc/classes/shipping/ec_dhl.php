@@ -138,14 +138,17 @@ class ec_dhl{
 					}
 				}
 			}else{
-				if( $xml->GetQuoteResponse->BkgDetails->QtdShp->ProductShortCode == $this->get_product_name( $rate_code ) )
-					$rate = $xml->GetQuoteResponse->BkgDetails->QtdShp->TotalAmount;
+				if( $xml->GetQuoteResponse->BkgDetails->QtdShp->ProductShortName == $this->get_product_name( $rate_code ) )
+					$rate = $xml->GetQuoteResponse->BkgDetails->QtdShp->WeightCharge;
 				else
 					$rate = "ERROR";
 			}
 		}else{
 			$rate = "ERROR";
 		}
+		
+		if( $rate == "0.00" )
+			$rate = "ERROR";
 		
 		if( $rate )
 			return $rate;
