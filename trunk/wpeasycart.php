@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.4
+ * Version: 1.2.5
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.4
+ * @version 1.2.5
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_4' );
+define( 'EC_CURRENT_VERSION', '1_2_5' );
 define( 'EC_CURRENT_DB', '1_9' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -962,8 +962,14 @@ add_action( 'wp_ajax_ec_ajax_estimate_shipping', 'ec_ajax_estimate_shipping' );
 add_action( 'wp_ajax_nopriv_ec_ajax_estimate_shipping', 'ec_ajax_estimate_shipping' );
 function ec_ajax_estimate_shipping( ){
 	//Get the variables from the AJAX call
-	if( isset( $_POST['zipcode'] ) )
+	if( isset( $_POST['zipcode'] ) ){
 		$_SESSION['ec_temp_zipcode'] = $_POST['zipcode'];
+		$_SESSION['ec_shipping_zip'] = $_POST['zipcode'];
+	}
+	if( isset( $_POST['country'] ) && $_POST['country'] != "0" ){
+		$_SESSION['ec_temp_country'] = $_POST['country'];
+		$_SESSION['ec_shipping_country'] = $_POST['country'];
+	}
 	
 	$cart = new ec_cart( session_id() );
 	$order_totals = ec_get_order_totals( );
@@ -993,6 +999,21 @@ function ec_ajax_update_shipping_method( ){
 	
 	//Create a new db and submit review
 	$_SESSION['ec_shipping_method'] = $shipping_method;
+	
+	$cart = new ec_cart( session_id() );
+	$order_totals = ec_get_order_totals( );
+	$setting = new ec_setting( );
+	$cart = new ec_cart( session_id() );
+	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
+	
+	$shipping_options = $shipping->get_shipping_options( "", "" );
+	
+	if( $setting->get_shipping_method() == "live" && $shipping_options )
+		echo $GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $order_totals->grand_total ) . "***" . $shipping_options . "***" . $GLOBALS['currency']->get_currency_display( $order_totals->vat_total );
+	else if( $setting->get_shipping_method() == "live" )
+		echo $GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $order_totals->grand_total ) . "***" . "<div class=\"ec_cart_shipping_method_row\">" . $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_error' ) . "</div>";
+	else
+		echo $GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . $GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	
 	die(); // this is required to return a proper result
 	

@@ -45,6 +45,7 @@ class ec_paypal_payments_pro extends ec_gateway{
 											"ITEMAMT"			=> number_format( $this->order_totals->sub_total, 2, '.', '' ),
 											"SHIPPINGAMT"		=> number_format( $this->order_totals->shipping_total, 2, '.', '' ),
 											"TAXAMT"			=> number_format( $this->order_totals->tax_total, 2, '.', '' ),
+											"SHIPDISCAMT"		=> "-" . number_format( $this->order_totals->discount_total, 2, '.', '' ),
 											"CURRENCYCODE"		=> $paypal_payments_pro_currency,
 											
 											//"INVNUM"			=> $this->order_id,

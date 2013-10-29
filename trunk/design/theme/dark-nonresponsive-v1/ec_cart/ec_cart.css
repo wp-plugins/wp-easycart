@@ -221,6 +221,29 @@
 	color:$FFF;
 	font-weight:bold;
 }
+.ec_estimate_shipping_country{
+	width: 100%;
+	float: left;
+	height: 36px;
+	line-height: 36px;
+}
+.ec_estimate_shipping_country span{
+	width:60px;
+}
+.ec_estimate_shipping_country select{
+	height: 30px;
+	margin-left: 5px;
+	width: 291px;
+}
+.ec_estimate_shipping_zip{
+	width: 100%;
+	float: left;
+	height: 36px;
+	line-height: 36px;
+}
+.ec_estimate_shipping_zip span{
+	width:60px;
+}
 .ec_estimate_shipping_loader {
 	display: none;
 	float: right;

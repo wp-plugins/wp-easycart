@@ -65,6 +65,8 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_use_state_dropdown');					array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_use_country_dropdown');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_estimate_shipping_country');			array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');																																												
 		array_push($this->wp_option_names, 'ec_option_stylesheettype');						array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');

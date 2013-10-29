@@ -12,5 +12,14 @@ function ec_cart_shipping_method_change( shipping_method, shipping_price ){
 
 
 function ec_cart_shipping_method_change_finished( data ){
-	// do nothing.
+	var values = data.split("***");
+	
+	if( values.length == 2 ){
+		document.getElementById('ec_cart_shipping').innerHTML = values[0];
+		document.getElementById('ec_cart_grandtotal').innerHTML = values[1];
+	}else{
+		document.getElementById('ec_cart_shipping').innerHTML = values[0];
+		document.getElementById('ec_cart_grandtotal').innerHTML = values[1];
+		document.getElementById('ec_cart_shipping_methods').innerHTML = values[2];	
+	}
 }

@@ -86,7 +86,7 @@ class ec_fedex{
 			$shipper = array( 'Address' => array( 'PostalCode' => $this->fedex_ship_from_zip, 'CountryCode' => $this->fedex_country_code ) );
 			$request['RequestedShipment']['Shipper'] = $shipper;
 			
-			$recipient = array( 'Address' => array( 'PostalCode' => $destination_zip, 'CountryCode' => $destination_country ) );
+			$recipient = array( 'Address' => array( 'PostalCode' => $destination_zip, 'CountryCode' => $destination_country, 'Residential' => 1 ) );
 			$request['RequestedShipment']['Recipient'] = $recipient;
 			
 			$request['RequestedShipment']['RateRequestTypes'] = 'ACCOUNT'; 

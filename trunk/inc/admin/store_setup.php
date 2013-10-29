@@ -15,6 +15,7 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_bcc_email_addresses', $_POST['ec_option_bcc_email_addresses'] );
 	update_option( 'ec_option_use_state_dropdown', $_POST['ec_option_use_state_dropdown'] );
 	update_option( 'ec_option_use_country_dropdown', $_POST['ec_option_use_country_dropdown'] );
+	update_option( 'ec_option_estimate_shipping_country', $_POST['ec_option_estimate_shipping_country'] );
 	update_option( 'ec_option_default_store_filter', $_POST['ec_option_default_store_filter'] );
 	update_option( 'ec_option_default_payment_type', $_POST['ec_option_default_payment_type'] );
 	update_option( 'ec_option_allow_guest', $_POST['ec_option_allow_guest'] );
@@ -131,6 +132,16 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
             <option value="0" <?php if (get_option('ec_option_use_country_dropdown') == 0) echo ' selected'; ?>>No</option>
           </select>
           <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Country Drop Downs</em>Country drop downs allow you to choose to have a pull down for the country, or to have an open text box for the country.  For consistent data, it is best to leave this option on.  you can edit the list of countries in the pulldown by using the admin console software.</span></a>
+          </td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Use Country on Estimate Shipping (Live Shipping Only):<br />
+          <span class="itemsubheading">(edit the country list in the EasyCart Admin console)</span></td>
+          <td valign="top"><select name="ec_option_estimate_shipping_country" id="ec_option_estimate_shipping_country">
+            <option value="1" <?php if (get_option('ec_option_estimate_shipping_country') == 1) echo ' selected'; ?>>Yes</option>
+            <option value="0" <?php if (get_option('ec_option_estimate_shipping_country') == 0) echo ' selected'; ?>>No</option>
+          </select>
+          <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Country for Estimate Shipping</em>We highly recommend you use this option for live shpping estimates. If you initially downloaded the EasyCart prior to 1.2.5, then you will need to update the ec_cart.css and ec_cart.js files in the wp-easycart/design/theme/{your_selected_theme}/ec_cart/ folder to a more current version. This is because the estimate shipping heavily relies on design files and we do not overwrite design files ever on update.</span></a>
           </td>
         </tr>
         <tr valign="top">

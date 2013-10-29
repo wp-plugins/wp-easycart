@@ -68,7 +68,7 @@ class ec_shipping{
 				else if( $shipping_row->is_method_based )			
 					array_push( $this->method_based, array( $shipping_row->shipping_rate, $shipping_row->shipping_label, $shipping_row->shippingrate_id ) );
 				else if( $this->is_live_based( $shipping_row ) ){	
-					array_push( $this->live_based, array( $shipping_row->shipping_code, $shipping_row->shipping_label, $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ) ) );
+					array_push( $this->live_based, array( $shipping_row->shipping_code, $shipping_row->shipping_label, $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
 				}
 			}
 			
@@ -166,7 +166,12 @@ class ec_shipping{
 			$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
 		
 		for( $i=0; $i<count( $this->live_based ); $i++){
-			$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+			if( $this->live_based[$i][4] < 0 )
+				$rate = "0.00";
+			else if( $this->live_based[$i][4] > 0 )
+				$rate = $this->live_based[$i][4];
+			else
+				$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
 			
 			//$rate = $GLOBALS['currency']->get_currency_display( $rate );
 			
@@ -233,7 +238,11 @@ class ec_shipping{
 			$ret_string .= "<input type=\"radio\" name=\"ec_cart_shipping_method\" value=\"" . $this->live_based[$i][2] . "\" onchange=\"ec_cart_shipping_method_change('" . $this->live_based[$i][2] . "', " . $rate . " ); \"";
 			
 			if( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] )
-			$ret_string .= " checked=\"checked\"";
+				$ret_string .= " checked=\"checked\"";
+			else if( !isset( $_SESSION['ec_shipping_method'] ) ){
+				$_SESSION['ec_shipping_method'] = $this->live_based[$i][2];
+				$ret_string .= " checked=\"checked\"";
+			}
 			
 			$ret_string .= " /><span class=\"label\">" . $this->live_based[$i][1] . "</span> <span class=\"price\">" . $GLOBALS['currency']->get_currency_display( $rate ) . "</span></div>";
 			
@@ -286,7 +295,13 @@ class ec_shipping{
 		}else if( $this->shipping_method == "live" ){
 			for( $i=0; $i<count($this->live_based); $i++){
 				if( $this->live_based[$i][2] == $selected_shipping_method_id ){
-					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+					if( $this->live_based[$i][4] < 0 )
+						$rate = "0.00";
+					else if( $this->live_based[$i][4] > 0 )
+						$rate = $this->live_based[$i][4];
+					else
+						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+					
 					return $this->get_live_based_div( $i, $rate );
 				}
 			}
@@ -340,14 +355,24 @@ class ec_shipping{
 			
 		}else if( $this->shipping_method == "live" ){
 			if( !isset( $_SESSION['ec_shipping_method'] ) ){
-				if( isset( $this->live_based ) && count( $this->live_based ) > 0 && count( $this->live_based[0] ) > 3 )
-					$rate = $this->shipper->get_rate( $this->live_based[0][3], $this->live_based[0][0], $this->destination_zip, $this->destination_country, $this->weight );
-				
+				if( isset( $this->live_based ) && count( $this->live_based ) > 0 && count( $this->live_based[0] ) > 3 ){
+					if( $this->live_based[0][4] < 0 )
+						$rate = "0.00";
+					else if( $this->live_based[0][4] > 0 )
+						$rate = $this->live_based[0][4];
+					else
+						$rate = $this->shipper->get_rate( $this->live_based[0][3], $this->live_based[0][0], $this->destination_zip, $this->destination_country, $this->weight );
+				}
 			}else{
 				for( $i=0; $i<count( $this->live_based ); $i++ ){
-					if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] )
-						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
-					
+					if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] ){
+						if( $this->live_based[$i][4] < 0 )
+							$rate = "0.00";
+						else if( $this->live_based[$i][4] > 0 )
+							$rate = $this->live_based[$i][4];
+						else
+							$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+					}
 				}	
 			}
 		}
