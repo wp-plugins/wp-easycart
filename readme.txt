@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,14 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.5 =
+* Upgrade - Estimate shipping, you can now select to require the customer to enter a country to estimate shipping.
+* Bug Fix - FedEx live shipping now using live shipping production servers. Also setting addresses to residential.
+* Bug Fix - PayPal Payments Pro, working with discounts. Was failing because the totals with a discount did not match up.
+* Bug Fix - Live shipping override price was not working.
+* Improvement - Selecting a live rate in the estimate shipping section will update the cart totals automatically.
+* Improvement - Continue shopping button now links back to the main store page.
+* Improvement - First live shipping rate returned is by default selected now.
 = 1.2.4 =
 * Improved Setup Wizard
 * Bug Fixes for DHL and Australia Post

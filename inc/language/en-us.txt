@@ -319,8 +319,16 @@
 					"title":"Cart, Estimate Shipping Sub Title",
 					"value":"Please enter your zip code to estimate shipping costs."
 				},
+				"cart_estimate_shipping_input_country_label":{
+					"title":"Cart, Estimate Shipping, Input Label Country",
+					"value":"Country:"
+				},
+				"cart_estimate_shipping_select_one":{
+					"title":"Cart, Estimate Shipping, Select one for country box",
+					"value":"Select One"
+				},
 				"cart_estimate_shipping_input_label":{
-					"title":"Cart, Estimate Shipping Input Label",
+					"title":"Cart, Estimate Shipping, Input Label Zip Code",
 					"value":"Zip Code:"
 				},
 				"cart_estimate_shipping_button":{

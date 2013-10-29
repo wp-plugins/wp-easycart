@@ -49,7 +49,7 @@ if( $this->should_display_cart( ) ){
     <div class="ec_cart_lower_left_title"><?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_title' )?></div>
     <div class="ec_cart_lower_left_subtitle"><?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_sub_title' )?></div>
     <div class="ec_cart_shipping_costs_row">
-      <?php $this->display_shipping_costs_input( $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_input_label' ), $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_button' ) ); ?>
+      <?php $this->display_shipping_costs_input( $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_input_label' ), $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_button' ), $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_input_country_label' ), $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_select_one' ) ); ?>
       <?php $this->display_estimate_shipping_loader(); ?>
     </div>
     <div class="ec_cart_shipping_methods" id="ec_cart_shipping_methods">

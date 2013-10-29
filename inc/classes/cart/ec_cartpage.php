@@ -317,11 +317,35 @@ class ec_cartpage{
 		echo $this->shipping->get_shipping_promotion_text();
 	}
 	
-	public function display_shipping_costs_input( $label, $button_text ){
-		echo "<span>" . $label . "</span><input type=\"text\" name=\"ec_cart_zip_code\" id=\"ec_cart_zip_code\" value=\"";
+	public function display_shipping_costs_input( $label, $button_text, $label2 = 'Country:', $select_label = 'Select One' ){
+		
+		if( get_option( 'ec_option_estimate_shipping_country' ) ){
+			if( isset( $_SESSION['ec_temp_country'] ) )
+				$selected_country = $_SESSION['ec_temp_country'];
+			else
+				$selected_country = "0";
+			
+			$countries = $this->mysqli->get_countries( );
+			
+			echo "<div class=\"ec_estimate_shipping_country\"><span>" . $label2 . "</span><select name=\"ec_cart_country\" id=\"ec_cart_country\">";
+			echo "<option value=\"0\"";
+			if( $selected_country == "0" )
+				echo " selected=\"selected\"";
+			echo ">" . $select_label . "</option>";
+			foreach( $countries as $country ){
+				echo "<option value=\"" . $country->iso2_cnt . "\"";
+				if( $country->iso2_cnt == $selected_country )
+					echo " selected=\"selected\"";
+				echo ">" . $country->name_cnt . "</option>";
+			}
+			echo "</select></div>";
+		}else{
+			echo "<input type=\"hidden\" name=\"ec_cart_country\" id=\"ec_cart_country\" value=\"0\" />";
+		}
+		echo "<div class=\"ec_estimate_shipping_zip\"><span>" . $label . "</span><input type=\"text\" name=\"ec_cart_zip_code\" id=\"ec_cart_zip_code\" value=\"";
 		if( isset( $_SESSION['ec_temp_zipcode'] ) )
 			echo $_SESSION['ec_temp_zipcode'];
-		echo "\" /><a href=\"#\" onclick=\"return ec_estimate_shipping_click();\">" . $button_text . "</a>";
+		echo "\" /><a href=\"#\" onclick=\"return ec_estimate_shipping_click();\">" . $button_text . "</a></div>";
 	}
 	
 	public function display_shipping_costs_input_text( $label ){
@@ -378,8 +402,6 @@ class ec_cartpage{
 	
 	public function display_continue_shopping_button( $button_text ){
 		echo "<a href=\"" . $this->store_page;
-		if( isset( $_GET['model_number'] ) )
-			echo $this->permalink_divider . "model_number=" . $_GET['model_number'];
 		
 		echo "\" class=\"ec_cart_continue_shopping_link\">" . $button_text . "</a>";
 	}
@@ -866,7 +888,7 @@ class ec_cartpage{
 	}
 	
 	public function ec_cart_display_payment_method_input( $select_one_text ){
-		echo "<select name=\"ec_cart_payment_type\" id=\"ec_cart_payment_type\" class=\"ec_cart_payment_information_input_select\" onchange=\"ec_cart_payment_type_change();\">";
+		echo "<select name=\"ec_cart_payment_type\" id=\"ec_cart_payment_type\" class=\"ec_cart_payment_information_input_select\">";
 		
 		echo "<option value=\"0\">" . $select_one_text . "</option>";
 		

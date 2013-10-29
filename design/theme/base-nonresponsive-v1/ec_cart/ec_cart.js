@@ -6,7 +6,8 @@ function ec_estimate_shipping_click( ){
 	
 	var data = {
 		action: 'ec_ajax_estimate_shipping',
-		zipcode: document.getElementById( 'ec_cart_zip_code' ).value
+		zipcode: document.getElementById( 'ec_cart_zip_code' ).value,
+		country: document.getElementById( 'ec_cart_country' ).value
 	};
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ ec_estimate_shipping_complete( data ); } } );
