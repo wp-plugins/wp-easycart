@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.6 =
+* Bug Fix - USPS now chooses the option to send internationally with your own box, bringing the price of shipping down for the customer.
 = 1.2.5 =
 * Upgrade - Estimate shipping, you can now select to require the customer to enter a country to estimate shipping.
 * Bug Fix - FedEx live shipping now using live shipping production servers. Also setting addresses to residential.

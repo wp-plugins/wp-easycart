@@ -242,16 +242,14 @@ class ec_usps{
 		
 		if( $this->use_international ){
 			if( $xml && $xml->Package && $xml->Package[0] && $xml->Package[0]->Service && $xml->Package[0]->Service[0] ){
-				/*$rate_array = array( );
 				for( $i=0; $i<count( $xml->Package[0]->Service ); $i++ ){
-					$rate_array[] = array( $xml->Package[0]->Service[$i]->SvcDescription, $xml->Package[0]->Service[$i]->Postage );
-				}*/
-				$rate = $xml->Package[0]->Service[0]->Postage;
+					$rate = $xml->Package[0]->Service[$i]->Postage;
+				}
 			}else
 				$rate = "ERROR";
 				
 		}else{
-			if( $xml && $xml->Package && $xml->Package[0] && $xml->Package[0]->Postage && $xml->Package[0]->Postage[0] && $xml->Package[0]->Postage[0]->Rate )
+			if( $rate_code != 7 && $xml && $xml->Package && $xml->Package[0] && $xml->Package[0]->Postage && $xml->Package[0]->Postage[0] && $xml->Package[0]->Postage[0]->Rate )
 				$rate = $xml->Package[0]->Postage[0]->Rate;
 			else
 				$rate = "ERROR";
