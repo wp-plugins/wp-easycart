@@ -52,12 +52,16 @@ if( $_FILES && $_FILES["theme_file"]["name"] ) {
 	$filenoext = basename ($filename, '.zip');  // absolute path to the directory where zipper.php is in (lowercase)
 	$filenoext = basename ($filenoext, '.ZIP');  // absolute path to the directory where zipper.php is in (when uppercase)
 	$targetdir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/". $filenoext; // target directory
+	$targetdir2 = WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/". $filenoext; // target directory
 	$targetzip = $path . $filename; // target zip file
 	
 	if( is_writable( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/" ) ){ // If we can create the dir, do it, otherwise ftp it.
 		if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
 		mkdir($targetdir, 0777);
-		if( is_dir( $targetdir ) )
+		if (is_dir($targetdir2))  rmdir_recursive ( $targetdir2);
+		mkdir($targetdir2, 0777);
+		
+		if( is_dir( $targetdir2 ) )
 			$theme_message .= " The theme directory was created successfully.<br>";
 		else
 			$theme_message .= " The theme directory was NOT created, please try again.<br>";
@@ -79,6 +83,10 @@ if( $_FILES && $_FILES["theme_file"]["name"] ) {
 		}else{
 			ftp_mkdir( $conn_id, $targetdir );
 			ftp_site( $conn_id, "CHMOD 0777 " . $targetdir );
+			
+			ftp_mkdir( $conn_id, $targetdir2 );
+			ftp_site( $conn_id, "CHMOD 0777 " . $targetdir2 );
+			
 			if( is_dir( $targetdir ) )
 				$theme_message .= " The theme directory was created successfully via FTP.<br>";
 			else
@@ -86,13 +94,14 @@ if( $_FILES && $_FILES["theme_file"]["name"] ) {
 		}
 	}
   	
-	if( !is_dir( $targetdir ) ){
+	if( !is_dir( $targetdir2 ) ){
 		// Already added message about the dir.
 	}else{
 		$zip = new ZipArchive();
 		$x = $zip->open( $_FILES["theme_file"]["tmp_name"] );  // open the zip file to extract 
 		if( $x === true ) {
 			$zip->extractTo( $targetdir ); // place in the directory with same name  
+			$zip->extractTo( $targetdir2 ); // place in the directory with same name  
 			$zip->close();
 			$theme_message .= "Your EasyCart theme file was uploaded and unpacked. You may select from the Base Design above.";
 			update_option( 'ec_option_base_theme', $filenoext );
@@ -131,11 +140,14 @@ if( $_FILES && $_FILES["layout_file"]["name"] ) {
 	$filenoext = basename ($filename, '.zip');  // absolute path to the directory where zipper.php is in (lowercase)
 	$filenoext = basename ($filenoext, '.ZIP');  // absolute path to the directory where zipper.php is in (when uppercase)
 	$targetdir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/". $filenoext; // target directory
+	$targetdir2 = WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/". $filenoext; // target directory
 	$targetzip = $path . $filename; // target zip file
 	
 	if( is_writable(  WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" ) ){ // If we can create the dir, do it, otherwise ftp it.
 		if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
 		mkdir($targetdir, 0777);
+		if (is_dir($targetdir2))  rmdir_recursive ( $targetdir2 );
+		mkdir($targetdir2, 0777);
 		if( is_dir( $targetdir ) )
 			$layout_message .= " The layout directory was created successfully.<br>";
 		else
@@ -158,20 +170,23 @@ if( $_FILES && $_FILES["layout_file"]["name"] ) {
 		}else{
 			ftp_mkdir( $conn_id, $targetdir );
 			ftp_site( $conn_id, "CHMOD 0777 " . $targetdir );
-			if( is_dir( $targetdir ) )
+			ftp_mkdir( $conn_id, $targetdir2 );
+			ftp_site( $conn_id, "CHMOD 0777 " . $targetdir2 );
+			if( is_dir( $targetdir2 ) )
 				$layout_message .= " The layout directory was created successfully via FTP.<br>";
 			else
 				$layout_message .= " The layout directory was NOT created, failed via FTP, please try again.<br>";
 		}
 	}
   	
-	if( !is_dir( $targetdir ) ){
+	if( !is_dir( $targetdir2 ) ){
 		// Already added message about the dir.
 	}else{
 		$zip = new ZipArchive();
 		$x = $zip->open( $_FILES["layout_file"]["tmp_name"] );  // open the zip file to extract 
 		if( $x === true ) {
 			$zip->extractTo( $targetdir ); // place in the directory with same name  
+			$zip->extractTo( $targetdir2 ); // place in the directory with same name  
 			$zip->close();
 			$layout_message .= "Your EasyCart layout file was uploaded and unpacked. You may select from the Base Design above.";
 			update_option( 'ec_option_base_layout', $filenoext );
@@ -227,7 +242,11 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 <span class="itemsubheading">(This will become default design for all sections)</span></td>
               <td scope="row"><select name="ec_option_base_theme" id="ec_option_base_theme" onchange="theme_change();">
 		          <?php
-						$dir = '../wp-content/plugins/' . EC_PLUGIN_DIRECTORY . '/design/theme/';
+						if( is_dir( '../wp-content/plugins/wp-easycart-data/' ) )
+							$dir = '../wp-content/plugins/wp-easycart-data/design/theme/';
+						else
+							$dir = '../wp-content/plugins/wp-easycart/design/theme/';
+						
 						$scan = scandir( $dir );
 						foreach( $scan as $key => $val ) {
 							
@@ -262,7 +281,11 @@ When you upload a new theme to your site, you will see them appear here.  This s
               <span class="itemsubheading">(This will become default layout for all sections)</span></td>
               <td scope="row"><select name="ec_option_base_layout" id="ec_option_base_layout" onchange="layout_change();">
 		          <?php
-						$dir = '../wp-content/plugins/' . EC_PLUGIN_DIRECTORY . '/design/layout/';
+						if( is_dir( '../wp-content/plugins/wp-easycart-data/' ) )
+							$dir = '../wp-content/plugins/wp-easycart-data/design/layout/';
+						else
+							$dir = '../wp-content/plugins/wp-easycart/design/layout/';
+							
 						$scan = scandir( $dir );
 						foreach( $scan as $key => $val ) {
 							
@@ -312,7 +335,11 @@ When you upload a new theme to your site, you will see them appear here.  This s
               <a href="#" class="ec_tooltip"> <img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /> <span class="ec_custom ec_help"> <img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /> <em>EasyCart Themes</em> To get more EasyCart themes, you can visit www.wpeasycart.com and browser our catalog of WordPress and EasyCart themes.</span> </a>              </td>
             </tr>
             <?php 
-			$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/";
+			if( is_dir( '../wp-content/plugins/wp-easycart-data/' ) )
+				$install_dir = '../wp-content/plugins/wp-easycart-data/design/layout/';
+			else
+				$install_dir = '../wp-content/plugins/wp-easycart/design/layout/';
+				
 			if( !is_writable( $install_dir ) ){?>
             <tr valign="top">
               <td class="itemheading" scope="row" colspan="2">Some servers require FTP access</td>
@@ -343,7 +370,11 @@ When you upload a new theme to your site, you will see them appear here.  This s
               </td>
             </tr>
             <?php 
-			$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/";
+			if( is_dir( '../wp-content/plugins/wp-easycart-data/' ) )
+				$install_dir = '../wp-content/plugins/wp-easycart-data/design/theme/';
+			else
+				$install_dir = '../wp-content/plugins/wp-easycart/design/theme/';
+				
 			if( !is_writable( $install_dir ) ){?>
             <tr valign="top">
               <td class="itemheading" scope="row" colspan="2">Some servers require FTP access</td>

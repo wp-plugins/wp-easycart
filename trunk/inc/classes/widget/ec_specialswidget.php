@@ -15,14 +15,14 @@ class ec_specialswidget extends WP_Widget{
 		echo "<p>";
 		echo "<label for=\"" . $this->get_field_id('title') . "\">";
 		echo "Title: ";
-		echo "<input class=\"widefat\" id=\"" . $this->get_field_id('title') . "\" name=\"" . $this->get_field_name('title') . "\" type=\"text\" value=\"" . attribute_escape($title) . "\" />";
+		echo "<input class=\"widefat\" id=\"" . $this->get_field_id('title') . "\" name=\"" . $this->get_field_name('title') . "\" type=\"text\" value=\"" . esc_attr($title) . "\" />";
 		echo "</label>";
 		echo "</p>";
 		
 		echo "<p>";
 		echo "<label for=\"" . $this->get_field_id('product_limit') . "\">";
 		echo "Product Limit: ";
-		echo "<input class=\"widefat\" id=\"" . $this->get_field_id('product_limit') . "\" name=\"" . $this->get_field_name('product_limit') . "\" type=\"text\" value=\"" . attribute_escape($product_limit) . "\" />";
+		echo "<input class=\"widefat\" id=\"" . $this->get_field_id('product_limit') . "\" name=\"" . $this->get_field_name('product_limit') . "\" type=\"text\" value=\"" . esc_attr($product_limit) . "\" />";
 		echo "</label>";
 		echo "</p>";
 	}
@@ -54,7 +54,10 @@ class ec_specialswidget extends WP_Widget{
 		
 		for($i=0; $i<count($result); $i++){
 			$product = new ec_product( $result[$i], 0, 0, 1 );
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_special.php' );
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_special.php' ) )	
+				include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_special.php");
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_special.php");
 		}
 		echo "<div style=\"clear:both;\"></div>";
 		echo $after_widget;

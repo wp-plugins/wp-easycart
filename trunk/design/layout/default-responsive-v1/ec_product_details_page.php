@@ -36,7 +36,9 @@
 		</div>
     
 		<?php if( $this->product->is_donation ){?>
-    	<div class="ec_product_details_donation" id="ec_product_details_donation_row"> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_donation_label' )?> <?php $this->product->display_price_input(); ?> ( <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_donation' )?> <?php $this->product->display_price( ); ?> )</div>
+    	<div class="ec_product_details_donation" id="ec_product_details_donation_row"> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_donation_label' )?> <?php $this->product->display_price_input(); ?></div>
+        
+        <div class="ec_product_details_donation" id="ec_product_details_donation_min_row">( <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_donation' )?> <?php $this->product->display_price( ); ?> )</div>
     
 		<?php }else{ ?>
     	<div class="ec_product_details_price">

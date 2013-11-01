@@ -74,6 +74,7 @@ if ($users || is_user_logged_in()) {
 		// Place file on server, into the banners folder
 	
 		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/banners/".$nameoffile."_".$date.".".$fileextension);
+		copy( "../../../products/banners/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/banners/".$nameoffile."_".$date.".".$fileextension );
 	
 		//if we are updating, then update the db field, inserting happens later
 	

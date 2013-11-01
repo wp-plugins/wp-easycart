@@ -84,7 +84,8 @@ if (is_ssl()) {
         <td  style="padding: 15px;">
         	&nbsp;&nbsp;&nbsp;&nbsp;
             <p><strong>How to Install: </strong></p>
-            <p><strong>1. </strong><a href="http://wpeasycart.com/air/wp-easycart-admin.zip">Click this link</a> to download the WP EasyCart Administration Plugin.</p>
+            <p><strong>1. </strong><a href="http://wpeasycart.com/air/wp-easycart-admin.zip">Click this link</a> to download the WP EasyCart Administration Plugin.<br />
+            Note: MAC users may have an option set in Safari that automatically opens the zip. You should disable this option: Uncheck &quot;Open Safe files after downloading&quot; in Safari preferences.</p>
             <p><strong>2. </strong>Click 'Plugins' -> 'Add New' -> 'Upload' -> 'Choose File' and select the plugin from your downloads. Once selected, click install now.</p>
             <p><strong>3. </strong>Once Installed, this section will be replaced with an embedded version of the WP EasyCart Administration Software.</p>
             <p>&nbsp;</p>

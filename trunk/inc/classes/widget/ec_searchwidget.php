@@ -56,7 +56,10 @@ class ec_searchwidget extends WP_Widget{
 		if( substr_count( $store_page, '?' ) )						$permalink_divider = "&";
 		else														$permalink_divider = "?";
 		
-		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_search_widget.php");
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_search_widget.php' ) )	
+			include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_search_widget.php");
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_search_widget.php");
 		
 		echo $after_widget;
 	}

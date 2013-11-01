@@ -35,7 +35,10 @@ class ec_breadcrumbwidget extends WP_Widget{
 		echo $before_widget;
 		
 		// WIDGET CODE GOES HERE
-		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_breadcrumb_widget.php");
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_breadcrumb_widget.php' ) )	
+			include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_breadcrumb_widget.php");
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_breadcrumb_widget.php");
 		
 		echo $after_widget;
 	}

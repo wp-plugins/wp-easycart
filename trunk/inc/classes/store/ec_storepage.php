@@ -97,7 +97,10 @@ class ec_storepage{
 	}
 	
 	private function display_products_page( ){
-		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_page.php' );	
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_page.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_page.php' );	
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_page.php' );
 	}
 	
 	public function has_products( ){
@@ -119,7 +122,10 @@ class ec_storepage{
 		if(substr_count($storepage, '?'))							$permalinkdivider = "&";
 		else														$permalinkdivider = "?";
 		
-		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_details_page.php' );
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_details_page.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_details_page.php' );
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_details_page.php' );
 		echo "<script>ec_initialize_options();</script>";
 	}
 	
@@ -127,7 +133,10 @@ class ec_storepage{
 	// PRODUCT MENU FILTER BAR DISPLAY FUNCTIONS
 	////////////////////////////////////////////////////////
 	private function product_menu_filter( ){
-		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_menu_filter.php' );	
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_menu_filter.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_menu_filter.php' );
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_menu_filter.php' );
 	}
 	
 	private function product_filter_menu_items( $divider ){
@@ -138,7 +147,10 @@ class ec_storepage{
 	// PRODUCT FILTER AND PAGESET BAR DISPLAY FUNCTIONS
 	////////////////////////////////////////////////////////
 	private function product_filter_bar( ){
-		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_filter_bar.php' );	
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_filter_bar.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_filter_bar.php' );
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_filter_bar.php' );
 	}
 	
 	private function product_filter_combo( ){
@@ -248,7 +260,10 @@ class ec_storepage{
 		
 		if( isset( $menu_row ) ){
 			if( $menu_row->banner_image != "" ){
-				echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/banners/" . $menu_row->banner_image ) . "\" alt=\"" . $menu_row->name . "\" />";	
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/banners/" . $menu_row->banner_image ) )	
+					echo "<img src=\"" . plugins_url( "wp-easycart-data/products/banners/" . $menu_row->banner_image ) . "\" alt=\"" . $menu_row->name . "\" />";	
+				else
+					echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/banners/" . $menu_row->banner_image ) . "\" alt=\"" . $menu_row->name . "\" />";	
 			}
 		}
 	}

@@ -49,7 +49,10 @@ class ec_accountpage{
 	
 	public function display_account_page( ){
 		echo "<div class=\"ec_account_page\">";
-		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_page.php' );
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_page.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_page.php' );
+		else	
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_page.php' );
 		echo "<input type=\"hidden\" name=\"ec_account_base_path\" id=\"ec_account_base_path\" value=\"" . plugins_url( ) . "\" />";
 		echo "<input type=\"hidden\" name=\"ec_account_session_id\" id=\"ec_account_session_id\" value=\"" . session_id() . "\" />";
 		echo "<input type=\"hidden\" name=\"ec_account_email\" id=\"ec_account_email\" value=\"" . $this->user_email . "\" />";
@@ -105,8 +108,12 @@ class ec_accountpage{
 	
 	/* START ACCOUNT LOGIN FUNCTIONS */
 	public function display_account_login( ){
-		if( $this->is_page_visible( "login" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_login.php' );
+		if( $this->is_page_visible( "login" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_login.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_login.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_login.php' );
+		}
 	}
 	
 	public function display_account_login_form_start( ){
@@ -142,8 +149,12 @@ class ec_accountpage{
 	
 	/* START FORGOT PASSWORD FUNCTIONS */
 	public function display_account_forgot_password( ){
-		if( $this->is_page_visible( "forgot_password" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_forgot_password.php' );
+		if( $this->is_page_visible( "forgot_password" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_forgot_password.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_forgot_password.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_forgot_password.php' );
+		}
 	}
 	
 	public function display_account_forgot_password_form_start( ){
@@ -166,8 +177,12 @@ class ec_accountpage{
 	
 	/* START REGISTER FUNCTIONS */
 	public function display_account_register( ){
-		if( $this->is_page_visible( "register" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_register.php' );
+		if( $this->is_page_visible( "register" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_register.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_register.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_register.php' );
+		}
 	}
 	
 	public function display_account_register_form_start( ){
@@ -217,8 +232,12 @@ class ec_accountpage{
 	
 	/* START DASHBOARD FUNCTIONS */
 	public function display_account_dashboard( ){
-		if( $this->is_page_visible( "dashboard" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_dashboard.php' );
+		if( $this->is_page_visible( "dashboard" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_dashboard.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_dashboard.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_dashboard.php' );
+		}
 	}
 	
 	public function display_dashboard_link( $link_text ){
@@ -252,15 +271,23 @@ class ec_accountpage{
 	
 	/* START ORDERS FUNCTIONS */
 	public function display_account_orders( ){
-		if( $this->is_page_visible( "orders" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_orders.php' );
+		if( $this->is_page_visible( "orders" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_orders.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_orders.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_orders.php' );
+		}
 	}
 	/* END ORDERS FUNCTIONS*/
 	
 	/* START ORDER DETAILS FUNCTIONS */
 	public function display_account_order_details( ){
-		if( $this->is_page_visible( "order_details" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_order_details.php' );
+		if( $this->is_page_visible( "order_details" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_order_details.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_order_details.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_order_details.php' );
+		}
 	}
 	
 	public function display_order_detail_product_list( ){
@@ -270,15 +297,23 @@ class ec_accountpage{
 	}
 	
 	public function display_print_order_icon( ){
-		if( $this->order )
-			echo "<a href=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/print_receipt.php?order_id=" . $this->order->order_id ) . "\" target=\"_blank\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
+		if( $this->order ){
+			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) )	
+				echo "<a href=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/print_receipt.php?order_id=" . $this->order->order_id ) . "\" target=\"_blank\"><img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
+			else
+				echo "<a href=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/print_receipt.php?order_id=" . $this->order->order_id ) . "\" target=\"_blank\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
+		}
 	}
 	/* END ORDER DETAILS FUNCTIONS*/
 	
 	/* START PERSONAL INFORMATION FUNCTIONS */
 	public function display_account_personal_information( ){
-		if( $this->is_page_visible( "personal_information" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_personal_information.php' );
+		if( $this->is_page_visible( "personal_information" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_personal_information.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_personal_information.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_personal_information.php' );
+		}
 	}
 	
 	public function display_account_personal_information_form_start( ){
@@ -325,8 +360,12 @@ class ec_accountpage{
 	
 	/* START PASSWORD FUNCTIONS */
 	public function display_account_password( ){
-		if( $this->is_page_visible( "password" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_password.php' );
+		if( $this->is_page_visible( "password" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_password.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_password.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_password.php' );
+		}
 	}
 	
 	public function display_account_password_form_start( ){
@@ -361,8 +400,12 @@ class ec_accountpage{
 	
 	/* START BILLING INFORMATION FUNCTIONS */
 	public function display_account_billing_information( ){
-		if( $this->is_page_visible( "billing_information" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_billing_information.php' );
+		if( $this->is_page_visible( "billing_information" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_billing_information.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_billing_information.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_billing_information.php' );
+		}
 	}
 	
 	public function display_account_billing_information_form_start( ){
@@ -448,8 +491,12 @@ class ec_accountpage{
 	
 	/* START SHIPPING INFORMATION FUNCTIONS */
 	public function display_account_shipping_information( ){
-		if( $this->is_page_visible( "shipping_information" ) )
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_shipping_information.php' );
+		if( $this->is_page_visible( "shipping_information" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_shipping_information.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_shipping_information.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_shipping_information.php' );
+		}
 	}
 	
 	public function display_account_shipping_information_form_start( ){
@@ -831,7 +878,10 @@ class ec_accountpage{
 	 	
 		// Get receipt
 		ob_start();
-        include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_retrieve_password_email.php' );
+        if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_retrieve_password_email.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_retrieve_password_email.php' );	
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_retrieve_password_email.php' );
 		$message = ob_get_contents();
 		ob_end_clean();
 		

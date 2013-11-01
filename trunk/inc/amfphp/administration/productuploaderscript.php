@@ -65,6 +65,7 @@ if ($users || is_user_logged_in()) {
 	$fileextension = $explodedfilename[1];
 
 	move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension);
+	copy( "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/downloads/".$nameoffile."_".$date.".".$fileextension );
 
 	//if we are updating, then update the db field, inserting happens later
 

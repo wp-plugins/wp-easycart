@@ -109,8 +109,12 @@ class ec_cartwidget extends WP_Widget{
 		$cart = new ec_cart( session_id() );
 		$page_id = get_the_ID();
 		
-		if( $page_id != $cartpageid )
-		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_widget.php");
+		if( $page_id != $cartpageid ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_widget.php' ) )	
+				include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_widget.php");
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_widget.php");
+		}
 		
 		echo $after_widget;
 	}

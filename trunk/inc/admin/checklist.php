@@ -309,6 +309,7 @@ function ec_link_page( $page_id, $page_type ){
 function ec_install_demo_data( ){
 	$datapack_url = 'http://www.wpeasycart.com/sampledata/standard_demo';	
 	$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
+	$install_dir2 = WP_PLUGIN_DIR . "/wp-easycart-data/";
 	copy( $datapack_url . "/standard_demo_assets.zip",  $install_dir . "standard_demo_assets.zip" );
 	copy( $datapack_url . "/standard_demo_install.sql",  $install_dir . "standard_demo_install.sql" );
 	
@@ -339,9 +340,11 @@ function ec_install_demo_data( ){
 	
 	// Now that the zip is open sucessfully, we should remove the products folder
 	ec_recursive_remove_dir( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products" );
+	ec_recursive_remove_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products" );
 	
 	// Now finish extracting
 	$zip->extractTo( $install_dir );
+	$zip->extractTo( $install_dir2 );
 	$zip->close();
 	unlink( $install_dir . "standard_demo_assets.zip" );
 	unlink( $install_dir . "standard_demo_install.sql" );
