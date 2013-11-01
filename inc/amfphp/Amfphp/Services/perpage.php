@@ -22,7 +22,10 @@ class perpage
 	
 		function perpage() {
 			//load our connection settings
-			require_once('../../../connection/ec_conn.php');
+			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) )
+				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
+			else
+				require_once('../../../connection/ec_conn.php');
 		
 			//set our connection variables
 			$dbhost = HOSTNAME;

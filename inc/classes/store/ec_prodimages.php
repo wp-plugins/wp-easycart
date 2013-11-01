@@ -159,10 +159,15 @@ class ec_prodimages{
 			// GET IMAGE SOURCE
 			/////////////////////////////////////////////////////////////
 			
-			$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img );
 			$test_src = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img;
-			if( !file_exists( $test_src ) )
-			$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
+			$test_src2 = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics" . $level . "/" . $img;
+			
+			if( file_exists( $test_src2 ) )
+				$image_src = plugins_url( "wp-easycart-data/products/pics" . $level . "/" . $img );
+			else if( file_exists( $test_src ) )
+				$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img );
+			else
+				$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
 			
 			/////////////////////////////////////////////////////////////
 			// END SOURCE IMAGE CODE
@@ -202,7 +207,10 @@ class ec_prodimages{
 				
 			}else if( $allow_popup ){
 				
-				$ret_string = "<a href=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img) . "\" class=\"ec_product_image";
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics" . $level . "/" . $img ) )
+					$ret_string = "<a href=\"" . WP_PLUGIN_DIR . "/wp-easycart-data/products/pics" . $level . "/" . $img . "\" class=\"ec_product_image";
+				else
+					$ret_string = "<a href=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img ) . "\" class=\"ec_product_image";
 				
 				if( !$active )
 				$ret_string .= "_inactive";

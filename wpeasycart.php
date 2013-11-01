@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.6
+ * Version: 1.2.7
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.6
+ * @version 1.2.7
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_6' );
+define( 'EC_CURRENT_VERSION', '1_2_7' );
 define( 'EC_CURRENT_DB', '1_9' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -87,6 +87,28 @@ function ec_activate(){
 		update_option( 'ec_option_currency', '$' );	
 	}
 	
+	// This is a fix for the backup issue. We are going to put into place now in hopes it saves people some of the troubles they've been having.
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data" ) ){
+		
+		// Now Copy Recursive (connection, design, products
+		$to = WP_PLUGIN_DIR . "/wp-easycart-data/";
+		$from = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
+		
+		// Make destination directory
+		if( !is_writable( WP_PLUGIN_DIR ) ){
+			
+			// We really can't do anything now about the data folder. Lets try and get people to do this in the install page.
+			
+		}else{
+			mkdir( $to, 0755 );
+		
+			wpeasycart_copyr( $from . "products", $to . "products" );
+			wpeasycart_copyr( $from . "design", $to . "design" );
+			wpeasycart_copyr( $from . "connection", $to . "connection" );
+			
+		}
+	}
+	
 }
 
 function ec_uninstall(){
@@ -103,6 +125,29 @@ function ec_uninstall(){
 	$wpoptions = new ec_wpoptionset();
 	$wpoptions->delete_options();
 	
+	$data_dir = WP_PLUGIN_DIR . "/wp-easycart-data/";
+	if( !is_writable( WP_PLUGIN_DIR ) ){
+		// Could not open the file, lets write it via ftp!
+		$ftp_server = $_POST['hostname'];
+		$ftp_user_name = $_POST['username'];
+		$ftp_user_pass = $_POST['password'];
+		
+		// set up basic connection
+		$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
+		
+		// login with username and password
+		$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+		
+		if( !$login_result ){
+			
+			die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your informaiton and try again." );
+			
+		}else{
+			ec_delete_directory_ftp( $conn_id, $data_dir );
+		}
+	}else{
+		ec_recursive_remove_directory( $data_dir );
+	}
 }
 
 register_activation_hook( __FILE__, 'ec_activate' );
@@ -597,8 +642,50 @@ function ec_recursive_remove_directory( $directory, $empty=FALSE ) {
          }
          // return success
          return TRUE;
-     }
- }
+    }
+}
+ 
+function ec_delete_directory_ftp( $resource, $path ) {
+    $result_message = "";
+    $list = ftp_nlist( $resource, $path );
+	
+	if ( empty($list) ) {
+        $list = ec_ran_list_n( ftp_rawlist($resource, $path), $path . ( substr($path, strlen($path) - 1, 1) == "/" ? "" : "/" ) );
+    }
+    if ($list[0] != $path) {
+        $path .= ( substr($path, strlen($path)-1, 1) == "/" ? "" : "/" );
+        foreach ($list as $item) {
+			if ($item != $path.".." && $item != $path.".") {
+				$result_message .= ec_delete_directory_ftp($resource, $item);
+			}
+        }
+        if (ftp_rmdir ($resource, $path)) {
+            $result_message .= "Successfully deleted $path <br />\n";
+        } else {
+            $result_message .= "There was a problem while deleting $path <br />\n";
+        }
+    }
+    else {
+		$res = ftp_site( $resource, 'CHMOD 0777 ' . $path );
+        if (ftp_delete ($resource, $path)) {
+            $result_message .= "Successfully deleted $path <br />\n";
+        } else {
+            $result_message .= "There was a problem while deleting $path <br />\n";
+        }
+    }
+    return $result_message;
+}
+
+function ec_ran_list_n($rawlist, $path) {
+    $array = array();
+    foreach ($rawlist as $item) {
+        $filename = trim(substr($item, 55, strlen($item) - 55));
+        if ($filename != "." || $filename != "..") {
+        $array[] = $path . $filename;
+        }
+    }
+    return $array;
+}
 
 function wpeasycart_recover( ){
 	
@@ -1149,7 +1236,10 @@ function ec_store_meta( ){
 }
 
 function ec_theme_options_page_callback( ){
-	include("design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
+	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option('ec_option_base_theme') . "/" ) )
+		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
+	else
+		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
 }
 
 /////////////////////////////////////////////////////////////////////

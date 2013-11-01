@@ -105,6 +105,7 @@ if ($users || is_user_logged_in()) {
 
 		// Place file on server, into the images folder
 		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/pics1/".$nameoffile."_".$date.".".$fileextension);
+		copy( "../../../products/pics1/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics1/".$nameoffile."_".$date.".".$fileextension );
 
 		//if using option item images
 		if($useoptionitemimages){
@@ -132,6 +133,7 @@ if ($users || is_user_logged_in()) {
 		// Place file on server, into the images folder
 
 		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/pics2/".$nameoffile."_".$date.".".$fileextension);
+		copy( "../../../products/pics2/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics2/".$nameoffile."_".$date.".".$fileextension  );
 
 		//resize original max image
 
@@ -165,6 +167,7 @@ if ($users || is_user_logged_in()) {
 		// Place file on server, into the images folder
 
 		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/pics3/".$nameoffile."_".$date.".".$fileextension);
+		copy( "../../../products/pics3/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics3/".$nameoffile."_".$date.".".$fileextension  );
 
 		//resize original max image
 
@@ -198,6 +201,7 @@ if ($users || is_user_logged_in()) {
 		// Place file on server, into the images folder
 
 		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/pics4/".$nameoffile."_".$date.".".$fileextension);
+		copy( "../../../products/pics4/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics4/".$nameoffile."_".$date.".".$fileextension  );
 
 		//resize original max image
 
@@ -231,6 +235,7 @@ if ($users || is_user_logged_in()) {
 		// Place file on server, into the images folder
 
 		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/pics5/".$nameoffile."_".$date.".".$fileextension);
+		copy( "../../../products/pics5/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics5/".$nameoffile."_".$date.".".$fileextension  );
 
 		//resize original max image
 

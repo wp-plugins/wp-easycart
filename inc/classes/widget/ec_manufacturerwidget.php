@@ -62,7 +62,10 @@ class ec_manufacturerwidget extends WP_Widget{
 		
 		$manufacturers = $mysqli->get_manufacturers( $level, $menu_id );
 		
-		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_manufacturer_widget.php");
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_manufacturer_widget.php' ) )	
+			include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_manufacturer_widget.php");
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_manufacturer_widget.php");
 		
 		echo $after_widget;
 	}

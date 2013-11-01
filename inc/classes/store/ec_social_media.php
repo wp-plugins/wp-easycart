@@ -174,8 +174,10 @@ class ec_social_media{
 	}
 	
 	private function get_image_url( ) {
-		return plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image);
-	
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image ) )
+			return plugins_url( "wp-easycart-data/products/pics1/" . $this->image );
+		else
+			return plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image );
 	}
 	
 	private function get_product_url( ){
@@ -183,7 +185,10 @@ class ec_social_media{
 	}
 	
 	private function get_icon_image( $image ){
-		return plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ). "/ec_product_details_page/" . $image );
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ). "/ec_product_details_page/" . $image ) )
+			return plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ). "/ec_product_details_page/" . $image );
+		else
+			return plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ). "/ec_product_details_page/" . $image );
 	}
 	
 	private function get_product_clean_title( ){

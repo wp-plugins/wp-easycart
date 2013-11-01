@@ -67,22 +67,37 @@ $ec_widget_js = array(
 $js_content = "";
 
 foreach ($ec_store_js as $js_file) {
-	$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
+		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+	else
+		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
 }
 
-foreach ($ec_cart_js as $js_file)
-	$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+foreach ($ec_cart_js as $js_file){
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
+		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+	else
+		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+}
 
+foreach ($ec_account_js as $js_file) {
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
+		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+	else
+		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+}
 
-foreach ($ec_account_js as $js_file) 
-	$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+foreach ($ec_widget_js as $js_file){
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
+		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+	else
+		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+}
 
-
-
-foreach ($ec_widget_js as $js_file)
-	$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
-	
-$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_validation.js' );
+if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_validation.js' ) )
+	$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_validation.js' );
+else
+	$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_validation.js' );
 
 // Replace some variables
 $js_content = str_replace( '$GLOBALVAR_SWATCH_ERROR', $GLOBALS['language']->get_text( "quick_view", "quick_view_select_options" ), $js_content );

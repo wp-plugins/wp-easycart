@@ -66,8 +66,10 @@ class ec_pricepointwidget extends WP_Widget{
 			$man_id = 0;
 		
 		$pricepoints = $mysqli->get_pricepoints( $level, $menu_id, $man_id );
-		
-		include("wp-content/plugins/wp-easycart/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_pricepoint_widget.php");
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_pricepoint_widget.php' ) )	
+			include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_pricepoint_widget.php");
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_pricepoint_widget.php");
 		
 		echo $after_widget;
 	}

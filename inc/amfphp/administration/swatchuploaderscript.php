@@ -86,12 +86,15 @@ if ($users || is_user_logged_in()) {
 	// Place file on server, into the images folder
 
 	move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension);
+	copy( "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension);
 
 	//resize original max image
 
 	$resizeObj = new resizer("../../../products/swatches/".$nameoffile."_".$date.".".$fileextension);
-
-	$resizeObj -> resize($maxwidth, $maxheight, "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
+	$resizeObj->resize($maxwidth, $maxheight, "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
+	
+	$resizeObj = new resizer("../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension);
+	$resizeObj->resize($maxwidth, $maxheight, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
 
 	
 	//if we are updating, then update the db field, inserting happens later

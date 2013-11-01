@@ -35,7 +35,10 @@ class ec_orderlist{
 		for( $i=0; $i < count( $this->orders ) && ($order_limit == 0 || $i < $order_limit); $i++ ){
 			if( $days_limit == 0 || $this->date_within_range( $this->orders[$i]->order_date, $days_limit ) ){
 				$order = $this->orders[$i];
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_account_order_line.php' );
+				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_order_line.php' ) )	
+					include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_account_order_line.php' );
+				else
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_account_order_line.php' );
 			}
 		}
 		

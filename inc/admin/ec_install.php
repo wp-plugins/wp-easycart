@@ -162,11 +162,22 @@ function clean_up_demo( ){
 	unlink( $install_dir . "standard_demo_assets.zip" );
 }
 
-//set our datapack location
-$datapack_url = 'http://www.wpeasycart.com/sampledata';
-if( isset( $_POST['datapack'] ) ){
-	if($_POST['datapack'] == 'standard_data') {
-		$datapack_url = 'http://www.wpeasycart.com/sampledata/standard_demo';	
+function ec_ftp_copy_recursive( $conn_id, $prefix, $src_dir, $dst_dir ){ 
+	if( !is_dir( $prefix . "/" . $dst_dir ) ){ 
+		$d = dir( $prefix . "/" . $src_dir); 
+		ftp_mkdir( $conn_id, $dst_dir );
+		while( $file = $d->read( ) ){
+			if( $file != "." && $file != ".." ){
+				if( is_dir( $prefix . "/" . $src_dir . "/" . $file ) ){
+					ec_ftp_copy_recursive( $conn_id, $prefix, $src_dir . "/" . $file, $dst_dir . "/" . $file ); 
+				}else{ 
+					$upload = ftp_put( $conn_id, $dst_dir . "/" . $file, $src_dir . "/" . $file, FTP_BINARY );
+				} 
+  			}
+			ob_flush() ; 
+			sleep(1);  
+		} 
+		$d->close(); 
 	}
 }
 	
@@ -201,17 +212,121 @@ if(isset($_POST['isupdate'])){
 		$accountpage_data = "[ec_account]" . $accountpage_data;
 		update_page( $_POST['ec_option_accountpage'], $accountpage_data);
 	}
-
-
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-//START DEMO DATA INSTALL SCRIPT
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////		
-} else if( isset( $_POST['isinsertdemodata'] ) ){
-	// The installation directory
-	$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
 	
+} else if( isset( $_POST['isinsertdemodata'] ) ){
+	
+	install_demo_data( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/" );
+	install_demo_images( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/" );
+	install_demo_images( WP_PLUGIN_DIR . "/wp-easycart-data/" );
+	
+}else if( isset( $_POST['isdeletedemodata'] ) ){
+	
+	uninstall_demo_data( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/" );
+	uninstall_demo_images( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/" );
+	uninstall_demo_images( WP_PLUGIN_DIR . "/wp-easycart-data/" );
+	
+	
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//START CONNECTIONS FTP WRITE SCRIPT
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////	
+	
+}else if( isset( $_GET['save_conn'] ) && $_GET['save_conn'] == "yes" ){
+	$dir_arr = explode( "/", WP_PLUGIN_DIR );
+	for( $i=0; $i<count( $dir_arr ); $i++ ){
+		if( $dir_arr[$i] == "public_html" ){
+			break;
+		}
+	}
+	$plugin_dir = "";
+	$prefix_dir = "";
+	for( $j=0; $j<$i; $j++ ){
+		$prefix_dir .= "/" . $dir_arr[$j];
+	}
+	for( $i; $i<count( $dir_arr ); $i++ ){
+		$plugin_dir .= "/" . $dir_arr[$i];
+	}
+	
+	$to = $plugin_dir . "/wp-easycart-data/";
+	$from = $plugin_dir . "/" . EC_PLUGIN_DIRECTORY . "/";
+	
+	$ec_conn_filename = $plugin_dir . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php";
+	
+	$ec_conn_php = "<?php
+	define ('HOSTNAME','" . DB_HOST . "'); 	
+	define ('DATABASE','" . DB_NAME . "'); 		
+	define ('USERNAME','" . DB_USER . "'); 	
+	define ('PASSWORD','" . DB_PASSWORD . "'); 	
+?>"; 
+
+	// Could not open the file, lets write it via ftp!
+	$ftp_server = $_SERVER['HTTP_HOST'];
+	$ftp_user_name = $_POST['ec_ftp_user'];
+	$ftp_user_pass = $_POST['ec_ftp_pass'];
+	
+	// set up basic connection
+	$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
+	
+	// login with username and password
+	$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+	
+	if( !$login_result ){
+		
+		die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your informaiton and try again." );
+		
+	}else{
+		/* LETS WRITE THE CONNECTIONS HERE FOR FTP USERS ONLY */
+		
+		$temp = tmpfile();
+		fwrite( $temp, $ec_conn_php );
+		fseek( $temp, 0 );
+		
+		ftp_fput( $conn_id, $ec_conn_filename, $temp, FTP_BINARY );
+		
+		//Close the temp file to finish process
+		fclose( $temp );
+		
+		ftp_site( $conn_id, 'CHMOD 0644 ' . $ec_conn_filename );
+		
+		if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php" ) ){
+			$admin_conn_config = "complete";
+		}else{
+			$admin_conn_config = "failed";
+		}
+		
+		/* LETS WRITE THE DATA FOLDER HERE!!! FOR FTP USERS ONLY */
+		// Find the destination plugins folder
+		
+		if( !is_dir( $to ) ){
+			ftp_mkdir( $conn_id, $to );
+		
+			ec_ftp_copy_recursive( $conn_id, $prefix_dir, $from . "products", $to . "products" );
+			ec_ftp_copy_recursive( $conn_id, $prefix_dir, $from . "design", $to . "design"  );
+			ec_ftp_copy_recursive( $conn_id, $prefix_dir, $from . "connection", $to . "connection" );
+		}
+	}
+}
+
+if( isset( $_GET['dismiss_lite_banner'] ) ){
+	update_option( 'ec_option_show_lite_message', '0' );	
+}
+
+function install_demo_data( $install_dir ){
+	//////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////
+	//START DEMO DATA INSTALL SCRIPT
+	//////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////	
+	
+	//set our datapack location
+	$datapack_url = 'http://www.wpeasycart.com/sampledata';
+	if( isset( $_POST['datapack'] ) ){
+		if($_POST['datapack'] == 'standard_data') {
+			$datapack_url = 'http://www.wpeasycart.com/sampledata/standard_demo';	
+		}
+	}
+
 	// See if we can even write via http
 	if( is_writable( $install_dir ) && ini_get( "allow_url_fopen" ) ){
 		
@@ -221,6 +336,91 @@ if(isset($_POST['isupdate'])){
 			die( "The plugin could not copy the demo install sql script from our WP EasyCart servers. Likely this was a network failure. We recommend trying again. If you continue to have issues, please submit a support ticket with WP EasyCart at www.wpeasycart.com. Please be sure to include FTP access to ensure a quick resolution." );
 		}
 			
+	}else{ // Cannot install via http, use ftp
+		
+		if( isset( $_POST['ec_ftp_user'] ) && $_POST['ec_ftp_user'] !=  "" && isset( $_POST['ec_ftp_pass'] ) && $_POST['ec_ftp_pass'] != "" ){
+			
+			$wp_server_sql = $datapack_url . "/standard_demo_install.sql";
+			$local_install_sql = $install_dir . "standard_demo_install.sql";
+			
+			// Could not open the file, lets write it via ftp!
+			$ftp_server = $_SERVER['HTTP_HOST'];
+			$ftp_user_name = $_POST['ec_ftp_user'];
+			$ftp_user_pass = $_POST['ec_ftp_pass'];
+			
+			// set up basic connection
+			$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
+			
+			// login with username and password
+			$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+			
+			if( !$login_result ){
+				die( "The plugin could not connect to your server via ftp. Please return to the last page, re-enter your login info, and try again. If you continue to have problems, please submit a support ticket at www.wpeasycart.com with your FTP information." );
+			}else{
+			
+				$f1 = fopen( $wp_server_sql, "r" );
+				
+				// Sometimes helps to try and change the wp-easycart permissions
+				ftp_site( $conn_id, 'CHMOD 0777 ' . $install_dir );
+				
+				// Copy the sql script from wp servers
+				if( !ftp_fput( $conn_id, $local_install_sql, $f1, FTP_BINARY ) ){
+					// clean up the directory if anything remains
+					die( "The plugin could not copy $wp_server_sql to $local_install_sql. Likely this was a network failure, please try again. If the problem persists, contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket." );
+				}
+				// Close the file
+				fclose( $f1 );
+				
+				// Try to change the permissions
+				ftp_site( $conn_id, 'CHMOD 0777 ' . $local_install_sql );
+				
+			}// Close ftp login check
+			
+		}// Close check for FTP info
+		else{
+			die( "Please return to the last page and insert your FTP information to continue. Your wp-easycart directory is not writable and requires FTP access to continue. Please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket if you need assistance." );
+		} // Close section related to could not connect and didn't insert FTP info
+	}// Close FTP option
+		
+	//Put up the database for website
+	$url = $install_dir . "standard_demo_install.sql";
+	// Load and explode the sql file
+	$f = fopen( $url, "r" );
+	if( !$f ){
+		// clean up the directory if anything remains
+		die("The plugin could not open the demo install script. This is most likely related to permissions issues. The copy was successful if you made it this far, so you should be able to find the install sql script in your wp-easycart plugin folder. Change the permissions to 644 to fix this issue. Please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket if you need assistance.");
+	}
+	$sqlFile = fread($f, filesize($url));
+	$sqlArray = explode(';', $sqlFile);
+	   
+	//Process the sql file by statements
+	foreach ($sqlArray as $stmt) {
+	if (strlen($stmt)>3){
+		$result = mysql_query($stmt);
+		
+		  if (mysql_error()){
+			 $sqlErrorCode = mysql_errno();
+			 $sqlErrorText = mysql_error();
+			 $sqlStmt      = $stmt;
+			 break;
+		  }
+	   }
+	} 
+}
+
+function install_demo_images( $install_dir ){
+	
+	//set our datapack location
+	$datapack_url = 'http://www.wpeasycart.com/sampledata';
+	if( isset( $_POST['datapack'] ) ){
+		if($_POST['datapack'] == 'standard_data') {
+			$datapack_url = 'http://www.wpeasycart.com/sampledata/standard_demo';	
+		}
+	}
+
+	// See if we can even write via http
+	if( is_writable( $install_dir ) && ini_get( "allow_url_fopen" ) ){
+		
 		if( !copy( "$datapack_url/standard_demo_assets.zip", $install_dir . "standard_demo_assets.zip") ){
 			// clean up the directory if anything remains
 			die( "The plugin could not copy the demo images from the WP EasyCart servers. Likely this was a network failure. Please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket if you need assistance. Tried to copy to " . $install_dir . "standard_demo_assets.zip." );
@@ -230,8 +430,6 @@ if(isset($_POST['isupdate'])){
 		
 		if( isset( $_POST['ec_ftp_user'] ) && $_POST['ec_ftp_user'] !=  "" && isset( $_POST['ec_ftp_pass'] ) && $_POST['ec_ftp_pass'] != "" ){
 			
-			$wp_server_sql = $datapack_url . "/standard_demo_install.sql";
-			$local_install_sql = $install_dir . "standard_demo_install.sql";
 			$wp_server_zip = $datapack_url . "/standard_demo_assets.zip";
 			$local_install_zip = $install_dir . "standard_demo_assets.zip";
 		
@@ -250,22 +448,10 @@ if(isset($_POST['isupdate'])){
 				die( "The plugin could not connect to your server via ftp. Please return to the last page, re-enter your login info, and try again. If you continue to have problems, please submit a support ticket at www.wpeasycart.com with your FTP information." );
 			}else{
 			
-				$f1 = fopen( $wp_server_sql, "r" );
 				$f2 = fopen( $wp_server_zip, "r" );
 				
 				// Sometimes helps to try and change the wp-easycart permissions
 				ftp_site( $conn_id, 'CHMOD 0777 ' . $install_dir );
-				
-				// Copy the sql script from wp servers
-				if( !ftp_fput( $conn_id, $local_install_sql, $f1, FTP_BINARY ) ){
-					// clean up the directory if anything remains
-					die( "The plugin could not copy $wp_server_sql to $local_install_sql. Likely this was a network failure, please try again. If the problem persists, contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket." );
-				}
-				// Close the file
-				fclose( $f1 );
-				
-				// Try to change the permissions
-				ftp_site( $conn_id, 'CHMOD 0777 ' . $local_install_sql );
 				
 				// Copy the Zip
 				if( !ftp_fput( $conn_id, $local_install_zip, $f2, FTP_BINARY ) ){
@@ -319,31 +505,6 @@ if(isset($_POST['isupdate'])){
 			die( "Please return to the last page and insert your FTP information to continue. Your wp-easycart directory is not writable and requires FTP access to continue. Please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket if you need assistance." );
 		} // Close section related to could not connect and didn't insert FTP info
 	}// Close FTP option
-		
-	//Put up the database for website
-	$url = $install_dir . "standard_demo_install.sql";
-	// Load and explode the sql file
-	$f = fopen( $url, "r" );
-	if( !$f ){
-		// clean up the directory if anything remains
-		die("The plugin could not open the demo install script. This is most likely related to permissions issues. The copy was successful if you made it this far, so you should be able to find the install sql script in your wp-easycart plugin folder. Change the permissions to 644 to fix this issue. Please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket if you need assistance.");
-	}
-	$sqlFile = fread($f, filesize($url));
-	$sqlArray = explode(';', $sqlFile);
-	   
-	//Process the sql file by statements
-	foreach ($sqlArray as $stmt) {
-	if (strlen($stmt)>3){
-		$result = mysql_query($stmt);
-		
-		  if (mysql_error()){
-			 $sqlErrorCode = mysql_errno();
-			 $sqlErrorText = mysql_error();
-			 $sqlStmt      = $stmt;
-			 break;
-		  }
-	   }
-	} 
 	
 	// First, make sure the client's server can extract the zip.
 	if( !class_exists('ZipArchive') ){
@@ -370,9 +531,7 @@ if(isset($_POST['isupdate'])){
 	$zip->close();
 	
 	// Finish up by cleaning up the directory if anything remains
-	if( unlink( $install_dir . "standard_demo_assets.zip" ) ){
-		unlink( $install_dir . "standard_demo_install.sql" );
-	}else{
+	if( !unlink( $install_dir . "standard_demo_assets.zip" ) ){
 		
 		ftp_site( $conn_id, 'CHMOD 0777 ' . $install_dir . "standard_demo_install.sql" );
 		$res = ftp_delete( $conn_id, $install_dir . "standard_demo_install.sql" );
@@ -393,20 +552,115 @@ if(isset($_POST['isupdate'])){
 	if( substr( sprintf( '%o', fileperms( $install_dir ) ), -4 ) == "0777" ){
 		echo "Could not reset the wp-easycart plugin folder permissions to 0755, currently set at 0777. Please manually fix the permissions.";
 	}
-	
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-//START DEMO DATA REMOVAL SCRIPT
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////	
-}else if( isset( $_POST['isdeletedemodata'] ) ){
-	
-	$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
-	
+}
+
+function uninstall_demo_data( $install_dir ){
+	//////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////
+	//START DEMO DATA REMOVAL SCRIPT
+	//////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////	
+	//set our datapack location
+	$datapack_url = 'http://www.wpeasycart.com/sampledata';
+	if( isset( $_POST['datapack'] ) ){
+		if($_POST['datapack'] == 'standard_data') {
+			$datapack_url = 'http://www.wpeasycart.com/sampledata/standard_demo';	
+		}
+	}
+
 	if( is_writable( $install_dir ) && ini_get( "allow_url_fopen" ) ){ //start http version
 		
 		//REMOVE JUST TABLE DATA
 		copy("http://www.wpeasycart.com/sampledata/demo_uninstall.sql", $install_dir . "demo_uninstall.sql");
+		
+	}// close http version
+	else{// start ftp version
+		
+		if( isset( $_POST['ec_ftp_user'] ) && $_POST['ec_ftp_user'] !=  "" && isset( $_POST['ec_ftp_pass'] ) && $_POST['ec_ftp_pass'] != "" ){
+			$wp_server_sql = $datapack_url . "/demo_uninstall.sql";
+			$local_uninstall_sql = $install_dir . "demo_uninstall.sql";
+			
+			// Could not open the file, lets write it via ftp!
+			$ftp_server = $_SERVER['HTTP_HOST'];
+			$ftp_user_name = $_POST['ec_ftp_user'];
+			$ftp_user_pass = $_POST['ec_ftp_pass'];
+			
+			// set up basic connection
+			$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
+			
+			// login with username and password
+			$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+			
+			if( !$login_result ){
+				die( "The plugin could not connect to your server via ftp. Please return to the last page, re-enter your login info, and try again. If you continue to have problems, please submit a support ticket at www.wpeasycart.com with your FTP information." );
+				
+			}else{ // Done all the checks, lets do an FTP delete.
+				
+				$f1 = fopen( $wp_server_sql, "r" );
+				
+				// Try to copy the sql uninstaller
+				if( !ftp_fput( $conn_id, $local_uninstall_sql, $f1, FTP_BINARY ) ){
+					// clean up the directory if anything remains
+					die( "The plugin could not copy $wp_server_sql to $local_uninstall_sql. Please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket if you need assistance." );
+				}
+				fclose( $f1 );
+				
+				// Try to change the permissions
+				ftp_site( $conn_id, 'CHMOD 0777 ' . $local_uninstall_sql );
+				
+			}
+			
+		}else{
+			die( "Please return to the last page and insert your FTP information to continue. Your wp-easycart directory is not writable and requires FTP access to continue. Please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket if you need assistance." );
+		}
+		
+	}//close ftp version
+	
+	//uninstall if it's there first
+	$url = $install_dir . "demo_uninstall.sql";
+	// Load and explode the sql file
+	$f = fopen($url, "r") or die(" The plugin could not open the demo uninstall sql script from our WP EasyCart servers. This could be related to a network failure or permissions issues. Try setting your wp-easycart plugin folder to 0777 for now and try again. If you continue to have issues please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket.");
+	$sqlFile = fread($f, filesize($url));
+	$sqlArray = explode(';', $sqlFile);
+	   
+	//Process the sql file by statements
+	foreach ($sqlArray as $stmt) {
+	if (strlen($stmt)>3){
+		$result = mysql_query($stmt);
+		  if (!$result){
+			 $sqlErrorCode = mysql_errno();
+			 $sqlErrorText = mysql_error();
+			 $sqlStmt      = $stmt;
+			 break;
+		  }
+	   }
+	}
+	
+	// Finish up by cleaning up the directory if anything remains
+	if( !unlink( $install_dir . "demo_uninstall.sql" ) ){
+		// Do the FTP version of the cleanup
+		$res = ftp_delete( $conn_id, $install_dir . "demo_uninstall.sql" );
+		if( !$res ){
+			echo "Could not delete the demo install script during clean up. Please delete manually.\r\n";	
+		}
+	}
+}
+
+function uninstall_demo_images( $install_dir ){
+	//////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////
+	//START DEMO DATA REMOVAL SCRIPT
+	//////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////	
+	//set our datapack location
+	$datapack_url = 'http://www.wpeasycart.com/sampledata';
+	if( isset( $_POST['datapack'] ) ){
+		if($_POST['datapack'] == 'standard_data') {
+			$datapack_url = 'http://www.wpeasycart.com/sampledata/standard_demo';	
+		}
+	}
+
+	if( is_writable( $install_dir ) && ini_get( "allow_url_fopen" ) ){ //start http version
 		
 		//COPY CLEAN SET OF PRODUCTS FOLDERS
 		copy( "http://www.wpeasycart.com/sampledata/clean_assets.zip", $install_dir . "clean_assets.zip" );
@@ -415,8 +669,6 @@ if(isset($_POST['isupdate'])){
 	else{// start ftp version
 		
 		if( isset( $_POST['ec_ftp_user'] ) && $_POST['ec_ftp_user'] !=  "" && isset( $_POST['ec_ftp_pass'] ) && $_POST['ec_ftp_pass'] != "" ){
-			$wp_server_sql = $datapack_url . "/demo_uninstall.sql";
-			$local_uninstall_sql = $install_dir . "demo_uninstall.sql";
 			$wp_server_zip = $datapack_url . "/clean_assets.zip";
 			$local_uninstall_zip = $install_dir . "clean_assets.zip";
 		
@@ -436,19 +688,7 @@ if(isset($_POST['isupdate'])){
 				
 			}else{ // Done all the checks, lets do an FTP delete.
 				
-				$f1 = fopen( $wp_server_sql, "r" );
 				$f2 = fopen( $wp_server_zip, "r" );
-				
-				// Try to copy the sql uninstaller
-				if( !ftp_fput( $conn_id, $local_uninstall_sql, $f1, FTP_BINARY ) ){
-					// clean up the directory if anything remains
-					die( "The plugin could not copy $wp_server_sql to $local_uninstall_sql. Please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket if you need assistance." );
-				}
-				fclose( $f1 );
-				
-				// Try to change the permissions
-				ftp_site( $conn_id, 'CHMOD 0777 ' . $local_uninstall_sql );
-				
 				
 				// Try to copy the zip for fresh products folder
 				if( !ftp_fput( $conn_id, $local_uninstall_zip, $f2, FTP_BINARY ) ){
@@ -499,26 +739,6 @@ if(isset($_POST['isupdate'])){
 		
 	}//close ftp version
 	
-	//uninstall if it's there first
-	$url = $install_dir . "demo_uninstall.sql";
-	// Load and explode the sql file
-	$f = fopen($url, "r") or die(" The plugin could not open the demo uninstall sql script from our WP EasyCart servers. This could be related to a network failure or permissions issues. Try setting your wp-easycart plugin folder to 0777 for now and try again. If you continue to have issues please contact WP EasyCart at www.wpeasycart.com with FTP access in a support ticket.");
-	$sqlFile = fread($f, filesize($url));
-	$sqlArray = explode(';', $sqlFile);
-	   
-	//Process the sql file by statements
-	foreach ($sqlArray as $stmt) {
-	if (strlen($stmt)>3){
-		$result = mysql_query($stmt);
-		  if (!$result){
-			 $sqlErrorCode = mysql_errno();
-			 $sqlErrorText = mysql_error();
-			 $sqlStmt      = $stmt;
-			 break;
-		  }
-	   }
-	} 
-	
 	$zip = new ZipArchive;
 	if( $zip->open( $install_dir . "clean_assets.zip" ) ){
 		if( !$zip->extractTo( $install_dir ) )
@@ -530,7 +750,6 @@ if(isset($_POST['isupdate'])){
 	
 	// Finish up by cleaning up the directory if anything remains
 	if( unlink( $install_dir . "clean_assets.zip" ) ){
-		unlink( $install_dir . "demo_uninstall.sql" );
 		
 		if( is_dir( $install_dir . "old-products" ) ){
 			echo "Could not delete the old-products folder during clean up. Please delete manually.\r\n";
@@ -542,11 +761,6 @@ if(isset($_POST['isupdate'])){
 		}
 		
 	}else{ // Do the FTP version of the cleanup
-		
-		$res = ftp_delete( $conn_id, $install_dir . "demo_uninstall.sql" );
-		if( !$res ){
-			echo "Could not delete the demo install script during clean up. Please delete manually.\r\n";	
-		}
 		
 		$res = ftp_delete( $conn_id, $install_dir . "clean_assets.zip" );
 		if( !$res ){
@@ -565,56 +779,6 @@ if(isset($_POST['isupdate'])){
 	if( substr( sprintf( '%o', fileperms( $install_dir ) ), -4 ) == "0777" ){
 		echo "Could not reset the wp-easycart plugin folder permissions to 0755, currently set at 0777. Please manually fix the permissions.";
 	}
-	
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
-//START CONNECTIONS FTP WRITE SCRIPT
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////	
-	
-}else if( isset( $_GET['save_conn'] ) && $_GET['save_conn'] == "yes" ){
-	
-	$ec_conn_filename = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php";
-	
-	$ec_conn_php = "<?php
-	define ('HOSTNAME','" . DB_HOST . "'); 	
-	define ('DATABASE','" . DB_NAME . "'); 		
-	define ('USERNAME','" . DB_USER . "'); 	
-	define ('PASSWORD','" . DB_PASSWORD . "'); 	
-?>"; 
-
-	// Could not open the file, lets write it via ftp!
-	$ftp_server = $_SERVER['HTTP_HOST'];
-	$ftp_user_name = $_POST['ec_ftp_user'];
-	$ftp_user_pass = $_POST['ec_ftp_pass'];
-	
-	// set up basic connection
-	$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
-	
-	// login with username and password
-	$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
-					
-	$temp = tmpfile();
-	fwrite( $temp, $ec_conn_php );
-	fseek( $temp, 0 );
-
-	//Upload the temporary file to server
-	ftp_fput( $conn_id, $ec_conn_filename, $temp, FTP_BINARY );
-	
-	//Close the temp file to finish process
-	fclose( $temp );
-	
-	ftp_site( $conn_id, 'CHMOD 0644 ' . $ec_conn_filename );
-	
-	if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php" ) ){
-		$admin_conn_config = "complete";
-	}else{
-		$admin_conn_config = "failed";
-	}
-}
-
-if( isset( $_GET['dismiss_lite_banner'] ) ){
-	update_option( 'ec_option_show_lite_message', '0' );	
 }
 
 ?>
@@ -649,8 +813,11 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 
 <img src="<?php echo plugins_url('images/WP-Easy-Cart-Logo.png', __FILE__); ?>" />
 
-<?php if( !file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php" ) ){ ?>
+<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/connection/ec_conn.php" ) && !file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php" ) ){ ?>
 <div class="ec_special_note"><strong>Administration Console Connection Problem</strong>: Please notice that during the activation of your WP EasyCart the necessary connection file could not be written. To write this file now, simply enter your FTP information and press submit.</div>
+<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/connection/ec_conn.php" ) ){ ?>
+<div class="ec_special_note"><strong>WP EasyCart Data Folder Problem</strong>: During the activation of your plugin, the necessary data folder was not able to create. Enter your FTP information below to copy the necessary data over. This is important to prevent data loss during upgrades. Notice, this process takes a while via FTP, please be patient.</div>
+<?php }?>
 <form action="<?php echo admin_url( "admin.php?page=ec_install&save_conn=yes" ); ?>" method="post">
 <table>
 	<tr><td colspan="2">Please enter FTP info to finish installation/activation:</td></tr>

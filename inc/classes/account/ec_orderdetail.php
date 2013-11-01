@@ -118,7 +118,10 @@ class ec_orderdetail{
 	}
 	
 	public function display_image( $size ){
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) )	
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";	
+		else
+			echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
 	}
 	
 	public function display_title( ){
@@ -380,7 +383,11 @@ class ec_orderdetail{
 	
 				ob_start();
 				$mm_type="application/octet-stream";
-				$file = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/" . $this->download->download_file_name;
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $this->download->download_file_name ) )	
+					$file = WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $this->download->download_file_name;
+				else
+					$file = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/" . $this->download->download_file_name;
+				
 				$ext = substr( $this->download->download_file_name, strrpos( $this->download->download_file_name, '.' ) + 1);
 				
 				$date = new DateTime();

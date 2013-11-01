@@ -243,7 +243,10 @@ class ec_product{
 		echo "<input name=\"initial_swatch_selected\" id=\"initial_swatch_selected_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->first_selection . "\" />";
 		echo "<input type=\"hidden\" name=\"ec_product_details_base_path\" id=\"ec_product_details_base_path_" . $this->model_number . "\" value=\"" . plugins_url( ) . "\" />";
 		echo "<input type=\"hidden\" name=\"ec_product_details_form_action\" id=\"ec_product_details_form_action_" . $this->model_number . "\" value=\"add_to_cart\" />";
-		echo "<input name=\"ec_jquery_get_stock_quantity_file\" id=\"ec_jquery_get_stock_quantity_file_" . $this->model_number . "\" type=\"hidden\" value=\"" . plugins_url( EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) . "\" />";
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) )	
+			echo "<input name=\"ec_jquery_get_stock_quantity_file\" id=\"ec_jquery_get_stock_quantity_file_" . $this->model_number . "\" type=\"hidden\" value=\"" . plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) . "\" />";
+		else
+			echo "<input name=\"ec_jquery_get_stock_quantity_file\" id=\"ec_jquery_get_stock_quantity_file_" . $this->model_number . "\" type=\"hidden\" value=\"" . plugins_url( EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) . "\" />";
 		echo "<input name=\"ec_cart_form_action\" id=\"ec_cart_form_action_" . $this->model_number . "\" value=\"add_to_cart\" type=\"hidden\" />";
 		echo "</form>";
 		echo "<div id=\"ec_product_details_loader_" . $this->model_number . "\" class=\"ec_product_details_loader_div\">LOADING</div>";
@@ -467,10 +470,15 @@ class ec_product{
 			
 			for( $i=0; $i<count( $optionset->optionset ); $i++ ){
 				
-				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionset->optionset[$i]->optionitem_icon );
-				$test_src = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionset->optionset[$i]->optionitem_icon;
-				if( !file_exists( $test_src ) || is_dir( $test_src ) )
-				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
+				$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/swatches/" . $optionset->optionset[$i]->optionitem_icon;
+				$test_src2 = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionset->optionset[$i]->optionitem_icon;
+				
+				if( file_exists( $test_src ) && !is_dir( $test_src ) )
+					$thumb_src = plugins_url( "wp-easycart-data/products/swatches/" . $optionset->optionset[$i]->optionitem_icon );
+				else if( file_exists( $test_src2 ) && !is_dir( $test_src2 ) )
+					$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionset->optionset[$i]->optionitem_icon );
+				else
+					$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
 				
 				echo "<img src=\"" . $thumb_src . "\" alt=\"" . $optionset->optionset[$i]->optionitem_name . "\" class=\"";
 				
@@ -540,7 +548,10 @@ class ec_product{
 	public function display_product_reviews( ){
 		foreach( $this->reviews as $review_row ){
 			$review = new ec_review( $review_row );
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_customer_review.php' );
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_customer_review.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_customer_review.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_customer_review.php' );
 		}
 	}
 	
@@ -622,32 +633,47 @@ class ec_product{
 		if( $this->featured_products->product1->product_id != 0 ){
 			$i=1;
 			$featured_product = $this->featured_products->product1;
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_featured_product.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
 		}
 		
 		if( $this->featured_products->product2->product_id != 0 ){
 			$i=2;
 			$featured_product = $this->featured_products->product2;
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_featured_product.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
 		}
 		
 		if( $this->featured_products->product3->product_id != 0 ){
 			$i=3;
 			$featured_product = $this->featured_products->product3;
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_featured_product.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
 		}
 		
 		if( $this->featured_products->product4->product_id != 0 ){
 			$i=4;
 			$featured_product = $this->featured_products->product4;
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_featured_product.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
 		}
 	}
 	
 	/* Display the Gift Card Input Fields */
 	public function display_gift_card_input( ){
 		if( $this->is_giftcard ){
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_gift_card_input.php' );	
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_gift_card_input.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_gift_card_input.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_gift_card_input.php' );	
 		}
 	}
 	
@@ -687,7 +713,10 @@ class ec_product{
 		for( $i=0; $i<count( $this->pricetiers ) && count( $this->pricetiers[$i] ) == 2; $i++ ){
 			$Price = $GLOBALS['currency']->get_currency_display( $this->pricetiers[$i][0] );
 			$Quantity = $this->pricetiers[$i][1];
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_price_tier.php' );	
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_price_tier.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_price_tier.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_price_tier.php' );	
 		}
 	}
 	

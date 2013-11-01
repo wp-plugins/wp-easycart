@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.7 =
+* Bug Fix - Donation input was not available in the quick view.
+* Improvement - In order to prevent data loss, we now install a second folder, outside of the plugin, called wp-easycart-data. This folder saves the data necessary to the plug in and prevents WordPress from deleting everything.
 = 1.2.6 =
 * Bug Fix - USPS now chooses the option to send internationally with your own box, bringing the price of shipping down for the customer.
 = 1.2.5 =

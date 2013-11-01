@@ -151,7 +151,10 @@ class ec_cart{
 	public function display_cart_items( $vat_enabled, $vat_country_match ){
 		for($i=0; $i<count( $this->cart ); $i++){
 			$cart_item = $this->cart[$i];
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_item.php' );	
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_page.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_item.php' );	
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_item.php' );	
 		}
 	}
 	

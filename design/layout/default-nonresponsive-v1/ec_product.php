@@ -15,9 +15,18 @@
         </div>
         <div class="ec_product_quick_view_box_content_right">
         	<div class="ec_product_quick_view_box_content_row"><span class="title"><?php $product->display_product_title(); ?></span></div>
-        	<div class="ec_product_quick_view_box_content_row"><?php $product->display_product_list_price(); ?><?php $product->display_product_price(); ?></div>
-            <div class="ec_product_quick_view_box_content_row"><?php $product->display_product_price_tiers(); ?></div>
-            
+        	<?php if( $product->is_donation ){?>
+                <div class="ec_product_quick_view_box_content_row" id="ec_product_details_donation_row"> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_donation_label' )?> <?php $product->display_price_input(); ?></div>
+                
+                <div class="ec_product_details_donation" id="ec_product_details_donation_min_row">( <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_donation' )?> <?php $product->display_price( ); ?> )</div>
+        
+            <?php }else{ ?>
+                <div class="ec_product_quick_view_box_content_row2"><?php $product->display_price(); ?>&nbsp;<?php $product->display_product_list_price(); ?></div>
+                <?php if( $product->list_price != "0.00" ){ ?>
+                <div class="ec_product_quick_view_box_content_row3"><span class="ec_product_details_discount"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_reduced_price' )?> <?php $product->display_product_discount_percentage( ); ?>%</span></div>
+                <?php } ?> 
+                <div class="ec_product_quick_view_box_content_row"><?php $product->display_product_price_tiers(); ?></div>
+            <?php }?>
             
             <?php if( $product->product_has_swatches( $product->options->optionset1 ) ){ ?>
             <div class="ec_product_quick_view_box_content_option_row">
