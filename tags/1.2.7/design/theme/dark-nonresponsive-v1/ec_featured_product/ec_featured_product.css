@@ -1,0 +1,93 @@
+@charset "utf-8";
+/* Base Theme - Filter Bar CSS Document */
+.ec_featured_product {
+	margin-top: 10px;
+}
+.ec_featured_product.prod1{
+	float:left;
+	width:24.5%;
+}
+.ec_featured_product.prod2{
+	float:left;
+	margin-left:.7%;
+	width:24.5%;
+}
+.ec_featured_product.prod3{
+	float:left;
+	margin-left:.6%;
+	width:24.5%;
+}
+.ec_featured_product.prod4{
+	float:right;
+	width:24.5%;
+}
+.ec_featured_product_image .ec_product_image{
+	max-width:187px;
+}
+.ec_featured_product_image .ec_product_image img{  
+	max-width:100%;
+}
+.ec_featured_product_image a{
+	float:left;
+	border:1px solid #eee;
+}
+.ec_featured_product_image a:hover{
+	border:1px solid #ccc;
+}
+.ec_featured_product_image {
+	float: left;
+}
+.ec_featured_product_title {
+	float: left;
+	width: 100%;
+	text-align: left;
+	margin-top: 15px;
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+.ec_featured_product_price {
+	float: left;
+	width: 100%;
+	text-align: left;
+	margin-top: 3px;
+}
+.ec_featured_product_price .ec_product_price {
+	float: left;
+	text-align: left;
+	font-size: 12px;
+}
+.ec_featured_product_price .ec_product_old_price {
+	float: left;
+	text-align: left;
+	font-size: 12px;
+	margin-top: 5px;
+	width:0;
+}
+.ec_featured_product_price .ec_product_sale_price {
+	float: left;
+	text-align: left;
+	font-size: 12px;
+	width:0;
+}
+.ec_featured_product_rating {
+	float: left;
+	width: 100%;
+	margin-top: 3px;
+}
+.ec_featured_product_rating_stars {
+	float: left;
+}
+.ec_featured_product_rating_num_ratings {
+	float: left;
+	margin-left: 5px;
+	margin-top: -2px;
+	font-size: 11px;
+}
+.ec_product_title_link{
+	color:#EEE !important;
+}
+.ec_product_title_link:hover{
+	color:#FFF !important;
+	text-decoration:none;
+}
+/* END SORT BAR STYLE*/ 
