@@ -123,6 +123,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.8 =
+* Bug Fix - Correction to the result processing in the eWay payment gateway.
 = 1.2.7 =
 * Bug Fix - Donation input was not available in the quick view.
 * Improvement - In order to prevent data loss, we now install a second folder, outside of the plugin, called wp-easycart-data. This folder saves the data necessary to the plug in and prevents WordPress from deleting everything.
