@@ -66,7 +66,7 @@ class ec_eway extends ec_gateway{
 		
 		$response_text = print_r( $xml, true );
 		
-		if( $ewayTrxnStatus == "True" )
+		if( $xml->ewayTrxnStatus == "True" )
 			$this->is_success = 1;
 		else
 			$this->is_success = 0;
