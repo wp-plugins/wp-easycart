@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.8
+ * Version: 1.2.9
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.8
+ * @version 1.2.9
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_8' );
+define( 'EC_CURRENT_VERSION', '1_2_9' );
 define( 'EC_CURRENT_DB', '1_9' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
@@ -88,7 +88,7 @@ function ec_activate(){
 	}
 	
 	// This is a fix for the backup issue. We are going to put into place now in hopes it saves people some of the troubles they've been having.
-	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data" ) ){
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
 		
 		// Now Copy Recursive (connection, design, products
 		$to = WP_PLUGIN_DIR . "/wp-easycart-data/";
