@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.9
+ * Version: 1.2.10
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.9
+ * @version 1.2.10
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,11 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_9' );
+define( 'EC_CURRENT_VERSION', '1_2_10' );
 define( 'EC_CURRENT_DB', '1_9' );
+
+if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
+	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
 
@@ -172,6 +175,28 @@ function load_ec_pre(){
 		// Any version before 13 needs the banner folder.
 		if( !mkdir( $banners_folder, 0755 ) )
 			echo "The WP EasyCart plugin could not add a folder to your install on upgrade. You will need to manually add this folder on your server to access future features. To solve this issue add a folder called 'banners' to the following directory: wp-easycart/products/ (so wp-easycart/products/banners needs to exist). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.";
+	}
+	
+	// This is a fix for the backup issue. We are going to put into place now in hopes it saves people some of the troubles they've been having.
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
+		
+		// Now Copy Recursive (connection, design, products
+		$to = WP_PLUGIN_DIR . "/wp-easycart-data/";
+		$from = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
+		
+		// Make destination directory
+		if( !is_writable( WP_PLUGIN_DIR ) ){
+			
+			// We really can't do anything now about the data folder. Lets try and get people to do this in the install page.
+			
+		}else{
+			mkdir( $to, 0755 );
+		
+			wpeasycart_copyr( $from . "products", $to . "products" );
+			wpeasycart_copyr( $from . "design", $to . "design" );
+			wpeasycart_copyr( $from . "connection", $to . "connection" );
+			
+		}
 	}
 	
 	$storepageid = get_option('ec_option_storepage');
