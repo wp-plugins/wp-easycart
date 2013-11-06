@@ -1,10 +1,14 @@
 <?php
-// First of all send css header
-header("Content-type: text/css");
-
 //Load Wordpress Connection Data
 define('WP_USE_THEMES', false);
-require('../../../../../wp-load.php');
+require('../../../../../wp-blog-header.php');
+
+// First of all send css header
+$expires = 60*60*24; // how long to cache in secs..
+header("Pragma: public");
+header("Cache-Control: maxage=".$expires);
+header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
+header('Content-type: text/css');
 
 $ec_store_css = array(
 	'product',
@@ -68,25 +72,31 @@ $ec_widget_css = array(
 
 $css_content = "";
 
-foreach ($ec_store_css as $css_file ){
-	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' ) )
-		$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
-	else
-		$css_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+if( $_GET['ec_page_type'] == "store" ){
+	foreach ($ec_store_css as $css_file ){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' ) )
+			$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+		else
+			$css_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+	}
 }
 
-foreach ($ec_cart_css as $css_file ){
-	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' ) )
-		$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
-	else
-		$css_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+if( $_GET['ec_page_type'] == "cart" ){
+	foreach ($ec_cart_css as $css_file ){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' ) )
+			$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+		else
+			$css_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+	}
 }
 
-foreach ($ec_account_css as $css_file ){ 
-	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' ) )
-		$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
-	else
-		$css_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+if( $_GET['ec_page_type'] == "account" ){
+	foreach ($ec_account_css as $css_file ){ 
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' ) )
+			$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+		else
+			$css_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
+	}
 }
 
 foreach ($ec_widget_css as $css_file ){

@@ -1,10 +1,14 @@
 <?php
-// First of all send js header
-header("Content-type: text/javascript");
-
 //Load Wordpress Connection Data
 define('WP_USE_THEMES', false);
-require('../../../../../wp-load.php');
+require('../../../../../wp-blog-header.php');
+
+// First of all send css header
+$expires = 60*60*24; // how long to cache in secs..
+header("Pragma: public");
+header("Cache-Control: maxage=".$expires);
+header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
+header('Content-type: text/javascript');
 
 $ec_store_js = array(
 	'product',
@@ -66,25 +70,31 @@ $ec_widget_js = array(
 
 $js_content = "";
 
-foreach ($ec_store_js as $js_file) {
-	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
-		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
-	else
-		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+if( $_GET['ec_page_type'] == "store" ){
+	foreach ($ec_store_js as $js_file) {
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
+			$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+		else
+			$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+	}
 }
 
-foreach ($ec_cart_js as $js_file){
-	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
-		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
-	else
-		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+if( $_GET['ec_page_type'] == "cart" ){
+	foreach ($ec_cart_js as $js_file){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
+			$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+		else
+			$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+	}
 }
 
-foreach ($ec_account_js as $js_file) {
-	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
-		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
-	else
-		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+if( $_GET['ec_page_type'] == "account" ){
+	foreach ($ec_account_js as $js_file) {
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
+			$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+		else
+			$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
+	}
 }
 
 foreach ($ec_widget_js as $js_file){
