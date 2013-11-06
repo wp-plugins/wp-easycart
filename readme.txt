@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.9
+Stable tag: 1.2.10
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.10 =
+* Bug Fix - Check for backup data directory was failing. Once a user successfully gets to this version they should never lose EasyCart data on updates again.
+* Bug Fix - PayPal payments pro would fail if server had all notifications turned on at all times.
 = 1.2.9 =
 * Bug Fix - Check for backup data directory was failing. Once a user successfully gets to this version they should never lose EasyCart data on updates again.
 = 1.2.8 =

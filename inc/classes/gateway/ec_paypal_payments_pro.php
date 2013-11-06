@@ -135,7 +135,7 @@ class ec_paypal_payments_pro extends ec_gateway{
 			
 		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "PayPal Payments Pro", $response_text );
 			
-		if( !$this->is_success )
+		if( !$this->is_success && isset( $response_vals["L_SHORTMESSAGE"] ) )
 			$this->error_message = $response_vals["L_SHORTMESSAGE"];
 			
 	}
