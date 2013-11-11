@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.12
+Stable tag: 1.2.13
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.13 =
+* Bug Fix - Sales tax with discounts bug fix. Discounts for products should lower the sales tax value, shipping discounts do not. This has been corrected.
+* Bug Fix - Small vat error corrected.
 = 1.2.12 =
 * Bug Fix - We have found some servers are incompatible with the changes made to the css and js loaders. We will focus on increasing the load time later, for now this will fix the customers who are having issues.
 * We are sorry for those customers who were affected. We are still confident in our compatibility with WP Super Cache and highly recommend it for those running a WordPress site.

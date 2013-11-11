@@ -51,19 +51,20 @@ class ec_cartpage{
 			$this->gift_card = "";
 		}
 		
-		// Tax (no VAT here)
-		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal, 0, $this->user->shipping->state, $this->user->shipping->country );
 		// Shipping
 		$this->shipping = new ec_shipping( $this->cart->subtotal, $this->cart->weight );
+		// Tax (no VAT here)
+		$sales_tax_discount = new ec_discount( $this->cart, $this->cart->subtotal, 0.00, $this->coupon_code, "", 0 );
+		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country );
 		// Duty (Based on Product Price) - already calculated in tax
 		// Get Total Without VAT, used only breifly
-		$total_without_vat_or_discount = $this->cart->vat_subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
+		$total_without_vat_or_discount = $this->cart->subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
 		// Discount for Coupon
 		$this->discount = new ec_discount( $this->cart, $this->cart->subtotal, $this->shipping->get_shipping_price( ), $this->coupon_code, $this->gift_card, $total_without_vat_or_discount );
 		// Amount to Apply VAT on
 		$vatable_subtotal = $total_without_vat_or_discount - $this->discount->coupon_discount;
 		// Get Tax Again For VAT
-		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal, $vatable_subtotal, $this->user->shipping->state, $this->user->shipping->country );
+		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, $vatable_subtotal, $this->user->shipping->state, $this->user->shipping->country );
 		// Discount for Gift Card
 		$this->discount = new ec_discount( $this->cart, $this->cart->subtotal, $this->shipping->get_shipping_price( ), $this->coupon_code, $this->gift_card, $GLOBALS['currency']->get_number_only( $total_without_vat_or_discount ) + $GLOBALS['currency']->get_number_only( $this->tax->vat_total ) );
 		// Order Totals

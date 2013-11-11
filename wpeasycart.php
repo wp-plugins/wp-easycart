@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.12
+ * Version: 1.2.13
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.12
+ * @version 1.2.13
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_12' );
+define( 'EC_CURRENT_VERSION', '1_2_13' );
 define( 'EC_CURRENT_DB', '1_9' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -1169,11 +1169,12 @@ function ec_get_order_totals( ){
 	$cart = new ec_cart( session_id() );
 	$user = new ec_user( $user_email );
 	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
-	$tax = new ec_tax( $cart->subtotal, $cart->taxable_subtotal, 0, $user->shipping->state, $user->shipping->country );
+	$sales_tax_discount = new ec_discount( $cart, $cart->subtotal, 0.00, $coupon_code, "", 0 );
+	$tax = new ec_tax( $cart->subtotal, $cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $user->shipping->state, $user->shipping->country );
 	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
 	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $grand_total );
 	$vatable_subtotal = $grand_total - $discount->coupon_discount;
-	$tax = new ec_tax( $cart->subtotal, $cart->taxable_subtotal, $vatable_subtotal, $user->shipping->state, $user->shipping->country );
+	$tax = new ec_tax( $cart->subtotal, $cart->taxable_subtotal - $sales_tax_discount->coupon_discount, $vatable_subtotal, $user->shipping->state, $user->shipping->country );
 	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $GLOBALS['currency']->get_number_only( $grand_total ) + $GLOBALS['currency']->get_number_only( $tax->vat_total ) );
 	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
 	return $order_totals;
