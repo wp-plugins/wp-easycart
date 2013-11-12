@@ -23,7 +23,7 @@
 define ('VERSION', '2.8.10');																		// Version of this script 
 //Load a config file if it exists. Otherwise, use the values below
 if( file_exists(dirname(__FILE__) . '/timthumb-config.php'))	require_once('timthumb-config.php');
-if(! defined('DEBUG_ON') )					define ('DEBUG_ON', false);								// Enable debug logging to web server error log (STDERR)
+if(! defined('DEBUG_ON') )					define ('DEBUG_ON', true);								// Enable debug logging to web server error log (STDERR)
 if(! defined('DEBUG_LEVEL') )				define ('DEBUG_LEVEL', 3);								// Debug level 1 is less noisy and 3 is the most noisy
 if(! defined('MEMORY_LIMIT') )				define ('MEMORY_LIMIT', '30M');							// Set PHP memory limit
 if(! defined('BLOCK_EXTERNAL_LEECHERS') ) 	define ('BLOCK_EXTERNAL_LEECHERS', false);				// If the image or webshot is being loaded on an external site, display a red "No Hotlinking" gif.
@@ -263,11 +263,15 @@ class timthumb {
 			$this->cachefile = $this->cacheDirectory . '/' . FILE_CACHE_PREFIX . $cachePrefix . md5($this->salt . implode('', $arr) . $this->fileCacheVersion) . FILE_CACHE_SUFFIX;
 		} else {
 			$this->localImage = $this->getLocalImagePath($this->src);
-			if(! $this->localImage){
-				$this->debug(1, "Could not find the local image: {$this->localImage}");
-				$this->error("Could not find the internal image you specified.");
-				$this->set404();
-				return false;
+			if (! $this->localImage) {
+				//added to check data directory as well
+				$this->localImage = $this->getLocalImagePath('/wp-easycart-data' . $this->src);
+				if(! $this->localImage){
+					$this->debug(1, "Could not find the local image: {$this->localImage}");
+					$this->error("Could not find the internal image you specified.");
+					$this->set404();
+					return false;
+				}
 			}
 			$this->debug(1, "Local image path is {$this->localImage}");
 			$this->localImageMTime = @filemtime($this->localImage);
