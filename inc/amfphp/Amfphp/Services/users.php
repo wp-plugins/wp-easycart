@@ -22,10 +22,11 @@ class users
 	
 		function users() {
 			//load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) )
+			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
 				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			else
+			} else {
 				require_once('../../../connection/ec_conn.php');
+			}
 			require_once( "../../classes/core/ec_db.php" );
 			
 			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
