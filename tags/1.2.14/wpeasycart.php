@@ -225,10 +225,8 @@ function load_ec_pre(){
 								'post_title'	=> $menu_item->menu1_name,
 								'post_type'		=> "ec_store"
 							  );
-				$post_id = wp_insert_post( $post, $wp_error );
-				if( !$wp_error ){
-					$db->update_menu_post_id( $menu_item->menulevel1_id, $post_id );
-				}
+				$post_id = wp_insert_post( $post );
+				$db->update_menu_post_id( $menu_item->menulevel1_id, $post_id );
 			}
 		}
 		
@@ -240,10 +238,8 @@ function load_ec_pre(){
 								'post_title'	=> $menu_item->menu2_name,
 								'post_type'		=> "ec_store"
 							  );
-				$post_id = wp_insert_post( $post, $wp_error );
-				if( !$wp_error ){
-					$db->update_submenu_post_id( $menu_item->menulevel2_id, $post_id );
-				}
+				$post_id = wp_insert_post( $post );
+				$db->update_submenu_post_id( $menu_item->menulevel2_id, $post_id );
 			}
 		}
 		
@@ -255,10 +251,8 @@ function load_ec_pre(){
 								'post_title'	=> $menu_item->menu3_name,
 								'post_type'		=> "ec_store"
 							  );
-				$post_id = wp_insert_post( $post, $wp_error );
-				if( !$wp_error ){
-					$db->update_subsubmenu_post_id( $menu_item->menulevel3_id, $post_id );
-				}
+				$post_id = wp_insert_post( $post );
+				$db->update_subsubmenu_post_id( $menu_item->menulevel3_id, $post_id );
 			}
 		}
 	
@@ -270,40 +264,34 @@ function load_ec_pre(){
 								'post_title'	=> $product_single['title'],
 								'post_type'		=> "ec_store"
 							  );
-				$post_id = wp_insert_post( $post, $wp_error );
-				if( !$wp_error ){
-					$db->update_product_post_id( $product_single['product_id'], $post_id );
-				}
+				$post_id = wp_insert_post( $post );
+				$db->update_product_post_id( $product_single['product_id'], $post_id );
 			}
 		}
 	
 		foreach( $manufacturer_list as $manufacturer_single ){
 			if( $manufacturer_single->post_id == 0 ){
 				// Add a post id
-				$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturer_single['manufacturer_id'] . "\"]",
+				$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturer_single->manufacturer_id . "\"]",
 								'post_status'	=> "publish",
-								'post_title'	=> $manufacturer_single['name'],
+								'post_title'	=> $manufacturer_single->name,
 								'post_type'		=> "ec_store"
 							  );
-				$post_id = wp_insert_post( $post, $wp_error );
-				if( !$wp_error ){
-					$db->update_manufacturer_post_id( $manufacturer_single['manufacturer_id'], $post_id );
-				}
+				$post_id = wp_insert_post( $post );
+				$db->update_manufacturer_post_id( $manufacturer_single->manufacturer_id, $post_id );
 			}
 		}
 	
 		foreach( $category_list as $category_single ){
 			if( $category_single->post_id == 0 ){
 				// Add a post id
-				$post = array(	'post_content'	=> "[ec_store groupid=\"" . $category_single['category_id'] . "\"]",
+				$post = array(	'post_content'	=> "[ec_store groupid=\"" . $category_single->category_id . "\"]",
 								'post_status'	=> "publish",
-								'post_title'	=> $category_single['category_name'],
+								'post_title'	=> $category_single->category_name,
 								'post_type'		=> "ec_store"
 							  );
-				$post_id = wp_insert_post( $post, $wp_error );
-				if( !$wp_error ){
-					$db->update_product_post_id( $category_single['category_id'], $post_id );
-				}
+				$post_id = wp_insert_post( $post );
+				$db->update_product_post_id( $category_single->category_id, $post_id );
 			}
 		}
 		
