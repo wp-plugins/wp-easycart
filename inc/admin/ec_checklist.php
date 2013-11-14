@@ -1,6 +1,7 @@
 <?php
 $minimumversion = "5.3.0";
 $minimummysqlversion = "3.23.58";
+session_start();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -385,6 +386,37 @@ a:active {
 					}
 				}
 			}
+		?>
+          </tr>
+          <tr>
+            <td class="productheading">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="label">Session Test (should increment by 1 with refresh)</td>
+            <?php
+			
+			$_SESSION['test'] += 1;
+			
+			if(isset($_SESSION['test'])) {
+				echo "<td class='passed'>" . $_SESSION['test'] . "</td>";
+			}
+		?>
+          </tr>
+          <tr>
+            <td class="productheading">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="label">PHP Session Path</td>
+            <?php
+			
+			if(session_save_path()) {
+				echo "<td  class='passed'>" . session_save_path() . "</td>";
+			} else {
+				echo "<td class='failed'>No Session Path</td>";
+			}
+			
 		?>
           </tr>
           <tr>
