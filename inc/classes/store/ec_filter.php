@@ -123,8 +123,19 @@ class ec_filter{
 	}
 	
 	public function get_group_id(){
-		if( isset( $_GET['group_id'] ) )						return $_GET['group_id'];
-		else													return 0;	
+		global $wp_query;
+		$post_obj = $wp_query->get_queried_object();
+		if( isset( $post_obj ) ){
+			$post_id = $post_obj->ID;
+			$group = $this->mysqli->get_category_id_from_post_id( $post_id );
+		
+			if( isset( $_GET['group_id'] ) )						return $_GET['group_id'];
+			else if( isset( $group ) )								return $group->category_id;
+			else													return 0;
+		}else{
+			if( isset( $_GET['group_id'] ) )						return $_GET['group_id'];
+			else													return 0;
+		}
 	}
 	
 	private function get_model_number(){
@@ -174,16 +185,28 @@ class ec_filter{
 			return 0;
 	}
 	
+	public function get_menu_permalink( ){
+		return get_permalink( $this->menulevel1->post_id );
+	}
+	
+	public function get_submenu_permalink( ){
+		return get_permalink( $this->menulevel2->post_id );
+	}
+	
+	public function get_subsubmenu_permalink( ){
+		return get_permalink( $this->menulevel3->post_id );
+	}
+	
 	public function get_menu_link(){
-		return "<a href=\"". $this->store_page . $this->permalink_divider . "menu=" . $this->get_menu_name( ) . "&amp;menuid=" . $this->get_menu_id( ) . "\" class=\"ec_store_link\">" . $this->get_menu_name( ) . "</a>";
+		return "<a href=\"". $this->get_menu_permalink( ) . "\" class=\"ec_store_link\">" . $this->menu->level1->name( ) . "</a>";
 	}
 	
 	public function get_submenu_link(){
-		return "<a href=\"". $this->store_page . $this->permalink_divider . "submenu=" . $this->menu->level2->name . "submenuid=" . $this->menu->level2->menu_id . "\" class=\"ec_store_link\">" . $this->menu->level2->name . "</a>";
+		return "<a href=\"". $this->get_submenu_permalink( ) . "\" class=\"ec_store_link\">" . $this->menu->level2->name . "</a>";
 	}
 	
 	public function get_subsubmenu_link(){
-		return "<a href=\"". $$this->store_page . $this->permalink_divider . "subsubmenu=" . $this->menu->level3->name . "subsubmenuid=" . $this->menu->level3->menu_id . "\" class=\"ec_store_link\">" . $this->menu->level3->name . "</a>";
+		return "<a href=\"". $this->get_subsubmenu_permalink( ) . "\" class=\"ec_store_link\">" . $this->menu->level3->name . "</a>";
 	}
 	
 	public function if_level_1_get_name(){
@@ -214,12 +237,51 @@ class ec_filter{
 	
 	public function get_link_string( $leave_out ){
 		
-		$ret_string = $this->store_page . $this->permalink_divider;
+		// First we should check if the store shortcode is even on the page. This will tell us what to use as the initial link
+		$has_store_shortcode = false;
+		global $wp_query;
+		$post_obj = $wp_query->get_queried_object();
+		$post_content = $post_obj->post_content;
+		if( strstr( $post_content, "[ec_store" ) )
+			$has_store_shortcode = true;
 		
-		if( $leave_out != 1){
-			if( $this->get_menu_level() == 1 )						$ret_string .= "menuid=" . $this->menulevel1->menu_id . "&amp;menu=" . $this->get_menu_name();
-			else if( $this->get_menu_level() == 2 ) 				$ret_string .= "submenuid=" . $this->menulevel2->menu_id . "&amp;submenu=" . $this->get_submenu_name();
-			else if( $this->get_menu_level() == 3 )					$ret_string .= "subsubmenuid=" . $this->menulevel3->menu_id . "&amp;subsubmenu=" . $this->get_subsubmenu_name();
+		if( $leave_out != 1 && ( isset( $_GET['menuid'] ) || isset( $_GET['submenuid'] ) || isset( $_GET['subsubmenuid'] ) ) ){
+			// First try and get a permalink from the id
+			if( isset( $_GET['subsubmenuid'] ) )
+				$menu_row = $this->mysqli->get_menu_row( $_GET['subsubmenuid'], 3 );
+			else if( isset( $_GET['submenuid'] ) )
+				$menu_row = $this->mysqli->get_menu_row( $_GET['submenuid'], 2 );
+			else if( isset( $_GET['menuid'] ) )
+				$menu_row = $this->mysqli->get_menu_row( $_GET['menuid'], 1 );
+				
+			if( count( $menu_row ) > 0 ){
+				if( $has_store_shortcode )
+					$ret_string = get_permalink( $menu_row->post_id ) . $this->permalink_divider;
+				else
+					$ret_string = $this->store_page . $this->permalink_divider;
+			}else{
+				
+				$ret_string = $this->store_page . $this->permalink_divider;
+				if( $this->get_menu_level() == 1 )						$ret_string .= "menuid=" . $this->menulevel1->menu_id . "&amp;menu=" . $this->get_menu_name();
+				else if( $this->get_menu_level() == 2 ) 				$ret_string .= "submenuid=" . $this->menulevel2->menu_id . "&amp;submenu=" . $this->get_submenu_name();
+				else if( $this->get_menu_level() == 3 )					$ret_string .= "subsubmenuid=" . $this->menulevel3->menu_id . "&amp;subsubmenu=" . $this->get_subsubmenu_name();
+			}
+		}else if( $leave_out != 1 ){
+			global $wp_query;
+			$post_obj = $wp_query->get_queried_object();
+			$post_id = $post_obj->ID;
+			$manufacturer = $this->mysqli->get_manufacturer_id_from_post_id( $post_id );
+			$product = $this->mysqli->get_product_from_post_id( $post_id );
+			if( ( isset( $manufacturer ) && $leave_out == 3 ) || ( isset( $product ) && $leave_out == 3 ) || ( isset( $product ) && $leave_out == 4 ) )
+				$ret_string = $this->store_page . $this->permalink_divider;
+			else{
+				if( $has_store_shortcode )
+					$ret_string = get_permalink( $post_id ) . $this->permalink_divider;
+				else
+					$ret_string = $this->store_page . $this->permalink_divider;
+			}
+		}else{
+			$ret_string = $this->store_page . $this->permalink_divider;
 		}
 		
 		if( $leave_out != 2 )										$ret_string .= "&amp;perpage=" . $this->perpage->selected;

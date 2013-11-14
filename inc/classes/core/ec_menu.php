@@ -23,8 +23,9 @@ class ec_menu{
 	
 	public function display_menulevel1_link( $level1 ){
 		
-		echo $this->storepage . $this->permalinkdivider . "menuid=" . $this->menu_array[$level1][1] . "&menu=" . $this->menu_array[$level1][2] ;	
-	
+		$permalink = get_permalink( $this->menu_array[$level1][3] );
+		echo $permalink;
+		
 	}
 	
 	public function display_menulevel1_name( $level1 ){
@@ -45,8 +46,9 @@ class ec_menu{
 	
 	public function display_menulevel2_link( $level1, $level2 ){
 		
-		echo $this->storepage . $this->permalinkdivider . "submenuid=" . $this->menu_array[$level1][0][$level2][1] . "&submenu=" . $this->menu_array[$level1][0][$level2][2] ;	
-	
+		$permalink = get_permalink( $this->menu_array[$level1][0][$level2][3] );
+		echo $permalink;
+		
 	}
 	
 	public function display_menulevel2_name( $level1, $level2 ){
@@ -67,7 +69,8 @@ class ec_menu{
 	
 	public function display_menulevel3_link( $level1, $level2, $level3 ){
 		
-		echo $this->storepage . $this->permalinkdivider . "subsubmenuid=" . $this->menu_array[$level1][0][$level2][0][$level3][0] . "&subsubmenu=" . $this->menu_array[$level1][0][$level2][0][$level3][1] ;	
+		$permalink = get_permalink( $this->menu_array[$level1][0][$level2][0][$level3][2] );
+		echo $permalink;
 	
 	}
 	

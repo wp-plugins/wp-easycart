@@ -119,6 +119,7 @@
 	margin-top:10px;
 	background-image:none;
 	box-shadow:none;
+	padding:0px !important;
 }
 .ec_cart_login_button:hover {
 	cursor: pointer;

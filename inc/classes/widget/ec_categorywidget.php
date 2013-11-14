@@ -48,39 +48,83 @@ class ec_categorywidget extends WP_Widget{
 		
 		// WIDGET CODE GOES HERE
 		$mysqli = new ec_db();
-		$storepageid = get_option('ec_option_storepage');
-		$store_page = get_permalink( $storepageid );
 		
-		if( substr_count( $store_page, '?' ) )						$permalink_divider = "&";
-		else														$permalink_divider = "?";
+		//Required for old linking layouts /////DO NOT DELETE////
+		$store_page_id = get_option('ec_option_storepage');
+		$store_page = get_permalink( $store_page_id );
 		
-		if( isset( $_GET['menuid'] ) ){
-			$level = 1;
-			$menu_id = $_GET['menuid'];
-			$submenu_id = 0;
-			$subsubmenu_id = 0;
-		}else if( isset( $_GET['submenuid'] ) ){
-			$level = 2;
-			$menu_id = 0;
-			$submenu_id = $_GET['submenuid'];
-			$subsubmenu_id = 0;
-		}else if( isset( $_GET['subsubmenuid'] ) ){
-			$level = 3;
-			$menu_id = 0;
-			$submenu_id = 0;
-			$subsubmenu_id = $_GET['subsubmenuid'];
+		if( substr_count( $store_page, '?' ) )					$permalink_divider = "&";
+		else													$permalink_divider = "?";
+		//Required for old linking layouts //////DO NOT DELETE////
+		
+		
+		if( isset( $_GET['menuid'] ) || isset( $_GET['submenuid'] ) || isset( $_GET['subsubmenuid'] ) ){
+			//Old Linking Format Code
+			if( isset( $_GET['menuid'] ) ){
+				$level = 1;
+				$menu_id = $_GET['menuid'];
+				$submenu_id = 0;
+				$subsubmenu_id = 0;
+			}else if( isset( $_GET['submenuid'] ) ){
+				$level = 2;
+				$menu_id = 0;
+				$submenu_id = $_GET['submenuid'];
+				$subsubmenu_id = 0;
+			}else if( isset( $_GET['subsubmenuid'] ) ){
+				$level = 3;
+				$menu_id = 0;
+				$submenu_id = 0;
+				$subsubmenu_id = $_GET['subsubmenuid'];
+			}else{
+				$level = 0;
+				$menu_id = 0;
+				$submenu_id = 0;
+				$subsubmenu_id = 0;
+			}
 		}else{
-			$level = 0;
-			$menu_id = 0;
-			$submenu_id = 0;
-			$subsubmenu_id = 0;
+			//New Linking Format Code
+			global $wp_query;
+			$post_obj = $wp_query->get_queried_object();
+			if( isset( $post_obj ) ){
+				$post_id = $post_obj->ID;
+				$menulevel1 = $mysqli->get_menu_row_from_post_id( $post_id, 1 );
+				$menulevel2 = $mysqli->get_menu_row_from_post_id( $post_id, 2 );
+				$menulevel3 = $mysqli->get_menu_row_from_post_id( $post_id, 3 );
+				
+				if( count( $menulevel1 ) > 0 ){
+					$level = 1;
+					$menu_id = $menulevel1->menulevel1_id;
+					$submenu_id = 0;
+					$subsubmenu_id = 0;
+				}else if( count( $menulevel2 ) > 0 ){
+					$level = 2;
+					$menu_id = 0;
+					$submenu_id = $menulevel2->menulevel2_id;
+					$subsubmenu_id = 0;
+				}else if( count( $menulevel3 ) > 0 ){
+					$level = 3;
+					$menu_id = 0;
+					$submenu_id = 0;
+					$subsubmenu_id = $menulevel3->menulevel3_id;
+				}else{
+					$level = 0;
+					$menu_id = 0;
+					$submenu_id = 0;
+					$subsubmenu_id = 0;
+				}
+			}else{
+				$level = 0;
+				$menu_id = 0;
+				$submenu_id = 0;
+				$subsubmenu_id = 0;
+			}
 		}
 		
 		$category_items = $mysqli->get_category_items( $level, $menu_id, $submenu_id, $subsubmenu_id );
 		
 		$categories = array(); 
 		for( $i=0; $i<count( $category_items ); $i++ ){
-			$categories[] = array( $category_items[$i]->menu_id, $category_items[$i]->menu_name, $category_items[$i]->product_count );
+			$categories[] = array( $category_items[$i]->menu_id, $category_items[$i]->menu_name, $category_items[$i]->product_count, get_permalink( $category_items[$i]->post_id ) );
 		}
 		
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_category_widget.php' ) )	

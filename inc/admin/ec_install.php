@@ -405,7 +405,80 @@ function install_demo_data( $install_dir ){
 			 break;
 		  }
 	   }
-	} 
+	}
+	
+	// NOW LETS UPDATE THE LINKING STRUCTURE
+	$db = new ec_db();
+	$menulevel1_items = $db->get_menulevel1_items( );
+	$menulevel2_items = $db->get_menulevel2_items( );
+	$menulevel3_items = $db->get_menulevel3_items( );
+	$product_list = $db->get_product_list( "", "", "", "" );
+	$manufacturer_list = $db->get_manufacturer_list( );
+	
+	foreach( $menulevel1_items as $menu_item ){
+		if( $menu_item->menulevel1_post_id == 0 ){
+			// Add a post id
+			$post = array(	'post_content'	=> "[ec_store menuid=\"" . $menu_item->menulevel1_id . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menu_item->menu1_name,
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post );
+			$db->update_menu_post_id( $menu_item->menulevel1_id, $post_id );
+		}
+	}
+	
+	foreach( $menulevel2_items as $menu_item ){
+		if( $menu_item->menulevel2_post_id == 0 ){
+			// Add a post id
+			$post = array(	'post_content'	=> "[ec_store submenuid=\"" . $menu_item->menulevel2_id . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menu_item->menu2_name,
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post );
+			$db->update_submenu_post_id( $menu_item->menulevel2_id, $post_id );
+		}
+	}
+	
+	foreach( $menulevel3_items as $menu_item ){
+		if( $menu_item->menulevel3_post_id == 0 ){
+			// Add a post id
+			$post = array(	'post_content'	=> "[ec_store subsubmenuid=\"" . $menu_item->menulevel3_id . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menu_item->menu3_name,
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post );
+			$db->update_subsubmenu_post_id( $menu_item->menulevel3_id, $post_id );
+		}
+	}
+	
+	foreach( $product_list as $product_single ){
+		if( $product_single['post_id'] == 0 ){
+			// Add a post id
+			$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $product_single['model_number'] . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $product_single['title'],
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post );
+			$db->update_product_post_id( $product_single['product_id'], $post_id );
+		}
+	}
+	
+	foreach( $manufacturer_list as $manufacturer_single ){
+		if( $manufacturer_single->post_id == 0 ){
+			// Add a post id
+			$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturer_single->manufacturer_id . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $manufacturer_single->name,
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post );
+			$db->update_manufacturer_post_id( $manufacturer_single->manufacturer_id, $post_id );
+		}
+	}
 }
 
 function install_demo_images( $install_dir ){
@@ -560,6 +633,12 @@ function uninstall_demo_data( $install_dir ){
 	//START DEMO DATA REMOVAL SCRIPT
 	//////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////	
+	// Remove all wordpress posts
+	$store_posts = get_posts( array( 'post_type' => 'ec_store', 'posts_per_page' => 5000 ) );
+	foreach( $store_posts as $store_post ) {
+		wp_delete_post( $store_post->ID, true);
+	}
+	
 	//set our datapack location
 	$datapack_url = 'http://www.wpeasycart.com/sampledata';
 	if( isset( $_POST['datapack'] ) ){

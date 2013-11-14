@@ -201,6 +201,7 @@ class ec_db{
 		$sql = "SELECT
 				product.product_id,
 				product.model_number,
+				product.post_id,
 				product.activate_in_store,
 				manufacturer.manufacturer_id,
 				manufacturer.name as manufacturer_name,
@@ -385,6 +386,7 @@ class ec_db{
 						"product_count" => $result_count,
 						"product_id" => $row->product_id,
 						"model_number" => $row->model_number,
+						"post_id" => $row->post_id,
 						"activate_in_store" => $row->activate_in_store,
 						"manufacturer_id" => $row->manufacturer_id, 
 						"manufacturer_name" => $row->manufacturer_name, 
@@ -577,9 +579,13 @@ class ec_db{
 		return $array;
 	}
 	
-	public function get_manufacturers( $level, $menuid ){
+	public function get_manufacturers( $level, $menuid, $manufacturer_id, $category_id ){
 		
-		if( $level == 0 )
+		if( $manufacturer_id )
+			$sql = $this->mysqli->prepare( "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product WHERE ec_product.activate_in_store = 1 AND ec_product.show_on_startup = 1 AND ec_product.manufacturer_id = %d AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id) as product_count FROM ec_manufacturer ORDER BY name ASC", $manufacturer_id );
+		else if( $category_id )
+			$sql = $this->mysqli->prepare( "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product, ec_categoryitem WHERE ec_product.activate_in_store = 1 AND ec_product.show_on_startup = 1 AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id AND ec_product.product_id = ec_categoryitem.product_id AND ec_categoryitem.category_id = %d) as product_count FROM ec_manufacturer ORDER BY name ASC", $category_id );
+		else if( $level == 0 )
 			$sql = "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product WHERE ec_product.activate_in_store = 1 AND ec_product.show_on_startup = 1 AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id) as product_count FROM ec_manufacturer ORDER BY name ASC";
 		else
 			$sql = $this->mysqli->prepare( "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product WHERE ec_product.activate_in_store = 1 AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id AND ( ec_product.menulevel1_id_%d = %d OR ec_product.menulevel2_id_%d = %d OR ec_product.menulevel3_id_%d = %d ) ) as product_count FROM ec_manufacturer ORDER BY name ASC", $level, $menuid, $level, $menuid, $level, $menuid );
@@ -589,7 +595,7 @@ class ec_db{
 	
 	public function get_groups( ){
 		
-		return $this->mysqli->get_results( "SELECT ec_category.category_id, ec_category.category_name FROM ec_category ORDER BY ec_category.category_name ASC" );	
+		return $this->mysqli->get_results( "SELECT ec_category.category_id, ec_category.category_name, ec_category.post_id FROM ec_category ORDER BY ec_category.category_name ASC" );	
 	}
 	
 	public function get_pricepoint_row( $pricepoint_id ){
@@ -631,11 +637,19 @@ class ec_db{
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $pricepoint_id ) );
 	}
 	
-	public function get_pricepoints( $level, $menuid, $manufacturerid ){
+	public function get_pricepoints( $level, $menuid, $manufacturerid, $category_id ){
 		if( $manufacturerid )
 			$man_sql = $this->mysqli->prepare( " AND ec_product.manufacturer_id = %d", $manufacturerid );
 		else
 			$man_sql = "";
+			
+		if( $category_id ){
+			$cat_from_sql = ", ec_categoryitem ";
+			$cat_sql = $this->mysqli->prepare( " AND ec_product.product_id = ec_categoryitem.product_id AND ec_categoryitem.category_id = %d", $category_id );
+		}else{
+			$cat_from_sql = " ";
+			$cat_sql = "";
+		}
 		
 		if( $level == 0 )
 			$sql = "SELECT 
@@ -646,31 +660,34 @@ class ec_db{
 					ec_pricepoint.high_point, 
 					(
 						SELECT COUNT( ec_product.product_id ) 
-						FROM ec_product 
+						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
 						ec_product.show_on_startup = 1 AND 
 						ec_product.price < ec_pricepoint.high_point
 						" . $man_sql . "
+						" . $cat_sql . "
 					) as product_count_below,
 					(
 						SELECT COUNT( ec_product.product_id )
-						FROM ec_product 
+						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
 						ec_product.show_on_startup = 1 AND 
 						ec_product.price > ec_pricepoint.low_point
 						" . $man_sql . "
+						" . $cat_sql . "
 					) as product_count_above,
 					(
 						SELECT COUNT( ec_product.product_id )
-						FROM ec_product 
+						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
 						ec_product.show_on_startup = 1 AND 
 						ec_product.price <= ec_pricepoint.high_point AND 
 						ec_product.price >= ec_pricepoint.low_point
 						" . $man_sql . "
+						" . $cat_sql . "
 					) as product_count_between
 					 FROM ec_pricepoint 
 					 ORDER BY ec_pricepoint.order ASC";
@@ -683,31 +700,34 @@ class ec_db{
 					ec_pricepoint.high_point, 
 					(
 						SELECT COUNT( ec_product.product_id ) 
-						FROM ec_product 
+						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
 						ec_product.price < ec_pricepoint.high_point AND
 						( ec_product.menulevel1_id_%d = %d OR ec_product.menulevel2_id_%d = %d OR ec_product.menulevel3_id_%d = %d )
 						" . $man_sql . "
+						" . $cat_sql . "
 					) as product_count_below,
 					(
 						SELECT COUNT( ec_product.product_id )
-						FROM ec_product 
+						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
 						ec_product.price > ec_pricepoint.low_point AND
 						( ec_product.menulevel1_id_%d = %d OR ec_product.menulevel2_id_%d = %d OR ec_product.menulevel3_id_%d = %d )
 						" . $man_sql . "
+						" . $cat_sql . "
 					) as product_count_above,
 					(
 						SELECT COUNT( ec_product.product_id )
-						FROM ec_product 
+						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
 						ec_product.price <= ec_pricepoint.high_point AND 
 						ec_product.price >= ec_pricepoint.low_point AND
 						( ec_product.menulevel1_id_%d = %d OR ec_product.menulevel2_id_%d = %d OR ec_product.menulevel3_id_%d = %d )
 						" . $man_sql . "
+						" . $cat_sql . "
 					) as product_count_between
 					 FROM ec_pricepoint 
 					 ORDER BY ec_pricepoint.order ASC", $level, $menuid, $level, $menuid, $level, $menuid, $level, $menuid, $level, $menuid, $level, $menuid, $level, $menuid, $level, $menuid, $level, $menuid );
@@ -742,6 +762,7 @@ class ec_db{
 		$sql = "SELECT 
 				product.product_id,
 				product.model_number,
+				product.post_id,
 				product.manufacturer_id,
 				product.price,
 				product.handling_price,
@@ -843,9 +864,24 @@ class ec_db{
 	}
 	
 	public function get_menu_items(){
-		$sql = "SELECT menulevel1.name as menu1_name, menulevel1.menulevel1_id, menulevel2.name as menu2_name, menulevel2.menulevel2_id, menulevel3.name as menu3_name, menulevel3.menulevel3_id FROM ec_menulevel1 as menulevel1 LEFT JOIN ec_menulevel2 as menulevel2 ON menulevel2.menulevel1_id = menulevel1.menulevel1_id LEFT JOIN ec_menulevel3 as menulevel3 ON menulevel3.menulevel2_id = menulevel2.menulevel2_id ORDER BY menulevel1.order, menulevel2.order, menulevel3.order";
+		$sql = "SELECT menulevel1.name as menu1_name, menulevel1.menulevel1_id, menulevel1.post_id as menulevel1_post_id, menulevel2.name as menu2_name, menulevel2.menulevel2_id, menulevel2.post_id as menulevel2_post_id, menulevel3.name as menu3_name, menulevel3.menulevel3_id, menulevel3.post_id as menulevel3_post_id FROM ec_menulevel1 as menulevel1 LEFT JOIN ec_menulevel2 as menulevel2 ON menulevel2.menulevel1_id = menulevel1.menulevel1_id LEFT JOIN ec_menulevel3 as menulevel3 ON menulevel3.menulevel2_id = menulevel2.menulevel2_id ORDER BY menulevel1.order, menulevel2.order, menulevel3.order";
 		$result = $this->mysqli->get_results($sql);
 		return $result;
+	}
+	
+	public function get_menulevel1_items( ){
+		$sql = "SELECT menulevel1.name as menu1_name, menulevel1.menulevel1_id, menulevel1.post_id as menulevel1_post_id FROM ec_menulevel1 as menulevel1 ORDER BY menulevel1.order";
+		return $this->mysqli->get_results($sql);
+	}
+	
+	public function get_menulevel2_items( ){
+		$sql = "SELECT menulevel2.name as menu2_name, menulevel2.menulevel2_id, menulevel2.post_id as menulevel2_post_id FROM ec_menulevel2 as menulevel2 ORDER BY menulevel2.order";
+		return $this->mysqli->get_results($sql);
+	}
+	
+	public function get_menulevel3_items( ){
+		$sql = "SELECT menulevel3.name as menu3_name, menulevel3.menulevel3_id, menulevel3.post_id as menulevel3_post_id FROM ec_menulevel3 as menulevel3 ORDER BY menulevel3.order";
+		return $this->mysqli->get_results($sql);
 	}
 	
 	public function submit_customer_review( $product_id, $rating, $title, $description ){
@@ -863,6 +899,7 @@ class ec_db{
 		$sql_level0 = "SELECT 
 						ec_menulevel1.name as menu_name, 
 						ec_menulevel1.menulevel1_id as menu_id,
+						ec_menulevel1.post_id as post_id,
 						( 	SELECT count( ec_product.product_id ) 
 							FROM ec_product 
 							WHERE 
@@ -883,6 +920,7 @@ class ec_db{
 		$sql_level1 = "SELECT 
 						ec_menulevel2.name as menu_name, 
 						ec_menulevel2.menulevel2_id as menu_id, 
+						ec_menulevel2.post_id as post_id,
 						( 	SELECT count( ec_product.product_id ) 
 							FROM ec_product 
 							WHERE 
@@ -903,6 +941,7 @@ class ec_db{
 		$sql_level2 = "SELECT 
 						ec_menulevel3.name as menu_name, 
 						ec_menulevel3.menulevel3_id as menu_id, 
+						ec_menulevel3.post_id as post_id,
 						( 	SELECT count( ec_product.product_id ) 
 							FROM ec_product 
 							WHERE 
@@ -2098,12 +2137,36 @@ class ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_menulevel1 SET ec_menulevel1.clicks=ec_menulevel1.clicks+1 WHERE ec_menulevel1.menulevel1_id = '%s'", $menuid ) );
 	}
 	
+	public function update_menu_post_id( $menuid, $post_id ){
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_menulevel1 SET ec_menulevel1.post_id=%d WHERE ec_menulevel1.menulevel1_id = %d", $post_id, $menuid ) );
+	}
+	
 	public function update_submenu_views( $submenuid ){
 		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_menulevel2 SET ec_menulevel2.clicks=ec_menulevel2.clicks+1 WHERE ec_menulevel2.menulevel2_id = '%s'", $submenuid ) );
 	}
 	
+	public function update_submenu_post_id( $submenuid, $post_id ){
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_menulevel2 SET ec_menulevel2.post_id=%d WHERE ec_menulevel2.menulevel2_id = %d", $post_id, $submenuid ) );
+	}
+	
 	public function update_subsubmenu_views( $subsubmenuid ){
 		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_menulevel3 SET ec_menulevel3.clicks=ec_menulevel3.clicks+1 WHERE ec_menulevel3.menulevel3_id = '%s'", $subsubmenuid ) );
+	}
+	
+	public function update_subsubmenu_post_id( $subsubmenuid, $post_id ){
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_menulevel3 SET ec_menulevel3.post_id=%d WHERE ec_menulevel3.menulevel3_id = %d", $post_id, $subsubmenuid ) );
+	}
+	
+	public function update_product_post_id( $product_id, $post_id ){
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_product SET ec_product.post_id=%d WHERE ec_product.product_id = %d", $post_id, $product_id ) );
+	}
+	
+	public function update_category_post_id( $category_id, $post_id ){
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_category SET ec_category.post_id=%d WHERE ec_category.category_id = %d", $post_id, $category_id ) );
+	}
+	
+	public function update_manufacturer_post_id( $manufacturer_id, $post_id ){
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_manufacturer SET ec_manufacturer.post_id=%d WHERE ec_manufacturer.manufacturer_id = %d", $post_id, $manufacturer_id ) );
 	}
 	
 	public function get_countries( ){
@@ -2141,17 +2204,55 @@ class ec_db{
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $manufacturer_id ) );	
 	}
 	
+	public function get_manufacturer_list( ){
+		$sql = "SELECT ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks, ec_manufacturer.post_id FROM ec_manufacturer";
+		return $this->mysqli->get_results( $sql );	
+	}
+	
+	public function get_category_list( ){
+		$sql = "SELECT ec_category.category_id, ec_category.category_name, ec_category.post_id FROM ec_category";
+		return $this->mysqli->get_results( $sql );	
+	}
+	
 	public function get_menu_row( $menu_id, $level ){
 		if( $level == 1 ){
-			$sql = "SELECT ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.order, ec_menulevel1.clicks, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image FROM ec_menulevel1 WHERE ec_menulevel1.menulevel1_id = %d";
+			$sql = "SELECT ec_menulevel1.menulevel1_id, ec_menulevel1.post_id, ec_menulevel1.name, ec_menulevel1.order, ec_menulevel1.clicks, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image FROM ec_menulevel1 WHERE ec_menulevel1.menulevel1_id = %d";
 			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $menu_id ) );
 		}else if( $level == 2 ){
-			$sql = "SELECT ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.order, ec_menulevel2.clicks, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = %d";
+			$sql = "SELECT ec_menulevel2.menulevel2_id, ec_menulevel2.post_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.order, ec_menulevel2.clicks, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = %d";
 			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $menu_id ) );
 		}else if( $level == 3 ){
-			$sql = "SELECT ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.order, ec_menulevel3.clicks, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d";
+			$sql = "SELECT ec_menulevel3.menulevel3_id, ec_menulevel3.post_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.order, ec_menulevel3.clicks, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d";
 			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $menu_id ) );
 		}
+	}
+	
+	public function get_menu_row_from_post_id( $post_id, $level ){
+		if( $level == 1 ){
+			$sql = "SELECT ec_menulevel1.menulevel1_id, ec_menulevel1.post_id, ec_menulevel1.name, ec_menulevel1.order, ec_menulevel1.clicks, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image FROM ec_menulevel1 WHERE ec_menulevel1.post_id = %d";
+			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
+		}else if( $level == 2 ){
+			$sql = "SELECT ec_menulevel2.menulevel2_id, ec_menulevel2.post_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.order, ec_menulevel2.clicks, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image FROM ec_menulevel2 WHERE ec_menulevel2.post_id = %d";
+			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
+		}else if( $level == 3 ){
+			$sql = "SELECT ec_menulevel3.menulevel3_id, ec_menulevel3.post_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.order, ec_menulevel3.clicks, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image FROM ec_menulevel3 WHERE ec_menulevel3.post_id = %d";
+			return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
+		}
+	}
+	
+	public function get_product_from_post_id( $post_id ){
+		$sql = "SELECT ec_product.product_id, ec_product.model_number, ec_product.title, ec_product.description, ec_product.use_optionitem_images, ec_product.image1 FROM ec_product WHERE ec_product.post_id = %d";
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
+	}
+	
+	public function get_category_id_from_post_id( $post_id ){
+		$sql = "SELECT ec_category.category_id FROM ec_category WHERE ec_category.post_id = %d";
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
+	}
+	
+	public function get_manufacturer_id_from_post_id( $post_id ){
+		$sql = "SELECT ec_manufacturer.manufacturer_id FROM ec_manufacturer WHERE ec_manufacturer.post_id = %d";
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
 	}
 	
 	public function get_roleprice( $email, $password, $product_id ){
@@ -2162,6 +2263,11 @@ class ec_db{
 	public function update_user_realvault_registered( $user_id ){
 		$sql = "UPDATE ec_user SET realauth_registered = 1 WHERE user_id = %d";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $user_id ) );
+	}
+	
+	public function get_donation_order_total( $model_number ){
+		$sql = "SELECT SUM( ec_orderdetail.total_price ) as order_sum FROM ec_order, ec_orderstatus, ec_orderdetail WHERE ec_orderstatus.status_id = ec_order.orderstatus_id AND ec_orderstatus.is_approved = 1 AND ec_order.order_id = ec_orderdetail.order_id AND ec_orderdetail.model_number = %s";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $model_number ) );
 	}
 	
 }

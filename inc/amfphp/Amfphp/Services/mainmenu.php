@@ -113,60 +113,85 @@ class mainmenu
 		
 		
 		function deletemenulevel1($keyfield) {
-			  //first, delete menu 3 sub-sub menus attached to this
-			  //query for 2nd level menu ids if there are some 
-			  $subquery = mysql_query("SELECT ec_menulevel2.menulevel2_id FROM ec_menulevel2 WHERE ec_menulevel2.menulevel1_id = ".$keyfield."");
-			  while($level2 = mysql_fetch_array($subquery)){
-				  $level2_id = $level2[0];
-				  //Create SQL Query	
-				  $deletesql = $this->escape("DELETE FROM ec_menulevel3 WHERE ec_menulevel3.menulevel2_id = '%s'", $level2_id);
-				  //Run query on database;
-				  mysql_query($deletesql);
-			  }
-			  //then remove menu and main menu items using keyfield
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_menulevel1 WHERE ec_menulevel1.menulevel1_id = '%s'", $keyfield);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_menulevel2 WHERE ec_menulevel2.menulevel1_id = '%s'", $keyfield);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			   
-			  
-			  
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			//first, delete menu 3 sub-sub menus attached to this
+			//query for 2nd level menu ids if there are some 
+			$subquery = mysql_query("SELECT ec_menulevel2.menulevel2_id, ec_menulevel2.post_id FROM ec_menulevel2 WHERE ec_menulevel2.menulevel1_id = ".$keyfield."");
+			while($level2 = mysql_fetch_array($subquery)){
+				$level2_id = $level2[0];
+				//Create SQL Query	
+				$subsubquery = mysql_query( sprintf( "SELECT ec_menulevel3.menulevel3_id, ec_menulevel3.post_id FROM ec_menulevel3 WHERE ec_menulevel3.menulevel2_id = %d", mysql_real_escape_string( $level2_id ) ) );
+				while( $level3 = mysql_fetch_array( $subsubquery ) ){
+					wp_delete_post( $level3[1], true );
+					
+				}
+				$deletesql = $this->escape("DELETE FROM ec_menulevel3 WHERE ec_menulevel3.menulevel2_id = '%s'", $level2_id);
+				mysql_query($deletesql);
+				wp_delete_post( $level2[1], true );
+			}
+			//then remove menu and main menu items using keyfield
+			//Create SQL Query
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel1 WHERE menulevel1_id = %d", $keyfield );
+			$result = mysql_query( $sql_get_post_id );
+			$menu_item = mysql_fetch_array( $result );
+			wp_delete_post( $menu_item['post_id'], true );
+			
+			$deletesql = $this->escape("DELETE FROM ec_menulevel1 WHERE ec_menulevel1.menulevel1_id = '%s'", $keyfield);
+			//Run query on database;
+			mysql_query($deletesql);
+			//Create SQL Query	
+			$deletesql = $this->escape("DELETE FROM ec_menulevel2 WHERE ec_menulevel2.menulevel1_id = '%s'", $keyfield);
+			//Run query on database;
+			mysql_query($deletesql);
+			
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+			  $returnArray[] ="success";
+			  return($returnArray); //return array results if there are some
+			} else {
+			  $returnArray[] = "error";
+			  return $returnArray; //return noresults if there are no results
+			}
 		}
 		function updatemenulevel1($keyfield, $menulevel1) {
-			  //convert object to array
-			  $menulevel1 = (array)$menulevel1;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_menulevel1 (ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.clicks, ec_menulevel1.order, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image) values ('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($menulevel1['menuname']),
-				mysql_real_escape_string($menulevel1['clicks']),
-				mysql_real_escape_string($menulevel1['menu1order']),
-				mysql_real_escape_string($menulevel1['seokeywords']),
-				mysql_real_escape_string($menulevel1['seodescription']),
-				mysql_real_escape_string($menulevel1['bannerimage']));
+			//convert object to array
+			$menulevel1 = (array)$menulevel1;
+			
+			//Update WordPress Post
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel1 WHERE menulevel1_id = %d", $keyfield );
+			$result = mysql_query( $sql_get_post_id );
+			$menu_item = mysql_fetch_array( $result );
+			wp_delete_post( $menu_item['post_id'], true );
+			
+			//Add Back New Post
+			$post = array(	'post_content'	=> "[ec_store menuid=\"" . $keyfield . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menulevel1['menuname'],
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post, $wp_error );
+			$db = new ec_db( );
+			$db->update_menu_post_id( $keyfield, $post_id );
+			
+			//Create SQL Query
+			$sql = sprintf("Replace into ec_menulevel1 (ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.clicks, ec_menulevel1.order, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image, ec_menulevel1.post_id ) values ('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+					mysql_real_escape_string($menulevel1['menuname']),
+					mysql_real_escape_string($menulevel1['clicks']),
+					mysql_real_escape_string($menulevel1['menu1order']),
+					mysql_real_escape_string($menulevel1['seokeywords']),
+					mysql_real_escape_string($menulevel1['seodescription']),
+					mysql_real_escape_string($menulevel1['bannerimage']),
+					mysql_real_escape_string($post_id));
 			//Run query on database;
 			mysql_query($sql);
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			$returnArray[] ="success";
+			return($returnArray); //return array results if there are some
 			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
+			$returnArray[] = "error";
+			return $returnArray; //return noresults if there are no results
 			}
 		}
 		function addmenulevel1($menulevel1) {
@@ -183,6 +208,18 @@ class mainmenu
 				mysql_real_escape_string($menulevel1['seodescription']),
 				mysql_real_escape_string($menulevel1['bannerimage']));
 			  mysql_query($sql);
+			
+			// Insert a WordPress Custom post type post.
+			$menu_id = mysql_insert_id( );
+			$post = array(	'post_content'	=> "[ec_store menuid=\"" . $menu_id . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menulevel1['menuname'],
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post, $wp_error );
+			$db = new ec_db( );
+			$db->update_menu_post_id( $menu_id, $post_id );
+			
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
@@ -231,38 +268,66 @@ class mainmenu
 		}
 		function deletemenulevel2($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = '%s'", $keyfield);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			   //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_menulevel3 WHERE ec_menulevel3.ec_menulevel2_id = '%s'", $keyfield);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			$subsubquery = mysql_query( sprintf( "SELECT ec_menulevel3.menulevel3_id, ec_menulevel3.post_id FROM ec_menulevel3 WHERE ec_menulevel3.menulevel2_id = %d", mysql_real_escape_string( $keyfield ) ) );
+			while( $level3 = mysql_fetch_array( $subsubquery ) ){
+				wp_delete_post( $level3[1], true );
+			}
+			
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel2 WHERE menulevel2_id = %d", $keyfield );
+			$result = mysql_query( $sql_get_post_id );
+			$menu_item = mysql_fetch_array( $result );
+			wp_delete_post( $menu_item['post_id'], true );
+			
+			//Create SQL Query	
+			$deletesql = $this->escape("DELETE FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = '%s'", $keyfield);
+			//Run query on database;
+			mysql_query($deletesql);
+			//Create SQL Query	
+			$deletesql = $this->escape("DELETE FROM ec_menulevel3 WHERE ec_menulevel3.ec_menulevel2_id = '%s'", $keyfield);
+			//Run query on database;
+			mysql_query($deletesql);
+			
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+			  $returnArray[] ="success";
+			  return($returnArray); //return array results if there are some
+			} else {
+			  $returnArray[] = "error";
+			  return $returnArray; //return noresults if there are no results
+			}
 		}
 		function updatemenulevel2($keyfield, $menulevel2) {
-			  //convert object to array
-			  $menulevel2 = (array)$menulevel2;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_menulevel2(ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.clicks, ec_menulevel2.order, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image)
-				values('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($menulevel2['menuparentid']),
-				mysql_real_escape_string($menulevel2['menuname']),
-				mysql_real_escape_string($menulevel2['clicks']),
-				mysql_real_escape_string($menulevel2['menu2order']),
-				mysql_real_escape_string($menulevel2['seokeywords']),
-				mysql_real_escape_string($menulevel2['seodescription']),
-				mysql_real_escape_string($menulevel2['bannerimage']));
+			//convert object to array
+			$menulevel2 = (array)$menulevel2;
+			
+			//Update WordPress Post
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel2 WHERE menulevel2_id = %d", $keyfield );
+			$result = mysql_query( $sql_get_post_id );
+			$menu_item = mysql_fetch_array( $result );
+			wp_delete_post( $menu_item['post_id'], true );
+			
+			//Add Back New Post
+			$post = array(	'post_content'	=> "[ec_store submenuid=\"" . $keyfield . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menulevel2['menuname'],
+							'post_type'		=> "ec_store"
+					  );
+			$post_id = wp_insert_post( $post, $wp_error );
+			$db = new ec_db( );
+			$db->update_menu_post_id( $keyfield, $post_id );
+			
+			//Create SQL Query
+			$sql = sprintf("Replace into ec_menulevel2(ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.clicks, ec_menulevel2.order, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image, ec_menulevel2.post_id)
+			values('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+					mysql_real_escape_string($menulevel2['menuparentid']),
+					mysql_real_escape_string($menulevel2['menuname']),
+					mysql_real_escape_string($menulevel2['clicks']),
+					mysql_real_escape_string($menulevel2['menu2order']),
+					mysql_real_escape_string($menulevel2['seokeywords']),
+					mysql_real_escape_string($menulevel2['seodescription']),
+					mysql_real_escape_string($menulevel2['bannerimage']),
+					mysql_real_escape_string($post_id));
 			//Run query on database;
 			mysql_query($sql);
 			//if no errors, return their current Client ID
@@ -290,6 +355,18 @@ class mainmenu
 				mysql_real_escape_string($menulevel2['seodescription']),
 				mysql_real_escape_string($menulevel2['bannerimage']));
 			  mysql_query($sql);
+			
+			// Insert a WordPress Custom post type post.
+			$submenu_id = mysql_insert_id( );
+			$post = array(	'post_content'	=> "[ec_store submenuid=\"" . $submenu_id . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menulevel2['menuname'],
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post, $wp_error );
+			$db = new ec_db( );
+			$db->update_submenu_post_id( $submenu_id, $post_id );
+			
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
@@ -337,37 +414,15 @@ class mainmenu
 			  }
 		}
 		function deletemenulevel3($keyfield) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = '%s'", $keyfield);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
-		}
-		function updatemenulevel3($keyfield, $menulevel3) {
-			  //convert object to array
-			  $menulevel3 = (array)$menulevel3;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_menulevel3(ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.clicks, ec_menulevel3.order, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image)
-				values('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($menulevel3['menuparentid']),
-				mysql_real_escape_string($menulevel3['menuname']),
-				mysql_real_escape_string($menulevel3['clicks']),
-				mysql_real_escape_string($menulevel3['menu3order']),
-				mysql_real_escape_string($menulevel3['seokeywords']),
-				mysql_real_escape_string($menulevel3['seodescription']),
-				mysql_real_escape_string($menulevel3['bannerimage']));
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel3 WHERE menulevel3_id = %d", $keyfield );
+			$result = mysql_query( $sql_get_post_id );
+			$menu_item = mysql_fetch_array( $result );
+			wp_delete_post( $menu_item['post_id'], true );
+			//Create SQL Query	
+			$deletesql = $this->escape("DELETE FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = '%s'", $keyfield);
 			//Run query on database;
-			mysql_query($sql);
+			mysql_query($deletesql);
+			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
@@ -375,7 +430,50 @@ class mainmenu
 				return($returnArray); //return array results if there are some
 			} else {
 				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results 
+				return $returnArray; //return noresults if there are no results
+			}
+		}
+		function updatemenulevel3($keyfield, $menulevel3) {
+			//convert object to array
+			$menulevel3 = (array)$menulevel3;
+			
+			//Update WordPress Post
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel3 WHERE menulevel3_id = %d", $keyfield );
+			$result = mysql_query( $sql_get_post_id );
+			$menu_item = mysql_fetch_array( $result );
+			wp_delete_post( $menu_item['post_id'], true );
+			
+			//Add Back New Post
+			$post = array(	'post_content'	=> "[ec_store subsubmenuid=\"" . $keyfield . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menulevel3['menuname'],
+							'post_type'		=> "ec_store"
+				  		 );
+			$post_id = wp_insert_post( $post, $wp_error );
+			$db = new ec_db( );
+			$db->update_menu_post_id( $keyfield, $post_id );
+			
+			//Create SQL Query
+			$sql = sprintf("Replace into ec_menulevel3(ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.clicks, ec_menulevel3.order, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image, ec_menulevel3.post_id)
+			values('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+					mysql_real_escape_string($menulevel3['menuparentid']),
+					mysql_real_escape_string($menulevel3['menuname']),
+					mysql_real_escape_string($menulevel3['clicks']),
+					mysql_real_escape_string($menulevel3['menu3order']),
+					mysql_real_escape_string($menulevel3['seokeywords']),
+					mysql_real_escape_string($menulevel3['seodescription']),
+					mysql_real_escape_string($menulevel3['bannerimage']),
+					mysql_real_escape_string($post_id));
+			//Run query on database;
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+			$returnArray[] ="success";
+			return($returnArray); //return array results if there are some
+			} else {
+			$returnArray[] = "error";
+			return $returnArray; //return noresults if there are no results 
 			}
 		}
 		function addmenulevel3($menulevel3) {
@@ -393,6 +491,18 @@ class mainmenu
 				mysql_real_escape_string($menulevel3['seodescription']),
 				mysql_real_escape_string($menulevel3['bannerimage']));
 			  mysql_query($sql);
+			
+			// Insert a WordPress Custom post type post.
+			$subsubmenu_id = mysql_insert_id( );
+			$post = array(	'post_content'	=> "[ec_store subsubmenuid=\"" . $subsubmenu_id . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $menulevel3['menuname'],
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post, $wp_error );
+			$db = new ec_db( );
+			$db->update_subsubmenu_post_id( $subsubmenu_id, $post_id );
+			
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {

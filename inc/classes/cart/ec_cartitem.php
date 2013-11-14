@@ -7,6 +7,7 @@ class ec_cartitem{
 	public $cartitem_id;											// INT
 	public $product_id;												// INT
 	public $model_number;											// VARCHAR 255
+	public $post_id;												// INT
 	public $manufacturer_id;										// INT
 	
 	public $quantity;												// INT
@@ -75,6 +76,7 @@ class ec_cartitem{
 		$this->cartitem_id = $cartitem_data->cartitem_id;
 		$this->product_id = $cartitem_data->product_id;
 		$this->model_number = $cartitem_data->model_number;
+		$this->post_id = $cartitem_data->post_id;
 		$this->manufacturer_id = $cartitem_data->manufacturer_id;
 		
 		$this->quantity = $cartitem_data->quantity;
@@ -236,13 +238,13 @@ class ec_cartitem{
 	
 	public function display_image( $size ){
 		
-		echo "<a href=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
+		echo "<a href=\"" . get_permalink( $this->post_id );
 		
 		if( $this->image1_optionitem ){
 			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) )
-				echo "&optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
+				echo $this->permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
 			else
-				echo "&optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
+				echo $this->permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
 		}else{
 			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) )
 				echo "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
@@ -258,10 +260,10 @@ class ec_cartitem{
 	}
 	
 	public function display_title_link( ){
-		echo "<a href=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
+		echo "<a href=\"" . get_permalink( $this->post_id );
 		
 		if( $this->image1_optionitem )
-			echo "&optionitem_id=" . $this->optionitem1_id;
+			echo $this->permalink_divider . "optionitem_id=" . $this->optionitem1_id;
 		
 		echo "\">" . $this->title . "</a>";
 	}
