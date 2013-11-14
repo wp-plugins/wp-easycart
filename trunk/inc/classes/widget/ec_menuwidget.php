@@ -76,17 +76,17 @@ class ec_menuwidget extends WP_Widget{
 				$last_menu1 = $menu_item->menulevel1_id;
 				$last_menu2 = 0;
 				$j=-1;
-				$menu_array[] = array(array(), $menu_item->menulevel1_id, $menu_item->menu1_name);
+				$menu_array[] = array(array(), $menu_item->menulevel1_id, $menu_item->menu1_name, $menu_item->menulevel1_post_id );
 			}
 			
 			if( $menu_item->menulevel2_id && $last_menu2 != $menu_item->menulevel2_id ){
 				$j++;
 				$last_menu2 = $menu_item->menulevel2_id;
-				$menu_array[$i][0][] = array(array(), $menu_item->menulevel2_id, $menu_item->menu2_name);
+				$menu_array[$i][0][] = array(array(), $menu_item->menulevel2_id, $menu_item->menu2_name, $menu_item->menulevel2_post_id );
 			}
 			
 			if( $menu_item->menulevel3_id ){
-				$menu_array[$i][0][$j][0][] = array($menu_item->menulevel3_id, $menu_item->menu3_name);
+				$menu_array[$i][0][$j][0][] = array($menu_item->menulevel3_id, $menu_item->menu3_name, $menu_item->menulevel3_post_id);
 			}
 		}
 		

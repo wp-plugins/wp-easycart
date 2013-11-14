@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.13
+ * Version: 1.2.14
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.13
+ * @version 1.2.14
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_13' );
-define( 'EC_CURRENT_DB', '1_9' );
+define( 'EC_CURRENT_VERSION', '1_2_14' );
+define( 'EC_CURRENT_DB', '1_10' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -151,6 +151,12 @@ function ec_uninstall(){
 	}else{
 		ec_recursive_remove_directory( $data_dir );
 	}
+	
+	// Clean up linking structure
+	$store_posts = get_posts( array( 'post_type' => 'ec_store', 'posts_per_page' => 10000 ) );
+	foreach( $store_posts as $store_post ) {
+		wp_delete_post( $store_post->ID, true);
+	}
 }
 
 register_activation_hook( __FILE__, 'ec_activate' );
@@ -198,6 +204,114 @@ function load_ec_pre(){
 			
 		}
 	}
+	
+	///////////////////////////////////////////////////////////////////////////////////
+	// This is a check to ensure old users are upgraded to the new linking format
+	///////////////////////////////////////////////////////////////////////////////////
+	if( !get_option( 'ec_option_new_linking_setup' ) ){
+		$db = new ec_db();
+		$menulevel1_items = $db->get_menulevel1_items( );
+		$menulevel2_items = $db->get_menulevel2_items( );
+		$menulevel3_items = $db->get_menulevel3_items( );
+		$product_list = $db->get_product_list( "", "", "", "" );
+		$category_list = $db->get_category_list( );
+		$manufacturer_list = $db->get_manufacturer_list( );
+		
+		foreach( $menulevel1_items as $menu_item ){
+			if( $menu_item->menulevel1_post_id == 0 ){
+				// Add a post id
+				$post = array(	'post_content'	=> "[ec_store menuid=\"" . $menu_item->menulevel1_id . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $menu_item->menu1_name,
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post, $wp_error );
+				if( !$wp_error ){
+					$db->update_menu_post_id( $menu_item->menulevel1_id, $post_id );
+				}
+			}
+		}
+		
+		foreach( $menulevel2_items as $menu_item ){
+			if( $menu_item->menulevel2_post_id == 0 ){
+				// Add a post id
+				$post = array(	'post_content'	=> "[ec_store submenuid=\"" . $menu_item->menulevel2_id . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $menu_item->menu2_name,
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post, $wp_error );
+				if( !$wp_error ){
+					$db->update_submenu_post_id( $menu_item->menulevel2_id, $post_id );
+				}
+			}
+		}
+		
+		foreach( $menulevel3_items as $menu_item ){
+			if( $menu_item->menulevel3_post_id == 0 ){
+				// Add a post id
+				$post = array(	'post_content'	=> "[ec_store subsubmenuid=\"" . $menu_item->menulevel3_id . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $menu_item->menu3_name,
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post, $wp_error );
+				if( !$wp_error ){
+					$db->update_subsubmenu_post_id( $menu_item->menulevel3_id, $post_id );
+				}
+			}
+		}
+	
+		foreach( $product_list as $product_single ){
+			if( $product_single->post_id == 0 ){
+				// Add a post id
+				$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $product_single['model_number'] . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $product_single['title'],
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post, $wp_error );
+				if( !$wp_error ){
+					$db->update_product_post_id( $product_single['product_id'], $post_id );
+				}
+			}
+		}
+	
+		foreach( $manufacturer_list as $manufacturer_single ){
+			if( $manufacturer_single->post_id == 0 ){
+				// Add a post id
+				$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturer_single['manufacturer_id'] . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $manufacturer_single['name'],
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post, $wp_error );
+				if( !$wp_error ){
+					$db->update_manufacturer_post_id( $manufacturer_single['manufacturer_id'], $post_id );
+				}
+			}
+		}
+	
+		foreach( $category_list as $category_single ){
+			if( $category_single->post_id == 0 ){
+				// Add a post id
+				$post = array(	'post_content'	=> "[ec_store groupid=\"" . $category_single['category_id'] . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $category_single['category_name'],
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post, $wp_error );
+				if( !$wp_error ){
+					$db->update_product_post_id( $category_single['category_id'], $post_id );
+				}
+			}
+		}
+		
+		update_option( 'ec_option_new_linking_setup', 1 );
+	}
+	///////////////////////////////////////////////////////////////////////////////////
+	// END - linkage check
+	///////////////////////////////////////////////////////////////////////////////////
 	
 	$storepageid = get_option('ec_option_storepage');
 	$cartpageid = get_option('ec_option_cartpage');
@@ -347,22 +461,37 @@ function ec_load_js( ){
 }	
 	
 function ec_facebook_metadata() {
-	if( isset( $_GET['model_number'] ) ){
-		$query_productRS = sprintf("SELECT ec_product.* FROM ec_product WHERE ec_product.model_number = '%s'", mysql_real_escape_string($_GET['model_number']));
-		$productRS = mysql_query($query_productRS);
-		$product = mysql_fetch_assoc($productRS);
+	global $wp_query;
+	$post_obj = $wp_query->get_queried_object();
+	$post_id = $post_obj->ID;
+	$db = new ec_db( );
+	$product = $db->get_product_from_post_id( $post_id );
+	if( isset( $product ) || isset( $_GET['model_number'] ) ){
+		if( isset( $product ) ){
+			$product_id = $product->product_id;
+			$prod_title = $product->title;
+			$prod_model_number = $product->model_number;
+			$prod_description = $product->description;
+			$prod_use_optionitem_images = $product->use_optionitem_images;
+			$prod_image = $product->image1;
+		}else{
+			$query_productRS = sprintf("SELECT ec_product.* FROM ec_product WHERE ec_product.model_number = '%s'", mysql_real_escape_string($_GET['model_number']));
+			$productRS = mysql_query($query_productRS);
+			$product = mysql_fetch_assoc($productRS);
+			
+			$product_id = $product['product_id'];
+			$prod_title = $product['title'];
+			$prod_model_number = $product['model_number'];
+			$prod_description = $product['description'];
+			$prod_use_optionitem_images = $product['use_optionitem_images'];
+			$prod_image = $product['image1'];
+		}
 		
-		$prod_title = $product['title'];
-		$prod_model_number = $product['model_number'];
-		$prod_description = $product['description'];
-	
-		if($product['use_optionitem_images']){
-			$optimg_sql = sprintf("SELECT ec_optionitemimage.image1 FROM ec_optionitemimage WHERE ec_optionitemimage.product_id = '%s' ", $product['product_id']);
+		if( $prod_use_optionitem_images ){
+			$optimg_sql = sprintf("SELECT ec_optionitemimage.image1 FROM ec_optionitemimage WHERE ec_optionitemimage.product_id = '%s' ", $product_id );
 			$optimgs = mysql_query($optimg_sql);
 			$optimg = mysql_fetch_assoc($optimgs);
 			$prod_image = $optimg['image1'];
-		} else {
-			$prod_image = $product['image1'];
 		}	
 		
 		remove_action('wp_head', 'rel_canonical');
@@ -371,7 +500,15 @@ function ec_facebook_metadata() {
 		echo "<meta property=\"og:title\" content=\"" . $prod_title . "\" />\n"; 
 		echo "<meta property=\"og:type\" content=\"product\" />\n";
 		echo "<meta property=\"og:description\" content=\"" . ec_short_string($prod_description, 300) . "\" />\n";
-		echo "<meta property=\"og:image\" content=\"" .  plugin_dir_url(__DIR__) . "wpeasycart/products/pics1/" . $prod_image . "\" />\n"; 
+		$test_src1 = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics1/" . $prod_image;
+		$test_src2 = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/pics1/" . $prod_image;
+		if( file_exists( $test_src1 ) )
+			echo "<meta property=\"og:image\" content=\"" .  plugin_dir_url(__DIR__) . "wp-easycart-data/products/pics1/" . $prod_image . "\" />\n"; 
+		else if( file_exists( $test_src2 ) )
+			echo "<meta property=\"og:image\" content=\"" .  plugin_dir_url(__DIR__) . EC_PLUGIN_DIRECTORY . "/products/pics1/" . $prod_image . "\" />\n"; 
+		else 
+			echo "<meta property=\"og:image\" content=\"" .  plugin_dir_url(__DIR__) . EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" . "\" />\n"; 
+		
 		echo "<meta property=\"og:url\" content=\"" . ec_curPageURL() . "\" /> \n";
 	}
 }
@@ -468,9 +605,9 @@ function ec_wp_myplugin_property_title($data){
 }
 
 function wpeasycart_register_widgets( ) {
-	register_widget( 'ec_breadcrumbwidget' );
 	register_widget( 'ec_categorywidget' );
 	register_widget( 'ec_cartwidget' );
+	register_widget( 'ec_donationwidget' );
 	register_widget( 'ec_groupwidget' );
 	register_widget( 'ec_manufacturerwidget' );
 	register_widget( 'ec_menuwidget' );
@@ -1168,7 +1305,7 @@ function ec_get_order_totals( ){
 	
 	$cart = new ec_cart( session_id() );
 	$user = new ec_user( $user_email );
-	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
+	$shipping = new ec_shipping( $cart->shipping_subtotal, $cart->weight );
 	$sales_tax_discount = new ec_discount( $cart, $cart->subtotal, 0.00, $coupon_code, "", 0 );
 	$tax = new ec_tax( $cart->subtotal, $cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $user->shipping->state, $user->shipping->country );
 	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );
@@ -1269,6 +1406,69 @@ function ec_theme_options_page_callback( ){
 		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
 	else
 		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
+}
+
+/////////////////////////////////////////////////////////////////////
+//CUSTOM POST TYPES
+/////////////////////////////////////////////////////////////////////
+add_action( 'init', 'ec_create_post_type_menu' );
+function ec_create_post_type_menu() {
+	global $wp_rewrite;
+	$store_id = get_option( 'ec_option_storepage' );
+	if( $store_id ){
+		$store_slug = ec_get_the_slug( $store_id );
+		
+		$labels = array(
+			'name'               => _x( 'Store Items', 'post type general name' ),
+			'singular_name'      => _x( 'Store Item', 'post type singular name' ),
+			'add_new'            => _x( 'Add New', 'ec_store' ),
+			'add_new_item'       => __( 'Add New Store Item' ),
+			'edit_item'          => __( 'Edit Store Item' ),
+			'new_item'           => __( 'New Store Item' ),
+			'all_items'          => __( 'All Store Items' ),
+			'view_item'          => __( 'View Store Item' ),
+			'search_items'       => __( 'Search Store Items' ),
+			'not_found'          => __( 'No store items found' ),
+			'not_found_in_trash' => __( 'No store items found in the Trash' ), 
+			'parent_item_colon'  => '',
+			'menu_name'          => 'Store Items'
+		);
+		$args = array(
+			'labels'        	=> $labels,
+			'description' 		=> 'Used for the EasyCart Store',
+			'public' 			=> true,
+			'has_archive' 		=> false,
+			'show_ui' 			=> false,
+			'show_in_nav_menus' => true,
+			'supports'			=> array( 'title', 'page-attributes', 'author', 'editor' ),
+		);
+		register_post_type( 'ec_store', $args );
+	
+	
+		$wp_rewrite->add_permastruct( 'ec_store', $store_slug . '/%ec_store%/', true, 1 );
+    	add_rewrite_rule( $store_slug . '/([^/]*)/([^/]*)/?$', 'index.php?ec_store=$matches[2]', 'top');
+		$wp_rewrite->flush_rules(); // !!!
+    }
+}
+
+function ec_get_the_slug( $id=null ){
+	if( empty($id) ) : 
+		global $post;
+    	if( empty($post) )
+			return '';
+		$id = $post->ID;
+	endif;
+	$slug = basename( get_permalink($id) );
+	return $slug;
+}
+
+add_action ('wp', 'ec_force_page_type');
+function ec_force_page_type() {
+	global $wp_query, $post_type;
+	if ($post_type == 'ec_store') {
+		$wp_query->is_page = true;
+		$wp_query->is_single = false;
+	}
 }
 
 /////////////////////////////////////////////////////////////////////

@@ -57,6 +57,7 @@ $ec_widget_js = array(
 	'menu_vertical_widget',
 	'category_widget',
 	'cart_widget',
+	'donation_widget',
 	'manufacturer_widget',
 	'newsletter_widget',
 	'price_widget',

@@ -52,7 +52,7 @@ class ec_cartpage{
 		}
 		
 		// Shipping
-		$this->shipping = new ec_shipping( $this->cart->subtotal, $this->cart->weight );
+		$this->shipping = new ec_shipping( $this->cart->shipping_subtotal, $this->cart->weight );
 		// Tax (no VAT here)
 		$sales_tax_discount = new ec_discount( $this->cart, $this->cart->subtotal, 0.00, $this->coupon_code, "", 0 );
 		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country );
@@ -1205,7 +1205,7 @@ class ec_cartpage{
 		
 		$this->mysqli->add_to_cart( $product_id, $session_id, $quantity, $option1, $option2, $option3, $option4, $option5, $gift_card_message, $gift_card_to_name, $gift_card_from_name, $donation_price );
 		
-		header( "location: " . $this->cart_page . $this->permalink_divider . "model_number=" . $model_number );
+		header( "location: " . $this->cart_page );
 		
 	}
 	

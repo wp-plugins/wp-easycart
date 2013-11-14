@@ -103,32 +103,55 @@ class manufacturers
 			  }
 		}
 		function deletemanufacturer($manufacturerid) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = '%s'", $manufacturerid);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			// Remove the post from WordPress
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_manufacturer WHERE manufacturer_id = %d", $manufacturerid );
+			$result = mysql_query( $sql_get_post_id );
+			$manufacturer = mysql_fetch_array( $result );
+			wp_delete_post( $manufacturer['post_id'], true );
+			
+			//Create SQL Query	
+			$deletesql = $this->escape("DELETE FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = '%s'", $manufacturerid);
+			//Run query on database;
+			mysql_query($deletesql);
+			
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
 		}
 		function updatemanufacturer($manufacturerid, $manufacturer) {
-			  //convert object to array
-			  $manufacturer = (array)$manufacturer;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_manufacturer(ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks)
-				values('".$manufacturerid."', '%s', '%s')",
-				mysql_real_escape_string($manufacturer['manufacturername']),
-				mysql_real_escape_string($manufacturer['clicks']));
-			//Run query on database;
+			//convert object to array
+			$manufacturer = (array)$manufacturer;
+			
+			// Update WordPress to match
+			// Remove the post from WordPress
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_manufacturer WHERE manufacturer_id = %d", $manufacturerid );
+			$result = mysql_query( $sql_get_post_id );
+			$manufacturer_post = mysql_fetch_array( $result );
+			wp_delete_post( $manufacturer_post['post_id'], true );
+			
+			//Create SQL Query
+			$sql = sprintf("Replace into ec_manufacturer(ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks) values('".$manufacturerid."', '%s', '%s')",
+					mysql_real_escape_string($manufacturer['manufacturername']),
+					mysql_real_escape_string($manufacturer['clicks']));
+			
 			mysql_query($sql);
+			
+			// Insert a WordPress Custom post type post.
+			$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturerid . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $manufacturer['manufacturername'],
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post, $wp_error );
+			$db = new ec_db( );
+			$db->update_manufacturer_post_id( $manufacturerid, $post_id );
+			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
@@ -141,27 +164,33 @@ class manufacturers
 		}
 		function addmanufacturer($manufacturer) {
 			//convert object to array
-			  $manufacturer = (array)$manufacturer;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_manufacturer(ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks)
-				values(Null, '%s', '%s')",
-				mysql_real_escape_string($manufacturer['manufacturername']),
-				mysql_real_escape_string($manufacturer['clicks']));
-			  mysql_query($sql);
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			$manufacturer = (array)$manufacturer;
+			
+			//Create SQL Query
+			$sql = sprintf("Insert into ec_manufacturer(ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks) values(Null, '%s', '%s')",
+					mysql_real_escape_string($manufacturer['manufacturername']),
+					mysql_real_escape_string($manufacturer['clicks']));
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$manufacturerid = mysql_insert_id( );
+				// Insert a WordPress Custom post type post.
+				$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturerid . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $manufacturer['manufacturername'],
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post, $wp_error );
+				$db = new ec_db( );
+				$db->update_manufacturer_post_id( $manufacturerid, $post_id );
+				
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
 		}
-		
-
-
-
 	}//close class
 ?>

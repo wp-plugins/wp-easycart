@@ -58,6 +58,7 @@ $ec_widget_css = array(
 	'menu_vertical_widget',
 	'category_widget',
 	'cart_widget',
+	'donation_widget',
 	'group_widget',
 	'manufacturer_widget',
 	'newsletter_widget',

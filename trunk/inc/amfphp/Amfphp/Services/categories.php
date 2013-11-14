@@ -21,7 +21,6 @@ class categories
 	{		
 	
 		function categories() {
-			
 			//load our connection settings
 			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) )
 				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
@@ -114,32 +113,21 @@ class categories
 		}
 		
 		function deletecategory($categoryid) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_category WHERE ec_category.category_id = '%s'", $categoryid);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_categoryitem WHERE ec_categoryitem.category_id = '%s'", $categoryid);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
-		}
-		function updatecategory($categoryid, $categoryname) {
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_category(category_id, category_name)
-				values('".$categoryid."', '%s')",
-				mysql_real_escape_string($categoryname));
+			// Remove the post from WordPress
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_category WHERE category_id = %d", $categoryid );
+			$result = mysql_query( $sql_get_post_id );
+			$category = mysql_fetch_array( $result );
+			wp_delete_post( $category['post_id'], true );
+			
+			//Create SQL Query	
+			$deletesql = $this->escape("DELETE FROM ec_category WHERE ec_category.category_id = '%s'", $categoryid);
 			//Run query on database;
-			mysql_query($sql);
+			mysql_query($deletesql);
+			//Create SQL Query	
+			$deletesql = $this->escape("DELETE FROM ec_categoryitem WHERE ec_categoryitem.category_id = '%s'", $categoryid);
+			//Run query on database;
+			mysql_query($deletesql);
+			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
@@ -150,21 +138,60 @@ class categories
 				return $returnArray; //return noresults if there are no results
 			}
 		}
-		function addcategory($categoryname) {
-			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_category(category_id, category_name)
-				values(Null, '%s')",
-				mysql_real_escape_string($categoryname));
-			  mysql_query($sql);
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+		function updatecategory($categoryid, $categoryname) {
+			//Create and run SQL Query
+			$sql = sprintf("UPDATE ec_category SET category_name = '%s' WHERE category_id = %d", mysql_real_escape_string( $categoryname ), mysql_real_escape_string( $categoryid ) );
+			mysql_query($sql);
+			
+			// Update WordPress to match
+			// Remove the post from WordPress
+			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_category WHERE category_id = %d", $categoryid );
+			$result = mysql_query( $sql_get_post_id );
+			$category = mysql_fetch_array( $result );
+			wp_delete_post( $category['post_id'], true );
+			
+			// Insert a WordPress Custom post type post.
+			$post = array(	'post_content'	=> "[ec_store groupid=\"" . $categoryid . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $categoryname,
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post, $wp_error );
+			$db = new ec_db( );
+			$db->update_category_post_id( $categoryid, $post_id );
+			
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
+		}
+		function addcategory( $categoryname ){
+			//Create SQL Query
+			$sql = sprintf( "INSERT INTO ec_category(category_name) VALUES('%s')", mysql_real_escape_string( $categoryname ) );
+			mysql_query( $sql );
+			
+			if( !mysql_error( ) ){
+				// Insert a WordPress Custom post type post.
+				$category_id = mysql_insert_id( );
+				$post = array(	'post_content'	=> "[ec_store groupid=\"" . $category_id . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $categoryname,
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post, $wp_error );
+				$db = new ec_db( );
+				$db->update_category_post_id( $category_id, $post_id );
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			}else{
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
 		}
 
 		//category items function

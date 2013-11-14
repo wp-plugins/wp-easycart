@@ -440,7 +440,7 @@
 	-webkit-border-radius: 0;
 	margin-top: 4px;
 	min-width: 160px;
-	width:260px;
+	width:200px;
 	height:36px;
 	line-height:36px;
 	background-color: [main_color] !important;
@@ -649,7 +649,7 @@
 	width: 140px;
 	margin-top: 4px;
 	min-width: 130px;
-	background-color: #6e9e42;
+	background-color: [main_color];
 	color: #ffffff;
 	padding: 7px 12px;
 	text-indent: 0;

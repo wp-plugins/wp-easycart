@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.13
+Stable tag: 1.2.14
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,11 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.14 =
+* Addition - New donation widget available. This widget displays a goal thermometer on the product details for a donation product. If you put the goal amount in the specifications, e.g. 500.00, it will add up the order totals to show how close you are to reaching your goal.
+* Bug Fix - Shipping not needed for non-shippable goods (donation, downloads, or gift cards) yet was giving a shipping price for price based shipping.
+* Improvement - New linking structure available - Products and menus now use SEO friendly linking.
+* Bug Fix - Link to larger image was broken.
 = 1.2.13 =
 * Bug Fix - Sales tax with discounts bug fix. Discounts for products should lower the sales tax value, shipping discounts do not. This has been corrected.
 * Bug Fix - Small vat error corrected.

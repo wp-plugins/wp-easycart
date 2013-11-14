@@ -6,6 +6,7 @@ class ec_prodimages{
 	public $options;									// ec_prodoptions
 	public $model_number;								// VARCHAR 255
 	public $additional_link_options;					// TEXT
+	public $post_id;									// INT
 	
 	public $image1;										// VARCHAR 255
 	public $image2;										// VARCHAR 255
@@ -18,11 +19,12 @@ class ec_prodimages{
 	private $store_page;
 	private $permalink_divider;
 	
-	function __construct( $product_id, $options, $model_number, $use_optionitem_images, $image1, $image2, $image3, $image4, $image5, $image_data, $additional_link_options ){
+	function __construct( $product_id, $options, $model_number, $use_optionitem_images, $image1, $image2, $image3, $image4, $image5, $image_data, $additional_link_options, $post_id ){
 		
 		$this->use_optionitem_images = $use_optionitem_images;
 		$this->options = $options;
 		$this->model_number = $model_number;
+		$this->post_id = $post_id;
 		$this->additional_link_options = $additional_link_options;
 		
 		$this->image1 = $image1;
@@ -154,6 +156,8 @@ class ec_prodimages{
 	
 	private function get_image_html( $level, $img, $active, $i, $size, $islink, $js, $allow_popup, $id_prefix){
 		
+		$permalink =  get_permalink( $this->post_id );
+		
 		if( $img ){
 			/////////////////////////////////////////////////////////////
 			// GET IMAGE SOURCE
@@ -175,13 +179,15 @@ class ec_prodimages{
 			
 			if( $islink ){
 				
-				$ret_string = "<a href=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
+				$ret_string = "<a href=\"" . $permalink;
 				
 				if( $i < count( $this->imageset ) && $this->imageset[$i]->optionitem_id )
-					$ret_string .= "&optionitem_id=" . $this->imageset[$i]->optionitem_id;
+					$ret_string .= $this->permalink_divider . "optionitem_id=" . $this->imageset[$i]->optionitem_id;
 				
-				if( $this->additional_link_options )
-				$ret_string .= $this->additional_link_options;
+				if( ( $i < count( $this->imageset ) && $this->imageset[$i]->optionitem_id ) && $this->additional_link_options )
+					$ret_string .= $this->additional_link_options;
+				else if( $this->additional_link_options )
+					$ret_string .= $this->permalink_divider . substr( $this->additional_link_options, 5, strlen( $this->additional_link_options ) - 5 );
 				
 				$ret_string .= "\" class=\"ec_product_image";
 				
@@ -208,7 +214,7 @@ class ec_prodimages{
 			}else if( $allow_popup ){
 				
 				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics" . $level . "/" . $img ) )
-					$ret_string = "<a href=\"" . WP_PLUGIN_DIR . "/wp-easycart-data/products/pics" . $level . "/" . $img . "\" class=\"ec_product_image";
+					$ret_string = "<a href=\"" . plugins_url( "/wp-easycart-data/products/pics" . $level . "/" . $img ) . "\" class=\"ec_product_image";
 				else
 					$ret_string = "<a href=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img ) . "\" class=\"ec_product_image";
 				

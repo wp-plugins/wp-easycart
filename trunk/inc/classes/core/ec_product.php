@@ -5,6 +5,7 @@ class ec_product{
 	
 	public $product_id;							// INT
 	public $model_number;						// VARCHAR 255
+	public $post_id;							// INT
 	public $activate_in_store;					// BOOL
 	public $title;								// VARCHAR 255
 	public $description;						// Text
@@ -92,6 +93,7 @@ class ec_product{
 		
 		$this->product_id = $product_data['product_id'];
 		$this->model_number = $product_data['model_number'];
+		$this->post_id = $product_data['post_id'];
 		$this->activate_in_store = $product_data['activate_in_store'];
 		$this->title = $product_data['title'];
 		$this->description = $product_data['description'];
@@ -117,9 +119,9 @@ class ec_product{
 		$this->options = new ec_prodoptions($this->product_id, $product_data['option1'], $product_data['option2'], $product_data['option3'], $product_data['option4'], $product_data['option5'], $product_data['use_optionitem_quantity_tracking']);
 		
 		if( $this->is_featured_product )
-			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], "" );
+			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], "", $this->post_id );
 		else
-			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], $this->get_additional_link_options() );
+			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], $this->get_additional_link_options(), $this->post_id );
 		
 		if(!$this->is_featured_product)
 		$this->featured_products = new ec_featuredproducts($product_data['featured_product_id_1'], $product_data['featured_product_id_2'], $product_data['featured_product_id_3'], $product_data['featured_product_id_4']);
@@ -279,16 +281,33 @@ class ec_product{
 	/* Display the product title with a link to the product details page */
 	public function display_product_title_link( ){
 		
+		$permalink =  get_permalink( $this->post_id );
+		$add_options = $this->get_additional_link_options();
+		if( $add_options != "" ){
+			if( substr( $add_options, 0, 5 ) == "&amp;" )
+				$add_options = substr( $add_options, 5, strlen( $add_options ) - 5 );
+				
+			$add_options = $this->permalink_divider . $add_options;
+		}
 		if( $this->is_featured_product ) 
-			echo "<a href=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number . "\" class=\"ec_product_title_link\">" . $this->title . "</a>";
+			echo "<a href=\"" . $permalink . "\" class=\"ec_product_title_link\">" . $this->title . "</a>";
 		else
-			echo "<a href=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number . $this->get_additional_link_options() . "\" class=\"ec_product_title_link\">" . $this->title . "</a>";
+			echo "<a href=\"" . $permalink . $add_options . "\" class=\"ec_product_title_link\">" . $this->title . "</a>";
 		
 	}
 	
 	/* Display the link to the product details page */
 	public function display_product_link( $link_text ){
-		echo "<a href=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number . $this->get_additional_link_options() . "\" class=\"ec_product_title_link\">" . $link_text . "</a>";
+		
+		$permalink =  get_permalink( $this->post_id );
+		$add_options = $this->get_additional_link_options();
+		if( $add_options != "" ){
+			if( substr( $add_options, 0, 5 ) == "&amp;" )
+				$add_options = substr( $add_options, 5, strlen( $add_options ) - 5 );
+				
+			$add_options = $this->permalink_divider . $add_options;
+		}
+		echo "<a href=\"" . $permalink . $add_options . "\" class=\"ec_product_title_link\">" . $link_text . "</a>";
 	}
 	
 	public function has_promotion_text( ){
@@ -573,10 +592,15 @@ class ec_product{
 	
 	/* Print Out Customer Review Form Tag */
 	public function display_product_customer_review_form_start( ){
+		global $wp_query;
+		$post_obj = $wp_query->get_queried_object();
+		$post_id = $post_obj->ID;
+		$product = $this->mysqli->get_product_from_post_id( $post_id );
+		
 		if( isset( $_GET['optionitem_id'] ) ){
-			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $_GET['model_number'] . "&optionitem_id=" . $_GET['optionitem_id'] . "\" method=\"post\" id=\"customer_review_form\">";
+			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $product->model_number . "&optionitem_id=" . $_GET['optionitem_id'] . "\" method=\"post\" id=\"customer_review_form\">";
 		}else{
-			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $_GET['model_number'] . "\" method=\"post\" id=\"customer_review_form\">";
+			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $product->model_number . "\" method=\"post\" id=\"customer_review_form\">";
 		}
 	}
 	
@@ -756,6 +780,17 @@ class ec_product{
 	
 	public function get_additional_link_options( ){
 		
+		global $wp_query;
+		$post_obj = $wp_query->get_queried_object();
+		if( isset( $post_obj ) )
+			$post_id = $post_obj->ID;
+		else
+			$post_id = 0;
+		$menulevel1 = $this->mysqli->get_menu_row_from_post_id( $post_id, 1 );
+		$menulevel2 = $this->mysqli->get_menu_row_from_post_id( $post_id, 2 );
+		$menulevel3 = $this->mysqli->get_menu_row_from_post_id( $post_id, 3 );
+		$product = $this->mysqli->get_product_from_post_id( $post_id );
+
 		$link_text = "";
 		
 		if( !$this->is_widget ){
@@ -768,6 +803,10 @@ class ec_product{
 				if( isset( $_GET['pagenum'] ) )
 					$link_text .= "&amp;pagenum=" . $_GET['pagenum'];
 			
+			}else if( count( $menulevel3 ) > 0 ){
+				$link_text .= "&amp;subsubmenuid=" . $menulevel3->menulevel3_id;
+				if( isset( $_GET['pagenum'] ) )
+					$link_text .= "&amp;pagenum=" . $_GET['pagenum'];
 			}else if( isset( $_GET['submenuid'] ) ){
 				$link_text .= "&amp;submenuid=" . $_GET['submenuid'];
 				
@@ -777,21 +816,15 @@ class ec_product{
 				if( isset( $_GET['pagenum'] ) )
 					$link_text .= "&amp;pagenum=" . $_GET['pagenum'];
 			
-			}else if( isset( $_GET['menuid'] ) ){
-				$link_text .= "&amp;menuid=" . $_GET['menuid'];
-			
-				if( isset( $_GET['menu'] ) )
-					$link_text .= "&amp;menu=" . $_GET['menu'];
-					
-				
+			}else if( count( $menulevel2 ) > 0 ){
+				$link_text .= "&amp;submenuid=" . $menulevel2->menulevel2_id;
 				if( isset( $_GET['pagenum'] ) )
-					$link_text .= "&amp;pagenum=" . $_GET['pagenum'];	
-			
-			}else if( isset( $_GET['ec_search'] ) ){
-				$link_text .= "&amp;ec_search=" . $_GET['ec_search'];
+					$link_text .= "&amp;pagenum=" . $_GET['pagenum'];
+			}else if( count( $menulevel1 ) > 0 ){
+				$link_text .= "&amp;menuid=" . $menulevel1->menulevel1_id;
+				if( isset( $_GET['pagenum'] ) )
+					$link_text .= "&amp;pagenum=" . $_GET['pagenum'];
 			}else if( !isset( $_GET['manufacturer'] ) && !isset( $_GET['group_id'] ) && $this->show_on_startup ){
-				$link_text .= "&amp;featured=true";
-				
 				if( isset( $_GET['pagenum'] ) )
 					$link_text .= "&amp;pagenum=" . $_GET['pagenum'];
 			}
