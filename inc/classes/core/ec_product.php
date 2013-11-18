@@ -778,6 +778,11 @@ class ec_product{
 		echo $this->model_number;	
 	}
 	
+	/* Return the product product_id */
+	public function display_product_product_id( ){
+		echo $this->product_id;
+	}
+	
 	public function get_additional_link_options( ){
 		
 		global $wp_query;
