@@ -30,9 +30,7 @@
         
     </div>
     <div class="ec_cart_item_column3">
-    	<?php if( !$cart_item->is_donation ){ ?>
-        <div class="ec_cart_item_unit_price"><?php $cart_item->display_unit_price( ); ?></div>
-		<?php }?>
+    	<div class="ec_cart_item_unit_price"><?php $cart_item->display_unit_price( ); ?></div>
     </div>
 	<?php $cart_item->display_update_form_start( ); ?>
     <div class="ec_cart_item_column4">

@@ -46,6 +46,18 @@ class ec_db{
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
 				ec_orderdetail.download_timelimit_seconds,
+				";
+		
+		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
+				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
+				for( $j=0; $j<count( $arr ); $j++ ){
+					$this->orderdetail_sql .= "ec_orderdetail." . $arr[$j] . ", ";
+				}
+			}
+		}
+			
+		$this->orderdetail_sql .=	"
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
@@ -110,6 +122,19 @@ class ec_db{
 				ec_orderdetail.maximum_downloads_allowed,
 				ec_orderdetail.download_timelimit_seconds,
 				
+				";
+		
+		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
+				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
+				for( $j=0; $j<count( $arr ); $j++ ){
+					$this->orderdetail_guest_sql .= "ec_orderdetail." . $arr[$j] . ", ";
+				}
+			}
+		}
+				
+		$this->orderdetail_guest_sql .=	"
+				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
 				FROM ec_orderdetail
@@ -149,6 +174,20 @@ class ec_db{
 			$sql = $sql_menu0;
 		
 		return $this->mysqli->get_row( $sql );	
+	}
+	
+	public function get_option_list( ){
+		$sql = "SELECT
+				ec_option.option_id,
+				ec_option.option_name,
+				ec_option.option_label
+				
+				FROM ec_option
+				
+				ORDER BY 
+				ec_option.option_id";
+				
+		return $this->mysqli->get_results( $sql );
 	}
 	
 	public function get_optionitem_list( ){
@@ -795,7 +834,18 @@ class ec_db{
 				tempcart.gift_card_from_name,
 				
 				tempcart.donation_price,
-
+				";
+		
+		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
+				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
+				for( $j=0; $j<count( $arr ); $j++ ){
+					$sql .= "tempcart." . $arr[$j] . ", ";
+				}
+			}
+		}
+				
+		$sql .=	"
 				( 
 					SELECT GROUP_CONCAT( CONCAT_WS('***', ec_pricetier.price, ec_pricetier.quantity) SEPARATOR '---' ) 
 					FROM ec_pricetier 
@@ -1537,57 +1587,74 @@ class ec_db{
 		if( $cart_item->image1_optionitem )	$image1 = $cart_item->image1_optionitem;
 		else								$image1 = $cart_item->image1;
 		
+		$insert_array = array(	'order_id'						=> $order_id,
+								'product_id'					=> $cart_item->product_id,
+								'title'							=> $cart_item->title,
+								'model_number'					=> $cart_item->model_number,
+								'unit_price'					=> $cart_item->unit_price,
+								
+								'total_price'					=> $cart_item->total_price,
+								'quantity'						=> $cart_item->quantity,
+								'image1'						=> $image1,
+								
+								'optionitem_name_1'				=> $cart_item->optionitem1_name,
+								'optionitem_name_2'				=> $cart_item->optionitem2_name,
+								'optionitem_name_3'				=> $cart_item->optionitem3_name,
+								'optionitem_name_4'				=> $cart_item->optionitem4_name,
+								'optionitem_name_5'				=> $cart_item->optionitem5_name,
+								
+								'optionitem_label_1'			=> $cart_item->optionitem1_label,
+								'optionitem_label_2'			=> $cart_item->optionitem2_label,
+								'optionitem_label_3'			=> $cart_item->optionitem3_label,
+								'optionitem_label_4'			=> $cart_item->optionitem4_label,
+								'optionitem_label_5'			=> $cart_item->optionitem5_label,
+								
+								'optionitem_price_1'			=> $cart_item->optionitem1_price,
+								'optionitem_price_2'			=> $cart_item->optionitem2_price,
+								'optionitem_price_3'			=> $cart_item->optionitem3_price,
+								'optionitem_price_4'			=> $cart_item->optionitem4_price,
+								'optionitem_price_5'			=> $cart_item->optionitem5_price,
+								
+								'giftcard_id'					=> $giftcard_id,
+								'gift_card_message'				=> $cart_item->gift_card_message,
+								
+								'gift_card_from_name'			=> $cart_item->gift_card_from_name,
+								'gift_card_to_name'				=> $cart_item->gift_card_to_name,
+								'is_download'					=> $cart_item->is_download,
+								'is_giftcard'					=> $cart_item->is_giftcard,
+								
+								'is_taxable'					=> $cart_item->is_taxable,
+								'download_file_name'			=> $cart_item->download_file_name,
+								'download_key'					=> $download_key,
+								'maximum_downloads_allowed'		=> $cart_item->maximum_downloads_allowed,
+								'download_timelimit_seconds'	=> $cart_item->download_timelimit_seconds );
+								
+										
+		$percent_array = array( '%d', '%d', '%s', '%s', '%s',
+								'%s', '%d', '%s', 
+								'%s', '%s', '%s', '%s', '%s', 
+								'%s', '%s', '%s', '%s', '%s', 
+								'%s', '%s', '%s', '%s', '%s',
+								'%s', '%s',
+								'%s', '%s', '%d', '%d', 
+								'%d', '%s', '%s', '%d', '%d' );
+								
+		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
+				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
+				for( $j=0; $j<count( $arr ); $j++ ){
+					$insert_array[ $arr[$j] ] = $cart_item->custom_vars[$arr[$j]];
+					array_push( $percent_array, '%s' );
+				}
+			}
+		}
+		
 		$this->mysqli->insert(	'ec_orderdetail',
-								array(	'order_id'						=> $order_id,
-										'product_id'					=> $cart_item->product_id,
-										'title'							=> $cart_item->title,
-										'model_number'					=> $cart_item->model_number,
-										'unit_price'					=> $cart_item->unit_price,
-										
-										'total_price'					=> $cart_item->total_price,
-										'quantity'						=> $cart_item->quantity,
-										'image1'						=> $image1,
-										
-										'optionitem_name_1'				=> $cart_item->optionitem1_name,
-										'optionitem_name_2'				=> $cart_item->optionitem2_name,
-										'optionitem_name_3'				=> $cart_item->optionitem3_name,
-										'optionitem_name_4'				=> $cart_item->optionitem4_name,
-										'optionitem_name_5'				=> $cart_item->optionitem5_name,
-										
-										'optionitem_label_1'			=> $cart_item->optionitem1_label,
-										'optionitem_label_2'			=> $cart_item->optionitem2_label,
-										'optionitem_label_3'			=> $cart_item->optionitem3_label,
-										'optionitem_label_4'			=> $cart_item->optionitem4_label,
-										'optionitem_label_5'			=> $cart_item->optionitem5_label,
-										
-										'optionitem_price_1'			=> $cart_item->optionitem1_price,
-										'optionitem_price_2'			=> $cart_item->optionitem2_price,
-										'optionitem_price_3'			=> $cart_item->optionitem3_price,
-										'optionitem_price_4'			=> $cart_item->optionitem4_price,
-										'optionitem_price_5'			=> $cart_item->optionitem5_price,
-										
-										'giftcard_id'					=> $giftcard_id,
-										'gift_card_message'				=> $cart_item->gift_card_message,
-										
-										'gift_card_from_name'			=> $cart_item->gift_card_from_name,
-										'gift_card_to_name'				=> $cart_item->gift_card_to_name,
-										'is_download'					=> $cart_item->is_download,
-										'is_giftcard'					=> $cart_item->is_giftcard,
-										
-										'is_taxable'					=> $cart_item->is_taxable,
-										'download_file_name'			=> $cart_item->download_file_name,
-										'download_key'					=> $download_key,
-										'maximum_downloads_allowed'		=> $cart_item->maximum_downloads_allowed,
-										'download_timelimit_seconds'	=> $cart_item->download_timelimit_seconds ),
-										
-								array( 	'%d', '%d', '%s', '%s', '%s',
-										'%s', '%d', '%s', 
-										'%s', '%s', '%s', '%s', '%s', 
-										'%s', '%s', '%s', '%s', '%s', 
-										'%s', '%s', '%s', '%s', '%s',
-										'%s', '%s',
-										'%s', '%s', '%d', '%d', 
-										'%d', '%s', '%s', '%d', '%d' ) );
+								$insert_array,
+								$percent_array
+							  );
+							  
+		return $this->mysqli->insert_id;
 	}
 	
 	public function insert_response( $order_id, $is_error, $processor, $response_text ){
@@ -1951,6 +2018,19 @@ class ec_db{
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
 				ec_orderdetail.download_timelimit_seconds,
+				
+				";
+		
+		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
+				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
+				for( $j=0; $j<count( $arr ); $j++ ){
+					$row_sql .= "ec_orderdetail." . $arr[$j] . ", ";
+				}
+			}
+		}
+			
+		$row_sql .=	"
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				

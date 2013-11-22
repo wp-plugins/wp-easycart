@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://wpeasycart.com/docs/1.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 1.2.15
+ * Version: 1.2.16
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 1.2.15
+ * @version 1.2.16
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,13 +20,20 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '1_2_15' );
+define( 'EC_CURRENT_VERSION', '1_2_16' );
 define( 'EC_CURRENT_DB', '1_10' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
 
 require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
+
+// Setup Hook Structure
+ec_setup_hooks( );
+
+// Check and add hooks
+if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/ec_hooks.php" ) )
+	include( WP_PLUGIN_DIR . "/wp-easycart-data/ec_hooks.php" );
 
 function ec_activate(){
 	
@@ -1428,7 +1435,8 @@ function ec_create_post_type_menu() {
 			'has_archive' 		=> false,
 			'show_ui' 			=> false,
 			'show_in_nav_menus' => true,
-			'supports'			=> array( 'title', 'page-attributes', 'author', 'editor' ),
+			'supports'			=> array( 'title', 'page-attributes', 'author', 'editor', 'post-formats' ),
+			'rewrite'			=> array( 'slug' => $store_slug, 'with_front' => false, 'page' => false ),
 		);
 		register_post_type( 'ec_store', $args );
 	
@@ -1450,12 +1458,29 @@ function ec_get_the_slug( $id=null ){
 	return $slug;
 }
 
-add_action ('wp', 'ec_force_page_type');
+add_action( 'wp', 'ec_force_page_type' );
 function ec_force_page_type() {
 	global $wp_query, $post_type;
+	
 	if ($post_type == 'ec_store') {
 		$wp_query->is_page = true;
 		$wp_query->is_single = false;
+		$wp_query->query_vars['post_type'] = "page";
+		$wp_query->post->post_type = "page";
+	}
+}
+
+add_filter( 'template_redirect', 'ec_fix_store_template', 1 );
+function ec_fix_store_template( ){
+	global $wp;
+	$custom_post_types = array("ec_store");
+	
+	if( isset( $wp->query_vars["post_type"] ) && in_array( $wp->query_vars["post_type"], $custom_post_types ) ){
+		$store_template = get_post_meta( get_option( 'ec_option_storepage' ), "_wp_page_template", true );
+		if( isset( $store_template ) && $store_template != "" && $store_template != "default"  ){
+			include( get_template_directory( ) . "/" . $store_template );
+			exit( );
+		}
 	}
 }
 
@@ -1473,6 +1498,21 @@ function ec_get_url(){
   $strip = explode("/wp-admin", $_SERVER['REQUEST_URI']);
   $folder = $strip[0];
   return $protocol .  $baseurl . $folder;
+}
+
+function ec_setup_hooks( ){
+	$GLOBALS['ec_hooks'] = array( );
+}
+
+function ec_add_hook( $call_location, $function_name, $args = array(), $priority = 1 ){
+	if( !isset( $GLOBALS['ec_hooks'][$call_location] ) )
+		$GLOBALS['ec_hooks'][$call_location] = array( );
+	
+	$GLOBALS['ec_hooks'][$call_location][] = array( $function_name, $args, $priority );
+}
+
+function ec_call_hook( $hook_array, $class_args ){
+	$hook_array[0]( $hook_array[1], $class_args );
 }
 
 ///////////////////HAVING ISSUES WITH OUT DURING ACTIVATION?? PRINT ERRORS!//////////////////

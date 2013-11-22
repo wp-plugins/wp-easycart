@@ -400,5 +400,34 @@ When you upload a new theme to your site, you will see them appear here.  This s
             </table>
       
 		</form>
+        
+        <form method="post" action="options.php">
+		<?php settings_fields( 'ec-custom-css-design-group' ); ?>
+        <table width="100%" cellpadding="0" cellspacing="0" class="form-table">
+            <tr valign="top">
+              <td width="27%" class="platformheading" scope="row">Enter Custom CSS</td>
+              <td width="73%" class="platformheadingimage" scope="row">
+              	<img src="<?php echo plugins_url('images/settings_icon.png', __FILE__); ?>" alt="" width="25" height="25" />
+              </td>
+            </tr>
+            <tr valign="top">
+              <td colspan="2" scope="row"><p>This section is meant to give you an opportunity to customize the css of the store without accessing the design files. Great for quick adjustments or fixes.</p></td>
+            </tr>
+            
+            <tr valign="top">
+              <td class="itemheading" scope="row" colspan="2">
+              	<textarea style="width:100%; height:250px;" name="ec_option_custom_css"><?php echo get_option( 'ec_option_custom_css' ); ?></textarea>
+              </td>
+            </tr>
+            <tr valign="top">
+              <td colspan="2" scope="row">
+              	<p class="submit">
+                <input type="hidden" name="isupdate" value="1" />
+                <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+                </p>
+              </td>
+            </tr>
+            </table>
+         </form> 
     </div>
 </div>

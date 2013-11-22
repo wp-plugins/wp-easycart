@@ -278,17 +278,16 @@ class products
 			$sql = $this->escape( "SELECT post_id FROM ec_product WHERE product_id = %d", $productid );
 			$result = mysql_query( $sql );
 			$result_product = mysql_fetch_array( $result );
-			wp_delete_post( $result_product['post_id'], true );
 			
 			// Insert a WordPress Custom post type post.
-			$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $product['modelnumber'] . "\"]",
+			$post = array(	'ID'			=> $result_product['post_id'],
+							'post_content'	=> "[ec_store modelnumber=\"" . $product['modelnumber'] . "\"]",
 							'post_status'	=> "publish",
 							'post_title'	=> $product['producttitle'],
-							'post_type'		=> "ec_store"
+							'post_type'		=> "ec_store",
+							'post_name'		=> str_replace(' ', '-', $product['producttitle'] ),
 						  );
-			$post_id = wp_insert_post( $post, $wp_error );
-			$db = new ec_db( );
-			$db->update_product_post_id( $productid, $post_id );
+			$post_id = wp_update_post( $post );
 			
 			if ($product['useoptionitemimages'] == 1) {
 				$product['Image1'] = '';

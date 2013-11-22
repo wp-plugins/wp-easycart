@@ -1158,55 +1158,62 @@ class ec_cartpage{
 	// Process the add to cart form submission
 	private function process_add_to_cart(){
 		
-		//Product Info
-		$session_id = session_id( );
-		$product_id = $_POST['product_id'];
-		$quantity = $_POST['product_quantity'];
-		$model_number = $_POST['model_number'];
-		
-		//Optional Gift Card Info
-		$gift_card_message = "";
-		if( isset( $_POST['ec_gift_card_message'] ) )
-			$gift_card_message = $_POST['ec_gift_card_message'];
-		
-		$gift_card_to_name = "";
-		if( isset( $_POST['ec_gift_card_to_name'] ) )
-			$gift_card_to_name = $_POST['ec_gift_card_to_name'];
-		
-		$gift_card_from_name = "";
-		if( isset( $_POST['ec_gift_card_from_name'] ) )
-			$gift_card_from_name = $_POST['ec_gift_card_from_name'];
-		
-		// Optional Donation Price
-		$donation_price = 0.000;
-		if( isset( $_POST['ec_product_input_price'] ) )
-			$donation_price = $_POST['ec_product_input_price'];
-		
-		//Product Options
-		$option1 = "";
-		if( isset( $_POST['ec_option1'] ) )
-			$option1 = $_POST['ec_option1'];
-		
-		$option2 = "";
-		if( isset( $_POST['ec_option2'] ) )
-			$option2 = $_POST['ec_option2'];
-		
-		$option3 = "";
-		if( isset( $_POST['ec_option3'] ) )
-			$option3 = $_POST['ec_option3'];
-		
-		$option4 = "";
-		if( isset( $_POST['ec_option4'] ) )
-			$option4 = $_POST['ec_option4'];
-		
-		$option5 = "";
-		if( isset( $_POST['ec_option5'] ) )
-			$option5 = $_POST['ec_option5'];
-		
-		$this->mysqli->add_to_cart( $product_id, $session_id, $quantity, $option1, $option2, $option3, $option4, $option5, $gift_card_message, $gift_card_to_name, $gift_card_from_name, $donation_price );
-		
-		header( "location: " . $this->cart_page );
-		
+		//add_to_cart_replace Hook
+		if( isset( $GLOBALS['ec_hooks']['add_to_cart_replace'] ) ){
+			$class_args = array( "cart_page" => $this->cart_page, "permalink_divider" => $this->permalink_divider );
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['add_to_cart_replace'] ); $i++ ){
+				ec_call_hook( $GLOBALS['ec_hooks']['add_to_cart_replace'][$i], $class_args );
+			}
+		}else{
+			//Product Info
+			$session_id = session_id( );
+			$product_id = $_POST['product_id'];
+			$quantity = $_POST['product_quantity'];
+			$model_number = $_POST['model_number'];
+			
+			//Optional Gift Card Info
+			$gift_card_message = "";
+			if( isset( $_POST['ec_gift_card_message'] ) )
+				$gift_card_message = $_POST['ec_gift_card_message'];
+			
+			$gift_card_to_name = "";
+			if( isset( $_POST['ec_gift_card_to_name'] ) )
+				$gift_card_to_name = $_POST['ec_gift_card_to_name'];
+			
+			$gift_card_from_name = "";
+			if( isset( $_POST['ec_gift_card_from_name'] ) )
+				$gift_card_from_name = $_POST['ec_gift_card_from_name'];
+			
+			// Optional Donation Price
+			$donation_price = 0.000;
+			if( isset( $_POST['ec_product_input_price'] ) )
+				$donation_price = $_POST['ec_product_input_price'];
+			
+			//Product Options
+			$option1 = "";
+			if( isset( $_POST['ec_option1'] ) )
+				$option1 = $_POST['ec_option1'];
+			
+			$option2 = "";
+			if( isset( $_POST['ec_option2'] ) )
+				$option2 = $_POST['ec_option2'];
+			
+			$option3 = "";
+			if( isset( $_POST['ec_option3'] ) )
+				$option3 = $_POST['ec_option3'];
+			
+			$option4 = "";
+			if( isset( $_POST['ec_option4'] ) )
+				$option4 = $_POST['ec_option4'];
+			
+			$option5 = "";
+			if( isset( $_POST['ec_option5'] ) )
+				$option5 = $_POST['ec_option5'];
+			
+			$this->mysqli->add_to_cart( $product_id, $session_id, $quantity, $option1, $option2, $option3, $option4, $option5, $gift_card_message, $gift_card_to_name, $gift_card_from_name, $donation_price );
+			
+			header( "location: " . $this->cart_page );
+		}
 	}
 	
 	private function process_update_cartitem( $cartitem_id, $new_quantity ){

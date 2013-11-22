@@ -1,6 +1,6 @@
 <?php
 // First of all send css header
-header("Content-type: text/css");
+header("Content-type: text/javascript");
 
 //Load Wordpress Connection Data
 define('WP_USE_THEMES', false);

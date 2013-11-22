@@ -86,6 +86,40 @@
                 	<tr><td>
                     <?php echo $this->cart->cart[$i]->title; ?>
                     </td></tr>
+                    <?php if( $this->cart->cart[$i]->has_gift_card_message( ) ){ ?>
+                    <tr><td>
+                      <?php $this->cart->cart[$i]->display_gift_card_message( $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_message' ) ); ?>
+                    </td></tr>
+                    <?php }?>
+                    <?php if( $this->cart->cart[$i]->has_gift_card_from_name( ) ){ ?>
+                    <tr><td>
+                      <?php $this->cart->cart[$i]->display_gift_card_from_name( $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_from' ) ); ?>
+                    </td></tr>
+                    <?php }?>
+                    <?php if( $this->cart->cart[$i]->has_gift_card_to_name( ) ){ ?>
+                    <tr><td>
+                      <?php $this->cart->cart[$i]->display_gift_card_to_name( $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_to' ) ); ?>
+                    </td></tr>
+                    <?php }?>
+                    <?php if( $this->cart->cart[$i]->is_giftcard || $this->cart->cart[$i]->is_download ){ ?>
+                    <tr><td>
+                    
+                    <?php 
+					$account_page_id = get_option('ec_option_accountpage');
+					$account_page = get_permalink( $account_page_id );
+					if( substr_count( $account_page, '?' ) )
+						$permalink_divider = "&";
+					else
+						$permalink_divider = "?";
+					
+					if( $this->cart->cart[$i]->is_giftcard ){
+						echo "<a href=\"" . $account_page . $permalink_divider . "ec_page=order_details&order_id=" . $this->order_id . "\" target=\"_blank\">" . $GLOBALS['language']->get_text( "account_order_details", "account_orders_details_print_online" ) . "</a>";
+					}else if( $this->cart->cart[$i]->is_download ){
+						echo "<a href=\"" . $account_page . $permalink_divider . "ec_page=order_details&order_id=" . $this->order_id . "\" target=\"_blank\">" . $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_download' ) . "</a>";
+					}
+					?>
+                    </td></tr>
+                    <?php }?>
                     <?php 
                     if( $this->cart->cart[$i]->optionitem1_name ){
                         echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem1_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem1_name;

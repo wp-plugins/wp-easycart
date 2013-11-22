@@ -134,7 +134,6 @@ class manufacturers
 			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_manufacturer WHERE manufacturer_id = %d", $manufacturerid );
 			$result = mysql_query( $sql_get_post_id );
 			$manufacturer_post = mysql_fetch_array( $result );
-			wp_delete_post( $manufacturer_post['post_id'], true );
 			
 			//Create SQL Query
 			$sql = sprintf("Replace into ec_manufacturer(ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks) values('".$manufacturerid."', '%s', '%s')",
@@ -144,14 +143,14 @@ class manufacturers
 			mysql_query($sql);
 			
 			// Insert a WordPress Custom post type post.
-			$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturerid . "\"]",
+			$post = array(	'ID'			=> $manufacturer_post['post_id'],
+							'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturerid . "\"]",
 							'post_status'	=> "publish",
 							'post_title'	=> $manufacturer['manufacturername'],
-							'post_type'		=> "ec_store"
+							'post_type'		=> "ec_store",
+							'post_name'		=> str_replace(' ', '-', $manufacturer['manufacturername'] ),
 						  );
-			$post_id = wp_insert_post( $post, $wp_error );
-			$db = new ec_db( );
-			$db->update_manufacturer_post_id( $manufacturerid, $post_id );
+			$post_id = wp_update_post( $post );
 			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash

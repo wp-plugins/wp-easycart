@@ -57,7 +57,7 @@ class ec_donationwidget extends WP_Widget{
 			else														$permalink_divider = "?";
 			
 			
-			$donation_order_total = $db->get_donation_order_total( $model_number );
+			$donation_order_total = $db->get_donation_order_total( $products[0]['model_number'] );
 		
 			$raised_total = $GLOBALS['currency']->get_currency_display( $donation_order_total );
 			$goal_total = $GLOBALS['currency']->get_currency_display( $products[0]['specifications'] );

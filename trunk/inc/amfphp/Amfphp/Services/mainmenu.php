@@ -162,17 +162,16 @@ class mainmenu
 			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel1 WHERE menulevel1_id = %d", $keyfield );
 			$result = mysql_query( $sql_get_post_id );
 			$menu_item = mysql_fetch_array( $result );
-			wp_delete_post( $menu_item['post_id'], true );
 			
 			//Add Back New Post
-			$post = array(	'post_content'	=> "[ec_store menuid=\"" . $keyfield . "\"]",
+			$post = array(	'ID'			=> $menu_item['post_id'],
+							'post_content'	=> "[ec_store menuid=\"" . $keyfield . "\"]",
 							'post_status'	=> "publish",
 							'post_title'	=> $menulevel1['menuname'],
-							'post_type'		=> "ec_store"
+							'post_type'		=> "ec_store",
+							'post_name'		=> str_replace(' ', '-', $menulevel1['menuname'] ),
 						  );
-			$post_id = wp_insert_post( $post, $wp_error );
-			$db = new ec_db( );
-			$db->update_menu_post_id( $keyfield, $post_id );
+			$post_id = wp_update_post( $post );
 			
 			//Create SQL Query
 			$sql = sprintf("Replace into ec_menulevel1 (ec_menulevel1.menulevel1_id, ec_menulevel1.name, ec_menulevel1.clicks, ec_menulevel1.order, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image, ec_menulevel1.post_id ) values ('".$keyfield."', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
@@ -306,17 +305,16 @@ class mainmenu
 			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel2 WHERE menulevel2_id = %d", $keyfield );
 			$result = mysql_query( $sql_get_post_id );
 			$menu_item = mysql_fetch_array( $result );
-			wp_delete_post( $menu_item['post_id'], true );
 			
 			//Add Back New Post
-			$post = array(	'post_content'	=> "[ec_store submenuid=\"" . $keyfield . "\"]",
+			$post = array(	'ID'			=> $menu_item['post_id'],
+							'post_content'	=> "[ec_store submenuid=\"" . $keyfield . "\"]",
 							'post_status'	=> "publish",
 							'post_title'	=> $menulevel2['menuname'],
-							'post_type'		=> "ec_store"
+							'post_type'		=> "ec_store",
+							'post_name'		=> str_replace(' ', '-', $menulevel2['menuname'] ),
 					  );
-			$post_id = wp_insert_post( $post, $wp_error );
-			$db = new ec_db( );
-			$db->update_menu_post_id( $keyfield, $post_id );
+			$post_id = wp_update_post( $post );
 			
 			//Create SQL Query
 			$sql = sprintf("Replace into ec_menulevel2(ec_menulevel2.menulevel2_id, ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.clicks, ec_menulevel2.order, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image, ec_menulevel2.post_id)
@@ -442,17 +440,16 @@ class mainmenu
 			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_menulevel3 WHERE menulevel3_id = %d", $keyfield );
 			$result = mysql_query( $sql_get_post_id );
 			$menu_item = mysql_fetch_array( $result );
-			wp_delete_post( $menu_item['post_id'], true );
 			
 			//Add Back New Post
-			$post = array(	'post_content'	=> "[ec_store subsubmenuid=\"" . $keyfield . "\"]",
+			$post = array(	'ID'			=> $menu_item['post_id'],
+							'post_content'	=> "[ec_store subsubmenuid=\"" . $keyfield . "\"]",
 							'post_status'	=> "publish",
 							'post_title'	=> $menulevel3['menuname'],
-							'post_type'		=> "ec_store"
+							'post_type'		=> "ec_store",
+							'post_name'		=> str_replace(' ', '-', $menulevel3['menuname'] ),
 				  		 );
-			$post_id = wp_insert_post( $post, $wp_error );
-			$db = new ec_db( );
-			$db->update_menu_post_id( $keyfield, $post_id );
+			$post_id = wp_update_post( $post );
 			
 			//Create SQL Query
 			$sql = sprintf("Replace into ec_menulevel3(ec_menulevel3.menulevel3_id, ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.clicks, ec_menulevel3.order, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image, ec_menulevel3.post_id)

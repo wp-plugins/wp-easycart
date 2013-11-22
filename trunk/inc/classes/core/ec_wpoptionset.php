@@ -92,6 +92,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_use_wp_mail');						array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_product_layout_type');				array_push($this->wp_option_defaults, 'grid_only' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
 		array_push($this->wp_option_names, 'ec_option_use_direct_deposit');					array_push($this->wp_option_defaults, '1' );
@@ -302,6 +304,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
 		array_push($this->wp_option_names, 'ec_option_base_layout');						array_push($this->wp_option_defaults, 'base-responsive-v1' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
+		array_push($this->wp_option_names, 'ec_option_custom_css');							array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-custom-css-design-group');
 																							
 		// Theme Options
 		array_push($this->wp_option_names, 'ec_option_css_replacements');					array_push($this->wp_option_defaults, "main_color=#242424,second_color=#6b6b6b,third_color=#adadad,title_color=#0f0f0f,text_color=#141414,link_color=#242424,link_hover_color=#121212,sale_color=#900,backdrop_color=#333,content_bg=#FFF,error_text=#900,error_color=#F1D9D9,error_color2=#FF0606,success_text=#333,success_color=#E6FFE6,success_color2=#6FFF47"  );
