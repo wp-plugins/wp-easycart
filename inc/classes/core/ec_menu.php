@@ -40,6 +40,12 @@ class ec_menu{
 	
 	}
 	
+	public function get_menulevel1_id( $level1 ){
+		
+		return $this->menu_array[$level1][1];	
+	
+	}
+	
 	public function level2_count( $level1 ){
 		return count( $this->menu_array[$level1][0] );
 	}
@@ -63,6 +69,12 @@ class ec_menu{
 	
 	}
 	
+	public function get_menulevel2_id( $level1, $level2 ){
+		
+		return $this->menu_array[$level1][0][$level2][1];	
+	
+	}
+	
 	public function level3_count( $level1, $level2 ){
 		return count( $this->menu_array[$level1][0][$level2][0] );
 	}
@@ -83,6 +95,12 @@ class ec_menu{
 	public function display_menulevel3_id( $level1, $level2, $level3 ){
 		
 		echo $this->menu_array[$level1][0][$level2][0][$level3][0];	
+	
+	}
+	
+	public function get_menulevel3_id( $level1, $level2, $level3 ){
+		
+		return $this->menu_array[$level1][0][$level2][0][$level3][0];	
 	
 	}
 }

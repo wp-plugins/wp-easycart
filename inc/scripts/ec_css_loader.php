@@ -129,6 +129,8 @@ foreach( $size_rows as $size_row ){
 		$css_content = str_replace( "[" . $temp[0] . "]", $temp[1], $css_content );
 }
 
+$css_content .= get_option( 'ec_option_custom_css' );
+
 // print the css content
 echo $css_content;	
 ?>

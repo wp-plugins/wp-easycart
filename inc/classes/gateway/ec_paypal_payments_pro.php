@@ -28,7 +28,7 @@ class ec_paypal_payments_pro extends ec_gateway{
 		else if( $this->credit_card->payment_method == "uke" )
 			$card_type = "Visa";
 		else if( $this->credit_card->payment_method == "amex" )
-			$card_type = "American Express";
+			$card_type = "Amex";
 		else if( $this->credit_card->payment_method == "discover" )
 			$card_type = "Discover";
 		

@@ -45,11 +45,10 @@ class ec_orderlist{
 	}
 	
 	private function date_within_range( $order_date, $limit ){
-		$current_date = new DateTime();
-		$order_date = strtotime( $order_date );
-		$limit_date = strtotime( date_modify( $current_date, '-' . $limit . "day" )->format('Y-m-d H:i:s') );
+		$order_strtotime = strtotime( $order_date );
+		$limit_date = strtotime( "-" . $limit . " day" );
 		
-		if( $order_date > $limit_date )				return true;
+		if( $order_strtotime > $limit_date )		return true;
 		else										return false;
 	}
 	

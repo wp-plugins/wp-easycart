@@ -13,6 +13,8 @@ class ec_order{
 	public $payment;													// ec_payment structure
 	
 	public $order_customer_notes;										// BLOB
+	public $process_result;												// INT
+	public $order_status;												// INT
 	
 	public $order_id;													// INT
 	
@@ -46,24 +48,29 @@ class ec_order{
 			
 			if( $this->order_totals->grand_total <= 0 ){
 				$this->mysqli->update_order_status( $this->order_id, "3" );
-				$process_result = "1";
+				$this->process_result = "1";
+				$this->order_status = "3";
 				
 			}else if( $payment_type == "manual_bill" ){
 				$this->mysqli->update_order_status( $this->order_id, "14" );
-				$process_result = "1";
+				$this->process_result = "1";
+				$this->order_status = "14";
 			
 			}else if( $payment_type == "third_party" ){
 				$this->mysqli->update_order_status( $this->order_id, "8" );
-				$process_result = "1";
+				$this->process_result = "1";
+				$this->order_status = "8";
 			
 			}else{
-				$process_result = $this->payment->process_payment( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->order_id );
-				if( $process_result == "1" && !$this->payment->is_3d_auth )
+				$this->process_result = $this->payment->process_payment( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->order_id );
+				if( $this->process_result == "1" && !$this->payment->is_3d_auth ){
 					$this->mysqli->update_order_status( $this->order_id, "6" );
+					$this->order_status = "6";
+				}
 				
 			}
 			
-			if( $process_result == "1" ){
+			if( $this->process_result == "1" ){
 				$this->insert_details();
 				$this->update_user_addresses();
 				
@@ -87,7 +94,7 @@ class ec_order{
 				$this->mysqli->remove_order( $this->order_id );
 			
 			
-			return $process_result;
+			return $this->process_result;
 			
 		}else{
 			error_log( "error in submit_order(), couldn't insert order." );
@@ -102,7 +109,7 @@ class ec_order{
 		}
 	}
 	
-	private function insert_details_helper( $cart_item ){
+	private function insert_details_helper( &$cart_item ){
 		
 		if( $cart_item->is_giftcard || $cart_item->is_download ){
 			$num_times = $cart_item->quantity;
@@ -112,17 +119,20 @@ class ec_order{
 			for( $i=0; $i<$num_times; $i++ ){										
 														$giftcard_id = 0;
 				if( $cart_item->is_giftcard) 			$giftcard_id = $this->mysqli->insert_new_giftcard( $cart_item->unit_price, $cart_item->gift_card_message );
-		
+														$cart_item->giftcard_id = $giftcard_id;
+																
 														$download_id = 0;
-				if( $cart_item->is_download )			$download_id = $this->mysqli->insert_new_download( 	$this->order_id, $cart_item->download_file_name, $cart_item->product_id );	
+				if( $cart_item->is_download )			$download_id = $this->mysqli->insert_new_download( 	$this->order_id, $cart_item->download_file_name, $cart_item->product_id );
+														$cart_item->download_id = $download_id;
 				
-				$this->mysqli->insert_order_detail( $this->order_id, $giftcard_id, $download_id, $cart_item );
-			
+				$orderdetail_id = $this->mysqli->insert_order_detail( $this->order_id, $giftcard_id, $download_id, $cart_item );
 			}
 		
-		}else
+		}else{
 			$this->mysqli->insert_order_detail( $this->order_id, 0, 0, $cart_item );
+		}
 		
+		$cart_item->orderdetail_id = $orderdetail_id;
 		
 		if($cart_item->use_optionitem_quantity_tracking)	
 			$this->mysqli->update_quantity_value( 		$cart_item->quantity, 

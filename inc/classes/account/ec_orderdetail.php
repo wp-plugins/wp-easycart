@@ -40,6 +40,8 @@ class ec_orderdetail{
 	public $maximum_downloads_allowed;       			// INT
 	public $download_timelimit_seconds;      			// INT
 	
+	public $custom_vars = array();						// Array
+	
 	private $download;									// ec_download object
 	public $timecheck;
 	public $download_count;
@@ -85,6 +87,15 @@ class ec_orderdetail{
 		$this->download_id = $orderdetail_row->download_key;
 		$this->maximum_downloads_allowed = $orderdetail_row->maximum_downloads_allowed;
 		$this->download_timelimit_seconds = $orderdetail_row->download_timelimit_seconds;
+		
+		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
+				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
+				for( $j=0; $j<count( $arr ); $j++ ){
+					$this->custom_vars[ $arr[$j] ] =  $orderdetail_row->{$arr[$j]};
+				}
+			}
+		}
 		
 		if( $this->is_download ){
 			$this->download = $this->mysqli->get_download( $this->download_id );

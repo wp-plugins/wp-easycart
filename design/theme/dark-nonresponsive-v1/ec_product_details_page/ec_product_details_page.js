@@ -215,9 +215,6 @@ function ec_product_details_combo_change( level, modelnum ){
 		
 		// If the user selected a value (not index 0!)
 		if( document.getElementById( 'ec_option' + level + "_" + model_number ).selectedIndex > 0 ){
-			if( ec_uses_optionitem_images( ) && level == 1 ){
-				ec_update_product_details_images( level, document.getElementById( 'ec_option' + level + "_" + model_number ).selectedIndex - 1 );
-			}
 			
 			ec_update_next_option_level( level, document.getElementById( 'ec_option' + level + "_" + model_number ).selectedIndex );	
 		
@@ -233,6 +230,10 @@ function ec_product_details_combo_change( level, modelnum ){
 			}//close if/else for level 1
 		}//close if/else for 0 index check
 	}//close check if uses stock quantities
+
+	if( ec_uses_optionitem_images( ) && level == 1 && document.getElementById( 'ec_option' + level + "_" + model_number ).selectedIndex > 0 ){
+		ec_update_product_details_images( document.getElementById( 'ec_option' + level + "_" + model_number ).selectedIndex - 1, level );
+	}
 }// close ec_option_combo_change
 
 // Swap the product image

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.6.1
-Stable tag: 1.2.15
+Stable tag: 1.2.16
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -123,6 +123,17 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
 
+= 1.2.16 =
+* Addition - New "hooks" feature for the plugin to allow developers to improve and expand functionality without touching the core files. Docs on this feature to come, still in early stages and limited functionality.
+* Addition - Products can be displayed as a grid or list view (need to add the ec_product_list.php and the new ec_product.css file to use the upgrade).
+* Bug Fix - Donation product not displaying unit price, this fixed in a layout file, update to fix.
+* Improvement - Link to account order details available in email receipts or gift cards and downloads. This is available in the new design files.
+* Bug Fix - Option item images available for a drop down menu now. Must update design files to see this change.
+* Bug Fix - Updating products, menus, categories, and manufacturers now updates the WordPress post instead of deleting and adding. Helpful when using the appearance -> menu page.
+* Improvement - Menu widget vertical opens automatically to the menu page you are on. This is only available in the new design files.
+* Addition - Custom CSS box now available to over ride the store css without accessing design css files.
+* Bug Fix - Product Details page now uses the same template as your selected store page.
+* Bug Fix - Account orders were not displaying for PHP 5.1 and lower. This has been corrected.
 = 1.2.15 =
 * Improvement - Added additional methods for checking administrative connection file.
 = 1.2.14 =

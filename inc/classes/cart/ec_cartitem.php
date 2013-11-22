@@ -4,6 +4,7 @@ class ec_cartitem{
 	
 	public $mysqli;													// ec_db class
 	
+	public $orderdetail_id = 0;										// INT
 	public $cartitem_id;											// INT
 	public $product_id;												// INT
 	public $model_number;											// VARCHAR 255
@@ -16,7 +17,7 @@ class ec_cartitem{
 	public $title;													// VARCHAR 255
 	
 	public $unit_price;												// FLOAT 15,3
-	public $f;											// FLOAT 15,3
+	public $total_price;											// FLOAT 15,3
 	public $prev_price;												// FLOAT 15,3
 	public $handling_price;											// FLOAT 15,3
 	public $pricetiers = array();									// Array of rows of ec_pricetier
@@ -55,12 +56,16 @@ class ec_cartitem{
 	public $optionitem4_id;											// INT
 	public $optionitem5_id;											// INT
 	
+	public $custom_vars = array();									// array
+	
+	public $giftcard_id = 0;										// INT
 	public $gift_card_message;										// TEXT
 	public $gift_card_from_name;									// VARCHAR 255
 	public $gift_card_to_name;										// VARCHAR 255
 	
 	public $donation_price;											// FLOAT 9,2
 	
+	public $download_id = 0;										// INT
 	public $download_file_name;										// VARCHAR 255
 	public $use_optionitem_quantity_tracking;						// BOOL
 	
@@ -161,6 +166,15 @@ class ec_cartitem{
 		$this->use_optionitem_quantity_tracking = $cartitem_data->use_optionitem_quantity_tracking;
 		
 		$this->donation_price = $cartitem_data->donation_price;
+		
+		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
+				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
+				for( $j=0; $j<count( $arr ); $j++ ){
+					$this->custom_vars[ $arr[$j] ] =  $cartitem_data->{$arr[$j]};
+				}
+			}
+		}
 		
 		$options_price = $this->optionitem1_price + $this->optionitem2_price + $this->optionitem3_price + $this->optionitem4_price + $this->optionitem5_price;
 		
@@ -372,6 +386,20 @@ class ec_cartitem{
 	public function display_gift_card_to_name( $to_text ){
 		if( $this->gift_card_to_name )
 			echo $to_text . $this->gift_card_to_name;
+	}
+	
+	public function has_print_gift_card_link( ){
+		if( $this->is_giftcard )
+			return true;
+		else
+			return false;
+	}
+	
+	public function has_download_link( ){
+		if( $this->is_download )
+			return true;
+		else
+			return false;
 	}
 	
 	public function display_update_form_start( ){

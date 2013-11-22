@@ -149,17 +149,16 @@ class categories
 			$sql_get_post_id = $this->escape( "SELECT post_id FROM ec_category WHERE category_id = %d", $categoryid );
 			$result = mysql_query( $sql_get_post_id );
 			$category = mysql_fetch_array( $result );
-			wp_delete_post( $category['post_id'], true );
 			
 			// Insert a WordPress Custom post type post.
-			$post = array(	'post_content'	=> "[ec_store groupid=\"" . $categoryid . "\"]",
+			$post = array(	'ID'			=> $category['post_id'],
+							'post_content'	=> "[ec_store groupid=\"" . $categoryid . "\"]",
 							'post_status'	=> "publish",
 							'post_title'	=> $categoryname,
-							'post_type'		=> "ec_store"
+							'post_type'		=> "ec_store",
+							'post_name'		=> str_replace(' ', '-', $categoryname ),
 						  );
-			$post_id = wp_insert_post( $post, $wp_error );
-			$db = new ec_db( );
-			$db->update_category_post_id( $categoryid, $post_id );
+			$post_id = wp_update_post( $post );
 			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash

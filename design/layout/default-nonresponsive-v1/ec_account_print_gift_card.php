@@ -13,6 +13,13 @@
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 }
+.style24 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+.style24 img{
+	max-width:400px;
+}
 -->
 </style>
 </head>
@@ -22,7 +29,7 @@
     <td colspan='4' align='left' class='style22'><img src='<?php echo $email_logo_url; ?>'></td>
   </tr>
   <tr>
-    <td width='400' class='style22'><?php $ec_orderdetail->display_image( "large" ); ?></td>
+    <td width='400' class='style24'><?php $ec_orderdetail->display_image( "large" ); ?></td>
     <td width="25"></td>
     <td width='300' align='left' class='style22' colspan="2"><div class="style20">
         <?php $ec_orderdetail->display_gift_card_id( $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_card_id' ) ); ?>

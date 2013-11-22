@@ -25,6 +25,7 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_privacy_link', $_POST['ec_option_privacy_link'] );
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
 	update_option( 'ec_option_use_wp_mail', $_POST['ec_option_use_wp_mail'] );
+	update_option( 'ec_option_product_layout_type', $_POST['ec_option_product_layout_type'] );
 
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
 
@@ -224,6 +225,17 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 <option value="credit_card" <?php if (get_option('ec_option_default_payment_type') == 'credit_card') echo ' selected'; ?>>Credit Card</option>
               </select>
               <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Default Product Sort</em>This will set the default sort technique for the products page. For example, changing to Title A-Z will have the products sorted this way by default.</span></a>
+          </td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Product Layout Format:<br />
+          <span class="itemsubheading">This is the way the products are displayed to the user.</span></td>
+          <td valign="top">
+              <select name="ec_option_product_layout_type" id="ec_option_product_layout_type">
+                <option value="grid_only" <?php if (get_option('ec_option_product_layout_type') == 'grid_only') echo ' selected'; ?>>Grid Layout</option>
+                <option value="list_only" <?php if (get_option('ec_option_product_layout_type') == 'list_only') echo ' selected'; ?>>List Layout</option>
+              </select>
+              <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Product Layout Format</em>This will display the products in either a grid or list view. Some product types are best displayed in a grid view, others in a list view, choose what makes the most sense for you.</span></a>
           </td>
         </tr>
         <tr valign="top">
