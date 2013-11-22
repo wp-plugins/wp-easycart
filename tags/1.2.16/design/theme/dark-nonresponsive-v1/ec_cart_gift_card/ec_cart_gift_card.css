@@ -1,0 +1,115 @@
+@charset "utf-8";
+/* Base Theme - EC Cart Gift Card CSS Document */
+
+.ec_cart_gift_card_row {
+	width: 100%;
+	float: left;
+	text-align: left;
+}
+.ec_cart_gift_card_row .ec_cart_gift_card_input_text {
+	width: 225px;
+	height: 28px;
+	padding: 2px;
+	margin-top: 0;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-left: 2px;
+	float: left;
+}
+.ec_cart_gift_card_row .ec_cart_gift_card_redeem_button {
+	width: 159px;
+	margin-left: 1px;
+	float: left;
+	margin-top: 1px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px; 
+}
+.ec_cart_gift_card_row .ec_cart_gift_card_redeem_button a {
+	display: block;
+	float: right;
+	text-indent: 0;
+	text-decoration: none!important;
+	text-transform: uppercase;
+	white-space: nowrap;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	font-family: [content_font]!important;
+	font-size:11px;
+	font-weight:bold;
+	outline: 0;
+	width:150px;
+	height:28px;
+	line-height:28px;
+	background-repeat:no-repeat;
+	background-color:[main_color];
+	border: 1px solid #CCC !important;
+	color:#ffffff;
+	font-weight:bold;
+	text-align:center;
+	border:none;
+	margin-left:0px;
+}
+.ec_cart_gift_card_row .ec_cart_gift_card_redeem_button a:hover {
+	cursor: pointer;
+	color:[main_color];
+	background-color: #f7f7f7;
+}
+.ec_cart_gift_card_loader {
+	display: none;
+	float: left;
+	margin-left: 40px;
+}
+.ec_cart_gift_card_row_message {
+	width: 100%;
+	float: left;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: left;
+	margin-bottom: 5px;
+	color: #FFF;
+	margin-left:5px;
+}
+.ec_cart_gift_card_row .ec_cart_gift_card_redeem_button {
+	width: 159px;
+	margin-left: 5px;
+	float: left;
+	margin-top: 0;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px; 
+}
+.ec_cart_gift_card_row .ec_cart_gift_card_redeem_button a {
+	display: block;
+	float: right;
+	text-indent: 0;
+	text-decoration: none!important;
+	text-transform: uppercase;
+	white-space: nowrap;
+	text-align: center;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	font-size:11px;
+	font-weight:bold;
+	outline: 0;
+	width:150px;
+	height:28px;
+	line-height:28px;
+	border:solid 1px #cccccc !important;
+	color:#ffffff;
+	font-weight:bold;
+	text-align:center;
+	border:none;
+	margin-top:0px;
+}
+.ec_cart_gift_card_row .ec_cart_gift_card_redeem_button a:hover {
+	cursor: pointer;
+	background-color: #f7f7f7;
+	color:[main_color] !important;
+}
+/* END EC CART GIFT CARD STYLE*/
