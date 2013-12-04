@@ -104,19 +104,26 @@ class ec_productlist{
 		
 		echo "<select name=\"sortfield\" id=\"sortfield\" onchange=\"change_product_sort('" . $this->filter->get_menu_id( ) . "', '" . $this->filter->get_menu_name( ) . "', '" . $this->filter->get_submenu_id( ) . "', '" . $this->filter->get_submenu_name( ) . "', '" . $this->filter->get_subsubmenu_id( ) . "', '" . $this->filter->get_subsubmenu_name( ) . "', '" . $this->filter->manufacturer->manufacturer_id . "', '" . $this->filter->pricepoint_id . "', '" . $this->paging->current_page . "', '" . $this->filter->perpage->selected . "', '" . $storepage . "', '" . $permalinkdivider . "');\" class=\"ec_sort_menu\">\n\n";
 
-            echo "<option value=\"1\""; if( $this->filter->is_sort_selected(1) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_price_low' ) . "</option>\n\n";
-
-            echo "<option value=\"2\""; if( $this->filter->is_sort_selected(2) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_price_high' ) . "</option>\n\n";
-
-            echo "<option value=\"3\""; if( $this->filter->is_sort_selected(3) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_title_a' ) . "</option>\n\n";
-
-            echo "<option value=\"4\""; if( $this->filter->is_sort_selected(4) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_title_z' ) . "</option>\n\n";
-
-            echo "<option value=\"5\""; if( $this->filter->is_sort_selected(5) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_newest' ) . "</option>\n\n";
-
-            echo "<option value=\"6\""; if( $this->filter->is_sort_selected(6) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_rating' ) . "</option>\n\n";
-
-            echo "<option value=\"7\""; if( $this->filter->is_sort_selected(7) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_most_viewed' ) . "</option>\n\n";
+		if( get_option( 'ec_option_product_filter_1' ) )
+			echo "<option value=\"1\""; if( $this->filter->is_sort_selected(1) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_price_low' ) . "</option>\n\n";
+		
+		if( get_option( 'ec_option_product_filter_2' ) )
+			echo "<option value=\"2\""; if( $this->filter->is_sort_selected(2) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_price_high' ) . "</option>\n\n";
+		
+		if( get_option( 'ec_option_product_filter_3' ) )
+			echo "<option value=\"3\""; if( $this->filter->is_sort_selected(3) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_title_a' ) . "</option>\n\n";
+		
+		if( get_option( 'ec_option_product_filter_4' ) )
+			echo "<option value=\"4\""; if( $this->filter->is_sort_selected(4) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_title_z' ) . "</option>\n\n";
+		
+		if( get_option( 'ec_option_product_filter_5' ) )
+			echo "<option value=\"5\""; if( $this->filter->is_sort_selected(5) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_newest' ) . "</option>\n\n";
+		
+		if( get_option( 'ec_option_product_filter_6' ) )
+			echo "<option value=\"6\""; if( $this->filter->is_sort_selected(6) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_rating' ) . "</option>\n\n";
+		
+		if( get_option( 'ec_option_product_filter_7' ) )
+			echo "<option value=\"7\""; if( $this->filter->is_sort_selected(7) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_most_viewed' ) . "</option>\n\n";
 
         echo "</select>\n\n";
         

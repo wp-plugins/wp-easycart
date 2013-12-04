@@ -43,6 +43,9 @@ class ec_product{
 	public $rating;								// ec_rating structure
 	public $reviews = array();		 			// Array of ec_review structures
 	
+	public $use_advanced_optionset;				// Bool
+	public $has_grid_optionset = false;			// Bool
+	
 	public $use_optionitem_images;				// Bool
 	public $first_selection;					// INT
 	public $total_products;						// INT
@@ -137,7 +140,7 @@ class ec_product{
 		//if( $this->is_product_details )
 		$this->reviews = $this->mysqli->get_customer_reviews( $this->product_id );
 		
-		
+		$this->use_advanced_optionset = $product_data['use_advanced_optionset'];
 		$this->use_optionitem_images = $product_data['use_optionitem_images'];
 		$this->total_products = $product_data['product_count'];
 		
@@ -238,6 +241,7 @@ class ec_product{
 		echo "<input name=\"model_number\" id=\"model_number\" type=\"hidden\" value=\"" . $this->model_number . "\" />";
 		echo "<input name=\"quantity\" id=\"quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->stock_quantity . "\" />";
 		echo "<input name=\"show_stock_quantity\" id=\"show_stock_quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->show_stock_quantity . "\" />";
+		echo "<input name=\"ec_use_advanced_optionset\" id=\"ec_use_advanced_optionset_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->use_advanced_optionset . "\" />";
 		echo "<input name=\"pricetier_quantity\" id=\"pricetier_quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->get_price_tier_quantity_string( ) . "\" />";
 		echo "<input name=\"pricetier_price\" id=\"pricetier_price_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->get_price_tier_price_string( ) . "\" />";
 		echo "<input name=\"use_optionitem_quantity_tracking\" id=\"use_optionitem_quantity_tracking_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->use_optionitem_quantity_tracking . "\" />";
@@ -479,6 +483,157 @@ class ec_product{
 		if( $optionset->is_combo() )						$this->display_product_option_combo( $optionset, $level, $id_prefix, $js_function_name );
 		else if( $optionset->is_swatch() )					$this->display_product_option_swatches( $optionset, $size, $level, $id_prefix, $js_function_name );
 		
+	}
+	
+	/* Display all option sets */
+	public function display_all_advanced_optionsets( ){
+		$optionsets = $this->mysqli->get_advanced_optionsets( $this->product_id );
+		$i=0;
+		foreach( $optionsets as $optionset ){
+			if( $optionset->option_type == "combo" )
+				$this->display_advanced_option_combo( $optionset, $i );
+			else if( $optionset->option_type == "swatch" )
+				$this->display_advanced_option_swatch( $optionset, $i );
+			else if( $optionset->option_type == "checkbox" )
+				$this->display_advanced_option_checkbox( $optionset, $i );
+			else if( $optionset->option_type == "text" )
+				$this->display_advanced_option_text( $optionset, $i );
+			else if( $optionset->option_type == "textarea" )
+				$this->display_advanced_option_textarea( $optionset, $i );
+			else if( $optionset->option_type == "file" )
+				$this->display_advanced_option_file( $optionset, $i );
+			else if( $optionset->option_type == "radio" )
+				$this->display_advanced_option_radio( $optionset, $i );
+			else if( $optionset->option_type == "grid" )
+				$this->display_advanced_option_grid( $optionset, $i );
+				
+			$i++;
+		}
+	}
+	
+	public function display_advanced_option_combo( $optionset, $i ){
+		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_combo_row\"><select name=\"ec_option_" . $optionset->option_id. "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" class=\"ec_product_details_option_combo\" onchange=\"ec_product_details_combo_change(" . $optionset->option_id . ", '" . $this->model_number . "');\" data-ec-required=\"" . $optionset->option_required . "\">";
+		echo "<option value=\"0\" data-quantitystring=\"" . $this->stock_quantity . "\">" . $optionset->option_label . "</option>";
+		foreach( $optionitems as $optionitem ){
+			$optionitem_price = ""; 
+			if( $optionitem->optionitem_price > 0 ){ 
+			  $optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			}else if( $optionitem->optionitem_price < 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			}else if( $optionitem->optionitem_price_onetime > 0 ){ 
+			  $optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ")"; 
+			}else if( $optionitem->optionitem_price_onetime < 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ")"; 
+			}else if( $optionitem->optionitem_price_override >= 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ")"; 
+			}
+			
+			echo "<option data-quantitystring=\"" . $this->stock_quantity . "\" value=\"" . $optionitem->optionitem_id . "\">" . $optionitem->optionitem_name . $optionitem_price . "</option>";
+		}
+		echo "</select></div>";
+	}
+	public function display_advanced_option_swatch( $optionset, $i ){
+		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+		$j=0;
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_swatch_row\">";
+		foreach( $optionitems as $optionitem ){
+				
+			$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/swatches/" . $optionitem->optionitem_icon;
+			$test_src2 = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionitem->optionitem_icon;
+			
+			if( file_exists( $test_src ) && !is_dir( $test_src ) )
+				$thumb_src = plugins_url( "wp-easycart-data/products/swatches/" . $optionitem->optionitem_icon );
+			else if( file_exists( $test_src2 ) && !is_dir( $test_src2 ) )
+				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionitem->optionitem_icon );
+			else
+				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
+			
+			echo "<img src=\"" . $thumb_src . "\" alt=\"" . $optionitem->optionitem_name . "\" class=\"";
+			
+			echo "ec_product_swatch";
+			
+			echo "\" onclick=\"ec_swatch_click('" . $this->model_number . "', " . $i . ", " . $j . ");\" id=\"ec_swatch_" . $this->model_number . "_" . $i . "_" . $j . "\" data-optionitemid=\"" . $optionitem->optionitem_id . "\" data-quantitystring=\"9999\" width=\"" . get_option( 'ec_option_swatch_large_width' ) . "\" height=\"" . get_option( 'ec_option_swatch_large_height' ) . "\" \>";
+			$j++;	
+		}
+		echo "</div>";
+		
+		echo "<input type=\"hidden\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" value=\"0\" data-ec-required=\"" . $optionset->option_required . "\" />";
+			
+	}
+	public function display_advanced_option_checkbox( $optionset, $i ){
+		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_checkbox_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_checkbox_box\">";
+		$j=0;
+		foreach( $optionitems as $optionitem ){
+			$optionitem_price = ""; 
+			if( $optionitem->optionitem_price > 0 ){ 
+			  $optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			}else if( $optionitem->optionitem_price < 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			}else if( $optionitem->optionitem_price_onetime > 0 ){ 
+			  $optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ")"; 
+			}else if( $optionitem->optionitem_price_onetime < 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ")"; 
+			}else if( $optionitem->optionitem_price_override >= 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ")"; 
+			}
+			
+			echo "<div class=\"ec_option_checkbox_row\"><input type=\"checkbox\" name=\"ec_option_" . $optionset->option_id . "_" . $optionitem->optionitem_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j . "\" value=\"" . $optionitem->optionitem_name . "\" data-ec-required=\"" . $optionset->option_required . "\">" . $optionitem->optionitem_name . $optionitem_price . "</div>";
+			$j++;
+		}
+		echo "</div>";
+	}
+	public function display_advanced_option_text( $optionset, $i ){
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_text_label_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_text_row\"><input class=\"ec_option_text\" type=\"text\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\" /></div>";
+	}
+	public function display_advanced_option_textarea( $optionset, $i ){
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_textarea_label_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_textarea_row\"><textarea class=\"ec_option_textarea\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\"></textarea></div>";
+	}
+	public function display_advanced_option_file( $optionset, $i ){
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_file_label_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_file_row\"><input class=\"ec_option_text\" type=\"file\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\" /></div>";
+	}
+	public function display_advanced_option_radio( $optionset, $i ){
+		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_radio_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_radio_box\">";
+		$j=0;
+		foreach( $optionitems as $optionitem ){
+			$optionitem_price = ""; 
+			if( $optionitem->optionitem_price > 0 ){ 
+			  $optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			}else if( $optionitem->optionitem_price < 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			}else if( $optionitem->optionitem_price_onetime > 0 ){ 
+			  $optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ")"; 
+			}else if( $optionitem->optionitem_price_onetime < 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ")"; 
+			}else if( $optionitem->optionitem_price_override >= 0 ){ 
+			  $optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ")"; 
+			}
+			
+			echo "<div class=\"ec_option_radio_row\"><input type=\"radio\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j . "\" value=\"" . $optionitem->optionitem_name . "\" data-ec-required=\"" . $optionset->option_required . "\">" . $optionitem->optionitem_name . $optionitem_price . "</div>";
+			$j++;
+		}
+		echo "</div>";
+	}
+	public function display_advanced_option_grid( $optionset, $i ){
+		$this->has_grid_optionset = true;
+		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_grid_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_grid_box\">";
+		$j=0;
+		foreach( $optionitems as $optionitem ){
+			echo "<div class=\"ec_option_grid_row\"><span class=\"ec_option_grid_label\">" . $optionitem->optionitem_name . ":</span><span class=\"ec_option_grid_input\"><input type=\"number\" name=\"ec_option_" . $optionset->option_id . "_" . $optionitem->optionitem_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j ."\" value=\"" . $optionitem->optionitem_initial_value . "\" data-ec-required=\"" . $optionset->option_required . "\"></span></div>";
+			$j++;
+		}
+		echo "</div>";
 	}
 	
 	/* Display product option swatches */

@@ -193,9 +193,21 @@ class users
 			  //convert object to array
 			  $client = (array)$client;
 			  
-			  //return $client['userlevel'];
-			  //Create SQL Query	
-			  if ($totalrows[0] != 1 || $client['userlevel'] == 'admin') {
+			  $matchlastadmin = false;
+			  while ($row = mysql_fetch_assoc($query)) {
+				  if ($totalrows[0] == 1 && $clientid == $row[user_id]) {
+					  $matchlastadmin = true;
+				  }
+			  }
+			  //need to determine if the one last user ID is this users ID
+			  ////////////////////////////////////////////////////////////
+
+
+			  if ($matchlastadmin == true && $client['userlevel'] != 'admin') {
+				  $returnArray[] = "noadminerror";
+				  return $returnArray; //return noresults if there ares no result
+			  } else {
+				  
 
 				  $sql = sprintf("Replace into ec_address(ec_address.address_id, ec_address.user_id, ec_address.first_name, ec_address.last_name, ec_address.address_line_1, ec_address.address_line_2, ec_address.city, ec_address.state, ec_address.zip, ec_address.country, ec_address.phone)
 					values('%s', '".$clientid."', '%s', '%s', '%s',  '%s', '%s', '%s', '%s', '%s', '%s')",
@@ -263,10 +275,7 @@ class users
 					$returnArray[] = "error";
 					return $returnArray; //return noresults if there are no results
 				}
-			} else {
-				  $returnArray[] = "noadminerror";
-				  return $returnArray; //return noresults if there ares no result
-			  }
+			} 
 		}
 		
 		

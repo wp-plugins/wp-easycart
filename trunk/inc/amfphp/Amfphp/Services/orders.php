@@ -45,6 +45,7 @@ class orders
 		//secure all of the services for logged in authenticated users only	
 		public function _getMethodRoles($methodName){
 		   if ($methodName == 'getorders') return array('admin');
+		   else if($methodName == 'getorderdetailsadvancedoptions') return array('admin');
 		   else if($methodName == 'getorderdetails') return array('admin');
 		   else if($methodName == 'getorderstatus') return array('admin');
 		   else if($methodName == 'updateorderstatus') return array('admin');
@@ -69,6 +70,22 @@ class orders
 		} 
 		
 
+		function getorderdetailsadvancedoptions($orderdetails_id) {
+			
+			  //Create SQL Query
+			  $ordersquery = mysql_query("SELECT ec_order_option.* FROM ec_order_option WHERE ec_order_option.orderdetail_id = '".$orderdetails_id."'");
+
+			  //if results, convert to an array for use in flash
+			  if(mysql_num_rows($ordersquery) > 0) {
+				  while ($row = mysql_fetch_object($ordersquery)) {
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
 		
 		//orders functions
 		function getorders($startrecord, $limit, $orderby, $ordertype, $filter) {

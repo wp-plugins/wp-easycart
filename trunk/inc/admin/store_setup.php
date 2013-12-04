@@ -6,6 +6,7 @@ $license = new ec_license;
 if(isset($_POST['isupdate'])){
 	
 	//update options
+	update_option( 'ec_option_weight', $_POST['ec_option_weight'] );
 	update_option( 'ec_option_currency', $_POST['ec_option_currency'] );
 	update_option( 'ec_option_currency_decimal_symbol', $_POST['ec_option_currency_decimal_symbol'] );
 	update_option( 'ec_option_currency_decimal_places', $_POST['ec_option_currency_decimal_places'] );
@@ -26,6 +27,13 @@ if(isset($_POST['isupdate'])){
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
 	update_option( 'ec_option_use_wp_mail', $_POST['ec_option_use_wp_mail'] );
 	update_option( 'ec_option_product_layout_type', $_POST['ec_option_product_layout_type'] );
+	update_option( 'ec_option_product_filter_1', $_POST['ec_option_product_filter_1'] );
+	update_option( 'ec_option_product_filter_2', $_POST['ec_option_product_filter_2'] );
+	update_option( 'ec_option_product_filter_3', $_POST['ec_option_product_filter_3'] );
+	update_option( 'ec_option_product_filter_4', $_POST['ec_option_product_filter_4'] );
+	update_option( 'ec_option_product_filter_5', $_POST['ec_option_product_filter_5'] );
+	update_option( 'ec_option_product_filter_6', $_POST['ec_option_product_filter_6'] );
+	update_option( 'ec_option_product_filter_7', $_POST['ec_option_product_filter_7'] );
 
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
 
@@ -146,6 +154,20 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
           </td>
         </tr>
         <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Weight Unit:<br />
+            <span class="itemsubheading">(The weight unit to use throughout your store)</span></td>
+          <td valign="top">
+          <select name="ec_option_weight">
+              <option value="0"<?php if(get_option('ec_option_weight') == '0') echo ' selected'; ?>>Select a Weight Unit</option>
+              <option value="lbs"<?php if(get_option('ec_option_weight') == 'lbs') echo ' selected'; ?>>LBS</option>
+              <option value="kgs"<?php if(get_option('ec_option_weight') == 'kgs') echo ' selected'; ?>>KGS</option>
+          </select>
+          
+          <a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Weight Unit</em>Weight unit is displayed for weight adjustment of an order and to display.  Please note that all live shipping options use their own weight choice and should be selected when live shipping is setup.</span></a>
+          
+          </td>
+        </tr>
+        <tr valign="top">
           <td align="left" class="itemheading" scope="row">Currency Symbol:<br />
             <span class="itemsubheading">(The currency symbol to represent throughout your store)</span></td>
           <td valign="top">
@@ -261,6 +283,34 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
         <tr valign="top">
           <td align="left" class="itemheading" scope="row">Use RTL Support (Right to Left Text):</td>
           <td valign="top"><select name="ec_option_use_rtl" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_rtl') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_rtl') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>RTL Support</em>RTL support is the method of setting all items in the store to be viewed with RTL direction text. We have also done some custom css to specific parts of the store to look more correct for RTL languages. In no way is this perfect though, or available in all themes. Please contact WP EasyCart with questions if you have any issues with our RTL support option.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Show "Price Low-High" Sort Option:</td>
+          <td valign="top"><select name="ec_option_product_filter_1" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_1') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_1') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Product Filter Option On/Off</em>This option is to turn the sort option on/off for the product sort/filter.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Show "Price High-Low" Sort Option:</td>
+          <td valign="top"><select name="ec_option_product_filter_2" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_2') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_2') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Product Filter Option On/Off</em>This option is to turn the sort option on/off for the product sort/filter.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Show "Title A-Z" Sort Option:</td>
+          <td valign="top"><select name="ec_option_product_filter_3" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_3') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_3') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Product Filter Option On/Off</em>This option is to turn the sort option on/off for the product sort/filter.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Show "Title Z-A" Sort Option:</td>
+          <td valign="top"><select name="ec_option_product_filter_4" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_4') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_4') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Product Filter Option On/Off</em>This option is to turn the sort option on/off for the product sort/filter.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Show "Newest" Sort Option:</td>
+          <td valign="top"><select name="ec_option_product_filter_5" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_5') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_5') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Product Filter Option On/Off</em>This option is to turn the sort option on/off for the product sort/filter.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Show "Best Rating" Sort Option:</td>
+          <td valign="top"><select name="ec_option_product_filter_6" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_6') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_6') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Product Filter Option On/Off</em>This option is to turn the sort option on/off for the product sort/filter.</span></a></td>
+        </tr>
+        <tr valign="top">
+          <td align="left" class="itemheading" scope="row">Show "Most Viewed" Sort Option:</td>
+          <td valign="top"><select name="ec_option_product_filter_7" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_7') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_7') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('images/help_icon.png', __FILE__); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url('images/Help.png', __FILE__); ?>" alt="Help" height="48" width="48" /><em>Product Filter Option On/Off</em>This option is to turn the sort option on/off for the product sort/filter.</span></a></td>
         </tr>
         <tr valign="top">
           <td align="left" class="itemheading" scope="row"><span class="submit">

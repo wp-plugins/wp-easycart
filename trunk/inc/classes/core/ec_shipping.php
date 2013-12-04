@@ -58,16 +58,48 @@ class ec_shipping{
 			else if( $this->user && $this->user->shipping && $this->user->shipping->country )
 				$this->destination_country = $this->user->shipping->country;
 			
+			$zone_obj = $this->mysqli->get_zone_ids( $this->destination_country, $this->user->shipping->state );
+			$zones = array();
+			foreach( $zone_obj as $zone ){
+				$zones[] = $zone->zone_id;
+			}
 			
 			foreach( $shipping_rows as $shipping_row ){
 				
-				if( $shipping_row->is_price_based )					
+				// Price and Zoned Based
+				if( $shipping_row->is_price_based && $shipping_row->zone_id > 0 ){
+					if( in_array( $shipping_row->zone_id, $zones ) )
+						array_push( $this->price_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
+				
+				// Price Based		
+				}else if( $shipping_row->is_price_based )					
 					array_push( $this->price_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
-				else if( $shipping_row->is_weight_based )			
+				
+				// Weight and Zoned Based
+				else if( $shipping_row->is_weight_based && $shipping_row->zone_id > 0 ){
+					if( in_array( $shipping_row->zone_id, $zones ) )
+						array_push( $this->weight_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
+				
+				// Weight Based
+				}else if( $shipping_row->is_weight_based )			
 					array_push( $this->weight_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
-				else if( $shipping_row->is_method_based )			
+				
+				// Method and Zoned Based
+				else if( $shipping_row->is_method_based && $shipping_row->zone_id > 0 ){
+					if( in_array( $shipping_row->zone_id, $zones ) )
+						array_push( $this->method_based, array( $shipping_row->shipping_rate, $shipping_row->shipping_label, $shipping_row->shippingrate_id ) );
+					
+				// Method Based	
+				}else if( $shipping_row->is_method_based )			
 					array_push( $this->method_based, array( $shipping_row->shipping_rate, $shipping_row->shipping_label, $shipping_row->shippingrate_id ) );
-				else if( $this->is_live_based( $shipping_row ) ){	
+				
+				// Live and Zoned Based
+				else if( $this->is_live_based( $shipping_row ) && $shipping_row->zone_id > 0 ){
+					if( in_array( $shipping_row->zone_id, $zones ) )
+						array_push( $this->live_based, array( $shipping_row->shipping_code, $shipping_row->shipping_label, $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
+				
+				// Live Based	
+				}else if( $this->is_live_based( $shipping_row ) ){	
 					array_push( $this->live_based, array( $shipping_row->shipping_code, $shipping_row->shipping_label, $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
 				}
 			}

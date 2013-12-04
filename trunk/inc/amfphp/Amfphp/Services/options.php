@@ -172,14 +172,16 @@ class options
 		}
 		function updateoption($optionid, $option) {
 			
-			  //convert object to array
-			  $option = (array)$option;
+			//convert object to array
+			$option = (array)$option;
 			  
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_option(ec_option.option_id, ec_option.option_name, ec_option.option_label)
-				values('".$optionid."', '%s', '%s')",
+			//Create SQL Query
+			$sql = sprintf("Replace into ec_option(ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required)
+				values('".$optionid."', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($option['optionname']),
-				mysql_real_escape_string($option['optionlabel']));
+				mysql_real_escape_string($option['optionlabel']),
+				mysql_real_escape_string($option['optiontype']),
+				mysql_real_escape_string($option['optionrequired']));
 			//Run query on database;
 			mysql_query($sql);
 			//if no errors, return their current Client ID
@@ -193,15 +195,42 @@ class options
 			}
 		}
 		function addoption($option) {
-			  //convert object to array
-			  $option = (array)$option;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_option(ec_option.option_id, ec_option.option_name, ec_option.option_label)
-				values(Null, '%s', '%s')",
-				mysql_real_escape_string($option['optionname']),
-				mysql_real_escape_string($option['optionlabel']));
-			  mysql_query($sql);
+			//convert object to array
+			$option = (array)$option;
+
+			//Create SQL Query
+			$sql = sprintf("Insert into ec_option(ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required)
+			values(Null, '%s', '%s', '%s', '%s')",
+			mysql_real_escape_string($option['optionname']),
+			mysql_real_escape_string($option['optionlabel']),
+			mysql_real_escape_string($option['optiontype']),
+			mysql_real_escape_string($option['optionrequired']));
+
+			mysql_query($sql);
+			$option_id_parent = mysql_insert_id();
+
+			//add option item if file, text, or text area
+			if ($option['optiontype'] == 'file' || $option['optiontype'] == 'text' || $option['optiontype'] == 'textarea' ) {
+			//Create SQL Query
+			if ($option['optiontype'] == 'file') $op_name = 'File Field';
+			if ($option['optiontype'] == 'text') $op_name = 'Text Box Input';
+			if ($option['optiontype'] == 'textarea') $op_name = 'Text Area Input';
+			$sql = sprintf("Insert into ec_optionitem(
+						  ec_optionitem.optionitem_id, 
+						  ec_optionitem.option_id, 
+						  ec_optionitem.optionitem_name, 
+						  ec_optionitem.optionitem_price, 
+						  ec_optionitem.optionitem_price_onetime,
+						  ec_optionitem.optionitem_price_override,
+						  ec_optionitem.optionitem_weight,
+						  ec_optionitem.optionitem_weight_onetime,
+						  ec_optionitem.optionitem_weight_override,
+						  ec_optionitem.optionitem_order, 
+						  ec_optionitem.optionitem_icon,
+						  ec_optionitem.optionitem_initial_value)
+						  values(Null, '".$option_id_parent."', '".$op_name."', '0', '0', '-1', '0', '0', '-1', '1', '', '')");
+			mysql_query($sql);
+			}
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
