@@ -276,6 +276,14 @@
 				"cart_item_remove_button":{
 					"title":"Cart Item, Remove Button",
 					"value":"REMOVE"
+				},
+				"cart_item_adjustment":{
+					"title":"Cart Item, Adjustment per Item",
+					"value":" each"
+				},
+				"cart_item_new_price_option":{
+					"title":"Cart Item, Price Override Text",
+					"value":"New Unit Price: "
 				}
 			}
 		},

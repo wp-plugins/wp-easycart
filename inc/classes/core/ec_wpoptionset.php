@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_10' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_11' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -36,6 +36,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		
 		//store basic setup settings
+		array_push($this->wp_option_names, 'ec_option_weight');								array_push($this->wp_option_defaults, 'lbs' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_currency');							array_push($this->wp_option_defaults, '$' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_currency_symbol_location');			array_push($this->wp_option_defaults, '1' );
@@ -93,6 +95,20 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_use_wp_mail');						array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_product_layout_type');				array_push($this->wp_option_defaults, 'grid_only' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_product_filter_1');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_product_filter_2');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_product_filter_3');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_product_filter_4');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_product_filter_5');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_product_filter_6');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_product_filter_7');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
@@ -300,9 +316,9 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-language-group');
 				
 		// Base Design Options	
-		array_push($this->wp_option_names, 'ec_option_base_theme');							array_push($this->wp_option_defaults, 'base-responsive-v1' );
+		array_push($this->wp_option_names, 'ec_option_base_theme');							array_push($this->wp_option_defaults, 'base-responsive-v2' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
-		array_push($this->wp_option_names, 'ec_option_base_layout');						array_push($this->wp_option_defaults, 'base-responsive-v1' );
+		array_push($this->wp_option_names, 'ec_option_base_layout');						array_push($this->wp_option_defaults, 'base-responsive-v2' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
 		array_push($this->wp_option_names, 'ec_option_custom_css');							array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-custom-css-design-group');

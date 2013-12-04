@@ -10,8 +10,10 @@ class ec_cartitem{
 	public $model_number;											// VARCHAR 255
 	public $post_id;												// INT
 	public $manufacturer_id;										// INT
+	public $use_advanced_optionset;									// BOOL
 	
 	public $quantity;												// INT
+	public $grid_quantity;											// INT
 	public $weight;													// INT
 	
 	public $title;													// VARCHAR 255
@@ -56,6 +58,8 @@ class ec_cartitem{
 	public $optionitem4_id;											// INT
 	public $optionitem5_id;											// INT
 	
+	public $advanced_options;										// array
+	
 	public $custom_vars = array();									// array
 	
 	public $giftcard_id = 0;										// INT
@@ -85,6 +89,10 @@ class ec_cartitem{
 		$this->manufacturer_id = $cartitem_data->manufacturer_id;
 		
 		$this->quantity = $cartitem_data->quantity;
+		$this->grid_quantity = $cartitem_data->grid_quantity;
+		if( $this->grid_quantity > 0 )
+			$this->quantity = $this->grid_quantity;
+			
 		$this->weight = $cartitem_data->weight;
 		
 		$this->title = $cartitem_data->title;
@@ -155,6 +163,8 @@ class ec_cartitem{
 			}
 		}
 		
+		$this->use_advanced_optionset = $cartitem_data->use_advanced_optionset;
+		
 		$this->gift_card_message = $cartitem_data->gift_card_message;
 		$this->gift_card_from_name = $cartitem_data->gift_card_from_name;
 		$this->gift_card_to_name = $cartitem_data->gift_card_to_name;
@@ -175,8 +185,37 @@ class ec_cartitem{
 				}
 			}
 		}
+		$options_price = 0;
+		$options_price_onetime = 0;
+		$options_weight = 0;
+		$options_weight_onetime = 0;
 		
-		$options_price = $this->optionitem1_price + $this->optionitem2_price + $this->optionitem3_price + $this->optionitem4_price + $this->optionitem5_price;
+		$this->advanced_options = $this->mysqli->get_advanced_cart_options( $this->cartitem_id );
+		
+		if( $this->use_advanced_optionset ){
+			foreach( $this->advanced_options as $advanced_option ){
+				if( $advanced_option->optionitem_price != 0 ){
+					$options_price = $options_price + $advanced_option->optionitem_price; 
+				}else if( $advanced_option->optionitem_price_onetime != 0 ){ 
+					$options_price_onetime = $options_price_onetime + $advanced_option->optionitem_price_onetime; 
+				}else if( $advanced_option->optionitem_price_override >= 0 ){
+					$cartitem_data->price = $advanced_option->optionitem_price_override;
+				}
+				
+				if( $advanced_option->optionitem_weight != 0 ){
+					$options_weight = $options_weight + ( $advanced_option->optionitem_weight * $this->quantity ); 
+				}else if( $advanced_option->optionitem_weight_onetime != 0 ){ 
+					$options_weight_onetime = $options_weight_onetime + $advanced_option->optionitem_weight_onetime; 
+				}else if( $advanced_option->optionitem_weight_override >= 0 ){
+					$this->weight = $advanced_option->optionitem_weight_override;
+				}
+			}
+		}else{
+			$options_price = $this->optionitem1_price + $this->optionitem2_price + $this->optionitem3_price + $this->optionitem4_price + $this->optionitem5_price;
+		}
+		
+		// Update the weight from option item weight
+		$this->weight = $this->weight + $options_weight_onetime + $options_weight;
 		
 		// Look for role based pricing
 		if( isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
@@ -198,7 +237,7 @@ class ec_cartitem{
 			$this->unit_price = $cartitem_data->price + $options_price;	
 		}
 		
-		$this->total_price = $this->unit_price * $this->quantity;
+		$this->total_price = ( $this->unit_price * $this->quantity ) + $options_price_onetime;
 		$this->handling_price = $cartitem_data->handling_price;
 		
 		$this->vat_enabled = $cartitem_data->vat_rate;
@@ -416,7 +455,11 @@ class ec_cartitem{
 	}
 	
 	public function display_quantity_box( ){
-		echo "<input type=\"number\" id=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" name=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" value=\"" . $this->quantity . "\" min=\"1\" />";
+		if( $this->grid_quantity > 0 ){
+			echo "<input type=\"hidden\" id=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" name=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" value=\"" . $this->quantity . "\" min=\"1\" />" . $this->grid_quantity;
+		}else{
+			echo "<input type=\"number\" id=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" name=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" value=\"" . $this->quantity . "\" min=\"1\" />";
+		}
 	}
 	
 	public function display_update_button( $update_text ){
@@ -464,6 +507,10 @@ class ec_cartitem{
 			echo "<div class=\"ec_cart_item_loader\" id=\"ec_cart_item_loader_" . $this->cartitem_id . "\"><img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_page/loader.gif" ) . "\" /></div>";	
 		else
 			echo "<div class=\"ec_cart_item_loader\" id=\"ec_cart_item_loader_" . $this->cartitem_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_page/loader.gif" ) . "\" /></div>";
+	}
+	
+	public function get_advanced_options( ){
+		return $this->advanced_options;
 	}
 }
 

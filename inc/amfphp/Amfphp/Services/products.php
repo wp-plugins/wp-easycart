@@ -51,17 +51,21 @@ class products
 		
 		//secure all of the services for logged in authenticated users only	
 		public function _getMethodRoles($methodName){
-		   if ($methodName == 'getfeaturedproducts') return array('admin');
-		   else if($methodName == 'getproductlist') return array('admin');
-		   else if($methodName == 'getproducts') return array('admin');
-		   else if($methodName == 'duplicateproduct') return array('admin');
-		   else if($methodName == 'deleteproduct') return array('admin');
-		   else if($methodName == 'updateproduct') return array('admin');
-		   else if($methodName == 'addproduct') return array('admin');
-		   else if($methodName == 'deleteimage') return array('admin');
-		   else if($methodName == 'deleteoptionitemimage') return array('admin');
-		   else if($methodName == 'deletefiledownload') return array('admin');
-		   else  return null;
+			if ($methodName == 'deleteadvancedoption') return array('admin');
+			else if($methodName == 'deletealladvancedoption') return array('admin');
+			else if($methodName == 'addadvancedoption') return array('admin');
+			else if($methodName == 'getadvancedproductoptions') return array('admin');
+			else if($methodName == 'getfeaturedproducts') return array('admin');
+		    else if($methodName == 'getproductlist') return array('admin');
+		    else if($methodName == 'getproducts') return array('admin');
+		    else if($methodName == 'duplicateproduct') return array('admin');
+		    else if($methodName == 'deleteproduct') return array('admin');
+		    else if($methodName == 'updateproduct') return array('admin');
+		    else if($methodName == 'addproduct') return array('admin');
+		    else if($methodName == 'deleteimage') return array('admin');
+		    else if($methodName == 'deleteoptionitemimage') return array('admin');
+		    else if($methodName == 'deletefiledownload') return array('admin');
+		    else  return null;
 		}
 		
 		//HELPER - used to escape out SQL calls
@@ -76,6 +80,146 @@ class products
 				$args[0] = $sql; 
 				return call_user_func_array('sprintf', $args); 
 		} 
+		
+		function deletealladvancedoption($product_id) {
+			  //Create SQL Query	
+			  $deletesql = $this->escape("DELETE FROM ec_option_to_product WHERE ec_option_to_product.product_id = '%s'", $product_id);
+			  //Run query on database;
+			  mysql_query($deletesql);
+			  
+			   			  
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				  $returnArray[] = "success";
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "error";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		function deleteadvancedoption($optionlinkid, $product_id) {
+			  //Create SQL Query	
+			  $deletesql = $this->escape("DELETE FROM ec_option_to_product WHERE ec_option_to_product.option_to_product_id = '%s'", $optionlinkid);
+			  //Run query on database;
+			  mysql_query($deletesql);
+			  
+			   //Create SQL Query
+			  $sql = $this->escape("SELECT 
+									  ec_option.option_name,
+									  ec_option.option_label,
+									  ec_option.option_type,
+									  ec_option.option_required,
+									  ec_option.option_error_text,
+									  ec_option.option_id,
+									  ec_product.model_number,
+									  ec_product.product_id,
+									  ec_option_to_product.product_id,
+									  ec_option_to_product.option_to_product_id,
+									  ec_option_to_product.option_id
+									FROM
+									  ec_option_to_product
+									  INNER JOIN ec_product ON (ec_option_to_product.product_id = ec_product.product_id)
+									  INNER JOIN ec_option ON (ec_option_to_product.option_id = ec_option.option_id)
+									WHERE
+									  ec_option_to_product.product_id = '".$product_id."'
+									ORDER BY
+									  ec_option_to_product.option_to_product_id");
+			  // Run query on database
+			  $result = mysql_query($sql);
+			  
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				  while ($row=mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "error";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+
+		function addadvancedoption($product_id, $optionid) {
+			  
+			  //Create SQL Query
+			  $sql = sprintf("Insert into ec_option_to_product(ec_option_to_product.option_to_product_id, ec_option_to_product.option_id, ec_option_to_product.product_id, ec_option_to_product.role_label)
+				values(Null, '%s', '%s', 'shopper')",
+				mysql_real_escape_string($optionid),
+				mysql_real_escape_string($product_id));
+			  mysql_query($sql);
+			  
+			  
+			   //Create SQL Query
+			  $sql = $this->escape("SELECT 
+									  ec_option.option_name,
+									  ec_option.option_label,
+									  ec_option.option_type,
+									  ec_option.option_required,
+									  ec_option.option_error_text,
+									  ec_option.option_id,
+									  ec_product.model_number,
+									  ec_product.product_id,
+									  ec_option_to_product.product_id,
+									  ec_option_to_product.option_to_product_id,
+									  ec_option_to_product.option_id
+									FROM
+									  ec_option_to_product
+									  INNER JOIN ec_product ON (ec_option_to_product.product_id = ec_product.product_id)
+									  INNER JOIN ec_option ON (ec_option_to_product.option_id = ec_option.option_id)
+									WHERE
+									  ec_option_to_product.product_id = '".$product_id."'
+									ORDER BY
+									  ec_option_to_product.option_to_product_id");
+			  // Run query on database
+			  $result = mysql_query($sql);
+			  
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				  while ($row=mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "error";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		
+		function getadvancedproductoptions($product_id) {
+			  //Create SQL Query
+			  $sql = $this->escape("SELECT 
+									  ec_option.option_name,
+									  ec_option.option_label,
+									  ec_option.option_type,
+									  ec_option.option_required,
+									  ec_option.option_error_text,
+									  ec_option.option_id,
+									  ec_product.model_number,
+									  ec_product.product_id,
+									  ec_option_to_product.product_id,
+									  ec_option_to_product.option_to_product_id,
+									  ec_option_to_product.option_id
+									FROM
+									  ec_option_to_product
+									  INNER JOIN ec_product ON (ec_option_to_product.product_id = ec_product.product_id)
+									  INNER JOIN ec_option ON (ec_option_to_product.option_id = ec_option.option_id)
+									WHERE
+									  ec_option_to_product.product_id = '".$product_id."'
+									ORDER BY
+									  ec_option_to_product.option_to_product_id");
+			  // Run query on database
+			  $result = mysql_query($sql);
+			  //if results, convert to an array for use in flash
+			  if(mysql_num_rows($result) > 0) {
+				  while ($row=mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
 		
 		function getfeaturedproducts() {
 			  //Create SQL Query
@@ -230,34 +374,23 @@ class products
 			}
 		}
 		function deleteproduct($productid) {
-			//Get the Product Post ID
-			$post_id_sql = $this->escape("SELECT post_id FROM ec_product WHERE product_id = '%s'", $productid );
-			$product_result = mysql_query( $post_id_sql );
-			$product = mysql_fetch_assoc( $product_result );
-			
 			//Remove Product
 			$deletesql = $this->escape("DELETE FROM ec_product WHERE ec_product.product_id = '%s'", $productid);
 			mysql_query($deletesql);
-			
 			//remove Option Item Images
 			$deletesql = $this->escape("DELETE FROM ec_optionitemimage WHERE ec_optionitemimage.product_id = '%s'", $productid);
 			mysql_query($deletesql);
-			
 			//Remove Option Item Quantity
 			$deletesql = $this->escape("DELETE FROM ec_optionitemquantity WHERE ec_optionitemquantity.product_id = '%s'", $productid);
 			mysql_query($deletesql);
-			
 			//Remove Reviews
 			$deletesql = $this->escape("DELETE FROM ec_review WHERE ec_review.product_id = '%s'", $productid);
 			mysql_query($deletesql);
-			
 			//Remove Item from Product Groupings
 			$deletesql = $this->escape("DELETE FROM ec_categoryitem WHERE ec_categoryitem.product_id = '%s'", $productid);
 			mysql_query($deletesql);
-			
 			//Delete the post for this item from WordPress
 			wp_delete_post( $product['post_id'], true );
-			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
@@ -273,118 +406,13 @@ class products
 			
 			//convert object to array
 			$product = (array)$product;
-			
 			// Update the WordPress entry
 			$sql = $this->escape( "SELECT post_id FROM ec_product WHERE product_id = %d", $productid );
 			$result = mysql_query( $sql );
 			$result_product = mysql_fetch_array( $result );
 			
-			// Insert a WordPress Custom post type post.
-			$post = array(	'ID'			=> $result_product['post_id'],
-							'post_content'	=> "[ec_store modelnumber=\"" . $product['modelnumber'] . "\"]",
-							'post_status'	=> "publish",
-							'post_title'	=> $product['producttitle'],
-							'post_type'		=> "ec_store",
-							'post_name'		=> str_replace(' ', '-', $product['producttitle'] ),
-						  );
-			$post_id = wp_update_post( $post );
-			
+			//configure default images  
 			if ($product['useoptionitemimages'] == 1) {
-				$product['Image1'] = '';
-				$product['Image2'] = '';
-				$product['Image3'] = '';
-				$product['Image4'] = '';
-				$product['Image5'] = ''; 
-			}
-			
-			//Create SQL Query
-			$sql = sprintf("UPDATE ec_product SET price = '%s', title = '%s', description = '%s', model_number = '%s', activate_in_store = '%s', manufacturer_id = '%s', image1 = '%s', image2 = '%s', image3 = '%s', image4 = '%s', image5 = '%s', is_giftcard = '%s', download_file_name = '%s', is_taxable = '%s', is_download = '%s', weight = '%s', stock_quantity = '%s', show_on_startup = '%s', menulevel1_id_1 = '%s', menulevel1_id_2 = '%s', menulevel1_id_3 = '%s', menulevel2_id_1 = '%s', menulevel2_id_2 = '%s', menulevel2_id_3 = '%s', menulevel3_id_1 = '%s', menulevel3_id_2 = '%s', menulevel3_id_3 = '%s', option_id_1 = '%s', option_id_2 = '%s', option_id_3 = '%s', option_id_4 = '%s', option_id_5 = '%s', featured_product_id_1 = '%s', featured_product_id_2 = '%s', featured_product_id_3 = '%s', featured_product_id_4 = '%s', seo_description = '%s', use_specifications = '%s', use_customer_reviews = '%s', specifications = '%s', list_price = '%s', seo_keywords = '%s', is_special = '%s', use_optionitem_images = '%s', use_optionitem_quantity_tracking = '%s', is_donation = '%s', show_stock_quantity = '%s', maximum_downloads_allowed = '%s', download_timelimit_seconds = '%s', handling_price = '%s', vat_rate= '%s' WHERE product_id = '%s'",
-					mysql_real_escape_string($product['listprice']),
-					mysql_real_escape_string($product['producttitle']),
-					mysql_real_escape_string($product['productdescription']),
-					mysql_real_escape_string($product['modelnumber']),
-					mysql_real_escape_string($product['listproduct']),
-					mysql_real_escape_string($product['productmanufacturer']),
-					mysql_real_escape_string($product['Image1']),
-					mysql_real_escape_string($product['Image2']),
-					mysql_real_escape_string($product['Image3']),
-					mysql_real_escape_string($product['Image4']),
-					mysql_real_escape_string($product['Image5']),
-					mysql_real_escape_string($product['isgiftcard']),
-					mysql_real_escape_string($product['downloadid']),
-					mysql_real_escape_string($product['taxableproduct']),
-					mysql_real_escape_string($product['isdownload']),
-					mysql_real_escape_string($product['productweight']),
-					mysql_real_escape_string($product['quantity']),
-					mysql_real_escape_string($product['featuredproduct']),
-					mysql_real_escape_string($product['Cat1Name']),
-					mysql_real_escape_string($product['Cat2Name']),
-					mysql_real_escape_string($product['Cat3Name']),
-					mysql_real_escape_string($product['Cat1bName']),
-					mysql_real_escape_string($product['Cat2bName']),
-					mysql_real_escape_string($product['Cat3bName']),
-					mysql_real_escape_string($product['Cat1cName']),
-					mysql_real_escape_string($product['Cat2cName']),
-					mysql_real_escape_string($product['Cat3cName']),
-					mysql_real_escape_string($product['option1']),
-					mysql_real_escape_string($product['option2']),
-					mysql_real_escape_string($product['option3']),
-					mysql_real_escape_string($product['option4']),
-					mysql_real_escape_string($product['option5']),
-					mysql_real_escape_string($product['featureproduct1']),
-					mysql_real_escape_string($product['featureproduct2']),
-					mysql_real_escape_string($product['featureproduct3']),
-					mysql_real_escape_string($product['featureproduct4']),
-					mysql_real_escape_string($product['seoshortdescription']),
-					mysql_real_escape_string($product['usespecs']),
-					mysql_real_escape_string($product['allowreviews']),
-					mysql_real_escape_string($product['specifications']),
-					mysql_real_escape_string($product['previousprice']),
-					mysql_real_escape_string($product['seokeywords']),
-					mysql_real_escape_string($product['isspecial']),
-					mysql_real_escape_string($product['useoptionitemimages']),
-					mysql_real_escape_string($product['usequantitytracking']),
-					mysql_real_escape_string($product['isdonation']),
-					mysql_real_escape_string($product['show_stock_quantity']),
-					mysql_real_escape_string($product['maximum_downloads_allowed']),
-					mysql_real_escape_string($product['download_timelimit_seconds']),
-					mysql_real_escape_string($product['handling_price']),
-					mysql_real_escape_string($product['vatrate']),
-					mysql_real_escape_string($productid));
-			
-			//Run query on database;
-			mysql_query($sql);
-			
-			//Enqueue Quickbooks Update Customer
-			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
-			$quickbooks = new ec_quickbooks( );
-			$quickbooks->update_product( $product['modelnumber'] );	
-			}
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-			$returnArray[] ="success";
-			return($returnArray); //return array results if there are some
-			} else {
-			$sqlerror = mysql_error();
-			$error = explode(" ", $sqlerror);
-			if ($error[0] == "Duplicate") {
-				$returnArray[] = "duplicate";
-				return $returnArray; //return noresults if there are no results
-			} else {  
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
-			}
-			}
-		}
-
-
-		function addproduct($product) {
-			
-			  //convert object to array
-			  $product = (array)$product;
-			  
-			  if ($product['useoptionitemimages'] == 1) {
 				 $product['Image1'] = '';
 				 $product['Image2'] = '';
 				 $product['Image3'] = '';
@@ -393,8 +421,7 @@ class products
 			  }
 			  
 			  //Create SQL Query
-			  $sql = sprintf("INSERT into ec_product(ec_product.price, ec_product.title, ec_product.description, ec_product.model_number, ec_product.activate_in_store, ec_product.manufacturer_id, ec_product.image1, ec_product.image2, ec_product.image3, ec_product.image4, ec_product.image5, ec_product.is_giftcard, ec_product.download_file_name, ec_product.is_taxable, ec_product.is_download, ec_product.weight, ec_product.stock_quantity, ec_product.show_on_startup, ec_product.menulevel1_id_1, ec_product.menulevel1_id_2, ec_product.menulevel1_id_3, ec_product.menulevel2_id_1, ec_product.menulevel2_id_2, ec_product.menulevel2_id_3, ec_product.menulevel3_id_1, ec_product.menulevel3_id_2, ec_product.menulevel3_id_3, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_product.featured_product_id_1, ec_product.featured_product_id_2, ec_product.featured_product_id_3, ec_product.featured_product_id_4, ec_product.seo_description, ec_product.use_specifications, ec_product.use_customer_reviews, ec_product.specifications, ec_product.list_price, ec_product.seo_keywords, ec_product.is_special, ec_product.use_optionitem_images, ec_product.use_optionitem_quantity_tracking, ec_product.is_donation, ec_product.show_stock_quantity, ec_product.maximum_downloads_allowed, ec_product.download_timelimit_seconds, ec_product.handling_price, ec_product.vat_rate)
-				values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("UPDATE ec_product SET price = '%s', title = '%s', description = '%s', model_number = '%s', activate_in_store = '%s', manufacturer_id = '%s', image1 = '%s', image2 = '%s', image3 = '%s', image4 = '%s', image5 = '%s', is_giftcard = '%s', download_file_name = '%s', is_taxable = '%s', is_download = '%s', weight = '%s', stock_quantity = '%s', show_on_startup = '%s', menulevel1_id_1 = '%s', menulevel1_id_2 = '%s', menulevel1_id_3 = '%s', menulevel2_id_1 = '%s', menulevel2_id_2 = '%s', menulevel2_id_3 = '%s', menulevel3_id_1 = '%s', menulevel3_id_2 = '%s', menulevel3_id_3 = '%s', option_id_1 = '%s', option_id_2 = '%s', option_id_3 = '%s', option_id_4 = '%s', option_id_5 = '%s', featured_product_id_1 = '%s', featured_product_id_2 = '%s', featured_product_id_3 = '%s', featured_product_id_4 = '%s', seo_description = '%s', use_specifications = '%s', use_customer_reviews = '%s', specifications = '%s', list_price = '%s', seo_keywords = '%s', is_special = '%s', use_optionitem_images = '%s', use_optionitem_quantity_tracking = '%s', is_donation = '%s', show_stock_quantity = '%s', maximum_downloads_allowed = '%s', download_timelimit_seconds = '%s', handling_price = '%s', vat_rate= '%s', use_advanced_optionset = '%s' WHERE product_id = '%s'",
 				mysql_real_escape_string($product['listprice']),
 				mysql_real_escape_string($product['producttitle']),
 				mysql_real_escape_string($product['productdescription']),
@@ -445,8 +472,127 @@ class products
 				mysql_real_escape_string($product['maximum_downloads_allowed']),
 				mysql_real_escape_string($product['download_timelimit_seconds']),
 				mysql_real_escape_string($product['handling_price']),
-				mysql_real_escape_string($product['vatrate']));
-			 	mysql_query($sql);
+				mysql_real_escape_string($product['vatrate']),
+				mysql_real_escape_string($product['use_advanced_optionset']),
+				mysql_real_escape_string($productid));
+
+			//Run query on database;
+			mysql_query($sql);
+			//return mysql_error();
+			
+			//Enqueue Quickbooks Update Customer
+			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->update_product( $product['modelnumber'] );	
+			}
+			
+			// Insert a WordPress Custom post type post.
+			$post = array(	'ID'			=> $result_product['post_id'],
+							'post_content'	=> "[ec_store modelnumber=\"" . $product['modelnumber'] . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $product['producttitle'],
+							'post_type'		=> "ec_store",
+							'post_name'		=> str_replace(' ', '-', $product['producttitle'] ),
+						  );
+			$post_id = wp_update_post( $post );
+			
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$sqlerror = mysql_error();
+				$error = explode(" ", $sqlerror);
+				if ($error[0] == "Duplicate") {
+					$returnArray[] = "duplicate";
+					return $returnArray; //return noresults if there are no results
+				} else {  
+					$returnArray[] = "error";
+					return $returnArray; //return noresults if there are no results
+				}
+			}
+		}
+
+
+		function addproduct($product) {
+			
+			  //convert object to array
+			  $product = (array)$product;
+			  
+			  if ($product['useoptionitemimages'] == 1) {
+				 $product['Image1'] = '';
+				 $product['Image2'] = '';
+				 $product['Image3'] = '';
+				 $product['Image4'] = '';
+				 $product['Image5'] = ''; 
+			  }
+			  
+			  //Create SQL Query
+			  $sql = sprintf("INSERT into ec_product(ec_product.price, ec_product.title, ec_product.description, ec_product.model_number, ec_product.activate_in_store, ec_product.manufacturer_id, ec_product.image1, ec_product.image2, ec_product.image3, ec_product.image4, ec_product.image5, ec_product.is_giftcard, ec_product.download_file_name, ec_product.is_taxable, ec_product.is_download, ec_product.weight, ec_product.stock_quantity, ec_product.show_on_startup, ec_product.menulevel1_id_1, ec_product.menulevel1_id_2, ec_product.menulevel1_id_3, ec_product.menulevel2_id_1, ec_product.menulevel2_id_2, ec_product.menulevel2_id_3, ec_product.menulevel3_id_1, ec_product.menulevel3_id_2, ec_product.menulevel3_id_3, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_product.featured_product_id_1, ec_product.featured_product_id_2, ec_product.featured_product_id_3, ec_product.featured_product_id_4, ec_product.seo_description, ec_product.use_specifications, ec_product.use_customer_reviews, ec_product.specifications, ec_product.list_price, ec_product.seo_keywords, ec_product.is_special, ec_product.use_optionitem_images, ec_product.use_optionitem_quantity_tracking, ec_product.is_donation, ec_product.show_stock_quantity, ec_product.maximum_downloads_allowed, ec_product.download_timelimit_seconds, ec_product.handling_price, ec_product.vat_rate, ec_product.use_advanced_optionset)
+				values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+				mysql_real_escape_string($product['listprice']),
+				mysql_real_escape_string($product['producttitle']),
+				mysql_real_escape_string($product['productdescription']),
+				mysql_real_escape_string($product['modelnumber']),
+				mysql_real_escape_string($product['listproduct']),
+				mysql_real_escape_string($product['productmanufacturer']),
+				mysql_real_escape_string($product['Image1']),
+				mysql_real_escape_string($product['Image2']),
+				mysql_real_escape_string($product['Image3']),
+				mysql_real_escape_string($product['Image4']),
+				mysql_real_escape_string($product['Image5']),
+				mysql_real_escape_string($product['isgiftcard']),
+				mysql_real_escape_string($product['downloadid']),
+				mysql_real_escape_string($product['taxableproduct']),
+				mysql_real_escape_string($product['isdownload']),
+				mysql_real_escape_string($product['productweight']),
+				mysql_real_escape_string($product['quantity']),
+				mysql_real_escape_string($product['featuredproduct']),
+				mysql_real_escape_string($product['Cat1Name']),
+				mysql_real_escape_string($product['Cat2Name']),
+				mysql_real_escape_string($product['Cat3Name']),
+				mysql_real_escape_string($product['Cat1bName']),
+				mysql_real_escape_string($product['Cat2bName']),
+				mysql_real_escape_string($product['Cat3bName']),
+				mysql_real_escape_string($product['Cat1cName']),
+				mysql_real_escape_string($product['Cat2cName']),
+				mysql_real_escape_string($product['Cat3cName']),
+				mysql_real_escape_string($product['option1']),
+				mysql_real_escape_string($product['option2']),
+				mysql_real_escape_string($product['option3']),
+				mysql_real_escape_string($product['option4']),
+				mysql_real_escape_string($product['option5']),
+				mysql_real_escape_string($product['featureproduct1']),
+				mysql_real_escape_string($product['featureproduct2']),
+				mysql_real_escape_string($product['featureproduct3']),
+				mysql_real_escape_string($product['featureproduct4']),
+				mysql_real_escape_string($product['seoshortdescription']),
+				mysql_real_escape_string($product['usespecs']),
+				mysql_real_escape_string($product['allowreviews']),
+				mysql_real_escape_string($product['specifications']),
+				mysql_real_escape_string($product['previousprice']),
+				mysql_real_escape_string($product['seokeywords']),
+				mysql_real_escape_string($product['isspecial']),
+				mysql_real_escape_string($product['useoptionitemimages']),
+				mysql_real_escape_string($product['usequantitytracking']),
+				mysql_real_escape_string($product['isdonation']),
+				mysql_real_escape_string($product['show_stock_quantity']),
+				mysql_real_escape_string($product['maximum_downloads_allowed']),
+				mysql_real_escape_string($product['download_timelimit_seconds']),
+				mysql_real_escape_string($product['handling_price']),
+				mysql_real_escape_string($product['vatrate']),
+				mysql_real_escape_string($product['use_advanced_optionset']));
+				mysql_query($sql);
+				if(mysql_error()) {
+				  $sqlerror = mysql_error();
+				  $error = explode(" ", $sqlerror);
+				  if ($error[0] == "Duplicate") {
+					  $returnArray[] = "duplicate";
+					  return $returnArray; //return noresults if there are no results
+				  }
+			 	}
+		
 					
 				$sql_getprodid = sprintf("SELECT product_id from ec_product WHERE ec_product.model_number = '%s'", $product['modelnumber']);
 				$result_getprodid = mysql_query($sql_getprodid);
@@ -481,9 +627,15 @@ class products
 				$returnArray[] ="success";
 				return($returnArray); //return array results if there are some
 			} else {
-				//return mysql_error();
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
+				$sqlerror = mysql_error();
+				  $error = explode(" ", $sqlerror);
+				  if ($error[0] == "Duplicate") {
+					  $returnArray[] = "duplicate";
+					  return $returnArray; //return noresults if there are no results
+				  } else {  
+					  $returnArray[] = "error";
+					  return $returnArray; //return noresults if there are no results
+				  }
 			}
 		}
 		function deleteimage($productid, $imagelocation, $imagename) {

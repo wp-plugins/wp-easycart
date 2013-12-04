@@ -112,6 +112,7 @@ class manufacturers
 			
 			//Create SQL Query	
 			$deletesql = $this->escape("DELETE FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = '%s'", $manufacturerid);
+
 			//Run query on database;
 			mysql_query($deletesql);
 			

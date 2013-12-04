@@ -35,6 +35,7 @@ class ec_db{
 				ec_orderdetail.optionitem_price_3, 
 				ec_orderdetail.optionitem_price_4, 
 				ec_orderdetail.optionitem_price_5,
+				ec_orderdetail.use_advanced_optionset,
 				ec_orderdetail.giftcard_id, 
 				ec_orderdetail.gift_card_message, 
 				ec_orderdetail.gift_card_from_name, 
@@ -110,6 +111,7 @@ class ec_db{
 				ec_orderdetail.optionitem_price_3, 
 				ec_orderdetail.optionitem_price_4, 
 				ec_orderdetail.optionitem_price_5,
+				ec_orderdetail.use_advanced_optionset,
 				ec_orderdetail.giftcard_id, 
 				ec_orderdetail.gift_card_message, 
 				ec_orderdetail.gift_card_from_name, 
@@ -272,6 +274,7 @@ class ec_db{
 				CONCAT_WS('***', option4.option_id, option4.option_name, option4.option_label) as option_data_4,
 				CONCAT_WS('***', option5.option_id, option5.option_name, option5.option_label) as option_data_5,
 				
+				product.use_advanced_optionset,
 				product.use_optionitem_images,
 				
 				product.image1,
@@ -457,6 +460,7 @@ class ec_db{
 						"option4" => $option4, 
 						"option5" => $option5, 
 						
+						"use_advanced_optionset" => $row->use_advanced_optionset,
 						"use_optionitem_images" => $row->use_optionitem_images, 
 						
 						"image1" => $row->image1, 
@@ -818,9 +822,11 @@ class ec_db{
 				product.show_stock_quantity,
 				product.maximum_downloads_allowed,
 				product.download_timelimit_seconds,
+				product.use_advanced_optionset,
 				
 				tempcart.tempcart_id as cartitem_id,
 				tempcart.quantity,
+				tempcart.grid_quantity,
 				optionitemimage.image1 as optionitemimage_image1,
 				
 				CONCAT_WS('***', optionitem1.optionitem_name, optionitem1.optionitem_price, option1.option_name, optionitem1.optionitem_id) as optionitem1_data,
@@ -1074,7 +1080,7 @@ class ec_db{
 			return false;
 	}
 	
-	public function add_to_cart( $product_id, $session_id, $quantity, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5, $gift_card_message="", $gift_card_to_name="", $gift_card_from_name="", $donation_price=0.00 ){
+	public function add_to_cart( $product_id, $session_id, $quantity, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5, $gift_card_message="", $gift_card_to_name="", $gift_card_from_name="", $donation_price=0.00, $use_advanced_optionset=false, $return_tempcart=1 ){
 		
 		// Get the limit on this product
 		$product_sql = "SELECT stock_quantity, use_optionitem_quantity_tracking FROM ec_product WHERE product_id = %d";
@@ -1102,12 +1108,27 @@ class ec_db{
 			$stock_quantity = 1000000;
 		}
 		
+		// OPTION ITEM QUANTITY TRACKING AND ENTERED QUANITTY GOES OVER ITEM LIMIT
+		// IF    1. Using advanced option items
+		//		 2. using basic quantity tracking
+		//       2. quantity in cart + new quantity is greater than the amount in stock
+		// THEN     use max for that option item set
+		if( $use_advanced_optionset && isset( $product->show_stock_quantity ) && $quantity + $tempcart->quantity > $stock_quantity ){
+			$quantity = $stock_quantity - $tempcart->quantity;
+			
+		// OPTION ITEM QUANTITY TRACKING AND ENTERED QUANITTY GOES OVER ITEM LIMIT
+		// IF    1. using advanced option items
+		//       2. quantity must not be exceding stock quantity OR we are not tracking it for this product
+		// THEN     use the actual quantity value
+		}else if( $use_advanced_optionset ){
+			// Do nothing to the quantity value
+			
 		//Get the quantity for the new tempcart item (insert or update)
 		// OPTION ITEM QUANTITY TRACKING AND ENTERED QUANITTY GOES OVER ITEM LIMIT
 		// IF    1. using option item quantity tracking
 		//       2. quantity + item in cart with same options quantity > amount available for this option
 		// THEN     use max for that option item set
-		if( $product->use_optionitem_quantity_tracking == 1 && isset( $tempcart_optionitem ) && $quantity + $tempcart_optionitem->quantity > $stock_quantity ){			
+		}else if( $product->use_optionitem_quantity_tracking == 1 && isset( $tempcart_optionitem ) && $quantity + $tempcart_optionitem->quantity > $stock_quantity ){			
 			$quantity = $stock_quantity;
 		
 		// OPTION ITEM QUANTITY TRACKING AND AMOUNT ENTERED IS TOO MUCH
@@ -1163,7 +1184,7 @@ class ec_db{
 		$sql = "SELECT COUNT(tempcart_id) AS total_rows FROM ec_tempcart WHERE session_id = '%s' AND product_id = %d AND optionitem_id_1 = %d AND optionitem_id_2 = %d AND optionitem_id_3 = %d AND optionitem_id_4 = %d AND optionitem_id_5 = %d";
 		$insert = $this->mysqli->get_var( $this->mysqli->prepare( $sql, $session_id, $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5 ) );
 		
-		if( $gift_card_message != "" || $gift_card_from_name != "" || $gift_card_to_name != "" || ( $insert == 0 && $quantity > 0 ) ){
+		if( $use_advanced_optionset || $gift_card_message != "" || $gift_card_from_name != "" || $gift_card_to_name != "" || ( $insert == 0 && $quantity > 0 ) ){
 			$this->mysqli->insert( 'ec_tempcart', 
 										array( 	'product_id' 					=> $product_id,
 												'session_id' 					=> $session_id, 
@@ -1195,7 +1216,10 @@ class ec_db{
 								  );	
 		}
 		
-		return $this->get_temp_cart( $session_id );
+		if( $return_tempcart )
+			return $this->get_temp_cart( $session_id );
+		else
+			return $this->mysqli->insert_id;
 	}
 	
 	public function update_cartitem( $tempcart_id, $session_id, $quantity ){
@@ -1212,7 +1236,7 @@ class ec_db{
 		// Get the limit on this product
 		$product_sql = "SELECT show_stock_quantity, stock_quantity, use_optionitem_quantity_tracking FROM ec_product WHERE product_id = %d";
 		$optionitem_sql = "SELECT quantity FROM ec_optionitemquantity WHERE product_id = %d AND optionitem_id_1 = %d AND optionitem_id_2 = %d AND optionitem_id_3 = %d AND optionitem_id_4 = %d AND optionitem_id_5 = %d";
-		$tempcart_optionitem_sql = "SELECT quantity FROM ec_tempcart WHERE session_id = '%s' AND product_id = '%s' AND optionitem_id_1 = '%s' AND optionitem_id_2 = '%s' AND optionitem_id_3 = '%s' AND optionitem_id_4 = '%s' AND optionitem_id_5 = '%s'";
+		$tempcart_optionitem_sql = "SELECT quantity FROM ec_tempcart WHERE tempcart_id = %d";
 		$tempcart_sql = "SELECT SUM(quantity) as quantity FROM ec_tempcart WHERE session_id = '%s' AND product_id = %d";
 		
 		$stock_quantity = 99999999999; // very large limit... nearly infinite really
@@ -1221,7 +1245,7 @@ class ec_db{
 		$product = $this->mysqli->get_row( $this->mysqli->prepare( $product_sql, $product_id ) );
 		
 		//Get this tempcart item quantity
-		$tempcart_optionitem = $this->mysqli->get_row( $this->mysqli->prepare( $tempcart_optionitem_sql, $session_id, $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5 ) );
+		$tempcart_optionitem = $this->mysqli->get_row( $this->mysqli->prepare( $tempcart_optionitem_sql, $tempcart_id ) );
 		
 		//Get this tempcart total quantity
 		$tempcart = $this->mysqli->get_row( $this->mysqli->prepare( $tempcart_sql, $session_id, $product_id ) );
@@ -1237,16 +1261,20 @@ class ec_db{
 			$stock_quantity = 1000000;
 		}
 		
-		if( $product->use_optionitem_quantity_tracking == 1 && $quantity > $stock_quantity ){			
-			$quantity = $stock_quantity;
+		if( $product->show_stock_quantity == 1 && $tempcart->quantity + $quantity - $tempcart_optionitem->quantity > $stock_quantity ){			
+			$quantity = $stock_quantity - ( $tempcart->quantity - $tempcart_optionitem->quantity );
 		
 		}else if( $product->show_stock_quantity == 1 && $quantity > $stock_quantity ){			
 			$quantity = $stock_quantity;
 		
-		}else if( $product->show_stock_quantity == 1 && $tempcart->quantity - $tempcart_optionitem->quantity + $quantity > $stock_quantity ){			
-			$quantity = $stock_quantity - ( $tempcart->quantity - $tempcart_optionitem->quantity );
+		}else if( $product->use_optionitem_quantity_tracking == 1 && $quantity > $stock_quantity ){			
+			$quantity = $stock_quantity;
 		
 		}
+		
+		// Don't allow negative quantities!
+		if( $quantity < 0 )
+			$quantity = 0;
 		
 		$this->mysqli->update( 	'ec_tempcart',
 								array( 	'quantity' => $quantity ),
@@ -1300,7 +1328,7 @@ class ec_db{
 	}
 	
 	public function get_shipping_data( ){
-		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.is_dhl_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.shipping_order";
+		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.zone_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.is_dhl_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.shipping_order";
 		return $this->mysqli->get_results( $sql );
 		
 	}
@@ -1615,6 +1643,7 @@ class ec_db{
 								'optionitem_price_4'			=> $cart_item->optionitem4_price,
 								'optionitem_price_5'			=> $cart_item->optionitem5_price,
 								
+								'use_advanced_optionset'		=> $cart_item->use_advanced_optionset,
 								'giftcard_id'					=> $giftcard_id,
 								'gift_card_message'				=> $cart_item->gift_card_message,
 								
@@ -1635,7 +1664,7 @@ class ec_db{
 								'%s', '%s', '%s', '%s', '%s', 
 								'%s', '%s', '%s', '%s', '%s', 
 								'%s', '%s', '%s', '%s', '%s',
-								'%s', '%s',
+								'%d', '%s', '%s',
 								'%s', '%s', '%d', '%d', 
 								'%d', '%s', '%s', '%d', '%d' );
 								
@@ -1654,7 +1683,39 @@ class ec_db{
 								$percent_array
 							  );
 							  
-		return $this->mysqli->insert_id;
+		$orderdetail_id = $this->mysqli->insert_id;
+		
+		// If using advanced option sets, insert the order values
+		if( $cart_item->use_advanced_optionset ){
+			foreach( $cart_item->advanced_options as $advanced_option ){
+				$this->insert_order_option( $orderdetail_id, $cart_item->cartitem_id, $advanced_option );
+			}
+		}
+		
+		return $orderdetail_id;
+	}
+	
+	public function insert_order_option( $orderdetail_id, $tempcart_id, $advanced_option ){
+		$sql = "INSERT INTO ec_order_option(orderdetail_id, option_name, optionitem_name, option_type, option_value, option_price_change) VALUES(%d, %s, %s, %s, %s, %s)";
+		// Set the display text for an option item price adjustment
+		$optionitem_price = ""; 
+		if( $advanced_option->optionitem_price > 0 ){ 
+			$optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+		}else if( $advanced_option->optionitem_price < 0 ){ 
+			$optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+		}else if( $advanced_option->optionitem_price_onetime > 0 ){ 
+			$optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_onetime ) . ")"; 
+		}else if( $advanced_option->optionitem_price_onetime < 0 ){ 
+			$optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_onetime ) . ")"; 
+		}else if( $advanced_option->optionitem_price_override >= 0 ){ 
+			$optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_override ) . ")"; 
+		}
+		
+		$option_value = $advanced_option->optionitem_value;
+		if( $advanced_option->option_type == "file" )
+			$option_value = $tempcart_id . "/" . $option_value;
+		
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $orderdetail_id, $advanced_option->option_name, $advanced_option->optionitem_name, $advanced_option->option_type, $option_value, $optionitem_price ) );
 	}
 	
 	public function insert_response( $order_id, $is_error, $processor, $response_text ){
@@ -2057,6 +2118,81 @@ class ec_db{
 		return $this->mysqli->get_row( $this->mysqli->prepare( $row_sql, $_SESSION['ec_email'], $_SESSION['ec_password'], $order_id, $orderdetail_id ) );
 	}
 	
+	public function get_orderdetail_row_guest( $order_id, $orderdetail_id ){
+		$row_sql = "SELECT 
+				ec_orderdetail.orderdetail_id, 
+				ec_orderdetail.order_id, 
+				ec_orderdetail.product_id, 
+				ec_orderdetail.title, 
+				ec_orderdetail.model_number, 
+				ec_orderdetail.order_date, 
+				ec_orderdetail.unit_price, 
+				ec_orderdetail.total_price, 
+				ec_orderdetail.quantity, 
+				ec_orderdetail.image1, 
+				ec_orderdetail.optionitem_name_1, 
+				ec_orderdetail.optionitem_name_2, 
+				ec_orderdetail.optionitem_name_3, 
+				ec_orderdetail.optionitem_name_4, 
+				ec_orderdetail.optionitem_name_5,
+				ec_orderdetail.optionitem_label_1, 
+				ec_orderdetail.optionitem_label_2, 
+				ec_orderdetail.optionitem_label_3, 
+				ec_orderdetail.optionitem_label_4, 
+				ec_orderdetail.optionitem_label_5,
+				ec_orderdetail.optionitem_price_1, 
+				ec_orderdetail.optionitem_price_2, 
+				ec_orderdetail.optionitem_price_3, 
+				ec_orderdetail.optionitem_price_4, 
+				ec_orderdetail.optionitem_price_5,
+				ec_orderdetail.giftcard_id, 
+				ec_orderdetail.gift_card_message, 
+				ec_orderdetail.gift_card_from_name, 
+				ec_orderdetail.gift_card_to_name,
+				ec_orderdetail.is_download, 
+				ec_orderdetail.is_giftcard, 
+				ec_orderdetail.is_taxable, 
+				ec_orderdetail.download_file_name, 
+				ec_orderdetail.download_key,
+				ec_orderdetail.maximum_downloads_allowed,
+				ec_orderdetail.download_timelimit_seconds,
+				
+				";
+		
+		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
+			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
+				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
+				for( $j=0; $j<count( $arr ); $j++ ){
+					$row_sql .= "ec_orderdetail." . $arr[$j] . ", ";
+				}
+			}
+		}
+			
+		$row_sql .=	"
+				
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
+				
+				FROM ec_orderdetail
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_orderdetail'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id, 
+				
+				ec_order
+				
+				WHERE 
+				ec_order.order_id = ec_orderdetail.order_id AND
+				ec_orderdetail.order_id = %d AND 
+				ec_orderdetail.orderdetail_id = %d
+				
+				GROUP BY
+				ec_orderdetail.orderdetail_id";
+		
+		return $this->mysqli->get_row( $this->mysqli->prepare( $row_sql, $order_id, $orderdetail_id ) );
+	}
+	
 	public function get_user( $email, $password ){
 		$sql = "SELECT 
 				ec_user.user_id,
@@ -2348,6 +2484,41 @@ class ec_db{
 	public function get_donation_order_total( $model_number ){
 		$sql = "SELECT SUM( ec_orderdetail.total_price ) as order_sum FROM ec_order, ec_orderstatus, ec_orderdetail WHERE ec_orderstatus.status_id = ec_order.orderstatus_id AND ec_orderstatus.is_approved = 1 AND ec_order.order_id = ec_orderdetail.order_id AND ec_orderdetail.model_number = %s";
 		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $model_number ) );
+	}
+	
+	public function get_advanced_optionsets( $product_id ){
+		$sql = "SELECT ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required, ec_option.option_error_text FROM ec_option_to_product LEFT JOIN ec_option ON ec_option.option_id = ec_option_to_product.option_id WHERE ec_option_to_product.product_id = %d";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $product_id ) );
+	}
+	
+	public function get_advanced_optionitems( $option_id ){
+		$sql = "SELECT optionitem_id, option_id, optionitem_name, optionitem_price, optionitem_price_onetime, optionitem_price_override, optionitem_weight, optionitem_weight_onetime, optionitem_weight_override, optionitem_order, optionitem_icon, optionitem_initial_value FROM ec_optionitem WHERE option_id = %d ORDER BY optionitem_order";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $option_id ) );
+	}
+	
+	public function add_option_to_cart( $tempcart_id, $option_val ){
+		$sql = "INSERT INTO ec_tempcart_optionitem(tempcart_id, option_id, optionitem_id, optionitem_value) VALUES(%d, %d, %d, %s)";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $tempcart_id, $option_val["option_id"], $option_val["optionitem_id"], $option_val["optionitem_value"] ) ); 
+	}
+	
+	public function get_advanced_cart_options( $tempcart_id ){
+		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id WHERE ec_tempcart_optionitem.tempcart_id = %d";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $tempcart_id ) );
+	}
+	
+	public function get_order_options( $orderdetail_id ){
+		$sql = "SELECT ec_order_option.option_name, ec_order_option.optionitem_name, ec_order_option.option_type, ec_order_option.option_value, ec_order_option.option_price_change FROM ec_order_option WHERE ec_order_option.orderdetail_id = %d";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $orderdetail_id ) );
+	}
+	
+	public function update_tempcart_grid_quantity( $tempcart_id, $quantity ){
+		$sql = "UPDATE ec_tempcart SET ec_tempcart.grid_quantity = %d WHERE ec_tempcart.tempcart_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $quantity, $tempcart_id ) );
+	}
+	
+	public function get_zone_ids( $iso2_cnt, $code_sta ){
+		$sql = "SELECT zone_id FROM ec_zone_to_location WHERE ( iso2_cnt = %s AND code_sta = '' ) OR ( iso2_cnt = %s AND code_sta = %s )";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $iso2_cnt, $iso2_cnt, $code_sta ) );
 	}
 	
 }

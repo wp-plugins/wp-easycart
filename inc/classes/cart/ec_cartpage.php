@@ -800,7 +800,7 @@ class ec_cartpage{
 	/* END CONTINUE TO PAYMENT FUNCTIONS */
 	
 	public function display_submit_order_button( $button_text ){
-		echo "<input type=\"submit\" class=\"ec_cart_submit_order_button\" value=\"" . $button_text . "\" onclick=\"return ec_cart_validate_checkout_submit_order();\" />";
+		echo "<input type=\"submit\" id=\"ec_submit_payment_button\" class=\"ec_cart_submit_order_button\" value=\"" . $button_text . "\" onclick=\"return ec_cart_validate_checkout_submit_order();\" />";
 	}
 	
 	/* START ADDRESS REVIEW FUNCTIONS */
@@ -1168,7 +1168,11 @@ class ec_cartpage{
 			//Product Info
 			$session_id = session_id( );
 			$product_id = $_POST['product_id'];
-			$quantity = $_POST['product_quantity'];
+			if( isset( $_POST['product_quantity'] ) )
+				$quantity = $_POST['product_quantity'];
+			else
+				$quantity = 1;
+			
 			$model_number = $_POST['model_number'];
 			
 			//Optional Gift Card Info
@@ -1189,28 +1193,96 @@ class ec_cartpage{
 			if( isset( $_POST['ec_product_input_price'] ) )
 				$donation_price = $_POST['ec_product_input_price'];
 			
+			$use_advanced_optionset = false;
 			//Product Options
-			$option1 = "";
-			if( isset( $_POST['ec_option1'] ) )
-				$option1 = $_POST['ec_option1'];
+			if( isset( $_POST['ec_use_advanced_optionset'] ) && $_POST['ec_use_advanced_optionset'] ){
+				$option1 = "";
+				$option2 = "";
+				$option3 = "";
+				$option4 = "";
+				$option5 = "";
+				$use_advanced_optionset = true;
+			}else{
+				$option1 = "";
+				if( isset( $_POST['ec_option1'] ) )
+					$option1 = $_POST['ec_option1'];
+				
+				$option2 = "";
+				if( isset( $_POST['ec_option2'] ) )
+					$option2 = $_POST['ec_option2'];
+				
+				$option3 = "";
+				if( isset( $_POST['ec_option3'] ) )
+					$option3 = $_POST['ec_option3'];
+				
+				$option4 = "";
+				if( isset( $_POST['ec_option4'] ) )
+					$option4 = $_POST['ec_option4'];
+				
+				$option5 = "";
+				if( isset( $_POST['ec_option5'] ) )
+					$option5 = $_POST['ec_option5'];
+					
+			}
 			
-			$option2 = "";
-			if( isset( $_POST['ec_option2'] ) )
-				$option2 = $_POST['ec_option2'];
+			$tempcart_id = $this->mysqli->add_to_cart( $product_id, $session_id, $quantity, $option1, $option2, $option3, $option4, $option5, $gift_card_message, $gift_card_to_name, $gift_card_from_name, $donation_price, $use_advanced_optionset, false );
 			
-			$option3 = "";
-			if( isset( $_POST['ec_option3'] ) )
-				$option3 = $_POST['ec_option3'];
+			$option_vals = array( );
+			// Now insert the advanced option set tempcart table if needed
+			if( $use_advanced_optionset ){
+				
+				$optionsets = $this->mysqli->get_advanced_optionsets( $product_id );
+				$grid_quantity = 0;
+				
+				foreach( $optionsets as $optionset ){
+					if( $optionset->option_type == "checkbox" ){
+						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+						foreach( $optionitems as $optionitem ){
+							if( isset( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) ){
+								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] );
+							}
+						}
+					}else if( $optionset->option_type == "grid" ){
+						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+						foreach( $optionitems as $optionitem ){
+							if( isset( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) && $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] > 0 ){
+								$grid_quantity = $grid_quantity + $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id];
+								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] );
+							}
+						}
+					}else if( $optionset->option_type == "combo" || $optionset->option_type == "swatch" || $optionset->option_type == "radio" ){
+						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+						foreach( $optionitems as $optionitem ){
+							if( $optionitem->optionitem_id == $_POST['ec_option_' . $optionset->option_id] ){
+								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $optionitem->optionitem_name );
+							}
+						}
+					}else if( $optionset->option_type == "file" ){
+						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+						foreach( $optionitems as $optionitem ){
+							$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_FILES['ec_option_' . $optionset->option_id]['name'] );
+						}
+					}else{
+						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+						foreach( $optionitems as $optionitem ){
+							$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_POST['ec_option_' . $optionset->option_id] );
+						}
+					}
+					
+					if( $optionset->option_type == "file" ){
+						//upload the file
+						$this->upload_customer_file( $tempcart_id, 'ec_option_' . $optionset->option_id );
+					}
+				}
+			}
 			
-			$option4 = "";
-			if( isset( $_POST['ec_option4'] ) )
-				$option4 = $_POST['ec_option4'];
+			for( $i=0; $i<count( $option_vals ); $i++ ){
+				$this->mysqli->add_option_to_cart( $tempcart_id, $option_vals[$i] );
+			}
 			
-			$option5 = "";
-			if( isset( $_POST['ec_option5'] ) )
-				$option5 = $_POST['ec_option5'];
-			
-			$this->mysqli->add_to_cart( $product_id, $session_id, $quantity, $option1, $option2, $option3, $option4, $option5, $gift_card_message, $gift_card_to_name, $gift_card_from_name, $donation_price );
+			if( $grid_quantity > 0 ){
+				$this->mysqli->update_tempcart_grid_quantity( $tempcart_id, $grid_quantity );
+			}
 			
 			header( "location: " . $this->cart_page );
 		}
@@ -1529,6 +1601,39 @@ class ec_cartpage{
 		header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment");
 	}
 	/* END PROCESS FORM SUBMISSION FUNCTIONS */
+	
+	/* Customer File Upload Function */
+	private function upload_customer_file( $tempcart_id, $upload_field_name ){
+		
+		# Check to see if the file is accessible
+		if( isset($_FILES[$upload_field_name]['name']) && $_FILES[$upload_field_name]['name'] != '' ) {
+			$max_filesize = 999999;
+			$filetypes = array( 'text/plain', 'image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/x-compressed', 'application/x-zip-compressed', 'application/zip', 'multipart/x-zip', 'application/x-bzip2', 'application/x-bzip', 'application/x-bzip2', 'application/x-gzip', 'application/x-gzip', 'multipart/x-gzip' );
+			if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" ) )
+				$upload_path =  WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/";
+			else
+				$upload_path =  WP_PLUGIN_DIR . "/wp-easycart/products/uploads/";
+		 
+			# Check to see if the filesize is too large
+			if( $_FILES[$upload_field_name]['size'] <= $max_filesize && in_array( $_FILES[$upload_field_name]['type'], $filetypes ) ){
+				
+				# Create a custom dir for this order
+				mkdir( $upload_path . $tempcart_id . "/", 0775 );
+				
+				# If file has gotten this far, it is successful
+				$copy_to = $upload_path . $tempcart_id . "/" . $_FILES[$upload_field_name]['name'];
+		
+				# Upload the file
+				$upload = move_uploaded_file( $_FILES[$upload_field_name]['tmp_name'], $copy_to );
+		 
+				# Check to see if upload was successful
+				if( $upload ){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
 
 ?>

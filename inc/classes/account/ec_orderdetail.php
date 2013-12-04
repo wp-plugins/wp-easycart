@@ -28,6 +28,7 @@ class ec_orderdetail{
 	public $optionitem_price_3;    						// FLOAT 13,3
 	public $optionitem_price_4;    						// FLOAT 13,3
 	public $optionitem_price_5;    						// FLOAT 13,3
+	public $use_advanced_optionset;						// BOOL
 	public $giftcard_id;    							// VARCHAR 20
 	public $gift_card_message;     						// TEXT
 	public $gift_card_from_name;     					// VARCHAR 255
@@ -76,6 +77,7 @@ class ec_orderdetail{
 		$this->optionitem_price_3 = $orderdetail_row->optionitem_price_3; 
 		$this->optionitem_price_4 = $orderdetail_row->optionitem_price_4; 
 		$this->optionitem_price_5 = $orderdetail_row->optionitem_price_5; 
+		$this->use_advanced_optionset = $orderdetail_row->use_advanced_optionset;
 		$this->giftcard_id = $orderdetail_row->giftcard_id; 
 		$this->gift_card_message = $orderdetail_row->gift_card_message; 
 		$this->gift_card_from_name = $orderdetail_row->gift_card_from_name; 

@@ -144,14 +144,33 @@ class optionitems
 			  //convert object to array
 			  $optionitem = (array)$optionitem;
 			  
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_optionitem(ec_optionitem.optionitem_id, ec_optionitem.option_id, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_order, ec_optionitem.optionitem_icon)
-				values('".$optionitemid."', '%s', '%s', '%s', '%s', '%s')",
+			  //Create SQL Query  
+			  $sql = sprintf("Replace into ec_optionitem(
+								  ec_optionitem.optionitem_id, 
+								  ec_optionitem.option_id, 
+								  ec_optionitem.optionitem_name, 
+								  ec_optionitem.optionitem_price, 
+								  ec_optionitem.optionitem_price_onetime,
+								  ec_optionitem.optionitem_price_override,
+								  ec_optionitem.optionitem_weight,
+								  ec_optionitem.optionitem_weight_onetime,
+								  ec_optionitem.optionitem_weight_override,
+								  ec_optionitem.optionitem_order, 
+								  ec_optionitem.optionitem_icon,
+								  ec_optionitem.optionitem_initial_value)
+
+				values('".$optionitemid.",  '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($optionitem['optionparentID']),
 				mysql_real_escape_string($optionitem['optionitemname']),
 				mysql_real_escape_string($optionitem['optionitemprice']),
+				mysql_real_escape_string($optionitem['optionitempriceonetime']),
+				mysql_real_escape_string($optionitem['optionitempriceoverride']),
+				mysql_real_escape_string($optionitem['optionitemweight']),
+				mysql_real_escape_string($optionitem['optionitemweightonetime']),
+				mysql_real_escape_string($optionitem['optionitemweightoverride']),
 				mysql_real_escape_string($optionitem['optionorder']),
-				mysql_real_escape_string($optionitem['optionitemicon']));
+				mysql_real_escape_string($optionitem['optionitemicon']),
+				mysql_real_escape_string($optionitem['optioniteminitialvalue']));
 			//Run query on database;
 			mysql_query($sql);
 			//if no errors, return their current Client ID
@@ -165,27 +184,46 @@ class optionitems
 			}
 		}
 		function addoptionitem($optionitem) {
-			  //convert object to array
-			  $optionitem = (array)$optionitem;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_optionitem(ec_optionitem.optionitem_id, ec_optionitem.option_id, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_order, ec_optionitem.optionitem_icon)
-				values(Null,  '%s', '%s', '%s', '%s', '%s')",
+			//convert object to array
+			$optionitem = (array)$optionitem;
+
+			//Create SQL Query
+			$sql = sprintf("Insert into ec_optionitem(
+							  ec_optionitem.optionitem_id, 
+							  ec_optionitem.option_id, 
+							  ec_optionitem.optionitem_name, 
+							  ec_optionitem.optionitem_price, 
+							  ec_optionitem.optionitem_price_onetime,
+							  ec_optionitem.optionitem_price_override,
+							  ec_optionitem.optionitem_weight,
+							  ec_optionitem.optionitem_weight_onetime,
+							  ec_optionitem.optionitem_weight_override,
+							  ec_optionitem.optionitem_order, 
+							  ec_optionitem.optionitem_icon,
+							  ec_optionitem.optionitem_initial_value)
+
+			values(Null,  '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($optionitem['optionparentID']),
 				mysql_real_escape_string($optionitem['optionitemname']),
 				mysql_real_escape_string($optionitem['optionitemprice']),
+				mysql_real_escape_string($optionitem['optionitempriceonetime']),
+				mysql_real_escape_string($optionitem['optionitempriceoverride']),
+				mysql_real_escape_string($optionitem['optionitemweight']),
+				mysql_real_escape_string($optionitem['optionitemweightonetime']),
+				mysql_real_escape_string($optionitem['optionitemweightoverride']),
 				mysql_real_escape_string($optionitem['optionorder']),
-				mysql_real_escape_string($optionitem['optionitemicon']));
-			  mysql_query($sql);
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+				mysql_real_escape_string($optionitem['optionitemicon']),
+				mysql_real_escape_string($optionitem['optioniteminitialvalue']));
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			}
 		}
 		
 		

@@ -9,12 +9,10 @@ if( isset( $_GET['order_id'] ) && isset( $_GET['orderdetail_id'] ) && isset( $_G
 	$order_id = $_GET['order_id'];
 	$orderdetail_id = $_GET['orderdetail_id'];
 	$giftcard_id = $_GET['giftcard_id'];
-	$email = $_SESSION['ec_email'];
-	$password = $_SESSION['ec_password'];
 	
 	$mysqli = new ec_db( );
 	
-	$orderdetail_row = $mysqli->get_orderdetail_row( $order_id, $orderdetail_id, $email, $password );
+	$orderdetail_row = $mysqli->get_orderdetail_row_guest( $order_id, $orderdetail_id );
 	
 	if( $orderdetail_row ){
 		

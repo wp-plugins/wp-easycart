@@ -21,7 +21,7 @@
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
 define( 'EC_CURRENT_VERSION', '1_2_16' );
-define( 'EC_CURRENT_DB', '1_10' );
+define( 'EC_CURRENT_DB', '1_11' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -117,6 +117,14 @@ function ec_activate(){
 			wpeasycart_copyr( $from . "connection", $to . "connection" );
 			
 		}
+	}
+	
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart/products/uploads/" ) ){
+		mkdir( WP_PLUGIN_DIR . "/wp-easycart/products/uploads/" );
+	}
+	
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" ) ){
+		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" );
 	}
 	
 }
@@ -375,6 +383,14 @@ function load_ec_pre(){
 	if( isset( $_POST['ec_newsletter_email'] ) ){
 		$ec_db = new ec_db();
 		$ec_db->insert_subscriber( $_POST['ec_newsletter_email'], "", "" );
+	}
+	
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart/products/uploads/" ) ){
+		mkdir( WP_PLUGIN_DIR . "/wp-easycart/products/uploads/" );
+	}
+	
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" ) ){
+		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" );
 	}
 }
 
