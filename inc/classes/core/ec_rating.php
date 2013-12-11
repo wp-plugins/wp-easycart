@@ -14,7 +14,9 @@ class ec_rating{
 			$total = 0;
 			
 			for($i=0; $i<count($rating_data); $i++){
-				$total = $total + $rating_data[$i]['rating'];
+				if(isset($rating_data[$i]['rating'])) {
+					$total = $total + $rating_data[$i]['rating'];
+				}
 			}
 				
 			$this->product_rating = ($total/($this->review_count * 5)) * 5;
