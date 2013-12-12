@@ -1754,17 +1754,9 @@ class ec_db{
 	}
 	
 	public function update_quantity_value( $quantity, $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5 ){
-		$this->mysqli->update(  'ec_optionitemquantity',
-								array(  'quantity' => $quantity ),
-								array(  'product_id' => $product_id, 
-										'optionitem_id_1' => $optionitem_id_1, 
-										'optionitem_id_2' => $optionitem_id_2, 
-										'optionitem_id_3' => $optionitem_id_3, 
-										'optionitem_id_4' => $optionitem_id_4, 
-										'optionitem_id_5' => $optionitem_id_5
-									  ),
-								array(  '%d', '%d', '%d', '%d', '%d', '%d', '%d' )
-							);
+		$sql = "UPDATE ec_optionitemquantity SET ec_optionitemquantity.quantity = ec_optionitemquantity.quantity - %d WHERE ec_optionitemquantity.product_id = %d AND ec_optionitemquantity.optionitem_id_1 = %d AND ec_optionitemquantity.optionitem_id_2 = %d AND ec_optionitemquantity.optionitem_id_3 = %d AND ec_optionitemquantity.optionitem_id_4 = %d AND ec_optionitemquantity.optionitem_id_5 = %d";
+		
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $quantity, $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5 ) );
 	}
 	
 	public function update_download_count( $download_id, $download_count ){
