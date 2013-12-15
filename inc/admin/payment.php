@@ -330,7 +330,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
                 </tr>
                 <tr valign="top" class="form-table">
                   <td width="23%" class="itemheading" scope="row">Select Payment Processor:</td>
-                  <td width="77%"><select id="paymentmethod" name="ec_option_payment_process_method"  onclick="toggle_live_gateways();" value="<?php echo get_option('ec_option_payment_process_method'); ?>" style="width:250px;">
+                  <td width="77%"><select id="paymentmethod" name="ec_option_payment_process_method"  onchange="toggle_live_gateways();" value="<?php echo get_option('ec_option_payment_process_method'); ?>" style="width:250px;">
                     <option value="0" <?php if( get_option('ec_option_payment_process_method') == "0" ){ echo " selected"; } ?>>No Live Payment Processor</option>
                     <option value="authorize" <?php if( get_option('ec_option_payment_process_method') == "authorize" ){ echo " selected"; } ?>>Authorize.net</option>
                     <option value="braintree" <?php if( get_option('ec_option_payment_process_method') == "braintree" ){ echo " selected"; } ?>>Braintree S2S</option>

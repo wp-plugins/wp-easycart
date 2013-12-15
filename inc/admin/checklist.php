@@ -650,9 +650,11 @@ if( get_option( 'ec_option_privacy_link' ) != "http://yoursite.com/privacypolicy
 $ups_has_settings = false;
 $ups_setup = false;
 $ups_error_reason = 0;
+
 $usps_has_settings = false;
 $usps_setup = false;
 $usps_error_reason = 0;
+
 $fedex_has_settings = false;
 $fedex_setup = false;
 $fedex_error_reason = 0;
