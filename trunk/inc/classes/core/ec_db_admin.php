@@ -90,6 +90,36 @@ class ec_db_admin extends ec_db{
 		$func = QUICKBOOKS_HASH;
 		$this->mysqli->query( $this->mysqli->prepare( $sql_quickbooks_user, $username, $func( $password . QUICKBOOKS_SALT ) ) );
 	}
+	
+	public function get_order_totals_by_days( $days_limit ){
+		$sql = "SELECT SUM( ec_order.grand_total ) AS total, DAY( ec_order.order_date ) AS the_day FROM ec_order LEFT JOIN ec_orderstatus ON ( ec_order.orderstatus_id = ec_orderstatus.status_id ) WHERE ec_order.order_date > ( curdate( ) - INTERVAL %d DAY ) AND ec_orderstatus.is_approved = 1 GROUP BY DAY( ec_order.order_date ) ORDER BY ec_order.order_date ASC";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $days_limit ) );
+	}
+	
+	public function get_order_totals_by_weeks( $weeks_limit ){
+		$sql = "SELECT SUM( ec_order.grand_total ) as total, WEEK( ec_order.order_date ) AS the_week FROM ec_order LEFT JOIN ec_orderstatus ON ( ec_order.orderstatus_id = ec_orderstatus.status_id ) WHERE ec_order.order_date > ( curdate( ) - INTERVAL %d WEEK ) AND ec_orderstatus.is_approved = 1 GROUP BY WEEK( ec_order.order_date ) ORDER BY ec_order.order_date ASC";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $weeks_limit ) );
+	}
+	
+	public function get_order_totals_by_months( $months_limit ){
+		$sql = "SELECT SUM( ec_order.grand_total ) as total, MONTH( ec_order.order_date ) AS the_month FROM ec_order LEFT JOIN ec_orderstatus ON ( ec_order.orderstatus_id = ec_orderstatus.status_id ) WHERE ec_order.order_date > ( curdate( ) - INTERVAL %d MONTH ) AND ec_orderstatus.is_approved = 1 GROUP BY MONTH( ec_order.order_date ) ORDER BY ec_order.order_date ASC";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $months_limit ) );
+	}
+	
+	public function get_order_totals_by_years( $years_limit ){
+		$sql = "SELECT SUM( ec_order.grand_total ) as total, YEAR( ec_order.order_date ) AS the_year FROM ec_order LEFT JOIN ec_orderstatus ON ( ec_order.orderstatus_id = ec_orderstatus.status_id ) WHERE ec_order.order_date > ( curdate( ) - INTERVAL %d YEAR ) AND ec_orderstatus.is_approved = 1 GROUP BY YEAR( ec_order.order_date ) ORDER BY ec_order.order_date ASC";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $years_limit ) );
+	}
+	
+	public function get_top_ten_products( ){
+		$sql = "SELECT ec_product.title, ec_product.views FROM ec_product ORDER BY ec_product.views DESC LIMIT 10";
+		return $this->mysqli->get_results( $sql );
+	}
+	
+	public function get_last_ten_orders( ){
+		$sql = "SELECT ec_order.grand_total, ec_order.billing_first_name, ec_order.billing_last_name FROM ec_order ORDER BY ec_order.order_date DESC LIMIT 10";
+		return $this->mysqli->get_results( $sql );
+	}
 }
 
 ?>
