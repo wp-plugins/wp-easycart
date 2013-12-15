@@ -1,0 +1,265 @@
+<?php
+$db = new ec_db_admin( );
+
+function get_high_point( $largest ){
+	if( $largest < 10 )
+		return 10;
+	else if( $largest < 50 )
+		return 50;
+	else if( $largest < 100 )
+		return 100;
+	else if( $largest < 250 )
+		return 250;
+	else if( $largest < 500 )
+		return 500;
+	else if( $largest < 1000 )
+		return 1000;
+	else if( $largest < 2500 )
+		return 2500;
+	else if( $largest < 5000 )
+		return 5000;
+	else if( $largest < 10000 )
+		return 10000;
+	else if( $largest < 25000 )
+		return 25000;
+	else if( $largest < 50000 )
+		return 50000;
+	else if( $largest < 100000 )
+		return 100000;
+	else if( $largest < 250000 )
+		return 250000;
+	else if( $largest < 500000 )
+		return 500000;
+	else if( $largest < 1000000 )
+		return 1000000;
+	else if( $largest < 5000000 )
+		return 5000000;
+	else if( $largest < 10000000 )
+		return 10000000;
+	else if( $largest < 100000000 )
+		return 100000000;
+	else if( $largest < 1000000000 )
+		return 1000000000;
+	else
+		return 10000000000;
+	
+}
+
+/* Get the recent sales totals */
+if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) )
+	$orders = $db->get_order_totals_by_days( 11 );
+
+else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" )
+	$orders = $db->get_order_totals_by_weeks( 11 );
+
+else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" )
+	$orders = $db->get_order_totals_by_months( 11 );
+
+else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" )
+	$orders = $db->get_order_totals_by_years( 11 );
+
+// Get splits
+$largest = 0;
+for( $i=0; $i<count( $orders ); $i++ ){
+	if( $orders[$i]->total > $largest ){
+		$largest = $orders[$i]->total;
+	}
+}
+$high_point = get_high_point( $largest );
+$split = $high_point/5;
+$high_point = $high_point + $split;
+$next_point = $high_point;
+
+// Get the top viewed products
+$top_products = $db->get_top_ten_products( );
+
+// get the last 10 orders
+$last_orders = $db->get_last_ten_orders( );
+
+$highest_point = $high_point + $split;
+?>
+<div class="ec_statistics_row">
+<div class="ec_statistics_quad1">
+	<div class="ec_statistics_tab_holder">
+    	<div class="ec_statistcs_tab<?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=days">Days</a></div>
+    	<div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=weeks">Weeks</a></div>
+    	<div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=months">Months</a></div>
+    	<div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=years">Years</a></div>
+    </div>
+    <div class="ec_statistics_holder">
+    	<div class="ec_statistics_scale">
+        	<div class="ec_statistics_scale_item_top"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( 0 ); ?></div>
+        </div>
+        <div class="ec_statistics_content">
+        	<?php 
+			$last_total = 0;
+			if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){
+				$last_used_order_index = 0;
+				$first_num = date( 'd', strtotime( '-11 days' ) );
+				$last_num = date( 'd', strtotime( '-0 days' ) );
+				
+				// We need to first check and see if the first order value falls before our first date...
+				// This is a bug fix for timezone issues
+				if( $first_num < $last_num ){ //check when all dates in the same month
+					if( count( $orders ) > 0 && $orders[0]->the_day >= $first_num  && $orders[0]->the_day <= $last_num ){
+						$i=11;
+					}else{
+						$i=12;
+					}
+				}else{ //check when dates are split between two months
+					if( count( $orders ) > 0 && $first_num >= $orders[0]->the_day || $orders[0]->the_day <= $last_num ){
+						$i=11;
+					}else{
+						$i=12;
+					}
+				}
+				
+				for( $i; $i > -1 && $last_used_order_index < count( $orders ); $i-- ){
+					$current_day_number = date( 'd', strtotime( '-' . $i . ' days' ) ); 
+					
+					if( $orders[$last_used_order_index]->the_day == $current_day_number ){
+						$total = $orders[$last_used_order_index]->total;
+						$last_used_order_index++;
+					}else{
+						$total = 0;
+					}
+					$last_total = $total;
+					if( $highest_point > 0 )
+						$percent_height = $total/$highest_point;
+					else
+						$percent_height = 0;
+				?>
+				<div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
+            <?php 
+				}
+				$current_day_number = date( 'd' ); 
+				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_day != $current_day_number )
+					$last_total = 0;
+			}else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){
+				$last_used_order_index = 0;
+				for( $i=12; $i > 0 && $last_used_order_index < count( $orders ); $i-- ){
+					$current_week_number = date( 'W', strtotime( '-' . $i . ' weeks' ) ); 
+					if( $orders[$last_used_order_index]->the_week == $current_week_number ){
+						$total = $orders[$last_used_order_index]->total;
+						$last_used_order_index++;
+					}else{
+						$total = 0;
+					}
+					$last_total = $total;
+					if( $highest_point > 0 )
+						$percent_height = $total/$highest_point;
+					else
+						$percent_height = 0;
+				?>
+				<div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
+            <?php 
+				}
+				$current_week_number = date( 'W', strtotime( '-1 weeks' ) ); 
+				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_week != $current_week_number )
+					$last_total = 0;
+			}else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){
+				$last_used_order_index = 0;
+				for( $i=11; $i > -1 && $last_used_order_index < count( $orders ); $i-- ){
+					$current_month_number = date( 'n', strtotime( '-' . $i . ' months' ) ); 
+					
+					if( $orders[$last_used_order_index]->the_month == $current_month_number ){
+						$total = $orders[$last_used_order_index]->total;
+						$last_used_order_index++;
+					}else{
+						$total = 0;
+					}
+					$last_total = $total;
+					if( $highest_point > 0 )
+						$percent_height = $total/$highest_point;
+					else
+						$percent_height = 0;
+				?>
+				<div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
+            <?php 
+				}
+				$current_month_number = date( 'n' ); 
+				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_month != $current_month_number )
+					$last_total = 0;
+			}else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){
+				$last_used_order_index = 0;
+				for( $i=11; $i > -1 && $last_used_order_index < count( $orders ); $i-- ){
+					$current_year_number = date( 'Y', strtotime( '-' . $i . ' years' ) ); 
+					
+					if( $orders[$last_used_order_index]->the_year == $current_year_number ){
+						$total = $orders[$last_used_order_index]->total;
+						$last_used_order_index++;
+					}else{
+						$total = 0;
+					}
+					$last_total = $total;
+					if( $highest_point > 0 )
+						$percent_height = $total/$highest_point;
+					else
+						$percent_height = 0;
+				?>
+				<div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
+            <?php 
+				}
+				$current_year_number = date( 'Y' ); 
+				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_year != $current_year_number )
+					$last_total = 0;
+			}?>
+        </div>
+        <div class="ec_statistics_dates">
+        	<?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ ?>
+			<div class="ec_statistics_date_first_item"><?php echo date( 'M d', strtotime( '-10 days' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-8 days' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-6 days' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-4 days' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-2 days' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-0 days' ) ); ?></div>
+            <?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ ?>
+			<div class="ec_statistics_date_first_item"><?php echo date( 'M d', strtotime( '-10 weeks' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-8 weeks' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-6 weeks' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-4 weeks' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-2 weeks' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-0 weeks' ) ); ?></div>
+			<?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ ?>
+			<div class="ec_statistics_date_first_item"><?php echo date( 'M, Y', strtotime( '-10 months' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-8 months' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-6 months' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-4 months' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-2 months' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-0 months' ) ); ?></div>
+			<?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ ?>
+			<div class="ec_statistics_date_first_item"><?php echo date( 'Y', strtotime( '-10 years' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-8 years' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-6 years' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-4 years' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-2 years' ) ); ?></div>
+        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-0 years' ) ); ?></div>
+			<?php }?>
+        </div>
+        <div class="ec_statistics_todate_label"><?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ echo "Today"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ echo "This Week"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ echo "This Month"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ echo "This Year"; } ?></div>
+        <div class="ec_statistics_todate_value"><?php echo $GLOBALS['currency']->get_currency_display( $last_total ); ?></div>
+        <div class="ec_statistics_todate_label2">Sales</div>
+    </div>
+</div>
+</div>
+<div class="ec_statistics_row">
+<div class="ec_statistics_quad2">
+    <div class="ec_statistics_title_bar"><div class="ec_statistics_holder_square">Top 10 Viewed Products</div></div>
+    <?php for( $i=0; $i<count( $top_products ); $i++ ){ ?>
+    <div class="ec_statistics_lineitem<?php echo $i%2; ?>"><div class="ec_statistics_holder_square"><span class="ec_statistics_lineitem_label"><?php echo $top_products[$i]->title; ?></span><span class="ec_statistics_lineitem_value"><?php echo $top_products[$i]->views; ?> views</span></div></div>
+    <?php }?>
+</div>
+<div class="ec_statistics_quad3">
+    <div class="ec_statistics_title_bar"><div class="ec_statistics_holder_square">Last 10 Orders</div></div>
+    <?php for( $i=0; $i<count( $last_orders ); $i++ ){ ?>
+    <div class="ec_statistics_lineitem<?php echo $i%2; ?>"><div class="ec_statistics_holder_square"><span class="ec_statistics_lineitem_label"><?php echo $last_orders[$i]->billing_first_name . " " . $last_orders[$i]->billing_last_name; ?></span><span class="ec_statistics_lineitem_value"><?php echo $GLOBALS['currency']->get_currency_display( $last_orders[$i]->grand_total ); ?></span></div></div>
+    <?php }?>
+</div>
+</div>
+<div style="clear:both;"></div>
