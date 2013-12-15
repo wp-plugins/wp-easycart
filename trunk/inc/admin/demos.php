@@ -31,7 +31,7 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
       <tr>
         <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td align="center"><span class="ec_demo_shadow"><a href="http://basev2.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-1.png', __FILE__); ?>" width="325" height="211" /></a></span></td>
+            <td align="center"><span class="ec_demo_shadow"><a href="http://base.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/demo-portfolio-shots-1.png', __FILE__); ?>" width="325" height="211" /></a></span></td>
             <td align="center"><span class="ec_demo_shadow"><a href="http://basedark.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/basedark.jpg', __FILE__); ?>" width="325" height="211" /></a></span></td>
             <td align="center"><span class="ec_demo_shadow"><a href="http://choices-fresh.wpeasycart.com" target="_blank"><img src="<?php echo plugins_url('images/demos/choices-fresh.jpg', __FILE__); ?>" width="325" height="211" /></a></span></td>
           </tr>
