@@ -12,8 +12,6 @@
 ////////////////////////////
 if( ec_get_php_version( ) < 5.3 ){ ?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">PHP 5.3 is the optimaal setup. We do not guarantee functionality for PHP versions below 5.3 at this time.</span></div>
-<?php }else if( ec_get_php_version( ) >= 5.4 ){ ?>
-<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">PHP 5.3 is the optimaal setup. We do not guarantee functionality for PHP 5.4 and above at this time.</span></div>
 <?php }else{ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">Your PHP Version is <?php echo ec_get_php_version( ); ?>, meeting the PHP 5.3 optimal setup.</span></div>
 <?php } ?>

@@ -802,11 +802,11 @@ body{ height:100%; }
 }
 
 .ec_lite_version_link{
-	width:250px; height:250px; background-image:url(../images/plugin_box.jpg);
+	float:left; width:250px; height:250px; background-image:url(../images/plugin_box_lite.png);
 }
 
 .ec_full_version_link{
-	width:250px; height:250px; background-image:url(../images/plugin_box.jpg);
+	float:left; width:250px; height:250px; background-image:url(../images/plugin_box_full.png);
 }
 
 .ec_selected_payment_title{

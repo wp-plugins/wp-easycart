@@ -220,7 +220,7 @@ foreach( $font_split as $font_item ){
 ?>
 
 <div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em><?php echo $labels[$temp_split[0]]; ?></em>You can edit the color for this item using the swatch next to the input box.</span></a></span>
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em><?php echo $labels[$temp_split[0]]; ?></em>You can change the font for this item here. Some EasyCart themes do not actually use this option.</span></a></span>
     <span class="ec_setting_row_label"><?php echo $labels[$temp_split[0]]; ?>:</span>
     <span class="ec_setting_row_input"><?php
 				echo "<select name=\"" . $temp_split[0] . "\">";
