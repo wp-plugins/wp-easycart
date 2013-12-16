@@ -220,6 +220,41 @@ function load_ec_pre(){
 		}
 	}
 	
+	// If no latest design folder, obviously it should be created
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
+		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
+		
+		$version = EC_CURRENT_VERSION;
+		$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
+		fwrite( $fp, $version );
+		fclose( $fp );
+	}
+	
+	// We should check the current "latest version" and see if it needs to be updated (only run in upgrade)
+	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
+			$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
+		else
+			$version = "1";
+		
+		if( $version != EC_CURRENT_VERSION ){
+			echo "testing";
+			// This is an outdated version, lets update.
+			ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
+			
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
+			wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+			wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
+			
+			$version = EC_CURRENT_VERSION;
+			$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
+			fwrite( $fp, $version );
+			fclose( $fp );
+		}
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////
 	// This is a check to ensure old users are upgraded to the new linking format
 	///////////////////////////////////////////////////////////////////////////////////

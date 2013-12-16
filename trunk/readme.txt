@@ -2,7 +2,7 @@
 Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
-Tested up to: 3.6.1
+Tested up to: 3.8
 Stable tag: 1.2.16
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/

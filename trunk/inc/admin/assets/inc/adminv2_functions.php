@@ -1275,4 +1275,203 @@ function ec_update_selected_design( ){
 	update_option( 'ec_option_base_layout', $_POST['ec_option_base_layout'] );
 }
 
+function ec_design_management_update( ){
+	//////////////////////////////////////////////////////
+	//Theme Uploader
+	//////////////////////////////////////////////////////
+	if( $_FILES && $_FILES["theme_file"]["name"] ) {
+		
+		$filename = $_FILES["theme_file"]["name"];
+		$source = $_FILES["theme_file"]["tmp_name"];
+		$type = $_FILES["theme_file"]["type"];
+		
+		$theme_message = "";
+		
+		$name = explode(".", $filename);
+		$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
+		foreach($accepted_types as $mime_type) {
+			if($mime_type == $type) {
+				$okay = true;
+				break;
+			} 
+		}
+		
+		$continue = strtolower($name[1]) == 'zip' ? true : false;
+		if(!$continue) {
+			$theme_message .= " The theme file you are trying to upload is not a .zip file. Please try again.<br>";
+		}
+		/* PHP current path */
+		$path = dirname(__FILE__).'/';
+		$filenoext = basename ($filename, '.zip');  // absolute path to the directory where zipper.php is in (lowercase)
+		$filenoext = basename ($filenoext, '.ZIP');  // absolute path to the directory where zipper.php is in (when uppercase)
+		$targetdir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/". $filenoext; // target directory
+		$targetdir2 = WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/". $filenoext; // target directory
+		$targetzip = $path . $filename; // target zip file
+		
+		if( is_writable( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/" ) ){ // If we can create the dir, do it, otherwise ftp it.
+			if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
+			mkdir($targetdir, 0777);
+			if (is_dir($targetdir2))  rmdir_recursive ( $targetdir2);
+			mkdir($targetdir2, 0777);
+			
+			if( is_dir( $targetdir2 ) )
+				$theme_message .= " The theme directory was created successfully.<br>";
+			else
+				$theme_message .= " The theme directory was NOT created, please try again.<br>";
+		  
+		}else{
+			// Could not open the file, lets write it via ftp!
+			$ftp_server = $_SERVER['HTTP_HOST'];
+			$ftp_user_name = $_POST['ec_ftp_user1'];
+			$ftp_user_pass = $_POST['ec_ftp_pass1'];
+			
+			// set up basic connection
+			$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
+			
+			// login with username and password
+			$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+			
+			if( !$login_result ){
+				$theme_message .= "The plugin could not connect to your server via FTP. Please enter your FTP info and try again.<br>";
+			}else{
+				ftp_mkdir( $conn_id, $targetdir );
+				ftp_site( $conn_id, "CHMOD 0777 " . $targetdir );
+				
+				ftp_mkdir( $conn_id, $targetdir2 );
+				ftp_site( $conn_id, "CHMOD 0777 " . $targetdir2 );
+				
+				if( is_dir( $targetdir ) )
+					$theme_message .= " The theme directory was created successfully via FTP.<br>";
+				else
+					$theme_message .= " The theme directory was NOT created, failed via FTP, please try again.<br>";
+			}
+		}
+		
+		if( !is_dir( $targetdir2 ) ){
+			// Already added message about the dir.
+		}else{
+			$zip = new ZipArchive();
+			$x = $zip->open( $_FILES["theme_file"]["tmp_name"] );  // open the zip file to extract 
+			if( $x === true ) {
+				$zip->extractTo( $targetdir ); // place in the directory with same name  
+				$zip->extractTo( $targetdir2 ); // place in the directory with same name  
+				$zip->close();
+				$theme_message .= "Your EasyCart theme file was uploaded and unpacked. You may select from the Base Design above.";
+				update_option( 'ec_option_base_theme', $filenoext );
+			}else{
+				$theme_message .= "Could not open the uploaded zip file. Please try again.";
+			}
+		}
+	}
+		
+	//////////////////////////////////////////////////////
+	//layout uploader
+	//////////////////////////////////////////////////////
+	if( $_FILES && $_FILES["layout_file"]["name"] ) {
+		
+		$filename = $_FILES["layout_file"]["name"];
+		$source = $_FILES["layout_file"]["tmp_name"];
+		$type = $_FILES["layout_file"]["type"];
+		
+		$layout_message = "";
+		
+		$name = explode(".", $filename);
+		$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
+		foreach($accepted_types as $mime_type) {
+			if($mime_type == $type) {
+				$okay = true;
+				break;
+			} 
+		}
+		
+		$continue = strtolower($name[1]) == 'zip' ? true : false;
+		if(!$continue) {
+			$layout_message .= " The layout file you are trying to upload is not a .zip file. Please try again.<br>";
+		}
+		/* PHP current path */
+		$path = dirname(__FILE__).'/';
+		$filenoext = basename ($filename, '.zip');  // absolute path to the directory where zipper.php is in (lowercase)
+		$filenoext = basename ($filenoext, '.ZIP');  // absolute path to the directory where zipper.php is in (when uppercase)
+		$targetdir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/". $filenoext; // target directory
+		$targetdir2 = WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/". $filenoext; // target directory
+		$targetzip = $path . $filename; // target zip file
+		
+		if( is_writable(  WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" ) ){ // If we can create the dir, do it, otherwise ftp it.
+			if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
+			mkdir($targetdir, 0777);
+			if (is_dir($targetdir2))  rmdir_recursive ( $targetdir2 );
+			mkdir($targetdir2, 0777);
+			if( is_dir( $targetdir ) )
+				$layout_message .= " The layout directory was created successfully.<br>";
+			else
+				$layout_message .= " The layout directory was NOT created, please try again.<br>";
+		  
+		}else{
+			// Could not open the file, lets write it via ftp!
+			$ftp_server = $_SERVER['HTTP_HOST'];
+			$ftp_user_name = $_POST['ec_ftp_user2'];
+			$ftp_user_pass = $_POST['ec_ftp_pass2'];
+			
+			// set up basic connection
+			$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
+			
+			// login with username and password
+			$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+			
+			if( !$login_result ){
+				$layout_message .= "The plugin could not connect to your server via FTP. Please enter your FTP info and try again.<br>";
+			}else{
+				ftp_mkdir( $conn_id, $targetdir );
+				ftp_site( $conn_id, "CHMOD 0777 " . $targetdir );
+				ftp_mkdir( $conn_id, $targetdir2 );
+				ftp_site( $conn_id, "CHMOD 0777 " . $targetdir2 );
+				if( is_dir( $targetdir2 ) )
+					$layout_message .= " The layout directory was created successfully via FTP.<br>";
+				else
+					$layout_message .= " The layout directory was NOT created, failed via FTP, please try again.<br>";
+			}
+		}
+		
+		if( !is_dir( $targetdir2 ) ){
+			// Already added message about the dir.
+		}else{
+			$zip = new ZipArchive();
+			$x = $zip->open( $_FILES["layout_file"]["tmp_name"] );  // open the zip file to extract 
+			if( $x === true ) {
+				$zip->extractTo( $targetdir ); // place in the directory with same name  
+				$zip->extractTo( $targetdir2 ); // place in the directory with same name  
+				$zip->close();
+				$layout_message .= "Your EasyCart layout file was uploaded and unpacked. You may select from the Base Design above.";
+				update_option( 'ec_option_base_layout', $filenoext );
+			}else{
+				$layout_message .= "Could not open the uploaded zip file. Please try again.";
+			}
+		}
+	}
+	
+	// Copy the latest theme
+	if( $_POST['ec_option_copy_theme'] != "0" ){
+		$to = "../wp-content/plugins/wp-easycart-data/design/theme/";
+		$from = "../wp-content/plugins/wp-easycart-data/latest-design/theme/" . $_POST['ec_option_copy_theme'] . "/";
+		
+		if( is_dir( $to ) && !is_dir( $to . $_POST['ec_option_copy_theme'] . "-" . EC_CURRENT_VERSION . "/" ) && is_dir( $from ) ){
+			// Recursive copy the selected theme
+			wpeasycart_copyr( $from, $to . $_POST['ec_option_copy_theme'] . "-" . EC_CURRENT_VERSION . "/" );
+			update_option( 'ec_option_base_theme', $_POST['ec_option_copy_theme'] . "-" . EC_CURRENT_VERSION );
+		}
+	}
+	
+	// Copy the latest layout
+	if( $_POST['ec_option_copy_layout'] != "0" ){
+		$to = "../wp-content/plugins/wp-easycart-data/design/layout/";
+		$from = "../wp-content/plugins/wp-easycart-data/latest-design/layout/" . $_POST['ec_option_copy_layout'] . "/";
+		
+		if( is_dir( $to ) && !is_dir( $to . $_POST['ec_option_copy_layout'] . "-" . EC_CURRENT_VERSION . "/" ) && is_dir( $from ) ){
+			// Recursive copy the selected theme
+			wpeasycart_copyr( $from, $to . $_POST['ec_option_copy_layout'] . "-" . EC_CURRENT_VERSION . "/" );
+			update_option( 'ec_option_base_layout', $_POST['ec_option_copy_layout'] . "-" . EC_CURRENT_VERSION );
+		}
+	}
+}
+
 ?>
