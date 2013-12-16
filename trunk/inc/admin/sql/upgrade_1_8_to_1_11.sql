@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `ec_zone` (
    'The unique identifier for the ec_zone table',
   `zone_name` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
    'An identifying name for this zone.',
-  PRIMARY KEY (`zone_id`),
+  PRIMARY KEY (`zone_id`)
 )ENGINE=MyISAM 
 AUTO_INCREMENT=10 CHARACTER SET 'utf8' COLLATE
 'utf8_general_ci' DEFAULT CHARSET=utf8
