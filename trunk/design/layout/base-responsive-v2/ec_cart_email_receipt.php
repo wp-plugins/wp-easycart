@@ -86,14 +86,12 @@
                 	<tr><td>
                     <?php echo $this->cart->cart[$i]->title; ?>
                     </td></tr>
-                     <?php if( $this->cart->cart[$i]->gift_card_message ){ ?>
+                    <?php if( $this->cart->cart[$i]->gift_card_message ){ ?>
                     <tr><td>
-                      <?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_message' ); ?>
-                    </td></tr>
-                    <tr><td>
-                      <?php echo $this->cart->cart[$i]->gift_card_message; ?>
+                      <?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_message' ) . $this->cart->cart[$i]->gift_card_message; ?>
                     </td></tr>
                     <?php }?>
+                    
                     <?php if( $this->cart->cart[$i]->gift_card_from_name ){ ?>
                     <tr><td>
                       <?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_from' ) . $this->cart->cart[$i]->gift_card_from_name; ?>
@@ -101,7 +99,7 @@
                     <?php }?>
                     <?php if( $this->cart->cart[$i]->gift_card_to_name ){ ?>
                     <tr><td>
-                      <?php $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_to' ) . $this->cart->cart[$i]->gift_card_to_name; ?>
+                      <?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_to' ) . $this->cart->cart[$i]->gift_card_to_name; ?>
                     </td></tr>
                     <?php }?>
                     <?php if( $this->cart->cart[$i]->is_giftcard || $this->cart->cart[$i]->is_download ){ ?>
