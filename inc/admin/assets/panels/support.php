@@ -1,4 +1,3 @@
-
 <div class="ec_contentwrap">
      <br />
     <div class="ec_admin_page_title">Help and Support</div>
@@ -43,5 +42,4 @@
       </tr>
     </table>
     <p>&nbsp;</p>
-</div>
 </div>
