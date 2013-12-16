@@ -424,9 +424,13 @@ class ec_orderdetail{
 				header( "Content-Transfer-Encoding: binary\n" );
 				ob_end_clean();
 				
+				flush( );
+				
 				readfile( $file );
 				
 				$this->mysqli->update_download_count( $this->download_id, $this->download_count );
+				
+				die( );
 	
 			}
 		}

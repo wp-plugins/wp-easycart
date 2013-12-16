@@ -1,4 +1,5 @@
 <?php require_once( "assets/inc/adminv2_functions.php" ); ?>
+<?php include( "assets/elements/notifications.php" ); ?>
 <?php include( "assets/menus/mainmenu.php" ); ?>
 <div class="ec_admin_holder<?php if( isset( $_GET['ec_panel'] ) && ($_GET['ec_panel'] == "admin" || $_GET['ec_panel'] == "demos" || $_GET['ec_panel'] == "support") ){ echo "_console"; } ?>">
 	<?php
