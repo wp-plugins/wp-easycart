@@ -1474,4 +1474,19 @@ function ec_design_management_update( ){
 	}
 }
 
+function ec_send_test_email( ){
+	$order_id = $_POST['ec_order_id'];
+	$mysqli = new ec_db( );
+	$mysqli->update_order_status( $order_id, "10" );
+				
+	// send email
+	$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+	if( $order_row ){
+		$order_display = new ec_orderdisplay( $order_row, true );
+		$order_display->send_email_receipt( );
+		return true;
+	}else{
+		return false;
+	}
+}
 ?>
