@@ -1079,6 +1079,56 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_estimate_shipping_country', $_POST['ec_option_estimate_shipping_country'] );
 	update_option( 'ec_option_use_wp_mail', $_POST['ec_option_use_wp_mail'] );
 	update_option( 'ec_option_use_rtl', $_POST['ec_option_use_rtl'] );
+	update_option( 'ec_option_custom_css', $_POST['ec_option_custom_css'] );
+	
+	//update sizes
+	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 
+	$sizes_split = explode( ":::", $responsive_sizes );
+	
+	$responsive_sizes = "";
+	
+	for( $i=0; $i<count($sizes_split); $i++ ){
+		$temp_split = explode( "=", $sizes_split[$i] );
+		$key = $temp_split[0];
+		$val = $_POST[$key];
+		if( $i>0 )
+			$responsive_sizes .= ":::";
+		$responsive_sizes .= $key . "=" . $val;
+	}
+	
+	update_option( 'ec_option_responsive_sizes', $responsive_sizes );
+	
+	//update colors
+	$css_options = get_option( 'ec_option_css_replacements' ); 
+	$css_split = explode( ",", $css_options );
+	
+	$css_options = "";
+	
+	for( $i=0; $i<count($css_split); $i++ ){
+		$temp_split = explode( "=", $css_split[$i] );
+		$key = $temp_split[0];
+		$val = $_POST[$key];
+		if( $i>0 )
+			$css_options .= ",";
+		$css_options .= $key . "=" . $val;
+	}
+	update_option( 'ec_option_css_replacements', $css_options );
+	
+	//update fonts
+	$font_options = get_option( 'ec_option_font_replacements' ); 
+	$font_split = explode( ":::", $font_options );
+	
+	$font_options = "";
+	
+	for( $i=0; $i<count($font_split); $i++ ){
+		$temp_split = explode( "=", $font_split[$i] );
+		$key = $temp_split[0];
+		$val = $_POST[$key];
+		if( $i>0 )
+			$font_options .= ":::";
+		$font_options .= $key . "=" . $val;
+	}
+	update_option( 'ec_option_font_replacements', $font_options );
 }
 
 function ec_update_colors( ){
@@ -1219,4 +1269,10 @@ function ec_update_language_file( $language ){
 	update_option( 'ec_option_language', $_POST['ec_option_language'] );
 	$language->save_language_data( );
 }
+
+function ec_update_selected_design( ){
+	update_option( 'ec_option_base_theme', $_POST['ec_option_base_theme'] );
+	update_option( 'ec_option_base_layout', $_POST['ec_option_base_layout'] );
+}
+
 ?>

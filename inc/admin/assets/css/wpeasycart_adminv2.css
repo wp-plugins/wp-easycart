@@ -18,6 +18,30 @@
 	margin-left: 20px;
 }
 
+.ec_license_notification{
+	float:left;
+	width:1220px;
+	background: #333333;
+	color:#FFF;
+	background-position:10px 5px;
+	margin-left:-20px;
+	border:5px solid #7bb141;
+}
+
+.ec_license_notification_inner{
+	padding:15px; text-align:center; font-weight:bold;
+}
+
+.ec_license_notification_inner a{
+	color:#7bb141;
+	text-decoration:none;
+}
+
+.ec_license_notification_inner a:hover{
+	color:#FFF;
+	text-decoration:none;
+}
+
 /**************************************
 /* Online Demos shadows and notes
 /**************************************/
@@ -397,6 +421,10 @@ body{ height:100%; }
 	float:left; width:100%; font-size:18px; font-weight:bold; color:#7bb141;
 }
 
+.ec_admin_page_title_secondary{
+	float:left; width:100%; font-size:18px; font-weight:bold; color:#7bb141; margin-top:25px;
+}
+
 .ec_adin_page_intro{
 	float:left; width:100%; margin-bottom:20px; margin-top:10px;
 }
@@ -414,6 +442,10 @@ body{ height:100%; }
 
 .ec_setup_row_label{
 	float:left; width:100px; margin-left:20px; font-weight:bold;
+}
+
+.ec_setup_row_label_wide{
+	float:left; width:200px; margin-left:20px; font-weight:bold;
 }
 
 .ec_setup_row_input{
@@ -487,6 +519,10 @@ body{ height:100%; }
 
 .ec_setting_row_input{
 	float:left; width:225px;
+}
+
+.ec_setting_row_input_color{
+	float:left; width:225px; margin-top:7px;
 }
 
 .ec_setting_row_help{
