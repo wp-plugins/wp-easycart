@@ -1,4 +1,20 @@
 <?php
+$isupdate = false;
+if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "store-status" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "send_test_email" ){
+	$result = ec_send_test_email( );
+	if( $result )
+		$isupdate = "1";
+	else
+		$isupdate = "2";
+}
+?>
+
+<?php if( $isupdate && $isupdate == "1" ) { ?>
+	<div id='setting-error-settings_updated' class='updated settings-success'><p><strong>The receipt has been sent to the customer's email address and the admin.</strong></p></div>
+<?php }else if( $isupdate && $isupdate == "2" ){ ?>
+	<div id='setting-error-settings_updated' class='updated settings-success'><p><strong>The order row was not found from the entered order id.</strong></p></div> 
+<?php
+}
 ///////////////////////////////////////////////
 // Server Status Section
 ///////////////////////////////////////////////
@@ -255,4 +271,26 @@ if( ec_live_payment_selected( ) && ec_live_payment_setup( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have selected to use <?php echo ec_get_live_payment_method( ); ?> as a live payment method and you have entered all necessary info.</span></div>
 <?php }else if( ec_third_party_payment_selected( ) ){ ?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have selected <?php echo ec_get_live_payment_method( ); ?> , but have missed some necessary info. Go to Store Setup -> Payment Setup to resolve this.</span></div>
+<?php }
+
+////////////////////////////
+// Live Payment Type Selected Check
+////////////////////////////
+if( ec_live_payment_selected( ) && ec_live_payment_setup( ) ){ ?>
+<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have selected to use <?php echo ec_get_live_payment_method( ); ?> as a live payment method and you have entered all necessary info.</span></div>
+<?php }else if( ec_third_party_payment_selected( ) ){ ?>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have selected <?php echo ec_get_live_payment_method( ); ?> , but have missed some necessary info. Go to Store Setup -> Payment Setup to resolve this.</span></div>
 <?php } ?>
+
+<form action="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=store-status&ec_action=send_test_email" method="POST">
+<div class="ec_status_header"><div class="ec_status_header_text">Receipt Email Test</div></div>
+<div class="ec_adin_page_intro">This section is intended to troubleshoot the EasyCart emailer system. First place an order, then you can change the status of the order in the admin to a completed payment status (this allows you to test without actually completing the checkout payment process). Once you have a completed order, get the order id, enter it below, and hit the send email button.</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Send Receipt Test</em>Emails go out to customers once an order is placed and successfully processed.  This email address represents who that email comes from and if a customer hits reply, this email is where they will respond to. If you would like a name to be displayed in the 'FROM' line, enter an email address as follows: My Name&lt;myemail@mysite.com&gt;</span></a></span>
+    <span class="ec_setting_row_label">Order ID:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_order_id" value="1700" /></span>
+</div>
+
+<div class="ec_save_changes_row"><input type="submit" value="SEND EMAIL" class="ec_save_changes_button" /></div>
+</form>
