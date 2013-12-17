@@ -10,6 +10,7 @@ function ec_is_session_writable( ){
 function ec_is_store_page_setup( ){
 	$store_page_found = false;
 	$store_is_match = false;
+	$store_page_ids = array( );
 	$selected_store_id = get_option( 'ec_option_storepage' );
 	$pages = get_pages( );
 	foreach( $pages as $page ){
@@ -49,6 +50,7 @@ function ec_get_store_page_error( ){
 function ec_is_cart_page_setup( ){
 	$cart_page_found = false;
 	$cart_is_match = false;
+	$cart_page_ids = array( );
 	$selected_cart_id = get_option( 'ec_option_cartpage' );
 	$pages = get_pages( );
 	foreach( $pages as $page ){
@@ -88,6 +90,7 @@ function ec_get_cart_page_error( ){
 function ec_is_account_page_setup( ){
 	$account_page_found = false;
 	$account_is_match = false;
+	$account_page_ids = array( );
 	$selected_account_id = get_option( 'ec_option_accountpage' );
 	$pages = get_pages( );
 	foreach( $pages as $page ){
