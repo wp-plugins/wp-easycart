@@ -18,7 +18,7 @@ clothing and more!  And now with WordPress, the powerful features are still very
 
 WP EasyCart provides administrative software, so there is no need to use WordPress as a management system for your products. Desktop PC, Mac, iPad, and Android software is available to download and allows you to control the myriad of options the software has to offer.
 
-[youtube http://www.youtube.com/watch?v=OYqWP5SNsoA]
+[youtube http://www.youtube.com/watch?v=M1uyPcAYGoU]
 
 = POPULAR LINKS =
 
@@ -42,9 +42,10 @@ Key EasyCart features:
 
 * __Popular Payment Gateways__ - Accept PayPal standard, pro, authorize.net, FirstData, and many others.
 * __Internationalization__ - Set language, currency configurations, VAT, and payment gateways for seven continent coverage.
-* __Live Shipping__ - UPS, FedEx, and USPS all pre-integrated!
+* __Advanced Product Setup__ - Access Unlimited option sets, tiered pricing, B2B pricing, downloadable goods, featured products and more!
+* __Live Shipping__ - UPS, FedEx, USPS, Australian Post, and Shipping Zones all pre-integrated!
 * __Coupons and Promotions__ - Setup and run your marketing strategies with built in tools.
-* __Administrative Software__ -Run desktop PC and Mac software, or use our iPad and Android device software.
+* __Administrative Software__ -Run desktop PC and Mac software, or use our WordPress Plugin, iPad and Android device software.
 * __Google Analytics__ - Integrated eCommerce conversion tracking of orders, for unbelievable analytics data.
 * __Social Sharing__ - Every product is set to have social sharing icons.
 
@@ -57,30 +58,24 @@ WP EasyCart is a full service agency and offers custom services such as design, 
 
 == Installation ==
 
-1.  Create 3 new pages in WordPress: An example of the three page names would be 'Store', 'Shopping Cart', and 'My Account'.
+1.  Install and Activate the WordPress Shopping Cart plugin.
 
-2.  Open each page you just created and enter the WordPress shortcode to apply the eCommerce system to those pages. A short code is a word in brackets that is replaced by a plugin or widget when displayed to the user. The image on the right is a screenshot of adding the store shortcode to the store page.
+2.  Click the new WordPress sidemenu for EasyCart Admin -> Store Setup.
 
-     a.  Open the 'Store' page and type **[ec_store]** in the page text editor.
-	 
-	 b.  Open 'Shopping Cart' page and type **[ec_cart]** in the page text editor.
-	 
-     c.  Open 'My Account' page and type **[ec_account]** in the page text editor.
+3.  Click Create Page for the store, account, and cart.  EasyCart will automatically create 3 new pages in wordpress AND add the appropriate shortcode to those pages.
 
-3.  Select the pages you just created in the select boxes below. The will help the WP EasyCart link your store up correctly. That's it! Now you can configure your store or access the admin console area.
-
-4.  Download the administrative console by visiting your administration menu link.  This software lets you manage orders, update products and images, setup customer accounts, promotions, and more.
+4.  Download the administrative console by visiting the Store Admin menu link.  This software lets you manage orders, update products and images, setup customer accounts, promotions, and more.
 
 == Upgrading ==
 
-As with all wordpress plugins, even WordPress themselves suggest to always backup your data.  We recommend you always backup the plugin folder for WP EasyCart.  Usually located under /wp-content/plugins/wp-easycart/ is a good start.
+As with all wordpress plugins, even WordPress themselves suggest to always backup your data.  We recommend you always backup the plugin folder for WP EasyCart.  Usually located under /wp-content/plugins/wp-easycart-data/ & /wp-content/plugins/wp-easycart/ is a good start.
 
 **For more information on upgrading, please visit our website at [WP EasyCart Upgrading Process](http://wpeasycart.com/docs/1.0.0/index/upgrading.php "WP EasyCart Upgrading Process")
 
 **We have full documentation at [WP EasyCart](http://www.wpeasycart.com/ "WP EasyCart website") including an online users manual, video tutorials, and community forums.**
 
 = Watch our Installation Video =
-[youtube http://www.youtube.com/watch?v=OYqWP5SNsoA]
+[youtube http://www.youtube.com/watch?v=M1uyPcAYGoU]
 
 More videos can be found at our website!
 
@@ -108,7 +103,7 @@ If you purchase a monthly hosted plan, then we do have a monthly charge program 
 Yes you can! Simply go to the widgets page, and drag over the specials widget to any widget area. You can then check a box on the product you want to display in the specials area.
 
 = How do I add a vertical or horizontal store menu to my WordPress site? =
-Simply go to the widgets page, and drag over the store menu widget to any widget area.
+Simply go to the widgets page, and drag over the store menu widget to any widget area.  You may also go to the WordPress -> appearances -> menus and setup menus from the new Store Items category list.
 
 = How do I add categories, manufacturers, or price range filters to my WordPress site? =
 Simply go to the widgets page, and drag over the widget corresponding to the filter you wish to display to any widget area.
@@ -122,7 +117,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
-
+= 2.0.1 =
+* Addition - New unlimited advanced option sets allow for file uploads, radio groups, checkbox groups, text areas, text boxes!
+* Addition - New Shipping Zones allow you to setup shipping zones by country or by country and states.  All shipping methods let you attach a shipping method to that zone.
+* Addition - Completely new administrative look to the software, making setup easier, configuration easier, and finding your data easier.
+* Addition - Completely new EasyCart admin software designs allow new grid view of products and better pagination of data for easier viewing.
+* Addition - New store status page allows you to quickly view the status of your site and the settings that make-up the easycart system.
+* Addition - New one click colorizer to allow easy colorization of the entire shopping system (depending on EasyCart theme usage)
 = 1.2.16 =
 * Addition - New "hooks" feature for the plugin to allow developers to improve and expand functionality without touching the core files. Docs on this feature to come, still in early stages and limited functionality.
 * Addition - Products can be displayed as a grid or list view (need to add the ec_product_list.php and the new ec_product.css file to use the upgrade).
