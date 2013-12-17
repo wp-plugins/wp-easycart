@@ -111,7 +111,7 @@ if( ec_basic_settings_setup( ) ){ ?>
 if( ec_using_price_shipping( ) && ec_price_shipping_setup( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have successfully setup price based shipping.</span></div>
 <?php }else if( ec_using_price_shipping( ) ){ ?>
-<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">The setup of your server does not allow for us to copy the demo data and write it to your store. Manually add products to test functionality.</span></div>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have chosen to use price based shipping, but there doesn't appear to be any price triggers setup.</span></div>
 <?php }
 
 ////////////////////////////
@@ -120,7 +120,7 @@ if( ec_using_price_shipping( ) && ec_price_shipping_setup( ) ){ ?>
 if( ec_using_weight_shipping( ) && ec_weight_shipping_setup( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have successfully setup weight based shipping.</span></div>
 <?php }else if( ec_using_weight_shipping( ) ){ ?>
-<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">The setup of your server does not allow for us to copy the demo data and write it to your store. Manually add products to test functionality.</span></div>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have chosen to use weight based shipping, but there doesn't appear to be any weight triggers setup.</span></div>
 <?php }
 
 ////////////////////////////
@@ -129,7 +129,7 @@ if( ec_using_weight_shipping( ) && ec_weight_shipping_setup( ) ){ ?>
 if( ec_using_method_shipping( ) && ec_method_shipping_setup( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have successfully setup method based shipping.</span></div>
 <?php }else if( ec_using_method_shipping( ) ){ ?>
-<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have not added any price triggers, yet price based shipping is selected.</span></div>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have chosen to use method based shipping, but there doesn't appear to be any method triggers setup.</span></div>
 <?php }
 
 ////////////////////////////
@@ -269,16 +269,7 @@ if( ec_third_party_payment_selected( ) && ec_third_party_payment_setup( ) ){ ?>
 ////////////////////////////
 if( ec_live_payment_selected( ) && ec_live_payment_setup( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have selected to use <?php echo ec_get_live_payment_method( ); ?> as a live payment method and you have entered all necessary info.</span></div>
-<?php }else if( ec_third_party_payment_selected( ) ){ ?>
-<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have selected <?php echo ec_get_live_payment_method( ); ?> , but have missed some necessary info. Go to Store Setup -> Payment Setup to resolve this.</span></div>
-<?php }
-
-////////////////////////////
-// Live Payment Type Selected Check
-////////////////////////////
-if( ec_live_payment_selected( ) && ec_live_payment_setup( ) ){ ?>
-<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have selected to use <?php echo ec_get_live_payment_method( ); ?> as a live payment method and you have entered all necessary info.</span></div>
-<?php }else if( ec_third_party_payment_selected( ) ){ ?>
+<?php }else if( ec_live_payment_selected( ) ){ ?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have selected <?php echo ec_get_live_payment_method( ); ?> , but have missed some necessary info. Go to Store Setup -> Payment Setup to resolve this.</span></div>
 <?php } ?>
 

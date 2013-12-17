@@ -653,14 +653,14 @@ function ec_manual_payment_selected( ){
 
 function ec_third_party_payment_selected( ){
 	$third_party = get_option( 'ec_option_payment_third_party' );
-	if( $third_party )
+	if( $third_party && $third_party != "0" )
 		return true;
 	else
 		return false;
 }
 
 function ec_third_party_payment_setup( ){
-	$third_party = get_option( 'ec_option_payment_process_method' );
+	$third_party = get_option( 'ec_option_payment_third_party' );
 	if( $third_party == "paypal" ){
 		if( get_option( 'ec_option_paypal_email' ) != "" )
 			return true;
@@ -698,7 +698,7 @@ function ec_get_third_party_method( ){
 
 function ec_live_payment_selected( ){
 	$live_payment = get_option( 'ec_option_payment_process_method' );
-	if( $live_payment )
+	if( $live_payment && $live_payment != "0" )
 		return true;
 	else
 		return false;

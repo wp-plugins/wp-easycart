@@ -60,7 +60,7 @@ ALTER TABLE ec_menulevel3 ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT '
 ALTER TABLE ec_category ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.';
 ALTER TABLE ec_manufacturer ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.';
 ALTER TABLE ec_product ADD `use_advanced_optionset` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If true, uses the advanced, unlimited option set type.';
-ALTER TABLE ec_option ADD `option_type` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'combo' COMMENT 'The type of input for the option.'
+ALTER TABLE ec_option ADD `option_type` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'combo' COMMENT 'The type of input for the option.';
 ALTER TABLE ec_option ADD `option_required` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'Is this option required.';
 ALTER TABLE ec_option ADD `option_error_text` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Text displayed when option required and no value selected.';
 ALTER TABLE ec_optionitem ADD `optionitem_price_onetime` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Price change one-time addition to total price.';
