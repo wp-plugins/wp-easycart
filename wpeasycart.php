@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.0.1
+ * @version 2.0.2
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_0_1' );
+define( 'EC_CURRENT_VERSION', '2_0_2' );
 define( 'EC_CURRENT_DB', '1_11' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -426,6 +426,17 @@ function load_ec_pre(){
 	
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" ) ){
 		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" );
+	}
+	
+	/* Bug Fix for Product List Drop Down */
+	if( !get_option( 'ec_option_product_filter_1' ) && !get_option( 'ec_option_product_filter_2' ) && !get_option( 'ec_option_product_filter_3' ) && !get_option( 'ec_option_product_filter_4' ) && !get_option( 'ec_option_product_filter_5') && !get_option( 'ec_option_product_filter_6') && !get_option( 'ec_option_product_filter_7' ) ){
+		update_option( 'ec_option_product_filter_1', '1' );
+		update_option( 'ec_option_product_filter_2', '1' );
+		update_option( 'ec_option_product_filter_3', '1' );
+		update_option( 'ec_option_product_filter_4', '1' );
+		update_option( 'ec_option_product_filter_5', '1' );
+		update_option( 'ec_option_product_filter_6', '1' );
+		update_option( 'ec_option_product_filter_7', '1' );
 	}
 }
 

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.0.2 =
+* Bug Fix - Product list drop down bug fix.
 = 2.0.1 =
 * Addition - New unlimited advanced option sets allow for file uploads, radio groups, checkbox groups, text areas, text boxes!
 * Addition - New Shipping Zones allow you to setup shipping zones by country or by country and states.  All shipping methods let you attach a shipping method to that zone.
