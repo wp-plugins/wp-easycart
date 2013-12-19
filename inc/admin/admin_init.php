@@ -6,6 +6,21 @@ add_action( 'admin_enqueue_scripts', 'ec_load_admin_scripts' );
 add_action( 'admin_init', 'ec_register_settings' );
 add_action( 'admin_menu', 'ec_create_menu' );
 add_action( 'admin_init', 'ec_custom_downloads', 1 );
+add_action( 'admin_notices', 'ec_install_admin_notice' );
+
+function ec_install_admin_notice() {
+	if( isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "basic-setup" ){
+		update_option( 'ec_option_show_install_message', '1' );
+	}
+	
+	if( !get_option( 'ec_option_show_install_message' ) && ( !get_option( 'ec_option_accountpage' ) || !get_option( 'ec_option_cartpage' ) || !get_option( 'ec_option_storepage' ) ) ){
+    ?>
+    <div class="updated">
+        <p>You Have not Setup Your WP EasyCart! Please <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-setup">Click Here to Setup</a>.</p>
+    </div>
+    <?php
+	}
+}
 
 function ec_load_admin_scripts( ){
 	

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -70,7 +70,7 @@ WP EasyCart is a full service agency and offers custom services such as design, 
 
 As with all wordpress plugins, even WordPress themselves suggest to always backup your data.  We recommend you always backup the plugin folder for WP EasyCart.  Usually located under /wp-content/plugins/wp-easycart-data/ & /wp-content/plugins/wp-easycart/ is a good start.
 
-**For more information on upgrading, please visit our website at [WP EasyCart Upgrading Process](http://wpeasycart.com/docs/1.0.0/index/upgrading.php "WP EasyCart Upgrading Process")
+**For more information on upgrading, please visit our website at [WP EasyCart Upgrading Process](http://wpeasycart.com/docs/2.0.0/index/upgrading.php "WP EasyCart Upgrading Process")
 
 **We have full documentation at [WP EasyCart](http://www.wpeasycart.com/ "WP EasyCart website") including an online users manual, video tutorials, and community forums.**
 
@@ -117,6 +117,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.0.3 =
+* Bug Fix - Fixed the design file upgrader script in the WordPress admin.
+* Addition - Added a notice for new users to help them get to the installation and settings page.
 = 2.0.2 =
 * Bug Fix - Product list drop down bug fix.
 = 2.0.1 =
