@@ -316,6 +316,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-language-group');
 		array_push($this->wp_option_names, 'ec_option_language_data');						array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-language-group');
+		array_push($this->wp_option_names, 'ec_option_use_seperate_language_forms');		array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-language-group');
 				
 		// Base Design Options	
 		array_push($this->wp_option_names, 'ec_option_base_theme');							array_push($this->wp_option_defaults, 'base-responsive-v2' );
