@@ -308,7 +308,13 @@ class ec_admin_products
 			foreach ($original_record as $key => $value) {
 				if ($key != "product_id" && $key != "model_number") {
 					//$query .= '`'.$key.'` = "'.str_replace('"','\"',mysql_real_escape_string($value)).'", '; //removed, was adding double \\" to escape them 
-					$query .= '`'.$key.'` = "'.mysql_real_escape_string($value).'", ';
+					if ($key == 'added_to_db_date') {
+						$query .= '`'.$key.'` = NOW(), ';
+					} else if ($key == 'views') {
+						$query .= '`'.$key.'` = "0", ';
+					} else {
+						$query .= '`'.$key.'` = "'.mysql_real_escape_string($value).'", ';
+					}
 				}
 			}
 			$query = substr($query,0,strlen($query)-2); # lop off the extra trailing comma
