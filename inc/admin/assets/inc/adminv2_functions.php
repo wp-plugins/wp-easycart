@@ -1453,7 +1453,7 @@ function ec_design_management_update( ){
 	}
 	
 	// Copy the latest theme
-	if( $_POST['ec_option_copy_theme'] != "0" ){
+	if( isset( $_POST['ec_option_copy_theme']) && $_POST['ec_option_copy_theme'] != "0" ){
 		$to = "../wp-content/plugins/wp-easycart-data/design/theme/";
 		$from = "../wp-content/plugins/wp-easycart-data/latest-design/theme/" . $_POST['ec_option_copy_theme'] . "/";
 		
@@ -1465,7 +1465,7 @@ function ec_design_management_update( ){
 	}
 	
 	// Copy the latest layout
-	if( $_POST['ec_option_copy_layout'] != "0" ){
+	if( isset( $_POST['ec_option_copy_layout']) && $_POST['ec_option_copy_layout'] != "0" ){
 		$to = "../wp-content/plugins/wp-easycart-data/design/layout/";
 		$from = "../wp-content/plugins/wp-easycart-data/latest-design/layout/" . $_POST['ec_option_copy_layout'] . "/";
 		

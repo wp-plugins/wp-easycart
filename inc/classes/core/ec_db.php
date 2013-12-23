@@ -2479,7 +2479,7 @@ class ec_db{
 	}
 	
 	public function get_advanced_optionsets( $product_id ){
-		$sql = "SELECT ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required, ec_option.option_error_text FROM ec_option_to_product LEFT JOIN ec_option ON ec_option.option_id = ec_option_to_product.option_id WHERE ec_option_to_product.product_id = %d";
+		$sql = "SELECT ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required, ec_option.option_error_text FROM ec_option_to_product LEFT JOIN ec_option ON ec_option.option_id = ec_option_to_product.option_id WHERE ec_option_to_product.product_id = %d ORDER BY ec_option_to_product.option_id ASC";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $product_id ) );
 	}
 	
