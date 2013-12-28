@@ -108,7 +108,7 @@ a:active {
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td class="label">PHP: Version Minimum (<?php echo $minimumversion ?>) - Currently <?php echo phpversion() ?> &nbsp;&nbsp;&nbsp;<a href="phpinfo.php" target="_blank">Click to View full PHPINFO()</a></td>
+            <td class="label">PHP: Version Minimum (<?php echo $minimumversion ?>) - Currently <?php echo phpversion() ?> &nbsp;&nbsp;&nbsp;</td>
             <?php
                         	// ======= Version Check =======
                             $phpversionresult = version_compare(phpversion(), $minimumversion);
