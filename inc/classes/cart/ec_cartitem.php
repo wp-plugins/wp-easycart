@@ -203,7 +203,7 @@ class ec_cartitem{
 				}
 				
 				if( $advanced_option->optionitem_weight != 0 ){
-					$options_weight = $options_weight + ( $advanced_option->optionitem_weight * $this->quantity ); 
+					$options_weight = $options_weight + $advanced_option->optionitem_weight; 
 				}else if( $advanced_option->optionitem_weight_onetime != 0 ){ 
 					$options_weight_onetime = $options_weight_onetime + $advanced_option->optionitem_weight_onetime; 
 				}else if( $advanced_option->optionitem_weight_override >= 0 ){
