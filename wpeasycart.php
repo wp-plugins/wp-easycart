@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.0.6
+ * Version: 2.0.7
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.0.6
+ * @version 2.0.7
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_0_6' );
+define( 'EC_CURRENT_VERSION', '2_0_7' );
 define( 'EC_CURRENT_DB', '1_11' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -37,11 +37,11 @@ if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/ec_hooks.php" ) )
 
 function ec_activate(){
 	
-	//ADD OPTIONS
+	// ADD WORDPRESS OPTIONS
 	$wpoptions = new ec_wpoptionset();
 	$wpoptions->add_options();
 	
-	//INITIALIZE
+	//INITIALIZE DATABASE
 	$mysqli = new ec_db();
 	
 	// FIRST ATTEMPT TO INSTALL THE INITIAL VERSION.
@@ -51,8 +51,9 @@ function ec_activate(){
 	$install_sql = fread( $f, filesize( $install_sql_url ) );
 	$install_sql_array = explode(';', $install_sql);
 	$mysqli->install( $install_sql_array );
+	// END SQL INSTALLER
 	
-	// NOW LETS CHECK TO SEE IF WE NEED TO UPGRADE THE DB
+	// START SQL UPGRADER
 	if( get_option( 'ec_option_db_version' ) && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
 		$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . get_option( 'ec_option_db_version') . '_to_' . EC_CURRENT_DB . '.sql';
 		$f = fopen( $update_sql_url, "r") or die("The Wp EasyCart plugin was unable to access the database upgrade script. Upgrade halted. To fix this problem, change the permissions on the following files to 775 and try again: wp-easycart/inc/admin/sql/upgrade_x_x_to_x_x (change all upgrade files unless you know what plugin DB version you have and which you are upgrading to). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.");
@@ -62,11 +63,13 @@ function ec_activate(){
 		$db->upgrade( $upgrade_sql_array );
 		update_option( 'ec_option_db_version', EC_CURRENT_DB );
 	}
+	// END SQL UPGRADER
 	
-	//UPDATE SITE URL
+	// UPDATE SITE URL
 	$site = explode( "://", ec_get_url( ) );
 	$site = $site[1];
 	$mysqli->update_url( $site );
+	// END UPDATE SITE URL 
 	
 	//SETUP BASIC LANGUAGE SETTINGS
 	$language = new ec_language( );
@@ -92,26 +95,30 @@ function ec_activate(){
 		fwrite($ec_conn_filehandler, $ec_conn_php);
 		fclose($ec_conn_filehandler);
 	}
+	//END WRITE FOR EC_CONN FILE FOR AMFPHP
 	
+	// FIX FOR CURRENCY ISSUES
 	if( get_option( 'ec_option_currency' ) == '&#36;' ){
 		update_option( 'ec_option_currency', '$' );	
 	}
+	// END FIX FOR CURRENCY ISSUES
 	
-	// This is a fix for the backup issue. We are going to put into place now in hopes it saves people some of the troubles they've been having.
+	// IF NO wp-easycart-data FOLDER
+	// SHOULD ONLY RUN ON FIRST INSTALL
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
 		
-		// Now Copy Recursive (connection, design, products
 		$to = WP_PLUGIN_DIR . "/wp-easycart-data/";
 		$from = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
 		
-		// Make destination directory
+		// CHECK IF WRITABLE
 		if( !is_writable( WP_PLUGIN_DIR ) ){
 			
 			// We really can't do anything now about the data folder. Lets try and get people to do this in the install page.
 			
 		}else{
 			mkdir( $to, 0755 );
-		
+			
+			// COPY FROM wp-easycart to wp-easycart-data
 			wpeasycart_copyr( $from . "products", $to . "products" );
 			wpeasycart_copyr( $from . "design", $to . "design" );
 			wpeasycart_copyr( $from . "connection", $to . "connection" );
@@ -119,10 +126,10 @@ function ec_activate(){
 		}
 	}
 	
+	// Create Uploads folder if it doesn't exist
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart/products/uploads/" ) ){
 		mkdir( WP_PLUGIN_DIR . "/wp-easycart/products/uploads/" );
 	}
-	
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" ) ){
 		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" );
 	}
@@ -179,7 +186,7 @@ register_uninstall_hook( __FILE__, 'ec_uninstall' );
 
 function load_ec_pre(){
 	
-	// NOW LETS CHECK TO SEE IF WE NEED TO UPGRADE THE DB
+	// UPGRADE THE DB IF NEEDED
 	if( get_option( 'ec_option_db_version' ) && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
 		$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . get_option( 'ec_option_db_version') . '_to_' . EC_CURRENT_DB . '.sql';
 		$f = fopen( $update_sql_url, "r") or die("The Wp EasyCart plugin was unable to access the database upgrade script. Upgrade halted. To fix this problem, change the permissions on the following files to 775 and try again: wp-easycart/inc/admin/sql/upgrade_x_x_to_x_x (change all upgrade files unless you know what plugin DB version you have and which you are upgrading to). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.");
@@ -189,23 +196,23 @@ function load_ec_pre(){
 		$db->upgrade( $upgrade_sql_array );
 		update_option( 'ec_option_db_version', EC_CURRENT_DB );
 	}
+	// END UPGRADE THE DB IF NEEDED
 	
-	// check for a banners folder, upgrader needs to create this if it doesn't
+	// CREATE BANNERS FOLDER IF IT DOESN'T EXIST
 	$banners_folder = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/products' . "/banners";
 	if( !is_dir( $banners_folder  ) ){
 		// Any version before 13 needs the banner folder.
 		if( !mkdir( $banners_folder, 0755 ) )
 			echo "The WP EasyCart plugin could not add a folder to your install on upgrade. You will need to manually add this folder on your server to access future features. To solve this issue add a folder called 'banners' to the following directory: wp-easycart/products/ (so wp-easycart/products/banners needs to exist). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.";
 	}
+	// END CREATE BANNERS FOLDER IF IT DOESN'T EXIST
 	
-	// This is a fix for the backup issue. We are going to put into place now in hopes it saves people some of the troubles they've been having.
+	// CREATE DATA FOLDER IF IT DOESN'T EXIST
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
 		
-		// Now Copy Recursive (connection, design, products
 		$to = WP_PLUGIN_DIR . "/wp-easycart-data/";
 		$from = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
 		
-		// Make destination directory
 		if( !is_writable( WP_PLUGIN_DIR ) ){
 			
 			// We really can't do anything now about the data folder. Lets try and get people to do this in the install page.
@@ -213,50 +220,39 @@ function load_ec_pre(){
 		}else{
 			mkdir( $to, 0755 );
 			
-			// If no latest design folder, obviously it should be created
-			if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-				mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-				
-				$version = EC_CURRENT_VERSION;
-				$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-				fwrite( $fp, $version );
-				fclose( $fp );
-			}
-			
-			// We should check the current "latest version" and see if it needs to be updated (only run in upgrade)
-			if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
-					$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
-				else
-					$version = "1";
-				
-				if( $version != EC_CURRENT_VERSION ){
-					// This is an outdated version, lets update.
-					ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
-					
-					mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-					
-					$version = EC_CURRENT_VERSION;
-					$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-					fwrite( $fp, $version );
-					fclose( $fp );
-				}
-			}
-			
 			// Now backup
 			wpeasycart_copyr( $from . "products", $to . "products" );
 			wpeasycart_copyr( $from . "design", $to . "design" );
 			wpeasycart_copyr( $from . "connection", $to . "connection" );
 			
 		}
-	}else{
+	}
+	// END CREATE DATA FOLDER IF IT DOESN'T EXIST
 	
-		// If no latest design folder, obviously it should be created
-		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+	// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
+		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
+		
+		$version = EC_CURRENT_VERSION;
+		$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
+		fwrite( $fp, $version );
+		fclose( $fp );
+	}
+	// END CREATE LATEST DESIGN FOLDER
+	
+	// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
+	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
+			$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
+		else
+			$version = "1";
+			
+		if( $version != EC_CURRENT_VERSION ){
+			// This is an outdated version, lets update.
+			ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
+			
 			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
 			wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
 			wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
@@ -266,29 +262,8 @@ function load_ec_pre(){
 			fwrite( $fp, $version );
 			fclose( $fp );
 		}
-		
-		// We should check the current "latest version" and see if it needs to be updated (only run in upgrade)
-		if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
-				$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
-			else
-				$version = "1";
-			
-			if( $version != EC_CURRENT_VERSION ){
-				// This is an outdated version, lets update.
-				ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
-				
-				mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-				
-				$version = EC_CURRENT_VERSION;
-				$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-				fwrite( $fp, $version );
-				fclose( $fp );
-			}
-		}
 	}
+	// END UPDATE LATEST DESIGN FOLDER
 	
 	///////////////////////////////////////////////////////////////////////////////////
 	// This is a check to ensure old users are upgraded to the new linking format
@@ -386,6 +361,7 @@ function load_ec_pre(){
 	// END - linkage check
 	///////////////////////////////////////////////////////////////////////////////////
 	
+	// START STATS AND FORM PROCESSING
 	$storepageid = get_option('ec_option_storepage');
 	$cartpageid = get_option('ec_option_cartpage');
 	$accountpageid = get_option('ec_option_accountpage');
@@ -463,7 +439,9 @@ function load_ec_pre(){
 		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" );
 	}
 	
-	/* Bug Fix for Product List Drop Down */
+	// END STATS AND FORM PROCESSING
+	
+	// FIX FOR PRODUCT LIST DROP DOWN
 	if( !get_option( 'ec_option_product_filter_1' ) && !get_option( 'ec_option_product_filter_2' ) && !get_option( 'ec_option_product_filter_3' ) && !get_option( 'ec_option_product_filter_4' ) && !get_option( 'ec_option_product_filter_5') && !get_option( 'ec_option_product_filter_6') && !get_option( 'ec_option_product_filter_7' ) ){
 		update_option( 'ec_option_product_filter_1', '1' );
 		update_option( 'ec_option_product_filter_2', '1' );
@@ -473,6 +451,7 @@ function load_ec_pre(){
 		update_option( 'ec_option_product_filter_6', '1' );
 		update_option( 'ec_option_product_filter_7', '1' );
 	}
+	// END FIX FOR PRODUCT LIST DROP DOWN
 }
 
 function ec_custom_headers( ){
@@ -961,6 +940,42 @@ function wpeasycart_recover( ){
 			$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
 			$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
 			
+			// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
+			if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+				mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
+				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
+				
+				$version = EC_CURRENT_VERSION;
+				$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
+				fwrite( $fp, $version );
+				fclose( $fp );
+			}
+			// END CREATE LATEST DESIGN FOLDER
+			
+			// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
+			if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
+					$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
+				else
+					$version = "1";
+				
+				if( $version != EC_CURRENT_VERSION ){
+					// This is an outdated version, lets update.
+					ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
+					
+					mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
+					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
+					
+					$version = EC_CURRENT_VERSION;
+					$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
+					fwrite( $fp, $version );
+					fclose( $fp );
+				}
+			}
+			// END UPDATE LATEST DESIGN FOLDER
+			
 			// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
 			$success = false;
 			if( is_dir( $to . "products" ) ) {
@@ -1085,6 +1100,42 @@ function wpeasycart_recover_ftp( ){
 			// Setup your pathing (relative to the plugins folder)
 			$wp_new = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
 			$wp_backup = WP_PLUGIN_DIR . "/wp-easycart-backup/";
+			
+			// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
+			if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+				ftp_mkdir( $conn_id, WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
+				ec_ftp_recursive_copy( $conn_id, WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+				ec_ftp_recursive_copy( $conn_id, WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
+				
+				$version = EC_CURRENT_VERSION;
+				$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
+				fwrite( $fp, $version );
+				fclose( $fp );
+			}
+			// END CREATE LATEST DESIGN FOLDER
+			
+			// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
+			if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
+					$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
+				else
+					$version = "1";
+				
+				if( $version != EC_CURRENT_VERSION ){
+					// This is an outdated version, lets update.
+					ec_recursive_ftp_remove_directory( $conn_id, WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
+					
+					ftp_mkdir( $conn_id, WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
+					ec_ftp_recursive_copy( $conn_id, WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+					ec_ftp_recursive_copy( $conn_id, WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
+					
+					$version = EC_CURRENT_VERSION;
+					$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
+					fwrite( $fp, $version );
+					fclose( $fp );
+				}
+			}
+			// END UPDATE LATEST DESIGN FOLDER
 			
 			// Recover products images
 			ftp_rename( $conn_id, $wp_new . "products", $wp_new . "products_new" );

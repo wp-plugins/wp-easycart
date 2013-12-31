@@ -113,6 +113,29 @@ class ec_admin_options
 			  $deletesql = $this->escape("DELETE FROM ec_option WHERE ec_option.option_id = '%s'", $optionid);
 			  //Run query on database;
 			  mysql_query($deletesql);
+			  
+			  //update products who have this option on them.
+			  //Create SQL Query
+			  $sql = $this->escape("UPDATE ec_product SET ec_product.option_id_1 = 0 WHERE ec_product.option_id_1 = '%s'", $optionid);
+			  //Run query on database;
+			  mysql_query($sql);
+			  //Create SQL Query
+			  $sql = $this->escape("UPDATE ec_product SET ec_product.option_id_2 = 0 WHERE ec_product.option_id_2 = '%s'", $optionid);
+			  //Run query on database;
+			  mysql_query($sql);
+			  //Create SQL Query
+			  $sql = $this->escape("UPDATE ec_product SET ec_product.option_id_3 = 0 WHERE ec_product.option_id_3 = '%s'", $optionid);
+			  //Run query on database;
+			  mysql_query($sql);
+			  //Create SQL Query
+			  $sql = $this->escape("UPDATE ec_product SET ec_product.option_id_4 = 0 WHERE ec_product.option_id_4 = '%s'", $optionid);
+			  //Run query on database;
+			  mysql_query($sql);
+			  //Create SQL Query
+			  $sql = $this->escape("UPDATE ec_product SET ec_product.option_id_5 = 0 WHERE ec_product.option_id_5 = '%s'", $optionid);
+			  //Run query on database;
+			  mysql_query($sql);
+			
 			 
 			 	//get all option items and delete them from db
 			 	$sql_getoptionitemid = sprintf("SELECT optionitem_id from ec_optionitem WHERE ec_optionitem.option_id = '%s'", $optionid);
@@ -178,12 +201,13 @@ class ec_admin_options
 			  $option = (array)$option;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_option(ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required)
-				values('".$optionid."', '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Replace into ec_option(ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required, ec_option.option_error_text)
+				values('".$optionid."', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($option['optionname']),
 				mysql_real_escape_string($option['optionlabel']),
 				mysql_real_escape_string($option['optiontype']),
-				mysql_real_escape_string($option['optionrequired']));
+				mysql_real_escape_string($option['optionrequired']),
+				mysql_real_escape_string($option['optionerror']));
 				
 			//Run query on database;
 			mysql_query($sql);
@@ -202,12 +226,13 @@ class ec_admin_options
 			  $option = (array)$option;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_option(ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required)
-				values(Null, '%s', '%s', '%s', '%s')",
+			  $sql = sprintf("Insert into ec_option(ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required, ec_option.option_error_text)
+				values(Null, '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($option['optionname']),
 				mysql_real_escape_string($option['optionlabel']),
 				mysql_real_escape_string($option['optiontype']),
-				mysql_real_escape_string($option['optionrequired']));
+				mysql_real_escape_string($option['optionrequired']),
+				mysql_real_escape_string($option['optionerror']));
 				
 			  mysql_query($sql);
 			  $option_id_parent = mysql_insert_id();
