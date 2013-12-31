@@ -230,7 +230,7 @@ function load_ec_pre(){
 	// END CREATE DATA FOLDER IF IT DOESN'T EXIST
 	
 	// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
-	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+	/*if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
 		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
 		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
 		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
@@ -262,7 +262,7 @@ function load_ec_pre(){
 			fwrite( $fp, $version );
 			fclose( $fp );
 		}
-	}
+	}*/
 	// END UPDATE LATEST DESIGN FOLDER
 	
 	///////////////////////////////////////////////////////////////////////////////////
