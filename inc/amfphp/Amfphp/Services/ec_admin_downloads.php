@@ -127,7 +127,7 @@ class ec_admin_downloads
 		function readdownloaddirectory() { 
 			  //get a list of files in the download directory
 			$listDir = array(); 
-			$dir = "../../../products/downloads";
+			$dir = "../../../../wp-easycart-data/products/downloads";
 			if($handler = opendir($dir)) { 
 				while (($sub = readdir($handler)) !== FALSE) { 
 					if ($sub != "." && $sub != ".." && $sub != "Thumb.db" && $sub != "_notes" && $sub != ".htaccess") { 
