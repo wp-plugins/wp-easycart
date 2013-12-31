@@ -433,7 +433,12 @@ class ec_product{
 	
 	/* Display the add to cart button */
 	public function display_product_add_to_cart_button( $title, $id ){
-		echo "<input type=\"submit\" value=\"" . $title . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\" onclick=\"return ec_product_details_add_to_cart( '" . $this->model_number . "' );\" />";
+		echo "<input type=\"submit\" value=\"" . $title . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\" ";
+		if( $this->use_advanced_optionset )
+			echo "onclick=\"return ec_product_details_add_to_cart_advanced( '" . $this->model_number . "' );\" />";
+		else
+			echo "onclick=\"return ec_product_details_add_to_cart( '" . $this->model_number . "' );\" />";
+			
 		echo "<div class=\"ec_error_message_box\" id=\"" . $id . "_" . $this->model_number . "\">error text here</div>";
 	}
 	

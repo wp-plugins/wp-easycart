@@ -15,6 +15,13 @@ class ec_storepage{
 	private $store_page;
 	private $permalink_divider;
 	
+	// Short Code Info
+	public $menu_id;
+	public $submenu_id;
+	public $subsubmenu_id;
+	public $manufacturer_id;
+	public $group_id;
+	
 	////////////////////////////////////////////////////////
 	// CONSTUCTOR FUNCTION
 	////////////////////////////////////////////////////////
@@ -39,6 +46,12 @@ class ec_storepage{
 		
 		if( substr_count( $this->store_page, '?' ) )						$this->permalink_divider = "&";
 		else																$this->permalink_divider = "?";
+		
+		$this->menu_id = $menuid;
+		$this->submenu_id = $submenuid;
+		$this->subsubmenu_id = $subsubmenuid;
+		$this->manufacturer_id = $manufacturerid;
+		$this->group_id = $groupid;
 	}
 
 	////////////////////////////////////////////////////////
