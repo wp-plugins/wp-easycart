@@ -938,7 +938,7 @@ function wpeasycart_recover( ){
 		$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
 		$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
 		
-		$latest_folder = WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/";
+		$latest_folder = WP_PLUGIN_DIR . "/latest-design/";
 		
 		// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
 		if( !is_dir( $latest_folder ) ){
