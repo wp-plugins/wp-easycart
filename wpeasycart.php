@@ -1067,7 +1067,7 @@ function wpeasycart_recover( ){
 		// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
 		$success = false;
 		if( is_dir( $from ) ) {
-			$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
+			//$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
 		}
 		if( !$success ){
 			$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
