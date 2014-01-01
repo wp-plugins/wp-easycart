@@ -761,16 +761,12 @@ function wpeasycart_copyr( $source, $dest ){
 
 function wpeasycart_backup( ){
 	
-	error_log( "Backup Test 1", 0, WP_PLUGIN_DIR );
-	
 	if( !is_writable( WP_PLUGIN_DIR ) ){
 		
-		error_log( "Backup Test 2", 0, WP_PLUGIN_DIR );	
 		wpeasycart_backup_ftp( );
 		
 	}else{
 	
-		error_log( "Backup Test 3", 0, WP_PLUGIN_DIR );
 		$to = WP_PLUGIN_DIR . "/wp-easycart-backup/"; // <------- this back up directory will be made
 		$from = WP_PLUGIN_DIR . "/wp-easycart/"; // <------- this is the directory that will be backed up
 		
@@ -790,11 +786,13 @@ function wpeasycart_backup( ){
 			error_log( $err_message );
 			exit( $err_message );	
 		}
-		$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );
+		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
+			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );
+			}
 		}
 		$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
 		if( !$success ){
@@ -930,21 +928,15 @@ function ec_ran_list_n($rawlist, $path) {
 
 function wpeasycart_recover( ){
 	
-	error_log( "Recover Test 1", 0, WP_PLUGIN_DIR );
-	
 	if( !is_writable( WP_PLUGIN_DIR ) ){
 		
-		error_log( "Recover Test 2", 0, WP_PLUGIN_DIR );	
 		wpeasycart_recover_ftp( );
 		
 	}else{
 		
-		error_log( "Recover Test 3", 0, WP_PLUGIN_DIR );
-		
 		$from = WP_PLUGIN_DIR . "/wp-easycart-backup/"; // <------- this back up directory will be made
 		$to = WP_PLUGIN_DIR . "/wp-easycart/"; // <------- this is the directory that will be backed up
 		
-		error_log( "trying to save latest-design here: " . $to );
 		rename( $to . "design", $to . "latest-design" );
 		/*
 		// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
@@ -1032,14 +1024,16 @@ function wpeasycart_recover( ){
 		 * END 1.1.7 UPGRADE
 		 **********************************************************/
 		
-		$success = false;
-		if( is_dir( $to . "design" ) ) {
-			$success = ec_recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
-		}
-		if( !$success ){
-			$err_message = "wpeasycart - error removing the design folder from the upgraded plugin. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
+		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
+			$success = false;
+			if( is_dir( $to . "design" ) ) {
+				$success = ec_recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the design folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
 		}
 		
 		$success = false;
@@ -1059,11 +1053,13 @@ function wpeasycart_recover( ){
 			error_log( $err_message );
 			exit( $err_message );	
 		}
-		$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
+		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
+			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
 		}
 		$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
 		if( !$success ){
@@ -1075,7 +1071,7 @@ function wpeasycart_recover( ){
 		// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
 		$success = false;
 		if( is_dir( $from ) ) {
-			//$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
+			$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
 		}
 		if( !$success ){
 			$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
