@@ -929,7 +929,7 @@ function ec_ran_list_n($rawlist, $path) {
 
 function wpeasycart_recover( ){
 	
-	if( !is_writable( WP_PLUGIN_DIR ) ){
+	if( !is_writable( dirname(__FILE__) . "/../" ) ){
 			
 		wpeasycart_recover_ftp( );
 		
