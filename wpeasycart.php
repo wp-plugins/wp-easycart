@@ -940,41 +940,7 @@ function wpeasycart_recover( ){
 			$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
 			$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
 			
-			// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
-			if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-				mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-				
-				$version = EC_CURRENT_VERSION;
-				$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-				fwrite( $fp, $version );
-				fclose( $fp );
-			}
-			// END CREATE LATEST DESIGN FOLDER
-			
-			// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
-			if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
-					$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
-				else
-					$version = "1";
-				
-				if( $version != EC_CURRENT_VERSION ){
-					// This is an outdated version, lets update.
-					ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
-					
-					mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-					
-					$version = EC_CURRENT_VERSION;
-					$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-					fwrite( $fp, $version );
-					fclose( $fp );
-				}
-			}
-			// END UPDATE LATEST DESIGN FOLDER
+			wpeasycart_copyr( $to . "/design", $to . "/latest-design" );
 			
 			// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
 			$success = false;
