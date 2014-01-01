@@ -938,6 +938,7 @@ function wpeasycart_recover( ){
 		$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
 		$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
 		
+		error_log( "trying to save latest-design here: " . $to );
 		rename( $to . "design", $to . "latest-design" );
 		/*
 		// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
