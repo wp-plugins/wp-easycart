@@ -230,7 +230,7 @@ function load_ec_pre(){
 	// END CREATE DATA FOLDER IF IT DOESN'T EXIST
 	
 	// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
-	/*if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
 		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
 		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
 		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
@@ -262,7 +262,7 @@ function load_ec_pre(){
 			fwrite( $fp, $version );
 			fclose( $fp );
 		}
-	}*/
+	}
 	// END UPDATE LATEST DESIGN FOLDER
 	
 	///////////////////////////////////////////////////////////////////////////////////
@@ -761,46 +761,47 @@ function wpeasycart_copyr( $source, $dest ){
 
 function wpeasycart_backup( ){
 	
-	if( !is_writable( WP_PLUGIN_DIR ) ){
-		
-		wpeasycart_backup_ftp( );
-		
-	}else{
+	//if( isset( $_GET['plugin'] ) && $_GET['plugin'] == "wp-easycart/wpeasycart.php" ){
 	
-		$to = WP_PLUGIN_DIR . "/wp-easycart-backup/"; // <------- this back up directory will be made
-		$from = WP_PLUGIN_DIR . "/wp-easycart/"; // <------- this is the directory that will be backed up
+		if( !is_writable( WP_PLUGIN_DIR ) ){
+			
+			wpeasycart_backup_ftp( );
+			
+		}else{
 		
-		 // Make destination directory
-		if( !is_dir( $to )) {
-			$success = mkdir( $to, 0755 );
+			$to = dirname( __FILE__ ) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
+			$from = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
+			
+			 // Make destination directory
+			if( !is_dir( $to )) {
+				$success = mkdir( $to, 0755 );
+				if( !$success ){
+					$err_message = "wpeasycart - error creating backup directory. Updated halted.";
+					error_log( $err_message );
+					exit( $err_message );	
+				}
+			}
+			
+			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
 			if( !$success ){
-				$err_message = "wpeasycart - error creating backup directory. Updated halted.";
+				$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
 				error_log( $err_message );
 				exit( $err_message );	
 			}
-		}
-		
-		$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
 			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
 			if( !$success ){
 				$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
 				error_log( $err_message );
 				exit( $err_message );
 			}
+			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );
+			}
 		}
-		$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );
-		}
-	}
+	//}
 }
 
 function wpeasycart_backup_ftp( ){
@@ -928,103 +929,101 @@ function ec_ran_list_n($rawlist, $path) {
 
 function wpeasycart_recover( ){
 	
-	if( !is_writable( WP_PLUGIN_DIR ) ){
+	//if( isset( $_GET['plugin'] ) && $_GET['plugin'] == "wp-easycart/wpeasycart.php" ){
 		
-		wpeasycart_recover_ftp( );
-		
-	}else{
-		
-		$from = WP_PLUGIN_DIR . "/wp-easycart-backup/"; // <------- this back up directory will be made
-		$to = WP_PLUGIN_DIR . "/wp-easycart/"; // <------- this is the directory that will be backed up
-		
-		rename( $to . "design", $to . "latest-design" );
-		/*
-		// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
-		if( !is_dir( $latest_folder ) ){
-			mkdir( $latest_folder, 0755 );
-			wpeasycart_copyr( $to . "design/layout/", $latest_folder . "layout/" );
-			wpeasycart_copyr( $to . "design/theme/", $latest_folder . "theme/" );
+		if( !is_writable( WP_PLUGIN_DIR ) ){
 			
-			$version = EC_CURRENT_VERSION;
-			$fp = fopen( $latest_folder . "version.txt", "wb" );
-			fwrite( $fp, $version );
-			fclose( $fp );
-		}
-		// END CREATE LATEST DESIGN FOLDER
-		
-		// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
-		if( is_dir( $latest_folder ) ){
-			if( file_exists( $latest_folder . "version.txt" ) )
-				$version = file_get_contents( $latest_folder . "version.txt" );
-			else
-				$version = "1";
+			wpeasycart_recover_ftp( );
 			
-			if( $version != EC_CURRENT_VERSION ){
-				// This is an outdated version, lets update.
-				ec_recursive_remove_directory( $latest_folder );
-				
-				mkdir( $latest_folder, 0755 );
-				wpeasycart_copyr( $to . "design/layout/", $latest_folder . "layout/" );
-				wpeasycart_copyr( $to . "design/theme/", $latest_folder . "theme/" );
+		}else{
+		
+			$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
+			$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
+			
+			// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
+			if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+				mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
+				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
 				
 				$version = EC_CURRENT_VERSION;
-				$fp = fopen( $latest_folder . "version.txt", "wb" );
+				$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
 				fwrite( $fp, $version );
 				fclose( $fp );
 			}
-		}
-		// END UPDATE LATEST DESIGN FOLDER
-		*/
-		
-		// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
-		$success = false;
-		if( is_dir( $to . "products" ) ) {
-			$success = ec_recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
-		}
-		if( !$success ){
-			$err_message = "wpeasycart - error removing the products folder from the upgraded plugin. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		
-		/**********************************************************
-		 * ANYONE PRIOR TO 1.1.7 WILL RUN THIS UPGRADE TO GET THEIR
-		 * THEMES UP TO SPEED WITH THE LATEST SOFTWARE
-		 **********************************************************/
-		
-		/* We are adding a few new files to every theme. Lets do this by copying from the new folder to backup IF IT DOESN"T EXIST */
-		$group_layout = $to . "design/layout/base-responsive-v1/ec_group_widget.php";
-		$group_css = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.css";
-		$group_js = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.js";
-		$rtl_file = $to . "design/theme/base-responsive-v1/rtl_support.css";
-		
-		//Cycle through design folders, add dir and files
-		$layout_list = array_filter( glob($from . 'design/layout/*'), 'is_dir' );
-		$theme_list = array_filter( glob($from . 'design/theme/*'), 'is_dir' );
-		
-		//Loop through the layout folders
-		for( $i=0; $i<count( $layout_list ); $i++ ){
-			if( !file_exists( $layout_list[$i] . "/ec_group_widget.php" ) )
-				copy( $group_layout, $layout_list[$i] . "/ec_group_widget.php" );
-		}
-		
-		//Loop through the theme folders
-		for( $i=0; $i<count( $theme_list ); $i++ ){
-			if( !is_dir( $theme_list[$i] . "/ec_group_widget" ) )
-				mkdir( $theme_list[$i] . "/ec_group_widget" );
-			if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" ) )
-				copy( $group_css, $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" );
-			if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" ) )
-				copy( $group_js, $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" );
-			if( !file_exists( $theme_list[$i] . "/rtl_support.css" ) )
-				copy( $rtl_file, $theme_list[$i] . "/rtl_support.css" );
+			// END CREATE LATEST DESIGN FOLDER
 			
-		}
-		/**********************************************************
-		 * END 1.1.7 UPGRADE
-		 **********************************************************/
-		
-		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
+			// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
+			if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
+					$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
+				else
+					$version = "1";
+				
+				if( $version != EC_CURRENT_VERSION ){
+					// This is an outdated version, lets update.
+					ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
+					
+					mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
+					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
+					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
+					
+					$version = EC_CURRENT_VERSION;
+					$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
+					fwrite( $fp, $version );
+					fclose( $fp );
+				}
+			}
+			// END UPDATE LATEST DESIGN FOLDER
+			
+			// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
+			$success = false;
+			if( is_dir( $to . "products" ) ) {
+				$success = ec_recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the products folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			/**********************************************************
+			 * ANYONE PRIOR TO 1.1.7 WILL RUN THIS UPGRADE TO GET THEIR
+			 * THEMES UP TO SPEED WITH THE LATEST SOFTWARE
+			 **********************************************************/
+			
+			/* We are adding a few new files to every theme. Lets do this by copying from the new folder to backup IF IT DOESN"T EXIST */
+			$group_layout = $to . "design/layout/base-responsive-v1/ec_group_widget.php";
+			$group_css = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.css";
+			$group_js = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.js";
+			$rtl_file = $to . "design/theme/base-responsive-v1/rtl_support.css";
+			
+			//Cycle through design folders, add dir and files
+			$layout_list = array_filter( glob($from . 'design/layout/*'), 'is_dir' );
+			$theme_list = array_filter( glob($from . 'design/theme/*'), 'is_dir' );
+			
+			//Loop through the layout folders
+			for( $i=0; $i<count( $layout_list ); $i++ ){
+				if( !file_exists( $layout_list[$i] . "/ec_group_widget.php" ) )
+					copy( $group_layout, $layout_list[$i] . "/ec_group_widget.php" );
+			}
+			
+			//Loop through the theme folders
+			for( $i=0; $i<count( $theme_list ); $i++ ){
+				if( !is_dir( $theme_list[$i] . "/ec_group_widget" ) )
+					mkdir( $theme_list[$i] . "/ec_group_widget" );
+				if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" ) )
+					copy( $group_css, $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" );
+				if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" ) )
+					copy( $group_js, $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" );
+				if( !file_exists( $theme_list[$i] . "/rtl_support.css" ) )
+					copy( $rtl_file, $theme_list[$i] . "/rtl_support.css" );
+				
+			}
+			/**********************************************************
+			 * END 1.1.7 UPGRADE
+			 **********************************************************/
+			
 			$success = false;
 			if( is_dir( $to . "design" ) ) {
 				$success = ec_recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
@@ -1034,51 +1033,49 @@ function wpeasycart_recover( ){
 				error_log( $err_message );
 				exit( $err_message );	
 			}
-		}
-		
-		$success = false;
-		if( is_dir( $to . "connection" ) ) {
-			$success = ec_recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
-		}
-		if( !$success ){
-			$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		
-		// COPY OVER THE BACKED UP DIRECTORIES
-		$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error recovering the products folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
+			
+			$success = false;
+			if( is_dir( $to . "connection" ) ) {
+				$success = ec_recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			// COPY OVER THE BACKED UP DIRECTORIES
+			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the products folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
 			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
 			if( !$success ){
 				$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
 				error_log( $err_message );
 				exit( $err_message );	
 			}
+			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+			if( !$success ){
+				$err_message = "wpeasycart - error recovering the connection folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
+			
+			// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
+			$success = false;
+			if( is_dir( $from ) ) {
+				$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
+			}
+			if( !$success ){
+				$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
+				error_log( $err_message );
+				exit( $err_message );	
+			}
 		}
-		$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-		if( !$success ){
-			$err_message = "wpeasycart - error recovering the connection folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-		
-		// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
-		$success = false;
-		if( is_dir( $from ) ) {
-			$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
-		}
-		if( !$success ){
-			$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
-			error_log( $err_message );
-			exit( $err_message );	
-		}
-	}
+	//}
 }
 
 function wpeasycart_recover_ftp( ){
