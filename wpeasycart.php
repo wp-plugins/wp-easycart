@@ -761,12 +761,16 @@ function wpeasycart_copyr( $source, $dest ){
 
 function wpeasycart_backup( ){
 	
+	error_log( "Backup Test 1", 0, WP_PLUGIN_DIR );
+	
 	if( !is_writable( WP_PLUGIN_DIR ) ){
-			
+		
+		error_log( "Backup Test 2", 0, WP_PLUGIN_DIR );	
 		wpeasycart_backup_ftp( );
 		
 	}else{
 	
+		error_log( "Backup Test 3", 0, WP_PLUGIN_DIR );
 		$to = WP_PLUGIN_DIR . "/wp-easycart-backup/"; // <------- this back up directory will be made
 		$from = WP_PLUGIN_DIR . "/wp-easycart/"; // <------- this is the directory that will be backed up
 		
@@ -926,17 +930,17 @@ function ec_ran_list_n($rawlist, $path) {
 
 function wpeasycart_recover( ){
 	
-	error_log( "TEST 1" );
+	error_log( "Recover Test 1", 0, WP_PLUGIN_DIR );
 	
 	if( !is_writable( WP_PLUGIN_DIR ) ){
 		
-		error_log( "TEST 2" );	
+		error_log( "Recover Test 2", 0, WP_PLUGIN_DIR );	
 		wpeasycart_recover_ftp( );
 		
 	}else{
 		
-		error_log( "TEST 3" );
-	
+		error_log( "Recover Test 3", 0, WP_PLUGIN_DIR );
+		
 		$from = WP_PLUGIN_DIR . "/wp-easycart-backup/"; // <------- this back up directory will be made
 		$to = WP_PLUGIN_DIR . "/wp-easycart/"; // <------- this is the directory that will be backed up
 		
