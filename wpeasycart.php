@@ -938,8 +938,8 @@ function wpeasycart_recover( ){
 		$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
 		$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
 		
-		$latest_folder = WP_PLUGIN_DIR . "/latest-design/";
-		
+		rename( $to . "design", $to . "latest-design" );
+		/*
 		// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
 		if( !is_dir( $latest_folder ) ){
 			mkdir( $latest_folder, 0755 );
@@ -975,6 +975,7 @@ function wpeasycart_recover( ){
 			}
 		}
 		// END UPDATE LATEST DESIGN FOLDER
+		*/
 		
 		// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
 		$success = false;
