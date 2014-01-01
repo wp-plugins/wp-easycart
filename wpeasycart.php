@@ -761,47 +761,44 @@ function wpeasycart_copyr( $source, $dest ){
 
 function wpeasycart_backup( ){
 	
-	//if( isset( $_GET['plugin'] ) && $_GET['plugin'] == "wp-easycart/wpeasycart.php" ){
-	
-		if( !is_writable( WP_PLUGIN_DIR ) ){
+	if( !is_writable( WP_PLUGIN_DIR ) ){
 			
-			wpeasycart_backup_ftp( );
-			
-		}else{
+		wpeasycart_backup_ftp( );
 		
-			$to = dirname( __FILE__ ) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
-			$from = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
-			
-			 // Make destination directory
-			if( !is_dir( $to )) {
-				$success = mkdir( $to, 0755 );
-				if( !$success ){
-					$err_message = "wpeasycart - error creating backup directory. Updated halted.";
-					error_log( $err_message );
-					exit( $err_message );	
-				}
-			}
-			
-			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
+	}else{
+	
+		$to = WP_PLUGIN_DIR . "/wp-easycart-backup/"; // <------- this back up directory will be made
+		$from = WP_PLUGIN_DIR . "/wp-easycart/"; // <------- this is the directory that will be backed up
+		
+		 // Make destination directory
+		if( !is_dir( $to )) {
+			$success = mkdir( $to, 0755 );
 			if( !$success ){
-				$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
+				$err_message = "wpeasycart - error creating backup directory. Updated halted.";
 				error_log( $err_message );
 				exit( $err_message );	
 			}
-			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-			if( !$success ){
-				$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );
-			}
-			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-			if( !$success ){
-				$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );
-			}
 		}
-	//}
+		
+		$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
+		if( !$success ){
+			$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
+			error_log( $err_message );
+			exit( $err_message );	
+		}
+		$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
+		if( !$success ){
+			$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
+			error_log( $err_message );
+			exit( $err_message );
+		}
+		$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
+		if( !$success ){
+			$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
+			error_log( $err_message );
+			exit( $err_message );
+		}
+	}
 }
 
 function wpeasycart_backup_ftp( ){
@@ -929,14 +926,19 @@ function ec_ran_list_n($rawlist, $path) {
 
 function wpeasycart_recover( ){
 	
-	if( !is_writable( dirname(__FILE__) . "/../" ) ){
-			
+	error_log( "TEST 1" );
+	
+	if( !is_writable( WP_PLUGIN_DIR ) ){
+		
+		error_log( "TEST 2" );	
 		wpeasycart_recover_ftp( );
 		
 	}else{
+		
+		error_log( "TEST 3" );
 	
-		$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
-		$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
+		$from = WP_PLUGIN_DIR . "/wp-easycart-backup/"; // <------- this back up directory will be made
+		$to = WP_PLUGIN_DIR . "/wp-easycart/"; // <------- this is the directory that will be backed up
 		
 		error_log( "trying to save latest-design here: " . $to );
 		rename( $to . "design", $to . "latest-design" );
