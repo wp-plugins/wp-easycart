@@ -229,6 +229,7 @@ function load_ec_pre(){
 	}
 	// END CREATE DATA FOLDER IF IT DOESN'T EXIST
 	
+	/*
 	// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
 		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
@@ -264,7 +265,7 @@ function load_ec_pre(){
 		}
 	}
 	// END UPDATE LATEST DESIGN FOLDER
-	
+	*/
 	///////////////////////////////////////////////////////////////////////////////////
 	// This is a check to ensure old users are upgraded to the new linking format
 	///////////////////////////////////////////////////////////////////////////////////
