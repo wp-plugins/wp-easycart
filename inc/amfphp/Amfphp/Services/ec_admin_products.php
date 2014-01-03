@@ -439,6 +439,15 @@ class ec_admin_products
 				 $product['Image5'] = ''; 
 			  }
 			  
+			  //set default handling price
+			  $handling_price = '0';
+			  if ($product['handling_price']) $handling_price = $product['handling_price'];
+			  
+			  //set default vat rate
+			  $vat_rate = '0';
+			  if ($product['vatrate']) $vat_rate = $product['vatrate'];
+			  
+			  
 			  //Create SQL Query
 			  $sql = sprintf("UPDATE ec_product SET price = '%s', title = '%s', description = '%s', model_number = '%s', activate_in_store = '%s', manufacturer_id = '%s', image1 = '%s', image2 = '%s', image3 = '%s', image4 = '%s', image5 = '%s', is_giftcard = '%s', download_file_name = '%s', is_taxable = '%s', is_download = '%s', weight = '%s', stock_quantity = '%s', show_on_startup = '%s', menulevel1_id_1 = '%s', menulevel1_id_2 = '%s', menulevel1_id_3 = '%s', menulevel2_id_1 = '%s', menulevel2_id_2 = '%s', menulevel2_id_3 = '%s', menulevel3_id_1 = '%s', menulevel3_id_2 = '%s', menulevel3_id_3 = '%s', option_id_1 = '%s', option_id_2 = '%s', option_id_3 = '%s', option_id_4 = '%s', option_id_5 = '%s', featured_product_id_1 = '%s', featured_product_id_2 = '%s', featured_product_id_3 = '%s', featured_product_id_4 = '%s', seo_description = '%s', use_specifications = '%s', use_customer_reviews = '%s', specifications = '%s', list_price = '%s', seo_keywords = '%s', is_special = '%s', use_optionitem_images = '%s', use_optionitem_quantity_tracking = '%s', is_donation = '%s', show_stock_quantity = '%s', maximum_downloads_allowed = '%s', download_timelimit_seconds = '%s', handling_price = '%s', vat_rate= '%s', use_advanced_optionset = '%s' WHERE product_id = '%s'",
 				mysql_real_escape_string($product['listprice']),
@@ -547,6 +556,14 @@ class ec_admin_products
 				 $product['Image5'] = ''; 
 			  }
 			  
+			  //set default handling price
+			  $handling_price = '0';
+			  if ($product['handling_price']) $handling_price = $product['handling_price'];
+			  
+			  //set default vat rate
+			  $vat_rate = '0';
+			  if ($product['vatrate']) $vat_rate = $product['vatrate'];
+			  
 			  //Create SQL Query
 			  $sql = sprintf("INSERT into ec_product(ec_product.price, ec_product.title, ec_product.description, ec_product.model_number, ec_product.activate_in_store, ec_product.manufacturer_id, ec_product.image1, ec_product.image2, ec_product.image3, ec_product.image4, ec_product.image5, ec_product.is_giftcard, ec_product.download_file_name, ec_product.is_taxable, ec_product.is_download, ec_product.weight, ec_product.stock_quantity, ec_product.show_on_startup, ec_product.menulevel1_id_1, ec_product.menulevel1_id_2, ec_product.menulevel1_id_3, ec_product.menulevel2_id_1, ec_product.menulevel2_id_2, ec_product.menulevel2_id_3, ec_product.menulevel3_id_1, ec_product.menulevel3_id_2, ec_product.menulevel3_id_3, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_product.featured_product_id_1, ec_product.featured_product_id_2, ec_product.featured_product_id_3, ec_product.featured_product_id_4, ec_product.seo_description, ec_product.use_specifications, ec_product.use_customer_reviews, ec_product.specifications, ec_product.list_price, ec_product.seo_keywords, ec_product.is_special, ec_product.use_optionitem_images, ec_product.use_optionitem_quantity_tracking, ec_product.is_donation, ec_product.show_stock_quantity, ec_product.maximum_downloads_allowed, ec_product.download_timelimit_seconds, ec_product.handling_price, ec_product.vat_rate, ec_product.use_advanced_optionset)
 				values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
@@ -599,8 +616,8 @@ class ec_admin_products
 				mysql_real_escape_string($product['show_stock_quantity']),
 				mysql_real_escape_string($product['maximum_downloads_allowed']),
 				mysql_real_escape_string($product['download_timelimit_seconds']),
-				mysql_real_escape_string($product['handling_price']),
-				mysql_real_escape_string($product['vatrate']),
+				mysql_real_escape_string($handling_price),
+				mysql_real_escape_string($vat_rate),
 				mysql_real_escape_string($product['use_advanced_optionset']));
 			 	mysql_query($sql);
 				if(mysql_error()) {
