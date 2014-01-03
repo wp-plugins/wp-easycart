@@ -56,10 +56,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
     <span class="ec_setting_row_label">Use RTL Support(e.g. Arabic, Hewbrew, etc...):</span>
     <span class="ec_setting_row_input"><select name="ec_option_use_rtl" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_rtl') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_rtl') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title_secondary">Custom CSS</div>
 <div class="ec_adin_page_intro">Any CSS you add here will over-ride the css in your EasyCart theme files. If you have an error in CSS here, it may effect your entire site, so please be cautious and pay attention to syntax errors.</div>
 <div class="ec_adin_page_intro"><textarea style="width:100%; height:250px;" name="ec_option_custom_css"><?php echo get_option( 'ec_option_custom_css' ); ?></textarea></div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title_secondary">Responsive Size Points</div>
 <div class="ec_adin_page_intro">This section is meant for you to match up the resize points of your WordPress theme to that of your EasyCart theme.</div>
@@ -122,6 +124,7 @@ if( count( $resize_split ) != 8 ){
     <span class="ec_setting_row_label">Min Width Large Desktop:</span>
     <span class="ec_setting_row_input"><input name="size_level5_low" style="width:100px;" value="<?php $var = explode( "=", $resize_split[7] ); echo $var[1]; ?>" /></span>
 </div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title_secondary">Advanced Color Management</div>
 <div class="ec_adin_page_intro">This section allows for you to edit the advanced colors of your store. These colors may not apply to all EasyCart themes or in all places you would expect.</div>
@@ -196,6 +199,7 @@ foreach( $css_split as $css_item ){
 	});
 </script>
 <?php } ?>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title_secondary">Font Management</div>
 <div class="ec_adin_page_intro">This section allows for you to edit the fonts used in your store. These fonts may not apply to all EasyCart themes or in all places you would expect.</div>

@@ -7,6 +7,10 @@ function ec_is_session_writable( ){
 	return is_writable( session_save_path( ) );
 }
 
+function ec_open_basedir() {
+	if(ini_get("open_basedir")) return true;
+}
+
 function ec_is_store_page_setup( ){
 	$store_page_found = false;
 	$store_is_match = false;

@@ -59,6 +59,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
               <option value="kgs"<?php if(get_option('ec_option_weight') == 'kgs') echo ' selected'; ?>>KGS</option>
           </select></span>
 </div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Currency Display: <?php echo $GLOBALS['currency']->get_currency_display( 1999.990 ); ?></div></div>
 
@@ -103,6 +104,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_label">Currency Grouping Symbol:</span>
     <span class="ec_setting_row_input"><input name="ec_option_currency_thousands_seperator" type="text" value="<?php echo get_option('ec_option_currency_thousands_seperator'); ?>" size="1" style="width:40px;" /></span>
 </div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Store Page Display Options</div></div>
 
@@ -168,6 +170,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_label">Show "Most Viewed" Sort Option:</span>
     <span class="ec_setting_row_input"><select name="ec_option_product_filter_7" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_7') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_7') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Product Details Page Display Options</div></div>
 
@@ -251,6 +254,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
                   <option value="0" <?php if (get_option('ec_option_use_pinterest_icon') == 0) echo ' selected'; ?>>No</option>
               	</select></span>
 </div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Cart Page Display Options</div></div>
 
@@ -281,6 +285,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_label">Enable Customer Notes on Checkout:</span>
     <span class="ec_setting_row_input"><select name="ec_option_user_order_notes" style="width:100px;"><option value="0"<?php if( get_option('ec_option_user_order_notes') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_user_order_notes') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Account Page Display Options</div></div>
 

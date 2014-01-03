@@ -27,7 +27,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "store-status" && isset( 
 // PHP Versoin Check
 ////////////////////////////
 if( ec_get_php_version( ) < 5.3 ){ ?>
-<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">PHP 5.3 is the optimaal setup. We do not guarantee functionality for PHP versions below 5.3 at this time.</span></div>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">PHP 5.3 is the optimal setup. We do not guarantee functionality for PHP versions below 5.3 at this time.</span></div>
 <?php }else{ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">Your PHP Version is <?php echo ec_get_php_version( ); ?>, meeting the PHP 5.3 optimal setup.</span></div>
 <?php } ?>
@@ -38,9 +38,17 @@ if( ec_get_php_version( ) < 5.3 ){ ?>
 ///////////////////////////
 if( ec_is_session_writable( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">Your session path is writable, which will allow the cart to function correctly.</span></div>
-<?php }else{ ?>
+<?php }else{?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">Your session path is NOT writable and session variables cannot be written at this time. Contact your host to have this issue resolved.</span></div>
 <?php } 
+///////////////////////////
+// OpenBase DIR Check
+///////////////////////////
+if( ec_open_basedir()){ ?>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">Your webserver has open_basedir enabled which makes it hard to copy files and folders on your server.  We recommend you disable.</span></div>
+<?php } 
+
+
 ///////////////////////////////////////////////
 // EasyCart Status Section
 ///////////////////////////////////////////////
@@ -278,9 +286,10 @@ if( ec_live_payment_selected( ) && ec_live_payment_setup( ) ){ ?>
 <div class="ec_adin_page_intro">This section is intended to troubleshoot the EasyCart emailer system. First place an order, then you can change the status of the order in the admin to a completed payment status (this allows you to test without actually completing the checkout payment process). Once you have a completed order, get the order id, enter it below, and hit the send email button.</div>
 
 <div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Send Receipt Test</em>Emails go out to customers once an order is placed and successfully processed.  This email address represents who that email comes from and if a customer hits reply, this email is where they will respond to. If you would like a name to be displayed in the 'FROM' line, enter an email address as follows: My Name&lt;myemail@mysite.com&gt;</span></a></span>
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Send Receipt Test Emails</em> go out to customers once an order is placed and successfully processed.  This email address represents who that email comes from and if a customer hits reply, this email is where they will respond to. If you would like a name to be displayed in the 'FROM' line, enter an email address as follows: My Name&lt;myemail@mysite.com&gt;</span></a></span>
     <span class="ec_setting_row_label">Order ID:</span>
-    <span class="ec_setting_row_input"><input type="text" name="ec_order_id" value="1700" /></span>
+    <span class="ec_setting_row_input">
+    <input type="text" name="ec_order_id" value="1700" /></span>
 </div>
 
 <div class="ec_save_changes_row"><input type="submit" value="SEND EMAIL" class="ec_save_changes_button" /></div>
