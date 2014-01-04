@@ -154,73 +154,93 @@ class ec_shipping{
 	}
 	
 	private function get_price_based_shipping_options( $standard_text, $express_text ){
-		for( $i=0; $i<count($this->price_based); $i++){
-			if( $this->subtotal > $this->price_based[$i][0] )
-				return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->price_based[$i][1] );
-		}	
+		if( count( $this->price_based ) > 0 ){
+			for( $i=0; $i<count($this->price_based); $i++){
+				if( $this->subtotal > $this->price_based[$i][0] )
+					return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->price_based[$i][1] );
+			}
+		}else{
+			return "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\">Shipping Rate Setup ERROR: Please visit the EasyCart Admin -> Store Admin -> Rates and add at least one price trigger. If you have done this, check to ensure no gaps in triggers.</div>";
+		}
 	}
 	
 	private function get_weight_based_shipping_options( $standard_text, $express_text ){
-		for( $i=0; $i<count($this->weight_based); $i++){
-			if( $this->weight > $this->weight_based[$i][0] )
-				return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->weight_based[$i][1] );
+		if( count( $this->weight_based ) > 0 ){
+			for( $i=0; $i<count($this->weight_based); $i++){
+				if( $this->weight > $this->weight_based[$i][0] )
+					return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->weight_based[$i][1] );
+			}
+		}else{
+			return "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\">Shipping Rate Setup ERROR: Please visit the EasyCart Admin -> Store Admin -> Rates and add at least one weight trigger. If you have done this, check to ensure no gaps in triggers.</div>";
 		}
 	}
 	
 	private function get_method_based_shipping_options( $standard_text, $express_text ){
-		$ret_string = "";
-			
-		if( $this->display_type == "SELECT" )
-			$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
+		if( count( $this->method_based ) > 0 ){ 
 		
-		for( $i=0; $i<count($this->method_based); $i++){
-			if( $this->display_type == "RADIO" )
-				$ret_string .= $this->get_method_based_radio( $i );
+			$ret_string = "";
+				
+			if( $this->display_type == "SELECT" )
+				$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
 			
-			else if( $this->display_type == "SELECT" )
-				$ret_string .= $this->get_method_based_select( $i );
+			for( $i=0; $i<count($this->method_based); $i++){
+				if( $this->display_type == "RADIO" )
+					$ret_string .= $this->get_method_based_radio( $i );
+				
+				else if( $this->display_type == "SELECT" )
+					$ret_string .= $this->get_method_based_select( $i );
+				
+				else //default is div
+					$ret_string .= $this->get_method_based_div( $i );
+			}
 			
-			else //default is div
-				$ret_string .= $this->get_method_based_div( $i );
+			if( $this->display_type == "SELECT" )
+				$ret_string .= "</select>";
+			
+			return $ret_string;
+		
+		}else{
+			return "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\">Shipping Rate Setup ERROR: Please visit the EasyCart Admin -> Store Admin -> Rates and add at least one shipping method.</div>";
 		}
-		
-		if( $this->display_type == "SELECT" )
-			$ret_string .= "</select>";
-		
-		return $ret_string;
 	}
 	
 	private function get_live_based_shipping_options( $standard_text, $express_text ){
 		
-		$ret_string = "";
-			
-		if( $this->display_type == "SELECT" )
-			$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
+		if( count( $this->method_based ) > 0 ){ 
 		
-		for( $i=0; $i<count( $this->live_based ); $i++){
-			if( $this->live_based[$i][4] < 0 )
-				$rate = "0.00";
-			else if( $this->live_based[$i][4] > 0 )
-				$rate = $this->live_based[$i][4];
-			else
-				$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+			$ret_string = "";
 			
-			//$rate = $GLOBALS['currency']->get_currency_display( $rate );
+			if( $this->display_type == "SELECT" )
+				$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
 			
-			if( $this->display_type == "RADIO" )
-				$ret_string .= $this->get_live_based_radio( $i, $rate );
+			for( $i=0; $i<count( $this->live_based ); $i++){
+				if( $this->live_based[$i][4] < 0 )
+					$rate = "0.00";
+				else if( $this->live_based[$i][4] > 0 )
+					$rate = $this->live_based[$i][4];
+				else
+					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+				
+				//$rate = $GLOBALS['currency']->get_currency_display( $rate );
+				
+				if( $this->display_type == "RADIO" )
+					$ret_string .= $this->get_live_based_radio( $i, $rate );
+				
+				else if( $this->display_type == "SELECT" )
+					$ret_string .= $this->get_live_based_select( $i, $rate );
+				
+				else //default is div
+					$ret_string .= $this->get_live_based_div( $i, $rate );
+			}
 			
-			else if( $this->display_type == "SELECT" )
-				$ret_string .= $this->get_live_based_select( $i, $rate );
+			if( $this->display_type == "SELECT" )
+			$ret_string .= "</select>";
 			
-			else //default is div
-				$ret_string .= $this->get_live_based_div( $i, $rate );
+			return $ret_string;
+			
+		}else{
+			return "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\">Shipping Rate Setup ERROR: Please visit the EasyCart Admin -> Store Admin -> Rates and add at least one shipping method for your selected live based shipping company. If you have done this and are still seeing this error, then likely there is a setup error in the live based company settings. Feel free to contact us at www.wpeasycart.com to get help troubleshooting.</div>";
 		}
-		
-		if( $this->display_type == "SELECT" )
-		$ret_string .= "</select>";
-		
-		return $ret_string;
 	}
 	
 	private function get_method_based_radio( $i ){
@@ -316,7 +336,19 @@ class ec_shipping{
 		if( isset( $_SESSION['ec_shipping_method'] ) )
 			$selected_shipping_method_id = $_SESSION['ec_shipping_method'];
 			
-		if( $this->shipping_method == "method" ){
+		if( $this->shipping_method == "price" ){
+			if( $this->ship_express ){
+				echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_express' );
+			}else{
+				echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_standard' );
+			}
+		}else if( $this->shipping_method == "weight" ){
+			if( $this->ship_express ){
+				echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_express' );
+			}else{
+				echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_standard' );
+			}
+		}else if( $this->shipping_method == "method" ){
 			
 			for( $i=0; $i<count($this->method_based); $i++){
 				if( $this->method_based[$i][2] == $selected_shipping_method_id ){
@@ -344,10 +376,12 @@ class ec_shipping{
 	public function get_single_shipping_price_content( $standard_text, $express_text, $standard_price ){
 		$ret_string = "";
 		$ret_string .= "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"radio\" name=\"ec_cart_shipping_method\" id=\"ec_cart_shipping_method\" value=\"standard\" checked=\"checked\" />" . $standard_text . " (" . get_option( 'ec_option_currency' ) . "<span id=\"ec_cart_standard_shipping_price\">" . $GLOBALS['currency']->get_number_only( $standard_price ) . "</span>)</div>";
-		$ret_string .= "<div id=\"ec_cart_express_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"checkbox\" name=\"ec_cart_ship_express\" id=\"ec_cart_ship_express\" value=\"shipexpress\"";
-		if( $this->ship_express )
-			$ret_string .= " checked=\"checked\"";
-		$ret_string .= " />" . $express_text . " (" . get_option( 'ec_option_currency' ) . "<span id=\"ec_cart_express_shipping_price\">" . $GLOBALS['currency']->get_number_only( $this->express_price ) . "</span>)</div>";
+		if( $this->express_price > 0 ){
+			$ret_string .= "<div id=\"ec_cart_express_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"checkbox\" name=\"ec_cart_ship_express\" id=\"ec_cart_ship_express\" value=\"shipexpress\"";
+			if( $this->ship_express )
+				$ret_string .= " checked=\"checked\"";
+			$ret_string .= " />" . $express_text . " (" . get_option( 'ec_option_currency' ) . "<span id=\"ec_cart_express_shipping_price\">" . $GLOBALS['currency']->get_number_only( $this->express_price ) . "</span>)</div>";
+		}
 		return $ret_string;
 	}
 	

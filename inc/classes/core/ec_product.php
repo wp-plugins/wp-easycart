@@ -623,7 +623,7 @@ class ec_product{
 			  $optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ")"; 
 			}
 			
-			echo "<div class=\"ec_option_radio_row\"><input type=\"radio\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j . "\" value=\"" . $optionitem->optionitem_name . "\" data-ec-required=\"" . $optionset->option_required . "\">" . $optionitem->optionitem_name . $optionitem_price . "</div>";
+			echo "<div class=\"ec_option_radio_row\"><input type=\"radio\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j . "\" value=\"" . $optionitem->optionitem_id . "\" data-ec-required=\"" . $optionset->option_required . "\">" . $optionitem->optionitem_name . $optionitem_price . "</div>";
 			$j++;
 		}
 		echo "</div>";

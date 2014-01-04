@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.0.7
+ * Version: 2.0.8
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.0.7
+ * @version 2.0.8
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_0_7' );
+define( 'EC_CURRENT_VERSION', '2_0_8' );
 define( 'EC_CURRENT_DB', '1_11' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -228,7 +228,7 @@ function load_ec_pre(){
 		}
 	}
 	// END CREATE DATA FOLDER IF IT DOESN'T EXIST
-	
+	/*
 	// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
 		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
@@ -264,7 +264,7 @@ function load_ec_pre(){
 		}
 	}
 	// END UPDATE LATEST DESIGN FOLDER
-	
+	*/
 	///////////////////////////////////////////////////////////////////////////////////
 	// This is a check to ensure old users are upgraded to the new linking format
 	///////////////////////////////////////////////////////////////////////////////////
@@ -1560,7 +1560,7 @@ function ec_theme_options_page_callback( ){
 /////////////////////////////////////////////////////////////////////
 add_action( 'init', 'ec_create_post_type_menu' );
 function ec_create_post_type_menu() {
-	global $wp_rewrite;
+	
 	$store_id = get_option( 'ec_option_storepage' );
 	if( $store_id ){
 		$store_slug = ec_get_the_slug( $store_id );
@@ -1591,12 +1591,17 @@ function ec_create_post_type_menu() {
 			'rewrite'			=> array( 'slug' => $store_slug, 'with_front' => false, 'page' => false ),
 		);
 		register_post_type( 'ec_store', $args );
-	
-	
+		
+		global $wp_rewrite;
 		$wp_rewrite->add_permastruct( 'ec_store', $store_slug . '/%ec_store%/', true, 1 );
     	add_rewrite_rule( $store_slug . '/([^/]*)/([^/]*)/?$', 'index.php?ec_store=$matches[2]', 'top');
-		$wp_rewrite->flush_rules(); // !!!
-    }
+		
+		// Only Flush Once!
+		if( !get_option( 'ec_option_added_custom_post_type' ) ){	
+			$wp_rewrite->flush_rules();
+			update_option( 'ec_option_added_custom_post_type', '1' );
+		}
+	}
 }
 
 function ec_get_the_slug( $id=null ){
@@ -1630,8 +1635,10 @@ function ec_fix_store_template( ){
 	if( isset( $wp->query_vars["post_type"] ) && in_array( $wp->query_vars["post_type"], $custom_post_types ) ){
 		$store_template = get_post_meta( get_option( 'ec_option_storepage' ), "_wp_page_template", true );
 		if( isset( $store_template ) && $store_template != "" && $store_template != "default"  ){
-			include( get_template_directory( ) . "/" . $store_template );
-			exit( );
+			if( file_exists( get_template_directory( ) . "/" . $store_template ) ){
+				include( get_template_directory( ) . "/" . $store_template );
+				exit( );
+			}
 		}
 	}
 }
