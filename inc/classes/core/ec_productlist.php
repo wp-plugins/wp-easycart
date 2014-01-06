@@ -9,11 +9,11 @@ class ec_productlist{
 	public $paging;									// ec_paging structure
 	public $num_products;							// INT
 	
-	function __construct( $is_product_details = false, $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP" ){
+	function __construct( $is_product_details = false, $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP", $modelnumber = "NOMODELNUMBER" ){
 		$this->mysqli = new ec_db();
 		
 		$this->filter = new ec_filter( );
-		$this->set_shortcode_vals( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
+		$this->set_shortcode_vals( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, $modelnumber );
 		$this->paging = new ec_paging( $this->filter->perpage->selected );
 		$this->is_product_details = $is_product_details;
 		$this->get_products( );	
@@ -159,7 +159,7 @@ class ec_productlist{
 		echo $this->paging->display_paging_links( $divider, $this->filter->get_link_string( 0 ) );
 	}
 	
-	public function set_shortcode_vals( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid ){
+	public function set_shortcode_vals( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, $modelnumber ){
 		
 		if( $menuid != "NOMENU" ){
 			$this->filter->menulevel1 = new ec_menuitem( $menuid, 1 );
@@ -177,6 +177,9 @@ class ec_productlist{
 			
 		if( $groupid != "NOGROUP" )
 			$this->filter->group_id = $groupid;
+			
+		if( $modelnumber != "NOMODELNUMBER" )
+			$this->filter->model_number = $modelnumber;
 			
 	}
 	

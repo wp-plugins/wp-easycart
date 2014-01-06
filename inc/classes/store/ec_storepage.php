@@ -65,7 +65,7 @@ class ec_storepage{
 	
 	private function setup_details( ){
 		
-		$this->product_list = new ec_productlist( true );
+		$this->product_list = new ec_productlist( true, $this->menu_id, $this->submenu_id, $this->subsubmenu_id, $this->manufacturer_id, $this->group_id, $this->model_number );
 		if( $this->product_list->num_products > 0 ){
 			
 			$this->previous_model_number = "";

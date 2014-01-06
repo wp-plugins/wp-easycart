@@ -140,6 +140,7 @@ class ec_filter{
 	
 	private function get_model_number(){
 		if(isset($_GET['model_number']))						return $_GET['model_number'];
+		else if(isset($this->model_number))						return $this->model_number;
 		else													return "";
 	}
 	
@@ -332,8 +333,6 @@ class ec_filter{
 			if( $this->group_id != 0 )								$ret_string .= " AND ec_categoryitem.category_id = ".$this->group_id;
 																	
 			if( $this->pricepoint_id != 0 )							$ret_string .= $this->get_price_point_where( );
-			
-			if( $this->show_on_startup )							$ret_string .= " AND product.show_on_startup = 1";
 			
 																	return $ret_string;
 			
