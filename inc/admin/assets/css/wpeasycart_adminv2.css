@@ -101,6 +101,19 @@
 /* Shell and Menu CSS
 /**************************************/
 body{ height:100%; }
+.ec_admin_mainmenu a {
+	color: #ffffff !important;
+}
+.ec_admin_mainmenu a:visited {
+	color: #ffffff !important;
+}
+
+.ec_admin_leftmenu a {
+	color: #fff !important;
+} 
+.ec_admin_leftmenu a:visited {
+	color: #fff !important;
+} 
 .ec_admin_mainmenu{
 	float:left;
 	width:1170px; height:48px;
