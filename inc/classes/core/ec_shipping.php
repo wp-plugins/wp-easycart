@@ -206,7 +206,7 @@ class ec_shipping{
 	
 	private function get_live_based_shipping_options( $standard_text, $express_text ){
 		
-		if( count( $this->method_based ) > 0 ){ 
+		if( count( $this->live_based ) > 0 ){ 
 		
 			$ret_string = "";
 			
