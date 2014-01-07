@@ -1753,3 +1753,112 @@
 	margin-bottom: 10px;
 	line-height: 20px;	
 }
+
+/* ADVANCED OPTION SET CSS */
+.ec_product_details_option_holder{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_combo_row{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_swatch_row{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_swatch_row img{
+	max-width:25px;
+	max-height:25px;
+	width:25px;
+	height:25px;	
+}
+
+.ec_option_checkbox_box{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_checkbox_row{
+	float:left; width:100%;
+}
+
+.ec_option_radio_box{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_radio_row{
+	float:left; width:100%;
+}
+
+.ec_option_text_label_row{
+	float:left; width:100%;
+}
+
+.ec_option_text_row{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_text_row input{
+	width:98%;
+}
+
+.ec_option_textarea_label_row{
+	float:left; width:100%;
+}
+
+.ec_option_textarea_row{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_textarea_row textarea{
+	width:98%; height:55px;
+}
+
+.ec_option_file_label_row{
+	float:left; width:100%;
+}
+
+.ec_option_file_row{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_grid_box{
+	float:left; width:100%;
+	margin-bottom:20px;
+}
+
+.ec_option_grid_row{
+	float:left; width:100%;
+}
+
+.ec_option_grid_label{
+	width:85px; float:left;
+}
+
+.ec_option_grid_input{
+	width:100%;
+}
+
+.ec_option_error_row{
+	display:none;
+	float: left;
+	width: 100%;
+	color: #250002;
+	background-color: #FFD5D5;
+	border-top: 3px solid #D8000C;
+	text-shadow: none;
+	border-radius: 5px;
+	margin-bottom:5px;
+}
+
+.ec_option_error_row .ec_option_error_row_inner{
+	width:100%; padding: 10px;
+}
