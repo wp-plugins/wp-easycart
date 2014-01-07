@@ -858,6 +858,72 @@ function ec_product_details_add_to_cart( modelnum ){
 		return false;
 }
 
+function ec_product_details_add_to_cart_advanced( model_number ){
+	var i=0;
+	var errors=0;
+	while( document.getElementById( 'ec_option' + i + '_' + model_number ) || document.getElementById( 'ec_option' + i + '_' + model_number + '_0' ) ){
+		if( document.getElementById( 'ec_option' + i + '_' + model_number ) ){
+			if( document.getElementById( 'ec_option' + i + '_' + model_number ).value <= 0 && document.getElementById( 'ec_option' + i + '_' + model_number ).getAttribute( "data-ec-required" ) == '1' ){
+				document.getElementById( 'ec_option' + i + '_' + model_number + "_error" ).style.display = "block";
+				errors++;
+			}else{
+				document.getElementById( 'ec_option' + i + '_' + model_number + "_error" ).style.display = "none";
+			}
+		}else{
+			var input_type = jQuery( '#ec_option' + i + '_' + model_number + "_0" ).attr("type").toLowerCase();
+			if( input_type == "checkbox" ){
+				var j=0;
+				var selected = 0;
+				while( document.getElementById( 'ec_option' + i + '_' + model_number + '_' + j ) ){
+					if( jQuery( '#ec_option' + i + '_' + model_number + "_" + j ).prop("checked") ){
+						selected++;
+					}
+					j++;
+				}
+				if( selected <= 0 && document.getElementById( 'ec_option' + i + '_' + model_number + '_0' ).getAttribute( "data-ec-required" ) == '1' ){
+					document.getElementById( 'ec_option' + i + '_' + model_number + "_error" ).style.display = "block";
+					errors++;
+				}else{
+					document.getElementById( 'ec_option' + i + '_' + model_number + "_error" ).style.display = "none";
+				}
+			}else if( input_type == "radio" ){
+				var j=0;
+				var selected = 0;
+				while( document.getElementById( 'ec_option' + i + '_' + model_number + '_' + j ) ){
+					if( jQuery( '#ec_option' + i + '_' + model_number + "_" + j ).prop("checked") ){
+						selected++;
+					}
+					j++;
+				}
+				if( selected <= 0 && document.getElementById( 'ec_option' + i + '_' + model_number + '_0' ).getAttribute( "data-ec-required" ) == '1' ){
+					document.getElementById( 'ec_option' + i + '_' + model_number + "_error" ).style.display = "block";
+					errors++;
+				}else{
+					document.getElementById( 'ec_option' + i + '_' + model_number + "_error" ).style.display = "none";
+				}
+			}else if( input_type == "number" ){
+				var j=0;
+				var total=0;
+				while( document.getElementById( 'ec_option' + i + '_' + model_number + '_' + j ) ){
+					total = total + Number( jQuery( '#ec_option' + i + '_' + model_number + "_" + j ).val( )  );
+					j++;
+				}
+				if( total <= 0 && document.getElementById( 'ec_option' + i + '_' + model_number + '_0' ).getAttribute( "data-ec-required" ) == '1' ){
+					document.getElementById( 'ec_option' + i + '_' + model_number + "_error" ).style.display = "block";
+					errors++;
+				}else{
+					document.getElementById( 'ec_option' + i + '_' + model_number + "_error" ).style.display = "none";
+				}
+			}
+		}
+		i++;
+	}
+	if( errors > 0 )
+		return false;
+	else
+		return true;
+}
+
 function ec_track_basic_quantity( model_number ){
 	if( document.getElementById( 'show_stock_quantity_' + model_number ) && document.getElementById( 'show_stock_quantity_' + model_number ).value == "1" )
 		return true;
