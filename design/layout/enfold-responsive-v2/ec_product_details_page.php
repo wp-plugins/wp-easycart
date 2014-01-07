@@ -55,6 +55,12 @@
     
 		<?php }?>
     
+    	<?php if( $this->product->use_advanced_optionset ){ ?>
+		
+        <div class="ec_product_details_option_holder"><?php $this->product->display_all_advanced_optionsets( ); ?></div>
+        
+        <?php }else{ ?>
+        
     	<?php if( $this->product->product_has_swatches( $this->product->options->optionset1 ) ){ ?>
     	<div class="ec_product_details_option1_swatches"><?php $this->product->display_product_option( $this->product->options->optionset1, "large", 1, "ec_swatch_", "ec_swatch_click" ); ?></div>
     
@@ -94,6 +100,8 @@
     	<div class="ec_product_details_option5_combo"><?php $this->product->display_product_option( $this->product->options->optionset5, "large", 5, "ec_combo_", "" ); ?></div>
     
 		<?php }?>
+        
+        <?php } // End Advanced Option Set( Basic Option Set Here) Else ?>
     
 		<?php if( $this->product->is_giftcard ){ ?>
     	<div class="ec_product_details_gift_card"><?php $this->product->display_gift_card_input(); ?></div>

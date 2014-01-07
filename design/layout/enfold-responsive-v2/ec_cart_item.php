@@ -4,11 +4,48 @@
 	</div>
     <div class="ec_cart_item_column2">
 		<div class="ec_cart_item_title"><?php $cart_item->display_title_link(); ?></div>
+        <?php if( $cart_item->use_advanced_optionset ){ ?>
+        <?php $advanced_options = $cart_item->get_advanced_options( ) ?>
+        <?php foreach( $advanced_options as $advanced_option ){ ?>
+        <?php // Set the display text for an option item price adjustment
+			  $optionitem_price = ""; 
+		      if( $advanced_option->optionitem_price > 0 ){ 
+			      $optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			  }else if( $advanced_option->optionitem_price < 0 ){ 
+			      $optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			  }else if( $advanced_option->optionitem_price_onetime > 0 ){ 
+			      $optionitem_price = " (+" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_onetime ) . ")"; 
+			  }else if( $advanced_option->optionitem_price_onetime < 0 ){ 
+			      $optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_onetime ) . ")"; 
+			  }else if( $advanced_option->optionitem_price_override >= 0 ){ 
+			      $optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_override ) . ")"; 
+			  }
+			  
+			  // Set the display text for an option item weight adjustment
+			  $optionitem_weight = "";
+			  if( $advanced_option->optionitem_weight > 0 ){ 
+			      $optionitem_weight = " (+" . $advanced_option->optionitem_weight . get_option( 'ec_option_weight' ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			  }else if( $advanced_option->optionitem_weight < 0 ){ 
+			      $optionitem_weight = " (" . $advanced_option->optionitem_weight . get_option( 'ec_option_weight' ) . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ")"; 
+			  }else if( $advanced_option->optionitem_weight_onetime > 0 ){ 
+			      $optionitem_weight = " (+" . $advanced_option->optionitem_weight_onetime . get_option( 'ec_option_weight' ) . ")"; 
+			  }else if( $advanced_option->optionitem_weight_onetime < 0 ){ 
+			      $optionitem_weight = " (" . $advanced_option->optionitem_weight_onetime . get_option( 'ec_option_weight' ) . ")"; 
+			  }
+		?>
+        <?php if( $advanced_option->option_type == "grid" ){ ?>
+        <div class="ec_cart_item_option"><?php echo $advanced_option->option_name; ?>: <?php echo $advanced_option->optionitem_name; ?> (<?php echo $advanced_option->optionitem_value; ?>)<?php echo $optionitem_price; ?></div>
+        <?php }else{ ?>
+        <div class="ec_cart_item_option"><?php echo $advanced_option->option_name; ?>: <?php echo $advanced_option->optionitem_value; ?><?php echo $optionitem_price; ?></div>
+        <?php } ?>
+		<?php } ?>
+        <?php }else{ ?>
         <?php if( $cart_item->has_option1( ) ){?><div class="ec_cart_item_option"><?php $cart_item->display_option1( ); ?></div><?php } ?>
         <?php if( $cart_item->has_option2( ) ){?><div class="ec_cart_item_option"><?php $cart_item->display_option2( ); ?></div><?php } ?>
         <?php if( $cart_item->has_option3( ) ){?><div class="ec_cart_item_option"><?php $cart_item->display_option3( ); ?></div><?php } ?>
         <?php if( $cart_item->has_option4( ) ){?><div class="ec_cart_item_option"><?php $cart_item->display_option4( ); ?></div><?php } ?>
         <?php if( $cart_item->has_option5( ) ){?><div class="ec_cart_item_option"><?php $cart_item->display_option5( ); ?></div><?php } ?>
+        <?php } ?>
         
         <?php if( $cart_item->has_gift_card_message( ) ){?>
         <div class="ec_cart_item_option">

@@ -8,6 +8,21 @@
     <div class="ec_account_order_details_item_display_title">
       <?php $order_item->display_title(); ?>
     </div>
+    <?php 
+	if( $order_item->use_advanced_optionset ){
+		$advanced_options = $this->mysqli->get_order_options( $order_item->orderdetail_id );
+		foreach( $advanced_options as $advanced_option ){
+			if( $advanced_option->option_type == "file" ){
+				$file_split = explode( "/", $advanced_option->option_value );
+				echo "<div class=\"ec_account_order_details_item_display_option\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $file_split[1] . $advanced_option->option_price_change . "</div>";
+			}else if( $advanced_option->option_type == "grid" ){
+				echo "<div class=\"ec_account_order_details_item_display_option\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $advanced_option->optionitem_name . " (" . $advanced_option->option_value . ")" . $advanced_option->option_price_change . "</div>";
+			}else{
+				echo "<div class=\"ec_account_order_details_item_display_option\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $advanced_option->option_value . $advanced_option->option_price_change . "</div>";
+			}
+		}
+	}else{
+	?>
     <?php if( $order_item->has_option1( ) ){ ?>
     <div class="ec_account_order_details_item_display_option">
       <?php $order_item->display_option1_label( ); ?>: <?php $order_item->display_option1( ); ?><?php if( $order_item->has_option1_price( ) ){ ?> (<?php $order_item->display_option1_price( ); ?> )<?php }?>
@@ -32,7 +47,9 @@
     <div class="ec_account_order_details_item_display_option">
       <?php $order_item->display_option5_label( ); ?>: <?php $order_item->display_option5( ); ?><?php if( $order_item->has_option5_price( ) ){ ?> (<?php $order_item->display_option5_price( ); ?> )<?php }?>
     </div>
-    <?php }?>
+    <?php }
+	}//close basic options
+	?>
     <?php if( $order_item->has_gift_card_message( ) ){ ?>
     <div class="ec_account_order_details_item_display_option">
       <?php $order_item->display_gift_card_message( $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_message' ) ); ?>

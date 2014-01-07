@@ -33,6 +33,8 @@
             <div class="ec_product_quick_view_box_content_row"><span id="in_stock_amount_text_<?php echo $product->model_number; ?>"><?php $product->display_product_stock_quantity(); ?></span> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_remaining' )?></div>
             <?php }?>
             
+            <?php if( !$product->use_advanced_optionset ){ ?>
+            
             <?php if( $product->product_has_swatches( $product->options->optionset1 ) ){ ?>
             <div class="ec_product_quick_view_box_content_option_row">
               <?php $product->display_product_option( $product->options->optionset1, "large", 1, "ec_swatch_quick_view_", "ec_swatch_click" ); ?>
@@ -83,10 +85,14 @@
               <?php $product->display_gift_card_input(); ?>
             </div>
             <?php }?>
+            
             <div class="ec_product_details_quantity" id="ec_product_details_quantity_<?php echo $product->model_number; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_quantity' )?> <?php $product->display_product_quantity_input("1"); ?></div>
             
-            
+            <?php if( $product->show_stock_quantity || $product->use_optionitem_quantity_tracking ){ ?>
+            <div class="ec_product_quick_view_box_content_row"><span id="in_stock_amount_text_<?php echo $product->model_number; ?>"><?php $product->display_product_stock_quantity(); ?></span> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_remaining' )?></div>
+            <?php }?>
             <div class="ec_product_quick_view_box_content_row"><?php $product->display_product_add_to_cart_button( $GLOBALS['language']->get_text( 'quick_view', 'quick_view_add_to_cart' ), "ec_quick_view_error" ); ?></div>
+            <?php } //Close advanced options if ?>
         </div>
         <?php $product->display_product_details_form_end( ); ?>
     </div>

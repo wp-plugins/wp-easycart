@@ -85,6 +85,20 @@
             <?php echo $order_details[$i]->title; ?>
             </td></tr>
             <?php 
+			if( $order_details[$i]->use_advanced_optionset ){
+				$advanced_options = $mysqli->get_order_options( $order_details[$i]->orderdetail_id );
+				foreach( $advanced_options as $advanced_option ){
+					if( $advanced_option->option_type == "file" ){
+						$file_split = explode( "/", $advanced_option->option_value );
+						echo "<tr><td><span class=\"ec_option_label\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $file_split[1] . $advanced_option->option_price_change . "</span></td></tr>";
+					}else if( $advanced_option->option_type == "grid" ){
+						echo "<tr><td><span class=\"ec_option_label\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $advanced_option->optionitem_name . " (" . $advanced_option->option_value . ")" . $advanced_option->option_price_change . "</span></td></tr>";
+					}else{
+						echo "<tr><td><span class=\"ec_option_label\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $advanced_option->option_value . $advanced_option->option_price_change . "</span></td></tr>";
+					}
+				}
+			}else{
+			
 			if( $order_details[$i]->optionitem_name_1 ){
 				echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_1 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_1;
 				if( $order_details[$i]->optionitem_price_1 != "0.00" )
@@ -119,6 +133,8 @@
 					echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_5 ) . ")";
 				echo "</span></td></tr>";
 			}
+			
+			}//close basic options
 			?>
         </table>
 	</td>
