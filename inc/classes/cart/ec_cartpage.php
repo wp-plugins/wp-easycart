@@ -1618,7 +1618,7 @@ class ec_cartpage{
 			if( $_FILES[$upload_field_name]['size'] <= $max_filesize && in_array( $_FILES[$upload_field_name]['type'], $filetypes ) ){
 				
 				# Create a custom dir for this order
-				mkdir( $upload_path . $tempcart_id . "/", 0775 );
+				mkdir( $upload_path . $tempcart_id . "/", 0711 );
 				
 				# If file has gotten this far, it is successful
 				$copy_to = $upload_path . $tempcart_id . "/" . $_FILES[$upload_field_name]['name'];

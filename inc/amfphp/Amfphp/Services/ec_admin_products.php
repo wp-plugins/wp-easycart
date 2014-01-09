@@ -372,7 +372,7 @@ class ec_admin_products
 						  );
 			$post_id = wp_insert_post( $post, $wp_error );
 			$db = new ec_db( );
-			$db->update_product_post_id( $productid, $post_id );
+			$db->update_product_post_id( $newid, $post_id );
 
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash

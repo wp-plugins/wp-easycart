@@ -13,7 +13,15 @@ class ec_newsletterwidget extends WP_Widget{
 			$title = __( 'Newsletter Sign Up', 'text_domain' );
 		}
 		
+		if( isset( $instance[ 'widget_label' ] ) ) {
+			$label = $instance[ 'widget_label' ];
+		}else {
+			$label = __( 'Email', 'text_domain' );
+		}
+		
 		echo "<p><label for=\"" . $this->get_field_name( 'title' ) . "\">" . _e( 'Title:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'title' ) . "\" name=\"" . $this->get_field_name( 'title' ) . "\" type=\"text\" value=\"" . esc_attr( $title ) . "\" /></p>";
+		
+		echo "<p><label for=\"" . $this->get_field_name( 'widget_label' ) . "\">" . _e( 'Field Label:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'widget_label' ) . "\" name=\"" . $this->get_field_name( 'widget_label' ) . "\" type=\"text\" value=\"" . esc_attr( $widget_label ) . "\" /></p>";
 		
 		$defaults = array();
 		$instance = wp_parse_args( (array) $instance, $defaults);
@@ -22,6 +30,7 @@ class ec_newsletterwidget extends WP_Widget{
 	function update($new_instance, $old_instance){
 		$instance = array();
 		$instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['widget_label'] = ( !empty( $new_instance['widget_label'] ) ) ? strip_tags( $new_instance['widget_label'] ) : '';
 
 		return $instance;
 	}
@@ -31,6 +40,7 @@ class ec_newsletterwidget extends WP_Widget{
 	
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
+		$widget_label = apply_filters( 'widget_label', $instance['widget_label'] );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )

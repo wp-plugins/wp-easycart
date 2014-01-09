@@ -7,6 +7,7 @@ add_action( 'admin_init', 'ec_register_settings' );
 add_action( 'admin_menu', 'ec_create_menu' );
 add_action( 'admin_init', 'ec_custom_downloads', 1 );
 add_action( 'admin_notices', 'ec_install_admin_notice' );
+add_action( 'save_post', 'ec_post_save_permalink_structure' );
 
 function ec_install_admin_notice() {
 	if( isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "basic-setup" ){
@@ -317,6 +318,11 @@ function ec_mysqldump_table_data( $table ){
 	mysql_free_result($result);
 	$return_string .= "\n";
 	return $return_string;
+}
+
+function ec_post_save_permalink_structure( $post_id ) {
+	global $wp_rewrite;
+	$wp_rewrite->flush_rules();
 }
 
 ?>

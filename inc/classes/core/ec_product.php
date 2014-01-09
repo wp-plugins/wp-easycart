@@ -228,7 +228,7 @@ class ec_product{
 	
 	/* Display the form start */
 	public function display_product_details_form_start( ){
-		echo "<form action=\"" . $this->cart_page . "\" method=\"post\">";
+		echo "<form action=\"" . $this->cart_page . "\" method=\"post\" enctype=\"multipart/form-data\">";
 	}
 	
 	/* Display the form end */
