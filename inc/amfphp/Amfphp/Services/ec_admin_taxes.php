@@ -122,13 +122,24 @@ class ec_admin_taxes
 			  
 			  //vat tax
 			  if($taxrates['taxvatenable'] == 1) {
-				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1");
+				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1");
 				  mysql_query($sql);
 				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.vat_country_code, ec_taxrate.vat_rate, ec_taxrate.tax_by_vat)
 					values(null, '%s', '%s', 1)",
 					mysql_real_escape_string($taxrates['taxvatcountryid']),
 					mysql_real_escape_string($taxrates['taxvatrate']));
 			  }
+			  
+			  //vat tax globally
+			  if($taxrates['taxvatgloballyenable'] == 1) {
+				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1");
+				  mysql_query($sql);
+				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.vat_country_code, ec_taxrate.vat_rate, ec_taxrate.tax_by_single_vat)
+					values(null, '%s', '%s', 1)",
+					mysql_real_escape_string($taxrates['taxvatcountryid']),
+					mysql_real_escape_string($taxrates['taxvatrate']));
+			  }
+			  
 			  
 			  //state tax
 			  if($taxrates['taxstateenable'] == 1 && $taxrates['taxstaterate'] != '') {
@@ -184,6 +195,11 @@ class ec_admin_taxes
 			  //vat tax
 			  if($taxrates['removetaxvat'] == 1) {
 				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1";
+			  }
+			  
+			  //vat tax globally
+			  if($taxrates['removetaxvatglobally'] == 1) {
+				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_single_vat = 1";
 			  }
 			  
 			  //remove individual state tax
