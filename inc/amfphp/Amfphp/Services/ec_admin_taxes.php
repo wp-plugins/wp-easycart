@@ -121,24 +121,29 @@ class ec_admin_taxes
 			  }
 			  
 			  //vat tax
-			  if($taxrates['taxvatenable'] == 1) {
+			  if($taxrates['vattaxcountry'] == 1) {
 				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1");
 				  mysql_query($sql);
-				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.vat_country_code, ec_taxrate.vat_rate, ec_taxrate.tax_by_vat)
-					values(null, '%s', '%s', 1)",
+				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.vat_country_code, ec_taxrate.vat_rate, ec_taxrate.tax_by_vat, ec_taxrate.vat_added, ec_taxrate.vat_included)
+					values(null, '%s', '%s', 1, '%s', '%s')",
 					mysql_real_escape_string($taxrates['taxvatcountryid']),
-					mysql_real_escape_string($taxrates['taxvatrate']));
+					mysql_real_escape_string($taxrates['taxvatrate']),
+					mysql_real_escape_string($taxrates['vatadded']),
+					mysql_real_escape_string($taxrates['vatincluded']));
 			  }
 			  
 			  //vat tax globally
-			  if($taxrates['taxvatgloballyenable'] == 1) {
+			  if($taxrates['vattaxglobally'] == 1) {
 				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1");
 				  mysql_query($sql);
-				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.vat_country_code, ec_taxrate.vat_rate, ec_taxrate.tax_by_single_vat)
-					values(null, '%s', '%s', 1)",
+				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.vat_country_code, ec_taxrate.vat_rate, ec_taxrate.tax_by_single_vat, ec_taxrate.vat_added, ec_taxrate.vat_included)
+					values(null, '%s', '%s', 1, '%s', '%s')",
 					mysql_real_escape_string($taxrates['taxvatcountryid']),
-					mysql_real_escape_string($taxrates['taxvatrate']));
+					mysql_real_escape_string($taxrates['taxvatrate']),
+					mysql_real_escape_string($taxrates['vatadded']),
+					mysql_real_escape_string($taxrates['vatincluded']));
 			  }
+			
 			  
 			  
 			  //state tax
@@ -194,14 +199,9 @@ class ec_admin_taxes
 			  
 			  //vat tax
 			  if($taxrates['removetaxvat'] == 1) {
-				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1";
+				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1";
 			  }
-			  
-			  //vat tax globally
-			  if($taxrates['removetaxvatglobally'] == 1) {
-				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_single_vat = 1";
-			  }
-			  
+			  			  
 			  //remove individual state tax
 			  if($taxrates['removetaxstate'] == 1) {
 				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_state = 1 AND ec_taxrate.taxrate_id = ".$taxrates['keyfield']."";
