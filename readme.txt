@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.11
+Stable tag: 2.0.12
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,14 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.0.12 =
+* Bug Fix - Zone rate error with newly added zones that did not include a state value corrected.
+* Addition - Coupon Code Optional
+* Addition - Gift Card Code Optional
+* Addition - VAT now can be applied at the cart level or included in the price of products and shipping rates. Display and totals changes based on your choice.
+* Improvement - Language editor now saves only one language at a time, speeding up save and load time.
+* Addition - Dutch language file added.
+* Addition - French language file added.
 = 2.0.11 =
 * Bug Fix - Translation of widgets was not in place for newsletter and cart.
 * Bug Fix - Duplicate product was not working correctly.

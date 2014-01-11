@@ -240,7 +240,10 @@ class ec_cartitem{
 		$this->total_price = ( $this->unit_price * $this->quantity ) + $options_price_onetime;
 		$this->handling_price = $cartitem_data->handling_price;
 		
-		$this->vat_enabled = $cartitem_data->vat_rate;
+		if( $cartitem_data->vat_rate > 0 )
+			$this->vat_enabled = true;
+		else
+			$this->vat_enabled = false;
 			
 		$store_page_id = get_option('ec_option_storepage');
 		$this->store_page = get_permalink( $store_page_id );

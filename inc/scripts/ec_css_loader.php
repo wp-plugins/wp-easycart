@@ -129,6 +129,14 @@ foreach( $size_rows as $size_row ){
 		$css_content = str_replace( "[" . $temp[0] . "]", $temp[1], $css_content );
 }
 
+if( !get_option( 'ec_option_show_giftcards' ) && !get_option( 'ec_option_show_coupons' ) ){
+	$css_content .= ".ec_cart_lower_left{ display:none; } ";
+}else if( !get_option( 'ec_option_show_giftcards' ) ){
+	$css_content .= ".ec_cart_gift_card_row{ display:none; } .ec_cart_gift_card_row_message{ display:none; } ";
+}else if( !get_option( 'ec_option_show_coupons' ) ){
+	$css_content .= ".ec_cart_coupon_row{ display:none; } .ec_cart_coupon_row_message{ display:none; } ";
+}
+
 $css_content .= get_option( 'ec_option_custom_css' );
 
 // print the css content

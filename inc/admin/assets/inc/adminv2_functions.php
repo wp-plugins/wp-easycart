@@ -1072,6 +1072,8 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_allow_guest', $_POST['ec_option_allow_guest'] );
 	update_option( 'ec_option_use_shipping', $_POST['ec_option_use_shipping'] );
 	update_option( 'ec_option_user_order_notes', $_POST['ec_option_user_order_notes'] );
+	update_option( 'ec_option_show_giftcards', $_POST['ec_option_show_giftcards'] );
+	update_option( 'ec_option_show_coupons', $_POST['ec_option_show_coupons'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );

@@ -59,10 +59,16 @@ class ec_cartpage{
 		// Duty (Based on Product Price) - already calculated in tax
 		// Get Total Without VAT, used only breifly
 		$total_without_vat_or_discount = $this->cart->subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
+		//If a discount used, and no vatable subtotal, we need to set to 0
+		if( $total_without_vat_or_discount < 0 )
+			$total_without_vat_or_discount = 0;
 		// Discount for Coupon
 		$this->discount = new ec_discount( $this->cart, $this->cart->subtotal, $this->shipping->get_shipping_price( ), $this->coupon_code, $this->gift_card, $total_without_vat_or_discount );
 		// Amount to Apply VAT on
 		$vatable_subtotal = $total_without_vat_or_discount - $this->discount->coupon_discount;
+		// If for some reason this is less than zero, we should correct
+		if( $vatable_subtotal < 0 )
+			$vatable_subtotal = 0;
 		// Get Tax Again For VAT
 		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, $vatable_subtotal, $this->user->shipping->state, $this->user->shipping->country );
 		// Discount for Gift Card

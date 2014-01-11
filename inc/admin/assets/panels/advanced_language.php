@@ -45,8 +45,10 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
         <option value="<?php echo $file_name; ?>" <?php if( get_option( 'ec_option_language' ) == $file_name ) echo ' selected'; ?>><?php echo $language->language_data->{$file_name}->label; ?></option>
     <?php }?>
     </select>
+    <input type="submit" value="Update" />
 </div>
 
+</form>
 <?php }else{ ?>
 
 <form method="post" action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-language&ec_action=update-selected-language">
@@ -72,6 +74,10 @@ if( isset( $_GET['dismiss_lite_banner'] ) ){
 for( $i=0; $i<count( $language->languages ); $i++ ){ 
 	$file_name = $language->languages[$i];
 ?>
+<?php if( !get_option( 'ec_option_use_seperate_language_forms' ) ){ ?>
+<form method="post" action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-language&ec_action=update_language">
+<input type="hidden" name="ec_option_language" id="ec_option_language" value="<?php echo get_option( 'ec_option_language' ); ?>" />
+<?php }?>
 <div class="ec_language_holder" id="<?php echo $file_name; ?>">
 	<div class="ec_language_header"><?php echo $language->language_data->{$file_name}->label; ?></div>
     
@@ -103,13 +109,17 @@ for( $i=0; $i<count( $language->languages ); $i++ ){
     <?php } ?>
     
     <?php }?>
+	
+	<?php if( !get_option( 'ec_option_use_seperate_language_forms' ) ){ ?>
+    <input type="hidden" value="1" name="isupdate" />
+    <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
+    </form>
+    <?php }?>
 </div>
+
+
+
 <?php }?>
-
-<input type="hidden" value="1" name="isupdate" />
-<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
-
-</form>
 
 <script>
 

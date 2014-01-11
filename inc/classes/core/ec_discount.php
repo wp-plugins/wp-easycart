@@ -51,21 +51,27 @@ class ec_discount{
 	}
 	
 	private function has_manufacturer_match( $manufacturer_id ){
+		$this->cart_subtotal = 0;
+		$return_val = false;
 		for( $i=0; $i<count( $this->cart->cart ); $i++){
 			if( $this->cart->cart[$i]->manufacturer_id == $manufacturer_id ){
-				return true;	
+				$return_val = true;
+				$this->cart_subtotal = $this->cart_subtotal + $this->cart->cart[$i]->total_price;
 			}
 		}
-		return false;
+		return $return_val;
 	}
 	
 	private function has_product_match( $product_id ){
+		$this->cart_subtotal = 0;
+		$return_val = false;
 		for( $i=0; $i<count( $this->cart->cart ); $i++){
 			if( $this->cart->cart[$i]->product_id == $product_id ){
-				return true;	
+				$return_val = true;	
+				$this->cart_subtotal = $this->cart_subtotal + $this->cart->cart[$i]->total_price;
 			}
 		}
-		return false;
+		return $return_val;
 	}
 	
 	private function get_coupon_amount( $promocode_row ){

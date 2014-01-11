@@ -28,11 +28,15 @@ class ec_order_totals{
 			}
 		}
 		$this->discount_total = number_format( $discount->discount_total, 2, '.', '' );
-		$this->grand_total = number_format( $this->get_grand_total( ), 2, '.', '' );	
+		$this->grand_total = number_format( $this->get_grand_total( $tax ), 2, '.', '' );	
 	}
 	
-	private function get_grand_total( ){
-		 return $this->sub_total + $this->shipping_total + $this->tax_total + $this->duty_total + $this->vat_total - $this->discount_total;
+	private function get_grand_total( $tax ){
+		if( $tax->vat_included ){
+			return $this->sub_total + $this->shipping_total + $this->tax_total + $this->duty_total - $this->discount_total;
+		}else{
+			return $this->sub_total + $this->shipping_total + $this->tax_total + $this->duty_total + $this->vat_total - $this->discount_total;
+		}
 	}
 	
 	public function get_grand_total_in_cents( ){

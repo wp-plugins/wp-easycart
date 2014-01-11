@@ -1380,7 +1380,7 @@ class ec_db{
 	}
 	
 	public function get_taxrates( ){
-		$sql = "SELECT taxrate_id, tax_by_state, tax_by_country, tax_by_duty, tax_by_vat, tax_by_all, state_rate, country_rate, duty_rate, vat_rate, all_rate, state_code, country_code,vat_country_code, duty_exempt_country_code FROM ec_taxrate ORDER BY tax_by_vat, tax_by_duty, tax_by_all, tax_by_country, tax_by_state";
+		$sql = "SELECT taxrate_id, tax_by_state, tax_by_country, tax_by_duty, tax_by_vat, tax_by_single_vat, tax_by_all, state_rate, country_rate, duty_rate, vat_rate, vat_added, vat_included, all_rate, state_code, country_code,vat_country_code, duty_exempt_country_code FROM ec_taxrate ORDER BY tax_by_vat, tax_by_single_vat, tax_by_duty, tax_by_all, tax_by_country, tax_by_state";
 		return $this->mysqli->get_results( $sql );
 	}
 	
@@ -2509,7 +2509,7 @@ class ec_db{
 	}
 	
 	public function get_zone_ids( $iso2_cnt, $code_sta ){
-		$sql = "SELECT zone_id FROM ec_zone_to_location WHERE ( iso2_cnt = %s AND code_sta = '' ) OR ( iso2_cnt = %s AND code_sta = %s )";
+		$sql = "SELECT zone_id FROM ec_zone_to_location WHERE ( iso2_cnt = %s AND ( code_sta = '-1' OR code_sta = '' ) ) OR ( iso2_cnt = %s AND code_sta = %s )";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $iso2_cnt, $iso2_cnt, $code_sta ) );
 	}
 	

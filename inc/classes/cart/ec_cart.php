@@ -69,10 +69,10 @@ class ec_cart{
 			if( $this->cart[$i]->is_taxable ) 				
 				$this->taxable_subtotal = $this->taxable_subtotal + $this->cart[$i]->total_price;
 			
-			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation )
+			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation && $this->cart[$i]->weight > 0 )
 				$this->shipping_subtotal = $this->shipping_subtotal + $this->cart[$i]->total_price;
 			
-			if( $this->cart[$i]->vat_enabled > 0 )
+			if( $this->cart[$i]->vat_enabled )
 				$this->vat_subtotal = $this->vat_subtotal + $this->cart[$i]->total_price;
 			
 			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation )

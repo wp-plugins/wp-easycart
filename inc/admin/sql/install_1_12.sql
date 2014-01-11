@@ -1097,6 +1097,8 @@ CREATE TABLE IF NOT EXISTS `ec_taxrate` (
    ,
   `tax_by_vat` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
    'If selected, show the VAT calculation to the users on checkout.',
+  `tax_by_single_vat` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
+   'Vat tax all users the same if selected.',
   `tax_by_all` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
    'If selected, tax all users.',
   `state_rate` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT
@@ -1106,8 +1108,11 @@ CREATE TABLE IF NOT EXISTS `ec_taxrate` (
   `duty_rate` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT
    'This rate to tax for duty charges',
   `vat_rate` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT
-   'The VAT rate at which the user is calculating VAT additions to the products.'
-   ,
+   'The VAT rate at which the user is calculating VAT additions to the products.',
+  `vat_added` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
+   'Vat is added to the total at the end, not included in the products.',
+  `vat_included` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
+   'Vat is included in the price of the product.',
   `all_rate` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT
    'if tax_all_enabled, The rate to tax all users.',
   `state_code` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT

@@ -36,6 +36,8 @@ class ec_tax{
 	public $vat_enabled;									// BOOL
 	public $vat_country_match;								// BOOL
 	public $vat_rate;										// FLOAT 11,2
+	public $vat_added;										// BOOL
+	public $vat_included;									// BOOL
 	
 	// List of Countries for VAT
 	public $country_list;									// Array( 'name_cnt'=>'United States', 
@@ -128,10 +130,17 @@ class ec_tax{
 			}else if( $taxrate->tax_by_vat ){
 				$this->vat_enabled = true;
 				$vat_row = $taxrate;
+				$this->vat_added = $taxrate->vat_added;
+				$this->vat_included = $taxrate->vat_included;
+			}else if( $taxrate->tax_by_single_vat ){
+				$this->vat_enabled = true;
+				$this->vat_rate = $taxrate->vat_rate;
+				$this->vat_added = $taxrate->vat_added;
+				$this->vat_included = $taxrate->vat_included;
 			}
 		}
 		
-		if( $this->vat_enabled ){
+		if( $this->vat_enabled && $this->vat_rate <= 0 ){
 			for( $i=0; $i<count($this->country_list); $i++){
 				if( $this->shipping_country == $this->country_list[$i]->iso2_cnt ){
 					$this->vat_country_match = true;
@@ -173,7 +182,11 @@ class ec_tax{
 		// Calculate VAT Values
 		if( $this->vat_enabled ){
 			$GLOBALS['ec_vat_rate'] = $this->vat_rate;
-			$this->vat_total = $this->vatable_total * $this->vat_rate / 100;
+			if( $this->vat_included ){
+				$this->vat_total = ( $this->vatable_total / ( ( $this->vat_rate / 100 ) + 1 ) ) * ( $this->vat_rate / 100 );
+			}else{
+				$this->vat_total = $this->vatable_total * $this->vat_rate / 100;
+			}
 		}
 	}
 	
