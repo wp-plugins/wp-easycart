@@ -27,6 +27,8 @@ class ec_storepage{
 	////////////////////////////////////////////////////////
 	function __construct( $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP", $modelnumber = "NOMODELNUMBER" ){
 		
+		$this->update_statistics( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, $modelnumber );
+		
 		if( $modelnumber != "NOMODELNUMBER" )								$this->is_details = true;
 		else																$this->is_details = $this->get_is_details( );
 		
@@ -287,6 +289,20 @@ class ec_storepage{
 	private function get_is_details( ){
 		if( isset( $_GET['model_number'] ) )					return true;
 		else													return false;
+	}
+	
+	private function update_statistics( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, $modelnumber ){
+		
+		$db = new ec_db( );
+		if( $modelnumber != "NOMODELNUMBER" ){
+			$db->update_product_views( $modelnumber );
+		}else if( $menuid != "NOMENU" ){
+			$db->update_menu_views( $menuid );
+		}else if( $submenuid != "NOSUBMENU" ){
+			$db->update_submenu_views( $submenuid );
+		}else if( $subsubmenuid != "NOSUBSUBMENU" ){
+			$db->update_subsubmenu_views( $subsubmenuid );
+		}
 	}
 }
 
