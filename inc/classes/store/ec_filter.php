@@ -316,11 +316,13 @@ class ec_filter{
 			
 			$ret_string = "WHERE product.activate_in_store = 1";
 			
-			if( $this->get_menu_level() == 1 )						$ret_string .= sprintf(" AND ( product.menulevel1_id_1 = %s OR product.menulevel2_id_1 = %s OR product.menulevel3_id_1 = %s )", mysql_real_escape_string( $this->get_menu_id( ) ), mysql_real_escape_string( $this->get_menu_id( ) ), mysql_real_escape_string( $this->get_menu_id( ) ) );
+			if( $this->get_menu_level() == 1 && $this->get_menu_id( ) != 0 )						
+				$ret_string .= sprintf(" AND ( product.menulevel1_id_1 = %s OR product.menulevel2_id_1 = %s OR product.menulevel3_id_1 = %s )", mysql_real_escape_string( $this->get_menu_id( ) ), mysql_real_escape_string( $this->get_menu_id( ) ), mysql_real_escape_string( $this->get_menu_id( ) ) );
 			
-			if( $this->get_menu_level() == 2 ) 						$ret_string .= sprintf(" AND ( product.menulevel1_id_2 = %s OR product.menulevel2_id_2 = %s OR product.menulevel3_id_2 = %s )", mysql_real_escape_string( $this->get_submenu_id( ) ), mysql_real_escape_string( $this->get_submenu_id( ) ), mysql_real_escape_string( $this->get_submenu_id( ) ) );
+			if( $this->get_menu_level() == 2 && $this->get_submenu_id( ) != 0 ) 						$ret_string .= sprintf(" AND ( product.menulevel1_id_2 = %s OR product.menulevel2_id_2 = %s OR product.menulevel3_id_2 = %s )", mysql_real_escape_string( $this->get_submenu_id( ) ), mysql_real_escape_string( $this->get_submenu_id( ) ), mysql_real_escape_string( $this->get_submenu_id( ) ) );
 			
-			if( $this->get_menu_level() == 3 )						$ret_string .= sprintf(" AND ( product.menulevel1_id_3 = %s OR product.menulevel2_id_3 = %s OR product.menulevel3_id_3 = %s )", mysql_real_escape_string( $this->get_subsubmenu_id( ) ), mysql_real_escape_string( $this->get_subsubmenu_id( ) ), mysql_real_escape_string( $this->get_subsubmenu_id( ) ) );
+			if( $this->get_menu_level() == 3 && $this->get_subsubmenu_id( ) != 0 )						
+				$ret_string .= sprintf(" AND ( product.menulevel1_id_3 = %s OR product.menulevel2_id_3 = %s OR product.menulevel3_id_3 = %s )", mysql_real_escape_string( $this->get_subsubmenu_id( ) ), mysql_real_escape_string( $this->get_subsubmenu_id( ) ), mysql_real_escape_string( $this->get_subsubmenu_id( ) ) );
 			
 			if( $this->search != "" )								$ret_string .= " AND ( product.title LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' OR manufacturer.name LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' OR product.description LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' ) ";
 			
