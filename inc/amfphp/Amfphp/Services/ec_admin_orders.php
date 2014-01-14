@@ -249,21 +249,12 @@ class ec_admin_orders
 				$fromresult = mysql_query($fromsql);
 				$fromrow = mysql_fetch_assoc($fromresult);
 				
-				//Build the email message with full itemized paging
-				$Text = "This email is html, please switch to this view...";
-
-
-				$message = "--==MIME_BOUNDRY_alt_main_message\n";
-				$message .= "Content-Type: text/plain; charset=ISO-8859-1\n";
-				$message .= "Content-Transfer-Encoding: 7bit\n\n";
-				$message .= $Text . "\n\n";
-				$message .= "--==MIME_BOUNDRY_alt_main_message\n";
-				$message .= "Content-Type: text/html; charset=ISO-8859-1\n";
-				$message .= "Content-Transfer-Encoding: 7bit\n\n";
-				
 				$trackingnumber = $order[tracking_number];
 				$shipcarrier = $order[shipping_carrier];
-				$message .= "<html><head><title>..::Shipping Confirmation - Order Number $order_id ::..</title><style type='text/css'><!--.style20 {font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12px; }.style22 {font-family: Arial, Helvetica, sans-serif; font-size: 12px; }--></style></head><body> <table width='539' border='0' align='center'>   <tr><td colspan='4' align='left' class='style22'></td></tr><tr><td colspan='4' align='left' class='style22'><p><br> Dear $order[billing_first_name]  $order[billing_last_name]: </p><p>Your recent order  with the number <strong>$order[order_id]</strong> has been shipped! You should be receiving it within a short time period.<br>";
+				$orderfromemail = $fromrow[option_value];
+				
+				
+				$message = "<html><head><title>..::Shipping Confirmation - Order Number $order_id ::..</title><style type='text/css'><!--.style20 {font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12px; }.style22 {font-family: Arial, Helvetica, sans-serif; font-size: 12px; }--></style></head><body> <table width='539' border='0' align='center'>   <tr><td colspan='4' align='left' class='style22'></td></tr><tr><td colspan='4' align='left' class='style22'><p><br> Dear $order[billing_first_name]  $order[billing_last_name]: </p><p>Your recent order  with the number <strong>$order[order_id]</strong> has been shipped! You should be receiving it within a short time period.<br>";
 				
 				if ($trackingnumber != '0' && $trackingnumber != 'Null'&& $trackingnumber != 'NULL'&& $trackingnumber != 'null'&& $trackingnumber != NULL && $trackingnumber != '') {
 					$message .= "<br>  You may check the status of your order by visiting your carriers website and using the following tracking number.</p><p>Package Carrier: $shipcarrier<br>Package Tracking Number: $trackingnumber</p>";
@@ -280,19 +271,25 @@ $order[shipping_address_line_2] </span></td> </tr><tr><td><span class='style22'>
 				
 				$message .="<tr><td width='269'>&nbsp;</td><td width='80' align='center'>&nbsp;</td><td width='91' align='center'>&nbsp;</td><td>&nbsp;</td></tr><tr><td colspan='4' class='style22'><p><br>Please double check your order when you receive it and let us know immediately if there are any concerns or issues. We always value your business and hope you enjoy your product.<br><br>Thank you very much!<br><br><br></p></td></tr><tr><td colspan='4'><p class='style22'></p></td></tr></table></body></html>";
 				
-				//set from email address
-				$orderfromemail = $fromrow[option_value];
-				//headers
-				$headers = "From: $orderfromemail\r\n";
-				$headers .= "Reply-To: $orderfromemail\r\n";
-				$headers .= "X-Mailer: PHP4\n";
-				$headers .= "X-Priority: 3\n";
-				$headers .= "MIME-Version: 1.0\n";
-				$headers .= "Return-Path: $orderfromemail\r\n"; 
-				$headers .= "Content-Type: multipart/alternative; boundary=\"==MIME_BOUNDRY_alt_main_message\"\n\n";
+				
+				
+				//headers 
+				$headers = "MIME-Version: 1.0\r\n";
+				$headers .= "Content-Type: text/html; charset=utf-8\r\n";
+				$headers .= "From: " . get_option( 'ec_option_order_from_email')  . "\r\n";
+				$headers .= "Reply-To: " . get_option( 'ec_option_order_from_email' )  . "\r\n";
+				$headers .= "X-Mailer: PHP/".phpversion()  . "\r\n";
+			
 			
 				//mail individual gift card message
-				mail($order[user_email], 'Order Shipped - Confirmation', $message, $headers);
+			
+				if( get_option( 'ec_option_use_wp_mail' ) ){
+					wp_mail( $order[user_email], 'Order Shipped - Confirmation' , $message, $headers );
+				}else{
+					mail( $order[user_email], 'Order Shipped - Confirmation' , $message, $headers  );
+				}
+		
+		
 			  }//close if this is an emailer
 							  
 			  //if no errors, return their current Client ID
