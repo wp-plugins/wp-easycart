@@ -266,14 +266,17 @@ class ec_admin_productimporter
 								}
 								
 								// Insert a WordPress Custom post type post.
-								$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $excel->sheets[0]['cells'][$x][1] . "\"]",
+								$sql_product = sprintf("SELECT ec_product.product_id, ec_product.title, ec_product.model_number FROM ec_product WHERE ec_product.model_number = '%s'", $excel->sheets[0]['cells'][$x][1] );
+								$result_get_product = mysql_query( $sql_product );
+								$product = mysql_fetch_assoc( $result_get_product );
+								$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $product['model_number'] . "\"]",
 												'post_status'	=> "publish",
-												'post_title'	=> $excel->sheets[0]['cells'][$x][2],
+												'post_title'	=> $product['title'],
 												'post_type'		=> "ec_store"
 											  );
 								$post_id = wp_insert_post( $post, $wp_error );
 								$db = new ec_db( );
-								$db->update_product_post_id( $newproductid, $post_id );
+								$db->update_product_post_id( $product['product_id'], $post_id );
 							}
 							
 							
