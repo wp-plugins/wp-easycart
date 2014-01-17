@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.13
+Stable tag: 2.0.14
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,11 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.0.14 =
+* Bug Fix - Bottom sort filter was not working, hidden as it is not useful.
+* Bug Fix - Shipping prices were not updating on the shipping selection page in the cart when you updated the cart items (requires design file upgrade).
+* Bug Fix - Added a "+" to basic option items when there is a price addition.
+* Bug Fix - Fix for shipping zones, order was incorrect and caused inconsistencies.
 = 2.0.13 =
 * Bug Fix - Views for products and menus were not updating.
 * Bug Fix - Products with three menus attached were not displaying in product details.

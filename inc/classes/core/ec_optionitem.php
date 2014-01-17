@@ -17,8 +17,15 @@ class ec_optionitem{
 	}
 	
 	public function get_optionitem_label( ){
-		if($this->optionitem_price != 0.00)				return $this->optionitem_name . " (" . $GLOBALS['currency']->get_currency_display( $this->optionitem_price ) . ")";
-		else											return $this->optionitem_name;
+		if($this->optionitem_price != 0.00){
+			if( $this->optionitem_price > 0.00 ){
+				return $this->optionitem_name . " (+" . $GLOBALS['currency']->get_currency_display( $this->optionitem_price ) . ")";
+			}else{
+				return $this->optionitem_name . " (" . $GLOBALS['currency']->get_currency_display( $this->optionitem_price ) . ")";
+			}
+		}else{
+			return $this->optionitem_name;
+		}
 	}
 
 }

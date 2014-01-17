@@ -334,8 +334,12 @@ class ec_cartitem{
 	public function display_option1( ){
 		if( $this->optionitem1_price == "0.00" &&  $this->optionitem1_name)
 			echo $this->optionitem1_label . ": " . $this->optionitem1_name;
-		else if( $this->optionitem1_name )
-			echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem1_price ) . " )";
+		else if( $this->optionitem1_name ){
+			if( $this->optionitem1_price > 0.00 )
+				echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( +" . $GLOBALS['currency']->get_currency_display( $this->optionitem1_price ) . " )";
+			else
+				echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem1_price ) . " )";
+		}
 	}
 	
 	public function has_option2( ){
@@ -348,8 +352,12 @@ class ec_cartitem{
 	public function display_option2( ){
 		if( $this->optionitem2_price == "0.00" &&  $this->optionitem2_name )
 			echo $this->optionitem2_label . ": " . $this->optionitem2_name;
-		else if( $this->optionitem2_name )
-			echo $this->optionitem2_label . ": " . $this->optionitem2_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem2_price ) . " )";
+		else if( $this->optionitem2_name ){
+			if( $this->optionitem2_price > 0.00 )
+				echo $this->optionitem2_label . ": " . $this->optionitem2_name . " ( +" . $GLOBALS['currency']->get_currency_display( $this->optionitem2_price ) . " )";
+			else
+				echo $this->optionitem2_label . ": " . $this->optionitem2_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem2_price ) . " )";
+		}
 	}
 	
 	public function has_option3( ){
@@ -362,8 +370,12 @@ class ec_cartitem{
 	public function display_option3( ){
 		if( $this->optionitem3_price == "0.00" &&  $this->optionitem3_name )
 			echo $this->optionitem3_label . ": " . $this->optionitem3_name;
-		else if( $this->optionitem3_name )
-			echo $this->optionitem3_label . ": " . $this->optionitem3_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem3_price ) . " )";
+		else if( $this->optionitem3_name ){
+			if( $this->optionitem3_price > 0.00 )
+				echo $this->optionitem3_label . ": " . $this->optionitem3_name . " ( +" . $GLOBALS['currency']->get_currency_display( $this->optionitem3_price ) . " )";
+			else
+				echo $this->optionitem3_label . ": " . $this->optionitem3_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem3_price ) . " )";
+		}
 	}
 	
 	public function has_option4( ){
@@ -376,8 +388,12 @@ class ec_cartitem{
 	public function display_option4( ){
 		if( $this->optionitem4_price == "0.00" &&  $this->optionitem4_name )
 			echo $this->optionitem4_label . ": " . $this->optionitem4_name;
-		else if( $this->optionitem4_name )
-			echo $this->optionitem4_label . ": " . $this->optionitem4_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem4_price ) . " )";
+		else if( $this->optionitem4_name ){
+			if( $this->optionitem4_price > 0.00 )
+				echo $this->optionitem4_label . ": " . $this->optionitem4_name . " ( +" . $GLOBALS['currency']->get_currency_display( $this->optionitem4_price ) . " )";
+			else
+				echo $this->optionitem4_label . ": " . $this->optionitem4_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem4_price ) . " )";
+		}
 	}
 	
 	public function has_option5( ){
@@ -390,8 +406,12 @@ class ec_cartitem{
 	public function display_option5( ){
 		if( $this->optionitem5_price == "0.00" &&  $this->optionitem5_name )
 			echo $this->optionitem5_label . ": " . $this->optionitem5_name;
-		else if( $this->optionitem5_name )
-			echo $this->optionitem5_label . ": " . $this->optionitem5_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem5_price ) . " )";
+		else if( $this->optionitem5_name ){
+			if( $this->optionitem5_price > 0.00 )
+				echo $this->optionitem5_label . ": " . $this->optionitem5_name . " ( +" . $GLOBALS['currency']->get_currency_display( $this->optionitem5_price ) . " )";
+			else
+				echo $this->optionitem5_label . ": " . $this->optionitem5_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem5_price ) . " )";
+		}
 	}
 	
 	public function has_gift_card_message( ){

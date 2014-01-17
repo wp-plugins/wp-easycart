@@ -690,6 +690,11 @@ class ec_cartpage{
 	/* START SHIPPING METHOD FUNCTIONS */
 	public function display_shipping_method( ){
 		if(	$this->cart->total_items > 0 ){
+			echo "<input type=\"hidden\" id=\"ec_cart_zip_code\" value=\"" . $this->user->shipping->zip . "\" />";
+			echo "<input type=\"hidden\" id=\"ec_cart_country\" value=\"" . $this->user->shipping->country . "\" />";
+			echo "<input type=\"hidden\" id=\"ec_cart_shipping\" value=\"\" />";
+			echo "<input type=\"hidden\" id=\"ec_cart_grandtotal\" value=\"\" />";
+			
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_shipping_method.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_shipping_method.php' );
 			else

@@ -137,6 +137,8 @@ if( !get_option( 'ec_option_show_giftcards' ) && !get_option( 'ec_option_show_co
 	$css_content .= ".ec_cart_coupon_row{ display:none; } .ec_cart_coupon_row_message{ display:none; } ";
 }
 
+$css_content .= ".filter_bar_bottom .ec_sort_menu{ display:none; }";
+
 $css_content .= get_option( 'ec_option_custom_css' );
 
 // print the css content
