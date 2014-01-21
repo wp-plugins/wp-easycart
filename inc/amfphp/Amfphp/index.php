@@ -15,6 +15,7 @@
 if( !defined( 'WP_USE_THEMES' ) )
 	define('WP_USE_THEMES', false);
 define('WP_DEBUG', false);
+define('WP_INSTALLING', true);
 require_once('../../../../../../wp-load.php');
 
 require_once dirname(__FILE__) . '/ClassLoader.php';
