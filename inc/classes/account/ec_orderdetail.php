@@ -166,7 +166,10 @@ class ec_orderdetail{
 	}
 	
 	public function display_option1_price( ){
-		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_1 );
+		if( $this->optionitem_price_1 < 0 )
+			echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_1 );
+		else if( $this->optionitem_price_1 > 0 )
+			echo "+" . $GLOBALS['currency']->get_currency_display( $this->optionitem_price_1 );
 	}
 	
 	public function has_option2( ){
@@ -194,7 +197,10 @@ class ec_orderdetail{
 	}
 	
 	public function display_option2_price( ){
-		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_2 );
+		if( $this->optionitem_price_2 < 0 )
+			echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_2 );
+		else if( $this->optionitem_price_2 > 0 )
+			echo "+" . $GLOBALS['currency']->get_currency_display( $this->optionitem_price_2 );
 	}
 	
 	public function has_option3( ){
@@ -222,7 +228,10 @@ class ec_orderdetail{
 	}
 	
 	public function display_option3_price( ){
-		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_3 );
+		if( $this->optionitem_price_3 < 0 )
+			echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_3 );
+		else if( $this->optionitem_price_3 > 0 )
+			echo "+" . $GLOBALS['currency']->get_currency_display( $this->optionitem_price_3 );
 	}
 	
 	public function has_option4( ){
@@ -250,7 +259,10 @@ class ec_orderdetail{
 	}
 	
 	public function display_option4_price( ){
-		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_4 );
+		if( $this->optionitem_price_4 < 0 )
+			echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_4 );
+		else if( $this->optionitem_price_4 > 0 )
+			echo "+" . $GLOBALS['currency']->get_currency_display( $this->optionitem_price_4 );
 	}
 	
 	public function has_option5( ){
@@ -278,7 +290,10 @@ class ec_orderdetail{
 	}
 	
 	public function display_option5_price( ){
-		echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_5 );
+		if( $this->optionitem_price_5 < 0 )
+			echo $GLOBALS['currency']->get_currency_display( $this->optionitem_price_5 );
+		else if( $this->optionitem_price_5 > 0 )
+			echo "+" . $GLOBALS['currency']->get_currency_display( $this->optionitem_price_5 );
 	}
 	
 	public function has_gift_card_message( ){

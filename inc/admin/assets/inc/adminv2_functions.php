@@ -1089,6 +1089,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_use_wp_mail', $_POST['ec_option_use_wp_mail'] );
 	update_option( 'ec_option_use_rtl', $_POST['ec_option_use_rtl'] );
 	update_option( 'ec_option_custom_css', $_POST['ec_option_custom_css'] );
+	update_option( 'ec_option_match_store_meta', $_POST['ec_option_match_store_meta'] );
 	
 	//update sizes
 	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 

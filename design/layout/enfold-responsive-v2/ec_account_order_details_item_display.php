@@ -25,27 +25,27 @@
 	?>
     <?php if( $order_item->has_option1( ) ){ ?>
     <div class="ec_account_order_details_item_display_option">
-      <?php $order_item->display_option1_label( ); ?>: <?php $order_item->display_option1( ); ?><?php if( $order_item->has_option1_price( ) ){ ?> (<?php $order_item->display_option1_price( ); ?> )<?php }?>
+      <?php $order_item->display_option1_label( ); ?>: <?php $order_item->display_option1( ); ?><?php if( $order_item->has_option1_price( ) ){ ?> (<?php $order_item->display_option1_price( ); ?>)<?php }?>
     </div>
     <?php }?>
     <?php if( $order_item->has_option2( ) ){ ?>
     <div class="ec_account_order_details_item_display_option">
-      <?php $order_item->display_option2_label( ); ?>: <?php $order_item->display_option2( ); ?><?php if( $order_item->has_option2_price( ) ){ ?> (<?php $order_item->display_option2_price( ); ?> )<?php }?>
+      <?php $order_item->display_option2_label( ); ?>: <?php $order_item->display_option2( ); ?><?php if( $order_item->has_option2_price( ) ){ ?> (<?php $order_item->display_option2_price( ); ?>)<?php }?>
     </div>
     <?php }?>
     <?php if( $order_item->has_option3( ) ){ ?>
     <div class="ec_account_order_details_item_display_option">
-      <?php $order_item->display_option3_label( ); ?>: <?php $order_item->display_option3( ); ?><?php if( $order_item->has_option3_price( ) ){ ?> (<?php $order_item->display_option3_price( ); ?> )<?php }?>
+      <?php $order_item->display_option3_label( ); ?>: <?php $order_item->display_option3( ); ?><?php if( $order_item->has_option3_price( ) ){ ?> (<?php $order_item->display_option3_price( ); ?>)<?php }?>
     </div>
     <?php }?>
     <?php if( $order_item->has_option4( ) ){ ?>
     <div class="ec_account_order_details_item_display_option">
-      <?php $order_item->display_option4_label( ); ?>: <?php $order_item->display_option4( ); ?><?php if( $order_item->has_option4_price( ) ){ ?> (<?php $order_item->display_option4_price( ); ?> )<?php }?>
+      <?php $order_item->display_option4_label( ); ?>: <?php $order_item->display_option4( ); ?><?php if( $order_item->has_option4_price( ) ){ ?> (<?php $order_item->display_option4_price( ); ?>)<?php }?>
     </div>
     <?php }?>
     <?php if( $order_item->has_option5( ) ){ ?>
     <div class="ec_account_order_details_item_display_option">
-      <?php $order_item->display_option5_label( ); ?>: <?php $order_item->display_option5( ); ?><?php if( $order_item->has_option5_price( ) ){ ?> (<?php $order_item->display_option5_price( ); ?> )<?php }?>
+      <?php $order_item->display_option5_label( ); ?>: <?php $order_item->display_option5( ); ?><?php if( $order_item->has_option5_price( ) ){ ?> (<?php $order_item->display_option5_price( ); ?>)<?php }?>
     </div>
     <?php }
 	}//close basic options

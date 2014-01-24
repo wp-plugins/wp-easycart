@@ -140,36 +140,50 @@
                     <?php 
                     if( $this->cart->cart[$i]->optionitem1_name ){
                         echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem1_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem1_name;
-						if( $this->cart->cart[$i]->optionitem1_price != "0.00" )
+						if( $this->cart->cart[$i]->optionitem1_price < 0 )
 							echo " (" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem1_price ) . ")";
+						else if( $this->cart->cart[$i]->optionitem1_price > 0 )
+							echo " (+" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem1_price ) . ")";
 						echo "</span></td></tr>";
                     }
                     
                     if( $this->cart->cart[$i]->optionitem2_name ){
                         echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem2_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem2_name;
-						if( $this->cart->cart[$i]->optionitem2_price != "0.00" )
+						if( $this->cart->cart[$i]->optionitem2_price < 0 )
 							echo " (" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem2_price ) . ")";
+						else if( $this->cart->cart[$i]->optionitem2_price > 0 )
+							echo " (+" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem2_price ) . ")";
+						
 						echo "</span></td></tr>";
                     }
                     
                     if( $this->cart->cart[$i]->optionitem3_name ){
                         echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem3_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem3_name;
-						if( $this->cart->cart[$i]->optionitem3_price != "0.00" )
+						if( $this->cart->cart[$i]->optionitem3_price < 0 )
 							echo " (" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem3_price ) . ")";
+						else if( $this->cart->cart[$i]->optionitem3_price > 0 )
+							echo " (+" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem3_price ) . ")";
+						
 						echo "</span></td></tr>";
                     }
                     
                     if( $this->cart->cart[$i]->optionitem4_name ){
                         echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem4_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem4_name;
-						if( $this->cart->cart[$i]->optionitem4_price != "0.00" )
+						if( $this->cart->cart[$i]->optionitem4_price < 0 )
 							echo " (" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem4_price ) . ")";
+						else if( $this->cart->cart[$i]->optionitem4_price > 0 )
+							echo " (+" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem4_price ) . ")";
+						
 						echo "</span></td></tr>";
                     }
                     
                     if( $this->cart->cart[$i]->optionitem5_name ){
                         echo "<tr><td><span class=\"ec_option_label\">" . $this->cart->cart[$i]->optionitem5_label . "</span>: <span class=\"ec_option_name\">" . $this->cart->cart[$i]->optionitem5_name;
-						if( $this->cart->cart[$i]->optionitem5_price != "0.00" )
+						if( $this->cart->cart[$i]->optionitem5_price < 0 )
 							echo " (" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem5_price ) . ")";
+						else if( $this->cart->cart[$i]->optionitem5_price > 0 )
+							echo " (+" . $GLOBALS['currency']->get_currency_display( $this->cart->cart[$i]->optionitem5_price ) . ")";
+						
 						echo "</span></td></tr>";
                     }
 					}// Close basic options

@@ -50,6 +50,7 @@ class ec_orderdisplay{
 	public $shipping_phone;  					// VARCHAR 32
 	
 	public $order_customer_notes;				// BLOB
+	public $creditcard_digits;					// VARCHAR 4
 	
 	public $user;								// ec_user class
 	
@@ -115,6 +116,7 @@ class ec_orderdisplay{
 		$this->shipping_phone = $order_row->shipping_phone; 
 		
 		$this->order_customer_notes = $order_row->order_customer_notes;
+		$this->creditcard_digits = $order_row->creditcard_digits;
 		
 		$this->user = new ec_user( $this->user_email );
 		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1, $this->billing_city, $this->billing_state, $this->billing_country, $this->billing_zip, $this->billing_phone );
@@ -301,7 +303,7 @@ class ec_orderdisplay{
 	}
 	
 	public function display_payment_method( ){
-		echo $this->payment_method;
+		echo ucwords( $this->payment_method );
 	}
 	
 	public function display_order_link( $link_text ){

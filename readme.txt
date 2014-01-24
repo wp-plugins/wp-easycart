@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.15
+Stable tag: 2.0.16
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.0.16 =
+* Improvement - For themes that use post meta data instead of the post template type, you can now turn on an advanced option to automatically match all store items meta to your store page meta.
+* Improvement - Added a post to developers.wpeasycart.com to help users with a kriesi theme match all store item sidebars to your store page sidebar.
+* Bug Fix - Products with double quotes crashed the PayPal checkout, this has been corrected.
+* Addition - Credit card payments now saves and displays the last 4 digits of the credit card in the order information.
+* Bug Fix - Change from last version was not loading all necessary EasyCart classes in the admin console, this has been corrected.
+* Improvement - added a plus sign to receipts and order details in the account when options add a value to the unit price for basic options.
 = 2.0.15 =
 * Bug Fix - We found that some conflicting plugins were interfering with the admin console, these plugins have been blocked to improve the admin performance.
 = 2.0.14 =

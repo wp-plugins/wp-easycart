@@ -17,7 +17,7 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"upload\" id=\"upload\" type=\"hidden\" value=\"1\" />";
 		echo "<input name=\"custom\" id=\"custom\" type=\"hidden\" value=\"" . $this->order_id . "\" />";
 		echo "<input name=\"bn\" id=\"bn\" type=\"hidden\" value=\"LevelFourDevelopmentLLC_Cart\" />";
-		echo "<input name=\"business\" id=\"business\" type=\"hidden\" value=\"" . $paypal_email . "\" />";
+		echo "<input name=\"business\" id=\"business\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $paypal_email ) . "\" />";
 		echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $paypal_currency_code . "\" />";
 		echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
 		echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . number_format($this->order->discount_total, 2) . "\" />";
@@ -33,19 +33,19 @@ class ec_paypal extends ec_third_party{
 		echo "<input type=\"hidden\" name=\"cancel_return\" value=\"". $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment\" />";
 		
 		//customer billing information and address info
-		echo "<input name=\"first_name\" id=\"first_name\" type=\"hidden\" value=\"" . $this->order->billing_first_name . "\" />";
-		echo "<input name=\"last_name\" id=\"last_name\" type=\"hidden\" value=\"" . $this->order->billing_last_name . "\" />";
-		echo "<input name=\"address1\" id=\"address1\" type=\"hidden\" value=\"" . $this->order->billing_address_line_1 . "\" />";
-		echo "<input name=\"city\" id=\"city\" type=\"hidden\" value=\"" . $this->order->billing_city . "\" />";
-		echo "<input name=\"state\" id=\"state\" type=\"hidden\" value=\"".strtoupper($this->order->billing_state) . "\" />";
-		echo "<input name=\"zip\" id=\"zip\" type=\"hidden\" value=\"" . $this->order->billing_zip . "\" />";
-		echo "<input name=\"country\" id=\"country\" type=\"hidden\" value=\"" . $this->order->billing_country . "\" />";
-		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . $this->order->user_email . "\" />";
+		echo "<input name=\"first_name\" id=\"first_name\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_first_name ) . "\" />";
+		echo "<input name=\"last_name\" id=\"last_name\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_last_name ) . "\" />";
+		echo "<input name=\"address1\" id=\"address1\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_address_line_1 ) . "\" />";
+		echo "<input name=\"city\" id=\"city\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_city ) . "\" />";
+		echo "<input name=\"state\" id=\"state\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', strtoupper($this->order->billing_state ) ) . "\" />";
+		echo "<input name=\"zip\" id=\"zip\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_zip ) . "\" />";
+		echo "<input name=\"country\" id=\"country\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_country ) . "\" />";
+		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->user_email ) . "\" />";
 		
 		//add the cart contents to paypal
 		for( $i = 0; $i<count( $this->order_details ); $i++ ){
 			$paypal_counter = $i+1;
-			echo "<input name=\"item_name_" . $paypal_counter . "\" id=\"item_name_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $this->order_details[$i]->title . "\" />";
+			echo "<input name=\"item_name_" . $paypal_counter . "\" id=\"item_name_" . $paypal_counter . "\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order_details[$i]->title ) . "\" />";
 			echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . number_format($this->order_details[$i]->unit_price, 2) . "\" />";
 			echo "<input name=\"quantity_".$paypal_counter . "\" id=\"quantity_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $this->order_details[$i]->quantity . "\" />";
 			echo "<input name=\"shipping_" . $paypal_counter . "\" id=\"shipping_" . $paypal_counter."\" type=\"hidden\" value=\"0.00\" />";
@@ -69,7 +69,7 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"upload\" id=\"upload\" type=\"hidden\" value=\"1\" />";
 		echo "<input name=\"custom\" id=\"custom\" type=\"hidden\" value=\"" . $this->order_id . "\" />";
 		echo "<input name=\"bn\" id=\"bn\" type=\"hidden\" value=\"LevelFourDevelopmentLLC_Cart\" />";
-		echo "<input name=\"business\" id=\"business\" type=\"hidden\" value=\"" . $paypal_email . "\" />";
+		echo "<input name=\"business\" id=\"business\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $paypal_email ) . "\" />";
 		echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $paypal_currency_code . "\" />";
 		echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
 		echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . number_format($this->order->discount_total, 2) . "\" />";
@@ -85,19 +85,19 @@ class ec_paypal extends ec_third_party{
 		echo "<input type=\"hidden\" name=\"cancel_return\" value=\"". $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment\" />";
 		
 		//customer billing information and address info
-		echo "<input name=\"first_name\" id=\"first_name\" type=\"hidden\" value=\"" . $this->order->billing_first_name . "\" />";
-		echo "<input name=\"last_name\" id=\"last_name\" type=\"hidden\" value=\"" . $this->order->billing_last_name . "\" />";
-		echo "<input name=\"address1\" id=\"address1\" type=\"hidden\" value=\"" . $this->order->billing_address_line_1 . "\" />";
-		echo "<input name=\"city\" id=\"city\" type=\"hidden\" value=\"" . $this->order->billing_city . "\" />";
-		echo "<input name=\"state\" id=\"state\" type=\"hidden\" value=\"".strtoupper($this->order->billing_state) . "\" />";
-		echo "<input name=\"zip\" id=\"zip\" type=\"hidden\" value=\"" . $this->order->billing_zip . "\" />";
-		echo "<input name=\"country\" id=\"country\" type=\"hidden\" value=\"" . $this->order->billing_country . "\" />";
-		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . $this->order->user_email . "\" />";
+		echo "<input name=\"first_name\" id=\"first_name\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_first_name ) . "\" />";
+		echo "<input name=\"last_name\" id=\"last_name\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_last_name ) . "\" />";
+		echo "<input name=\"address1\" id=\"address1\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_address_line_1 ) . "\" />";
+		echo "<input name=\"city\" id=\"city\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_city ) . "\" />";
+		echo "<input name=\"state\" id=\"state\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', strtoupper($this->order->billing_state ) ) . "\" />";
+		echo "<input name=\"zip\" id=\"zip\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_zip ) . "\" />";
+		echo "<input name=\"country\" id=\"country\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_country ) . "\" />";
+		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->user_email ) . "\" />";
 		
 		//add the cart contents to paypal
 		for( $i = 0; $i<count( $this->order_details ); $i++ ){
 			$paypal_counter = $i+1;
-			echo "<input name=\"item_name_" . $paypal_counter . "\" id=\"item_name_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $this->order_details[$i]->title . "\" />";
+			echo "<input name=\"item_name_" . $paypal_counter . "\" id=\"item_name_" . $paypal_counter . "\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order_details[$i]->title ) . "\" />";
 			echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . number_format($this->order_details[$i]->unit_price, 2) . "\" />";
 			echo "<input name=\"quantity_".$paypal_counter . "\" id=\"quantity_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $this->order_details[$i]->quantity . "\" />";
 			echo "<input name=\"shipping_" . $paypal_counter . "\" id=\"shipping_" . $paypal_counter."\" type=\"hidden\" value=\"0.00\" />";

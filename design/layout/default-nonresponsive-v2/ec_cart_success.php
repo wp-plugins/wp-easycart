@@ -115,36 +115,46 @@
 		}else{
 		if( $order_details[$i]->optionitem_name_1 ){
 			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_1 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_1;
-			if( $order_details[$i]->optionitem_price_1 != "0.00" )
+			if( $order_details[$i]->optionitem_price_1 < 0 )
 				echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_1 ) . ")";
+			else if( $order_details[$i]->optionitem_price_1 > 0 )
+				echo " (+" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_1 ) . ")";
 			echo "</span></td></tr>";
 		}
 		
 		if( $order_details[$i]->optionitem_name_2 ){
 			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_2 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_2;
-			if( $order_details[$i]->optionitem_price_2 != "0.00" )
+			if( $order_details[$i]->optionitem_price_2 < 0 )
 				echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_2 ) . ")";
+			else if( $order_details[$i]->optionitem_price_2 > 0 )
+				echo " (+" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_2 ) . ")";
 			echo "</span></td></tr>";
 		}
 		
 		if( $order_details[$i]->optionitem_name_3 ){
 			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_3 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_3;
-			if( $order_details[$i]->optionitem_price_3 != "0.00" )
+			if( $order_details[$i]->optionitem_price_3 < 0 )
 				echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_3 ) . ")";
+			else if( $order_details[$i]->optionitem_price_3 > 0 )
+				echo " (+" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_3 ) . ")";
 			echo "</span></td></tr>";
 		}
 		
 		if( $order_details[$i]->optionitem_name_4 ){
 			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_4 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_4;
-			if( $order_details[$i]->optionitem_price_4 != "0.00" )
+			if( $order_details[$i]->optionitem_price_4 < 0 )
 				echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_4 ) . ")";
+			else if( $order_details[$i]->optionitem_price_4 > 0 )
+				echo " (+" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_4 ) . ")";
 			echo "</span></td></tr>";
 		}
 		
 		if( $order_details[$i]->optionitem_name_5 ){
 			echo "<tr><td><span class=\"ec_option_label\">" . $order_details[$i]->optionitem_label_5 . ":</span> <span class=\"ec_option_name\">" . $order_details[$i]->optionitem_name_5;
-			if( $order_details[$i]->optionitem_price_5 != "0.00" )
+			if( $order_details[$i]->optionitem_price_5 < 0 )
 				echo " (" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_5 ) . ")";
+			else if( $order_details[$i]->optionitem_price_5 > 0 )
+				echo " (+" . $GLOBALS['currency']->get_currency_display( $order_details[$i]->optionitem_price_5 ) . ")";
 			echo "</span></td></tr>";
 		}
 		}// end use basic option set

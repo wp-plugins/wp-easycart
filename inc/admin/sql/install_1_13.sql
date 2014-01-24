@@ -435,6 +435,8 @@ CREATE TABLE IF NOT EXISTS `ec_order` (
   'Quickbooks Specific TXN ID.',
   `edit_sequence` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 
   'Quickbooks Specific Edit Sequence.',
+  `creditcard_digits` VARCHAR(4) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'If credit card checkout is used, saves the last four digits here.',
   PRIMARY KEY (`order_id`),
   UNIQUE KEY `order_id` (`order_id`)
 )ENGINE=MyISAM

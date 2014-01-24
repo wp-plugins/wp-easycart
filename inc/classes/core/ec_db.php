@@ -1436,6 +1436,11 @@ class ec_db{
 			$payment_type = $GLOBALS['language']->get_text( "account_order_details", "account_order_details_payment_method_manual" );
 		else if( $payment_type == "third_party" )
 			$payment_type = get_option( 'ec_option_payment_third_party' );
+			
+		if( $payment_type != "manual_bill" && $payment_type != "third_party" )
+			$credit_card_last_four = substr( $payment->credit_card->card_number, -4 );
+		else
+			$credit_card_last_four = "";
 		
 		// Get Shipping Method to Save
 		$shipping_method = "";
@@ -1503,7 +1508,8 @@ class ec_db{
 										'shipping_phone'				=> $user->shipping->phone,
 										
 										'payment_method'				=> $payment_type,
-										'order_customer_notes'			=> $order_notes
+										'order_customer_notes'			=> $order_notes,
+										'creditcard_digits'				=> $credit_card_last_four
 								), 
 								array( 	'%d', '%s', '%d', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
@@ -1512,7 +1518,7 @@ class ec_db{
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
-										'%s', '%s'
+										'%s', '%s', '%s'
 								)
 							);	
 									
@@ -1835,7 +1841,8 @@ class ec_db{
 				ec_order.paypal_email_id, 
 				ec_order.paypal_payer_id,
 				
-				ec_order.order_customer_notes
+				ec_order.order_customer_notes,
+				ec_order.creditcard_digits
 				
 				FROM 
 				ec_order
@@ -1914,6 +1921,7 @@ class ec_db{
 				ec_order.paypal_payer_id,
 				
 				ec_order.order_customer_notes,
+				ec_order.creditcard_digits,
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
@@ -1998,6 +2006,7 @@ class ec_db{
 				ec_order.paypal_payer_id,
 				
 				ec_order.order_customer_notes,
+				ec_order.creditcard_digits,
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data 
 				

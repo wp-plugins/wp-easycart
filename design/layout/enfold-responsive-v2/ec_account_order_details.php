@@ -79,9 +79,15 @@
         </div>
         <div class="ec_account_order_details_row">&nbsp;&nbsp;&nbsp;</div>
         <?php }?>
+        <?php if( $this->order->creditcard_digits != "" ){ ?>
+        <div class="ec_account_order_details_row"><b></b>
+          <?php $this->order->display_payment_method( ); ?>: ************<?php echo $this->order->creditcard_digits; ?>
+        </div>
+        <?php }else{?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_payment_method' )?></b>
           <?php $this->order->display_payment_method( ); ?>
         </div>
+        <?php }?>
         <div class="ec_account_order_details_row">&nbsp;&nbsp;&nbsp;</div>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_subtotal' )?></b>
           <?php $this->order->display_sub_total( ); ?>

@@ -8,6 +8,7 @@ add_action( 'admin_menu', 'ec_create_menu' );
 add_action( 'admin_init', 'ec_custom_downloads', 1 );
 add_action( 'admin_notices', 'ec_install_admin_notice' );
 add_action( 'save_post', 'ec_post_save_permalink_structure' );
+add_action( 'save_post', 'ec_post_save_match_store_meta', 13 );
 
 function ec_install_admin_notice() {
 	if( isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "basic-setup" ){
@@ -323,6 +324,38 @@ function ec_mysqldump_table_data( $table ){
 function ec_post_save_permalink_structure( $post_id ) {
 	global $wp_rewrite;
 	$wp_rewrite->flush_rules();
+}
+
+function ec_post_save_match_store_meta( $post_id ) {
+	//If we are matching post meta, lets do it here for store page only!
+	$selected_store_id = get_option( 'ec_option_storepage' );
+	$using_meta_match = get_option( 'ec_option_match_store_meta' );
+	if( $using_meta_match && $selected_store_id == $post_id ){
+		//Get the store page meta
+		$store_meta = get_post_meta( $post_id );
+		//Get the posts for the store
+		$args = array( 'post_type' => 'ec_store' );
+		$my_query = new WP_Query( $args );
+		foreach( $my_query->posts as $post ){
+			//Get the post meta for deletion if needed
+			$post_meta = get_post_meta( $post->ID );
+			//Delete each meta for this post
+			foreach( $post_meta as $key => $meta ){
+				delete_post_meta( $post->ID, $key );
+			}
+			
+			//Add each store meta to this post
+			foreach( $store_meta as $key => $meta ){
+				//We need to check if unseriablizable and deal with it accordingly
+				$meta_arr = @unserialize( $meta[0] );
+				if( $meta_arr !== false ){
+					add_post_meta( $post->ID, $key, $meta_arr );
+				}else{
+					add_post_meta( $post->ID, $key, $meta[0] );
+				}
+			}
+		}
+	}
 }
 
 ?>
