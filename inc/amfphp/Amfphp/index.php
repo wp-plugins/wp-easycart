@@ -15,9 +15,9 @@
 if( !defined( 'WP_USE_THEMES' ) )
 	define( 'WP_USE_THEMES', false );
 define( 'WP_DEBUG', false );
-define( 'WP_INSTALLING', true );
-define( 'EC_PUGIN_NAME', 'WP EasyCart' );
-define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart' );
+//define( 'WP_INSTALLING', true );
+//define( 'EC_PUGIN_NAME', 'WP EasyCart' );
+//define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart' );
 
 require_once( '../../../../../../wp-load.php' );
 require_once( '../../ec_config.php' );
