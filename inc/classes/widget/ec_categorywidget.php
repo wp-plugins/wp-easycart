@@ -124,7 +124,7 @@ class ec_categorywidget extends WP_Widget{
 		
 		$categories = array(); 
 		for( $i=0; $i<count( $category_items ); $i++ ){
-			$categories[] = array( $category_items[$i]->menu_id, $category_items[$i]->menu_name, $category_items[$i]->product_count, get_permalink( $category_items[$i]->post_id ) );
+			$categories[] = array( $category_items[$i]->menu_id, $category_items[$i]->menu_name, $category_items[$i]->product_count, $this->ec_get_permalink( $category_items[$i] , $level, $store_page, $permalink_divider ) );
 		}
 		
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_category_widget.php' ) )	
@@ -133,6 +133,21 @@ class ec_categorywidget extends WP_Widget{
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_category_widget.php");
 		
 		echo $after_widget;
+	}
+	
+	private function ec_get_permalink( $category_item, $level, $store_page, $permalink_divider ){
+		
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $category_item->post_id != "0" ){
+			return get_permalink( $category_item->post_id );
+		}else{
+			if( $level == 0 )
+				return $store_page . $permalink_divider . "menuid=" . $category_item->menu_id . "&menuname=" . $category_item->menu_name;
+			else if( $level == 1 )
+				return $store_page . $permalink_divider . "submenuid=" . $category_item->menu_id . "&submenuname=" . $category_item->menu_name;
+			else if( $level == 2 )
+				return $store_page . $permalink_divider . "subsubmenuid=" . $category_item->menu_id . "&subsubmenuname=" . $category_item->menu_name;
+		}
+		
 	}
  
 }

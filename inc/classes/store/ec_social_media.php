@@ -184,7 +184,17 @@ class ec_social_media{
 		global $wp_query;
 		$post_obj = $wp_query->get_queried_object();
 		$post_id = $post_obj->ID;
-		return get_permalink( $post_id );
+		return $this->ec_get_permalink( $post_id );
+	}
+	
+	private function ec_get_permalink( $postid ){
+		
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $postid != "0" ){
+			return get_permalink( $postid );
+		}else{
+			return $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
+		}
+		
 	}
 	
 	private function get_icon_image( $image ){

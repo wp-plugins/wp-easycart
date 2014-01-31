@@ -187,15 +187,15 @@ class ec_filter{
 	}
 	
 	public function get_menu_permalink( ){
-		return get_permalink( $this->menulevel1->post_id );
+		return $this->ec_get_permalink( $this->menulevel1->post_id, "menu" );
 	}
 	
 	public function get_submenu_permalink( ){
-		return get_permalink( $this->menulevel2->post_id );
+		return $this->ec_get_permalink( $this->menulevel2->post_id, "submenu" );
 	}
 	
 	public function get_subsubmenu_permalink( ){
-		return get_permalink( $this->menulevel3->post_id );
+		return $this->ec_get_permalink( $this->menulevel3->post_id, "subsubmenu" );
 	}
 	
 	public function get_menu_link(){
@@ -242,7 +242,11 @@ class ec_filter{
 		$has_store_shortcode = false;
 		global $wp_query;
 		$post_obj = $wp_query->get_queried_object();
-		$post_content = $post_obj->post_content;
+		if( $post_obj ){
+			$post_content = $post_obj->post_content;
+		}else{
+			$post_content = "";
+		}
 		if( strstr( $post_content, "[ec_store" ) )
 			$has_store_shortcode = true;
 		
@@ -257,7 +261,7 @@ class ec_filter{
 				
 			if( count( $menu_row ) > 0 ){
 				if( $has_store_shortcode )
-					$ret_string = get_permalink( $menu_row->post_id ) . $this->permalink_divider;
+					$ret_string = $this->ec_get_permalink( $menu_row->post_id, "menurow", $menu_row ) . $this->permalink_divider;
 				else
 					$ret_string = $this->store_page . $this->permalink_divider;
 			}else{
@@ -270,14 +274,18 @@ class ec_filter{
 		}else if( $leave_out != 1 ){
 			global $wp_query;
 			$post_obj = $wp_query->get_queried_object();
-			$post_id = $post_obj->ID;
+			if( $post_obj ){
+				$post_id = $post_obj->ID;
+			}else{
+				$post_id = 0;
+			}
 			$manufacturer = $this->mysqli->get_manufacturer_id_from_post_id( $post_id );
 			$product = $this->mysqli->get_product_from_post_id( $post_id );
 			if( ( isset( $manufacturer ) && $leave_out == 3 ) || ( isset( $product ) && $leave_out == 3 ) || ( isset( $product ) && $leave_out == 4 ) )
 				$ret_string = $this->store_page . $this->permalink_divider;
 			else{
 				if( $has_store_shortcode )
-					$ret_string = get_permalink( $post_id ) . $this->permalink_divider;
+					$ret_string = $this->ec_get_permalink( $post_id, "store" ) . $this->permalink_divider;
 				else
 					$ret_string = $this->store_page . $this->permalink_divider;
 			}
@@ -377,6 +385,31 @@ class ec_filter{
 			return " AND product.price > " . $pricepoint_row->low_point;
 		else
 			return " AND product.price <= " . $pricepoint_row->high_point . " AND product.price >= " . $pricepoint_row->low_point;
+	}
+	
+	private function ec_get_permalink( $postid, $link_type, $menu_row = NULL ){
+		
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $postid != "0" ){
+			return get_permalink( $postid );
+		}else{
+			if( $link_type == "store" )
+				return $this->store_page . $this->permalink_divider;
+			else if( $link_type == "menu" )
+				return $this->store_page . $this->permalink_divider . "menuid=" . $this->get_menu1_id( ) . "&menuname=" . $this->get_menu_name( );
+			else if( $link_type == "submenu" )
+				return $this->store_page . $this->permalink_divider . "submenuid=" . $this->get_menu2_id( ) . "&submenuname=" . $this->get_submenu_name( );
+			else if( $link_type == "subsubmenu" )
+				return $this->store_page . $this->permalink_divider . "subsubmenuid=" . $this->get_menu3_id( ) . "&subsubmenuname=" . $this->get_subsubmenu_name( );
+			else if( $link_type == "menurow" ){
+				if( isset( $_GET['subsubmenuid'] ) )
+					return $this->store_page . $this->permalink_divider . "subsubmenuid=" . $menu_row->menulevel3_id . "&subsubmenuname=" . $menu_row->name;
+				else if( isset( $_GET['submenuid'] ) )
+					return $this->store_page . $this->permalink_divider . "submenuid=" . $menu_row->menulevel2_id . "&submenuname=" . $menu_row->name;
+				else if( isset( $_GET['menuid'] ) )
+					return $this->store_page . $this->permalink_divider . "menuid=" . $menu_row->menulevel1_id . "&menuname=" . $menu_row->name;
+			}
+		}
+		
 	}
 	
 }

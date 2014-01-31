@@ -294,13 +294,19 @@ class ec_cartitem{
 	
 	public function display_image( $size ){
 		
-		echo "<a href=\"" . get_permalink( $this->post_id );
+		echo "<a href=\"" . $this->ec_get_permalink( $this->post_id );
+		
+		if( substr_count( $this->ec_get_permalink( $this->post_id ), '?' ) ){
+			$second_permalink_divider = "&";
+		}else{
+			$second_permalink_divider = "?";
+		}
 		
 		if( $this->image1_optionitem ){
 			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) )
-				echo $this->permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
+				echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
 			else
-				echo $this->permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
+				echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
 		}else{
 			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) )
 				echo "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
@@ -316,10 +322,16 @@ class ec_cartitem{
 	}
 	
 	public function display_title_link( ){
-		echo "<a href=\"" . get_permalink( $this->post_id );
+		echo "<a href=\"" . $this->ec_get_permalink( $this->post_id );
+		
+		if( substr_count( $this->ec_get_permalink( $this->post_id ), '?' ) ){
+			$second_permalink_divider = "&";
+		}else{
+			$second_permalink_divider = "?";
+		}
 		
 		if( $this->image1_optionitem )
-			echo $this->permalink_divider . "optionitem_id=" . $this->optionitem1_id;
+			echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id;
 		
 		echo "\">" . $this->title . "</a>";
 	}
@@ -534,6 +546,16 @@ class ec_cartitem{
 	
 	public function get_advanced_options( ){
 		return $this->advanced_options;
+	}
+	
+	private function ec_get_permalink( $postid ){
+		
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $postid != "0" ){
+			return get_permalink( $postid );
+		}else{
+			return $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
+		}
+		
 	}
 }
 

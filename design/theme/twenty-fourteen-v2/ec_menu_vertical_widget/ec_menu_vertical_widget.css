@@ -25,7 +25,7 @@ ul.ec_menu_vertical li a {
     line-height: 10px;
     font-size: 12px;
     padding: 10px 5px;
-    color: [link_color];
+    color: #CCC;
     display: block;
     text-decoration: none;
     font-weight: bolder;
@@ -60,7 +60,7 @@ ul.ec_menu_vertical ul li a:hover {
 }
   
 ul.ec_menu_vertical ul ul li a {
-    color:[link_color];
+    color:#CCC;
     padding-left: 40px;
 }
   

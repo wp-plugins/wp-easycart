@@ -58,10 +58,17 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 </div>
 
 <div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Match Store Page Meta</em>This option is setup for those who use custom meta tags in their theme that apply to the store page. When this option is on, all store products, menus, product groups, and manufacturers will automatically match the meta information from the store page. We have an article specific to Kreisi themes here: http://developers.wpeasycart.com/2014/01/22/matching-the-store-page-setting-for-a-kriesi-theme/.</span></a></span>
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Match Store Page Meta</em>This option is setup for those who use custom meta tags in their theme that apply to the store page. When this option is on, all store products, menus, product groups, and manufacturers will automatically match the meta information from the store page.</span></a></span>
     <span class="ec_setting_row_label">Match Store Page Meta:</span>
     <span class="ec_setting_row_input"><select name="ec_option_match_store_meta" style="width:100px;"><option value="0"<?php if( get_option('ec_option_match_store_meta') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_match_store_meta') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Use Custom Post Type Linking</em>This option switches the linking format to go to individual product, menu, manufacterer, and group pages setup as custom post types. This option is the most SEO friendly option, but does not work with all WordPress themes and servers. If you begin to see a 404 error or no content on a product details page, then turn this option off or ask for help in troubleshooting.</span></a></span>
+    <span class="ec_setting_row_label">Use Custom Post Type Linking:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_use_old_linking_style" style="width:100px;"><option value="1"<?php if( get_option('ec_option_use_old_linking_style') == "1" ){ echo " selected=\"selected\""; }?>>Off</option><option value="0"<?php if( get_option('ec_option_use_old_linking_style') == "0" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title_secondary">Custom CSS</div>

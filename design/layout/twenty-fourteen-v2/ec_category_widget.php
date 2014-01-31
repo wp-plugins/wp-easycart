@@ -19,7 +19,11 @@
 		$menu_id = $mysqli->get_menulevel1_id_from_menulevel2( $submenu_id );
 		
 		$menurow = $mysqli->get_menu_row( $menu_id, 1 );
-		$menu_permalink = get_permalink( $menurow->post_id );
+		$up_level_category = new stdClass( );
+		$up_level_category->post_id = $menurow->post_id;
+		$up_level_category->menu_id = $menu_id;
+		$up_level_category->menu_name = $menurow->name;
+		$menu_permalink = $this->ec_get_permalink( $up_level_category, 0, $store_page, $permalink_divider );
 		
 		echo "<div><a href=\"" . $menu_permalink . "\" class=\"menu_link\">" . $up_level_text . "</a></div>";
 	}

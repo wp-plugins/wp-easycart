@@ -23,7 +23,7 @@ class ec_menu{
 	
 	public function display_menulevel1_link( $level1 ){
 		
-		$permalink = get_permalink( $this->menu_array[$level1][3] );
+		$permalink = $this->ec_get_permalink( 1, $level1, 0, 0, $this->menu_array[$level1][3] );
 		echo $permalink;
 		
 	}
@@ -31,6 +31,12 @@ class ec_menu{
 	public function display_menulevel1_name( $level1 ){
 		
 		echo $this->menu_array[$level1][2];	
+	
+	}
+	
+	public function get_menulevel1_name( $level1 ){
+		
+		return $this->menu_array[$level1][2];	
 	
 	}
 	
@@ -52,7 +58,7 @@ class ec_menu{
 	
 	public function display_menulevel2_link( $level1, $level2 ){
 		
-		$permalink = get_permalink( $this->menu_array[$level1][0][$level2][3] );
+		$permalink = $this->ec_get_permalink( 2, $level1, $level2, 0, $this->menu_array[$level1][0][$level2][3] );
 		echo $permalink;
 		
 	}
@@ -60,6 +66,12 @@ class ec_menu{
 	public function display_menulevel2_name( $level1, $level2 ){
 		
 		echo $this->menu_array[$level1][0][$level2][2];	
+	
+	}
+	
+	public function get_menulevel2_name( $level1, $level2 ){
+		
+		return $this->menu_array[$level1][0][$level2][2];	
 	
 	}
 	
@@ -81,7 +93,7 @@ class ec_menu{
 	
 	public function display_menulevel3_link( $level1, $level2, $level3 ){
 		
-		$permalink = get_permalink( $this->menu_array[$level1][0][$level2][0][$level3][2] );
+		$permalink = $this->ec_get_permalink( 3, $level1, $level2, $level3, $this->menu_array[$level1][0][$level2][0][$level3][2] );
 		echo $permalink;
 	
 	}
@@ -89,6 +101,12 @@ class ec_menu{
 	public function display_menulevel3_name( $level1, $level2, $level3 ){
 		
 		echo $this->menu_array[$level1][0][$level2][0][$level3][1];	
+	
+	}
+	
+	public function get_menulevel3_name( $level1, $level2, $level3 ){
+		
+		return $this->menu_array[$level1][0][$level2][0][$level3][1];	
 	
 	}
 	
@@ -102,6 +120,21 @@ class ec_menu{
 		
 		return $this->menu_array[$level1][0][$level2][0][$level3][0];	
 	
+	}
+	
+	private function ec_get_permalink( $menu_level, $level1, $level2, $level3, $postid ){
+		
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $postid != "0" ){
+			return get_permalink( $postid );
+		}else{
+			if( $menu_level == 1 )
+				return $this->storepage . $this->permalinkdivider . "menuid=" . $this->get_menulevel1_id( $level1 ) . "&menuname=" . $this->get_menulevel1_name( $level1 );
+			else if( $menu_level == 2 )
+				return $this->storepage . $this->permalinkdivider . "submenuid=" . $this->get_menulevel2_id( $level1, $level2 ) . "&submenuname=" . $this->get_menulevel2_name( $level1, $level2 );
+			else if( $menu_level == 3 )
+				return $this->storepage . $this->permalinkdivider . "subsubmenuid=" . $this->get_menulevel3_id( $level1, $level2, $level3 ) . "&subsubmenuname=" . $this->get_menulevel3_name( $level1, $level2, $level3 );
+		}
+		
 	}
 }
 

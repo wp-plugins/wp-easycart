@@ -285,13 +285,17 @@ class ec_product{
 	/* Display the product title with a link to the product details page */
 	public function display_product_title_link( ){
 		
-		$permalink =  get_permalink( $this->post_id );
+		$permalink =  $this->ec_get_permalink( $this->post_id );
 		$add_options = $this->get_additional_link_options();
 		if( $add_options != "" ){
 			if( substr( $add_options, 0, 5 ) == "&amp;" )
 				$add_options = substr( $add_options, 5, strlen( $add_options ) - 5 );
 				
-			$add_options = $this->permalink_divider . $add_options;
+			if( get_option( 'ec_option_use_old_linking_style' ) ){
+				$add_options = "&" . $add_options;
+			}else{
+				$add_options = $this->permalink_divider . $add_options;
+			}
 		}
 		if( $this->is_featured_product ) 
 			echo "<a href=\"" . $permalink . "\" class=\"ec_product_title_link\">" . $this->title . "</a>";
@@ -303,13 +307,17 @@ class ec_product{
 	/* Display the link to the product details page */
 	public function display_product_link( $link_text ){
 		
-		$permalink =  get_permalink( $this->post_id );
+		$permalink =  $this->ec_get_permalink( $this->post_id );
 		$add_options = $this->get_additional_link_options();
 		if( $add_options != "" ){
 			if( substr( $add_options, 0, 5 ) == "&amp;" )
 				$add_options = substr( $add_options, 5, strlen( $add_options ) - 5 );
 				
-			$add_options = $this->permalink_divider . $add_options;
+			if( get_option( 'ec_option_use_old_linking_style' ) ){
+				$add_options = "&" . $add_options;
+			}else{
+				$add_options = $this->permalink_divider . $add_options;
+			}
 		}
 		echo "<a href=\"" . $permalink . $add_options . "\" class=\"ec_product_title_link\">" . $link_text . "</a>";
 	}
@@ -758,9 +766,9 @@ class ec_product{
 		$product = $this->mysqli->get_product_from_post_id( $post_id );
 		
 		if( isset( $_GET['optionitem_id'] ) ){
-			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $product->model_number . "&optionitem_id=" . $_GET['optionitem_id'] . "\" method=\"post\" id=\"customer_review_form\">";
+			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number . "&optionitem_id=" . $_GET['optionitem_id'] . "\" method=\"post\" id=\"customer_review_form\">";
 		}else{
-			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $product->model_number . "\" method=\"post\" id=\"customer_review_form\">";
+			echo "<form action=\"" . $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number . "\" method=\"post\" id=\"customer_review_form\">";
 		}
 	}
 	
@@ -1009,6 +1017,16 @@ class ec_product{
 		}
 		
 		return $link_text;
+		
+	}
+	
+	private function ec_get_permalink( $postid ){
+		
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $postid != "0" ){
+			return get_permalink( $postid );
+		}else{
+			return $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
+		}
 		
 	}
 	

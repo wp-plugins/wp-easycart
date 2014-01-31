@@ -156,7 +156,11 @@ class ec_prodimages{
 	
 	private function get_image_html( $level, $img, $active, $i, $size, $islink, $js, $allow_popup, $id_prefix){
 		
-		$permalink =  get_permalink( $this->post_id );
+		$permalink = $this->ec_get_permalink( $this->post_id );
+		$add_options_divider = "?";
+		if( substr_count( $permalink, '?' ) ){
+			$add_options_divider = "&";
+		}
 		
 		if( $img ){
 			/////////////////////////////////////////////////////////////
@@ -182,12 +186,12 @@ class ec_prodimages{
 				$ret_string = "<a href=\"" . $permalink;
 				
 				if( $i < count( $this->imageset ) && $this->imageset[$i]->optionitem_id )
-					$ret_string .= $this->permalink_divider . "optionitem_id=" . $this->imageset[$i]->optionitem_id;
+					$ret_string .= $add_options_divider . "optionitem_id=" . $this->imageset[$i]->optionitem_id;
 				
 				if( ( $i < count( $this->imageset ) && $this->imageset[$i]->optionitem_id ) && $this->additional_link_options )
 					$ret_string .= $this->additional_link_options;
 				else if( $this->additional_link_options )
-					$ret_string .= $this->permalink_divider . substr( $this->additional_link_options, 5, strlen( $this->additional_link_options ) - 5 );
+					$ret_string .= $add_options_divider . substr( $this->additional_link_options, 5, strlen( $this->additional_link_options ) - 5 );
 				
 				$ret_string .= "\" class=\"ec_product_image";
 				
@@ -259,6 +263,16 @@ class ec_prodimages{
 			
 			return $ret_string;
 			
+		}
+		
+	}
+	
+	private function ec_get_permalink( $postid ){
+		
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $postid != "0" ){
+			return get_permalink( $postid );
+		}else{
+			return $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
 		}
 		
 	}
