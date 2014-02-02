@@ -1,7 +1,8 @@
 // Base Theme - EC Cart Page Javascript Document
 function ec_cart_validate_checkout_info( ){
 	
-	var country_code = document.getElementById('ec_cart_billing_country').value;
+	var billing_country_code = document.getElementById('ec_cart_billing_country').value;
+	var shipping_country_code = document.getElementById('ec_cart_shipping_country').value;
 	var first_name = document.getElementById('ec_contact_first_name').value;
 	var last_name = document.getElementById('ec_contact_last_name').value;
 	
@@ -31,7 +32,7 @@ function ec_cart_validate_checkout_info( ){
 			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] ).value;
 		}
 		// validate billing
-		if( !ec_validation( "validate_" + input_names[i], value, country_code ) ){
+		if( !ec_validation( "validate_" + input_names[i], value, billing_country_code ) ){
 			errors++;
 			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row_error";
 		}else{
@@ -48,7 +49,7 @@ function ec_cart_validate_checkout_info( ){
 			}
 			
 			// validate shipping
-			if( !ec_validation( "validate_" + input_names[i], value, country_code ) ){
+			if( !ec_validation( "validate_" + input_names[i], value, shipping_country_code ) ){
 				errors++;
 				document.getElementById('ec_cart_shipping_' + input_names[i] + '_row').className = "ec_cart_shipping_row_error";
 			}else{
@@ -57,14 +58,14 @@ function ec_cart_validate_checkout_info( ){
 		}
 	}
 	
-	if( !ec_validation( "validate_first_name", first_name, country_code ) ){
+	if( !ec_validation( "validate_first_name", first_name, billing_country_code ) ){
 		errors++;
 		document.getElementById('ec_contact_first_name_row').className = "ec_cart_contact_information_row_error";
 	}else{
 		document.getElementById('ec_contact_first_name_row').className = "ec_cart_contact_information_row";
 	}
 	
-	if( !ec_validation( "validate_last_name", last_name, country_code ) ){
+	if( !ec_validation( "validate_last_name", last_name, billing_country_code ) ){
 		errors++;
 		document.getElementById('ec_contact_last_name_row').className = "ec_cart_contact_information_row_error";
 	}else{
@@ -72,7 +73,7 @@ function ec_cart_validate_checkout_info( ){
 	}
 	
 	if( document.getElementById('ec_contact_email') ){
-		if( !ec_validation( "validate_email", email, country_code ) ){
+		if( !ec_validation( "validate_email", email, billing_country_code ) ){
 			errors++;
 			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row_error";
 		}else{
@@ -91,7 +92,7 @@ function ec_cart_validate_checkout_info( ){
 		
 		
 		
-		if( !ec_validation( "validate_password", password, country_code ) ){
+		if( !ec_validation( "validate_password", password, billing_country_code ) ){
 			errors++;
 			document.getElementById('ec_contact_password_row').className = "ec_cart_contact_information_row_error";
 		}else{
