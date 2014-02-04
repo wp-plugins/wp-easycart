@@ -38,6 +38,26 @@ function ec_install_admin_notice() {
     <?php
 	}// Close check for existing theme
 	}// Close check for latest WordPress theme
+	
+	// Check if the admin manage notice should be removed
+	if( isset( $_GET['page'] ) && $_GET['page'] == "ec_adminv2" && isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "admin-console" && isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "admin" && isset( $_GET['ec_notice'] ) && $_GET['ec_notice'] == "dismiss" ){
+		update_option( 'ec_option_hide_admin_notice', '1' );
+	}
+	
+	// Check if admin is installed
+	if( !is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) ){
+	?>
+    <div class="updated">
+        <p>EasyCart is best run with the WP EasyCart Admin Console, <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin">click here to learn how it can be installed</a>.</p>
+    </div>
+    <?php
+	}else if( !get_option( 'ec_option_hide_admin_notice' ) ){
+	?>
+    <div class="updated">
+        <p>Want to add/edit products, manage orders, manage users, or manage store rates? <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin">click here to view the WP EasyCart Admin Console</a>. <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_notice=dismiss">To dismiss this notice, click here</a></p>
+    </div>
+    <?php	
+	}
 }
 
 function ec_load_admin_scripts( ){

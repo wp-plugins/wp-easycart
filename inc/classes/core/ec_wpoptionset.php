@@ -38,6 +38,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_added_custom_post_type');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
+		array_push($this->wp_option_names, 'ec_option_hide_admin_notice');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		
 		//store basic setup settings
 		array_push($this->wp_option_names, 'ec_option_weight');								array_push($this->wp_option_defaults, 'lbs' );

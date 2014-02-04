@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.18
+Stable tag: 2.0.19
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.0.19 =
+* Improvement - Added some notices to help new users find the EasyCart admin console.
+* Bug Fix - Javascript error where a U.S. billing address forced a U.S. style validation on the shipping side. Update your ec_cart_page.js file in your theme manually to fix.
 = 2.0.18 =
 * Addition - Latest admin allows for an export of orders
 * Addition - We now allow a store to use the "Custom Post Type" linking style or the old "GET Variable" linking style. This is to help the store be more compatible with more servers and themes.
