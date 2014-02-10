@@ -931,12 +931,12 @@ class ec_db{
 	}
 	
 	public function get_menulevel2_items( ){
-		$sql = "SELECT menulevel2.name as menu2_name, menulevel2.menulevel2_id, menulevel2.post_id as menulevel2_post_id FROM ec_menulevel2 as menulevel2 ORDER BY menulevel2.order";
+		$sql = "SELECT menulevel2.menulevel1_id, menulevel2.name as menu2_name, menulevel2.menulevel2_id, menulevel2.post_id as menulevel2_post_id FROM ec_menulevel2 as menulevel2 ORDER BY menulevel2.order";
 		return $this->mysqli->get_results($sql);
 	}
 	
 	public function get_menulevel3_items( ){
-		$sql = "SELECT menulevel3.name as menu3_name, menulevel3.menulevel3_id, menulevel3.post_id as menulevel3_post_id FROM ec_menulevel3 as menulevel3 ORDER BY menulevel3.order";
+		$sql = "SELECT menulevel3.menulevel2_id, menulevel3.name as menu3_name, menulevel3.menulevel3_id, menulevel3.post_id as menulevel3_post_id FROM ec_menulevel3 as menulevel3 ORDER BY menulevel3.order";
 		return $this->mysqli->get_results($sql);
 	}
 	

@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.0.19
+ * Version: 2.0.20
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.0.19
+ * @version 2.0.20
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_0_19' );
+define( 'EC_CURRENT_VERSION', '2_0_20' );
 define( 'EC_CURRENT_DB', '1_13' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -653,18 +653,189 @@ function load_ec_account( $atts ){
     return ob_get_clean();
 }
 
-//[ecproduct]
+//[ec_product]
 function load_ec_product( $atts ){
 	extract( shortcode_atts( array(
-		'model_number' => 'NOPRODUCT'
+		'model_number' => 'NOPRODUCT',
+		'productid' => 'NOPRODUCTID',
+		'columns' => '3',
+		'margin' => '45px',
+		'width' => '175px',
+		'minheight' => '375px',
+		'imagew' => '140px',
+		'imageh' => '140px',
+		'style' => '1'
 	), $atts ) );
 	$simp_product_id = $model_number;
 	ob_start( );
     $mysqli = new ec_db( );
-	$products = $mysqli->get_product_list( " WHERE product.model_number = '" . $model_number . "'", "", "", "" );
+	if( $model_number != "NOPRODUCT" ){
+		$products = $mysqli->get_product_list( " WHERE product.model_number = '" . $model_number . "'", "", "", "" );
+	}else{
+		$product_ids = explode( ',', $productid );
+		$product_where = " WHERE ";
+		$ids = 0;
+		foreach( $product_ids as $product_id ){
+			if( $ids > 0 ){
+				$product_where .= " OR ";
+			}
+			$product_where .= "product.product_id = " . $product_id;
+			$ids++;
+		}
+		$products = $mysqli->get_product_list( $product_where, "", "", "" );
+	}
+	if( count( $products ) > 0 ){
+		echo "<div style=\"float:left; width:100%;\"><ul class=\"ec_productlist_ul\" style=\"list-style:none; margin: 0px; float:left; width:100%; min-height:" . $minheight . ";\">";
+		for( $i=0; $i<count( $products ); $i++ ){
+			$product = new ec_product( $products[$i], 0, 0, 1 );
+			if( $i%$columns == $columns-1 ){
+				echo "<li style=\"float:right;\">";
+			}else{
+				echo "<li style=\"float:left; margin-right:" . $margin . ";\">";
+			}
+			if( $style == '1' ){
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' );
+			}else if( $style == '2' ){
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' );
+			}else{
+				echo "<a href=\"" . $product->get_product_link( ) . "\">";
+				echo "<img src=\"" . $product->get_product_single_image( ) . "\" alt=\"" . $product->title . "\" width=\"" . $imagew . "\" height=\"" . $imageh . "\">";
+				echo "</a>";
+				echo "<h3><a href=\"" . $product->get_product_link( ) . "\">" . $product->title . "</a></h3>";
+				echo "<span class=\"ec_price_button\" style=\"width:" . $width . "\">";
+				if( $product->has_sale_price( ) ){
+					echo "<span class=\"ec_price_before\"><del>" . $product->get_formatted_before_price( ) . "</del></span>";
+					echo "<span class=\"ec_price_sale\">" . $product->get_formatted_price( ) . "</span>";
+				}else{
+					echo "<span class=\"ec_price\">" . $product->get_formatted_price( ) . "</span>";
+				}
+				echo "</span>";
+			}
+			echo "</li>";
+		}
+		echo "</ul><div style=\"clear:both;\"></div></div>";
+	}
+    return ob_get_clean( );
+}
+
+//[ec_addtocart]
+function load_ec_addtocart( $atts ){
+	extract( shortcode_atts( array(
+		'productid' => 'NOPRODUCTID'
+	), $atts ) );
+	ob_start( );
+	$mysqli = new ec_db( );
+	$products = $mysqli->get_product_list( " WHERE product.product_id = " . $productid, "", "", "" );
 	if( count( $products ) > 0 ){
 		$product = new ec_product( $products[0], 0, 0, 1 );
-		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' );
+		
+		echo "<div style=\"display:none;\">";
+		$product->display_product_details_image_set( "large", "ec_image_", "ec_image_click" );
+		$product->display_product_image_thumbnails("xsmall", "ec_thumb_", "ec_thumb_click" );
+		echo "</div>";
+		
+		$product->display_product_details_form_start( );
+		
+		if( $product->use_advanced_optionset ){
+			echo "<div class=\"ec_product_details_option_holder\">";
+			$product->display_all_advanced_optionsets( );
+			echo "</div>";
+        }else{
+			if( $product->product_has_swatches( $product->options->optionset1 ) ){
+    			echo "<div class=\"ec_product_details_option1_swatches\">";
+				$product->display_product_option( $product->options->optionset1, "large", 1, "ec_swatch_", "ec_swatch_click" );
+				echo "</div>";
+    		}else if( $product->product_has_combo( $product->options->optionset1 ) ){
+				echo "<div class=\"ec_product_details_option1_combo\">";
+				$product->display_product_option( $product->options->optionset1, "large", 1, "ec_combo_", "" );
+				echo "</div>";
+			}
+			
+			if( $product->product_has_swatches( $product->options->optionset2 ) ){
+				echo "<div class=\"ec_product_details_option2_swatches\">";
+				$product->display_product_option( $product->options->optionset2, "large", 2, "ec_swatch_", "ec_swatch_click" );
+				echo "</div>";
+			}else if( $product->product_has_combo( $product->options->optionset2 ) ){
+				echo "<div class=\"ec_product_details_option2_combo\">";
+				$product->display_product_option( $product->options->optionset2, "large", 2, "ec_combo_", "" );
+				echo "</div>";
+			}
+			
+			if( $product->product_has_swatches( $product->options->optionset3 ) ){
+				echo "<div class=\"ec_product_details_option3_swatches\">";
+				$product->display_product_option( $product->options->optionset3, "large", 3, "ec_swatch_", "ec_swatch_click" );
+				echo "</div>";
+    		}else if( $product->product_has_combo( $product->options->optionset3 ) ){
+				echo "<div class=\"ec_product_details_option3_combo\">";
+				$product->display_product_option( $product->options->optionset3, "large", 3, "ec_combo_", "" );
+				echo "</div>";
+    		}
+			
+			if( $product->product_has_swatches( $product->options->optionset4 ) ){
+        		echo "<div class=\"ec_product_details_option4_swatches\">";
+				$product->display_product_option( $product->options->optionset4, "large", 4, "ec_swatch_", "ec_swatch_click" );
+				echo "</div>";
+    		}else if( $product->product_has_combo( $product->options->optionset4 ) ){
+        		echo "<div class=\"ec_product_details_option4_combo\">";
+				$product->display_product_option( $product->options->optionset4, "large", 4, "ec_combo_", "" );
+				echo "</div>";
+    		}
+			
+			if( $product->product_has_swatches( $product->options->optionset5 ) ){
+				echo "<div class=\"ec_product_details_option5_swatches\">";
+				$product->display_product_option( $product->options->optionset5, "large", 5, "ec_swatch_", "ec_swatch_click" );
+				echo "</div>";
+			}else if( $product->product_has_combo( $product->options->optionset5 ) ){
+				echo "<div class=\"ec_product_details_option5_combo\">";
+				$product->display_product_option( $product->options->optionset5, "large", 5, "ec_combo_", "" );
+				echo "</div>";
+			}
+        
+        }
+		
+		if( $product->is_giftcard ){
+			echo "<div class=\"ec_product_details_gift_card\">"; $product->display_gift_card_input(); echo "</div>";
+    	}
+		
+		if( !$product->has_grid_optionset ){
+			echo "<div class=\"";
+			if( $product->is_donation ){
+				echo "ec_product_details_quantity_donation"; 
+			}else{ 
+				echo "ec_product_details_quantity";
+			}
+			echo "\" id=\"ec_product_details_quantity_" . $product->model_number . "\">" . $GLOBALS['language']->get_text( 'product_details', 'product_details_quantity' );
+			$product->display_product_quantity_input("1");
+			echo "</div>";
+        }
+		echo "<input type=\"hidden\" id=\"product_quantity_" . $product->model_number . "\" value=\"1\">";
+    	echo "<div class=\"ec_product_details_add_to_cart\">";
+		$product->display_product_add_to_cart_button_no_validation( $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ), "ec_quick_view_error" );
+		echo "</div>";
+		$product->display_product_details_form_end( );
+	}
+    return ob_get_clean( );
+}
+
+//[ec_cartdisplay]
+function load_ec_cartdisplay( $atts ){
+	extract( shortcode_atts( array(
+		'style' => '1'
+	), $atts ) );
+	ob_start( );
+	$cartpage = new ec_cartpage( );
+	if( $cartpage->cart->total_items > 0 ){
+		echo "<div class=\"ec_cart_title_bar\">";
+		echo "<div class=\"ec_cart_title_bar_column_1\">" . $GLOBALS['language']->get_text( 'cart', 'cart_header_column1' ) . "</div>";
+		echo "<div class=\"ec_cart_title_bar_column_2\">" . $GLOBALS['language']->get_text( 'cart', 'cart_header_column2' ) . "</div>";
+		echo "<div class=\"ec_cart_title_bar_column_3\">" . $GLOBALS['language']->get_text( 'cart', 'cart_header_column3' ) . "</div>";
+		echo "<div class=\"ec_cart_title_bar_column_4\">" . $GLOBALS['language']->get_text( 'cart', 'cart_header_column4' ) . "</div>";
+		echo "<div class=\"ec_cart_title_bar_column_5\">" . $GLOBALS['language']->get_text( 'cart', 'cart_header_column5' ) . "</div>";
+		echo "</div>";
+		echo "<div class=\"ec_cart_item_holder\">";
+		$cartpage->display_cart_items();
+		echo "</div>";
+		echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
 	}
     return ob_get_clean( );
 }
@@ -707,6 +878,8 @@ add_shortcode( 'ec_store', 'load_ec_store' );
 add_shortcode( 'ec_cart', 'load_ec_cart' );
 add_shortcode( 'ec_account', 'load_ec_account' );
 add_shortcode( 'ec_product', 'load_ec_product' );
+add_shortcode( 'ec_addtocart', 'load_ec_addtocart' );
+add_shortcode( 'ec_cartdisplay', 'load_ec_cartdisplay' );
 
 add_filter( 'widget_text', 'do_shortcode');
 

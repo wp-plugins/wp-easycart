@@ -450,6 +450,11 @@ class ec_product{
 		echo "<div class=\"ec_error_message_box\" id=\"" . $id . "_" . $this->model_number . "\">error text here</div>";
 	}
 	
+	/* Display the add to cart button */
+	public function display_product_add_to_cart_button_no_validation( $title, $id ){
+		echo "<input type=\"submit\" value=\"" . $title . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\" />";
+	}
+	
 	/* Display the product image set */
 	public function display_product_image_set( $size, $id_prefix, $js_function_name ){
 		echo $this->images->get_product_images( $size, $this->first_selection, $id_prefix, $js_function_name );
@@ -1018,6 +1023,42 @@ class ec_product{
 		
 		return $link_text;
 		
+	}
+	
+	public function get_product_link( ){
+		return $this->ec_get_permalink( $this->post_id );
+	}
+	
+	public function get_product_single_image( ){
+		$thumb = "";
+		if( $this->use_optionitem_images ){
+			$thumb = plugins_url( "wp-easycart-data/products/pics1/" . $this->images->imageset[0]->image1 );
+			if( !file_exists( $thumb ) ){
+				$thumb = plugins_url( "wp-easycart/products/pics1/" . $this->images->imageset[0]->image1 );
+			}
+		}else{
+			$thumb = plugins_url( "wp-easycart-data/products/pics1/" . $this->images->image1 );
+			if( !file_exists( $thumb ) ){
+				$thumb = plugins_url( "wp-easycart/products/pics1/" . $this->images->image1 );
+			}
+		}
+		return $thumb;
+	}
+	
+	public function has_sale_price( ){
+		if( $this->list_price == "0.000" ){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	public function get_formatted_before_price( ){
+		return $this->currency->get_currency_display( $this->list_price );
+	}
+	
+	public function get_formatted_price( ){
+		return $this->currency->get_currency_display( $this->price );
 	}
 	
 	private function ec_get_permalink( $postid ){

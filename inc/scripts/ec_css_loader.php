@@ -70,6 +70,104 @@ $ec_widget_css = array(
 
 $css_content = "";
 
+// Additional CSS used for the product (single and multiple) shortcode for display type 3
+$css_content .= "
+.ec_productlist_ul > li{
+	margin-bottom:44px;
+}
+.ec_productlist_ul > li > a{
+	float: left; width: 100%; text-align: center;
+}
+.ec_productlist_ul li a img{
+	padding-bottom:15px;
+}
+.ec_productlist_ul > li > h3{ 
+	margin-top:0px; font-weight: 300; font-size: 18px; padding-bottom: 21px; text-align:center;
+} 
+.ec_productlist_ul > li > h3 > a{ 
+	text-decoration: none; color: #2e2e2e; float:none;
+}
+.ec_productlist_ul > li > .ec_price_button{
+	display: inline-block; text-align:center;
+}
+.ec_productlist_ul > li > .ec_price_button .ec_price_before{
+	padding: 8px;
+	font-weight: bold;
+	border: 1px solid #d5d6d3;
+	border-right: 0;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	color: #1f1e1e;
+	text-shadow: 1px 1px 1px #fff;
+	-moz-box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 );
+	-webkit-box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 );
+	box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 );
+	background: #efefef;
+	background: -moz-linear-gradient(top, #ffffff 0%, #efefef 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#efefef));
+	background: -webkit-linear-gradient(top, #ffffff 0%,#efefef 100%);
+	background: -o-linear-gradient(top, #ffffff 0%,#efefef 100%);
+	background: -ms-linear-gradient(top, #ffffff 0%,#efefef 100%);
+	background: linear-gradient(to bottom, #ffffff 0%,#efefef 100%);
+	display: inline-block;
+}
+.ec_productlist_ul > li > .ec_price_button .ec_price_before del{
+	text-decoration: line-through;
+}
+.ec_productlist_ul > li > .ec_price_button .ec_price_sale{
+	border: 1px solid #aed23f;
+	margin-left: -4px;
+	-webkit-border-top-right-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	-moz-border-radius-bottomright: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	color: #fff;
+	text-shadow: 1px 1px 1px rgba( 0,0,0,0.3 );
+	-moz-box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 ), inset 0 1px 0 rgba( 255,255,255,0.6 );
+	-webkit-box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 ), inset 0 1px 0 rgba( 255,255,255,0.6 );
+	box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 ), inset 0 1px 0 rgba( 255,255,255,0.6 );
+	background: #cff06b;
+	background: -moz-linear-gradient(top, #cff06b 0%, #c0dd65 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cff06b), color-stop(100%,#c0dd65));
+	background: -webkit-linear-gradient(top, #cff06b 0%,#c0dd65 100%);
+	background: -o-linear-gradient(top, #cff06b 0%,#c0dd65 100%);
+	background: -ms-linear-gradient(top, #cff06b 0%,#c0dd65 100%);
+	background: linear-gradient(to bottom, #cff06b 0%,#c0dd65 100%);
+	padding: 8px;
+	font-weight: bold;
+	display: inline-block;
+}
+
+.ec_productlist_ul > li > .ec_price_button .ec_price{
+	border: 1px solid #aed23f;
+	margin-left: -4px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	color: #fff;
+	text-shadow: 1px 1px 1px rgba( 0,0,0,0.3 );
+	-moz-box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 ), inset 0 1px 0 rgba( 255,255,255,0.6 );
+	-webkit-box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 ), inset 0 1px 0 rgba( 255,255,255,0.6 );
+	box-shadow: 0 2px 2px 0px rgba( 0,0,0,0.1 ), inset 0 1px 0 rgba( 255,255,255,0.6 );
+	background: #cff06b;
+	background: -moz-linear-gradient(top, #cff06b 0%, #c0dd65 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cff06b), color-stop(100%,#c0dd65));
+	background: -webkit-linear-gradient(top, #cff06b 0%,#c0dd65 100%);
+	background: -o-linear-gradient(top, #cff06b 0%,#c0dd65 100%);
+	background: -ms-linear-gradient(top, #cff06b 0%,#c0dd65 100%);
+	background: linear-gradient(to bottom, #cff06b 0%,#c0dd65 100%);
+	padding: 8px;
+	font-weight: bold;
+	display: inline-block;
+}
+";
+
 foreach ($ec_store_css as $css_file ){
 	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' ) )
 		$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $css_file . '/ec_' . $css_file . '.css' );
