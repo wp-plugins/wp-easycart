@@ -129,7 +129,7 @@ class ec_order{
 			}
 		
 		}else{
-			$this->mysqli->insert_order_detail( $this->order_id, 0, 0, $cart_item );
+			$orderdetail_id = $this->mysqli->insert_order_detail( $this->order_id, 0, 0, $cart_item );
 		}
 		
 		$cart_item->orderdetail_id = $orderdetail_id;
