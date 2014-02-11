@@ -338,6 +338,30 @@ class ec_admin_products
 				mysql_query($sql);
 			}
 			
+			//duplicate tiered pricing
+			$tierpricingsql = sprintf("SELECT * FROM ec_pricetier WHERE ec_pricetier.product_id = '%s'", mysql_real_escape_string($productid));
+			$result = mysql_query($tierpricingsql);
+			
+			while($row = mysql_fetch_assoc($result)){
+				$sql = sprintf("INSERT INTO ec_pricetier(ec_pricetier.product_id, ec_pricetier.price, ec_pricetier.quantity) VALUES('%s', '%s', '%s')", 
+				mysql_real_escape_string($newid), 
+				mysql_real_escape_string($row['price']), 
+				mysql_real_escape_string($row['quantity']));
+				mysql_query($sql);
+			}
+			
+			//duplicate B2B role pricing
+			$rolepricingsql = sprintf("SELECT * FROM ec_roleprice WHERE ec_roleprice.product_id = '%s'", mysql_real_escape_string($productid));
+			$result = mysql_query($rolepricingsql);
+			
+			while($row = mysql_fetch_assoc($result)){
+				$sql = sprintf("INSERT INTO ec_roleprice(ec_roleprice.product_id, ec_roleprice.role_label, ec_roleprice.role_price) VALUES('%s', '%s', '%s')", 
+				mysql_real_escape_string($newid), 
+				mysql_real_escape_string($row['role_label']), 
+				mysql_real_escape_string($row['role_price']));
+				mysql_query($sql);
+			}
+			
 			//duplicate option quantity rows
 			$optionquantitysql = sprintf("SELECT * FROM ec_optionitemquantity WHERE ec_optionitemquantity.product_id = '%s'", mysql_real_escape_string($productid));
 			$result = mysql_query($optionquantitysql);
@@ -393,6 +417,14 @@ class ec_admin_products
 			  $deletesql = $this->escape("DELETE FROM ec_optionitemimage WHERE ec_optionitemimage.product_id = '%s'", $productid);
 			  mysql_query($deletesql);
 			  
+			  //Remove price tiers
+			  $deletesql = $this->escape("DELETE FROM ec_pricetier WHERE ec_pricetier.product_id = '%s'", $productid);
+			  mysql_query($deletesql);
+			  
+			  //Remove role pricing
+			  $deletesql = $this->escape("DELETE FROM ec_roleprice WHERE ec_roleprice.product_id = '%s'", $productid);
+			  mysql_query($deletesql);
+			  
 			  //Remove Option Item Quantity
 			  $deletesql = $this->escape("DELETE FROM ec_optionitemquantity WHERE ec_optionitemquantity.product_id = '%s'", $productid);
 			  mysql_query($deletesql);
@@ -404,6 +436,8 @@ class ec_admin_products
 			  //Remove Item from Product Groupings
 			  $deletesql = $this->escape("DELETE FROM ec_categoryitem WHERE ec_categoryitem.product_id = '%s'", $productid);
 			  mysql_query($deletesql);
+			  
+			  
 			  
 			  //Delete the post for this item from WordPress
 			  wp_delete_post( $product['post_id'], true );
