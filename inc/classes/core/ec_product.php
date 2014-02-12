@@ -767,7 +767,11 @@ class ec_product{
 	public function display_product_customer_review_form_start( ){
 		global $wp_query;
 		$post_obj = $wp_query->get_queried_object();
-		$post_id = $post_obj->ID;
+		if( isset( $post_obj ) && isset( $post_obj->ID ) ){
+			$post_id = $post_obj->ID;
+		}else{
+			$post_id = 0;
+		}
 		$product = $this->mysqli->get_product_from_post_id( $post_id );
 		
 		if( isset( $_GET['optionitem_id'] ) ){
@@ -960,7 +964,7 @@ class ec_product{
 		
 		global $wp_query;
 		$post_obj = $wp_query->get_queried_object();
-		if( isset( $post_obj ) )
+		if( isset( $post_obj ) && isset( $post_obj->ID ) )
 			$post_id = $post_obj->ID;
 		else
 			$post_id = 0;

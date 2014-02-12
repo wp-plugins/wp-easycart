@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.20
+Stable tag: 2.0.21
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.0.21 =
+* Improvement - Generally less notices on less lenient servers.
+* Bug Fix - Advanced items were not displaying on order receipts when using direct deposit or credit card check out.
+* Bug Fix - Admin bug fixes.
 = 2.0.20 =
 * Addition - Added a shortcode editor that can be accessed via the page/post editor toolbar.
 * Addition - Added a multiple product selection shortcode.

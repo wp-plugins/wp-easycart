@@ -85,7 +85,7 @@ class ec_categorywidget extends WP_Widget{
 			//New Linking Format Code
 			global $wp_query;
 			$post_obj = $wp_query->get_queried_object();
-			if( isset( $post_obj ) ){
+			if( isset( $post_obj ) && isset( $post_obj->ID ) ){
 				$post_id = $post_obj->ID;
 				$menulevel1 = $mysqli->get_menu_row_from_post_id( $post_id, 1 );
 				$menulevel2 = $mysqli->get_menu_row_from_post_id( $post_id, 2 );

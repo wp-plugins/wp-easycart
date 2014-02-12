@@ -125,7 +125,7 @@ class ec_filter{
 	public function get_group_id(){
 		global $wp_query;
 		$post_obj = $wp_query->get_queried_object();
-		if( isset( $post_obj ) ){
+		if( isset( $post_obj ) && isset( $post_obj->ID ) ){
 			$post_id = $post_obj->ID;
 			$group = $this->mysqli->get_category_id_from_post_id( $post_id );
 		
@@ -242,7 +242,7 @@ class ec_filter{
 		$has_store_shortcode = false;
 		global $wp_query;
 		$post_obj = $wp_query->get_queried_object();
-		if( $post_obj ){
+		if( isset( $post_obj ) && isset( $post_obj->post_content ) ){
 			$post_content = $post_obj->post_content;
 		}else{
 			$post_content = "";
@@ -274,7 +274,7 @@ class ec_filter{
 		}else if( $leave_out != 1 ){
 			global $wp_query;
 			$post_obj = $wp_query->get_queried_object();
-			if( $post_obj ){
+			if( isset( $post_obj ) && isset( $post_obj->ID ) ){
 				$post_id = $post_obj->ID;
 			}else{
 				$post_id = 0;

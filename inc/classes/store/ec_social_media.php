@@ -183,7 +183,11 @@ class ec_social_media{
 	private function get_product_url( ){
 		global $wp_query;
 		$post_obj = $wp_query->get_queried_object();
-		$post_id = $post_obj->ID;
+		if( isset( $post_obj ) && isset( $post_obj->ID ) ){
+			$post_id = $post_obj->ID;
+		}else{
+			$post_id = 0;
+		}
 		return $this->ec_get_permalink( $post_id );
 	}
 	
