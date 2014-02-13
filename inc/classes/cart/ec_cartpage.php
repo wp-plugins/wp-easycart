@@ -58,7 +58,11 @@ class ec_cartpage{
 		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country );
 		// Duty (Based on Product Price) - already calculated in tax
 		// Get Total Without VAT, used only breifly
-		$total_without_vat_or_discount = $this->cart->subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
+		if( get_option( 'ec_option_no_vat_on_shipping' ) ){
+			$total_without_vat_or_discount = $this->cart->subtotal + $this->tax->tax_total + $this->tax->duty_total;
+		}else{
+			$total_without_vat_or_discount = $this->cart->subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
+		}
 		//If a discount used, and no vatable subtotal, we need to set to 0
 		if( $total_without_vat_or_discount < 0 )
 			$total_without_vat_or_discount = 0;
@@ -151,9 +155,9 @@ class ec_cartpage{
 			$duty = $GLOBALS['currency']->get_currency_display( $order->duty_total );
 			$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
 			if( ( $order->grand_total - $order->vat_total ) > 0 )
-			$vat_rate = number_format( ( $order->vat_total / ( $order->grand_total - $order->vat_total ) ) * 100, 0, '', '' );
+				$vat_rate = number_format( $this->tax->vat_rate, 0, '', '' );
 			else
-			$vat_rate = number_format( 0, 0, '', '' );
+				$vat_rate = number_format( 0, 0, '', '' );
 			$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
 			$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
 			

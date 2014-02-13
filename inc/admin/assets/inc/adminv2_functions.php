@@ -1091,6 +1091,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_custom_css', $_POST['ec_option_custom_css'] );
 	update_option( 'ec_option_match_store_meta', $_POST['ec_option_match_store_meta'] );
 	update_option( 'ec_option_use_old_linking_style', $_POST['ec_option_use_old_linking_style'] );
+	update_option( 'ec_option_no_vat_on_shipping', $_POST['ec_option_no_vat_on_shipping'] );
 	
 	//update sizes
 	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 

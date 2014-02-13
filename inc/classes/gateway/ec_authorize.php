@@ -13,7 +13,7 @@ class ec_authorize extends ec_gateway{
 		$authorize_login_id 		= 		get_option( 'ec_option_authorize_login_id' );
 		$authorize_trans_key 		= 		get_option( 'ec_option_authorize_trans_key' );
 		$authorize_test_mode 		= 		get_option( 'ec_option_authorize_test_mode' );
-		$authorize_currency_code 	= 		get_option( 'ec_optin_authorize_currency_code' );
+		$authorize_currency_code 	= 		get_option( 'ec_option_authorize_currency_code' );
 		
 		$transaction_type = "AUTH_CAPTURE";
 		$expiration_date = $this->credit_card->expiration_month . '/' . $this->credit_card->get_expiration_year( 4 );

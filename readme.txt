@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.21
+Stable tag: 2.0.22
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.0.22 =
+* Fix - Removed the creation of the unused 'latest-design' folder.
+* Fix - No longer backing up the content in the 'wp-easycart' folder if the 'wp-easycart-data' folder exists. This will help many users who do not need this feature update and install.
+* Fix - PayPal with product included VAT was tacking on an additional tax when sending the user to PayPal.
+* Fix - Option items with swatches and quantity tracking where no quantity remained was still allowing the first item to get added to the cart.
+* Addition - New advanced option allows for no VAT to be applied to the shipping price.
+* Addition - If product is out of stock, the add to cart button is replaced with "OUT OF STOCK".
 = 2.0.21 =
 * Improvement - Generally less notices on less lenient servers.
 * Bug Fix - Advanced items were not displaying on order receipts when using direct deposit or credit card check out.

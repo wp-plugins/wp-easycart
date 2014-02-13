@@ -206,7 +206,7 @@ class ec_product{
 					return $i;
 				}
 			}
-			return 0;
+			return -1;
 		}else{
 			return 0;
 		}
@@ -441,13 +441,17 @@ class ec_product{
 	
 	/* Display the add to cart button */
 	public function display_product_add_to_cart_button( $title, $id ){
-		echo "<input type=\"submit\" value=\"" . $title . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\" ";
-		if( $this->use_advanced_optionset )
-			echo "onclick=\"return ec_product_details_add_to_cart_advanced( '" . $this->model_number . "' );\" />";
-		else
-			echo "onclick=\"return ec_product_details_add_to_cart( '" . $this->model_number . "' );\" />";
-			
-		echo "<div class=\"ec_error_message_box\" id=\"" . $id . "_" . $this->model_number . "\">error text here</div>";
+		if( $this->stock_quantity > 0 ){
+			echo "<input type=\"submit\" value=\"" . $title . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\" ";
+			if( $this->use_advanced_optionset )
+				echo "onclick=\"return ec_product_details_add_to_cart_advanced( '" . $this->model_number . "' );\" />";
+			else
+				echo "onclick=\"return ec_product_details_add_to_cart( '" . $this->model_number . "' );\" />";
+				
+			echo "<div class=\"ec_error_message_box\" id=\"" . $id . "_" . $this->model_number . "\">error text here</div>";
+		}else{
+			echo "<div class=\"ec_product_details_quantity\">" . $GLOBALS['language']->get_text( 'product_details', 'product_details_out_of_stock' ) . "</div>";
+		}
 	}
 	
 	/* Display the add to cart button */
@@ -457,17 +461,29 @@ class ec_product{
 	
 	/* Display the product image set */
 	public function display_product_image_set( $size, $id_prefix, $js_function_name ){
-		echo $this->images->get_product_images( $size, $this->first_selection, $id_prefix, $js_function_name );
+		if( $this->first_selection == -1 ){
+			echo $this->images->get_product_images( $size, 0, $id_prefix, $js_function_name );
+		}else{
+			echo $this->images->get_product_images( $size, $this->first_selection, $id_prefix, $js_function_name );
+		}
 	}
 	
 	/* Display the product details image set */
 	public function display_product_details_image_set( $size, $id_prefix, $js_function_name ){
-		echo $this->images->get_product_details_images( $size, $this->first_selection, $id_prefix, $js_function_name );
+		if( $this->first_selection == -1 ){
+			echo $this->images->get_product_details_images( $size, 0, $id_prefix, $js_function_name );
+		}else{
+			echo $this->images->get_product_details_images( $size, $this->first_selection, $id_prefix, $js_function_name );
+		}
 	}
 	
 	/* Display the product image thumbnails */
 	public function display_product_image_thumbnails( $size, $id_prefix, $js_function_name ){
-		echo $this->images->get_product_thumbnails( $size, $this->first_selection, $id_prefix, $js_function_name );
+		if( $this->first_selection == -1 ){
+			echo $this->images->get_product_thumbnails( $size, 0, $id_prefix, $js_function_name );
+		}else{
+			echo $this->images->get_product_thumbnails( $size, $this->first_selection, $id_prefix, $js_function_name );
+		}
 	}
 	
 	public function has_thumbnails( ){

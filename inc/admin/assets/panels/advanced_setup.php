@@ -69,6 +69,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
     <span class="ec_setting_row_input"><select name="ec_option_use_old_linking_style" style="width:100px;"><option value="1"<?php if( get_option('ec_option_use_old_linking_style') == "1" ){ echo " selected=\"selected\""; }?>>Off</option><option value="0"<?php if( get_option('ec_option_use_old_linking_style') == "0" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>No VAT For Shipping</em>This option is available only for VAT tax system users. If you turn this on, VAT will be calculated without the shipping price included.</span></a></span>
+    <span class="ec_setting_row_label">No VAT For Shipping:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_no_vat_on_shipping" style="width:100px;"><option value="0"<?php if( get_option('ec_option_no_vat_on_shipping') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_no_vat_on_shipping') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title_secondary">Custom CSS</div>

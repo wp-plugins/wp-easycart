@@ -380,7 +380,7 @@ class ec_shipping{
 			$ret_string .= "<div id=\"ec_cart_express_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"checkbox\" name=\"ec_cart_ship_express\" id=\"ec_cart_ship_express\" value=\"shipexpress\"";
 			if( $this->ship_express )
 				$ret_string .= " checked=\"checked\"";
-			$ret_string .= " />" . $express_text . " (" . get_option( 'ec_option_currency' ) . "<span id=\"ec_cart_express_shipping_price\">" . $GLOBALS['currency']->get_number_only( $this->express_price ) . "</span>)</div>";
+			$ret_string .= " />" . $express_text . " (+" . get_option( 'ec_option_currency' ) . "<span id=\"ec_cart_express_shipping_price\">" . $GLOBALS['currency']->get_number_only( $this->express_price ) . "</span>)</div>";
 		}
 		return $ret_string;
 	}

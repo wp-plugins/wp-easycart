@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.0.21
+ * Version: 2.0.22
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.0.21
+ * @version 2.0.22
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_0_21' );
+define( 'EC_CURRENT_VERSION', '2_0_22' );
 define( 'EC_CURRENT_DB', '1_13' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -232,43 +232,7 @@ function load_ec_pre(){
 		}
 	}
 	// END CREATE DATA FOLDER IF IT DOESN'T EXIST
-	/*
-	// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
-	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-		wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-		
-		$version = EC_CURRENT_VERSION;
-		$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-		fwrite( $fp, $version );
-		fclose( $fp );
-	}
-	// END CREATE LATEST DESIGN FOLDER
 	
-	// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
-	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
-			$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
-		else
-			$version = "1";
-			
-		if( $version != EC_CURRENT_VERSION ){
-			// This is an outdated version, lets update.
-			ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
-			
-			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-			wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-			wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-			
-			$version = EC_CURRENT_VERSION;
-			$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-			fwrite( $fp, $version );
-			fclose( $fp );
-		}
-	}
-	// END UPDATE LATEST DESIGN FOLDER
-	*/
 	///////////////////////////////////////////////////////////////////////////////////
 	// This is a check to ensure old users are upgraded to the new linking format
 	///////////////////////////////////////////////////////////////////////////////////
@@ -938,7 +902,7 @@ function wpeasycart_copyr( $source, $dest ){
 
 function wpeasycart_backup( ){
 	
-	//if( isset( $_GET['plugin'] ) && $_GET['plugin'] == "wp-easycart/wpeasycart.php" ){
+	if( !is_dir( dirname( __FILE__ ) . "/../wp-easycart-data/" ) ){
 	
 		if( !is_writable( WP_PLUGIN_DIR ) ){
 			
@@ -978,7 +942,7 @@ function wpeasycart_backup( ){
 				exit( $err_message );
 			}
 		}
-	//}
+	}
 }
 
 function wpeasycart_backup_ftp( ){
@@ -1106,7 +1070,7 @@ function ec_ran_list_n($rawlist, $path) {
 
 function wpeasycart_recover( ){
 	
-	//if( isset( $_GET['plugin'] ) && $_GET['plugin'] == "wp-easycart/wpeasycart.php" ){
+	if( !is_dir( dirname( __FILE__ ) . "/../wp-easycart-data/" ) ){
 		
 		if( !is_writable( WP_PLUGIN_DIR ) ){
 			
@@ -1116,42 +1080,6 @@ function wpeasycart_recover( ){
 		
 			$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
 			$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
-			
-			// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
-			if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-				mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-				wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-				
-				$version = EC_CURRENT_VERSION;
-				$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-				fwrite( $fp, $version );
-				fclose( $fp );
-			}
-			// END CREATE LATEST DESIGN FOLDER
-			
-			// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
-			if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
-					$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
-				else
-					$version = "1";
-				
-				if( $version != EC_CURRENT_VERSION ){
-					// This is an outdated version, lets update.
-					ec_recursive_remove_directory( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
-					
-					mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/", 0755 );
-					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-					wpeasycart_copyr( WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-					
-					$version = EC_CURRENT_VERSION;
-					$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-					fwrite( $fp, $version );
-					fclose( $fp );
-				}
-			}
-			// END UPDATE LATEST DESIGN FOLDER
 			
 			// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
 			$success = false;
@@ -1252,7 +1180,7 @@ function wpeasycart_recover( ){
 				exit( $err_message );	
 			}
 		}
-	//}
+	}
 }
 
 function wpeasycart_recover_ftp( ){
@@ -1277,42 +1205,6 @@ function wpeasycart_recover_ftp( ){
 			// Setup your pathing (relative to the plugins folder)
 			$wp_new = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
 			$wp_backup = WP_PLUGIN_DIR . "/wp-easycart-backup/";
-			
-			// CREATE LATEST DESIGN FOLDER IF IT DOESN'T EXIST
-			if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-				ftp_mkdir( $conn_id, WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
-				ec_ftp_recursive_copy( $conn_id, WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-				ec_ftp_recursive_copy( $conn_id, WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-				
-				$version = EC_CURRENT_VERSION;
-				$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-				fwrite( $fp, $version );
-				fclose( $fp );
-			}
-			// END CREATE LATEST DESIGN FOLDER
-			
-			// UPDATE LATEST DESIGN FOLDER IF EXPIRED VERSION
-			if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" ) ){
-				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" ) )
-					$version = file_get_contents( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt" );
-				else
-					$version = "1";
-				
-				if( $version != EC_CURRENT_VERSION ){
-					// This is an outdated version, lets update.
-					ec_recursive_ftp_remove_directory( $conn_id, WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
-					
-					ftp_mkdir( $conn_id, WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/" );
-					ec_ftp_recursive_copy( $conn_id, WP_PLUGIN_DIR . "/wp-easycart/design/layout/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/layout/" );
-					ec_ftp_recursive_copy( $conn_id, WP_PLUGIN_DIR . "/wp-easycart/design/theme/", WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/theme/" );
-					
-					$version = EC_CURRENT_VERSION;
-					$fp = fopen( WP_PLUGIN_DIR . "/wp-easycart-data/latest-design/version.txt", "wb" );
-					fwrite( $fp, $version );
-					fclose( $fp );
-				}
-			}
-			// END UPDATE LATEST DESIGN FOLDER
 			
 			// Recover products images
 			ftp_rename( $conn_id, $wp_new . "products", $wp_new . "products_new" );

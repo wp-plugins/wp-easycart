@@ -357,6 +357,14 @@
 
 					"value":"IN WINKELMAND"
 
+				},
+				
+				"product_details_out_of_stock":{
+				
+					"title":"Niet op voorraad tekst",
+				
+					"value":"OUTUITVERKOCHT"
+				
 				}
 
 			}

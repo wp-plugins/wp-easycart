@@ -308,7 +308,9 @@ class ec_admin_products
 			foreach ($original_record as $key => $value) {
 				if ($key != "product_id" && $key != "model_number") {
 					//$query .= '`'.$key.'` = "'.str_replace('"','\"',mysql_real_escape_string($value)).'", '; //removed, was adding double \\" to escape them 
-					if ($key == 'added_to_db_date') {
+					if( $key == "stock_quantity" ){
+						$query .= '`'.$key.'` = "0", ';
+					}else if ($key == 'added_to_db_date') {
 						$query .= '`'.$key.'` = NOW(), ';
 					} else if ($key == 'views') {
 						$query .= '`'.$key.'` = "0", ';

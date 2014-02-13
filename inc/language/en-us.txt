@@ -178,6 +178,10 @@
 				"product_details_add_to_cart":{
 					"title":"Add to Cart button text",
 					"value":"ADD TO CART"
+				},
+				"product_details_out_of_stock":{
+					"title":"Out of Stock Text",
+					"value":"OUT OF STOCK"
 				}
 			}
 		},
