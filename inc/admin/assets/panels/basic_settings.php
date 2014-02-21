@@ -64,6 +64,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 <div class="ec_status_header"><div class="ec_status_header_text">Currency Display: <?php echo $GLOBALS['currency']->get_currency_display( 1999.990 ); ?></div></div>
 
 <div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Base Currency Code</em>This is the currency your store is based in. If you choose to use the currency conversion option to allow customers to see the store in alternate currencies, the store will convert from this to another currency for display, but final checkout must be in the currency setup for your payment gateway.</span></a></span>
+    <span class="ec_setting_row_label">Base Currency Code:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_base_currency" value="<?php echo get_option('ec_option_base_currency'); ?>"></span>
+</div>
+
+<div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Currency Symbol</em>All currency symbols can easily be changed here.  Please note that all payment processors determine the actual payment currency, not this symbol.  Check with your payment processor to ensure you are processing in the proper currency that you need, then apply the currency symbol here to align your store.</span></a></span>
     <span class="ec_setting_row_label">Currency Symbol:</span>
     <span class="ec_setting_row_input"><input type="text" name="ec_option_currency" value="<?php echo get_option('ec_option_currency'); ?>"></span>
@@ -296,6 +302,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Enable Coupon Codes</em>Enabling/Disabling will essentially show or hide the coupon code box during checkout.</span></a></span>
     <span class="ec_setting_row_label">Enable Coupon Codes:</span>
     <span class="ec_setting_row_input"><select name="ec_option_show_coupons" style="width:100px;"><option value="0"<?php if( get_option('ec_option_show_coupons') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_show_coupons') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Return To Previous Page after Add to Cart Success</em>If enabled, the user will be returned to the store page or previous product page with a notice about add to cart success. This option actually returns to the previous page on the server, so if you use a widget or shortcode you may see a different result. If you leave this off the customer is still forwarded to the cart.</span></a></span>
+    <span class="ec_setting_row_label">Return To Previous Page after Add to Cart:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_addtocart_return_to_product" style="width:100px;"><option value="0"<?php if( get_option('ec_option_addtocart_return_to_product') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_addtocart_return_to_product') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>

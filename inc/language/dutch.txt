@@ -365,6 +365,14 @@
 				
 					"value":"OUTUITVERKOCHT"
 				
+				},
+				
+				"product_details_sign_up_now":{
+				
+					"title":"Meld je nu aan tekst",
+				
+					"value":"MELD JE NU AAN"
+				
 				}
 
 			}
@@ -2912,6 +2920,14 @@
 
 					"value":"Gratis"
 
+				},
+				
+				"store_added_to_cart":{
+				
+					"title":"Succes: Store, toegevoegde artikel winkelwagen",
+					
+					"value":"Je hebt met succes [prod_title] toegevoegd aan uw mandje."
+					
 				}
 
 			}
@@ -2942,6 +2958,28 @@
 
 			}
 
+		},
+		"ec_pricepoint_widget":{
+			"label":"Price Point Widget",
+			"options":{
+				"less_than":{
+					"title":"minder dan tekst",
+					"value":"minder dan"
+				},
+				"greater_than":{
+					"title":"groter dan tekst",
+					"value":"groter dan"
+				}
+			}
+		},
+		"language_code":{
+			"label":"Language Code",
+			"options":{
+				"code":{
+					"title":"Do Not Change",
+					"value":"NL"
+				}
+			}
 		}
 
 	}

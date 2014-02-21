@@ -2,7 +2,7 @@
 /*
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
+//All Code and Design is copyrighted by Level Four Development, LLC
 //
 //Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
 //including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
@@ -11,181 +11,133 @@
 //subject to copyright violation laws. If you have any questions regarding proper use of this code, please
 //contact Level Four Development, llc and EasyCart prior to use.
 //
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, LLC's  website.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
 
-
-class ec_admin_coupons
-	{		
+class ec_admin_coupons{		
 	
-		function ec_admin_coupons() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
+	private $db;
+	
+	function ec_admin_coupons( ){
 		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
-			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);
+		global $wpdb;
+		$this->db = $wpdb;
 
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);	
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 
-
-		}	
+	}//ec_admin_coupons
+	
+	public function _getMethodRoles( $methodName ){
+	
+	   		if( $methodName == 'getcoupons' ) 		return array( 'admin' );
+	   else if( $methodName == 'deletecoupon' ) 	return array( 'admin' );
+	   else if( $methodName == 'updatecoupon' ) 	return array( 'admin' );
+	   else if( $methodName == 'addcoupon' ) 		return array( 'admin' );
+	   else 										return null;
+	
+	}//_getMethodRoles
+	
+	function getcoupons( $startrecord, $limit, $orderby, $ordertype, $filter ){
 		
+		$sql = "SELECT SQL_CALC_FOUND_ROWS ec_promocode.* FROM ec_promocode  WHERE ec_promocode.promocode_id != '' " . $filter . " ORDER BY " . $orderby . " " . $ordertype . " LIMIT " . $startrecord . ", " . $limit;
+		$results = $this->db->get_results( $sql );
 		
-		//secure all of the services for logged in authenticated users only	
-		public function _getMethodRoles($methodName){
-		   if ($methodName == 'getcoupons') return array('admin');
-		   else if($methodName == 'deletecoupon') return array('admin');
-		   else if($methodName == 'updatecoupon') return array('admin');
-		   else if($methodName == 'addcoupon') return array('admin');
-		   else  return null;
+		$totalquery = $this->db->get_var( "SELECT FOUND_ROWS()" );
+		
+		if( count( $results ) > 0 ){
+			$results[0]->totalrows = $totalquery;
+			return $results;
+		}else{
+			return array( "noresults" );
 		}
 		
-		//HELPER - used to escape out SQL calls
-		function escape($sql) 
-		{ 
-			  $args = func_get_args(); 
-				foreach($args as $key => $val) 
-				{ 
-					$args[$key] = mysql_real_escape_string($val); 
-				} 
-				 
-				$args[0] = $sql; 
-				return call_user_func_array('sprintf', $args); 
-		} 
-		
+	}//getcoupons
+	
+	function deletecoupon( $promocodesid ){
 
+		$sql = "DELETE FROM ec_promocode WHERE ec_promocode.promocode_id  = %d";
+		$this->db->query( $this->db->prepare( $sql, $promocodesid ) );
+
+		if( !mysql_error( ) ){
+			return array( "success" );
+		}else{
+			return array( "error" );
+		}
 		
-		//coupon functions
-		function getcoupons($startrecord, $limit, $orderby, $ordertype, $filter) {
-			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_promocode.* FROM ec_promocode  WHERE ec_promocode.promocode_id != '' ".$filter." ORDER BY ".  $orderby ." ".  $ordertype . " LIMIT ".  $startrecord .", ".  $limit."");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
-			  
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
-		}
-		function deletecoupon($promocodesid) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_promocode WHERE ec_promocode.promocode_id  = '%s'", $promocodesid);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
-		}
-		function updatecoupon($promocodesid, $promocodes) {
-			//convert object to array
-			  $promocodes = (array)$promocodes;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_promocode(ec_promocode.promocode_id, ec_promocode.promo_dollar, ec_promocode.is_dollar_based, ec_promocode.promo_percentage, ec_promocode.is_percentage_based, ec_promocode.promo_shipping, ec_promocode.is_shipping_based, ec_promocode.promo_free_item, ec_promocode.is_free_item_based,  ec_promocode.message, ec_promocode.manufacturer_id, ec_promocode.product_id, ec_promocode.by_manufacturer_id, ec_promocode.by_product_id, ec_promocode.by_all_products)
-				values('".$promocodesid."', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($promocodes['dollaramount']),
-				mysql_real_escape_string($promocodes['usedollar']),
-				mysql_real_escape_string($promocodes['percentageamount']),
-				mysql_real_escape_string($promocodes['usepercentage']),
-				mysql_real_escape_string($promocodes['shippingamount']),
-				mysql_real_escape_string($promocodes['useshipping']),
-				mysql_real_escape_string('0.00'),
-				mysql_real_escape_string($promocodes['usefreeitem']),
-				mysql_real_escape_string($promocodes['promodescription']),
-				mysql_real_escape_string($promocodes['manufacturers']),
-				mysql_real_escape_string($promocodes['products']),
-				mysql_real_escape_string($promocodes['attachmanufacturer']),
-				mysql_real_escape_string($promocodes['attachproduct']),
-				mysql_real_escape_string($promocodes['attachall']));
-			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$sqlerror = mysql_error();
-				$error = explode(" ", $sqlerror);
-				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
-			    } else {  
-					$returnArray[] = "error";
-					return mysql_error(); //return noresults if there are no results
-				}
+	}//deletecoupon
+	
+	function updatecoupon( $promocode_id, $promocode ){
+		
+		$promocode = (array)$promocode;
+		
+		$sql = "UPDATE ec_promocode SET 
+					ec_promocode.promo_dollar = %s, 
+					ec_promocode.is_dollar_based = %s, 
+					ec_promocode.promo_percentage = %s, 
+					ec_promocode.is_percentage_based = %s, 
+					ec_promocode.promo_shipping = %s, 
+					ec_promocode.is_shipping_based = %s, 
+					ec_promocode.promo_free_item = %s, 
+					ec_promocode.is_free_item_based = %s, 
+					ec_promocode.message = %s, 
+					ec_promocode.manufacturer_id = %d, 
+					ec_promocode.product_id = %d, 
+					ec_promocode.by_manufacturer_id = %s, 
+					ec_promocode.by_product_id = %s, 
+					ec_promocode.by_all_products = %s 
+					
+				WHERE ec_promocode.promocode_id = %s";
+				
+		$this->db->query( $this->db->prepare( 	$sql, 
+												$promocode['dollaramount'], 
+												$promocode['usedollar'], 
+												$promocode['percentageamount'], 
+												$promocode['usepercentage'], 
+												$promocode['shippingamount'], 
+												$promocode['useshipping'], 
+												'0.00', 
+												$promocode['usefreeitem'], 
+												$promocode['promodescription'], 
+												$promocode['manufacturers'], 
+												$promocode['products'], 
+												$promocode['attachmanufacturer'], 
+												$promocode['attachproduct'], 
+												$promocode['attachall'],
+												$promocode_id ) );
+		
+		if( !mysql_error( ) ){
+			return array( "success" );
+		}else{
+			$sqlerror = mysql_error( );
+			$error = explode( " ", $sqlerror );
+			if( $error[0] == "Duplicate" ){
+				return array( "duplicate" );
+			}else{  
+				return array( mysql_error( ) );
 			}
 		}
-		function addcoupon($promocodes) {
-			
-			//convert object to array
-			  $promocodes = (array)$promocodes;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_promocode(ec_promocode.promocode_id, ec_promocode.promo_dollar, ec_promocode.is_dollar_based, ec_promocode.promo_percentage, ec_promocode.is_percentage_based, ec_promocode.promo_shipping, ec_promocode.is_shipping_based, ec_promocode.promo_free_item, ec_promocode.is_free_item_based,  ec_promocode.message, ec_promocode.manufacturer_id, ec_promocode.product_id, ec_promocode.by_manufacturer_id, ec_promocode.by_product_id, ec_promocode.by_all_products)
-				values('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($promocodes['promoid']),
-				mysql_real_escape_string($promocodes['dollaramount']),
-				mysql_real_escape_string($promocodes['usedollar']),
-				mysql_real_escape_string($promocodes['percentageamount']),
-				mysql_real_escape_string($promocodes['usepercentage']),
-				mysql_real_escape_string($promocodes['shippingamount']),
-				mysql_real_escape_string($promocodes['useshipping']),
-				mysql_real_escape_string('0.00'),
-				mysql_real_escape_string($promocodes['usefreeitem']),
-				mysql_real_escape_string($promocodes['promodescription']),
-				mysql_real_escape_string($promocodes['manufacturers']),
-				mysql_real_escape_string($promocodes['products']),
-				mysql_real_escape_string($promocodes['attachmanufacturer']),
-				mysql_real_escape_string($promocodes['attachproduct']),
-				mysql_real_escape_string($promocodes['attachall']));
-			//Run query on database;
-			  mysql_query($sql);
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$sqlerror = mysql_error();
-				$error = explode(" ", $sqlerror);
-				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
-			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
-				}
+	
+	}//updatecoupon
+	
+	function addcoupon( $promocode ){
+		
+		$promocode = (array)$promocode;
+		
+		$sql = "INSERT INTO ec_promocode( ec_promocode.promocode_id, ec_promocode.promo_dollar, ec_promocode.is_dollar_based, ec_promocode.promo_percentage, ec_promocode.is_percentage_based, ec_promocode.promo_shipping, ec_promocode.is_shipping_based, ec_promocode.promo_free_item, ec_promocode.is_free_item_based, ec_promocode.message, ec_promocode.manufacturer_id, ec_promocode.product_id, ec_promocode.by_manufacturer_id, ec_promocode.by_product_id, ec_promocode.by_all_products ) VALUES( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+		$this->db->query( $this->db->prepare( $sql, $promocode['promoid'], $promocode['dollaramount'], $promocode['usedollar'], $promocode['percentageamount'], $promocode['usepercentage'], $promocode['shippingamount'], $promocode['useshipping'], '0.00', $promocode['usefreeitem'], $promocode['promodescription'], $promocode['manufacturers'], $promocode['products'], $promocode['attachmanufacturer'], $promocode['attachproduct'], $promocode['attachall'] ) );
+		
+		if( !mysql_error( ) ){
+			return array( "success" );
+		}else{
+			$sqlerror = mysql_error( );
+			$error = explode( " ", $sqlerror );
+			if( $error[0] == "Duplicate" ){
+				return array( "duplicate" );
+			}else{  
+				return array( mysql_error( ) );
 			}
 		}
+	}//addcoupon
 
-	}//close class
+}//ec_admin_coupon
 ?>

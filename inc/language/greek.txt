@@ -177,6 +177,10 @@
 				"product_details_out_of_stock":{
 					"title":"Out of Stock Text",
 					"value":"Δεν υπάρχει σε στόκ"
+				},
+				"product_details_sign_up_now":{
+					"title":"Sign Up Now Text",
+					"value":"Εγγραφείτε τώρα"
 				}
 			}
 		},
@@ -1449,6 +1453,10 @@
 				"cart_account_free_order":{
 					"title":"Cart, Order Type, Gift Card, Free Order",
 					"value":"Δωρεάν παραγγελία"
+				},
+				"store_added_to_cart":{
+					"title":"Store, Added Item to Cart",
+					"value":"Έχετε προσθέσει με επιτυχία [prod_title] στο καλάθι σας."
 				}
 			}
 		},
@@ -1462,6 +1470,28 @@
 				"checkout_button_text":{
 					"title":"Minicart Widget, Checkout Button Text",
 					"value":"Ταμείο"
+				}
+			}
+		},
+		"ec_pricepoint_widget":{
+			"label":"Price Point Widget",
+			"options":{
+				"less_than":{
+					"title":"Less Than Text",
+					"value":"λιγότερο από"
+				},
+				"greater_than":{
+					"title":"Greater Than Text",
+					"value":"μεγαλύτερη από"
+				}
+			}
+		},
+		"language_code":{
+			"label":"Language Code",
+			"options":{
+				"code":{
+					"title":"Do Not Change",
+					"value":"EL"
 				}
 			}
 		}

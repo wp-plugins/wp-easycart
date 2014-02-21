@@ -393,7 +393,7 @@ class ec_admin_products
 			$product = mysql_fetch_assoc( $result_get_product );
 			$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $randmodel . "\"]",
 							'post_status'	=> "publish",
-							'post_title'	=> $product['title'],
+							'post_title'	=> $GLOBALS['language']->convert_text( $product['title'] ),
 							'post_type'		=> "ec_store"
 						  );
 			$post_id = wp_insert_post( $post, $wp_error );
@@ -557,9 +557,9 @@ class ec_admin_products
 			$post = array(	'ID'			=> $result_product['post_id'],
 							'post_content'	=> "[ec_store modelnumber=\"" . $product['modelnumber'] . "\"]",
 							'post_status'	=> "publish",
-							'post_title'	=> $product['producttitle'],
+							'post_title'	=> $GLOBALS['language']->convert_text( $product['producttitle'] ),
 							'post_type'		=> "ec_store",
-							'post_name'		=> str_replace(' ', '-', $product['producttitle'] ),
+							'post_name'		=> str_replace(' ', '-', $GLOBALS['language']->convert_text( $product['producttitle'] ) ),
 						  );
 			$post_id = wp_update_post( $post );
 			
@@ -692,7 +692,7 @@ class ec_admin_products
 			// Insert a WordPress Custom post type post.
 			$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $product['modelnumber'] . "\"]",
 							'post_status'	=> "publish",
-							'post_title'	=> $product['producttitle'],
+							'post_title'	=> $GLOBALS['language']->convert_text( $product['producttitle'] ),
 							'post_type'		=> "ec_store"
 						  );
 			$post_id = wp_insert_post( $post, $wp_error );

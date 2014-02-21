@@ -83,6 +83,10 @@ function ec_cart_item_delete_finished( data, cartitem_id ){
 	}else{
 	
 		ec_cart_item_hide_loader( cartitem_id );
+		
+		if( document.getElementById( 'ec_cart_zip_code' ) ){
+			ec_estimate_shipping_click( );
+		}
 	
 		jQuery('#ec_cart_item_' + cartitem_id ).remove(); 
 	

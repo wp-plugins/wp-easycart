@@ -11,10 +11,14 @@ class ec_shipping{
 	private $price_based = array();								// array of array[trigger_rate, shipping_rate] 
 	private $weight_based = array();							// array of array[trigger_rate, shipping_rate]
 	private $method_based = array();							// array of array[shipping_rate, shipping_label, shippingrate_id]
+	private $quantity_based = array();							// array of array[trigger_rate, shipping_rate] 
 	private $live_based = array();								// array of array[shipping_code, shipping_label, shippingrate_id, ship_type]
+	
+	private $handling;											// FLOAT 11,2
 	
 	private $subtotal;											// float 7,2
 	private $weight;											// float 7,2
+	private $quantity;											// float 7,2
 	private $express_price;										// float 7,2
 	private $ship_express;										// BOOL
 	private $destination_zip;									// VARCHAR
@@ -24,7 +28,7 @@ class ec_shipping{
 	
 	public $shipping_promotion_text;							// TEXT
 	
-	function __construct( $subtotal, $weight, $display_type = 'RADIO' ){
+	function __construct( $subtotal, $weight, $quantity = 1, $display_type = 'RADIO' ){
 		$this->mysqli = new ec_db();
 		$this->ec_setting = new ec_setting();
 		
@@ -87,25 +91,35 @@ class ec_shipping{
 				// Method and Zoned Based
 				else if( $shipping_row->is_method_based && $shipping_row->zone_id > 0 ){
 					if( in_array( $shipping_row->zone_id, $zones ) )
-						array_push( $this->method_based, array( $shipping_row->shipping_rate, $shipping_row->shipping_label, $shipping_row->shippingrate_id ) );
+						array_push( $this->method_based, array( $shipping_row->shipping_rate, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id ) );
 					
 				// Method Based	
 				}else if( $shipping_row->is_method_based )			
-					array_push( $this->method_based, array( $shipping_row->shipping_rate, $shipping_row->shipping_label, $shipping_row->shippingrate_id ) );
+					array_push( $this->method_based, array( $shipping_row->shipping_rate, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id ) );
+					
+				// Quantity and Zoned Based
+				else if( $shipping_row->is_quantity_based && $shipping_row->zone_id > 0 ){
+					if( in_array( $shipping_row->zone_id, $zones ) )
+						array_push( $this->quantity_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
+					
+				// Quantity Based	
+				}else if( $shipping_row->is_quantity_based )			
+					array_push( $this->quantity_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
 				
 				// Live and Zoned Based
 				else if( $this->is_live_based( $shipping_row ) && $shipping_row->zone_id > 0 ){
 					if( in_array( $shipping_row->zone_id, $zones ) )
-						array_push( $this->live_based, array( $shipping_row->shipping_code, $shipping_row->shipping_label, $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
+						array_push( $this->live_based, array( $shipping_row->shipping_code, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
 				
 				// Live Based	
 				}else if( $this->is_live_based( $shipping_row ) ){	
-					array_push( $this->live_based, array( $shipping_row->shipping_code, $shipping_row->shipping_label, $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
+					array_push( $this->live_based, array( $shipping_row->shipping_code, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
 				}
 			}
 			
 			$this->subtotal = $subtotal;
 			$this->weight = $weight;
+			$this->quantity = $quantity;
 			$this->express_price = $this->ec_setting->get_setting( "shipping_expedite_rate" );
 			if( isset( $_SESSION['ec_ship_express'] ) ){
 				$this->ship_express = $_SESSION['ec_ship_express'];
@@ -147,6 +161,9 @@ class ec_shipping{
 			
 		else if( $this->shipping_method == "method" )
 			return $this->get_method_based_shipping_options( $standard_text, $express_text );
+			
+		else if( $this->shipping_method == "quantity" )
+			return $this->get_quantity_based_shipping_options( $standard_text, $express_text );
 			
 		else if( $this->shipping_method == "live" )
 			return $this->get_live_based_shipping_options( $standard_text, $express_text );
@@ -201,6 +218,17 @@ class ec_shipping{
 		
 		}else{
 			return "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\">Shipping Rate Setup ERROR: Please visit the EasyCart Admin -> Store Admin -> Rates and add at least one shipping method.</div>";
+		}
+	}
+	
+	private function get_quantity_based_shipping_options( $standard_text, $express_text ){
+		if( count( $this->quantity_based ) > 0 ){
+			for( $i=0; $i<count($this->quantity_based); $i++){
+				if( $this->quantity >= $this->quantity_based[$i][0] )
+					return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->quantity_based[$i][1] );
+			}
+		}else{
+			return "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\">Shipping Rate Setup ERROR: Please visit the EasyCart Admin -> Store Admin -> Rates and add at least one quantity trigger. If you have done this, check to ensure no gaps in triggers.</div>";
 		}
 	}
 	
@@ -375,12 +403,12 @@ class ec_shipping{
 	
 	public function get_single_shipping_price_content( $standard_text, $express_text, $standard_price ){
 		$ret_string = "";
-		$ret_string .= "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"radio\" name=\"ec_cart_shipping_method\" id=\"ec_cart_shipping_method\" value=\"standard\" checked=\"checked\" />" . $standard_text . " (" . get_option( 'ec_option_currency' ) . "<span id=\"ec_cart_standard_shipping_price\">" . $GLOBALS['currency']->get_number_only( $standard_price ) . "</span>)</div>";
+		$ret_string .= "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"radio\" name=\"ec_cart_shipping_method\" id=\"ec_cart_shipping_method\" value=\"standard\" checked=\"checked\" />" . $standard_text . " (" . $GLOBALS['currency']->symbol . "<span id=\"ec_cart_standard_shipping_price\">" . $GLOBALS['currency']->get_number_only( $standard_price ) . "</span>)</div>";
 		if( $this->express_price > 0 ){
 			$ret_string .= "<div id=\"ec_cart_express_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"checkbox\" name=\"ec_cart_ship_express\" id=\"ec_cart_ship_express\" value=\"shipexpress\"";
 			if( $this->ship_express )
 				$ret_string .= " checked=\"checked\"";
-			$ret_string .= " />" . $express_text . " (+" . get_option( 'ec_option_currency' ) . "<span id=\"ec_cart_express_shipping_price\">" . $GLOBALS['currency']->get_number_only( $this->express_price ) . "</span>)</div>";
+			$ret_string .= " />" . $express_text . " (+" . $GLOBALS['currency']->symbol . "<span id=\"ec_cart_express_shipping_price\">" . $GLOBALS['currency']->get_number_only( $this->express_price ) . "</span>)</div>";
 		}
 		return $ret_string;
 	}
@@ -419,6 +447,17 @@ class ec_shipping{
 				}
 			}
 			
+		}else if( $this->shipping_method == "quantity" ){
+			for( $i=0; $i<count( $this->quantity_based ); $i++ ){
+				if( $this->quantity >= $this->quantity_based[$i][0] ){
+					$rate = $this->quantity_based[$i][1];
+					break;
+				}
+				
+			}
+			if( $this->ship_express )
+				$rate = $rate + $this->express_price;
+			
 		}else if( $this->shipping_method == "live" ){
 			if( !isset( $_SESSION['ec_shipping_method'] ) ){
 				if( isset( $this->live_based ) && count( $this->live_based ) > 0 && count( $this->live_based[0] ) > 3 ){
@@ -450,6 +489,8 @@ class ec_shipping{
 			error_log( "error getting shipping rate.");
 			return "0.00";
 		}else{
+			// Add the Handling Rate
+			$rate = $rate + $this->handling;
 			return doubleval( $rate ) - doubleval( $discount );
 		}
 	}

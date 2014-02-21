@@ -41,6 +41,10 @@ class ec_categorywidget extends WP_Widget{
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$up_level_text = apply_filters( 'widget_up_level_text', $instance['up_level_text'] );
+		
+		// Translate if Needed
+		$title = $GLOBALS['language']->convert_text( $title );
+		$up_level_text = $GLOBALS['language']->convert_text( $up_level_text );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )
@@ -124,7 +128,7 @@ class ec_categorywidget extends WP_Widget{
 		
 		$categories = array(); 
 		for( $i=0; $i<count( $category_items ); $i++ ){
-			$categories[] = array( $category_items[$i]->menu_id, $category_items[$i]->menu_name, $category_items[$i]->product_count, $this->ec_get_permalink( $category_items[$i] , $level, $store_page, $permalink_divider ) );
+			$categories[] = array( $category_items[$i]->menu_id, $GLOBALS['language']->convert_text( $category_items[$i]->menu_name ), $category_items[$i]->product_count, $this->ec_get_permalink( $category_items[$i] , $level, $store_page, $permalink_divider ) );
 		}
 		
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_category_widget.php' ) )	

@@ -1038,6 +1038,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_weight', $_POST['ec_option_weight'] );
 	
 	// Currency Display
+	update_option( 'ec_option_base_currency', $_POST['ec_option_base_currency'] );
 	update_option( 'ec_option_currency', $_POST['ec_option_currency'] );
 	update_option( 'ec_option_currency_symbol_location', $_POST['ec_option_currency_symbol_location'] );
 	update_option( 'ec_option_currency_negative_location', $_POST['ec_option_currency_negative_location'] );
@@ -1074,6 +1075,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_user_order_notes', $_POST['ec_option_user_order_notes'] );
 	update_option( 'ec_option_show_giftcards', $_POST['ec_option_show_giftcards'] );
 	update_option( 'ec_option_show_coupons', $_POST['ec_option_show_coupons'] );
+	update_option( 'ec_option_addtocart_return_to_product', $_POST['ec_option_addtocart_return_to_product'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
@@ -1092,6 +1094,8 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_match_store_meta', $_POST['ec_option_match_store_meta'] );
 	update_option( 'ec_option_use_old_linking_style', $_POST['ec_option_use_old_linking_style'] );
 	update_option( 'ec_option_no_vat_on_shipping', $_POST['ec_option_no_vat_on_shipping'] );
+	update_option( 'ec_option_display_as_catalog', $_POST['ec_option_display_as_catalog'] );
+	update_option( 'ec_option_exchange_rates', $_POST['ec_option_exchange_rates'] );
 	
 	//update sizes
 	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 

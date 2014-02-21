@@ -11,7 +11,7 @@ class ec_optionitem{
 	function __construct( $option_id, $optionitem_data ){
 		$this->option_id = $option_id;
 		$this->optionitem_id = $optionitem_data->optionitem_id;
-		$this->optionitem_name = $optionitem_data->optionitem_name;
+		$this->optionitem_name = $GLOBALS['language']->convert_text( $optionitem_data->optionitem_name );
 		$this->optionitem_price = $optionitem_data->optionitem_price;
 		$this->optionitem_icon = $optionitem_data->optionitem_icon;
 	}

@@ -95,7 +95,7 @@ class ec_cartitem{
 			
 		$this->weight = $cartitem_data->weight;
 		
-		$this->title = $cartitem_data->title;
+		$this->title = $GLOBALS['language']->convert_text( $cartitem_data->title );
 		
 		$this->is_giftcard = $cartitem_data->is_giftcard;
 		$this->is_download = $cartitem_data->is_download;
@@ -107,9 +107,9 @@ class ec_cartitem{
 		
 		if($cartitem_data->optionitem1_data){
 			$option = explode("***", $cartitem_data->optionitem1_data);
-			$this->optionitem1_name = $option[0]; 
+			$this->optionitem1_name = $GLOBALS['language']->convert_text( $option[0] ); 
 			$this->optionitem1_price = $option[1];
-			$this->optionitem1_label = $option[2];
+			$this->optionitem1_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem1_id = $option[3];
 		}else{
 			$this->optionitem1_name = ""; $this->optionitem1_price = 0.00;
@@ -117,9 +117,9 @@ class ec_cartitem{
 		
 		if($cartitem_data->optionitem2_data){
 			$option = explode("***", $cartitem_data->optionitem2_data);
-			$this->optionitem2_name = $option[0]; 
+			$this->optionitem2_name = $GLOBALS['language']->convert_text( $option[0] ); 
 			$this->optionitem2_price = $option[1];
-			$this->optionitem2_label = $option[2];
+			$this->optionitem2_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem2_id = $option[3];
 		}else{
 			$this->optionitem2_name = ""; $this->optionitem2_price = 0.00;
@@ -127,9 +127,9 @@ class ec_cartitem{
 		
 		if($cartitem_data->optionitem3_data){
 			$option = explode("***", $cartitem_data->optionitem3_data);
-			$this->optionitem3_name = $option[0]; 
+			$this->optionitem3_name = $GLOBALS['language']->convert_text( $option[0] ); 
 			$this->optionitem3_price = $option[1];
-			$this->optionitem3_label = $option[2];
+			$this->optionitem3_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem3_id = $option[3];
 		}else{
 			$this->optionitem3_name = ""; $this->optionitem3_price = 0.00;
@@ -137,9 +137,9 @@ class ec_cartitem{
 		
 		if($cartitem_data->optionitem4_data){
 			$option = explode("***", $cartitem_data->optionitem4_data);
-			$this->optionitem4_name = $option[0]; 
+			$this->optionitem4_name = $GLOBALS['language']->convert_text( $option[0] );
 			$this->optionitem4_price = $option[1];
-			$this->optionitem4_label = $option[2];
+			$this->optionitem4_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem4_id = $option[3];
 		}else{
 			$this->optionitem4_name = ""; $this->optionitem4_price = 0.00;
@@ -147,9 +147,9 @@ class ec_cartitem{
 		
 		if($cartitem_data->optionitem5_data){
 			$option = explode("***", $cartitem_data->optionitem5_data);
-			$this->optionitem5_name = $option[0]; 
+			$this->optionitem5_name = $GLOBALS['language']->convert_text( $option[0] );
 			$this->optionitem5_price = $option[1];
-			$this->optionitem5_label = $option[2];
+			$this->optionitem5_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem5_id = $option[3];
 		}else{
 			$this->optionitem5_name = ""; $this->optionitem5_price = 0.00;
@@ -161,6 +161,7 @@ class ec_cartitem{
 				$pricetier = explode( "***", $pricetiers[$i] );
 				$this->pricetiers[$i] = array( $pricetier[0], $pricetier[1] );
 			}
+			usort( $this->pricetiers, array( "ec_cartitem", "ec_sort_price_tier" ) );
 		}
 		
 		$this->use_advanced_optionset = $cartitem_data->use_advanced_optionset;
@@ -209,6 +210,11 @@ class ec_cartitem{
 				}else if( $advanced_option->optionitem_weight_override >= 0 ){
 					$this->weight = $advanced_option->optionitem_weight_override;
 				}
+			}
+			for( $i=0; $i<count( $this->advanced_options ); $i++ ){
+				$this->advanced_options[$i]->option_name = $GLOBALS['language']->convert_text( $this->advanced_options[$i]->option_name );
+				$this->advanced_options[$i]->optionitem_name = $GLOBALS['language']->convert_text( $this->advanced_options[$i]->optionitem_name );
+				$this->advanced_options[$i]->optionitem_value = $GLOBALS['language']->convert_text( $this->advanced_options[$i]->optionitem_value );
 			}
 		}else{
 			$options_price = $this->optionitem1_price + $this->optionitem2_price + $this->optionitem3_price + $this->optionitem4_price + $this->optionitem5_price;
@@ -556,6 +562,14 @@ class ec_cartitem{
 			return $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
 		}
 		
+	}
+	
+	static function ec_sort_price_tier( $a, $b ){
+		if( $a[1] > $b[1] ){
+			return 1;
+		}else{
+			return -1;
+		}
 	}
 }
 

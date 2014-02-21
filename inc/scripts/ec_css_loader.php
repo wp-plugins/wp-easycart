@@ -239,6 +239,16 @@ $css_content .= ".filter_bar_bottom .ec_sort_menu{ display:none; }";
 
 $css_content .= get_option( 'ec_option_custom_css' );
 
+// Show store as a catalog
+if( get_option( 'ec_option_display_as_catalog' ) ){
+	$css_content .= ".ec_product_details_add_to_cart_button{ display: none !important; }
+		.ec_product_quick_view_box_content_option_row{ display:none !important; }
+		.ec_product_details_quantity{ display:none !important; }
+		.ec_product_quick_view_holder{ opacity:0 !important; filter:alpha(opacity=0) !important; }
+		.ec_product_details_add_to_cart{ display:none !important; }
+		.ec_product_details_quantity{ display:none !important; }";
+}
+
 // print the css content
 echo $css_content;	
 ?>

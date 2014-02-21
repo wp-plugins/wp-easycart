@@ -19,6 +19,16 @@ if( ini_get( 'register_globals' ) ){
             unset( $GLOBALS[$key] );
     }
 }
+	
+// Language Translation Check
+if( isset( $_POST['ec_language_conversion'] ) ){
+	$_SESSION['ec_translate_to'] = $_POST['ec_language_conversion'];
+}
+	
+// Currency Conversion Check
+if( isset( $_POST['ec_currency_conversion'] ) ){
+	$_SESSION['ec_convert_to'] = $_POST['ec_currency_conversion'];
+}
 
 // INCLUDE GATEWAY CLASSES
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_gateway.php' );
@@ -117,8 +127,10 @@ include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/store/ec_stor
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_breadcrumbwidget.php' );
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_cartwidget.php' );
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_categorywidget.php' );
+include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_currencywidget.php' );
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_donationwidget.php' );
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_groupwidget.php' );
+include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_languagewidget.php' );
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_manufacturerwidget.php' );
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_menuwidget.php' );
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_newsletterwidget.php' );

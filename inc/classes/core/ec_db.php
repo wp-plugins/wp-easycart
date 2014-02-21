@@ -266,7 +266,12 @@ class ec_db{
 				product.is_giftcard,
 				product.is_download,
 				product.is_donation,
+				product.is_subscription_item,
+				
 				product.download_file_name,
+				
+				product.subscription_bill_length,
+				product.subscription_bill_period,
 				
 				CONCAT_WS('***', option1.option_id, option1.option_name, option1.option_label) as option_data_1,
 				CONCAT_WS('***', option2.option_id, option2.option_name, option2.option_label) as option_data_2,
@@ -452,7 +457,12 @@ class ec_db{
 						"is_giftcard" => $row->is_giftcard, 
 						"is_download" => $row->is_download,
 						"is_donation" => $row->is_donation,
+						"is_subscription_item" => $row->is_subscription_item,
+						
 						"download_file_name" => $row->download_file_name,
+						
+						"subscription_bill_length" => $row->subscription_bill_length,
+						"subscription_bill_period" => $row->subscription_bill_period,
 						
 						"option1" => $option1, 
 						"option2" => $option2, 
@@ -1328,7 +1338,7 @@ class ec_db{
 	}
 	
 	public function get_shipping_data( ){
-		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.zone_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.is_dhl_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.zone_id DESC, ec_shippingrate.shipping_order";
+		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.zone_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_quantity_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.is_dhl_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.is_quantity_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.zone_id DESC, ec_shippingrate.shipping_order";
 		return $this->mysqli->get_results( $sql );
 		
 	}
@@ -2407,7 +2417,7 @@ class ec_db{
 	}
 	
 	public function get_settings( ){
-		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode FROM ec_setting WHERE setting_id = 1";
+		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, ups_conversion_rate, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, fedex_conversion_rate, fedex_test_account, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode FROM ec_setting WHERE setting_id = 1";
 			return $this->mysqli->get_row( $sql );
 	}
 	
@@ -2520,6 +2530,48 @@ class ec_db{
 	public function get_zone_ids( $iso2_cnt, $code_sta ){
 		$sql = "SELECT zone_id FROM ec_zone_to_location WHERE ( iso2_cnt = %s AND ( code_sta = '-1' OR code_sta = '' ) ) OR ( iso2_cnt = %s AND code_sta = %s )";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $iso2_cnt, $iso2_cnt, $code_sta ) );
+	}
+	
+	//////////////// SUBSCRIPTION FUNCTIONS //////////////////////////
+	public function has_subscription_inserted( $subscr_id ){
+		$sql = "SELECT subscription_id FROM ec_subscription WHERE paypal_subscr_id = %s";
+		$results = $this->mysqli->get_results( $this->mysqli->prepare( $sql, $subscr_id ) );
+		if( count( $results ) > 0 ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public function insert_paypal_subscription( $item_name, $payer_email, $first_name, $last_name, $residence_country, $mc_gross, $payment_date, $txn_id, $txn_type, $subscr_id, $username, $password ){
+		
+		$sql = "SELECT ec_product.model_number, ec_product.subscription_bill_length, ec_product.subscription_bill_period FROM ec_product WHERE ec_product.title LIKE %s";
+		$result = $this->mysqli->get_results( $this->mysqli->prepare( $sql, $item_name ) );
+		
+		$model_number = "";
+		$bill_length = 0;
+		$bill_period = "";
+		if( count( $result ) > 0 ){
+			$model_number = $result[0]->model_number;
+			$bill_length = $result[0]->subscription_bill_length;
+			$bill_period = $result[0]->subscription_bill_period;
+		}
+		
+		$sql = "INSERT INTO ec_subscription( subscription_type, title, email, first_name, last_name, user_country, model_number, price, payment_length, payment_period, last_payment_date, paypal_txn_id, paypal_txn_type, paypal_subscr_id, paypal_username, paypal_password) VALUES( 'paypal', %s, %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $item_name, $payer_email, $first_name, $last_name, $residence_country, $model_number, $mc_gross, $bill_length, $bill_period, $payment_date, $txn_id, $txn_type, $subscr_id, $username, $password ) );
+	
+	}
+	
+	public function update_paypal_subscription( $next_payment_date, $subscr_id ){
+		
+		$sql = "UPDATE ec_subscription SET next_payment_date = %s, number_payments_completed = number_payments_completed + 1, last_payment_date = NOW( ) WHERE paypal_subscr_id = %s";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $next_payment_date, $subscr_id ) );
+		
+	}
+	
+	public function cancel_paypal_subscription( $subscr_id ){
+		$sql = "UPDATE ec_subscription SET subscription_status = 'Canceled' WHERE paypal_subscr_id = %s";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $subscr_id ) );
 	}
 	
 }

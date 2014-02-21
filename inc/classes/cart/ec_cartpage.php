@@ -52,7 +52,7 @@ class ec_cartpage{
 		}
 		
 		// Shipping
-		$this->shipping = new ec_shipping( $this->cart->shipping_subtotal, $this->cart->weight );
+		$this->shipping = new ec_shipping( $this->cart->shipping_subtotal, $this->cart->weight, $this->cart->total_items );
 		// Tax (no VAT here)
 		$sales_tax_discount = new ec_discount( $this->cart, $this->cart->subtotal, 0.00, $this->coupon_code, "", 0 );
 		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country );
@@ -876,7 +876,7 @@ class ec_cartpage{
 	}
 	
 	public function display_manual_payment_text( ){
-		echo nl2br( get_option( 'ec_option_direct_deposit_message' ) );	
+		echo nl2br( $GLOBALS['language']->convert_text( get_option( 'ec_option_direct_deposit_message' ) ) );
 	}
 	
 	public function use_third_party( ){
@@ -1299,7 +1299,18 @@ class ec_cartpage{
 				$this->mysqli->update_tempcart_grid_quantity( $tempcart_id, $grid_quantity );
 			}
 			
-			header( "location: " . $this->cart_page );
+			if( get_option( 'ec_option_addtocart_return_to_product' ) ){
+				$return_url = $_SERVER['HTTP_REFERER'];
+				$return_url = str_replace( "ec_store_success=addtocart", "", $return_url );
+				$divider = "?";
+				if( substr_count( $return_url, '?' ) )
+					$divider = "&";
+				
+				
+				header( "location: " . $return_url . $divider . "ec_store_success=addtocart&model=" . $_POST['model_number'] );
+			}else{
+				header( "location: " . $this->cart_page );
+			}
 		}
 	}
 	

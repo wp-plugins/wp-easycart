@@ -4,7 +4,7 @@
   		<?php if( $pricepoints[$i]->is_less_than ){ ?>
         	<?php if( $pricepoints[$i]->product_count_below > 0 ){ ?>
             	<div>
-                	<a href="<?php echo $filter->get_link_string( 4 ) . "&amp;pricepoint=" . $pricepoints[$i]->pricepoint_id; ?>" class="menu_link"><?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ echo "<b>"; } ?>Less Than <?php echo $GLOBALS['currency']->get_currency_display( $pricepoints[$i]->high_point ); ?> (<?php echo $pricepoints[$i]->product_count_below; ?>)<?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ echo "</b>"; } ?></a>
+                	<a href="<?php echo $filter->get_link_string( 4 ) . "&amp;pricepoint=" . $pricepoints[$i]->pricepoint_id; ?>" class="menu_link"><?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ echo "<b>"; } ?><?php echo $GLOBALS['language']->get_text( 'ec_pricepoint_widget', 'less_than' )?> <?php echo $GLOBALS['currency']->get_currency_display( $pricepoints[$i]->high_point ); ?> (<?php echo $pricepoints[$i]->product_count_below; ?>)<?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ echo "</b>"; } ?></a>
                     <?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ ?>
                     <a href="<?php echo $filter->get_link_string( 4 ); ?>" class="menu_link"> X </a>
                     <?php }?>
@@ -14,7 +14,7 @@
         <?php }else if( $pricepoints[$i]->is_greater_than ){?>
         	<?php if( $pricepoints[$i]->product_count_above > 0 ){ ?>
             	<div>
-                	<a href="<?php echo $filter->get_link_string( 4 ) . "&amp;pricepoint=" . $pricepoints[$i]->pricepoint_id; ?>" class="menu_link"><?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ echo "<b>"; } ?>Greater Than <?php echo $GLOBALS['currency']->get_currency_display( $pricepoints[$i]->low_point ); ?> (<?php echo $pricepoints[$i]->product_count_above; ?>)<?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ echo "</b>"; } ?></a>
+                	<a href="<?php echo $filter->get_link_string( 4 ) . "&amp;pricepoint=" . $pricepoints[$i]->pricepoint_id; ?>" class="menu_link"><?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ echo "<b>"; } ?><?php echo $GLOBALS['language']->get_text( 'ec_pricepoint_widget', 'greater_than' )?> <?php echo $GLOBALS['currency']->get_currency_display( $pricepoints[$i]->low_point ); ?> (<?php echo $pricepoints[$i]->product_count_above; ?>)<?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ echo "</b>"; } ?></a>
                     <?php if( isset( $_GET['pricepoint'] ) && $_GET['pricepoint'] == $pricepoints[$i]->pricepoint_id ){ ?>
                     <a href="<?php echo $filter->get_link_string( 4 ); ?>" class="menu_link"> X </a>
                     <?php }?>

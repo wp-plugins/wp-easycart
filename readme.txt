@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.0.22
+Stable tag: 2.1.0
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,18 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.0 =
+* Fix - Some price tiers that were coming from the DB in the incorrect order causing price tier value to be wrong in the cart. This has been corrected.
+* Fix - Conflict with the "n" key shortcode with Jetpack has been resolved. Now you will not see the notifications window popup.
+* Addition - New basic option, cart option, which allows you to send the customer back to the previous page instead of the cart after adding an item to the cart. Paired with the minicart widget, this is a nice option.
+* Addition - Subscription products through PayPal. Allow your customers to start a subscription right from your WP EasyCart.
+* Addition - New advanced option to turn your store into a simple catalog. If you do not want to allow a customer to checkout, use this option to simply display a list of product and their details.
+* Addition - Conversion rate now available for UPS to allow display of a different currency than that returned from UPS (which is based on your ship from country).
+* Addition - Conversion rate now available for FedEx to allow display of a different currency than that returned from FedEx (which is based on your ship from country).
+* Addition - Currency conversion widget now available. This will allow store's to display pricing in multiple currencies.
+* Addition - Now implemented with WPML or our own language translation tool. Use our widget to allow a customer to switch the entire store between languages or use WPML paired with our plugin to swap everything on the site.
+* Addition - Shipping rates by quantity. Similar to price and weight based shipping, instead, charge someone based on the quantity of items they purchase.
+* Addition - DHL live shipping now available for Full Version users.
 = 2.0.22 =
 * Fix - Removed the creation of the unused 'latest-design' folder.
 * Fix - No longer backing up the content in the 'wp-easycart' folder if the 'wp-easycart-data' folder exists. This will help many users who do not need this feature update and install.

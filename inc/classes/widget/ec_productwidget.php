@@ -52,6 +52,9 @@ class ec_productwidget extends WP_Widget{
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$model_number = apply_filters( 'widget_model_number', $instance['model_number'] );
+		
+		// Translate if Needed
+		$title = $GLOBALS['language']->convert_text( $title );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )

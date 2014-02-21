@@ -73,6 +73,13 @@ class ec_setting{
 			return "";
 	}
 	
+	public function get_ups_conversion_rate( ){
+		if( isset( $this->setting_row->ups_conversion_rate ) )
+			return $this->setting_row->ups_conversion_rate;
+		else
+			return "";
+	}
+	
 	public function get_usps_user_name( ){
 		if( isset( $this->setting_row->usps_user_name ) )
 			return $this->setting_row->usps_user_name;
@@ -132,6 +139,20 @@ class ec_setting{
 	public function get_fedex_country_code( ){
 		if( isset( $this->setting_row->fedex_country_code ) )
 			return $this->setting_row->fedex_country_code;
+		else
+			return "";
+	}
+
+	public function get_fedex_conversion_rate( ){
+		if( isset( $this->setting_row->fedex_conversion_rate ) )
+			return $this->setting_row->fedex_conversion_rate;
+		else
+			return "";
+	}
+
+	public function get_fedex_test_account( ){
+		if( isset( $this->setting_row->fedex_test_account ) )
+			return $this->setting_row->fedex_test_account;
 		else
 			return "";
 	}

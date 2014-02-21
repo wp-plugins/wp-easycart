@@ -31,6 +31,9 @@ class ec_groupwidget extends WP_Widget{
 	
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
+		
+		// Translate if Needed
+		$title = $GLOBALS['language']->convert_text( $title );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )
@@ -47,6 +50,9 @@ class ec_groupwidget extends WP_Widget{
 		else														$permalink_divider = "?";
 		
 		$groups = $mysqli->get_groups( );
+		for( $i=0; $i<count( $groups ); $i++ ){
+			$groups[$i]->category_name = $GLOBALS['language']->convert_text( $groups[$i]->category_name );
+		}
 		
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_group_widget.php' ) )	
 			include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_group_widget.php");

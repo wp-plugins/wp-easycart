@@ -40,6 +40,12 @@ if (is_ssl()) {
 
 ?>
 
+<script type="text/javascript">
+jQuery( document ).bind( 'keydown', function( e ){
+	e.stopImmediatePropagation();
+}
+);
+</script>
 
 <?php if( function_exists( "wp_easycart_load_admin" ) ){ ?>  
 <table align="left" width="95%" border="0" cellspacing="0" cellpadding="0">

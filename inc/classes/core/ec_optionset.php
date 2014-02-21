@@ -12,8 +12,8 @@ class ec_optionset{
 		
 		if( count( $option_data ) >= 3 ){
 			$this->option_id = $option_data[0];
-			$this->option_name = $option_data[1];
-			$this->option_label = $option_data[2];
+			$this->option_name = $GLOBALS['language']->convert_text( $option_data[1] );
+			$this->option_label = $GLOBALS['language']->convert_text( $option_data[2] );
 		
 			for($i=0; $i<count($option_data[3]); $i++){
 				array_push( $this->optionset, new ec_optionitem( $this->option_id, $option_data[3][$i] ) );

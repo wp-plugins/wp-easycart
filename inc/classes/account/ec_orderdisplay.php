@@ -87,8 +87,8 @@ class ec_orderdisplay{
 		$this->promo_code = $order_row->promo_code; 
 		$this->giftcard_id = $order_row->giftcard_id; 
 		
-		$this->use_expedited_shipping = $order_row->use_expedited_shipping; 
-		$this->shipping_method = $order_row->shipping_method; 
+		$this->use_expedited_shipping = $order_row->use_expedited_shipping;
+		$this->shipping_method = $GLOBALS['language']->convert_text( $order_row->shipping_method );
 		$this->shipping_carrier = $order_row->shipping_carrier; 
 		$this->tracking_number = $order_row->tracking_number; 
 		

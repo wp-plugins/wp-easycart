@@ -41,6 +41,10 @@ class ec_searchwidget extends WP_Widget{
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$label = apply_filters( 'widget_label', $instance['label'] );
+		
+		// Translate if needed
+		$title = $GLOBALS['language']->convert_text( $title );
+		$label = $GLOBALS['language']->convert_text( $label );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )

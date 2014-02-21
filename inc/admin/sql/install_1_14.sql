@@ -162,7 +162,7 @@ COMMENT=''
 CREATE TABLE IF NOT EXISTS `ec_menulevel1` (
   `menulevel1_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT
    'The unique identifier for ec_menulevel1.',
-  `name` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+  `name` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
    'A unique menu level 1 name.',
   `order` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
    'User defined order of the ec_menulevel1 items.',
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `ec_menulevel2` (
    'The unique identifier for ec_menulevel2.',
   `menulevel1_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
    'Relates the ec_menulevel2 table to the ec_menulevel1 table.',
-  `name` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+  `name` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
    'Name of this ec_menulevel2 item.',
   `order` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
    'User defined order of the ec_menulevel2 items.',
@@ -206,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `ec_menulevel3` (
    'The unique identifier for ec_menulevel3.',
   `menulevel2_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
    'Relates ec_menulevel3 to ec_menulevel2.',
-  `name` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+  `name` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
    'Name of this menu item.',
   `order` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
    'User defined order of the ec_menulevel3 items.',
@@ -711,6 +711,8 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
    'If selected, this product will be displayed in the specials widget.',
   `is_taxable` TINYINT(1) NOT NULL DEFAULT 1 COMMENT
    'Turn tax on/off for this product.',
+   `is_subscription_item` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 
+   'Makes this product a subscription product which is purchased individually.',
   `added_to_db_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT
    'Gives the product a date that it was added to the DB.',
   `show_on_startup` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
@@ -734,6 +736,10 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
   'Quickbooks Specific List ID.',
   `edit_sequence` VARCHAR(55) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 
   'Quickbooks Specific Edit Sequence.',
+  `subscription_bill_length` INTEGER(11) NOT NULL DEFAULT '1' COMMENT 
+  'Number of the period times to charge the customer, e.g. 3 paired with month is charge once every 3 months.',
+  `subscription_bill_period` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'M' COMMENT 
+  'The period of the subscription, valid values are: D, W, M, Y.',
   PRIMARY KEY (`product_id`),
   UNIQUE KEY `ProductID` (`product_id`),
   UNIQUE KEY `ModelNumber_2` (`model_number`),
@@ -967,6 +973,8 @@ CREATE TABLE IF NOT EXISTS `ec_setting` (
    COMMENT 'Your country code for UPS based shipping.',
   `ups_weight_type` VARCHAR(19) COLLATE utf8_general_ci NOT NULL DEFAULT 'LBS'
    COMMENT 'Your preferred weight label for UPS based shipping (lbs, kgs).',
+  `ups_conversion_rate` FLOAT(9,3) NOT NULL DEFAULT '1.000' 
+   COMMENT 'Converts the returned pricing.',
   `usps_user_name` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT ''
    COMMENT 'Your USPS user name for USPS shipping.',
   `usps_ship_from_zip` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT ''
@@ -985,6 +993,10 @@ CREATE TABLE IF NOT EXISTS `ec_setting` (
    'LB' COMMENT 'The weight unit for FedEx shipping (LB or KG).',
   `fedex_country_code` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT
    'US' COMMENT 'The country code for FedEx shipping.',
+  `fedex_conversion_rate` FLOAT(9,3) NOT NULL DEFAULT 
+   '1.000' COMMENT 'Converts the returned pricing.',
+  `fedex_test_account` TINYINT(1) NOT NULL DEFAULT 
+   '0' COMMENT 'If true, FedEx account is a test account.',
   `auspost_api_key` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT 
    '' COMMENT 'Your Australian Post API Key',
   `auspost_ship_from_zip` VARCHAR(55) COLLATE utf8_general_ci NOT NULL DEFAULT 
@@ -1018,6 +1030,8 @@ CREATE TABLE IF NOT EXISTS `ec_shippingrate` (
    'If selected, this rate is for a weight based trigger rate shipping.',
   `is_method_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
    'If selected, this rate is for method based shipping.',
+  `is_quantity_based` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 
+   'If selected, this rate is for quantity based shipping.',
   `is_ups_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
    'If selected, the live rate system for UPS.',
   `is_usps_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
@@ -1087,6 +1101,52 @@ AUTO_INCREMENT=281 AVG_ROW_LENGTH=40 CHARACTER SET 'utf8' COLLATE
  'utf8_general_ci'
 COMMENT=''
 ;
+CREATE TABLE IF NOT EXISTS `ec_subscription` (
+  `subscription_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT
+   'Unique ID for this table',
+  `subscription_type` VARCHAR(125) COLLATE utf8_general_ci NOT NULL DEFAULT 'paypal' COMMENT
+   'Type of subscription, e.g. paypal',
+  `subscription_status` VARCHAR(125) COLLATE utf8_general_ci NOT NULL DEFAULT 'Active' COMMENT
+   'Status of the subscription, Active or Canceled for example.',
+  `title` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Title of the product purchased.',
+  `model_number` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Model number of the product purchased.',
+  `price` double(21,3) NOT NULL DEFAULT '0.000' COMMENT
+   'Price of the product per period',
+  `payment_length` int(11) NOT NULL DEFAULT '1' COMMENT
+   'Length of time between payments, e.g. 3 months, represented by 3 in this field.',
+  `payment_period` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Period of the payment, day, week, month of year, represented as D, W, M, or Y in this field.',
+  `start_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT
+   'Date that this payment was submitted to start the subscription.',
+  `last_payment_date` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'The last date that this subscription was paid for.',
+  `next_payment_date` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'The next payment due date.',
+  `email` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Email entered by the user while purchasing the subscription',
+  `first_name` VARCHAR(155) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'First name of the customer.',
+  `last_name` VARCHAR(155) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Last name of the customer.',
+  `user_country` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'US' COMMENT
+   'Customer country of residence',
+  `number_payments_completed` int(11) NOT NULL DEFAULT '1' COMMENT
+   'The number of times this subscription has been paid for.',
+  `paypal_txn_id` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Initial transaction ID from PayPal',
+  `paypal_txn_type` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Initial transaction type from PayPal',
+  `paypal_subscr_id` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Initial subscription ID from PayPal used to track the subscription when updated or canceled.',
+  `paypal_username` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Username assigned to this subscription by PayPal.',
+  `paypal_password` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+   'Password assigned to this subscription by PayPal.',
+  PRIMARY KEY (`subscription_id`)
+) ENGINE=MyISAM 
+AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci';
 CREATE TABLE IF NOT EXISTS `ec_taxrate` (
   `taxrate_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT
    'The unique identifier for ec_taxrate.',

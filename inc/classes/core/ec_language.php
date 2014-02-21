@@ -3,23 +3,61 @@
 class ec_language{
 	
 	private $selected_language;										// VARCHAR
+	public $language_code;											// VARCHAR(2)
 	
 	public $language_data;											// OBJECT
 	public $languages;												// ARRAY of VARCHAR
 	
 	function __construct( ){
+		
 		$this->selected_language = get_option( 'ec_option_language' );
+		
+		// WPML Integration or EC Widget Integration
+		if( defined( 'ICL_LANGUAGE_CODE' ) ){
+			$this->language_code = strtoupper( ICL_LANGUAGE_CODE );
+		}else if( isset( $_SESSION['ec_translate_to'] ) ){
+			$this->language_code = strtoupper( $_SESSION['ec_translate_to'] );
+		}else{
+			$this->language_code = "NEEDTOSET";
+		}
+		
+		// Decode the language packs
 		$this->language_data = $this->get_decoded_language_data( );
 		if( !$this->language_data ){ // Language data is new, lets set it up from the text files
 			$this->language_data = $this->get_new_language_data( );
 			$this->save_language_data( );
 		}
 		$this->languages = $this->get_languages( );
+		
+		// If no language has been defined, figure out the code from the txt files
+		if( $this->language_code == "NEEDTOSET" ){
+			if( isset( $this->language_data ) && isset( $this->language_data->{$this->selected_language} ) && isset( $this->language_data->{$this->selected_language}->options ) && isset( $this->language_data->{$this->selected_language}->options->language_code->options->code ) && isset( $this->language_data->{$this->selected_language}->options->language_code->options->code->value ) ){
+				$this->language_code = $this->language_data->{$this->selected_language}->options->language_code->options->code->value;
+			}else{
+				$this->language_code = "NONE";
+			}
+		}else{ // Session or WPML defined, update the selected language to match
+			$this->set_selected_language( );
+		}
 	}
 	
 	/************************************************************
 	/* INITIALIZATION FUNCTIONS
 	/************************************************************/
+	
+	// Set selected language if the session is set or WPML language is defined
+	private function set_selected_language( ){
+		if( isset( $this->language_data ) ){
+			$languages = $this->get_languages( );
+			for( $i=0; $i<count( $languages ); $i++ ){
+				$item_language_code = $this->language_data->{$languages[$i]}->options->language_code->options->code->value;
+				if( strtoupper( $this->language_code ) == strtoupper( $item_language_code ) ){
+					$this->selected_language = $languages[$i];
+					break;
+				}
+			}
+		}
+	}
 	
 	// Get an array of languages from the language_data
 	// Returns: array of text
@@ -85,6 +123,26 @@ class ec_language{
 			return str_replace( "[terms]", "<a href=\"" . get_option( 'ec_option_terms_link' ) . "\" target=\"_blank\">", str_replace( "[/terms]", "</a>", str_replace( "[privacy]", "<a href=\"" . get_option( 'ec_option_privacy_link' ) . "\" target=\"_blank\">", str_replace( "[/privacy]", "</a>", $this->language_data->{$this->selected_language}->options->{$lang_section}->options->{$lang_var}->value ) ) ) );
 	}
 	
+	public function convert_text( $text ){
+		if( $this->language_code != "NONE" && preg_match_all( '/[\[][a-zA-Z][a-zA-Z][\]]|[\[][\/][a-zA-Z][a-zA-Z][\]]/', $text, $matches ) > 0 ){
+			$text_arr = preg_split( '/[\[][\/]|[\[]|[\]]/', $text );
+			$texts = array( );
+			
+			for( $i=1; $i<count( $text_arr ); $i++ ){
+				$key = $text_arr[$i];
+				$val = $text_arr[($i+1)];
+				$texts[$key] = $val;
+				$i = $i + 3;
+			}
+			
+			if( isset( $texts[ $this->language_code ] ) ){
+				return $texts[ $this->language_code ];
+			}
+		}
+			
+		return $text;
+	
+	}
 	
 	/************************************************************
 	/* ADMIN FUNCTIONS
@@ -126,7 +184,6 @@ class ec_language{
 		
 		foreach( $new_keys as $new_key ){
 			if( !in_array( $new_key, $current_keys ) ){
-				echo "not in there";
 				$this->language_data->{$file_name}->options->{$new_key} = $new_language_object->options->{$new_key};
 			}else{
 				$new_sub_array = get_object_vars( $new_language_object->options->{$new_key}->options );

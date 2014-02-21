@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.0.22
+ * Version: 2.1.0
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.0.22
+ * @version 2.1.0
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_0_22' );
-define( 'EC_CURRENT_DB', '1_13' );
+define( 'EC_CURRENT_VERSION', '2_1_0' );
+define( 'EC_CURRENT_DB', '1_14' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -821,8 +821,10 @@ function ec_wp_myplugin_property_title($data){
 function wpeasycart_register_widgets( ) {
 	register_widget( 'ec_categorywidget' );
 	register_widget( 'ec_cartwidget' );
+	register_widget( 'ec_currencywidget' );
 	register_widget( 'ec_donationwidget' );
 	register_widget( 'ec_groupwidget' );
+	register_widget( 'ec_languagewidget' );
 	register_widget( 'ec_manufacturerwidget' );
 	register_widget( 'ec_menuwidget' );
 	register_widget( 'ec_newsletterwidget' );
@@ -1443,7 +1445,7 @@ function ec_ajax_estimate_shipping( ){
 	$order_totals = ec_get_order_totals( );
 	$setting = new ec_setting( );
 	$cart = new ec_cart( session_id() );
-	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
+	$shipping = new ec_shipping( $cart->subtotal, $cart->weight, $cart->total_items );
 	
 	$shipping_options = $shipping->get_shipping_options( $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_standard' ),$GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_express' ), "RADIO" );
 	
@@ -1472,7 +1474,7 @@ function ec_ajax_update_shipping_method( ){
 	$order_totals = ec_get_order_totals( );
 	$setting = new ec_setting( );
 	$cart = new ec_cart( session_id() );
-	$shipping = new ec_shipping( $cart->subtotal, $cart->weight );
+	$shipping = new ec_shipping( $cart->subtotal, $cart->weight, $cart->total_items );
 	
 	$shipping_options = $shipping->get_shipping_options( "", "" );
 	
@@ -1521,7 +1523,7 @@ function ec_get_order_totals( ){
 	
 	$cart = new ec_cart( session_id() );
 	$user = new ec_user( $user_email );
-	$shipping = new ec_shipping( $cart->shipping_subtotal, $cart->weight );
+	$shipping = new ec_shipping( $cart->shipping_subtotal, $cart->weight, $cart->total_items );
 	$sales_tax_discount = new ec_discount( $cart, $cart->subtotal, 0.00, $coupon_code, "", 0 );
 	$tax = new ec_tax( $cart->subtotal, $cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $user->shipping->state, $user->shipping->country );
 	$grand_total = ( $cart->subtotal + $tax->tax_total + $shipping->get_shipping_price( ) + $tax->duty_total );

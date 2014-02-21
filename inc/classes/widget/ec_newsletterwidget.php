@@ -14,9 +14,9 @@ class ec_newsletterwidget extends WP_Widget{
 		}
 		
 		if( isset( $instance[ 'widget_label' ] ) ) {
-			$label = $instance[ 'widget_label' ];
+			$widget_label = $instance[ 'widget_label' ];
 		}else {
-			$label = __( 'Email', 'text_domain' );
+			$widget_label = __( 'Email', 'text_domain' );
 		}
 		
 		echo "<p><label for=\"" . $this->get_field_name( 'title' ) . "\">" . _e( 'Title:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'title' ) . "\" name=\"" . $this->get_field_name( 'title' ) . "\" type=\"text\" value=\"" . esc_attr( $title ) . "\" /></p>";
@@ -41,6 +41,10 @@ class ec_newsletterwidget extends WP_Widget{
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$widget_label = apply_filters( 'widget_label', $instance['widget_label'] );
+		
+		// Translate if Needed
+		$title = $GLOBALS['language']->convert_text( $title );
+		$widget_label = $GLOBALS['language']->convert_text( $widget_label );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )

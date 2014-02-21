@@ -8,6 +8,8 @@ class ec_fedex{
 	private $fedex_ship_from_zip;								// Your FedEx ship from zip code
 	private $fedex_weight_units;								// The weight units to use for the FedEx api
 	private $fedex_country_code;								// The country code for the FedEx api
+	private $fedex_conversion_rate;								// A conversion rate option
+	private $fedex_test_account;								// Is this is a FedEx test account
 	
 	private $shipper_url;										// String
 
@@ -19,6 +21,8 @@ class ec_fedex{
 		$this->fedex_ship_from_zip = $ec_setting->get_fedex_ship_from_zip();
 		$this->fedex_weight_units = $ec_setting->get_fedex_weight_units();
 		$this->fedex_country_code = $ec_setting->get_fedex_country_code();	
+		$this->fedex_conversion_rate = $ec_setting->get_fedex_conversion_rate();
+		$this->fedex_test_account = $ec_setting->get_fedex_test_account();
 	}
 		
 	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight ){
@@ -54,7 +58,11 @@ class ec_fedex{
 		
 		if( in_array( $service_type, $service_types ) ){
 			
-			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13.wsdl";
+			if( $this->fedex_test_account ){
+				$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13_test_account.wsdl";
+			}else{
+				$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13.wsdl";
+			}
 	
 			ini_set("soap.wsdl_cache_enabled", "0");
 			 
@@ -104,7 +112,8 @@ class ec_fedex{
 					$serviceType = $rateReply->ServiceType;
 					$amount = number_format( $rateReply->RatedShipmentDetails[0]->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", "," );
 					
-					return $amount;
+					$rate = floatval( $amount );
+					return ( $rate * $this->fedex_conversion_rate );
 				}else{
 			  		error_log( "error in fedex get rate, " . $this->printError($client, $response) );
 					return "ERROR";
@@ -150,7 +159,11 @@ class ec_fedex{
 		
 		if( in_array( $service_type, $service_types ) ){
 			
-			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13.wsdl";
+			if( $this->fedex_test_account ){
+				$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13_test_account.wsdl";
+			}else{
+				$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13.wsdl";
+			}
 	
 			ini_set("soap.wsdl_cache_enabled", "0");
 			 

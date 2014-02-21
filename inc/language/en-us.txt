@@ -182,6 +182,10 @@
 				"product_details_out_of_stock":{
 					"title":"Out of Stock Text",
 					"value":"OUT OF STOCK"
+				},
+				"product_details_sign_up_now":{
+					"title":"Sign Up Now Text",
+					"value":"SIGN UP NOW"
 				}
 			}
 		},
@@ -1462,6 +1466,10 @@
 				"cart_account_free_order":{
 					"title":"Cart, Order Type, Gift Card, Free Order",
 					"value":"Free Order"
+				},
+				"store_added_to_cart":{
+					"title":"Store, Added Item to Cart",
+					"value":"You have successfully added [prod_title] to your cart."
 				}
 			}
 		},
@@ -1475,6 +1483,28 @@
 				"checkout_button_text":{
 					"title":"Minicart Widget, Checkout Button Text",
 					"value":"CHECKOUT"
+				}
+			}
+		},
+		"ec_pricepoint_widget":{
+			"label":"Price Point Widget",
+			"options":{
+				"less_than":{
+					"title":"Less Than Text",
+					"value":"Less Than"
+				},
+				"greater_than":{
+					"title":"Greater Than Text",
+					"value":"Greater Than"
+				}
+			}
+		},
+		"language_code":{
+			"label":"Language Code",
+			"options":{
+				"code":{
+					"title":"Do Not Change",
+					"value":"EN"
 				}
 			}
 		}

@@ -30,13 +30,13 @@ class ec_menu{
 	
 	public function display_menulevel1_name( $level1 ){
 		
-		echo $this->menu_array[$level1][2];	
+		echo $GLOBALS['language']->convert_text( $this->menu_array[$level1][2] );	
 	
 	}
 	
 	public function get_menulevel1_name( $level1 ){
 		
-		return $this->menu_array[$level1][2];	
+		return $GLOBALS['language']->convert_text( $this->menu_array[$level1][2] );	
 	
 	}
 	
@@ -65,13 +65,13 @@ class ec_menu{
 	
 	public function display_menulevel2_name( $level1, $level2 ){
 		
-		echo $this->menu_array[$level1][0][$level2][2];	
+		echo $GLOBALS['language']->convert_text( $this->menu_array[$level1][0][$level2][2] );	
 	
 	}
 	
 	public function get_menulevel2_name( $level1, $level2 ){
 		
-		return $this->menu_array[$level1][0][$level2][2];	
+		return $GLOBALS['language']->convert_text( $this->menu_array[$level1][0][$level2][2] );	
 	
 	}
 	
@@ -100,13 +100,13 @@ class ec_menu{
 	
 	public function display_menulevel3_name( $level1, $level2, $level3 ){
 		
-		echo $this->menu_array[$level1][0][$level2][0][$level3][1];	
+		echo $GLOBALS['language']->convert_text( $this->menu_array[$level1][0][$level2][0][$level3][1] );	
 	
 	}
 	
 	public function get_menulevel3_name( $level1, $level2, $level3 ){
 		
-		return $this->menu_array[$level1][0][$level2][0][$level3][1];	
+		return $GLOBALS['language']->convert_text( $this->menu_array[$level1][0][$level2][0][$level3][1] );	
 	
 	}
 	

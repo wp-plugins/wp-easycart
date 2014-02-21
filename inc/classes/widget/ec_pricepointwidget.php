@@ -31,6 +31,9 @@ class ec_pricepointwidget extends WP_Widget{
 	
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
+		
+		// Translate if Needed
+		$title = $GLOBALS['language']->convert_text( $title );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )

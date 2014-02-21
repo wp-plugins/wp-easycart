@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_13' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_14' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -43,6 +43,8 @@ class ec_wpoptionset{
 		
 		//store basic setup settings
 		array_push($this->wp_option_names, 'ec_option_weight');								array_push($this->wp_option_defaults, 'lbs' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_base_currency');						array_push($this->wp_option_defaults, 'USD' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_currency');							array_push($this->wp_option_defaults, '$' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
@@ -125,6 +127,12 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_use_old_linking_style');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_no_vat_on_shipping');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_display_as_catalog');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_addtocart_return_to_product');		array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_exchange_rates');						array_push($this->wp_option_defaults, 'EUR=.73,GBP=.6,JPY=101.9' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options

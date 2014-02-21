@@ -31,6 +31,9 @@ class ec_manufacturerwidget extends WP_Widget{
 	
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
+		
+		// Translate if Needed
+		$title = $GLOBALS['language']->convert_text( $title );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )
@@ -114,6 +117,9 @@ class ec_manufacturerwidget extends WP_Widget{
 		}
 		
 		$manufacturers = $mysqli->get_manufacturers( $level, $menu_id, $man_id, $group_id );
+		for( $i=0; $i<count( $manufacturers ); $i++ ){
+			$manufacturers[$i]->name = $GLOBALS['language']->convert_text( $manufacturers[$i]->name );
+		}
 		
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_manufacturer_widget.php' ) )	
 			include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_manufacturer_widget.php");

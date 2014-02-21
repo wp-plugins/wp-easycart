@@ -31,3 +31,7 @@
 	color:[link_hover_color];
 	text-decoration:none !important;
 }
+
+.ec_specialswidget > h3{
+	min-height:40px;
+}

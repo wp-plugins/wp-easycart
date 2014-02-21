@@ -43,6 +43,9 @@ class ec_specialswidget extends WP_Widget{
 		$title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
 		$product_limit = empty($instance['product_limit']) ? ' ' : apply_filters('widget_product_limit', $instance['product_limit']);
 		
+		// Translate if Needed
+		$title = $GLOBALS['language']->convert_text( $title );
+		
 		if ( ! empty( $title ) )
 			echo $before_title . $title . $after_title;
 		

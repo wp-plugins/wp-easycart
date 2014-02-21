@@ -2,7 +2,7 @@
 /*
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
+//All Code and Design is copyrighted by Level Four Development, LLC
 //
 //Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
 //including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
@@ -11,197 +11,138 @@
 //subject to copyright violation laws. If you have any questions regarding proper use of this code, please
 //contact Level Four Development, llc and EasyCart prior to use.
 //
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, LLC's  website.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
 
-
-class ec_admin_manufacturers
-	{		
+class ec_admin_manufacturers{		
 	
-		function ec_admin_manufacturers() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
+	private $db;
+	
+	function ec_admin_manufacturers() {
 		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
-			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);
+		global $wpdb;
+		$this->db = $wpdb; 
 
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);		
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 
+	}//ec_admin_manufacturers
 
-		}	
-			
+	public function _getMethodRoles( $methodName ){
+
+			 if( $methodName == 'getmanufacturers' ) 		return array( 'admin' );
+		else if( $methodName == 'getmanufacturerset' ) 		return array( 'admin' );
+		else if( $methodName == 'deletemanufacturer' ) 		return array( 'admin' );
+		else if( $methodName == 'updatemanufacturer' ) 		return array( 'admin' );
+		else if( $methodName == 'addmanufacturer' ) 		return array( 'admin' );
+		else  												return null;
+
+	}//_getMethodRoles
+	
+	function getmanufacturers( ){
 		
-		//secure all of the services for logged in authenticated users only	
-		public function _getMethodRoles($methodName){
-		   if ($methodName == 'getmanufacturers') return array('admin');
-		   else if($methodName == 'getmanufacturerset') return array('admin');
-		   else if($methodName == 'deletemanufacturer') return array('admin');
-		   else if($methodName == 'updatemanufacturer') return array('admin');
-		   else if($methodName == 'addmanufacturer') return array('admin');
-		   else  return null;
+		$sql = "SELECT ec_manufacturer.* FROM ec_manufacturer ORDER BY ec_manufacturer.name";
+		$results = $this->db->get_results( $sql );
+		
+		if( count( $results ) > 0 ){
+			return $results;
+		}else{
+			return array( "noresults" );
 		}
 		
-		//HELPER - used to escape out SQL calls
-		function escape($sql) 
-		{ 
-			  $args = func_get_args(); 
-				foreach($args as $key => $val) 
-				{ 
-					$args[$key] = mysql_real_escape_string($val); 
-				} 
-				 
-				$args[0] = $sql; 
-				return call_user_func_array('sprintf', $args); 
-		} 
+	}//getmanufacturers
+	
+	function getmanufacturerset( $startrecord, $limit, $orderby, $ordertype, $filter ){
+
+		$sql = "SELECT SQL_CALC_FOUND_ROWS ec_manufacturer.* FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id != '' " . $filter . " ORDER BY " .  $orderby . " " . $ordertype . " LIMIT " . $startrecord . ", " . $limit;
+		$results = $this->db->get_results( $sql );
+		$totalquery = $this->db->get_var( "SELECT FOUND_ROWS()" );
 		
-		
-		//manufacturer functions
-		function getmanufacturers() {
-			  //Create SQL Query
-			  $sql = $this->escape("SELECT ec_manufacturer.* FROM ec_manufacturer ORDER BY ec_manufacturer.name");
-			  // Run query on database
-			  $result = mysql_query($sql);
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($result) > 0) {
-				  while ($row=mysql_fetch_object($result)) {
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+		if( count( $results ) > 0 ){
+			$results[0]->totalrows = $totalquery;
+			return $results;
+		}else{
+			return array( "noresults" );
 		}
 		
-		function getmanufacturerset($startrecord, $limit, $orderby, $ordertype, $filter) {
-			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_manufacturer.* FROM ec_manufacturer  WHERE ec_manufacturer.manufacturer_id != '' ".$filter." ORDER BY ".  $orderby ." ".  $ordertype . " LIMIT ".  $startrecord .", ".  $limit."");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
-			  
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+	}//getmanufacturerset
+	
+	function deletemanufacturer( $manufacturerid ){
+		
+		// Delete WordPress Post
+		$sql = "SELECT ec_manufacturer.post_id FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = %d";
+		$post_id = $this->db->get_var( $this->db->prepare( $sql, $manufacturerid ) );
+		wp_delete_post( $post_id, true );
+		
+		// Delete EC DB Items
+		$sql = "DELETE FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = %d";
+		$this->db->query( $this->db->prepare( $sql, $manufacturerid ) );
+		
+		if( !mysql_error( ) ){
+			return array( "success" );
+		}else{
+			return array( "error" );
 		}
-		function deletemanufacturer($manufacturerid) {
-			
-			  // Remove the post from WordPress
-			  $sql_get_post_id = $this->escape( "SELECT post_id FROM ec_manufacturer WHERE manufacturer_id = %d", $manufacturerid );
-			  $result = mysql_query( $sql_get_post_id );
-			  $manufacturer = mysql_fetch_array( $result );
-			  wp_delete_post( $manufacturer['post_id'], true );
-			
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = '%s'", $manufacturerid);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+		
+	}//deletemanufacturer
+	
+	function updatemanufacturer( $manufacturerid, $manufacturer ){
+		  
+		$manufacturer = (array)$manufacturer;
+		
+		// Update WordPress Post
+		$sql = "SELECT ec_manufacturer.post_id FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = %d";
+		$post_id = $this->db->get_var( $this->db->prepare( $sql, $manufacturerid ) );
+		$post = array(	'ID'			=> $post_id,
+						'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturerid . "\"]",
+						'post_status'	=> "publish",
+						'post_title'	=> $GLOBALS['language']->convert_text( $manufacturer['manufacturername'] ),
+						'post_type'		=> "ec_store",
+						'post_name'		=> str_replace(' ', '-', $GLOBALS['language']->convert_text( $manufacturer['manufacturername'] ) ),
+		);
+		wp_update_post( $post );
+		
+		// Update EC DB Item
+		$sql = "UPDATE ec_manufacturer SET ec_manufacturer.name = %s, ec_manufacturer.clicks = %s WHERE ec_manufacturer.manufacturer_id = %d";
+		$this->db->query( $this->db->prepare( $sql, $manufacturer['manufacturername'], $manufacturer['clicks'], $manufacturerid ) );
+		
+		if( !mysql_error( ) ){
+			return array( "success" );
+		}else{
+			return array( "error" );
 		}
-		function updatemanufacturer($manufacturerid, $manufacturer) {
-			  //convert object to array
-			  $manufacturer = (array)$manufacturer;
-			  
-			  // Update WordPress to match
-			  // Remove the post from WordPress
-			  $sql_get_post_id = $this->escape( "SELECT post_id FROM ec_manufacturer WHERE manufacturer_id = %d", $manufacturerid );
-			  $result = mysql_query( $sql_get_post_id );
-			  $manufacturer_post = mysql_fetch_array( $result );
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_manufacturer(ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks)
-				values('".$manufacturerid."', '%s', '%s')",
-				mysql_real_escape_string($manufacturer['manufacturername']),
-				mysql_real_escape_string($manufacturer['clicks']));
-			//Run query on database;
-			mysql_query($sql);
-			
-			
+		
+	}//updatemanufacturer
+	
+	function addmanufacturer( $manufacturer ){
+		
+		$manufacturer = (array)$manufacturer;
+		
+		// Insert EC DB Item
+		$sql = "INSERT INTO ec_manufacturer( ec_manufacturer.name, ec_manufacturer.clicks ) VALUES( '%s', '%s' )";
+		$this->db->query( $this->db->prepare( $sql, $manufacturer['manufacturername'], $manufacturer['clicks'] ) );
+		
+		if( !mysql_error( ) ){
+			$manufacturerid = $this->db->insert_id;
+		
 			// Insert a WordPress Custom post type post.
-			$post = array(	'ID'			=> $manufacturer_post['post_id'],
-							'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturerid . "\"]",
+			$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturerid . "\"]",
 							'post_status'	=> "publish",
-							'post_title'	=> $manufacturer['manufacturername'],
-							'post_type'		=> "ec_store",
-							'post_name'		=> str_replace(' ', '-', $manufacturer['manufacturername'] ),
-						  );
-			$post_id = wp_update_post( $post );
+							'post_title'	=> $GLOBALS['language']->convert_text( $manufacturer['manufacturername'] ),
+							'post_type'		=> "ec_store"
+			);
+			$post_id = wp_insert_post( $post );
 			
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
-			}
-		}
-		function addmanufacturer($manufacturer) {
-			//convert object to array
-			  $manufacturer = (array)$manufacturer;
-			  
-			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_manufacturer(ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks)
-				values(Null, '%s', '%s')",
-				mysql_real_escape_string($manufacturer['manufacturername']),
-				mysql_real_escape_string($manufacturer['clicks']));
-			  mysql_query($sql);
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  
-				  $manufacturerid = mysql_insert_id( );
-				  // Insert a WordPress Custom post type post.
-				  $post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturerid . "\"]",
-								  'post_status'	=> "publish",
-								  'post_title'	=> $manufacturer['manufacturername'],
-								  'post_type'		=> "ec_store"
-								);
-				  $post_id = wp_insert_post( $post, $wp_error );
-				  $db = new ec_db( );
-				  $db->update_manufacturer_post_id( $manufacturerid, $post_id );
-				
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			// Update post_id for EC DB Item
+			$db = new ec_db( );
+			$db->update_manufacturer_post_id( $manufacturerid, $post_id );
+		
+			return array( "success" );
+		
+		}else{
+			return array( "error" );
 		}
 		
+	}//addmanufacturer
 
-
-
-	}//close class
+}//ec_admin_manufacturers
 ?>

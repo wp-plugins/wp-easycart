@@ -39,7 +39,7 @@ class ec_cartwidget extends WP_Widget{
 		
 		echo "<p><label for=\"" . $this->get_field_name( 'title' ) . "\">" . _e( 'Title:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'title' ) . "\" name=\"" . $this->get_field_name( 'title' ) . "\" type=\"text\" value=\"" . esc_attr( $title ) . "\" /></p>";
 		
-		echo "<p><label for=\"" . $this->get_field_name( 'link_text' ) . "\">" . _e( 'Title:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'link_text' ) . "\" name=\"" . $this->get_field_name( 'link_text' ) . "\" type=\"text\" value=\"" . esc_attr( $link_text ) . "\" /></p>";
+		echo "<p><label for=\"" . $this->get_field_name( 'link_text' ) . "\">" . _e( 'Link Text:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'link_text' ) . "\" name=\"" . $this->get_field_name( 'link_text' ) . "\" type=\"text\" value=\"" . esc_attr( $link_text ) . "\" /></p>";
 		
 		echo "<p><label for=\"" . $this->get_field_name( 'use_popup_minicart' ) . "\">" . _e( 'Minicart Popup:' ) . "</label><select class=\"widefat\" id=\"" . $this->get_field_id( 'use_popup_minicart' ) . "\" name=\"" . $this->get_field_name( 'use_popup_minicart' ) . "\"><option value=\"1\"";
 		if( $use_popup_minicart == 1 )
@@ -89,6 +89,10 @@ class ec_cartwidget extends WP_Widget{
 		$use_popup_minicart = apply_filters( 'widget_use_popup_minicart', $instance['use_popup_minicart'] );
 		$open_on_click = apply_filters( 'widget_open_on_click', $instance['open_on_click'] );
 		$open_on_mouseover = apply_filters( 'widget_open_on_mouseover', $instance['open_on_mouseover'] );
+		
+		// Translate if Needed
+		$title = $GLOBALS['language']->convert_text( $title );
+		$link_text = $GLOBALS['language']->convert_text( $link_text );
 	
 		echo $before_widget;
 		if ( ! empty( $title ) )

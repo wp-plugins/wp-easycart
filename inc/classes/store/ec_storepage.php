@@ -106,7 +106,31 @@ class ec_storepage{
 	////////////////////////////////////////////////////////
 	// STORE PAGE MAIN DISPLAY FUNCTIONS
 	////////////////////////////////////////////////////////
+	public function display_store_success(){
+		$model_number = "";
+		$title = "";
+		if( isset( $_GET['model'] ) ){
+			$model_number = $_GET['model'];
+			$db = new ec_db( );
+			global $wpdb;
+			$products = $db->get_product_list( $wpdb->prepare( "WHERE product.model_number = %s", $model_number ), "", "", "" );
+			if( count( $products ) > 0 ){
+				$title = $products[0]['title'];
+			}
+		}
+		
+		$success_notes = array(	"addtocart" => $GLOBALS['language']->get_text( "ec_success", "store_added_to_cart" ) );
+		
+		if( isset( $_GET['ec_store_success'] ) ){
+			echo "<div class=\"ec_cart_success\"><div>" . str_replace( "[prod_title]", $GLOBALS['language']->convert_text( $title ), $success_notes[ $_GET['ec_store_success'] ] ) . " ";
+			$cartpage = new ec_cartpage( );
+			$cartpage->display_checkout_button( $GLOBALS['language']->get_text( 'cart', 'cart_checkout' ) );
+			echo "</div></div>";
+		}
+	}
+	
 	public function display_store_page( ){
+		if( isset( $_GET['ec_store_success'] ) )			$this->display_store_success( );
 		if(	!$this->is_details )							$this->display_products_page( );
 		else												$this->display_product_details_page( );
 	}

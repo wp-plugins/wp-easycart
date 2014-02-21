@@ -8,6 +8,7 @@ class ec_ups{
 	private $ups_shipper_number; 								// Your UPS shipper number
 	private $ups_country_code;									// Your UPS country code
 	private $ups_weight_type;									// Your UPS weight type
+	private $ups_conversion_rate;								// A Conversion Rate
 	
 	private $shipper_url;										// String
 	
@@ -19,6 +20,7 @@ class ec_ups{
 		$this->ups_shipper_number = $ec_setting->get_ups_shipper_number( );
 		$this->ups_country_code = $ec_setting->get_ups_country_code( );
 		$this->ups_weight_type = $ec_setting->get_ups_weight_type( );
+		$this->ups_conversion_rate = $ec_setting->get_ups_conversion_rate( );
 		
 		$this->shipper_url = "https://www.ups.com/ups.app/xml/Rate";
 	}
@@ -128,9 +130,10 @@ class ec_ups{
 		else
 			$rate = "ERROR";
 			
-		if( $rate )
-			return $rate;
-		else{
+		if( isset( $rate ) ){
+			$rate = floatval( $rate );
+			return ( $rate * $this->ups_conversion_rate );
+		}else{
 			error_log( "error in ups get rate, response: " . $result );
 			return "ERROR";	
 		}

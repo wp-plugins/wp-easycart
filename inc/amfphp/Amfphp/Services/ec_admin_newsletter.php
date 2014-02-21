@@ -2,7 +2,7 @@
 /*
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
+//All Code and Design is copyrighted by Level Four Development, LLC
 //
 //Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
 //including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
@@ -11,155 +11,116 @@
 //subject to copyright violation laws. If you have any questions regarding proper use of this code, please
 //contact Level Four Development, llc and EasyCart prior to use.
 //
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
+//All use of this storefront is subject to our terms of agreement found on Level Four Development, LLC's  website.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
 
-
-class ec_admin_newsletter
-	{		
+class ec_admin_newsletter{
 	
-		function ec_admin_newsletter() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
+	private $db;	
+	
+	function ec_admin_newsletter( ){
 		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
-			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);
+		global $wpdb;
+		$this->db = $wpdb;
 
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);		
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 
-
-		}	
+	}//ec_admin_newsletter	
+	
+	public function _getMethodRoles( $methodName ){
 		
+		if( $methodName == 'mailnewsletter' )	return array( 'admin' );
+		else  									return null;
+	
+	}//_getMethodRoles
+	
+	function mailnewsletter( $sendtype, $fromemail, $subject, $themessage, $smtphost, $smptport, $smtpusername, $smtppassword ){
 		
-		//secure all of the services for logged in authenticated users only	
-		public function _getMethodRoles($methodName){
-		   if ($methodName == 'mailnewsletter') return array('admin');
-		   else  return null;
-		}
+		$subscribers = $this->db->get_results( "SELECT ec_subscriber.* FROM ec_subscriber" );
+		$sentnum = 0;
+		$mailresult = "error";
+		$error = "";
+		
+		foreach( $subscribers as $subscriber ){
 			
-		
-		//HELPER - used to escape out SQL calls
-		function escape($sql) 
-		{ 
-			  $args = func_get_args(); 
-				foreach($args as $key => $val) 
-				{ 
-					$args[$key] = mysql_real_escape_string($val); 
-				} 
-				 
-				$args[0] = $sql; 
-				return call_user_func_array('sprintf', $args); 
-		} 
-		
-
-
-		//mail functions functions
-		function mailnewsletter($sendtype, $fromemail, $subject, $themessage, $smtphost, $smptport, $smtpusername, $smtppassword) {
-			//Create SQL Query
-			$subquery = mysql_query("SELECT ec_subscriber.* FROM ec_subscriber");
-			$sentnum = 0;
-			$mailresult = "error";
-			$error = "";
-			while($subscribers = mysql_fetch_array($subquery)){
-				
-				//build the message here
-				$text = "This message is in HTML and requires an html viewer, please switch to that view.";
-				$phpmailmessage = "--==MIME_BOUNDRY_alt_main_message\n";
-				$phpmailmessage .= "Content-Type: text/plain; charset=ISO-8859-1\n";
-				$phpmailmessage .= "Content-Transfer-Encoding: 7bit\n\n";
-				$phpmailmessage .= $text . "\n\n";
-				$phpmailmessage .= "--==MIME_BOUNDRY_alt_main_message\n";
-				$phpmailmessage .= "Content-Type: text/html; charset=ISO-8859-1\n";
-				$phpmailmessage .= "Content-Transfer-Encoding: 7bit\n\n";
-				//add the main message the user types in
-				$phpmailmessage .= $themessage;
-				$phpmailunsubscribelink = "http://" . $_SERVER['HTTP_HOST'] . "/wp-easycart/inc/amfphp/administration/unsubscribe.php?email=$subscribers[email]";
-				//now add the unsubscribe portion
-				$unsubscribemessage = "<br><br><br><br><center style='font-family: Arial, Helvetica, sans-serif; font-size: 9px;'>----------------------------------------------------------------------<br>Please click on the link below and you will be removed from this list.<br><a href='".$phpmailunsubscribelink."' style='color: #000; font-weight: bold; font-size: 10px;'>UNSUBSCRIBE</a><br>----------------------------------------------------------------------</center>";
-				
-				$message = $phpmailmessage . $unsubscribemessage;
-				
-				if ($sendtype == 'phpmail') {
-					//headers
-					$headers = "From: $fromemail\r\n";
-					$headers .= "Reply-To: $fromemail\r\n";
-					$headers .= "X-Mailer: PHP4\n";
-					$headers .= "X-Priority: 3\n";
-					$headers .= "MIME-Version: 1.0\n";
-					$headers .= "Return-Path: $fromemail\r\n"; 
-					$headers .= "Content-Type: multipart/alternative; boundary=\"==MIME_BOUNDRY_alt_main_message\"\n\n";
-					//mail individual newsletter
-					$mailresult = mail($subscribers[email], $subject, $message, $headers);
-					if ($mailresult === true) {
-						//do nothing
-					}
-					else {
-						$error =  "There was a problem sending your newsletter.  PHP Mail may not be allowed from your server, so please check with your host.";
-					}
-					//send mail using php mail
-				} else if ($sendtype == 'smtpmail') {
-					
-					//headers
-					$headers["From"] = $fromemail;
-					$headers["To"] = $subscribers[email];
-					$headers["Subject"] = $subject;
-					//mime email settings
-					$crlf = "\n"; 
-					$mime = new Mail_mime($crlf); 
-					$mime->setTXTBody($text); 
-					$mime->setHTMLBody($themessage . $unsubscribemessage); 
-
-					$mimemessage = $mime->get(); 
-					$headers = $mime->headers($headers); 
-
-					//smtp information
-					$smtpinfo["host"] = $smtphost;
-					$smtpinfo["port"] = $smtpport;
-					$smtpinfo["auth"] = true;
-					$smtpinfo["username"] = $smtpusername;
-					$smtpinfo["password"] = $smtppassword;
-					//create mail object
-					$mail_object =& Mail::factory("smtp", $smtpinfo);
-					//mail individual newsletter
-				
-					$mailresult = $mail_object->send($subscribers[email], $headers, $mimemessage);	
-					if ($mailresult === true) {
-						//do nothing
-					}
-					else {
-						preg_match('/(\d+)/', $mailresult->getMessage(), $match);
-						$error =  "There was a problem sending your newsletter. \n\nError Code: $match[0]\n" .
-							"Message: {$mailresult->getMessage()}\n";
-					}
-
+			//build the message here
+			$text = "This message is in HTML and requires an html viewer, please switch to that view.";
+			$phpmailmessage = "--==MIME_BOUNDRY_alt_main_message\n";
+			$phpmailmessage .= "Content-Type: text/plain; charset=ISO-8859-1\n";
+			$phpmailmessage .= "Content-Transfer-Encoding: 7bit\n\n";
+			$phpmailmessage .= $text . "\n\n";
+			$phpmailmessage .= "--==MIME_BOUNDRY_alt_main_message\n";
+			$phpmailmessage .= "Content-Type: text/html; charset=ISO-8859-1\n";
+			$phpmailmessage .= "Content-Transfer-Encoding: 7bit\n\n";
+			//add the main message the user types in
+			$phpmailmessage .= $themessage;
+			$phpmailunsubscribelink = "http://" . $_SERVER['HTTP_HOST'] . "/wp-easycart/inc/amfphp/administration/unsubscribe.php?email=" . $subscriber->email;
+			//now add the unsubscribe portion
+			$unsubscribemessage = "<br><br><br><br><center style='font-family: Arial, Helvetica, sans-serif; font-size: 9px;'>----------------------------------------------------------------------<br>Please click on the link below and you will be removed from this list.<br><a href='".$phpmailunsubscribelink."' style='color: #000; font-weight: bold; font-size: 10px;'>UNSUBSCRIBE</a><br>----------------------------------------------------------------------</center>";
+			
+			$message = $phpmailmessage . $unsubscribemessage;
+			
+			if( $sendtype == 'phpmail' ){
+				//headers
+				$headers = "From: $fromemail\r\n";
+				$headers .= "Reply-To: $fromemail\r\n";
+				$headers .= "X-Mailer: PHP4\n";
+				$headers .= "X-Priority: 3\n";
+				$headers .= "MIME-Version: 1.0\n";
+				$headers .= "Return-Path: $fromemail\r\n"; 
+				$headers .= "Content-Type: multipart/alternative; boundary=\"==MIME_BOUNDRY_alt_main_message\"\n\n";
+				//mail individual newsletter
+				$mailresult = mail( $subscriber->email, $subject, $message, $headers );
+				if( $mailresult === true ){
+					//do nothing
+				}else{
+					$error = "There was a problem sending your newsletter. PHP Mail may not be allowed from your server, so please check with your host.";
 				}
-				$sentnum += 1;
+				
+			}else if( $sendtype == 'smtpmail' ){
+				//headers
+				$headers["From"] = $fromemail;
+				$headers["To"] = $subscriber->email;
+				$headers["Subject"] = $subject;
+				//mime email settings
+				$crlf = "\n"; 
+				$mime = new Mail_mime( $crlf ); 
+				$mime->setTXTBody( $text );
+				$mime->setHTMLBody( $themessage . $unsubscribemessage );
+
+				$mimemessage = $mime->get( );
+				$headers = $mime->headers( $headers );
+
+				//smtp information
+				$smtpinfo["host"] = $smtphost;
+				$smtpinfo["port"] = $smtpport;
+				$smtpinfo["auth"] = true;
+				$smtpinfo["username"] = $smtpusername;
+				$smtpinfo["password"] = $smtppassword;
+				//create mail object
+				$mail_object =& Mail::factory("smtp", $smtpinfo);
+				//mail individual newsletter
+				$mailresult = $mail_object->send( $subscriber->email, $headers, $mimemessage );	
+				if( $mailresult === true ){
+					//do nothing
+				}else{
+					preg_match( '/(\d+)/', $mailresult->getMessage( ), $match );
+					$error = "There was a problem sending your newsletter. \n\nError Code: $match[0]\n" .
+						"Message: {$mailresult->getMessage()}\n";
+				}
 			}
-			if ($mailresult == 1 && $error == "") {
-				return "success";
-			} else {
-				if ($error == "") {
-					return "There was a general problem sending your newsletter.  Please try an alternative method for sending your newsletter and/or check with your host for settings and whether they allow email newsletter blasts to be sent from your hosting environment.";
-				} else {
-					return $error;
-				}
+			$sentnum += 1;
+		}
+		if( $mailresult == 1 && $error == "" ){
+			return "success";
+		}else{
+			if( $error == "" ){
+				return "There was a general problem sending your newsletter. Please try an alternative method for sending your newsletter and/or check with your host for settings and whether they allow email newsletter blasts to be sent from your hosting environment.";
+			}else{
+				return $error;
 			}
 		}
+	}//mailnewsletter
 
-
-	}//close class
+}//ec_admin_newsletter
 ?>

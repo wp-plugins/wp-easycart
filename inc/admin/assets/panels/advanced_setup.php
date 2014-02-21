@@ -75,6 +75,18 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
     <span class="ec_setting_row_input"><select name="ec_option_no_vat_on_shipping" style="width:100px;"><option value="0"<?php if( get_option('ec_option_no_vat_on_shipping') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_no_vat_on_shipping') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Display Store as Catalog</em>This option removes the add to cart button and quantity input as well as the quick view. This will allow you to display a catalog of products to your customers.</span></a></span>
+    <span class="ec_setting_row_label">Display Store as Catalog:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_display_as_catalog" style="width:100px;"><option value="0"<?php if( get_option('ec_option_display_as_catalog') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_display_as_catalog') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Store Exchange Rates</em>This option allows you to define exchange rates from your base currency. This is a list in the form of "EUR=.80,GBP=.55,JPY=101.9". Each of these is an example of converting from USD to each of the currencies provided. You can list as many currencies as you would like, but they must match the values entered in the WP EasyCart currency widget. The values must also be valid three digit currency codes.</span></a></span>
+    <span class="ec_setting_row_label">Currency Exchange Rates:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_exchange_rates" style="width:350px;" value="<?php echo get_option('ec_option_exchange_rates'); ?>" /></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title_secondary">Custom CSS</div>

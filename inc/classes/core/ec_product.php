@@ -39,6 +39,10 @@ class ec_product{
 	public $is_taxable;							// Bool
 	public $is_download;						// Bool
 	public $is_donation;						// Bool
+	public $is_subscription_item;				// Bool
+	
+	public $subscription_bill_length;			// INT
+	public $subscription_bill_period;			// VARCHAR(20)
 	
 	public $rating;								// ec_rating structure
 	public $reviews = array();		 			// Array of ec_review structures
@@ -66,8 +70,6 @@ class ec_product{
 	private $store_page;
 	private $permalink_divider;
 	
-	private $currency;							// ec_currency structure
-	
 	private $promotion;							// ec_promotion structure
 	private $promotion_text;					// TEXT
 	
@@ -88,8 +90,6 @@ class ec_product{
 		
 		if( substr_count( $this->store_page, '?' ) )						$this->permalink_divider = "&";
 		else																$this->permalink_divider = "?";
-		
-		$this->currency = new ec_currency( );
 	}
 	
 	private function setup_product( $product_data ){
@@ -98,9 +98,9 @@ class ec_product{
 		$this->model_number = $product_data['model_number'];
 		$this->post_id = $product_data['post_id'];
 		$this->activate_in_store = $product_data['activate_in_store'];
-		$this->title = $product_data['title'];
-		$this->description = $product_data['description'];
-		$this->specifications = $product_data['specifications'];
+		$this->title = $GLOBALS['language']->convert_text( $product_data['title'] );
+		$this->description = $GLOBALS['language']->convert_text( $product_data['description'] );
+		$this->specifications = $GLOBALS['language']->convert_text( $product_data['specifications'] );
 		$this->price = $product_data['price']; 
 		$this->list_price = $product_data['list_price'];
 		$this->vat_rate = $product_data['vat_rate'];
@@ -108,8 +108,8 @@ class ec_product{
 		$this->weight = $product_data['weight'];
 		$this->show_stock_quantity = $product_data['show_stock_quantity'];
 		
-		$this->seo_description = $product_data['seo_description'];
-		$this->seo_keywords = $product_data['seo_keywords'];
+		$this->seo_description = $GLOBALS['language']->convert_text( $product_data['seo_description'] );
+		$this->seo_keywords = $GLOBALS['language']->convert_text( $product_data['seo_keywords'] );
 		
 		$this->use_specifications = $product_data['use_specifications'];
 		$this->use_customer_reviews = $product_data['use_customer_reviews'];
@@ -134,6 +134,10 @@ class ec_product{
 		$this->is_taxable = $product_data['is_taxable'];
 		$this->is_download = $product_data['is_download'];
 		$this->is_donation = $product_data['is_donation'];
+		$this->is_subscription_item = $product_data['is_subscription_item'];
+		
+		$this->subscription_bill_length = $product_data['subscription_bill_length'];
+		$this->subscription_bill_period = $product_data['subscription_bill_period'];
 		
 		$this->rating = new ec_rating( $product_data['review_data'] );
 		
@@ -228,35 +232,69 @@ class ec_product{
 	
 	/* Display the form start */
 	public function display_product_details_form_start( ){
-		echo "<form action=\"" . $this->cart_page . "\" method=\"post\" enctype=\"multipart/form-data\">";
+		// Go to the subscription page for PayPal
+		if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
+			//this is actionscript version in flash
+			if( get_option( 'ec_option_paypal_use_sandbox' ) )			
+				$paypal_request = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+			else
+				$paypal_request = "https://www.paypal.com/cgi-bin/webscr";
+			
+			echo "<form action=\"" . $paypal_request . "\" method=\"post\">";
+			echo "<input type=\"hidden\" name=\"cmd\" value=\"_xclick-subscriptions\">";
+			echo "<input name=\"bn\" id=\"bn\" type=\"hidden\" value=\"LevelFourDevelopmentLLC_Cart\">";
+			echo "<input type=\"hidden\" name=\"business\" value=\"" . get_option( 'ec_option_paypal_email' ) . "\">";
+			echo "<input type=\"hidden\" name=\"currency_code\" value=\"" . get_option( 'ec_option_paypal_currency_code' ) . "\">";
+			echo "<input type=\"hidden\" name=\"no_shipping\" value=\"1\">";
+			
+			echo "<input type=\"hidden\" name=\"item_name\" value=\"" . $this->title . "\">";
+			echo "<input type=\"hidden\" name=\"a3\" value=\"" . number_format( $this->price, 2 ) . "\">";
+			echo "<input type=\"hidden\" name=\"p3\" value=\"" . $this->subscription_bill_length . "\">";
+			echo "<input type=\"hidden\" name=\"t3\" value=\"" . $this->subscription_bill_period . "\">";
+			
+			echo "<input type=\"hidden\" name=\"src\" value=\"1\">";
+			echo "<input type=\"hidden\" name=\"sra\" value=\"1\">";
+			echo "<input type=\"hidden\" name=\"usr_manage\" value=\"1\">";
+			echo "<input type=\"hidden\" name=\"modify\" value=\"0\">";
+			
+			
+		// Go to the cart	
+		}else{
+			echo "<form action=\"" . $this->cart_page . "\" method=\"post\" enctype=\"multipart/form-data\">";
+		}
 	}
 	
 	/* Display the form end */
 	public function display_product_details_form_end( ){
 		global $language_data;
 		
-		echo "<input name=\"is_donation\" id=\"is_donation_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->is_donation . "\" />";
-		echo "<input name=\"product_id\" id=\"product_id\" type=\"hidden\" value=\"" . $this->product_id . "\" />";
-		echo "<input name=\"session_id\" id=\"session_id\" type=\"hidden\" value=\"" . session_id() . "\" />";
-		echo "<input name=\"model_number\" id=\"model_number\" type=\"hidden\" value=\"" . $this->model_number . "\" />";
-		echo "<input name=\"quantity\" id=\"quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->stock_quantity . "\" />";
-		echo "<input name=\"show_stock_quantity\" id=\"show_stock_quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->show_stock_quantity . "\" />";
-		echo "<input name=\"ec_use_advanced_optionset\" id=\"ec_use_advanced_optionset_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->use_advanced_optionset . "\" />";
-		echo "<input name=\"pricetier_quantity\" id=\"pricetier_quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->get_price_tier_quantity_string( ) . "\" />";
-		echo "<input name=\"pricetier_price\" id=\"pricetier_price_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->get_price_tier_price_string( ) . "\" />";
-		echo "<input name=\"use_optionitem_quantity_tracking\" id=\"use_optionitem_quantity_tracking_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->use_optionitem_quantity_tracking . "\" />";
-		echo "<input name=\"use_optionitem_images\" id=\"use_optionitem_images_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->use_optionitem_images . "\" />";
-		echo "<input name=\"initial_swatch_selected\" id=\"initial_swatch_selected_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->first_selection . "\" />";
-		echo "<input type=\"hidden\" name=\"ec_product_details_base_path\" id=\"ec_product_details_base_path_" . $this->model_number . "\" value=\"" . plugins_url( ) . "\" />";
-		echo "<input type=\"hidden\" name=\"ec_product_details_form_action\" id=\"ec_product_details_form_action_" . $this->model_number . "\" value=\"add_to_cart\" />";
-		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) )	
-			echo "<input name=\"ec_jquery_get_stock_quantity_file\" id=\"ec_jquery_get_stock_quantity_file_" . $this->model_number . "\" type=\"hidden\" value=\"" . plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) . "\" />";
-		else
-			echo "<input name=\"ec_jquery_get_stock_quantity_file\" id=\"ec_jquery_get_stock_quantity_file_" . $this->model_number . "\" type=\"hidden\" value=\"" . plugins_url( EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) . "\" />";
-		echo "<input name=\"ec_cart_form_action\" id=\"ec_cart_form_action_" . $this->model_number . "\" value=\"add_to_cart\" type=\"hidden\" />";
-		echo "</form>";
-		echo "<div id=\"ec_product_details_loader_" . $this->model_number . "\" class=\"ec_product_details_loader_div\">LOADING</div>";
-		echo "<div id=\"ec_product_details_temp_cart_holder_" . $this->model_number . "\" class=\"ec_product_details_temp_cart_holder\"><div id=\"ec_product_details_temp_cart\" class=\"ec_product_details_temp_cart\">LOAD CART HERE!</div><div class=\"ec_product_details_temp_cart_button_holder\"><div class=\"ec_product_details_temp_cart_button_1\"><a href=\"#\" onclick=\"ec_continue_shopping_click();\">" . $language_data[11] . "</a></div><div class=\"ec_product_details_temp_cart_button_2\"><a href=\"" . $this->cart_page . "\">" . $language_data[12] . "</a></div></div></div>";
+		if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
+			echo "<script>jQuery( '#ec_product_details_quantity_" . $this->model_number . "' ).hide( ); </script>";
+			echo "</form>";
+		}else{
+			echo "<input name=\"is_donation\" id=\"is_donation_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->is_donation . "\" />";
+			echo "<input name=\"product_id\" id=\"product_id\" type=\"hidden\" value=\"" . $this->product_id . "\" />";
+			echo "<input name=\"session_id\" id=\"session_id\" type=\"hidden\" value=\"" . session_id() . "\" />";
+			echo "<input name=\"model_number\" id=\"model_number\" type=\"hidden\" value=\"" . $this->model_number . "\" />";
+			echo "<input name=\"quantity\" id=\"quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->stock_quantity . "\" />";
+			echo "<input name=\"show_stock_quantity\" id=\"show_stock_quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->show_stock_quantity . "\" />";
+			echo "<input name=\"ec_use_advanced_optionset\" id=\"ec_use_advanced_optionset_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->use_advanced_optionset . "\" />";
+			echo "<input name=\"pricetier_quantity\" id=\"pricetier_quantity_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->get_price_tier_quantity_string( ) . "\" />";
+			echo "<input name=\"pricetier_price\" id=\"pricetier_price_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->get_price_tier_price_string( ) . "\" />";
+			echo "<input name=\"use_optionitem_quantity_tracking\" id=\"use_optionitem_quantity_tracking_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->use_optionitem_quantity_tracking . "\" />";
+			echo "<input name=\"use_optionitem_images\" id=\"use_optionitem_images_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->use_optionitem_images . "\" />";
+			echo "<input name=\"initial_swatch_selected\" id=\"initial_swatch_selected_" . $this->model_number . "\" type=\"hidden\" value=\"" . $this->first_selection . "\" />";
+			echo "<input type=\"hidden\" name=\"ec_product_details_base_path\" id=\"ec_product_details_base_path_" . $this->model_number . "\" value=\"" . plugins_url( ) . "\" />";
+			echo "<input type=\"hidden\" name=\"ec_product_details_form_action\" id=\"ec_product_details_form_action_" . $this->model_number . "\" value=\"add_to_cart\" />";
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) )	
+				echo "<input name=\"ec_jquery_get_stock_quantity_file\" id=\"ec_jquery_get_stock_quantity_file_" . $this->model_number . "\" type=\"hidden\" value=\"" . plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) . "\" />";
+			else
+				echo "<input name=\"ec_jquery_get_stock_quantity_file\" id=\"ec_jquery_get_stock_quantity_file_" . $this->model_number . "\" type=\"hidden\" value=\"" . plugins_url( EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) . "\" />";
+			echo "<input name=\"ec_cart_form_action\" id=\"ec_cart_form_action_" . $this->model_number . "\" value=\"add_to_cart\" type=\"hidden\" />";
+			echo "</form>";
+			echo "<div id=\"ec_product_details_loader_" . $this->model_number . "\" class=\"ec_product_details_loader_div\">LOADING</div>";
+			echo "<div id=\"ec_product_details_temp_cart_holder_" . $this->model_number . "\" class=\"ec_product_details_temp_cart_holder\"><div id=\"ec_product_details_temp_cart\" class=\"ec_product_details_temp_cart\">LOAD CART HERE!</div><div class=\"ec_product_details_temp_cart_button_holder\"><div class=\"ec_product_details_temp_cart_button_1\"><a href=\"#\" onclick=\"ec_continue_shopping_click();\">" . $language_data[11] . "</a></div><div class=\"ec_product_details_temp_cart_button_2\"><a href=\"" . $this->cart_page . "\">" . $language_data[12] . "</a></div></div></div>";
+		}
 	}
 	
 	public function display_product_category_links( $divider, $featured_product_text ){
@@ -371,8 +409,8 @@ class ec_product{
 	
 	/* Display the input price for product */
 	public function display_price_input( ){
-		echo "<input type=\"text\" name=\"ec_product_input_price\" id=\"ec_product_input_price\" value=\"" . $this->currency->get_number_only( $this->price ) . "\" />";
-		echo "<input type=\"hidden\" name=\"ec_product_min_donation_amount\" id=\"ec_product_min_donation_amount\" value=\"" . $this->currency->get_number_only( $this->price ) . "\" />";
+		echo "<input type=\"text\" name=\"ec_product_input_price\" id=\"ec_product_input_price\" value=\"" . $GLOBALS['currency']->get_number_only( $this->price ) . "\" />";
+		echo "<input type=\"hidden\" name=\"ec_product_min_donation_amount\" id=\"ec_product_min_donation_amount\" value=\"" . $GLOBALS['currency']->get_number_only( $this->price ) . "\" />";
 	}
 	
 	/* Display the product price */
@@ -383,36 +421,67 @@ class ec_product{
 		else
 			echo "<span class=\"ec_product_price\">";
 		
-			echo  $this->currency->get_currency_display( $this->price ) . "</span>";
+			echo $GLOBALS['currency']->get_currency_display( $this->price );
+			
+			if( $this->is_subscription_item ){
+				
+				echo "/";
+				
+				if( $this->subscription_bill_length > 1 ){
+					
+					echo $this->subscription_bill_length . " " . $this->get_subscription_period_name( ) . "s";
+					
+				}else{
+					
+					echo $this->get_subscription_period_name( );
+					
+				}
+				
+			}
+			
+			echo "</span>";
+	}
+	
+	public function get_subscription_period_name( ){
+		if( $this->subscription_bill_period == 'D' )
+			return "Dy";
+		else if( $this->subscription_bill_period == 'W' )
+			return "Wk";
+		else if( $this->subscription_bill_period == 'M' )
+			return "Mo";
+		else if( $this->subscription_bill_period == 'Y' )
+			return "Yr";
 	}
 	
 	public function display_list_price( ){
 		if( $this->list_price != "0.00" )
-		echo "<span class=\"ec_product_old_price\">" . $this->currency->get_currency_display( $this->list_price ) . "</span>";
+		echo "<span class=\"ec_product_old_price\">" . $GLOBALS['currency']->get_currency_display( $this->list_price ) . "</span>";
 	}
 	
 	public function display_product_price( ){
 		
-		$p_arr = explode( ".", $this->price );
+		$price = $GLOBALS['currency']->convert_price( $this->price );
+		$p_arr = explode( ".", $price );
 		$p_dollar = $p_arr[0];
-		$p_cent = $this->currency->format_cents( $p_arr[1] );
+		$p_cent = $GLOBALS['currency']->format_cents( $p_arr[1] );
 		
 		if( $this->list_price != "0.000" )
-			echo "<span class=\"ec_product_sale_price\"><span class=\"currency\">" . get_option( 'ec_option_currency' ) . "</span><span class=\"dollar\">" . $p_dollar . "</span><span class=\"cent\">" . $p_cent . "</span></span>";
+			echo "<span class=\"ec_product_sale_price\"><span class=\"currency\">" . $GLOBALS['currency']->get_symbol( ) . "</span><span class=\"dollar\">" . $p_dollar . "</span><span class=\"cent\">" . $p_cent . "</span></span>";
 		
 		else
-			echo "<span class=\"ec_product_price\"><span class=\"currency\">" . get_option( 'ec_option_currency' ) . "</span><span class=\"dollar\">" . $p_dollar . "</span><span class=\"cent\">" . $p_cent . "</span></span>";
+			echo "<span class=\"ec_product_price\"><span class=\"currency\">" . $GLOBALS['currency']->get_symbol( ) . "</span><span class=\"dollar\">" . $p_dollar . "</span><span class=\"cent\">" . $p_cent . "</span></span>";
 	}
 	
 	/* Display the product list price (if available it is the "old price" */
 	public function display_product_list_price( ){
 		
-		$p_arr = explode( ".", $this->list_price );
+		$list_price = $GLOBALS['currency']->convert_price( $this->list_price );
+		$p_arr = explode( ".", $list_price );
 		$p_dollar = $p_arr[0];
-		$p_cent = $this->currency->format_cents( $p_arr[1] );
+		$p_cent = $GLOBALS['currency']->format_cents( $p_arr[1] );
 		
 		if( $this->list_price != "0.000" )
-			echo "<span class=\"ec_product_old_price\"><span class=\"currency\">" . get_option( 'ec_option_currency' ) . "</span><span class=\"dollar\">" . $p_dollar . "</span><span class=\"cent\">." . $p_cent . "</span></span>";
+			echo "<span class=\"ec_product_old_price\"><span class=\"currency\">" . $GLOBALS['currency']->get_symbol( ) . "</span><span class=\"dollar\">" . $p_dollar . "</span><span class=\"cent\">." . $p_cent . "</span></span>";
 		
 	}
 	
@@ -442,13 +511,20 @@ class ec_product{
 	/* Display the add to cart button */
 	public function display_product_add_to_cart_button( $title, $id ){
 		if( $this->stock_quantity > 0 ){
-			echo "<input type=\"submit\" value=\"" . $title . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\" ";
-			if( $this->use_advanced_optionset )
-				echo "onclick=\"return ec_product_details_add_to_cart_advanced( '" . $this->model_number . "' );\" />";
-			else
-				echo "onclick=\"return ec_product_details_add_to_cart( '" . $this->model_number . "' );\" />";
+			// Subscription Button
+			if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
+				echo "<input type=\"submit\" value=\"" . $GLOBALS['language']->get_text( 'product_details', 'product_details_sign_up_now' ) . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\">";
 				
-			echo "<div class=\"ec_error_message_box\" id=\"" . $id . "_" . $this->model_number . "\">error text here</div>";
+			// Add to Cart Button
+			}else{
+				echo "<input type=\"submit\" value=\"" . $title . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\" ";
+				if( $this->use_advanced_optionset )
+					echo "onclick=\"return ec_product_details_add_to_cart_advanced( '" . $this->model_number . "' );\" />";
+				else
+					echo "onclick=\"return ec_product_details_add_to_cart( '" . $this->model_number . "' );\" />";
+					
+				echo "<div class=\"ec_error_message_box\" id=\"" . $id . "_" . $this->model_number . "\">error text here</div>";
+			}
 		}else{
 			echo "<div class=\"ec_product_details_quantity\">" . $GLOBALS['language']->get_text( 'product_details', 'product_details_out_of_stock' ) . "</div>";
 		}
@@ -547,9 +623,9 @@ class ec_product{
 	
 	public function display_advanced_option_combo( $optionset, $i ){
 		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
 		echo "<div class=\"ec_option_combo_row\"><select name=\"ec_option_" . $optionset->option_id. "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" class=\"ec_product_details_option_combo\" onchange=\"ec_product_details_combo_change(" . $optionset->option_id . ", '" . $this->model_number . "');\" data-ec-required=\"" . $optionset->option_required . "\">";
-		echo "<option value=\"0\" data-quantitystring=\"" . $this->stock_quantity . "\">" . $optionset->option_label . "</option>";
+		echo "<option value=\"0\" data-quantitystring=\"" . $this->stock_quantity . "\">" . $GLOBALS['language']->convert_text( $optionset->option_label ) . "</option>";
 		foreach( $optionitems as $optionitem ){
 			$optionitem_price = ""; 
 			if( $optionitem->optionitem_price > 0 ){ 
@@ -564,14 +640,14 @@ class ec_product{
 			  $optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ")"; 
 			}
 			
-			echo "<option data-quantitystring=\"" . $this->stock_quantity . "\" value=\"" . $optionitem->optionitem_id . "\">" . $optionitem->optionitem_name . $optionitem_price . "</option>";
+			echo "<option data-quantitystring=\"" . $this->stock_quantity . "\" value=\"" . $optionitem->optionitem_id . "\">" . $GLOBALS['language']->convert_text( $optionitem->optionitem_name ) . $optionitem_price . "</option>";
 		}
 		echo "</select></div>";
 	}
 	public function display_advanced_option_swatch( $optionset, $i ){
 		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
 		$j=0;
-		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
 		echo "<div class=\"ec_option_swatch_row\">";
 		foreach( $optionitems as $optionitem ){
 				
@@ -599,8 +675,8 @@ class ec_product{
 	}
 	public function display_advanced_option_checkbox( $optionset, $i ){
 		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
-		echo "<div class=\"ec_option_checkbox_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_checkbox_box\">";
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
+		echo "<div class=\"ec_option_checkbox_row\">" . $GLOBALS['language']->convert_text( $optionset->option_label ) . ":</div><div class=\"ec_option_checkbox_box\">";
 		$j=0;
 		foreach( $optionitems as $optionitem ){
 			$optionitem_price = ""; 
@@ -616,27 +692,27 @@ class ec_product{
 			  $optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ")"; 
 			}
 			
-			echo "<div class=\"ec_option_checkbox_row\"><input type=\"checkbox\" name=\"ec_option_" . $optionset->option_id . "_" . $optionitem->optionitem_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j . "\" value=\"" . $optionitem->optionitem_name . "\" data-ec-required=\"" . $optionset->option_required . "\">" . $optionitem->optionitem_name . $optionitem_price . "</div>";
+			echo "<div class=\"ec_option_checkbox_row\"><input type=\"checkbox\" name=\"ec_option_" . $optionset->option_id . "_" . $optionitem->optionitem_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j . "\" value=\"" . $optionitem->optionitem_name . "\" data-ec-required=\"" . $optionset->option_required . "\">" . $GLOBALS['language']->convert_text( $optionitem->optionitem_name ) . $optionitem_price . "</div>";
 			$j++;
 		}
 		echo "</div>";
 	}
 	public function display_advanced_option_text( $optionset, $i ){
-		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
-		echo "<div class=\"ec_option_text_label_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_text_row\"><input class=\"ec_option_text\" type=\"text\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\" /></div>";
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
+		echo "<div class=\"ec_option_text_label_row\">" . $GLOBALS['language']->convert_text( $optionset->option_label ) . ":</div><div class=\"ec_option_text_row\"><input class=\"ec_option_text\" type=\"text\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\" /></div>";
 	}
 	public function display_advanced_option_textarea( $optionset, $i ){
-		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
-		echo "<div class=\"ec_option_textarea_label_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_textarea_row\"><textarea class=\"ec_option_textarea\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\"></textarea></div>";
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
+		echo "<div class=\"ec_option_textarea_label_row\">" . $GLOBALS['language']->convert_text( $optionset->option_label ) . ":</div><div class=\"ec_option_textarea_row\"><textarea class=\"ec_option_textarea\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\"></textarea></div>";
 	}
 	public function display_advanced_option_file( $optionset, $i ){
-		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
-		echo "<div class=\"ec_option_file_label_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_file_row\"><input class=\"ec_option_text\" type=\"file\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\" /></div>";
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
+		echo "<div class=\"ec_option_file_label_row\">" . $GLOBALS['language']->convert_text( $optionset->option_label ) . ":</div><div class=\"ec_option_file_row\"><input class=\"ec_option_text\" type=\"file\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\" /></div>";
 	}
 	public function display_advanced_option_radio( $optionset, $i ){
 		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
-		echo "<div class=\"ec_option_radio_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_radio_box\">";
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
+		echo "<div class=\"ec_option_radio_row\">" . $GLOBALS['language']->convert_text( $optionset->option_label ) . ":</div><div class=\"ec_option_radio_box\">";
 		$j=0;
 		foreach( $optionitems as $optionitem ){
 			$optionitem_price = ""; 
@@ -652,7 +728,7 @@ class ec_product{
 			  $optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ")"; 
 			}
 			
-			echo "<div class=\"ec_option_radio_row\"><input type=\"radio\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j . "\" value=\"" . $optionitem->optionitem_id . "\" data-ec-required=\"" . $optionset->option_required . "\">" . $optionitem->optionitem_name . $optionitem_price . "</div>";
+			echo "<div class=\"ec_option_radio_row\"><input type=\"radio\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j . "\" value=\"" . $optionitem->optionitem_id . "\" data-ec-required=\"" . $optionset->option_required . "\">" . $GLOBALS['language']->convert_text( $optionitem->optionitem_name ) . $optionitem_price . "</div>";
 			$j++;
 		}
 		echo "</div>";
@@ -660,11 +736,11 @@ class ec_product{
 	public function display_advanced_option_grid( $optionset, $i ){
 		$this->has_grid_optionset = true;
 		$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $optionset->option_error_text . "</div></div>";
-		echo "<div class=\"ec_option_grid_row\">" . $optionset->option_label . ":</div><div class=\"ec_option_grid_box\">";
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
+		echo "<div class=\"ec_option_grid_row\">" . $GLOBALS['language']->convert_text( $optionset->option_label ) . ":</div><div class=\"ec_option_grid_box\">";
 		$j=0;
 		foreach( $optionitems as $optionitem ){
-			echo "<div class=\"ec_option_grid_row\"><span class=\"ec_option_grid_label\">" . $optionitem->optionitem_name . ":</span><span class=\"ec_option_grid_input\"><input type=\"number\" name=\"ec_option_" . $optionset->option_id . "_" . $optionitem->optionitem_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j ."\" value=\"" . $optionitem->optionitem_initial_value . "\" data-ec-required=\"" . $optionset->option_required . "\"></span></div>";
+			echo "<div class=\"ec_option_grid_row\"><span class=\"ec_option_grid_label\">" . $GLOBALS['language']->convert_text( $optionitem->optionitem_name ) . ":</span><span class=\"ec_option_grid_input\"><input type=\"number\" name=\"ec_option_" . $optionset->option_id . "_" . $optionitem->optionitem_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "_" . $j ."\" value=\"" . $optionitem->optionitem_initial_value . "\" data-ec-required=\"" . $optionset->option_required . "\"></span></div>";
 			$j++;
 		}
 		echo "</div>";
@@ -1074,11 +1150,11 @@ class ec_product{
 	}
 	
 	public function get_formatted_before_price( ){
-		return $this->currency->get_currency_display( $this->list_price );
+		return $GLOBALS['currency']->get_currency_display( $this->list_price );
 	}
 	
 	public function get_formatted_price( ){
-		return $this->currency->get_currency_display( $this->price );
+		return $GLOBALS['currency']->get_currency_display( $this->price );
 	}
 	
 	private function ec_get_permalink( $postid ){
