@@ -117,6 +117,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.1 =
+* Fix - Advanced option items in order details not appearing in the admin.
 = 2.1.0 =
 * Fix - Some price tiers that were coming from the DB in the incorrect order causing price tier value to be wrong in the cart. This has been corrected.
 * Fix - Conflict with the "n" key shortcode with Jetpack has been resolved. Now you will not see the notifications window popup.

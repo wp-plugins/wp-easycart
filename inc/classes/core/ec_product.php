@@ -462,8 +462,17 @@ class ec_product{
 		
 		$price = $GLOBALS['currency']->convert_price( $this->price );
 		$p_arr = explode( ".", $price );
-		$p_dollar = $p_arr[0];
-		$p_cent = $GLOBALS['currency']->format_cents( $p_arr[1] );
+		$p_cents = "";
+		$p_dollar = "";
+		if( count( $p_arr ) > 0 ){
+			$p_dollar = $p_arr[0];
+		}
+		
+		if( count( $p_arr ) > 1 ){
+			$p_cents = $p_arr[1];
+		}
+		
+		$p_cent = $GLOBALS['currency']->format_cents( $p_cents );
 		
 		if( $this->list_price != "0.000" )
 			echo "<span class=\"ec_product_sale_price\"><span class=\"currency\">" . $GLOBALS['currency']->get_symbol( ) . "</span><span class=\"dollar\">" . $p_dollar . "</span><span class=\"cent\">" . $p_cent . "</span></span>";
