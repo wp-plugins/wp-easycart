@@ -45,7 +45,7 @@ class ec_admin_orders{
 	function getorderdetailsadvancedoptions( $orderdetails_id ){
 		
 		  $sql = "SELECT ec_order_option.* FROM ec_order_option WHERE ec_order_option.orderdetail_id = %s";
-		  $results = $this->db->query( $this->db->prepare( $sql, $orderdetails_id ) );
+		  $results = $this->db->get_results( $this->db->prepare( $sql, $orderdetails_id ) );
 		  
 		  if( count( $results ) > 0 ){
 			  return( $results );
