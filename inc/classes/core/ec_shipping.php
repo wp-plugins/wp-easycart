@@ -437,7 +437,10 @@ class ec_shipping{
 				$rate = $rate + $this->express_price;
 			
 		}else if( $this->shipping_method == "method" ){
-			if( !isset( $_SESSION['ec_shipping_method'] ) )
+			if( $this->subtotal <= 0 )
+				$rate = "0.00";
+			
+			else if( !isset( $_SESSION['ec_shipping_method'] ) )
 				$rate = $this->method_based[0][0];
 			
 			else{

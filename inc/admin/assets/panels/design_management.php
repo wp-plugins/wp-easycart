@@ -107,7 +107,7 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_design_options" )
 
 <form action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management&ec_action=upload_design" method="POST" enctype="multipart/form-data">
 <div class="ec_admin_page_title">Upload Design Packages</div>
-<div class="ec_adin_page_intro">This section is designed to give customers a location to upload new EasyCart design packages.</div>
+<div class="ec_adin_page_intro">This section is designed to give customers a location to upload new EasyCart design packages. If you would like to find new theme packages for download, <a href="http://www.wpeasycart.com/latest-theme-downloads" target="_blank">view our latest free store themes here</a>.</div>
 
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Upload New Theme Package</em>If you have a new EasyCart theme package, you can upload it here. Be sure you are uploading a zip that contains only the EasyCart theme. If you downloaded a design from our site, be sure you have extracted and selected the EasyCart theme zip package only.</span></a></span>
@@ -125,56 +125,5 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_design_options" )
 
 </form>
 
-<?php if( is_dir( '../wp-content/plugins/wp-easycart-data/latest-design/' ) ) {?>
-
-<form action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management&ec_action=upload_design" method="POST" enctype="multipart/form-data">
 <div class="ec_admin_page_title_secondary">Update to Latest Design</div>
-<div class="ec_adin_page_intro">If you have not edited the fileset, you may want to do a quick update to the latest design set. Starting with the EasyCart version 2.0, you can automatically copy the latest design files as a new EasyCart theme and layout set. This allows you to revert to the old version if the new version is not compatible with your WordPress theme.</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Use Latest Theme</em>This option allows you to create a new theme package from the latest theme from the EasyCart plugin core. If you have made changes to the css or javascript specific to your store, then you will need to make this update manually.</span></a></span>
-    <span class="ec_setting_row_label">Use Latest Theme:</span>
-    <span class="ec_setting_row_input"><select name="ec_option_copy_theme" id="ec_option_copy_theme">
-    				<option value="0" selected="selected">Do NOT Copy a Theme</option>
-		          <?php
-						$dir = '../wp-content/plugins/wp-easycart-data/latest-design/theme/';
-						
-						$scan = scandir( $dir );
-						foreach( $scan as $key => $val ) {
-							
-							if ( is_dir( $dir . "/" . $val ) ) {
-								if($val != "." && $val != ".."){
-									echo "<option value=\"".$val."\">" . $val . "</option>\n";
-								}
-							}
-							
-						}
-						?>
-		          </select></span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Use Latest Layout</em>This option allows you to create a new layout package from the latest layout from the EasyCart plugin core. If you have made changes to the php specific to your store, then you will need to make this update manually.</span></a></span>
-    <span class="ec_setting_row_label">Use Latest Layout:</span>
-    <span class="ec_setting_row_input"><select name="ec_option_copy_layout" id="ec_option_copy_layout">
-    				<option value="0" selected="selected">Do NOT Copy a Layout</option>
-		          <?php
-						$dir = '../wp-content/plugins/wp-easycart-data/latest-design/layout/';
-							
-						$scan = scandir( $dir );
-						foreach( $scan as $key => $val ) {
-							
-							if ( is_dir( $dir . "/" . $val ) ) {
-								if($val != "." && $val != ".."){
-									echo "<option value=\"".$val."\">" . $val . "</option>\n";
-								}
-							}
-							
-						}
-						?>
-		          </select></span>
-</div>
-<div class="ec_save_changes_row"><input type="submit" value="COPY LATEST DESIGN" class="ec_save_changes_button" /></div>
-
-</form>
-<?php } ?>
+<div class="ec_adin_page_intro">If you have not edited the fileset, you may want to do a quick update to the latest design set. You can <a href="http://www.wpeasycart.com/latest-theme-downloads" target="_blank">click here</a> to go to the latest design file download page. Download the theme and layout zips and upload them to the "Upload Design Packages" above. There may also be additional free downloads for new themes and layouts.</div>

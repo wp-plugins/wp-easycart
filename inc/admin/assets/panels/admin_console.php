@@ -64,8 +64,10 @@ jQuery( document ).bind( 'keydown', function( e ){
     <tr>
       <td height="55" colspan="2"><div class="ec_admin_page_title">Administrative Console Software</div>
         <br />
+        
         <p>The WordPress EasyCart administrative console software is available for Desktops and popular tablet and phone systems.  The administrative console software allows you to manage day to day operations of your store, including Orders, Products, Users, Marketing, and more!</p>
-        <p><em><strong>Note:</strong> The administrative console is not downloaded or associated with WordPress and/or it's site. This software is downloaded via 3rd party systems such as Apple iTunes, the Google Play store, and WP Easy Cart.</em></p></td>
+        <p><em><strong>Note:</strong> The administrative console is not downloaded or associated with WordPress and/or it's site. This software is downloaded via 3rd party systems such as Apple iTunes, the Google Play store, and WP Easy Cart.</em></p>
+        <p>The WordPress EasyCart runs best on its administrative console software, but we do offer a <em><strong>free editor</strong></em> which can be accessed here: <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=simple-admin">Simple Store Manager</a></p></td>
     </tr>
     <tr>
       <td height="10" colspan="2"></td>

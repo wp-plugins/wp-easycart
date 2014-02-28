@@ -1,6 +1,8 @@
 <?php require_once( "assets/inc/adminv2_functions.php" ); ?>
 <?php include( "assets/elements/notifications.php" ); ?>
-<?php include( "assets/menus/mainmenu.php" ); ?>
+<?php include( "assets/menus/mainmenu.php" );
+$ec_license = new ec_license( );
+?>
 <div class="ec_admin_holder<?php if( isset( $_GET['ec_panel'] ) && ($_GET['ec_panel'] == "admin" || $_GET['ec_panel'] == "demos" || $_GET['ec_panel'] == "support") ){ echo "_console"; } ?>">
 	<?php
 	if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "dashboard" ){
@@ -8,7 +10,11 @@
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "store-setup" ){
 		include( "assets/menus/leftmenu_setup.php" );
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "admin-console" ){
-		// Hide this section
+		if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "simple-admin" ){
+			include( "assets/menus/leftmenu_simple_admin.php" );
+		}else{
+			// Hide this section
+		}
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "online-demos" ){
 		//include( "assets/menus/leftmenu_online_demos.php" );
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "help-support" ){
@@ -52,6 +58,10 @@
 				include( "assets/panels/advanced_setup.php" );
 			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" ){
 				include( "assets/panels/design_management.php" );
+			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "simple-admin" ){
+				include( "assets/panels/simple_admin.php" );
+			}else if( !$ec_license->is_registered( ) ){
+				include( "assets/elements/versions_chart.php" );
 			}else{
 				include( "assets/panels/dashboard_statistics.php" );
 			}

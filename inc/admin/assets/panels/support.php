@@ -1,7 +1,7 @@
 <div class="ec_contentwrap">
      <br />
     <div class="ec_admin_page_title">Help and Support</div>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <table width="1150px" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="55"><p>Need Help and Support? The WordPress EasyCart team is dedicated to helping you get online and succeed. We try to provide all levels of support for users, and we encourage you to ask for help if you need it.</p>
           <p><strong>Online Support:</strong> Please try to use all our online support methods to help keep our support costs down. Most common answers can be found in our online documentation, but sometimes watching a quick online video tutorial or asking a question in our community forums can help resolve questions.</p>

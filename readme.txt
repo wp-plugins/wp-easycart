@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,14 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.2 =
+* Addition - New free simple editor for users who need a very simple shopping cart solution with basic products.
+* Addition - Link to latest designs page in the design file manager. This will help customers who need to update design files.
+* Removal - Limited the standard design choices that are installed, but a link to all options are available for new customers.
+* Addition - EasyCart search box built into your site that will allow you to search our docs site.
+* Fix - Static shipping methods with non-shippable items now does not charge any shipping fee when it shouldn't apply.
+* Addition - For new users, a plugin version chart is provided to help them understand the options of the EasyCart.
+* General touch-ups to the EasyCart admin panels have been included.
 = 2.1.1 =
 * Fix - Advanced option items in order details not appearing in the admin.
 = 2.1.0 =
