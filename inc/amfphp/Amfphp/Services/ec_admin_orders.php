@@ -164,20 +164,21 @@ class ec_admin_orders{
 		if( $sendemail == 1 ){
 			
 			$sql = "SELECT ec_order.* FROM ec_order WHERE ec_order.order_id = %d";
-			$order = $this->db->get_row( $this->db->prepare( $sql, $orderid ) );
+			$order = $this->db->get_results( $this->db->prepare( $sql, $orderid ) );
 			
-			$trackingnumber = $order['tracking_number'];
-			$shipcarrier = $order['shipping_carrier'];
+			$trackingnumber = $order[0]->tracking_number;
+			$shipcarrier = $order[0]->shipping_carrier;
+			
 			$orderfromemail = get_option( 'ec_option_order_from_email' );
 			
-			$message = "<html><head><title>Shipping Confirmation - Order Number " . $order_id . "</title><style type='text/css'><!--.style20 {font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12px; }.style22 {font-family: Arial, Helvetica, sans-serif; font-size: 12px; }--></style></head><body> <table width='539' border='0' align='center'>   <tr><td colspan='4' align='left' class='style22'></td></tr><tr><td colspan='4' align='left' class='style22'><p><br> Dear " . $order['billing_first_name'] . " " . $order['billing_last_name'] . ": </p><p>Your recent order  with the number <strong>" . $order['order_id'] . "</strong> has been shipped! You should be receiving it within a short time period.<br>";
+			$message = "<html><head><title>Shipping Confirmation - Order Number " . $order_id . "</title><style type='text/css'><!--.style20 {font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12px; }.style22 {font-family: Arial, Helvetica, sans-serif; font-size: 12px; }--></style></head><body> <table width='539' border='0' align='center'>   <tr><td colspan='4' align='left' class='style22'></td></tr><tr><td colspan='4' align='left' class='style22'><p><br> Dear " . $order[0]->billing_first_name . " " . $order[0]->billing_last_name . ": </p><p>Your recent order  with the number <strong>" . $order[0]->order_id . "</strong> has been shipped! You should be receiving it within a short time period.<br>";
 			
 			if( $trackingnumber != '0' && $trackingnumber != 'Null' && $trackingnumber != 'NULL'&& $trackingnumber != 'null' && $trackingnumber != NULL && $trackingnumber != '' ){
 				$message .= "<br>  You may check the status of your order by visiting your carriers website and using the following tracking number.</p><p>Package Carrier: " . $shipcarrier . "<br>Package Tracking Number: " . $trackingnumber . "</p>";
 			}
 			
-			$message .= "<p><br></p></td></tr><tr><td colspan='4' align='left' class='style20'><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr><td width='47%' bgcolor='#F3F1ED' class='style20'>Billing Address</td><td width='3%'>&nbsp;</td><td width='50%' bgcolor='#F3F1ED' class='style20'>Shipping Address</td></tr><tr>   <td><span class='style22'>     " . $order['billing_first_name'] . " " . $order['billing_last_name'] . "    </span></td>    <td>&nbsp;</td>   <td><span class='style22'>" . $order['shipping_first_name'] . " " . $order['shipping_last_name'] . "</span></td> </tr><tr><td><span class='style22'> " . $order['billing_address_line_1'] . "<br>" . $order['billing_address_line_2'] . "</span></td>   <td>&nbsp;</td><td><span class='style22'>" . $order['shipping_address_line_1'] . " <br>
-			" . $order['shipping_address_line_2'] . " </span></td> </tr><tr><td><span class='style22'>" . $order['billing_city'] . ", " . $order['billing_state'] . " " . $order['billing_zip'] . "</span></td>   <td>&nbsp;</td>   <td><span class='style22'>" . $order['shipping_city'] . ", " . $order['shipping_state'] . " " . $order['shipping_zip'] . "</span></td> </tr><tr><td><span class='style22'>Phone: " . $order['billing_phone'] . "</span></td><td>&nbsp;</td><td><span class='style22'>Phone: " . $order['shipping_phone'] . "</span></td> </tr></table></td></tr><tr><td width='269' align='left'>&nbsp;</td><td width='80' align='center'>&nbsp;</td><td width='91' align='center'>&nbsp;</td><td align='center'>&nbsp;</td></tr><tr><td width='269' align='left' bgcolor='#F3F1ED' class='style20'>Product</td><td width='80' align='center' bgcolor='#F3F1ED' class='style20'>Qty</td><td width='91' align='center' bgcolor='#F3F1ED' class='style20'>Unit Price</td><td align='center' bgcolor='#F3F1ED' class='style20'>Ext Price</td></tr>";
+			$message .= "<p><br></p></td></tr><tr><td colspan='4' align='left' class='style20'><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr><td width='47%' bgcolor='#F3F1ED' class='style20'>Billing Address</td><td width='3%'>&nbsp;</td><td width='50%' bgcolor='#F3F1ED' class='style20'>Shipping Address</td></tr><tr>   <td><span class='style22'>     " . $order[0]->billing_first_name . " " . $order[0]->billing_last_name . "    </span></td>    <td>&nbsp;</td>   <td><span class='style22'>" . $order[0]->shipping_first_name . " " . $order[0]->shipping_last_name . "</span></td> </tr><tr><td><span class='style22'> " . $order[0]->billing_address_line_1 . "<br>" . $order[0]->billing_address_line_2 . "</span></td>   <td>&nbsp;</td><td><span class='style22'>" . $order[0]->shipping_address_line_1 . " <br>
+			" . $order[0]->shipping_address_line_2 . " </span></td> </tr><tr><td><span class='style22'>" . $order[0]->billing_city . ", " . $order[0]->billing_state . " " . $order[0]->billing_zip . "</span></td>   <td>&nbsp;</td>   <td><span class='style22'>" . $order[0]->shipping_city . ", " . $order[0]->shipping_state . " " . $order[0]->shipping_zip . "</span></td> </tr><tr><td><span class='style22'>Phone: " . $order[0]->billing_phone . "</span></td><td>&nbsp;</td><td><span class='style22'>Phone: " . $order[0]->shipping_phone . "</span></td> </tr></table></td></tr><tr><td width='269' align='left'>&nbsp;</td><td width='80' align='center'>&nbsp;</td><td width='91' align='center'>&nbsp;</td><td align='center'>&nbsp;</td></tr><tr><td width='269' align='left' bgcolor='#F3F1ED' class='style20'>Product</td><td width='80' align='center' bgcolor='#F3F1ED' class='style20'>Qty</td><td width='91' align='center' bgcolor='#F3F1ED' class='style20'>Unit Price</td><td align='center' bgcolor='#F3F1ED' class='style20'>Ext Price</td></tr>";
 				
 			$sql = "SELECT ec_orderdetail.* FROM ec_orderdetail WHERE ec_orderdetail.order_id = %d ORDER BY ec_orderdetail.product_id";
 			$orderdetails = $this->db->get_results( $this->db->prepare( $sql, $orderid ) );
@@ -197,9 +198,9 @@ class ec_admin_orders{
 			$headers .= "X-Mailer: PHP/".phpversion()  . "\r\n";
 			
 			if( get_option( 'ec_option_use_wp_mail' ) ){
-				wp_mail( $order['user_email'], 'Order Shipped - Confirmation' , $message, $headers );
+				wp_mail( $order[0]->user_email, 'Order Shipped - Confirmation' , $message, $headers );
 			}else{
-				mail( $order['user_email'], 'Order Shipped - Confirmation' , $message, $headers  );
+				mail( $order[0]->user_email, 'Order Shipped - Confirmation' , $message, $headers  );
 			}
 		}
 		
