@@ -288,7 +288,7 @@ class ec_admin_shipping
 		
 		function getshippingsettings() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.ups_conversion_rate, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.fedex_conversion_rate, ec_setting.fedex_test_account, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip, ec_setting.dhl_site_id, ec_setting.dhl_password, ec_setting.dhl_ship_from_country, ec_setting.dhl_ship_from_zip, ec_setting.dhl_weight_unit, ec_setting.dhl_test_mode FROM ec_setting  WHERE ec_setting.setting_id = 1");
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.ups_conversion_rate, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.fedex_conversion_rate, ec_setting.fedex_test_account, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip, ec_setting.dhl_site_id, ec_setting.dhl_password, ec_setting.dhl_ship_from_country, ec_setting.dhl_ship_from_zip, ec_setting.dhl_weight_unit, ec_setting.dhl_test_mode, ec_setting.fraktjakt_customer_id, ec_setting.fraktjakt_login_key, ec_setting.fraktjakt_conversion_rate, ec_setting.fraktjakt_test_mode FROM ec_setting  WHERE ec_setting.setting_id = 1");
 			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
 			  $totalrows = mysql_fetch_object($totalquery);
 			  
@@ -336,7 +336,7 @@ class ec_admin_shipping
 				//convert object to array
 			  $shippingsettings = (array)$shippingsettings;
 			  //Create SQL Query
-			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s', ec_setting.shipping_handling_rate='%s', ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.ups_conversion_rate ='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s',  ec_setting.fedex_conversion_rate ='%s', ec_setting.fedex_test_account='%s', ec_setting.auspost_api_key = '%s', ec_setting.auspost_ship_from_zip = '%s' , ec_setting.dhl_site_id = '%s', ec_setting.dhl_password = '%s', ec_setting.dhl_ship_from_country = '%s', ec_setting.dhl_ship_from_zip = '%s', ec_setting.dhl_weight_unit = '%s', ec_setting.dhl_test_mode = '%s' WHERE ec_setting.setting_id = 1", 
+			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s', ec_setting.shipping_handling_rate='%s', ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.ups_conversion_rate ='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s',  ec_setting.fedex_conversion_rate ='%s', ec_setting.fedex_test_account='%s', ec_setting.auspost_api_key = '%s', ec_setting.auspost_ship_from_zip = '%s' , ec_setting.dhl_site_id = '%s', ec_setting.dhl_password = '%s', ec_setting.dhl_ship_from_country = '%s', ec_setting.dhl_ship_from_zip = '%s', ec_setting.dhl_weight_unit = '%s', ec_setting.dhl_test_mode = '%s', ec_setting.fraktjakt_customer_id = '%s', ec_setting.fraktjakt_login_key = '%s', ec_setting.fraktjakt_conversion_rate = '%s', ec_setting.fraktjakt_test_mode = '%s' WHERE ec_setting.setting_id = 1", 
 			 mysql_real_escape_string($shippingsettings['shippingmethod']), 
 			 mysql_real_escape_string($shippingsettings['handlingcharge']), 
 			 mysql_real_escape_string($shippingsettings['ups_access_license_number']), 
@@ -365,17 +365,21 @@ class ec_admin_shipping
 			 mysql_real_escape_string($shippingsettings['dhl_ship_from_country']), 
 			 mysql_real_escape_string($shippingsettings['dhl_ship_from_zip']),
 			 mysql_real_escape_string($shippingsettings['dhl_weight_unit']),
-			 mysql_real_escape_string($shippingsettings['dhl_test_mode']));
+			 mysql_real_escape_string($shippingsettings['dhl_test_mode']),
+			 mysql_real_escape_string($shippingsettings['fj_customerid']),
+			 mysql_real_escape_string($shippingsettings['fj_loginkey']),
+			 mysql_real_escape_string($shippingsettings['fj_conversionrate']),
+			 mysql_real_escape_string($shippingsettings['fj_testmode']));
 			//Run query on database;
 			  mysql_query($sql);
-			  return mysql_error();
+			  //return mysql_error();
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
 				$returnArray[] ="success";
 				return($returnArray); //return array results if there are some
 			} else {
-				$sqlerror = mysql_error();
+				//$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
 					$returnArray[] = "duplicate";

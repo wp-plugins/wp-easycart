@@ -37,7 +37,7 @@ class ec_admin_orders{
 	   else if( $methodName == 'updateorderviewed' ) 				return array( 'admin' );
 	   else if( $methodName == 'deleteorder' ) 						return array( 'admin' );
 	   else if( $methodName == 'updateshippingstatus' ) 			return array( 'admin' );
-	   else if( $methodName == 'updateshippingstatus' ) 			return array( 'admin' );
+	   else if( $methodName == 'updatefraktjaktshipping' ) 			return array( 'admin' );
 	   else  														return null;
 	   
 	}//_getMethodRoles
@@ -155,6 +155,19 @@ class ec_admin_orders{
 		}
 		
 	}//deleteorder
+	
+	function updatefraktjaktshipping( $orderid, $fraktjaktorderid, $fraktjaktshippingid){
+		
+		$sql = "UPDATE ec_order SET ec_order.fraktjakt_order_id = %s, ec_order.fraktjakt_shipment_id = %s WHERE ec_order.order_id = %d";
+		$this->db->query( $this->db->prepare( $sql, $fraktjaktorderid, $fraktjaktshippingid, $orderid ) );
+		
+		if( !mysql_error( ) ){
+			return array( "success" );
+		}else{
+			return array( "error" );
+		}
+		
+	}
 	
 	function updateshippingstatus( $orderid, $shipcarrier, $shiptrackingcode, $sendemail, $clientemail ){
 		
