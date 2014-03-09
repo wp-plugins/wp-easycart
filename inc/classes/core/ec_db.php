@@ -255,6 +255,9 @@ class ec_db{
 				product.vat_rate,
 				product.stock_quantity,
 				product.weight,
+				product.width,
+				product.height,
+				product.length,
 				product.use_optionitem_quantity_tracking,
 				product.use_specifications,
 				product.specifications,
@@ -272,6 +275,8 @@ class ec_db{
 				
 				product.subscription_bill_length,
 				product.subscription_bill_period,
+				product.trial_period_days,
+				product.stripe_plan_added,
 				
 				CONCAT_WS('***', option1.option_id, option1.option_name, option1.option_label) as option_data_1,
 				CONCAT_WS('***', option2.option_id, option2.option_name, option2.option_label) as option_data_2,
@@ -445,7 +450,10 @@ class ec_db{
 						"list_price" => $row->list_price, 
 						"vat_rate" => $row->vat_rate,
 						"stock_quantity" => $row->stock_quantity, 
-						"weight" => $row->weight, 
+						"weight" => $row->weight,  
+						"width" => $row->width,  
+						"height" => $row->height,  
+						"length" => $row->length, 
 						"use_optionitem_quantity_tracking" => $row->use_optionitem_quantity_tracking, 
 						"use_specifications" => $row->use_specifications, 
 						"specifications" => $row->specifications, 
@@ -463,6 +471,8 @@ class ec_db{
 						
 						"subscription_bill_length" => $row->subscription_bill_length,
 						"subscription_bill_period" => $row->subscription_bill_period,
+						"trial_period_days" => $row->trial_period_days,
+						"stripe_plan_added" => $row->stripe_plan_added,
 						
 						"option1" => $option1, 
 						"option2" => $option2, 
@@ -821,8 +831,12 @@ class ec_db{
 				product.handling_price,
 				product.vat_rate,
 				product.title,
+				product.description,
 				product.image1,
 				product.weight,
+				product.width,
+				product.height,
+				product.length,
 				product.is_giftcard,
 				product.is_download,
 				product.is_donation,
@@ -1360,7 +1374,9 @@ class ec_db{
 				ec_promocode.promo_for_me, 
 				ec_promocode.manufacturer_id, 
 				ec_promocode.product_id, 
-				ec_promocode.message 
+				ec_promocode.message,
+				ec_promocode.max_redemptions,
+				ec_promocode.times_redeemed
 				
 				FROM 
 				ec_promocode 
@@ -1454,10 +1470,15 @@ class ec_db{
 		
 		// Get Shipping Method to Save
 		$shipping_method = "";
-		if( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] != "standard" )
+		if( $shipping->shipping_method == "fraktjakt" ){
+			$shipping_method = $shipping->get_selected_shipping_method( );
+			
+		}else if( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] != "standard" )
 			$shipping_method = $this->get_shipping_method_name( $_SESSION['ec_shipping_method'] );
+		
 		else if( ( $shipping->shipping_method == "price" || $shipping->shipping_method == "weight" ) && isset( $_SESSION['ec_ship_express'] ) && $_SESSION['ec_ship_express'] != "" )
 			$shipping_method = $GLOBALS['language']->get_text( "cart_estimate_shipping", "cart_estimate_shipping_express" );
+		
 		else
 			$shipping_method = $GLOBALS['language']->get_text( "cart_estimate_shipping", "cart_estimate_shipping_standard" );
 		
@@ -1852,7 +1873,11 @@ class ec_db{
 				ec_order.paypal_payer_id,
 				
 				ec_order.order_customer_notes,
-				ec_order.creditcard_digits
+				ec_order.creditcard_digits,
+				
+				ec_order.fraktjakt_order_id,
+				ec_order.fraktjakt_shipment_id,
+				ec_order.subscription_id
 				
 				FROM 
 				ec_order
@@ -1933,10 +1958,20 @@ class ec_db{
 				ec_order.order_customer_notes,
 				ec_order.creditcard_digits,
 				
+				ec_order.fraktjakt_order_id,
+				ec_order.fraktjakt_shipment_id,
+				ec_order.subscription_id,
+				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
 				FROM 
 				ec_order
+				
+				LEFT JOIN ec_country as bill_country ON
+				bill_country.iso2_cnt = ec_order.billing_country
+				
+				LEFT JOIN ec_country as ship_country ON
+				ship_country.iso2_cnt = ec_order.shipping_country
 				
 				LEFT JOIN ec_orderstatus ON
 				ec_order.orderstatus_id = ec_orderstatus.status_id
@@ -1998,6 +2033,7 @@ class ec_db{
 				ec_order.billing_state, 
 				ec_order.billing_zip, 
 				ec_order.billing_country, 
+				bill_country.name_cnt as billing_country_name, 
 				ec_order.billing_phone, 
 				
 				ec_order.shipping_first_name, 
@@ -2007,7 +2043,8 @@ class ec_db{
 				ec_order.shipping_city, 
 				ec_order.shipping_state, 
 				ec_order.shipping_zip, 
-				ec_order.shipping_country, 
+				ec_order.shipping_country,
+				ship_country.name_cnt as shipping_country_name, 
 				ec_order.shipping_phone, 
 				
 				ec_order.payment_method, 
@@ -2018,10 +2055,20 @@ class ec_db{
 				ec_order.order_customer_notes,
 				ec_order.creditcard_digits,
 				
+				ec_order.fraktjakt_order_id,
+				ec_order.fraktjakt_shipment_id,
+				ec_order.subscription_id,
+				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data 
 				
 				FROM 
 				ec_order
+				
+				LEFT JOIN ec_country as bill_country ON
+				bill_country.iso2_cnt = ec_order.billing_country
+				
+				LEFT JOIN ec_country as ship_country ON
+				ship_country.iso2_cnt = ec_order.shipping_country
 				
 				LEFT JOIN ec_orderstatus ON
 				ec_order.orderstatus_id = ec_orderstatus.status_id
@@ -2214,6 +2261,7 @@ class ec_db{
 				ec_user.default_shipping_address_id,
 				ec_user.is_subscriber,
 				ec_user.realauth_registered,
+				ec_user.stripe_customer_id,
 				
 				billing.first_name as billing_first_name, 
 				billing.last_name as billing_last_name, 
@@ -2417,7 +2465,7 @@ class ec_db{
 	}
 	
 	public function get_settings( ){
-		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, ups_conversion_rate, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, fedex_conversion_rate, fedex_test_account, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode FROM ec_setting WHERE setting_id = 1";
+		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, ups_conversion_rate, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, fedex_conversion_rate, fedex_test_account, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode, fraktjakt_customer_id, fraktjakt_login_key, fraktjakt_conversion_rate, fraktjakt_test_mode FROM ec_setting WHERE setting_id = 1";
 			return $this->mysqli->get_row( $sql );
 	}
 	
@@ -2572,6 +2620,82 @@ class ec_db{
 	public function cancel_paypal_subscription( $subscr_id ){
 		$sql = "UPDATE ec_subscription SET subscription_status = 'Canceled' WHERE paypal_subscr_id = %s";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $subscr_id ) );
+	}
+	
+	public function update_order_fraktjakt_info( $order_id, $ship_order_info ){
+		$sql = "UPDATE ec_order SET ec_order.fraktjakt_order_id = %s, ec_order.fraktjakt_shipment_id = %s WHERE ec_order.order_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $ship_order_info['order_id'], $ship_order_info['shipment_id'], $order_id ) );
+	}
+	
+	public function update_order_stripe_charge_id( $order_id, $charge_id ){
+		$sql = "UPDATE ec_order SET ec_order.stripe_charge_id = %s WHERE ec_order.order_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $charge_id, $order_id ) );
+	}
+	
+	public function update_user_stripe_id( $user_id, $customer_id ){
+		$sql = "UPDATE ec_user SET ec_user.stripe_customer_id = %s WHERE ec_user.user_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $customer_id, $user_id ) );
+	}
+	
+	public function update_product_stripe_added( $product_id ){
+		$sql = "UPDATE ec_product SET ec_product.stripe_plan_added = 1 WHERE ec_product.product_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $product_id ) );
+	}
+	
+	public function insert_stripe_subscription( $subscription, $product, $user ){
+		$sql = "INSERT INTO ec_subscription( subscription_type, title, email, first_name, last_name, product_id, price, payment_length, payment_period, stripe_subscription_id, last_payment_date, next_payment_date ) VALUES( 'stripe', %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $product->title, $user->email, $user->billing->first_name, $user->billing->last_name, $product->product_id, $product->price, $product->subscription_bill_length, $product->subscription_bill_period, $subscription->id, $subscription->current_period_start, $subscription->current_period_end ) );
+		
+		return $this->mysqli->insert_id;
+	}
+	
+	public function insert_subscription_order( $product, $user, $card, $subscription_id ){
+		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, payment_method, creditcard_digits, subscription_id) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d)";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price, $product->price, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $card->payment_method, substr( $card->card_number, -4 ), $subscription_id ) );
+		
+		$order_id = $this->mysqli->insert_id;
+		$image1 = $product->images->get_single_image( );
+		
+		$sql = "INSERT INTO ec_orderdetail( order_id, product_id, title, model_number, order_date, unit_price, total_price, quantity, image1 ) VALUES( %d, %d, %s, %s, NOW( ), %s, %s, 1, %s )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $order_id, $product->product_id, $product->title, $product->model_number, $product->price, $product->price, $image1 ) );
+		
+		return $order_id;
+	}
+	
+	public function get_subscription_row( $subscription_id ){
+		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id FROM ec_subscription WHERE ec_subscription.subscription_id = %d";
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $subscription_id ) );
+	}
+	
+	public function find_subscription_match( $email, $product_id ){
+		$sql = "SELECT ec_subscription.subscription_id FROM ec_subscription WHERE ec_subscription.email = %s AND ec_subscription.subscription_status = 'Active' AND ec_subscription.product_id = %d";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $email, $product_id ) );
+	}
+	
+	public function activate_user( $email, $key ){
+	
+		$sql = "SELECT ec_user.email, ec_user.user_level FROM ec_user WHERE ec_user.email = %s";
+		$user = $this->mysqli->get_row( $this->mysqli->prepare( $sql, $email ) );
+		
+		if( $user->user_level != "pending" ){
+			return true;
+		}else{
+		
+			if( $user && isset( $user->email ) ){
+				$match_key = md5( $user->email . "ecsalt" );
+				
+				if( $match_key == $key ){
+					$sql = "UPDATE ec_user SET ec_user.user_level = 'shopper' WHERE ec_user.email = %s";
+					$this->mysqli->query( $this->mysqli->prepare( $sql, $email ) );
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return false;
+			}
+		}
+		
 	}
 	
 }

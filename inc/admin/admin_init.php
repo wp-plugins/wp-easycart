@@ -422,6 +422,7 @@ function ec_print_editor( ){
 	ec_print_editor_product_menu( );// Product Menu Store Shortcode Panel
 	ec_print_editor_product_category( );// Product Category Store Shortcode Panel
 	ec_print_editor_manufacturer_group( );// Manufacturer Group Store Shortcode Panel
+	ec_print_editor_product_details( );// Product Details Store Shortcode Panel
 	// Cart shortcode, no options, nothing needed
 	// Account shortcode, no options, nothing needed
 	ec_print_editor_single_product( );// Single Product Shortcode Panel
@@ -441,6 +442,7 @@ function ec_print_editor_shortcode_menu( ){
 		echo "<li data-ecshortcode=\"ec_menu\"><div>PRODUCT MENU</div></li>";
 		echo "<li data-ecshortcode=\"ec_category\"><div>PRODUCT CATEGORY</div></li>";
 		echo "<li data-ecshortcode=\"ec_manufacturer\"><div>MANUFACTURER GROUP</div></li>";
+		echo "<li data-ecshortcode=\"ec_productdetails\"><div>PRODUCT DETAILS</div></li>";
 		echo "<li data-ecshortcode=\"ec_cart\"><div>CART</div></li>";
 		echo "<li data-ecshortcode=\"ec_account\"><div>ACCOUNT</div></li>";
 		echo "<li data-ecshortcode=\"ec_singleitem\"><div>SINGLE ITEM</div></li>";
@@ -612,6 +614,41 @@ function ec_print_manufacturer_select( $id ){
 		}
 	}else{
 		echo "<option value=\"0\">No Manufacturers Exist</option>";
+	}
+	echo "</select>";
+}
+
+/***********************************************************************************
+* BEGIN FUNCTIONS FOR THE PRODUCT DETAILS PANEL
+************************************************************************************/
+// Product Category Shortcode Creator Panel
+function ec_print_editor_product_details( ){
+	echo "<div class=\"ec_editor_panel\" id=\"ec_productdetails_menu\">";
+		echo "<div class=\"ec_editor_select_row\"><input type=\"button\" value=\"BACK\" class=\"ec_editor_button backlink\"></div>";
+		echo "<div class=\"ec_editor_error\" id=\"ec_productdetails_error\"><span>Please Select a Product</span></div>";
+		echo "<div class=\"ec_editor_help_text\">This shortcode displays a single product's details on the specified page.</div>";
+		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Product:</span><span class=\"ec_editor_select_row_input\">";
+		ec_print_productdetails_select( 'ec_editor_productdetails_select' );
+		echo "</div>";
+		echo "<div class=\"ec_editor_submit_row\"><span class=\"ec_editor_select_row_input\"><input type=\"button\" value=\"ADD SHORTCODE\" id=\"ec_add_productdetails\" class=\"ec_editor_button\"></span></div>";
+		
+	echo "</div>";
+}
+
+
+
+// Print all main menu items in a select box
+function ec_print_productdetails_select( $id ){
+	echo "<select class=\"ec_editor_select_box\" id=\"" . $id . "\">";
+	$db = new ec_db( );
+	$products = $db->get_product_list( "", " ORDER BY product.title", "", "" );
+	if( count( $products ) > 0 ){
+		echo "<option value=\"0\">Select a Product</option>";
+		for( $i=0; $i<count( $products ); $i++ ){
+			echo "<option value=\"" . $products[$i]['model_number'] . "\">" . $products[$i]['title'] . "</option>";
+		}
+	}else{
+		echo "<option value=\"0\">No Products Exist</option>";
 	}
 	echo "</select>";
 }

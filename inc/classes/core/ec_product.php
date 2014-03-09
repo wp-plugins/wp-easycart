@@ -15,6 +15,9 @@ class ec_product{
 	public $vat_rate;							// FLOAT 11,2
 	public $stock_quantity;						// INT
 	public $weight;								// Float 9,2
+	public $width;								// DOUBLE 15,3
+	public $height;								// DOUBLE 15,3
+	public $length;								// DOUBLE 15,3
 	public $show_stock_quantity;				// BOOL
 	
 	public $seo_description;					// Text
@@ -43,6 +46,8 @@ class ec_product{
 	
 	public $subscription_bill_length;			// INT
 	public $subscription_bill_period;			// VARCHAR(20)
+	public $trial_period_days;					// INT
+	public $stripe_plan_added;					// VARCHAR(128)
 	
 	public $rating;								// ec_rating structure
 	public $reviews = array();		 			// Array of ec_review structures
@@ -106,6 +111,9 @@ class ec_product{
 		$this->vat_rate = $product_data['vat_rate'];
 		$this->stock_quantity = $product_data['stock_quantity'];
 		$this->weight = $product_data['weight'];
+		$this->width = $product_data['width'];
+		$this->height = $product_data['height'];
+		$this->length = $product_data['length'];
 		$this->show_stock_quantity = $product_data['show_stock_quantity'];
 		
 		$this->seo_description = $GLOBALS['language']->convert_text( $product_data['seo_description'] );
@@ -138,6 +146,8 @@ class ec_product{
 		
 		$this->subscription_bill_length = $product_data['subscription_bill_length'];
 		$this->subscription_bill_period = $product_data['subscription_bill_period'];
+		$this->trial_period_days = $product_data['trial_period_days'];
+		$this->stripe_plan_added = $product_data['stripe_plan_added'];
 		
 		$this->rating = new ec_rating( $product_data['review_data'] );
 		
@@ -232,7 +242,13 @@ class ec_product{
 	
 	/* Display the form start */
 	public function display_product_details_form_start( ){
+		
+		// Go to the login page, at the same time save this subscription to session
+		//if( get_option( 'ec_option_payment_process_method' ) == 'stripe' && $this->is_subscription_item ){
+		//	echo "<form action=\"" . $this->cart_page . "\" method=\"post\" enctype=\"multipart/form-data\">";
+		//	
 		// Go to the subscription page for PayPal
+		//}else if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
 		if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
 			//this is actionscript version in flash
 			if( get_option( 'ec_option_paypal_use_sandbox' ) )			
@@ -268,6 +284,13 @@ class ec_product{
 	public function display_product_details_form_end( ){
 		global $language_data;
 		
+		/*if( get_option( 'ec_option_payment_process_method' ) == 'stripe' && $this->is_subscription_item ){
+		//	echo "<input name=\"model_number\" id=\"model_number\" type=\"hidden\" value=\"" . $this->model_number . "\" />";
+		//	echo "<input name=\"ec_cart_form_action\" id=\"ec_cart_form_action_" . $this->model_number . "\" value=\"purchase_subscription\" type=\"hidden\" />";
+		//	echo "<script>jQuery( '#ec_product_details_quantity_" . $this->model_number . "' ).hide( ); </script>";
+		//	echo "</form>";
+		//	
+		//}else if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){*/
 		if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
 			echo "<script>jQuery( '#ec_product_details_quantity_" . $this->model_number . "' ).hide( ); </script>";
 			echo "</form>";
@@ -440,6 +463,20 @@ class ec_product{
 			}
 			
 			echo "</span>";
+	}
+	
+	public function get_price_formatted( ){
+		
+		$ret_string = "";
+		$ret_string .= $GLOBALS['currency']->get_currency_display( $this->price ) . "/"; 
+		if( $this->subscription_bill_length > 1 ){
+			$ret_string .= $this->subscription_bill_length . " " . $this->get_subscription_period_name( ) . "s";
+		}else{
+			$ret_string .= $this->get_subscription_period_name( );
+		}
+		
+		return $ret_string;
+		
 	}
 	
 	public function get_subscription_period_name( ){
@@ -932,7 +969,7 @@ class ec_product{
 	}
 	
 	public function display_featured_products( ){
-		if( $this->featured_products->product1->product_id != 0 ){
+		if( isset( $this->featured_products->product1 ) && $this->featured_products->product1->product_id != 0 ){
 			$i=1;
 			$featured_product = $this->featured_products->product1;
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_featured_product.php' ) )	
@@ -941,7 +978,7 @@ class ec_product{
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
 		}
 		
-		if( $this->featured_products->product2->product_id != 0 ){
+		if( isset( $this->featured_products->product2 ) && $this->featured_products->product2->product_id != 0 ){
 			$i=2;
 			$featured_product = $this->featured_products->product2;
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_featured_product.php' ) )	
@@ -950,7 +987,7 @@ class ec_product{
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
 		}
 		
-		if( $this->featured_products->product3->product_id != 0 ){
+		if( isset( $this->featured_products->product3 ) && $this->featured_products->product3->product_id != 0 ){
 			$i=3;
 			$featured_product = $this->featured_products->product3;
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_featured_product.php' ) )	
@@ -959,7 +996,7 @@ class ec_product{
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout') . '/ec_featured_product.php' );
 		}
 		
-		if( $this->featured_products->product4->product_id != 0 ){
+		if( isset( $this->featured_products->product4 ) && $this->featured_products->product4->product_id != 0 ){
 			$i=4;
 			$featured_product = $this->featured_products->product4;
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_featured_product.php' ) )	

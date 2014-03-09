@@ -51,6 +51,10 @@ class ec_orderdisplay{
 	
 	public $order_customer_notes;				// BLOB
 	public $creditcard_digits;					// VARCHAR 4
+				
+	public $fraktjakt_order_id;					// VARCHAR
+	public $fraktjakt_shipment_id;				// VARCHAR
+	public $subscription_id;					// VARCHAR
 	
 	public $user;								// ec_user class
 	
@@ -117,6 +121,10 @@ class ec_orderdisplay{
 		
 		$this->order_customer_notes = $order_row->order_customer_notes;
 		$this->creditcard_digits = $order_row->creditcard_digits;
+				
+		$this->fraktjakt_order_id = $order_row->fraktjakt_order_id;
+		$this->fraktjakt_shipment_id = $order_row->fraktjakt_shipment_id;
+		$this->subscription_id = $order_row->subscription_id;
 		
 		$this->user = new ec_user( $this->user_email );
 		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1, $this->billing_city, $this->billing_state, $this->billing_country, $this->billing_zip, $this->billing_phone );
@@ -217,6 +225,14 @@ class ec_orderdisplay{
 	
 	public function display_order_shipping_method( ){
 		echo $this->shipping_method;
+		
+		if( $this->fraktjakt_shipment_id ){
+			$fraktjakt = new ec_fraktjakt( );
+			$status = $fraktjakt->get_shipping_status( $this->fraktjakt_shipment_id );
+			
+			if( $status != "" )
+				echo "<br><b>Leveransstatus:</b> " . $status;
+		}
 	}
 	
 	public function display_order_promocode( ){
@@ -351,6 +367,10 @@ class ec_orderdisplay{
 			mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $this->order_id, $message, implode("\r\n", $headers) );
 		}
 		
+	}
+	
+	public function display_subscription_link( $text ){
+		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&amp;subscription_id=". $this->subscription_id ."\">" . $text . "</a>";
 	}
 	
 }

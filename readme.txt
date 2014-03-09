@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,20 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.3 =
+* Addition - Added Stripe to available payment gateways.
+* Addition - Added single product details shortcode.
+* Addition - Basic Setting -> Account Option, now require your customers to validate their email address when they register for an account. This does not apply to a user checking out.
+* Addition - Swedish shipping company, Fraktjakt, has been fully implemented to allow easy management of shipping options.
+* Addition - Fraktjakt shipping order automatically inserted if using this option.
+* Addition - Tracking information added to the shipping information of an order if using Fraktjakt.
+* Improvement - Live shipping rate calls are now much faster.
+* Improvement - Print receipt now has nicer looking link that stays within the account, protecting the plugin location.
+* Improvement - Bug fixes to the "pre" process when plugin data folders are missing making plugin compatible with more server setups.
+* Improvement - Checks for css/js files in the css/js loaders, does not try to load files that are missing now.
+* Fix - Single product shortcode file location issue fixed.
+* Fix - CSS correction to shortcode editor.
+* Fix - PayPal image and a few others were pointing to the wrong URL in some situations.
 = 2.1.2 =
 * Addition - New free simple editor for users who need a very simple shopping cart solution with basic products.
 * Addition - Link to latest designs page in the design file manager. This will help customers who need to update design files.

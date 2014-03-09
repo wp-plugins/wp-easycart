@@ -74,6 +74,12 @@ class ec_order{
 				$this->insert_details();
 				$this->update_user_addresses();
 				
+				if( $this->shipping->shipping_method == "fraktjakt" ){
+					// Insert order for shipping method
+					$ship_order_info = $this->shipping->submit_fraktjakt_shipping_order( );
+					$this->mysqli->update_order_fraktjakt_info( $this->order_id, $ship_order_info );
+				}
+				
 				if( !$this->payment->is_3d_auth ){
 					if ($payment_type != 'third_party') {
 						// Quickbooks Hook

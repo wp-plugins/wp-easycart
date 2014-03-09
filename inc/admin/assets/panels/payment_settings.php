@@ -41,7 +41,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 		<?php if( !$license->is_registered( ) ){ ?>
         Your store is currently not registered. Please purchase a Lite or Full version and register your store before setting up your third party payment gateway.
         <a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" target="_blank" class="ec_lite_version_link"></a><a href="http://www.wpeasycart.com/products/wp-easycart-full-version/" target="_blank" class="ec_full_version_link"></a>
-        <? }else{ ?>
+        <? }else{ ?><?php } ?><?php if( $license->is_registered( ) ){ ?>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_third_party' ) != "0" ){ echo '_inactive'; } ?>" id="none_title">No Third Party Selected</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_third_party' ) != "paypal" ){ echo '_inactive'; } ?>" id="paypal_title">PayPal Standard</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_third_party' ) != "skrill" ){ echo '_inactive'; } ?>" id="skrill_title">Skrill</div>
@@ -74,7 +74,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <?php }else if( !$license->is_registered( ) ){ ?>
         Your store is currently not registered. Please purchase the Full version and register your store before setting up your live payment gateway.
         <a href="http://www.wpeasycart.com/products/wp-easycart-full-version/" target="_blank" class="ec_full_version_link"></a>
-        <? }else{ ?>
+        <? }else{ ?><?php } ?><?php if( $license->is_registered( ) && !$license->is_lite_version( ) ){ ?>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "0" ){ echo '_inactive'; } ?>" id="none_live_title">No Live Gateway Selected</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "authorize" ){ echo '_inactive'; } ?>" id="authorize_title">Authorize.Net</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "braintree" ){ echo '_inactive'; } ?>" id="braintree_title">Braintree S2S</div>
@@ -89,6 +89,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "realex" ){ echo '_inactive'; } ?>" id="realex_title">Realex</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "sagepay" ){ echo '_inactive'; } ?>" id="sagepay_title">Sagepay</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "securepay" ){ echo '_inactive'; } ?>" id="securepay_title">SecurePay</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "stripe" ){ echo '_inactive'; } ?>" id="stripe_title">Stripe</div>
         <div class="ec_payment_type_selector">Select a Payment Type: 
         	<select id="paymentmethod" name="ec_option_payment_process_method" onchange="toggle_live_gateways();" value="<?php echo get_option('ec_option_payment_process_method'); ?>" style="width:250px;">
                 <option value="0" <?php if( get_option('ec_option_payment_process_method') == "0" ){ echo " selected"; } ?>>No Live Payment Processor</option>
@@ -105,6 +106,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
                 <option value="realex" <?php if( get_option('ec_option_payment_process_method') == "realex" ){ echo " selected"; } ?>>Realex</option>
                 <option value="sagepay" <?php if( get_option('ec_option_payment_process_method') == "sagepay" ){ echo " selected"; } ?>>Sagepay</option>
                 <option value="securepay" <?php if( get_option('ec_option_payment_process_method') == "securepay" ){ echo " selected"; } ?>>SecurePay</option>
+                <option value="stripe" <?php if( get_option('ec_option_payment_process_method') == "stripe" ){ echo " selected"; } ?>>Stripe</option>
             </select>
         </div>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/authorize.php" ); ?>
@@ -120,6 +122,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/realex.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/sagepay.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/securepay.php" ); ?>
+        <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/stripe.php" ); ?>
         <?php } ?>
     </div>
 </div>

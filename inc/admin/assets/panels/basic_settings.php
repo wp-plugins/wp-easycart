@@ -320,6 +320,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_input"><select name="ec_option_require_account_address" style="width:100px;"><option value="0"<?php if( get_option('ec_option_require_account_address') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_require_account_address') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Require Email Validation on Registration</em>Enabling this option will require a user to click a link in an email sent to their registered email account before they can use their account.</span></a></span>
+    <span class="ec_setting_row_label">Require Email Validation on Registration:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_require_email_validation" style="width:100px;"><option value="0"<?php if( get_option('ec_option_require_email_validation') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_require_email_validation') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_status_header"><div class="ec_status_header_text">Google Analytics Setup</div></div>
 
 <div class="ec_setting_row">

@@ -73,6 +73,7 @@ class ec_payment{
 		else if($this->proccess_method == "sagepay"			)			$gateway = new ec_sagepay();
 		else if($this->proccess_method == "sagepay3d"		)			$gateway = new ec_sagepay3d();
 		else if($this->proccess_method == "securepay"		)			$gateway = new ec_securepay();
+		else if($this->proccess_method == "stripe"			)			$gateway = new ec_stripe();
 		else{
 			error_log( "Setup error, no payment gateway selected." );
 			return "Setup error, no payment gateway selected."; 

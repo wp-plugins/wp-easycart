@@ -44,6 +44,25 @@ class ec_ups{
 		
 	}
 	
+	public function get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+		if( $weight == 0 )
+		return "0.00";
+		
+		if( !$destination_country )
+			$destination_country = $this->ups_country_code;
+		
+		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height );
+		$request = new WP_Http;
+		$response = $request->request( $this->shipper_url, array( 'method' => 'POST', 'body' => $shipper_data ) );
+		if( is_wp_error( $response ) ){
+			$error_message = $response->get_error_message();
+			error_log( "error in ups get rate, " . $error_message );
+			return false;
+		}else
+			return $this->process_all_rates_response( $response['body'] );
+		
+	}
+	
 	public function get_rate_test( $ship_code, $destination_zip, $destination_country, $weight ){
 		if( $weight == 0 )
 		return "0.00";
@@ -123,6 +142,63 @@ class ec_ups{
 		return $shipper_data;
 	}
 	
+	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+		$shipper_data = "<?xml version=\"1.0\"?>
+			<AccessRequest xml:lang=\"en-US\">
+				<AccessLicenseNumber>$this->ups_access_license_number</AccessLicenseNumber>
+				<UserId>$this->ups_user_id</UserId>
+				<Password>$this->ups_password</Password>
+			</AccessRequest>
+			<?xml version=\"1.0\"?>
+			<RatingServiceSelectionRequest xml:lang=\"en-US\">
+				<Request>
+					<TransactionReference>
+						<CustomerContext>Rate Request</CustomerContext>
+						<XpciVersion>1.0001</XpciVersion>
+					</TransactionReference>
+					<RequestAction>Rate</RequestAction>
+					<RequestOption>Shop</RequestOption>
+				</Request>
+			<PickupType>
+				<Code>01</Code>
+			</PickupType>
+			<Shipment>
+				<Shipper>
+					<Address>
+						<PostalCode>$this->ups_ship_from_zip</PostalCode>
+						<CountryCode>$this->ups_country_code</CountryCode>
+					</Address>
+				<ShipperNumber>$this->ups_shipper_number</ShipperNumber>
+				</Shipper>
+				<ShipTo>
+					<Address>
+						<PostalCode>$destination_zip</PostalCode>
+						<CountryCode>$destination_country</CountryCode>
+					<ResidentialAddressIndicator/>
+					</Address>
+				</ShipTo>
+				<ShipFrom>
+					<Address>
+						<PostalCode>$this->ups_ship_from_zip</PostalCode>
+						<CountryCode>$this->ups_country_code</CountryCode>
+					</Address>
+				</ShipFrom>
+				<Package>
+					<PackagingType>
+						<Code>02</Code>
+					</PackagingType>
+					<PackageWeight>
+						<UnitOfMeasurement>
+							<Code>$this->ups_weight_type</Code>
+						</UnitOfMeasurement>
+						<Weight>$weight</Weight>
+					</PackageWeight>
+				</Package>
+			</Shipment>
+			</RatingServiceSelectionRequest>";
+		return $shipper_data;
+	} 
+	
 	private function process_response( $result ){
 		$xml = new SimpleXMLElement($result);
 		if( $xml && $xml->RatedShipment && $xml->RatedShipment->TotalCharges && $xml->RatedShipment->TotalCharges->MonetaryValue )
@@ -137,6 +213,19 @@ class ec_ups{
 			error_log( "error in ups get rate, response: " . $result );
 			return "ERROR";	
 		}
+	} 
+	
+	private function process_all_rates_response( $result ){
+		
+		$rates = array( );
+		$xml = new SimpleXMLElement($result);
+		
+		for( $i=0; $i<count( $xml->RatedShipment ); $i++ ){
+			$rates[] = array( 'rate_code' => $xml->RatedShipment[$i]->Service->Code[0][0], 'rate' => number_format( floatval( $xml->RatedShipment[$i]->TotalCharges->MonetaryValue ) * $this->ups_conversion_rate, 2, ".", "," ) );
+		}
+		
+		return $rates;
+		
 	}
 }
 	

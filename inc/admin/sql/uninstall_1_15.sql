@@ -37,6 +37,7 @@ DROP TABLE IF EXISTS `ec_shippingrate`;
 DROP TABLE IF EXISTS `ec_state`;
 DROP TABLE IF EXISTS `ec_subscriber`;
 DROP TABLE IF EXISTS `ec_subscription`;
+DROP TABLE IF EXISTS `ec_subscription_plan`;
 DROP TABLE IF EXISTS `ec_taxrate`;
 DROP TABLE IF EXISTS `ec_tempcart`;
 DROP TABLE IF EXISTS `ec_tempcart_optionitem`;

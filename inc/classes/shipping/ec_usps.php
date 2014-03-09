@@ -99,6 +99,34 @@ class ec_usps{
 		return $this->process_response( $response, $rate_code );
 		
 	}
+		
+	public function get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+		
+		if( $weight == 0 )
+			return "0.00";
+			
+		if( !$destination_country )
+			$destination_country = "US";
+		
+		$ship_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height );
+		
+		
+		$ch = curl_init(); //initiate the curl session 
+		curl_setopt($ch, CURLOPT_URL, $this->shipper_url); //set to url to post to
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // tell curl to return data in a variable 
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_POST, true); 
+		if( $this->use_international )
+			curl_setopt($ch, CURLOPT_POSTFIELDS, 'API=IntlRateV2&XML=' . urlencode( $ship_data ) ); // post the xml 
+		else
+			curl_setopt($ch, CURLOPT_POSTFIELDS, 'API=RateV4&XML=' . urlencode( $ship_data ) ); // post the xml 
+		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30); // set timeout in seconds 
+		$response = curl_exec($ch);
+		curl_close ($ch); 
+	
+		return $this->process_all_rates_response( $response );
+		
+	}
 	
 	public function get_rate_test( $ship_code, $destination_zip, $destination_country, $weight ){
 		
@@ -236,6 +264,60 @@ class ec_usps{
 		return $shipper_data;
 	}
 	
+	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+		
+		if( $destination_country != "US" ){
+			$db = new ec_db( );
+			$country_name = $db->get_country_name( $destination_country );
+			$this->use_international = true;
+			if( $weight < 1 )
+				$weight = 1;
+				
+			$shipper_data = "<IntlRateV2Request USERID='" . $this->usps_user_name . "' >
+							<Revision>2</Revision>
+							<Package ID='1ST' >
+								<Pounds>" . $weight . "</Pounds>
+								<Ounces>0</Ounces>
+								<Machinable>true</Machinable>
+								<MailType>ALL</MailType>
+								<GXG>
+									<POBoxFlag>N</POBoxFlag>
+									<GiftFlag>N</GiftFlag>
+								</GXG>
+								<ValueOfContents>10.00</ValueOfContents>
+								<Country>" . $country_name . "</Country>
+								<Container>RECTANGULAR</Container>
+								<Size>REGULAR</Size>
+								<Width>" . $width . "</Width>
+								<Length>" . $length . "</Length>
+								<Height>" . $height . "</Height>
+								<Girth>1</Girth>
+								<OriginZip>" . $this->usps_ship_from_zip . "</OriginZip>
+							</Package>
+						</IntlRateV2Request>";
+			
+		}else{
+		
+			$this->use_international = false;
+			$shipper_data = "<RateV4Request USERID='" . $this->usps_user_name . "' >
+							<Revision/>
+							<Package ID='1ST' >
+								<Service>ALL</Service>
+								<ZipOrigination>" . $this->usps_ship_from_zip . "</ZipOrigination>
+								<ZipDestination>" . $destination_zip . "</ZipDestination>
+								<Pounds>" . $weight . "</Pounds>
+								<Ounces>0</Ounces>
+								<Container/>
+								<Size>REGULAR</Size>
+								<Machinable>true</Machinable>
+							</Package>
+						</RateV4Request>";
+						
+		}
+		
+		return $shipper_data;
+	}
+	
 	private function process_response( $result, $rate_code ){
 		
 		$xml = new SimpleXMLElement($result);
@@ -262,6 +344,43 @@ class ec_usps{
 			error_log( "error in usps get rate, response: " . $result );
 			return "ERROR";
 		}
+	}
+	
+	private function process_all_rates_response( $result ){
+		
+		$rates = array( );
+		$xml = new SimpleXMLElement($result);
+		
+		if( $this->use_international ){
+			
+			
+			for( $i=0; $i<count( $xml->Package[0]->Postage ); $i++ ){
+				$rates[] = array( 'rate_code' => $rate_codes[ $xml->Package[0]->Postage[$i]['CLASSID'] ], 'rate' => $xml->Package[0]->Postage[$i]->Rate );
+			}
+				
+		}else{
+			$rate_codes = array(	"1" => "PRIORITY",
+									"33" => "PRIORITY HFP COMMERCIAL", 
+									"3" => "EXPRESS",
+									"23" => "EXPRESS SH",   
+									"2" => "EXPRESS HFP CPP", 
+									"4" => "STANDARD POST", 
+									"6" => "MEDIA", 
+									"7" => "LIBRARY"
+								);
+								
+			
+			for( $i=0; $i<count( $xml->Package->Postage ); $i++ ){
+				$rate_id = $xml->Package->Postage[$i]['CLASSID'];
+				if( isset( $rate_codes[ strval( $rate_id ) ] ) ){
+					$rates[] = array( 'rate_code' => $rate_codes[ strval( $rate_id ) ], 'rate' => $xml->Package->Postage[$i]->Rate );
+				}
+			
+			}
+				
+		}
+		
+		return $rates;
 	}
 }	
 ?>

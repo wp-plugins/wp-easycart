@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_14' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_15' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -133,6 +133,8 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_addtocart_return_to_product');		array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_exchange_rates');						array_push($this->wp_option_defaults, 'EUR=.73,GBP=.6,JPY=101.9' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_require_email_validation');			array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
@@ -331,6 +333,10 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_use_proxy');							array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_proxy_address');						array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_stripe_api_key');						array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_stripe_currency');					array_push($this->wp_option_defaults, 'USD' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		
 		// Language Options																					

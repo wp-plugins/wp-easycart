@@ -24,25 +24,61 @@ class ec_dhl{
 		
 	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight ){
 		
-		if( $weight == 0 )
-			return "0.00";
+		if( $this->dhl_site_id == "" || $this->dhl_password == "" || $this->dhl_ship_from_zip == "" ){
+			return "ERROR";
+		}else{
+		
+			if( $weight == 0 )
+				return "0.00";
+				
+			if( !$destination_country )
+				$destination_country = "US";
 			
-		if( !$destination_country )
-			$destination_country = "US";
+			$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
+			
+			$ch = curl_init(); //initiate the curl session 
+			curl_setopt($ch, CURLOPT_URL, $this->shipper_url); //set to url to post to
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // tell curl to return data in a variable 
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_POST, true); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $ship_data ); // post the xml 
+			curl_setopt($ch, CURLOPT_TIMEOUT, (int)30); // set timeout in seconds 
+			$response = curl_exec($ch);
+			curl_close ($ch); 
+			
+			return $this->process_response( $response, $ship_code );
+			
+		}
 		
-		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
+	}
+	
+	public function get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height ){
 		
-		$ch = curl_init(); //initiate the curl session 
-		curl_setopt($ch, CURLOPT_URL, $this->shipper_url); //set to url to post to
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // tell curl to return data in a variable 
-		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_POST, true); 
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $ship_data ); // post the xml 
-		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30); // set timeout in seconds 
-		$response = curl_exec($ch);
-		curl_close ($ch); 
+		if( $this->dhl_site_id == "" || $this->dhl_password == "" || $this->dhl_ship_from_zip == "" ){
+			return "ERROR";
+		}else{
 		
-		return $this->process_response( $response, $ship_code );
+			if( $weight == 0 )
+				return "0.00";
+				
+			if( !$destination_country )
+				$destination_country = "US";
+			
+			$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
+			
+			$ch = curl_init(); //initiate the curl session 
+			curl_setopt($ch, CURLOPT_URL, $this->shipper_url); //set to url to post to
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // tell curl to return data in a variable 
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_POST, true); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $ship_data ); // post the xml 
+			curl_setopt($ch, CURLOPT_TIMEOUT, (int)30); // set timeout in seconds 
+			$response = curl_exec($ch);
+			curl_close ($ch);
+			
+			return $this->process_all_rates_response( $response );
+			
+		}
 		
 	}
 	
@@ -123,6 +159,29 @@ class ec_dhl{
 						</p:DCTRequest>';
 		
 		return $shipper_data;
+	}
+	
+	private function process_all_rates_response( $result ){
+		
+		$rates = array( );
+		
+		$xml = new SimpleXMLElement($result);
+		
+		if( $xml && $xml->GetQuoteResponse && $xml->GetQuoteResponse->BkgDetails && $xml->GetQuoteResponse->BkgDetails->QtdShp ){
+			if( count( $xml->GetQuoteResponse->BkgDetails->QtdShp ) > 1 ){
+				for( $i=0; $i<count( $xml->GetQuoteResponse->BkgDetails->QtdShp ); $i++ ){
+					$rates[] = array( 	'rate_code' => $this->get_product_code( $xml->GetQuoteResponse->BkgDetails->QtdShp[$i]->ProductShortName ), 
+										'rate' => $xml->GetQuoteResponse->BkgDetails->QtdShp[$i]->ShippingCharge
+									 );
+				}
+			}else{
+				$rates[] = array( 	'rate_code' => $this->get_product_code( $xml->GetQuoteResponse->BkgDetails->QtdShp->ProductShortName ), 
+										'rate' => $xml->GetQuoteResponse->BkgDetails->QtdShp->WeightCharge
+									 );
+			}
+		}
+		
+		return $rates;
 	}
 	
 	private function process_response( $result, $rate_code ){
@@ -270,6 +329,122 @@ class ec_dhl{
 				break;
 			case 'Z':
 				return "Destination Charges";
+				break;
+		}
+	}
+	
+	private function get_product_code( $rate_name ){
+		//--------------------------
+		// DHL product codes
+		//--------------------------
+		switch( $rate_name ){
+			case "LOGISTICS SERVICES":
+				return '0';
+				break;
+			case "DOMESTIC EXPRESS 12:00":
+				return '1';
+				break;
+			case "B2C":
+				return '2';
+				break;
+			case "B2C":
+				return '3';
+				break;
+			case "JETLINE":
+				return '4';
+				break;
+			case "SPRINTLINE":
+				return '5';
+				break;
+			case "SECURELINE":
+				return '6';
+				break;
+			case "EXPRESS EASY":
+				return '7';
+				break;
+			case "EXPRESS EASY":
+				return '8';
+				break;
+			case "EUROPACK":
+				return '9';
+				break;
+			case "AUTO REVERSALS":
+				return 'A';
+				break;
+			case "BREAK BULK EXPRESS":
+				return 'B';
+				break;
+			case "MEDICAL EXPRESS":
+				return 'C';
+				break;
+			case "EXPRESS WORLDWIDE":
+				return 'D';
+				break;
+			case "EXPRESS 9:00":
+				return 'E';
+				break;
+			case "FREIGHT WORLDWIDE":
+				return 'F';
+				break;
+			case "DOMESTIC ECONOMY SELECT":
+				return 'G';
+				break;
+			case "ECONOMY SELECT":
+				return 'H';
+				break;
+			case "BREAK BULK ECONOMY":
+				return 'I';
+				break;
+			case "JUMBO BOX":
+				return 'J';
+				break;
+			case "EXPRESS 9:00":
+				return 'K';
+				break;
+			case "EXPRESS 10:30":
+				return 'L';
+				break;
+			case "EXPRESS 10:30":
+				return 'M';
+				break;
+			case "DOMESTIC EXPRESS":
+				return 'N';
+				break;
+			case "DOM EXPRESS 10:30":
+				return 'O';
+				break;
+			case "":
+				return 'P';
+				break;
+			case "EXPRESS WORLDWIDE":
+				return 'U';
+				break;
+			case "MEDICAL EXPRESS":
+				return 'Q';
+				break;
+			case "GLOBALMAIL BUSINESS":
+				return 'R';
+				break;
+			case "SAME DAY":
+				return 'S';
+				break;
+			case "EXPRESS 12:00":
+				return 'T';
+				break;
+			case "EUROPACK":
+				return 'V';
+				break;
+			case "ECONOMY SELECT":
+				return 'W';
+				break;
+			case "EXPRESS ENVELOPE":
+				return 'X';
+				break;
+			case "EXPRESS 12:00":
+				return 'Y';
+				break;
+			case "Destination Charges":
+				return 'Z';
 				break;
 		}
 	}

@@ -6,6 +6,10 @@ class ec_accountpage{
 	public $user;								// ec_user structure
 	public $orders;								// ec_orderlist structure
 	public $order;								// ec_orderitem structure
+	public $subscriptions;						// ec_subscription_list structure
+	public $subscription;						// ec_subscription_item structure
+	public $payment_methods;					// ec_payment_method_list structure
+	public $payment_method;						// ec_payment_method structure
 	
 	private $user_email;						// VARCHAR
 	private $user_password;						// VARCHAR
@@ -30,9 +34,15 @@ class ec_accountpage{
 		$this->user = new ec_user( $this->user_email );
 		
 		$this->orders = new ec_orderlist( $this->user->user_id, $this->user_email, $this->user_password );
+		$this->subscriptions = new ec_subscription_list( $this->user );
+		
 		if( isset( $_GET['order_id'] ) ){
 			$order_row = $this->mysqli->get_order_row( $_GET['order_id'], $this->user_email, $this->user_password );
 			$this->order = new ec_orderdisplay( $order_row, true );
+		}
+		
+		if( isset( $_GET['subscription_id'] ) ){
+			$this->subscription = new ec_subscription( $_GET['subscription_id'] );
 		}
 		
 		$accountpageid = get_option('ec_option_accountpage');
@@ -264,6 +274,14 @@ class ec_accountpage{
 		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=password\" class=\"ec_account_dashboard_link\">" . $link_text . "</a>";
 	}
 	
+	public function display_subscriptions_link( $link_text ){
+		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=subscriptions\" class=\"ec_account_dashboard_link\">" . $link_text . "</a>";
+	}
+	
+	public function display_payment_methods_link( $link_text ){
+		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=payment_methods\" class=\"ec_account_dashboard_link\">" . $link_text . "</a>";
+	}
+	
 	public function display_logout_link( $link_text ){
 		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=logout\" class=\"ec_account_dashboard_link\">" . $link_text . "</a>";
 	}
@@ -299,9 +317,9 @@ class ec_accountpage{
 	public function display_print_order_icon( ){
 		if( $this->order ){
 			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) )	
-				echo "<a href=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/print_receipt.php?order_id=" . $this->order->order_id ) . "\" target=\"_blank\"><img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
+				echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=print_receipt&order_id=" . $this->order->order_id . "\" target=\"_blank\"><img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
 			else
-				echo "<a href=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/print_receipt.php?order_id=" . $this->order->order_id ) . "\" target=\"_blank\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
+				echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=print_receipt&order_id=" . $this->order->order_id . "\" target=\"_blank\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
 		}
 	}
 	/* END ORDER DETAILS FUNCTIONS*/
@@ -581,6 +599,61 @@ class ec_accountpage{
 
 	/* END SHIPPING INFORMATION FUNCTIONS */
 	
+	
+	/* START SUBSCRIPTIONS FUNCTIONS */
+	public function display_account_subscriptions( ){
+		if( $this->is_page_visible( "subscriptions" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscriptions.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscriptions.php' );
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscriptions.php' ) )
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscriptions.php' );
+		}
+	}
+	
+	public function using_subscriptions( ){
+		if( get_option( 'ec_option_payment_process_method' ) == "stripe" ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	/* END SUBSCRIPTIONS FUNCTIONS*/
+	
+	/* START SUBSCRIPTION DETAILS FUNCTIONS */
+	public function display_account_subscription_details( ){
+		if( $this->is_page_visible( "subscription_details" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_details.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_details.php' );
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_details.php' ) )
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_details.php' );
+		}
+	}
+	
+	/* END SUBSCRIPTION DETAILS FUNCTIONS */
+	
+	/* START PAYMENT METHODS FUNCTIONS */
+	public function display_account_payment_methods( ){
+		if( $this->is_page_visible( "payment_methods" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_methods.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_methods.php' );
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_methods.php' ) )
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_methods.php' );
+		}
+	}
+	/* END PAYMENT METHODS FUNCTIONS*/
+	
+	/* START PAYMENT METHOD DETAILS FUNCTIONS */
+	public function display_account_payment_method_details( ){
+		if( $this->is_page_visible( "payment_method_details" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_method_details.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_method_details.php' );
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_method_details.php' ) )
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_method_details.php' );
+		}
+	}
+	
+	/* END PAYMENT METHOD DETAILS FUNCTIONS */
+	
 	/* START FORM ACTION FUNCTIONS */
 	public function process_form_action( $action ){
 		if( $action == "login" )
@@ -607,7 +680,11 @@ class ec_accountpage{
 		
 		$user = $this->mysqli->get_user( $email, $password );
 		
-		if( $user ){
+		if( $user && $user->user_level == "pending" ){
+			
+			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=login&account_error=not_activated" );
+			
+		}else if( $user ){
 			$_SESSION['ec_user_id'] = $user->user_id;
 			$_SESSION['ec_email'] = $email;
 			$_SESSION['ec_username'] = $user->first_name . " " . $user->last_name;
@@ -648,7 +725,13 @@ class ec_accountpage{
 		}
 		
 		// Insert the user
-		$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, "shopper", $is_subscriber );
+		if( get_option( 'ec_option_require_email_validation' ) ){
+			// Send a validation email here.
+			$this->send_validation_email( $email );
+			$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, "pending", $is_subscriber );
+		}else{
+			$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, "shopper", $is_subscriber );
+		}
 		
 		// Update the address user_id
 		if( get_option( 'ec_option_require_account_address' ) ){
@@ -662,14 +745,23 @@ class ec_accountpage{
 		}
 		
 		if( $user_id ){
-			$_SESSION['ec_user_id'] = $user_id;
-			$_SESSION['ec_email'] = $email;
-			$_SESSION['ec_username'] = $first_name . " " . $last_name;
-			$_SESSION['ec_first_name'] = $first_name;
-			$_SESSION['ec_last_name'] = $last_name;
-			$_SESSION['ec_password'] = $password;
-		
-			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=dashboard" );
+			
+			if( get_option( 'ec_option_require_email_validation' ) ){
+			
+				header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=login&account_success=validation_required" );
+			
+			}else{
+				
+				$_SESSION['ec_user_id'] = $user_id;
+				$_SESSION['ec_email'] = $email;
+				$_SESSION['ec_username'] = $first_name . " " . $last_name;
+				$_SESSION['ec_first_name'] = $first_name;
+				$_SESSION['ec_last_name'] = $last_name;
+				$_SESSION['ec_password'] = $password;
+				
+				header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=dashboard" );
+				
+			}
 			
 		}else{
 			
@@ -903,6 +995,27 @@ class ec_accountpage{
 		$rand_chars = array( "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" );
 		$rand_password = $rand_chars[ rand( 0, 9 ) ] . $rand_chars[ rand( 0, 9 ) ] . $rand_chars[ rand( 0, 9 ) ] . $rand_chars[ rand( 0, 9 ) ] . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 );
 		return $rand_password;
+	}
+	
+	private function send_validation_email( $email ){
+	 	$key = md5( $email . "ecsalt" );
+		
+		// Get receipt
+		$message = $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_message" ) . "\r\n";
+		$message .= "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=activate_account&email=" . $email . "&key=" . $key . "\" target=\"_blank\">" . $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_link" ) . "</a>";
+		
+		$headers = "From: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
+		$headers .= "Reply-To: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
+		$headers .= "X-Mailer: PHP4\n";
+		$headers .= "X-Priority: 3\n";
+		$headers .= "MIME-Version: 1.0\n";
+		$headers .= "Return-Path: " . get_option( 'ec_option_order_from_email' ) . "\r\n"; 
+		$headers .= "Content-type: text/html\r\n"; 
+		
+		if( get_option( 'ec_option_use_wp_mail' ) )
+			wp_mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, $headers);
+		else
+			mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, $headers);
 	}
 	
 }

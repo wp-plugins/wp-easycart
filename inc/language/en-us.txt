@@ -729,6 +729,10 @@
 					"title":"Email Receipt, Link to Account",
 					"value":"view order details"
 				},
+				"cart_payment_receipt_subscription_details_link":{
+					"title":"Email Receipt, Link to Subscription",
+					"value":"view subscription details"
+				},
 				"cart_payment_receipt_title":{
 					"title":"Email Receipt Title",
 					"value":"Order Confirmation - Order Number"
@@ -885,6 +889,23 @@
 				}
 			}
 		},
+		"account_validation_email":{
+			"label":"Account - Validation Email",
+			"options":{
+				"account_validation_email_message":{
+					"title":"Account, Short Validate Email Message",
+					"value":"To activate your account, please click the link below."
+				},
+				"account_validation_email_title":{
+					"title":"Account, Activate Your Account Title",
+					"value":"Please Activate Your Account"
+				},
+				"account_validation_email_link":{
+					"title":"Account, Activate Your Account Link",
+					"value":"Click Here to Activate"
+				}
+			}
+		},
 		"account_register":{
 			"label":"Account - Register",
 			"options":{
@@ -933,9 +954,21 @@
 					"title":"Account, Navigation, Edit Basic Information Link",
 					"value":"edit basic information"
 				},
+				"account_navigation_orders":{
+					"title":"Account, Navigation, View Orders Link",
+					"value":"view orders"
+				},
 				"account_navigation_password":{
 					"title":"Account, Navigation, Edit Password Link",
 					"value":"edit password"
+				},
+				"account_navigation_subscriptions":{
+					"title":"Account, Navigation, Subscriptions Link",
+					"value":"manage subscriptions"
+				},
+				"account_navigation_payment_methods":{
+					"title":"Account, Navigation, Payments Link",
+					"value":"manage payment methods"
 				},
 				"account_navigation_sign_out":{
 					"title":"Account, Navigation, Sign Out Link",
@@ -1277,6 +1310,10 @@
 					"title":"Account, Orders Details, Gift Card Label",
 					"value":"Gift Card:"
 				},
+				"account_orders_details_view_subscription":{
+					"title":"Account, Orders Details, View Subscription",
+					"value":"View Subscription Details"
+				},
 				"account_orders_details_billing_label":{
 					"title":"Account, Orders Details, Billing Label",
 					"value":"Billing Address"
@@ -1375,6 +1412,39 @@
 				}
 			}
 		},
+		"account_subscriptions":{
+			"label":"Account - Subscriptions",
+			"options":{
+				"account_subscriptions_title":{
+					"title":"Account, Subscriptions Title",
+					"value":"Your Active Subscriptions"
+				},
+				"account_subscriptions_header_1":{
+					"title":"Account, Subscriptions, Header 1",
+					"value":"Subscription Name"
+				},
+				"account_subscriptions_header_2":{
+					"title":"Account, Subscriptions, Header 2",
+					"value":"Next Bill Date"
+				},
+				"account_subscriptions_header_3":{
+					"title":"Account, Subscriptions, Header 3",
+					"value":"Last Charged"
+				},
+				"account_subscriptions_header_4":{
+					"title":"Account, Subscriptions, Header 4",
+					"value":"Price/Cycle"
+				},
+				"account_subscriptions_view_subscription_button":{
+					"title":"Account, Subscriptions, View Details Button",
+					"value":"VIEW DETAILS"
+				},
+				"account_subscriptions_none_found":{
+					"title":"Account, Subscriptions, None Found",
+					"value":"There are no subscriptions associated with your account."
+				}
+			}
+		},
 		"ec_errors":{
 			"label":"Store Error Text",
 			"options":{
@@ -1433,6 +1503,22 @@
 				"payment_failed":{
 					"title":"Cart, Optional, Credit Card Failed, Gateway Dependent",
 					"value":"Your payment could not completed because your credit card could not be verified. Please check your credit card information and try again. If your problem persists, please contact us to complete payment."
+				},
+				"already_subscribed":{
+					"title":"Cart, Optional, Already Subscribed, Gateway Dependent",
+					"value":"You have already subscribed to this product. Please visit your account to manage your active subscriptions."
+				},
+				"subscription_not_found":{
+					"title":"Cart, Optional, Subscription Not Found, Gateway Dependent",
+					"value":"An error has occurred while processing your request and the subscription requested was not found. Contact us to resolve the issue."
+				},
+				"activation_error":{
+					"title":"Account, Activation Error",
+					"value":"An error has occurred while attempting to activate your account. Please contact us to have the issue resolved."
+				},
+				"not_activated":{
+					"title":"Account, Not Activated",
+					"value":"The account your are attempting to access has not been activated. Please activate your account through the activation email sent when you signed up for an account or contact us if you are having problems."
 				}
 			}
 		},
@@ -1470,6 +1556,14 @@
 				"store_added_to_cart":{
 					"title":"Store, Added Item to Cart",
 					"value":"You have successfully added [prod_title] to your cart."
+				},
+				"activation_success":{
+					"title":"Account, Activation Success",
+					"value":"You have successfully activated your account"
+				},
+				"validation_required":{
+					"title":"Account, Validation Required",
+					"value":"You have successfully created an account, but your email needs to be validated. An email has been sent to your account with instructions on how to complete the registration process. Contact us if you have any questions."
 				}
 			}
 		},

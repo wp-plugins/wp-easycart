@@ -716,6 +716,10 @@
 					"title":"Email Receipt, Link to Account",
 					"value":"Δείτε τις λεπτομέρειες τις παραγγελίας"
 				},
+				"cart_payment_receipt_subscription_details_link":{
+					"title":"Email Receipt, Link to Subscription",
+					"value":"άποψη λεπτομέρειες της συνδρομής"
+				},
 				"cart_payment_receipt_title":{
 					"title":"Email Receipt Title",
 					"value":"Επιβεβαίωση παραγγελίας"
@@ -872,6 +876,23 @@
 				}
 			}
 		},
+		"account_validation_email":{
+			"label":"Account - Validation Email",
+			"options":{
+				"account_validation_email_message":{
+					"title":"Account, Short Validate Email Message",
+					"value":"Για να ενεργοποιήσετε το λογαριασμό σας, κάντε κλικ στον παρακάτω σύνδεσμο."
+				},
+				"account_validation_email_title":{
+					"title":"Account, Activate Your Acocunt Title",
+					"value":"Παρακαλούμε ενεργοποιήστε το λογαριασμό σας"
+				},
+				"account_validation_email_link":{
+					"title":"Account, Activate Your Acocunt Link",
+					"value":"Κάντε κλικ εδώ για να ενεργοποιήσετε"
+				}
+			}
+		},
 		"account_register":{
 			"label":"Account - Register",
 			"options":{
@@ -920,9 +941,21 @@
 					"title":"Account, Navigation, Edit Basic Information Link",
 					"value":"Επεξεργασία βασικών πληροφοριών"
 				},
+				"account_navigation_orders":{
+					"title":"Account, Navigation, View Orders Link",
+					"value":"προβολή παραγγελίες"
+				},
 				"account_navigation_password":{
 					"title":"Account, Navigation, Edit Password Link",
 					"value":"Επεξεργασία κωδικού"
+				},
+				"account_navigation_subscriptions":{
+					"title":"Account, Navigation, Subscriptions Link",
+					"value":"διαχείριση των συνδρομών"
+				},
+				"account_navigation_payment_methods":{
+					"title":"Account, Navigation, Payments Link",
+					"value":"διαχειρίζονται τις μεθόδους πληρωμής"
 				},
 				"account_navigation_sign_out":{
 					"title":"Account, Navigation, Sign Out Link",
@@ -1264,6 +1297,10 @@
 					"title":"Account, Orders Details, Gift Card Label",
 					"value":"Δώρο - κάρτα"
 				},
+				"account_orders_details_view_subscription":{
+					"title":"Account, Orders Details, View Subscription",
+					"value":"Δείτε Λεπτομέρειες Συνδρομή"
+				},
 				"account_orders_details_billing_label":{
 					"title":"Account, Orders Details, Billing Label",
 					"value":"Πληροφορίες λογαριασμού πληρωμής"
@@ -1362,6 +1399,39 @@
 				}
 			}
 		},
+		"account_subscriptions":{
+			"label":"Account - Subscriptions",
+			"options":{
+				"account_subscriptions_title":{
+					"title":"Account, Subscriptions Title",
+					"value":"Ενεργά Συνδρομές σας"
+				},
+				"account_subscriptions_header_1":{
+					"title":"Account, Subscriptions, Header 1",
+					"value":"συνδρομή όνομα"
+				},
+				"account_subscriptions_header_2":{
+					"title":"Account, Subscriptions, Header 2",
+					"value":"Επόμενο Bill Ημερομηνία"
+				},
+				"account_subscriptions_header_3":{
+					"title":"Account, Subscriptions, Header 3",
+					"value":"Τελευταία Χρέωση"
+				},
+				"account_subscriptions_header_4":{
+					"title":"Account, Subscriptions, Header 4",
+					"value":"Τιμή/Κύκλος"
+				},
+				"account_subscriptions_view_subscription_button":{
+					"title":"Account, Subscriptions, View Details Button",
+					"value":"ΠΕΡΙΣΣΟΤΕΡΑ"
+				},
+				"account_subscriptions_none_found":{
+					"title":"Account, Subscriptions, None Found",
+					"value":"Δεν υπάρχουν συνδρομές που συνδέονται με το λογαριασμό σας."
+				}
+			}
+		},
 		"ec_errors":{
 			"label":"Store Error Text",
 			"options":{
@@ -1420,6 +1490,22 @@
 				"payment_failed":{
 					"title":"Cart, Optional, Credit Card Failed, Gateway Dependent",
 					"value":"Η πληρωμή σας δεν μπόρεσε να ολοκληρωθεί, επειδή η πιστωτική σας κάρτα δεν μπόρεσε να επαληθευτεί. Παρακαλούμε ελέγξτε τα στοιχεία της πιστωτικής σας κάρτας και δοκιμάστε ξανά. Αν το πρόβλημά σας εξακολουθεί να υφίσταται, παρακαλούμε επικοινωνήστε μαζί μας για να ολοκληρώσετε την πληρωμή."
+				},
+				"already_subscribed":{
+					"title":"Cart, Optional, Already Subscribed, Gateway Dependent",
+					"value":"Έχετε ήδη εγγραφεί σε αυτό το προϊόν. Παρακαλούμε επισκεφθείτε το λογαριασμό σας για να διαχειριστείτε τα ενεργά τις συνδρομές σας."
+				},
+				"subscription_not_found":{
+					"title":"Cart, Optional, Subscription Not Found, Gateway Dependent",
+					"value":"Παρουσιάστηκε σφάλμα κατά την επεξεργασία του αιτήματός σας και η εγγραφή που ζητήσατε δεν βρέθηκε. Επικοινωνήστε μαζί μας για να επιλύσει το ζήτημα."
+				},
+				"activation_error":{
+					"title":"Account, Activation Error",
+					"value":"Παρουσιάστηκε σφάλμα κατά την προσπάθεια ενεργοποίησης του λογαριασμού σας. Παρακαλώ επικοινωνήστε μαζί μας για να έχουμε το ζήτημα επιλύθηκε."
+				},
+				"not_activated":{
+					"title":"Account, Not Activated",
+					"value":"Ο λογαριασμός σας προσπαθείτε να αποκτήσετε πρόσβαση δεν έχει ενεργοποιηθεί. Παρακαλούμε ενεργοποιήστε το λογαριασμό σας μέσω του ηλεκτρονικού ταχυδρομείου ενεργοποίησης αποστέλλονται όταν έχετε εγγραφεί για λογαριασμό ή επικοινωνήστε μαζί μας αν έχετε προβλήματα."
 				}
 			}
 		},
@@ -1457,6 +1543,14 @@
 				"store_added_to_cart":{
 					"title":"Store, Added Item to Cart",
 					"value":"Έχετε προσθέσει με επιτυχία [prod_title] στο καλάθι σας."
+				},
+				"activation_success":{
+					"title":"Account, Activation Success",
+					"value":"Έχετε ενεργοποιήσει με επιτυχία το λογαριασμό σας"
+				},
+				"validation_required":{
+					"title":"Account, Validation Required",
+					"value":"Έχετε δημιουργήσει με επιτυχία ένα λογαριασμό, αλλά e-mail σας πρέπει να επικυρωθεί. Ένα email έχει σταλεί στο λογαριασμό σας με οδηγίες για το πώς να ολοκληρώσετε τη διαδικασία εγγραφής. Επικοινωνήστε μαζί μας εάν έχετε οποιεσδήποτε ερωτήσεις."
 				}
 			}
 		},

@@ -437,6 +437,15 @@ CREATE TABLE IF NOT EXISTS `ec_order` (
   'Quickbooks Specific Edit Sequence.',
   `creditcard_digits` VARCHAR(4) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
    'If credit card checkout is used, saves the last four digits here.',
+   `fraktjakt_order_id` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 
+   'Order ID for the Fraktjakt shipment.',
+   `fraktjakt_shipment_id` VARCHAR(20) COLLATE utf8_general_ci DEFAULT '' COMMENT 
+   'Shipment ID for the Fraktjakt shipment.',
+   `stripe_charge_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 
+   'Stripe Charge ID if Stripe used.',
+   `subscription_id` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 
+   'Subscription ID from the ec_subscription table if order was a subscription order.',
+
   PRIMARY KEY (`order_id`),
   UNIQUE KEY `order_id` (`order_id`)
 )ENGINE=MyISAM
@@ -639,9 +648,11 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
   `stock_quantity` INTEGER(7) NOT NULL DEFAULT 0 COMMENT
    'Simple stock quantity control, used to check overall stock total.',
   `weight` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Weight for the product.',
-  `seo_description` TEXT COLLATE utf8_general_ci COMMENT
-   'SEO description for the product. Should be short and used in the META-DATA.'
-   ,
+  `width` DOUBLE(15,3) NOT NULL DEFAULT '1.000' COMMENT 'Width of the product in the default shipping unit.',
+  `height` DOUBLE(15,3) NOT NULL DEFAULT '1.000' COMMENT 'Height of the product in the default shipping unit.',
+  `length` DOUBLE(15,3) NOT NULL DEFAULT '1.000' COMMENT 'Length of the product in the default shipping unit.',
+   `seo_description` TEXT COLLATE utf8_general_ci COMMENT
+   'SEO description for the product. Should be short and used in the META-DATA.',
   `seo_keywords` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT ''
    COMMENT 'SEO keywords for the product. Used in the META-DATA.',
   `use_specifications` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
@@ -740,6 +751,15 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
   'Number of the period times to charge the customer, e.g. 3 paired with month is charge once every 3 months.',
   `subscription_bill_period` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'M' COMMENT 
   'The period of the subscription, valid values are: D, W, M, Y.',
+  `trial_period_days` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 
+  'Length of subscription trial period in days.',
+  `stripe_plan_added` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 
+  'Has this subscription product been added to Stripe.',
+  `subscription_plan_id` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 
+  'Used to group the subscriptions in a membership plan used for upgrade.',
+  `allow_multiple_subscription_purchases` TINYINT(1) NOT NULL DEFAULT '1' COMMENT 
+  'Should this item be able to be purchased multiple times.',
+  
   PRIMARY KEY (`product_id`),
   UNIQUE KEY `ProductID` (`product_id`),
   UNIQUE KEY `ModelNumber_2` (`model_number`),
@@ -809,6 +829,11 @@ CREATE TABLE IF NOT EXISTS `ec_promocode` (
    'The product_id used if the promotion is a by_product_id type promotion.',
   `message` BLOB NOT NULL COMMENT
    'The message displayed when the promotion is used.',
+  `max_redemptions` INTEGER(11) NOT NULL DEFAULT '999' COMMENT 
+   'The maximum number of times you can use this promotion code.',
+  `times_redeemed` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 
+   'This is the number of times this coupon has been redeemed.',
+
   PRIMARY KEY (`promocode_id`),
   UNIQUE KEY `promoID` (`promocode_id`)
 )ENGINE=MyISAM
@@ -1013,6 +1038,15 @@ CREATE TABLE IF NOT EXISTS `ec_setting` (
    'LB' COMMENT 'Your DHL Weight Unit.',
   `dhl_test_mode` TINYINT(1) NOT NULL DEFAULT 
    '0' COMMENT 'Use DHL Test Mode.',
+   `fraktjakt_customer_id` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT 
+   '' COMMENT 'Fraktjakt Customer ID.',
+   `fraktjakt_login_key` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT 
+   '' COMMENT 'Fraktjakt Login Key.',
+   `fraktjakt_conversion_rate` DOUBLE(15,3) NOT NULL DEFAULT 
+   '1.000' COMMENT 'The conversion rate between your base currency and SEK.',
+   `fraktjakt_test_mode` TINYINT(1) NOT NULL DEFAULT 
+   '0' COMMENT 'Use test mode for Fraktjakt.',
+
   PRIMARY KEY (`setting_id`)
 )ENGINE=MyISAM
 AUTO_INCREMENT=223 AVG_ROW_LENGTH=268 CHARACTER SET 'utf8' COLLATE
@@ -1144,9 +1178,26 @@ CREATE TABLE IF NOT EXISTS `ec_subscription` (
    'Username assigned to this subscription by PayPal.',
   `paypal_password` VARCHAR(510) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
    'Password assigned to this subscription by PayPal.',
+  `stripe_subscription_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 
+  'If subscription created with Stripe, Stripe ID here.',
+
   PRIMARY KEY (`subscription_id`)
 ) ENGINE=MyISAM 
-AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci';
+AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci'
+COMMENT=''
+;
+CREATE TABLE IF NOT EXISTS `ec_subscription_plan` (
+  `subscription_plan_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT
+   'Unique ID for a Subscription Plan.',
+  `plan_title` VARCHAR(512) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT
+   'Title to describe the plan of connecting subscriptions.',
+  `can_downgrade` TINYINT(1) NOT NULL DEFAULT '0' COMMENT
+   'Can a customer automatically downgrade their subscription plan.',
+  PRIMARY KEY (`subscription_plan_id`)
+) ENGINE=MyISAM 
+AUTO_INCREMENT=0 CHARACTER SET'utf8' COLLATE 'utf8_general_ci'
+COMMENT=''
+;
 CREATE TABLE IF NOT EXISTS `ec_taxrate` (
   `taxrate_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT
    'The unique identifier for ec_taxrate.',
@@ -1295,6 +1346,9 @@ CREATE TABLE IF NOT EXISTS `ec_user` (
    `realauth_registered` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
    'If selected, customer is using Realex Payments and this customer already has an account in the RealVault.'
    ,
+   `stripe_customer_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 
+   'Stripe Customer ID if subscription created with Stripe.',
+
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id` (`user_id`),
   UNIQUE KEY `email_2` (`email`),

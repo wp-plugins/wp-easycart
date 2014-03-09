@@ -213,6 +213,34 @@ class ec_setting{
 			return "";
 	}
 	
+	public function get_fraktjakt_customer_id( ){
+		if( isset( $this->setting_row->fraktjakt_customer_id ) )
+			return $this->setting_row->fraktjakt_customer_id;
+		else
+			return "";
+	}
+	
+	public function get_fraktjakt_login_key( ){
+		if( isset( $this->setting_row->fraktjakt_login_key ) )
+			return $this->setting_row->fraktjakt_login_key;
+		else
+			return "";
+	}
+	
+	public function get_fraktjakt_conversion_rate( ){
+		if( isset( $this->setting_row->fraktjakt_conversion_rate ) )
+			return $this->setting_row->fraktjakt_conversion_rate;
+		else
+			return "";
+	}
+	
+	public function get_fraktjakt_test_mode( ){
+		if( isset( $this->setting_row->fraktjakt_test_mode ) )
+			return $this->setting_row->fraktjakt_test_mode;
+		else
+			return "";
+	}
+	
 }
 
 ?>

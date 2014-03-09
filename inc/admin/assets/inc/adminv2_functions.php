@@ -775,6 +775,11 @@ function ec_live_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $live_payment == "stripe" ){
+		if( get_option( 'ec_option_stripe_api_key' ) != "" && get_option( 'ec_option_stripe_currency' ) != "" )
+			return true;
+		else
+			return false;
 	}
 }
 
@@ -806,6 +811,8 @@ function ec_get_live_payment_method( ){
 		return "Sagepay";
 	else if( $live_payment == "securepay" )
 		return "SecurePay";
+	else if( $live_payment == "stripe" )
+		return "Stripe";
 }
 
 function ec_update_pages( $store_id, $account_id, $cart_id ){
@@ -1079,6 +1086,7 @@ function ec_save_basic_settings( ){
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
+	update_option( 'ec_option_require_email_validation', $_POST['ec_option_require_email_validation'] );
 	
 	// Google Analytics Setup
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
@@ -1276,6 +1284,9 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_securepay_password', $_POST['ec_option_securepay_password'] );
 	update_option( 'ec_option_securepay_currency', $_POST['ec_option_securepay_currency'] );
 	update_option( 'ec_option_securepay_test_mode', $_POST['ec_option_securepay_test_mode'] );
+	//Stripe
+	update_option( 'ec_option_stripe_api_key', $_POST['ec_option_stripe_api_key'] );
+	update_option( 'ec_option_stripe_currency', $_POST['ec_option_stripe_currency'] );
 	//proxy settings
 	update_option( 'ec_option_use_proxy', $_POST['ec_option_use_proxy'] );
 	update_option( 'ec_option_proxy_address', $_POST['ec_option_proxy_address'] );

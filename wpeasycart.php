@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.1.2
+ * Version: 2.1.3
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.1.2
+ * @version 2.1.3
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_1_2' );
-define( 'EC_CURRENT_DB', '1_14' );
+define( 'EC_CURRENT_VERSION', '2_1_3' );
+define( 'EC_CURRENT_DB', '1_15' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -202,15 +202,6 @@ function load_ec_pre(){
 	}
 	// END UPGRADE THE DB IF NEEDED
 	
-	// CREATE BANNERS FOLDER IF IT DOESN'T EXIST
-	$banners_folder = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/products' . "/banners";
-	if( !is_dir( $banners_folder  ) ){
-		// Any version before 13 needs the banner folder.
-		if( !mkdir( $banners_folder, 0755 ) )
-			echo "The WP EasyCart plugin could not add a folder to your install on upgrade. You will need to manually add this folder on your server to access future features. To solve this issue add a folder called 'banners' to the following directory: wp-easycart/products/ (so wp-easycart/products/banners needs to exist). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.";
-	}
-	// END CREATE BANNERS FOLDER IF IT DOESN'T EXIST
-	
 	// CREATE DATA FOLDER IF IT DOESN'T EXIST
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
 		
@@ -232,6 +223,94 @@ function load_ec_pre(){
 		}
 	}
 	// END CREATE DATA FOLDER IF IT DOESN'T EXIST
+	
+	// CHECK FOR PRODUCTS FOLDER STRUCTURE IN MAIN FOLDER, ADD IF NEEDED
+	$products_folder = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/";
+	$banners = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/banners/";
+	$downloads = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/";
+	$pics1  = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/pics1/";
+	$pics2 = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/pics2/";
+	$pics3 = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/pics3/";
+	$pics4 = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/pics4/";
+	$pics5 = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/pics5/";
+	$swatches = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/swatches/";
+	$uploads = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/uploads/";
+	
+	if( !is_dir( $products_folder ) )
+		mkdir( $products_folder, 0755 );
+		
+	if( !is_dir( $banners ) )
+		mkdir( $banners, 0755 );
+		
+	if( !is_dir( $downloads ) )
+		mkdir( $downloads, 0755 );
+		
+	if( !is_dir( $pics1 ) )
+		mkdir( $pics1, 0755 );
+		
+	if( !is_dir( $pics2 ) )
+		mkdir( $pics2, 0755 );
+		
+	if( !is_dir( $pics3 ) )
+		mkdir( $pics3, 0755 );
+		
+	if( !is_dir( $pics4 ) )
+		mkdir( $pics4, 0755 );
+		
+	if( !is_dir( $pics5 ) )
+		mkdir( $pics5, 0755 );
+		
+	if( !is_dir( $swatches ) )
+		mkdir( $swatches, 0755 );
+		
+	if( !is_dir( $uploads ) )
+		mkdir( $uploads, 0755 );
+	
+	// END CHECK FOR PRODUCTS FOLDER
+	
+	// CHECK FOR PRODUCTS FOLDER STRUCTURE IN DATA FOLDER, ADD IF NEEDED
+	$products_folder = WP_PLUGIN_DIR . "/wp-easycart-data/products/";
+	$banners = WP_PLUGIN_DIR . "/wp-easycart-data/products/banners/";
+	$downloads = WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/";
+	$pics1  = WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/";
+	$pics2 = WP_PLUGIN_DIR . "/wp-easycart-data/products/pics2/";
+	$pics3 = WP_PLUGIN_DIR . "/wp-easycart-data/products/pics3/";
+	$pics4 = WP_PLUGIN_DIR . "/wp-easycart-data/products/pics4/";
+	$pics5 = WP_PLUGIN_DIR . "/wp-easycart-data/products/pics5/";
+	$swatches = WP_PLUGIN_DIR . "/wp-easycart-data/products/swatches/";
+	$uploads = WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/";
+	
+	if( !is_dir( $products_folder ) )
+		mkdir( $products_folder, 0755 );
+		
+	if( !is_dir( $banners ) )
+		mkdir( $banners, 0755 );
+		
+	if( !is_dir( $downloads ) )
+		mkdir( $downloads, 0755 );
+		
+	if( !is_dir( $pics1 ) )
+		mkdir( $pics1, 0755 );
+		
+	if( !is_dir( $pics2 ) )
+		mkdir( $pics2, 0755 );
+		
+	if( !is_dir( $pics3 ) )
+		mkdir( $pics3, 0755 );
+		
+	if( !is_dir( $pics4 ) )
+		mkdir( $pics4, 0755 );
+		
+	if( !is_dir( $pics5 ) )
+		mkdir( $pics5, 0755 );
+		
+	if( !is_dir( $swatches ) )
+		mkdir( $swatches, 0755 );
+		
+	if( !is_dir( $uploads ) )
+		mkdir( $uploads, 0755 );
+	
+	// END CHECK FOR PRODUCTS FOLDER
 	
 	///////////////////////////////////////////////////////////////////////////////////
 	// This is a check to ensure old users are upgraded to the new linking format
@@ -387,24 +466,29 @@ function load_ec_pre(){
 	if( isset( $_POST['ec_account_form_action'] ) ){
 		$ec_accountpage = new ec_accountpage();
 		$ec_accountpage->process_form_action( $_POST['ec_account_form_action'] );
+	
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "logout" ){
 		$ec_accountpage = new ec_accountpage();
 		$ec_accountpage->process_form_action( "logout" );
 	
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "print_receipt" ){
+		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/scripts/print_receipt.php" );
+		die( );
+	
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "activate_account" && isset( $_GET['email'] ) && isset( $_GET['key'] ) ){
+		$db = new ec_db( );
+		$is_activated = $db->activate_user( $_GET['email'], $_GET['key'] );
+		if( $is_activated ){
+			header( "location: " . $account_page . $permalinkdivider . "ec_page=login&account_success=activation_success" );
+		}else{
+			header( "location: " . $account_page . $permalinkdivider . "ec_page=login&account_error=activation_error" );
+		}
 	}
 	
 	/* Newsletter Form Actions */
 	if( isset( $_POST['ec_newsletter_email'] ) ){
 		$ec_db = new ec_db();
 		$ec_db->insert_subscriber( $_POST['ec_newsletter_email'], "", "" );
-	}
-	
-	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart/products/uploads/" ) ){
-		mkdir( WP_PLUGIN_DIR . "/wp-easycart/products/uploads/" );
-	}
-	
-	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" ) ){
-		mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/products/uploads/" );
 	}
 	
 	// END STATS AND FORM PROCESSING
@@ -485,12 +569,17 @@ function ec_load_js( ){
 	wp_register_script( 'wpeasycart_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_js_loader.php' ), array( 'jquery' ) );
 	wp_enqueue_script( 'wpeasycart_js' );
 	
+	$ajax_subfolder = "";
+	if( file_exists( plugins_url( 'wp-easycart-data/ajax-subfolder.txt' ) ) ){
+		$ajax_subfolder = file_get_contents( plugins_url( 'wp-easycart-data/ajax-subfolder.txt' ) );
+	}
+	
 	$https_link = "";
 	if( class_exists( "WordPressHTTPS" ) ){
 		$https_class = new WordPressHTTPS( );
-		$https_link = $https_class->getHttpsUrl() . '/wp-admin/admin-ajax.php';
+		$https_link = $https_class->getHttpsUrl() . $ajax_subfolder . '/wp-admin/admin-ajax.php';
 	}else{
-		$https_link = str_replace( "http://", "https://", admin_url( 'admin-ajax.php' ) );
+		$https_link = str_replace( "http://", "https://", str_replace( "/wp-admin", $ajax_subfolder . "/wp-admin", admin_url( 'admin-ajax.php' ) ) );
 	}
 	
 	if( isset( $_SERVER['HTTPS'] ) && $_SERVER["HTTPS"] == "on" )
@@ -658,9 +747,17 @@ function load_ec_product( $atts ){
 				echo "<li style=\"float:left; margin-right:" . $margin . ";\">";
 			}
 			if( $style == '1' ){
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' );
+				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )
+					include( WP_PLUGIN_DIR . "/" . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' );
+				else
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' );
+			
 			}else if( $style == '2' ){
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' );
+				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' ) )
+					include( WP_PLUGIN_DIR . "/" . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' );
+				else
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' );
+				
 			}else{
 				echo "<a href=\"" . $product->get_product_link( ) . "\">";
 				echo "<img src=\"" . $product->get_product_single_image( ) . "\" alt=\"" . $product->title . "\" width=\"" . $imagew . "\" height=\"" . $imageh . "\">";

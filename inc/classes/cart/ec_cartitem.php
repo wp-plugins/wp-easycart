@@ -15,8 +15,12 @@ class ec_cartitem{
 	public $quantity;												// INT
 	public $grid_quantity;											// INT
 	public $weight;													// INT
+	public $width;
+	public $height;
+	public $length;
 	
 	public $title;													// VARCHAR 255
+	public $description;											// BLOB
 	
 	public $unit_price;												// FLOAT 15,3
 	public $total_price;											// FLOAT 15,3
@@ -94,8 +98,12 @@ class ec_cartitem{
 			$this->quantity = $this->grid_quantity;
 			
 		$this->weight = $cartitem_data->weight;
+		$this->width = $cartitem_data->width;
+		$this->height = $cartitem_data->height;
+		$this->length = $cartitem_data->length;
 		
 		$this->title = $GLOBALS['language']->convert_text( $cartitem_data->title );
+		$this->description = $GLOBALS['language']->convert_text( $cartitem_data->description );
 		
 		$this->is_giftcard = $cartitem_data->is_giftcard;
 		$this->is_download = $cartitem_data->is_download;

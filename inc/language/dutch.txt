@@ -1455,6 +1455,14 @@
 					"value":"Bekijk uw orderdetails"
 
 				},
+				
+				"cart_payment_receipt_subscription_details_link":{
+				
+					"title":"E-mail ontvangst, Link naar Subscription",
+				
+					"value":"view abonnementsgegevens"
+				
+				},
 
 				"cart_payment_receipt_title":{
 
@@ -1766,6 +1774,24 @@
 			}
 
 		},
+		
+		"account_validation_email":{
+			"label":"Account - Validation Email",
+			"options":{
+				"account_validation_email_message":{
+					"title":"Account, Korte valideren E-mail Bericht",
+					"value":"Om uw account te activeren, klikt u op de onderstaande link."
+				},
+				"account_validation_email_title":{
+					"title":"Rekening, uw account te activeren titel",
+					"value":"Activeer uw account"
+				},
+				"account_validation_email_link":{
+					"title":"Rekening, uw account te activeren Link",
+					"value":"Klik hier om te activeren"
+				}
+			}
+		},
 
 		"account_register":{
 
@@ -1859,6 +1885,10 @@
 					"value":"Wijzig basisinformatie"
 
 				},
+				"account_navigation_orders":{
+					"title":"Account, Navigatie, Uitzicht Bestellingen Link",
+					"value":"view bestellingen"
+				},
 
 				"account_navigation_password":{
 
@@ -1866,6 +1896,22 @@
 
 					"value":"Wijzig wachtwoord"
 
+				},
+				
+				"account_navigation_subscriptions":{
+				
+					"title":"Account, Navigatie, Abonnementen Link",
+					
+					"value":"beheer van abonnementen"
+				
+				},
+				
+				"account_navigation_payment_methods":{
+					
+					"title":"Account, Navigatie, Betalingen Link",
+					
+					"value":"beheren betaalmethoden"
+				
 				},
 
 				"account_navigation_sign_out":{
@@ -2544,6 +2590,10 @@
 					"value":"Cadeaubon:"
 
 				},
+				"account_orders_details_view_subscription":{
+					"title":"Account, Orders Details, Uitzicht Subscription",
+					"value":"Bekijk Abonnementsgegevens"
+				},
 
 				"account_orders_details_billing_label":{
 
@@ -2739,6 +2789,40 @@
 			}
 
 		},
+		
+		"account_subscriptions":{
+			"label":"Account - Abonnementen",
+			"options":{
+				"account_subscriptions_title":{
+					"title":"Rekening, abonnementen titel",
+					"value":"Uw actieve abonnementen"
+				},
+				"account_subscriptions_header_1":{
+					"title":"Rekening, abonnementen, Koppen 1",
+					"value":"Inschrijving Naam"
+				},
+				"account_subscriptions_header_2":{
+					"title":"Rekening, abonnementen, Koppen 2",
+					"value":"Volgende Bill Datum"
+				},
+				"account_subscriptions_header_3":{
+					"title":"Rekening, abonnementen, Koppen 3",
+					"value":"Laatste Charged"
+				},
+				"account_subscriptions_header_4":{
+					"title":"Rekening, abonnementen, Koppen 4",
+					"value":"Prijs/Cycle"
+				},
+				"account_subscriptions_view_subscription_button":{
+					"title":"Rekening, abonnementen, details Button",
+					"value":"BEKIJK DETAILS"
+				},
+				"account_subscriptions_none_found":{
+					"title":"Rekening, abonnementen, Geen gevonden",
+					"value":"Er zijn geen abonnementen aan uw account gekoppeld."
+				}
+			}
+		},
 
 		"ec_errors":{
 
@@ -2854,6 +2938,23 @@
 
 					"value":"Uw betaling kon niet worden afgerond, omdat uw creditcard niet kon worden geverifieerd. Controleer uw creditcardinformatie en probeer het opnieuw. Wanneer het probleem aanblijft, neem dan contact met ons op."
 
+				},
+				
+				"already_subscribed":{
+					"title":"Cart, Optioneel, al had ingeschreven, Gateway Afhankelijke",
+					"value":"Je hebt al geabonneerd op dit artikel. Kunt u terecht op uw account om uw actieve abonnementen te beheren."
+				},
+				"subscription_not_found":{
+					"title":"Kar, Optioneel Abonnement niet gevonden, Gateway Afhankelijke",
+					"value":"Er is een fout opgetreden tijdens het verwerken van uw verzoek en de gevraagde abonnement is niet gevonden. Contacteer ons om de kwestie op te lossen."
+				},
+				"activation_error":{
+					"title":"Account, Activation Error",
+					"value":"Er is een fout opgetreden tijdens een poging om uw account te activeren. Neem contact met ons om het probleem opgelost."
+				},
+				"not_activated":{
+					"title":"Account, Niet Geactiveerd",
+					"value":"De rekening je probeert op te vragen is niet geactiveerd. Activeer je account via de activatie e-mail verzonden wanneer u zich voor een account of neem contact met ons op als u problemen ondervindt."
 				}
 
 			}
@@ -2928,6 +3029,14 @@
 					
 					"value":"Je hebt met succes [prod_title] toegevoegd aan uw mandje."
 					
+				},
+				"activation_success":{
+					"title":"Account, Activering Succes",
+					"value":"Je hebt met succes je account geactiveerd"
+				},
+				"validation_required":{
+					"title":"Account, Validatie vereist",
+					"value":"U hebt een account aangemaakt, maar uw e-mail moet worden gevalideerd. Een e-mail naar uw account gestuurd met instructies over hoe u het registratieproces te voltooien. Neem contact met ons op als u vragen hebt."
 				}
 
 			}

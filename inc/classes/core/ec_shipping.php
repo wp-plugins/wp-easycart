@@ -6,6 +6,8 @@ class ec_shipping{
 	protected $ec_user;											// ec_user structure
 	protected $ec_shipper;										// ec_shipper structure
 	
+	private $fraktjakt;											// Optional ec_fraktjakt
+	
 	private $display_type;										// VARCHAR, methods = [RADIO, SELECT, DIV]
 	
 	private $price_based = array();								// array of array[trigger_rate, shipping_rate] 
@@ -13,6 +15,7 @@ class ec_shipping{
 	private $method_based = array();							// array of array[shipping_rate, shipping_label, shippingrate_id]
 	private $quantity_based = array();							// array of array[trigger_rate, shipping_rate] 
 	private $live_based = array();								// array of array[shipping_code, shipping_label, shippingrate_id, ship_type]
+	private $fraktjakt_shipping_options;						// Optional array of shipping options in array( shipment_id, id, description, price, arrival_time)
 	
 	private $handling;											// FLOAT 11,2
 	
@@ -61,6 +64,12 @@ class ec_shipping{
 			
 			else if( $this->user && $this->user->shipping && $this->user->shipping->country )
 				$this->destination_country = $this->user->shipping->country;
+			
+			// Fraktjakt Shipping Info	
+			if( $this->shipping_method == "fraktjakt" ){
+				$this->fraktjakt = new ec_fraktjakt( );
+				$this->fraktjakt_shipping_options = $this->fraktjakt->get_shipping_options( );
+			}
 			
 			$zone_obj = $this->mysqli->get_zone_ids( $this->destination_country, $this->user->shipping->state );
 			$zones = array();
@@ -168,6 +177,9 @@ class ec_shipping{
 		else if( $this->shipping_method == "live" )
 			return $this->get_live_based_shipping_options( $standard_text, $express_text );
 			
+		else if( $this->shipping_method == "fraktjakt" )
+			return $this->get_fraktjakt_based_shipping_options( );
+			
 	}
 	
 	private function get_price_based_shipping_options( $standard_text, $express_text ){
@@ -269,6 +281,26 @@ class ec_shipping{
 		}else{
 			return "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\">Shipping Rate Setup ERROR: Please visit the EasyCart Admin -> Store Admin -> Rates and add at least one shipping method for your selected live based shipping company. If you have done this and are still seeing this error, then likely there is a setup error in the live based company settings. Feel free to contact us at www.wpeasycart.com to get help troubleshooting.</div>";
 		}
+	}
+	
+	private function get_fraktjakt_based_shipping_options( ){
+		
+		$i = 0;
+		$selected_method = 0;
+		if( isset( $_SESSION['ec_shipping_method'] ) )
+			$selected_method = $_SESSION['ec_shipping_method'];
+			
+		$ret_string = "";
+		foreach( $this->fraktjakt_shipping_options as $shipping_option ){
+			$ret_string .= "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"radio\" name=\"ec_cart_shipping_method\" id=\"ec_cart_shipping_method\" value=\"" . $shipping_option['id'] . "\"";
+			if( ( !$selected_method && $i == 0 ) || ( $selected_method == $shipping_option['id'] ) )
+				$ret_string .= " checked=\"checked\"";
+				
+			$ret_string .= ">" . $shipping_option['description'] . " (" . $GLOBALS['currency']->symbol . "<span id=\"ec_cart_standard_shipping_price\">" . $GLOBALS['currency']->get_number_only( $shipping_option['price'] ) . "</span>)</div>";
+			$i++;
+		}
+		return $ret_string;
+		
 	}
 	
 	private function get_method_based_radio( $i ){
@@ -398,7 +430,22 @@ class ec_shipping{
 				}
 			}
 		
+		}else if( $this->shipping_method == "fraktjakt" ){
+			
+			$i = 0;
+			$selected_method = 0;
+			if( isset( $_SESSION['ec_shipping_method'] ) )
+				$selected_method = $_SESSION['ec_shipping_method'];
+				
+			$ret_string = "";
+			foreach( $this->fraktjakt_shipping_options as $shipping_option ){
+				if( ( !$selected_method && $i == 0 ) || ( $selected_method == $shipping_option['id'] ) )
+					return $shipping_option['description'];
+					
+				$i++;
+			}
 		}
+		
 	}
 	
 	public function get_single_shipping_price_content( $standard_text, $express_text, $standard_price ){
@@ -483,6 +530,22 @@ class ec_shipping{
 					}
 				}	
 			}
+		}else if( $this->shipping_method == "fraktjakt" ){
+			$i = 0;
+			$selected_method = 0;
+			if( isset( $_SESSION['ec_shipping_method'] ) )
+				$selected_method = $_SESSION['ec_shipping_method'];
+			
+			if( $this->fraktjakt_shipping_options ){
+					
+				foreach( $this->fraktjakt_shipping_options as $shipping_option ){
+					if( ( !$selected_method && $i == 0 ) || ( $selected_method == $shipping_option['id'] ) )
+						$rate = $shipping_option['price'];
+						
+					$i++;
+				}
+				
+			}
 		}
 		
 		$promotion = new ec_promotion( );
@@ -503,6 +566,21 @@ class ec_shipping{
 		$rate = 0;
 		$promotion->get_shipping_discounts( $this->subtotal, $rate, $this->shipping_promotion_text );
 		return $this->shipping_promotion_text;
+	}
+	
+	public function submit_fraktjakt_shipping_order( ){
+		$shipment_id = 0;
+		$i = 0;
+		$selected_method = 0;
+		if( isset( $_SESSION['ec_shipping_method'] ) )
+			$selected_method = $_SESSION['ec_shipping_method'];
+		
+		foreach( $this->fraktjakt_shipping_options as $shipping_option ){
+			if( $selected_method == $shipping_option['id'] )
+				$shipment_id = $shipping_option['shipment_id']; 
+		}
+		
+		return $this->fraktjakt->insert_shipping_order( $shipment_id, $_SESSION['ec_shipping_method'] );
 	}
 }
 

@@ -97,6 +97,11 @@ function ec_editor_show_panel( panel ){
 		jQuery( '#ec_shortcode_menu' ).hide( );
 		jQuery( '#ec_manufacturer_group' ).show( );
 		
+	}else if( panel == "ec_productdetails" ){
+		// Hide shorcode menu, show the category add panel
+		jQuery( '#ec_shortcode_menu' ).hide( );
+		jQuery( '#ec_productdetails_menu' ).show( );
+		
 	}else if( panel == "ec_cart" ){
 		// Just add the cart shortcode and hide the popup
 		tinyMCE.activeEditor.execCommand( 'mceInsertContent', 0, "[ec_cart]");
@@ -135,6 +140,7 @@ function ec_editor_hide_panels( ){
 	jQuery( '#ec_product_menu' ).hide( );
 	jQuery( '#ec_product_category' ).hide( );
 	jQuery( '#ec_manufacturer_group' ).hide( );
+	jQuery( '#ec_productdetails_menu' ).hide( );
 	jQuery( '#ec_single_product' ).hide( );
 	jQuery( '#ec_multiple_products' ).hide( );
 	jQuery( '#ec_add_to_cart' ).hide( );
@@ -250,6 +256,29 @@ jQuery( '#ec_add_manufacturer_group' ).click( function( ){
 function ec_reset_manufacturer_group( ){
 	jQuery( '#ec_manufacturer_group_error' ).hide( );
 	jQuery( '#ec_editor_manufacturer_select' ).val( "0" );
+}
+
+/***************************************************************************
+/ Insert Product Details Shortcode Functions
+/****************************************************************************/
+//Submit function for adding product details shortcode
+jQuery( '#ec_add_productdetails' ).click( function( ){
+	var model_number = jQuery( '#ec_editor_productdetails_select' ).val( );
+	
+	if( model_number != "0" ){
+		tinyMCE.activeEditor.execCommand( 'mceInsertContent', 0, "[ec_store modelnumber=\"" + model_number + "\"]" );
+		ec_close_editor( );
+		ec_reset_productdetails( );
+	}else{
+		//show error
+		jQuery( '#ec_productdetails_error' ).show( );
+	}
+});
+
+//Function to reset the product category panel
+function ec_reset_productdetails( ){
+	jQuery( '#ec_productdetails_error' ).hide( );
+	jQuery( '#ec_editor_productdetails_select' ).val( "0" );
 }
 
 /***************************************************************************

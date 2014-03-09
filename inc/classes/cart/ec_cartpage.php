@@ -128,7 +128,10 @@ class ec_cartpage{
 							  "3dsecure_failed" => $GLOBALS['language']->get_text( "ec_errors", "3dsecure_failed" ),
 							  "manualbill_failed" => $GLOBALS['language']->get_text( "ec_errors", "manualbill_failed"),
 							  "thirdparty_failed" => $GLOBALS['language']->get_text( "ec_errors", "thirdparty_failed"),
-							  "payment_failed" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed")   
+							  "payment_failed" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed"),
+							  "card_error" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed"),
+							  "already_subscribed" => $GLOBALS['language']->get_text( "ec_errors", "already_subscribed"),
+							  "not_activated" => $GLOBALS['language']->get_text( "ec_errors", "not_activated")   
 							);
 		if( isset( $_GET['ec_cart_error'] ) ){
 			echo "<div class=\"ec_cart_error\"><div>" . $error_notes[ $_GET['ec_cart_error'] ] . "</div></div>";
@@ -147,44 +150,53 @@ class ec_cartpage{
 			
 			$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone );
 		
-			$tax_struct = new ec_tax( 0,0,0, "", "");
-			
-			$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );
-			$subtotal = $GLOBALS['currency']->get_currency_display( $order->sub_total );
-			$tax = $GLOBALS['currency']->get_currency_display( $order->tax_total );
-			$duty = $GLOBALS['currency']->get_currency_display( $order->duty_total );
-			$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
-			if( ( $order->grand_total - $order->vat_total ) > 0 )
-				$vat_rate = number_format( $this->tax->vat_rate, 0, '', '' );
-			else
-				$vat_rate = number_format( 0, 0, '', '' );
-			$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
-			$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
-			
-			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emaillogo.jpg" ) ){
-				$email_logo_url = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emaillogo.jpg");
-				$email_footer_url = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emailfooter.jpg");
+			if( $order->subscription_id > 0 ){
+				
+				$subscription = new ec_subscription( $order->subscription_id );
+				$subscription->print_receipt( $order, $order_details );
+				
 			}else{
-				$email_logo_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emaillogo.jpg");
-				$email_footer_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_email_receipt/emailfooter.jpg");
+			
+				$tax_struct = new ec_tax( 0,0,0, "", "");
+				
+				$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );
+				$subtotal = $GLOBALS['currency']->get_currency_display( $order->sub_total );
+				$tax = $GLOBALS['currency']->get_currency_display( $order->tax_total );
+				$duty = $GLOBALS['currency']->get_currency_display( $order->duty_total );
+				$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
+				if( ( $order->grand_total - $order->vat_total ) > 0 )
+					$vat_rate = number_format( $this->tax->vat_rate, 0, '', '' );
+				else
+					$vat_rate = number_format( 0, 0, '', '' );
+				$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
+				$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
+				
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_email_receipt/emaillogo.jpg" ) ){
+					$email_logo_url = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_email_receipt/emaillogo.jpg");
+					$email_footer_url = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_email_receipt/emailfooter.jpg");
+				}else{
+					$email_logo_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_email_receipt/emaillogo.jpg");
+					$email_footer_url = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_email_receipt/emailfooter.jpg");
+				}
+				
+				//google analytics
+				$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
+				$google_urchin_code = get_option('ec_option_googleanalyticsid');
+				$google_wp_url = $_SERVER['SERVER_NAME'];
+				$google_transaction = $this->analytics->get_transaction_js();
+				$google_items = $this->analytics->get_item_js();
+				//end google analytics
+				$this->display_cart_error();
+				
+				//Backwards compatibility for an error... Don't want the button showing if user didn't create an account.
+				if( $_SESSION['ec_password'] == "guest" )
+					$_SESSION['ec_email'] = "guest";
+				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' ) )	
+					include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
+				else
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
+			
 			}
-			
-			//google analytics
-			$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
-			$google_urchin_code = get_option('ec_option_googleanalyticsid');
-			$google_wp_url = $_SERVER['SERVER_NAME'];
-			$google_transaction = $this->analytics->get_transaction_js();
-			$google_items = $this->analytics->get_item_js();
-			//end google analytics
-			$this->display_cart_error();
-			
-			//Backwards compatibility for an error... Don't want the button showing if user didn't create an account.
-			if( $_SESSION['ec_password'] == "guest" )
-				$_SESSION['ec_email'] = "guest";
-			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' ) )	
-				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
-			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_success.php' );
 			
 		}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "third_party" ){
 			$order_id = $_GET['order_id'];
@@ -202,6 +214,43 @@ class ec_cartpage{
 			else
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_third_party.php' );
 			
+		}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "subscription_info" ){
+			
+			$this->display_cart_error( );
+			
+			if( isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
+			
+				$subscription_found = false;
+				
+				if( isset( $_GET['subscription'] ) ){
+					
+					global $wpdb;
+					$model_number = $_GET['subscription'];
+					$products = $this->mysqli->get_product_list( $wpdb->prepare( " WHERE product.model_number = %s", $model_number ), "", "", "" );
+					if( count( $products ) > 0 ){
+						$subscription_found = true;
+						$product = new ec_product( $products[0], 0, 1, 0 );
+						
+						// Subscription
+						if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription.php' ) )	
+							include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription.php' );
+						else
+							include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription.php' );
+					}
+					
+				}
+				
+				if( !$subscription_found ){
+					echo "No subscription was found to match the model number provided.";
+				}
+				
+			}else{
+				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' ) )
+					include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' );
+				else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' ) )
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' );
+			}
+				
 		}else{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_page.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_page.php' );
@@ -242,6 +291,13 @@ class ec_cartpage{
 			else
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login_complete.php' );
 		}
+	}
+	
+	public function display_subscription_login_complete( ){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login_complete.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login_complete.php' );
+		else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login_complete.php' ) )
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login_complete.php' );
 	}
 	
 	public function should_display_cart( ){
@@ -305,6 +361,16 @@ class ec_cartpage{
 	}
 	
 	public function display_page_three_form_end(){
+		echo "</form>";
+	}
+	
+	public function display_subscription_form_start( $model_number ){
+		echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=checkout_submit_order\" method=\"post\">";
+		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" value=\"insert_subscription\" />";
+		echo "<input type=\"hidden\" name=\"ec_cart_model_number\" value=\"" . $model_number . "\" />";
+	}
+	
+	public function display_subscription_form_end(){
 		echo "</form>";
 	}
 	
@@ -467,6 +533,9 @@ class ec_cartpage{
 	}
 	
 	public function display_cart_login_form_end(){
+		if( isset( $_GET['subscription'] ) ){
+			echo "<input type=\"hidden\" name=\"ec_cart_subscription\" value=\"" . $_GET['subscription'] . "\" />";
+		}
 		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" value=\"login_user\" />";
 		echo "</form>";
 	}
@@ -476,6 +545,9 @@ class ec_cartpage{
 	}
 	
 	public function display_cart_login_form_guest_end(){
+		if( isset( $_GET['subscription'] ) ){
+			echo "<input type=\"hidden\" name=\"ec_cart_subscription\" value=\"" . $_GET['subscription'] . "\" />";
+		}
 		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" value=\"login_user\" />";
 		echo "<input type=\"hidden\" name=\"ec_cart_login_email\" value=\"guest\" />";
 		echo "<input type=\"hidden\" name=\"ec_cart_login_password\" value=\"guest\" />";
@@ -510,7 +582,11 @@ class ec_cartpage{
 	}
 	
 	public function display_cart_login_complete_signout_link( $input ){
-		echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_cart_action=logout\" class=\"ec_cart_login_complete_logout_link\">" . $input . "</a>";
+		if( isset( $_GET['subscription'] ) ){
+			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_cart_action=logout&subscription=" . $_GET['subscription'] . "\" class=\"ec_cart_login_complete_logout_link\">" . $input . "</a>";
+		}else{
+			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_cart_action=logout\" class=\"ec_cart_login_complete_logout_link\">" . $input . "</a>";
+		}
 	}
 	
 	/* END LOGIN/LOGOUT FUNCTIONS */
@@ -815,7 +891,13 @@ class ec_cartpage{
 	/* END CONTINUE TO PAYMENT FUNCTIONS */
 	
 	public function display_submit_order_button( $button_text ){
-		echo "<input type=\"submit\" id=\"ec_submit_payment_button\" class=\"ec_cart_submit_order_button\" value=\"" . $button_text . "\" onclick=\"return ec_cart_validate_checkout_submit_order();\" />";
+		
+		if( isset( $_GET['subscription'] ) ){
+			echo "<input type=\"submit\" id=\"ec_submit_payment_button\" class=\"ec_cart_submit_order_button\" value=\"" . $button_text . "\" onclick=\"return ec_cart_validate_subscription_order();\" />";
+		}else{
+			echo "<input type=\"submit\" id=\"ec_submit_payment_button\" class=\"ec_cart_submit_order_button\" value=\"" . $button_text . "\" onclick=\"return ec_cart_validate_checkout_submit_order();\" />";
+		}
+		
 	}
 	
 	/* START ADDRESS REVIEW FUNCTIONS */
@@ -923,15 +1005,15 @@ class ec_cartpage{
 	
 	public function ec_cart_display_third_party_logo( ){
 		if( get_option( 'ec_option_payment_third_party' ) == "paypal" ){
-			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/paypal.jpg" ) )	
-				echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/paypal.jpg" ) . "\" alt=\"PayPal\" />";
+			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/paypal.jpg" ) )	
+				echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/paypal.jpg" ) . "\" alt=\"PayPal\" />";
 			else
-				echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/paypal.jpg") . "\" alt=\"PayPal\" />";
+				echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/paypal.jpg") . "\" alt=\"PayPal\" />";
 		}else if( get_option( 'ec_option_payment_third_party' ) == "skrill" ){
-			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/skrill-logo.gif" ) )	
-				echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/skrill-logo.gif" ) . "\" alt=\"Skrill\" />";
+			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/skrill-logo.gif" ) )	
+				echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/skrill-logo.gif" ) . "\" alt=\"Skrill\" />";
 			else
-				echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/skrill-logo.gif") . "\" alt=\"Skrill\" />";
+				echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/skrill-logo.gif") . "\" alt=\"Skrill\" />";
 		}
 	}
 	
@@ -945,28 +1027,28 @@ class ec_cartpage{
 	public function ec_cart_display_credit_card_images(){
 		//display credit card icons
 		if( get_option('ec_option_use_visa') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/visa.png") . "\" alt=\"Visa\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_visa\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/visa_inactive.png") . "\" alt=\"Visa\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_visa_inactive\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visa.png") . "\" alt=\"Visa\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_visa\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visa_inactive.png") . "\" alt=\"Visa\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_visa_inactive\" />";
 		
 		if( get_option('ec_option_use_discover') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/discover.png") . "\" alt=\"Discover\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_discover\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/discover_inactive.png") . "\" alt=\"Discover\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_discover_inactive\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/discover.png") . "\" alt=\"Discover\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_discover\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/discover_inactive.png") . "\" alt=\"Discover\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_discover_inactive\" />";
 		
 		if( get_option('ec_option_use_mastercard') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/mastercard.png") . "\" alt=\"Mastercard\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_mastercard\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/mastercard_inactive.png") . "\" alt=\"Mastercard\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_mastercard_inactive\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/mastercard.png") . "\" alt=\"Mastercard\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_mastercard\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/mastercard_inactive.png") . "\" alt=\"Mastercard\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_mastercard_inactive\" />";
 		
 		if( get_option('ec_option_use_amex') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/american_express.png") . "\" alt=\"AMEX\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_amex\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/american_express_inactive.png") . "\" alt=\"AMEX\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_amex_inactive\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/american_express.png") . "\" alt=\"AMEX\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_amex\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/american_express_inactive.png") . "\" alt=\"AMEX\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_amex_inactive\" />";
 		
 		if( get_option('ec_option_use_jcb') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/jcb.png") . "\" alt=\"JCB\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_jcb\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/jcb_inactive.png") . "\" alt=\"JCB\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_jcb_inactive\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/jcb.png") . "\" alt=\"JCB\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_jcb\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/jcb_inactive.png") . "\" alt=\"JCB\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_jcb_inactive\" />";
 		
 		if( get_option('ec_option_use_diners') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/diners.png") . "\" alt=\"Diners\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_diners\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/diners_inactive.png") . "\" alt=\"Diners\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_diners_inactive\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/diners.png") . "\" alt=\"Diners\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_diners\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/diners_inactive.png") . "\" alt=\"Diners\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_diners_inactive\" />";
 		
 		if( get_option('ec_option_use_laser') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/laser.gif") . "\" alt=\"Laser\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_laser\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/laser_inactive.png") . "\" alt=\"Laser\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_laser_inactive\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/laser.gif") . "\" alt=\"Laser\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_laser\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/laser_inactive.png") . "\" alt=\"Laser\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_laser_inactive\" />";
 		
 		if( get_option('ec_option_use_maestro') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/maestro.png") . "\" alt=\"Maestro\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_maestro\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_layout' ) . "/ec_cart_payment_information/maestro_inactive.png") . "\" alt=\"Maestro\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_maestro_inactive\" />";
+		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/maestro.png") . "\" alt=\"Maestro\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_maestro\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/maestro_inactive.png") . "\" alt=\"Maestro\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_maestro_inactive\" />";
 		
 		
 	}
@@ -1168,6 +1250,8 @@ class ec_cartpage{
 		else if( $action == "realex_redirect" )						$this->process_realex_redirect( );
 		else if( $action == "realex_response" )						$this->process_realex_response( );
 		else if( $action == "paymentexpress_thirdparty_response" )	$this->process_paymentexpress_thirdparty_response( );
+		else if( $action == "purchase_subscription" )				$this->process_purchase_subscription( );
+		else if( $action == "insert_subscription" )					$this->process_insert_subscription( );
 	}
 	
 	// Process the add to cart form submission
@@ -1446,10 +1530,16 @@ class ec_cartpage{
 			$_SESSION['ec_email'] = "guest";
 			$_SESSION['ec_username'] = "guest";
 			$_SESSION['ec_password'] = "guest";
-			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
+			if( isset( $_POST['ec_cart_subscription'] ) ){
+				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $_POST['ec_cart_subscription'] );
+			}else{
+				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
+			}
 		}else{
 			$user = $this->mysqli->get_user( $email, $password );
-			if($user){
+			if( $user && $user->user_level == "pending" ){
+				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login&ec_cart_error=not_activated");
+			}else if( $user ){
 				$_SESSION['ec_user_id'] = $user->user_id;
 				$_SESSION['ec_email'] = $email;
 				$_SESSION['ec_username'] = $user->first_name . " " . $user->last_name;
@@ -1457,7 +1547,11 @@ class ec_cartpage{
 				$_SESSION['ec_last_name'] = $user->last_name;
 				$_SESSION['ec_password'] = $password;
 				
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
+				if( isset( $_POST['ec_cart_subscription'] ) ){
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $_POST['ec_cart_subscription'] );
+				}else{
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
+				}
 			}else{
 				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login&ec_cart_error=login_failed");
 			}
@@ -1500,8 +1594,12 @@ class ec_cartpage{
 		
 		unset( $_SESSION['ec_order_notes'] );
 		
-		header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login");
-	
+		
+		if( isset( $_GET['subscription'] ) ){
+			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $_GET['subscription'] );
+		}else{
+			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login");
+		}
 	}
 	
 	private function process_save_checkout_info( ){
@@ -1625,6 +1723,121 @@ class ec_cartpage{
 		$_SESSION['ec_ship_express'] = $ship_express;
 		
 		header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment");
+	}
+	
+	private function process_purchase_subscription( ){
+		
+		$model_number = 0;
+		if( isset( $_POST['model_number'] ) )
+			$model_number = $_POST['model_number'];
+		
+		header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number );
+		
+	}
+	
+	private function process_insert_subscription( ){
+		global $wpdb;
+		$model_number = $_POST['ec_cart_model_number'];
+		$products = $this->mysqli->get_product_list( $wpdb->prepare( " WHERE product.model_number = %s", $model_number ), "", "", "" );
+		
+		if( count( $products > 0 ) ){
+			
+			// Try to get a subscription for this product and email address!
+			if( isset( $_POST['ec_contact_email'] ) ){
+				$email_test = $_POST['ec_contact_email'];
+			}else{
+				$email_test = $_SESSION['ec_email'];
+			}
+			
+			$subscription_list = $this->mysqli->find_subscription_match( $email_test, $products[0]['product_id'] );
+			
+			if( count( $subscription_list ) > 0 ){
+				
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=already_subscribed" );
+			
+			// This user has not bought this subscription product, move forward.
+			}else{
+		
+				$first_name = $_POST['ec_cart_billing_first_name'];
+				$last_name = $_POST['ec_cart_billing_last_name'];
+				$address = $_POST['ec_cart_billing_address'];
+				$city = $_POST['ec_cart_billing_city'];
+				$state = $_POST['ec_cart_billing_state'];
+				$zip = $_POST['ec_cart_billing_zip'];
+				$country = $_POST['ec_cart_billing_country'];
+				$phone = $_POST['ec_cart_billing_phone'];
+				
+				$payment_method = $_POST['ec_cart_payment_type'];
+				$card_holder_name = $_POST['ec_card_holder_name'];
+				$card_number = $_POST['ec_card_number'];
+				$exp_month = $_POST['ec_expiration_month'];
+				$exp_year = $_POST['ec_expiration_year'];
+				$security_code = $_POST['ec_security_code'];
+				
+				// CREATE ACCOUNT IF NEEDED
+				if( isset( $_POST['ec_contact_email'] ) ){
+					$email = $_POST['ec_contact_email'];
+					$password = md5( $_POST['ec_contact_password'] );
+					
+					$billing_id = $this->mysqli->insert_address( $first_name, $last_name, $address, $city, $state, $zip, $country, $phone );
+					
+					$user_level = "shopper";
+					
+					$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, $user_level, false );
+					$this->mysqli->update_address_user_id( $billing_id, $user_id );
+					
+					$_SESSION['ec_email'] = $email;
+					$_SESSION['ec_password'] = $password;
+					$_SESSION['ec_user_id'] = $user_id;
+				}
+				// END CREATE ACCOUNT
+				
+				$user = new ec_user( "" );
+				$user->setup_billing_info_data( $first_name, $last_name, $address, $city, $state, $country, $zip, $phone );
+				$card = new ec_credit_card( $payment_method, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
+				$product = new ec_product( $products[0] );
+				$stripe = new ec_stripe( );
+				
+				if( $user->stripe_customer_id == "" ){
+					//first insert customer
+					$customer_id = $stripe->insert_customer( $user, $card );
+					$this->mysqli->update_user_stripe_id( $user->user_id, $customer_id );
+					$user->stripe_customer_id = $customer_id;
+				}
+				
+				if( !$product->stripe_plan_added ){
+					// first insert plan
+					$stripe->insert_plan( $product );
+					$this->mysqli->update_product_stripe_added( $product->product_id );
+				}
+				
+				// Insert Subscription
+				$stripe_response = $stripe->insert_subscription( $product, $user, $card );
+				
+				if( !isset( $stripe_response->error ) ){
+					$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user );
+					$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id );
+					$subscription = new ec_subscription( $stripe_response );
+					$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+					$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+					$subscription->send_email_receipt( $user, $order, $order_details );
+				
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );	
+				
+				}else{
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=" . $stripe_response->error->type );	
+				
+				}
+				
+			}
+		
+		}else{
+			
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_not_found" );
+			
+		}
+		
+		die( );
 	}
 	/* END PROCESS FORM SUBMISSION FUNCTIONS */
 	

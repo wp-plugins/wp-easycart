@@ -18,6 +18,7 @@ class ec_user{
 	public $shipping;									// ec_address structure
 	
 	public $realauth_registered;						// BOOL
+	public $stripe_customer_id;							// VARCHAR 128
 	
 	private $password;									// VARCHAR 255
 	
@@ -61,11 +62,13 @@ class ec_user{
 			$this->is_subscriber = $user->is_subscriber;
 			$this->billing_id = $user->default_billing_address_id;
 			$this->shipping_id = $user->default_shipping_address_id;
+			$this->stripe_customer_id = $user->stripe_customer_id;
 		}else{
 			$this->user_level = "";
 			$this->is_subscriber = "";
 			$this->billing_id = "";
 			$this->shipping_id = "";
+			$this->stripe_customer_id = "";
 		}
 		
 		if( isset( $_SESSION['ec_billing_first_name'] ) && $_SESSION['ec_billing_first_name'] != "" ){

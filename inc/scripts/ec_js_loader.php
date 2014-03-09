@@ -32,6 +32,7 @@ $ec_cart_js = array(
 	'cart_payment_information',
 	'cart_contact_information',
 	'cart_submit_order',
+	'cart_subscription',
 	'cart_success',
 	'cart_third_party'
 );
@@ -49,7 +50,9 @@ $ec_account_js = array(
 	'account_forgot_password',
 	'account_register',
 	'account_order_line',
-	'account_order_details_item_display'
+	'account_order_details_item_display',
+	'account_subscription_line',
+	'account_subscription_list'
 );
 
 $ec_widget_js = array(
@@ -70,21 +73,21 @@ $js_content = "";
 foreach ($ec_store_js as $js_file) {
 	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
 		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
-	else
+	else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
 		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
 }
 
 foreach ($ec_cart_js as $js_file){
 	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
 		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
-	else
+	else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
 		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
 }
 
 foreach ($ec_account_js as $js_file) {
 	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
 		$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
-	else
+	else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' ) )
 		$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_' . $js_file . '/ec_' . $js_file . '.js' );
 }
 
@@ -97,7 +100,7 @@ foreach ($ec_widget_js as $js_file){
 
 if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_validation.js' ) )
 	$js_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_validation.js' );
-else
+else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_validation.js' ) )
 	$js_content .= file_get_contents( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec_validation.js' );
 
 // Replace some variables
