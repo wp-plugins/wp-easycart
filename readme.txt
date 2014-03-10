@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.1.4
+Stable tag: 2.1.5
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.5 =
+* Fix - Estimate live shipping was not returning results until after the user entered the checkout info area.
 = 2.1.4 =
 * Fix - Adjustments to the forgot password and validate account emailers.
 * Fix - Admin CSS, fixed to prevent interference with other themes and plugins.

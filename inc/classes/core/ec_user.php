@@ -79,10 +79,23 @@ class ec_user{
 			$this->billing = new ec_address( "", "", "", "", "", "", "", "", "" );
 		}
 		
+		// User has gone through the checkout info page
 		if( isset( $_SESSION['ec_shipping_first_name'] ) && $_SESSION['ec_shipping_first_name'] != "" ){
 			$this->shipping = new ec_address( $_SESSION['ec_shipping_first_name'], $_SESSION['ec_shipping_last_name'], $_SESSION['ec_shipping_address'], "", $_SESSION['ec_shipping_city'], $_SESSION['ec_shipping_state'], $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], $_SESSION['ec_shipping_phone'] );
+		
+		// Live shipping estimate for zip and country
+		}else if( isset( $_SESSION['ec_shipping_zip'] ) && isset( $_SESSION['ec_shipping_country'] ) ){
+			$this->shipping = new ec_address( "", "", "", "", "", "", $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], "" );
+		
+		// Live shipping estimate for zip only
+		}else if( isset( $_SESSION['ec_shipping_zip'] ) ){
+			$this->shipping = new ec_address( "", "", "", "", "", "", $_SESSION['ec_shipping_zip'], "", "" );
+		
+		// No Session data, but a user found	
 		}else if( $user && $user->shipping_first_name ){
 			$this->shipping = new ec_address( $user->shipping_first_name, $user->shipping_last_name, $user->shipping_address_line_1, $user->shipping_address_line_2, $user->shipping_city, $user->shipping_state, $user->shipping_zip, $user->shipping_country, $user->shipping_phone );
+		
+		// Fall back option
 		}else{
 			$this->shipping = new ec_address( "", "", "", "", "", "", "", "", "" );
 		}
