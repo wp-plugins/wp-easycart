@@ -977,18 +977,17 @@ class ec_accountpage{
 		$message = ob_get_contents();
 		ob_end_clean();
 		
-		$headers = "From: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
-		$headers .= "Reply-To: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
-		$headers .= "X-Mailer: PHP4\n";
-		$headers .= "X-Priority: 3\n";
-		$headers .= "MIME-Version: 1.0\n";
-		$headers .= "Return-Path: " . get_option( 'ec_option_order_from_email' ) . "\r\n"; 
-		$headers .= "Content-type: text/html\r\n"; 
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = "Content-Type: text/html; charset=utf-8";
+		$headers[] = "From: " . get_option( 'ec_option_password_from_email' );
+		$headers[] = "Reply-To: " . get_option( 'ec_option_password_from_email' );
+		$headers[] = "X-Mailer: PHP/".phpversion();
 		
 		if( get_option( 'ec_option_use_wp_mail' ) )
-			wp_mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, $headers);
+			wp_mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, implode("\r\n", $headers));
 		else
-			mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, $headers);
+			mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, implode("\r\n", $headers));
 	}
 	
 	private function get_random_password( ){
@@ -1004,18 +1003,17 @@ class ec_accountpage{
 		$message = $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_message" ) . "\r\n";
 		$message .= "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=activate_account&email=" . $email . "&key=" . $key . "\" target=\"_blank\">" . $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_link" ) . "</a>";
 		
-		$headers = "From: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
-		$headers .= "Reply-To: " . get_option( 'ec_option_order_from_email' ) . "\r\n";
-		$headers .= "X-Mailer: PHP4\n";
-		$headers .= "X-Priority: 3\n";
-		$headers .= "MIME-Version: 1.0\n";
-		$headers .= "Return-Path: " . get_option( 'ec_option_order_from_email' ) . "\r\n"; 
-		$headers .= "Content-type: text/html\r\n"; 
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = "Content-Type: text/html; charset=utf-8";
+		$headers[] = "From: " . get_option( 'ec_option_password_from_email' );
+		$headers[] = "Reply-To: " . get_option( 'ec_option_password_from_email' );
+		$headers[] = "X-Mailer: PHP/".phpversion();
 		
 		if( get_option( 'ec_option_use_wp_mail' ) )
-			wp_mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, $headers);
+			wp_mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, implode("\r\n", $headers));
 		else
-			mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, $headers);
+			mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, implode("\r\n", $headers));
 	}
 	
 }

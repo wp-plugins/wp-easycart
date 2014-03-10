@@ -20,7 +20,7 @@
 
 .ec_license_notification{
 	float:left;
-	width:1230px;
+	width:1240px;
 	background: #333333;
 	color:#FFF;
 	background-position:10px 5px;
@@ -100,7 +100,6 @@
 /**************************************
 /* Shell and Menu CSS
 /**************************************/
-body{ height:100%; }
 .ec_admin_mainmenu a {
 	color: #ffffff !important;
 }
@@ -116,7 +115,7 @@ body{ height:100%; }
 } 
 .ec_admin_mainmenu{
 	float:left;
-	width:1230px; height:48px;
+	width:1190px; height:48px;
 	background-color:#7bb141;
 	color:#FFF;
 	background-image:url(../images/wp-easycart-logo.png); background-repeat:no-repeat; padding-left:60px;
@@ -1132,7 +1131,7 @@ body{ height:100%; }
 **********************************************************/
 .main_color{ color: #666666; }
 
-.main_color tr:nth-child(odd), .main_color .pricing-table>li:nth-child(odd), .main_color .pricing-extra{
+.main_color > tr:nth-child(odd), .main_color .pricing-table > li:nth-child(odd), .main_color .pricing-extra{
 	background:#fcfcfc;
 }
 
@@ -1141,12 +1140,12 @@ body{ height:100%; }
 	border-width:1px;
 }
 
-.main_color tr:nth-child(even), .main_color .avia-data-table .avia-heading-row .avia-desc-col, .main_color .avia-data-table .avia-highlight-col, .main_color .pricing-table>li:nth-child(even), body .main_color .pricing-table.avia-desc-col li {
+.main_color > tr:nth-child(even), .main_color .avia-data-table .avia-heading-row .avia-desc-col, .main_color .avia-data-table .avia-highlight-col, .main_color .pricing-table > li:nth-child(even), body > .main_color .pricing-table.avia-desc-col > li {
 	background-color: #ffffff;
 	color: #666666;
 }
 
-div .avia-table {
+div > .avia-table {
 	background: transparent;
 	width: 100%;
 	clear: both;
@@ -1158,7 +1157,7 @@ div .avia-table {
 	margin-top: 50px;
 }
 
-div .flex_column {
+div > .flex_column {
 	z-index: 1;
 	float: left;
 	position: relative;
@@ -1170,7 +1169,7 @@ div .flex_column {
 	text-align: center;
 }
 
-.avia-desc-col.pricing-table li {
+.avia-desc-col.pricing-table > li {
 	border-style: dashed;
 	border-left: none;
 	border-right: none;
@@ -1189,22 +1188,13 @@ div .flex_column {
 	border-right-width: 1px;
 }
 
-content-wrapper div li {
-	text-indent: 0;
-}
-
-::selection {
-	background-color: #769a66;
-	color: #ffffff;
-}
-
 .main_color .pricing-table li.avia-heading-row, .main_color .pricing-table li.avia-heading-row .pricing-extra {
 	background-color: #87ab77;
 	color: #ffffff;
 	border-color: #98bc88;
 }
 
-.main_color tr:nth-child(odd), .main_color .pricing-table>li:nth-child(odd), .main_color .pricing-extra {
+.main_color > tr:nth-child(odd), .main_color .pricing-table > li:nth-child(odd), .main_color .pricing-extra {
 	background: #fcfcfc;
 }
 
@@ -1258,13 +1248,15 @@ ul.disc, .entry-content-wrapper ul {
 	padding: 0px;
 }
 
-* {
+.ec_admin_holder *, .ec_admin_mainmenu *, .ec_license_notification * {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-ul, menu, dir {
+.ec_admin_holder ul, .ec_admin_holder menu, .ec_admin_holder dir,
+.ec_admin_mainmenu  ul, .ec_admin_mainmenu  menu, .ec_admin_mainmenu  dir, 
+.ec_license_notification ul, .ec_license_notification menu, .ec_license_notification dir {
 	display: block;
 	list-style-type: disc;
 	-webkit-margin-before: 1em;
@@ -1386,4 +1378,8 @@ body div .avia-button {
 	text-align: center;
 	max-width: 100%;
 	color:#000;
+}
+
+li.avia-pricing-row.empty-table-cell, li.avia-heading-row.empty-table-cell{
+	background-color:#FFF !important;
 }
