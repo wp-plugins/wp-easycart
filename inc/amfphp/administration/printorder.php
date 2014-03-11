@@ -194,6 +194,9 @@ $totalRows_settingsRS = mysql_num_rows($settingsRS);
 <body>
 <table width="800" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr class="fontstyle">
+    <td height="125" colspan="3" bgcolor="#FFFFFF" class="tableheadingbg"><img src="<?php echo get_option( 'ec_option_email_logo' ); ?>"></td>
+  </tr>
+  <tr class="fontstyle">
     <td width="442" height="25" bgcolor="#CCCCCC" class="tableheadingbg"><div align="left">
         <input name="Print Order" type="submit" class="buttontext" id="Print Order" value="Print Order" onClick="window.print()">
       </div></td>
