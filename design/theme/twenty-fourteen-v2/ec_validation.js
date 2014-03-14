@@ -59,11 +59,7 @@ function ec_validation( function_name, input, country_code ){
 				return false;
 				
 		}else{
-			//Validate the state/province for all other countries
-			if( input.length > 0 && input != "0" )
-				return true;
-			else
-				return false;
+			return true;
 				
 		}
 	}else if( function_name == "validate_zip" ){

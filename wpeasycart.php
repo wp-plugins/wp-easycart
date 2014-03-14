@@ -577,7 +577,11 @@ function ec_load_js( ){
 	$https_link = "";
 	if( class_exists( "WordPressHTTPS" ) ){
 		$https_class = new WordPressHTTPS( );
-		$https_link = $https_class->getHttpsUrl() . $ajax_subfolder . '/wp-admin/admin-ajax.php';
+		if( $ajax_subfolder != "" ){
+			$https_link = $https_class->getHttpsUrl() . $ajax_subfolder . '/wp-admin/admin-ajax.php';
+		}else{
+			$https_link = $https_class->makeUrlHttps( admin_url( 'admin-ajax.php' ) );
+		}
 	}else{
 		$https_link = str_replace( "http://", "https://", str_replace( "/wp-admin", $ajax_subfolder . "/wp-admin", admin_url( 'admin-ajax.php' ) ) );
 	}
