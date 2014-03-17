@@ -28,8 +28,8 @@ class ec_admin_orders{
 	}//ec_admin_orders
 	
 	public function _getMethodRoles( $methodName ){
-			
-			if( $methodName == 'getorders' ) 						return array( 'admin' );
+	   if( $methodName == 'updateorderaddresses' ) 					return array( 'admin' );	
+	   else if( $methodName == 'getorders' ) 						return array( 'admin' );
 	   else if( $methodName == 'getorderdetailsadvancedoptions' ) 	return array( 'admin' );
 	   else if( $methodName == 'getorderdetails' ) 					return array( 'admin' );
 	   else if( $methodName == 'getorderstatus' ) 					return array( 'admin' );
@@ -41,6 +41,36 @@ class ec_admin_orders{
 	   else  														return null;
 	   
 	}//_getMethodRoles
+
+
+	function updateorderaddresses($orderid, $addressinfo) {
+		//convert object to array
+		$addressinfo = (array)$addressinfo;
+		
+		//get previous order notes
+		$sql = "SELECT ec_order.order_notes FROM ec_order WHERE ec_order.order_id = %d";
+		$results = $this->db->get_results( $this->db->prepare( $sql, $orderid ) );
+		
+		$old_order_notes = (string)$results[0]->order_notes;
+		$new_order_notes = $old_order_notes .  PHP_EOL .  PHP_EOL . "***** Address Information Updated:  " . date("M d, Y") . " *****". PHP_EOL;
+			  
+		//first, edit the data
+		$editedsql = "UPDATE ec_order SET ec_order.billing_first_name = %s, ec_order.billing_last_name = %s, ec_order.billing_address_line_1 = %s, ec_order.billing_address_line_2 = %s, ec_order.billing_city = %s, ec_order.billing_state = %s, ec_order.billing_country = %s,  ec_order.billing_zip = %s, ec_order.billing_phone = %s, ec_order.shipping_first_name = %s, ec_order.shipping_last_name = %s, ec_order.shipping_address_line_1 = %s, ec_order.shipping_address_line_2 = %s, ec_order.shipping_city = %s, ec_order.shipping_state = %s, ec_order.shipping_country = %s,  ec_order.shipping_zip = %s, ec_order.shipping_phone = %s, ec_order.user_email = %s, ec_order.order_notes = %s  WHERE ec_order.order_id = %d";
+		
+		$this->db->query( $this->db->prepare( $editedsql, $addressinfo['billing_first_name'], $addressinfo['billing_last_name'], $addressinfo['billing_address_line_1'], $addressinfo['billing_address_line_2'], $addressinfo['billing_city'], $addressinfo['billing_state'], $addressinfo['billing_country'], $addressinfo['billing_zip'], $addressinfo['billing_phone'], $addressinfo['shipping_first_name'], $addressinfo['shipping_last_name'], $addressinfo['shipping_address_line_1'], $addressinfo['shipping_address_line_2'], $addressinfo['shipping_city'], $addressinfo['shipping_state'], $addressinfo['shipping_country'], $addressinfo['shipping_zip'], $addressinfo['shipping_phone'], $addressinfo['user_email'], $new_order_notes, $orderid ) );
+		
+
+		//then, just get the new order information and return
+		$sql = "SELECT ec_orderdetail.*, ec_order.*, ec_orderstatus.order_status, UNIX_TIMESTAMP(ec_order.order_date) AS order_date,  ec_download.date_created, ec_download.download_count FROM (((ec_order LEFT JOIN ec_orderdetail ON ec_orderdetail.order_id = ec_order.order_id) LEFT JOIN ec_download ON ec_orderdetail.download_key = ec_download.download_id) LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id) WHERE ec_order.order_id = %d ORDER BY ec_orderdetail.product_id";
+		  
+		$results = $this->db->get_results( $this->db->prepare( $sql, $orderid ) );
+		
+		if( count( $results ) > 0 ){
+			 return($results);
+		}else{
+			return array( "error" );
+		}
+	}
 
 	function getorderdetailsadvancedoptions( $orderdetails_id ){
 		
