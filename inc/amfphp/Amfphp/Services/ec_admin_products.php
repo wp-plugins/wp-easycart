@@ -57,6 +57,7 @@ class ec_admin_products
 		//secure all of the services for logged in authenticated users only	
 		public function _getMethodRoles($methodName){
 			if ($methodName == 'deleteadvancedoption') return array('admin');
+			else if($methodName == 'updatealldownloadcustomers') return array('admin');
 			else if($methodName == 'deletealladvancedoption') return array('admin');
 			else if($methodName == 'addadvancedoption') return array('admin');
 			else if($methodName == 'getadvancedproductoptions') return array('admin');
@@ -85,6 +86,25 @@ class ec_admin_products
 				$args[0] = $sql; 
 				return call_user_func_array('sprintf', $args); 
 		} 
+		
+		function updatealldownloadcustomers($productid, $newdownloadid, $olddownloadid) {
+			  /////////////////////////////////////////////////////
+			  //currently only changing customers who have matching file names, but can use product id if necessary to do all customers on this product.
+			  /////////////////////////////////////////////////////
+			  $sql = $this->escape("UPDATE ec_download SET ec_download.download_file_name = '%s' WHERE ec_download.product_id = '%s'", $newdownloadid, $productid);
+			  
+			  //Run query on database;
+			  mysql_query($sql);
+						
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				$returnArray[] = "success";
+				return($returnArray); //return array results if there are some
+			  } else {
+				$returnArray[] = "error";
+				return $returnArray; //return noresults if there are no results
+			  }
+		}
 		
 		function deletealladvancedoption($product_id) {
 			  //Create SQL Query	

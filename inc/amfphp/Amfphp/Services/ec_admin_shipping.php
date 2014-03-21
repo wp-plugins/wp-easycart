@@ -1324,7 +1324,107 @@ class ec_admin_shipping
 			}
 		}
 		
+
+/////////////////////////////////////////////////////////////////////////////////
+//PRICE BASED SHIPPING
+/////////////////////////////////////////////////////////////////////////////////
 		
+		function getpercentageshippingrates() {
+			  //Create SQL Query
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_percentage_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC");
+			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
+			  $totalrows = mysql_fetch_object($totalquery);
+			  
+			  //if results, convert to an array for use in flash
+			  if(mysql_num_rows($query) > 0) {
+				  while ($row=mysql_fetch_object($query)) {
+					  $row->totalrows=$totalrows;
+					  $returnArray[] = $row;
+				  }
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		
+		function deleteshippingpercentagerate($keyfield) {
+			  //Create SQL Query	
+			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			  //Run query on database;
+			  mysql_query($deletesql);
+			  
+			  //if no errors, return their current Client ID
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				  $returnArray[] ="success";
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "error";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		function updateshippingpercentagerate($keyfield, $rate) {
+			//convert object to array
+			  $rate = (array)$rate;
+			  
+			  //Create SQL Query
+			  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_percentage_based, ec_shippingrate.zone_id)
+				values('".$keyfield."', '%s', '%s', 1, '%s')",
+				mysql_real_escape_string($rate['triggerrate']),
+				mysql_real_escape_string($rate['shippingrate']),
+					mysql_real_escape_string($rate['zoneid']));
+			//Run query on database;
+			mysql_query($sql);
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$sqlerror = mysql_error();
+				$error = explode(" ", $sqlerror);
+				if ($error[0] == "Duplicate") {
+					$returnArray[] = "duplicate";
+					return $returnArray; //return noresults if there are no results
+			    } else {  
+					$returnArray[] = "error";
+					return $returnArray; //return noresults if there are no results
+				}
+			}
+		}
+		function addshippingpercentagerate($rate) {
+			//convert object to array
+			  $rate = (array)$rate;
+			  
+			  //Create SQL Query
+			  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_percentage_based, ec_shippingrate.zone_id)
+				values(null, '%s', '%s', 1, '%s')",
+				mysql_real_escape_string($rate['triggerrate']),
+				mysql_real_escape_string($rate['shippingrate']),
+					mysql_real_escape_string($rate['zoneid']));
+			//Run query on database;
+			  mysql_query($sql);
+			  //if no errors, return their current Client ID
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				$returnArray[] ="success";
+				return($returnArray); //return array results if there are some
+			} else {
+				$sqlerror = mysql_error();
+				$error = explode(" ", $sqlerror);
+				if ($error[0] == "Duplicate") {
+					$returnArray[] = "duplicate";
+					return $returnArray; //return noresults if there are no results
+			    } else {  
+					$returnArray[] = mysql_error();
+					return $returnArray; //return noresults if there are no results
+				}
+			}
+		}
+		
+		
+				
 		/////////////////////////////////////////////////////////////////////////////////
 		//QUANTITY BASED SHIPPING
 		/////////////////////////////////////////////////////////////////////////////////
