@@ -248,7 +248,7 @@ class ec_admin_products
 		
 		function getfeaturedproducts() {
 			  //Create SQL Query
-			  $sql = $this->escape("SELECT ec_product.product_id, ec_product.title, ec_product.model_number FROM ec_product ORDER BY ec_product.title ASC");
+			  $sql = $this->escape("SELECT ec_product.product_id, ec_product.title, ec_product.model_number, ec_product.is_subscription_item FROM ec_product ORDER BY ec_product.title ASC");
 			  // Run query on database
 			  $result = mysql_query($sql);
 			  //if results, convert to an array for use in flash
@@ -265,7 +265,7 @@ class ec_admin_products
 		
 		function getproductlist() {
 			  //Create SQL Query
-			  $sql = $this->escape("SELECT ec_product.title, ec_product.product_id FROM ec_product ORDER BY ec_product.title ASC");
+			  $sql = $this->escape("SELECT ec_product.title, ec_product.product_id, ec_product.is_subscription_item FROM ec_product ORDER BY ec_product.title ASC");
 			  // Run query on database
 			  $result = mysql_query($sql);
 			  //if results, convert to an array for use in flash
@@ -301,6 +301,7 @@ class ec_admin_products
 					}
 				  }
 				  $row->totalrows=$totalrows;
+				  $row->livepaymentprocessmethod = get_option('ec_option_payment_process_method');
 				  $returnArray[] = $row;
 			  }
 			  return($returnArray); //return array results if there are some
@@ -611,6 +612,20 @@ class ec_admin_products
 				
 				$stripe = new ec_stripe;
 				$response = $stripe->update_plan($stripe_plan);
+				if ($response == false) {
+					//try to insert it then
+					//create an object for call to stripe
+					$stripe_plan = (object)array(
+					  "price" 						=> $product['listprice'],
+					  "product_id" 					=> $productid,
+					  "title"						=> $product['producttitle'],
+					  "subscription_bill_period" 	=> $product['subscriptionperiod'],
+					  "subscription_bill_length" 	=> $product['subscriptioninterval'],
+					  "trial_period_days" 			=> $product['trialdays']);
+					
+					$stripe = new ec_stripe;
+					$response = $stripe->insert_plan($stripe_plan);
+				}
 			}
 			
 			//if no errors, return their current Client ID
