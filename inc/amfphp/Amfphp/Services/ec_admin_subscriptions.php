@@ -227,7 +227,7 @@ class ec_admin_subscriptions
 			
 			//now get the related items with similar subscription plan ids
 			$currentplanid = mysql_fetch_object($currentplansql);
-			$query= mysql_query("SELECT ec_product.product_id, ec_product.title FROM ec_product WHERE ec_product.subscription_plan_id = '".$currentplanid->subscription_plan_id."'");
+			$query= mysql_query("SELECT ec_product.product_id, ec_product.title FROM ec_product WHERE ec_product.is_subscription_item = '1' AND ec_product.subscription_plan_id = '".$currentplanid->subscription_plan_id."'");
 			
 			if(mysql_num_rows($query) > 0) {
 				  while ($row = mysql_fetch_object($query)) {
