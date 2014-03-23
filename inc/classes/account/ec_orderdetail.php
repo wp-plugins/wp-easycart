@@ -108,6 +108,11 @@ class ec_orderdetail{
 		$accountpageid = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $accountpageid );
 		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+		}
+		
 		if( substr_count( $this->account_page, '?' ) )				$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
 		

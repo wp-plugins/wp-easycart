@@ -106,7 +106,9 @@ class ec_cartpage{
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
 			$https_class = new WordPressHTTPS( );
-			$this->cart_page = $https_class->getHttpsUrl( ) . substr( $this->cart_page, strlen( get_option( 'home' ) ) + 1 );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
 		}
 		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
@@ -143,7 +145,8 @@ class ec_cartpage{
 		echo "<div class=\"ec_cart_page\">";
 		if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
 			$order_id = $_GET['order_id'];
-			$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			$order = new ec_orderdisplay( $order_row );
 			$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
 			
 			$this->user->setup_billing_info_data( $order->billing_first_name, $order->billing_last_name, $order->billing_address_line_1, $order->billing_city, $order->billing_state, $order->billing_country, $order->billing_zip, $order->billing_phone );
@@ -244,9 +247,25 @@ class ec_cartpage{
 					echo "No subscription was found to match the model number provided.";
 				}
 				
+			}else if( $_GET['ec_page'] == "subscription_info" ){
+				// First subscription specific login.
+				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription_login.php' ) )
+					include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription_login.php' );
+				else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription_login.php' ) )
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription_login.php' );
+				
+				// Fall back to regular login if needed
+				else if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' ) )
+					include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' );
+				
+				else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' ) )
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' );
+				
 			}else{
+				// Regular checkout login should display
 				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' ) )
 					include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' );
+				
 				else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' ) )
 					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_login.php' );
 			}
@@ -1740,104 +1759,120 @@ class ec_cartpage{
 		$model_number = $_POST['ec_cart_model_number'];
 		$products = $this->mysqli->get_product_list( $wpdb->prepare( " WHERE product.model_number = %s", $model_number ), "", "", "" );
 		
-		if( count( $products > 0 ) ){
-			
-			// Try to get a subscription for this product and email address!
-			if( isset( $_POST['ec_contact_email'] ) ){
-				$email_test = $_POST['ec_contact_email'];
-			}else{
-				$email_test = $_SESSION['ec_email'];
-			}
-			
-			$subscription_list = $this->mysqli->find_subscription_match( $email_test, $products[0]['product_id'] );
-			
-			if( count( $subscription_list ) > 0 ){
-				
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=already_subscribed" );
-			
-			// This user has not bought this subscription product, move forward.
-			}else{
-		
-				$first_name = $_POST['ec_cart_billing_first_name'];
-				$last_name = $_POST['ec_cart_billing_last_name'];
-				$address = $_POST['ec_cart_billing_address'];
-				$city = $_POST['ec_cart_billing_city'];
-				$state = $_POST['ec_cart_billing_state'];
-				$zip = $_POST['ec_cart_billing_zip'];
-				$country = $_POST['ec_cart_billing_country'];
-				$phone = $_POST['ec_cart_billing_phone'];
-				
-				$payment_method = $_POST['ec_cart_payment_type'];
-				$card_holder_name = $_POST['ec_card_holder_name'];
-				$card_number = $_POST['ec_card_number'];
-				$exp_month = $_POST['ec_expiration_month'];
-				$exp_year = $_POST['ec_expiration_year'];
-				$security_code = $_POST['ec_security_code'];
-				
-				// CREATE ACCOUNT IF NEEDED
-				if( isset( $_POST['ec_contact_email'] ) ){
-					$email = $_POST['ec_contact_email'];
-					$password = md5( $_POST['ec_contact_password'] );
-					
-					$billing_id = $this->mysqli->insert_address( $first_name, $last_name, $address, $city, $state, $zip, $country, $phone );
-					
-					$user_level = "shopper";
-					
-					$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, $user_level, false );
-					$this->mysqli->update_address_user_id( $billing_id, $user_id );
-					
-					$_SESSION['ec_email'] = $email;
-					$_SESSION['ec_password'] = $password;
-					$_SESSION['ec_user_id'] = $user_id;
-				}
-				// END CREATE ACCOUNT
-				
-				$user = new ec_user( "" );
-				$user->setup_billing_info_data( $first_name, $last_name, $address, $city, $state, $country, $zip, $phone );
-				$card = new ec_credit_card( $payment_method, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
-				$product = new ec_product( $products[0] );
-				$stripe = new ec_stripe( );
-				
-				if( $user->stripe_customer_id == "" ){
-					//first insert customer
-					$customer_id = $stripe->insert_customer( $user, $card );
-					$this->mysqli->update_user_stripe_id( $user->user_id, $customer_id );
-					$user->stripe_customer_id = $customer_id;
-				}
-				
-				if( !$product->stripe_plan_added ){
-					// first insert plan
-					$stripe->insert_plan( $product );
-					$this->mysqli->update_product_stripe_added( $product->product_id );
-				}
-				
-				// Insert Subscription
-				$stripe_response = $stripe->insert_subscription( $product, $user, $card );
-				
-				if( !isset( $stripe_response->error ) ){
-					$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user );
-					$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id );
-					$subscription = new ec_subscription( $stripe_response );
-					$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-					$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-					$subscription->send_email_receipt( $user, $order, $order_details );
-				
-					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );	
-				
-				}else{
-					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=" . $stripe_response->error->type );	
-				
-				}
-				
-			}
-		
-		}else{
-			
-			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_not_found" );
-			
+		$user_error = false;
+		if( isset( $_POST['ec_contact_email'] ) ){
+			$user_error = $this->mysqli->does_user_exist( $_POST['ec_contact_email'] );
 		}
 		
-		die( );
+		// If checkout out as new user and the email already exists, this is an error.
+		if( $user_error ){
+			
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=email_exists" );
+			
+		}else{
+		
+			if( count( $products > 0 ) ){
+				
+				// Try to get a subscription for this product and email address!
+				if( isset( $_POST['ec_contact_email'] ) ){
+					$email_test = $_POST['ec_contact_email'];
+				}else{
+					$email_test = $_SESSION['ec_email'];
+				}
+				
+				$subscription_list = $this->mysqli->find_subscription_match( $email_test, $products[0]['product_id'] );
+				
+				if( count( $subscription_list ) > 0 ){
+					
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=already_subscribed" );
+				
+				// This user has not bought this subscription product, move forward.
+				}else{
+			
+					$first_name = $_POST['ec_cart_billing_first_name'];
+					$last_name = $_POST['ec_cart_billing_last_name'];
+					$address = $_POST['ec_cart_billing_address'];
+					$city = $_POST['ec_cart_billing_city'];
+					$state = $_POST['ec_cart_billing_state'];
+					$zip = $_POST['ec_cart_billing_zip'];
+					$country = $_POST['ec_cart_billing_country'];
+					$phone = $_POST['ec_cart_billing_phone'];
+					
+					$payment_method = $_POST['ec_cart_payment_type'];
+					$card_holder_name = $_POST['ec_card_holder_name'];
+					$card_number = $_POST['ec_card_number'];
+					$exp_month = $_POST['ec_expiration_month'];
+					$exp_year = $_POST['ec_expiration_year'];
+					$security_code = $_POST['ec_security_code'];
+					
+					// CREATE ACCOUNT IF NEEDED
+					if( isset( $_POST['ec_contact_email'] ) ){
+						$email = $_POST['ec_contact_email'];
+						$password = md5( $_POST['ec_contact_password'] );
+						
+						$billing_id = $this->mysqli->insert_address( $first_name, $last_name, $address, $city, $state, $zip, $country, $phone );
+						
+						$user_level = "shopper";
+						
+						$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, $user_level, false );
+						$this->mysqli->update_address_user_id( $billing_id, $user_id );
+						
+						$_SESSION['ec_email'] = $email;
+						$_SESSION['ec_password'] = $password;
+						$_SESSION['ec_user_id'] = $user_id;
+					}
+					// END CREATE ACCOUNT
+					
+					$user = new ec_user( "" );
+					$user->setup_billing_info_data( $first_name, $last_name, $address, $city, $state, $country, $zip, $phone );
+					$card = new ec_credit_card( $payment_method, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
+					$product = new ec_product( $products[0] );
+					$stripe = new ec_stripe( );
+					
+					if( $user->stripe_customer_id == "" ){
+						//first insert customer
+						$customer_id = $stripe->insert_customer( $user, $card );
+						$this->mysqli->update_user_stripe_id( $user->user_id, $customer_id );
+						$user->stripe_customer_id = $customer_id;
+					}
+					
+					if( !$product->stripe_plan_added ){
+						// first insert plan
+						$stripe->insert_plan( $product );
+						$this->mysqli->update_product_stripe_added( $product->product_id );
+					}
+					
+					// Insert Subscription
+					$stripe_response = $stripe->insert_subscription( $product, $user, $card );
+					
+					if( !isset( $stripe_response->error ) ){
+						$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user, $card );
+						$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id );
+						$this->mysqli->update_user_default_card( $user, $card );
+						
+						$subscription = new ec_subscription( $stripe_response );
+						$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+						$order = new ec_orderdisplay( $order_row );
+						$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+						$subscription->send_email_receipt( $user, $order, $order_details );
+					
+						header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );	
+					
+					}else{
+						header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=" . $stripe_response->error->type );	
+					
+					}
+					
+				}
+			
+			}else{
+				
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_not_found" );
+				
+			}
+			
+		}// Close user exists error for guest checkout
+		
 	}
 	/* END PROCESS FORM SUBMISSION FUNCTIONS */
 	

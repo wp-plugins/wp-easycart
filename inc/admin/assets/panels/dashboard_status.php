@@ -48,6 +48,15 @@ if( ec_open_basedir()){ ?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">Your webserver has open_basedir enabled which makes it hard to copy files and folders on your server.  We recommend you disable.</span></div>
 <?php } 
 
+///////////////////////////
+// WP-EASYCART-DATA FOLDER CHECK
+///////////////////////////
+if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){ ?>
+<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">Your server has successfully created the wp-easycart-data folder, which will allow for successful updates.</span></div>
+<?php }else{?>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You are missing the wp-easycart-data folder which will cause data loss on plugin update, <a href="http://www.wpeasycart.com/plugin-update-help/" target="_blank">click here to learn how to correct this problem.</a></span></div>
+<?php } 
+
 
 ///////////////////////////////////////////////
 // EasyCart Status Section
@@ -132,6 +141,24 @@ if( ec_using_weight_shipping( ) && ec_weight_shipping_setup( ) ){ ?>
 <?php }
 
 ////////////////////////////
+// Quantity Based Shipping Check
+////////////////////////////
+if( ec_using_quantity_shipping( ) && ec_quantity_shipping_setup( ) ){ ?>
+<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have successfully setup quantity based shipping.</span></div>
+<?php }else if( ec_using_quantity_shipping( ) ){ ?>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have chosen to use quantity based shipping, but there doesn't appear to be any quantity triggers setup.</span></div>
+<?php }
+
+////////////////////////////
+// Percentage Based Shipping Check
+////////////////////////////
+if( ec_using_percentage_shipping( ) && ec_percentage_shipping_setup( ) ){ ?>
+<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have successfully setup percentage based shipping.</span></div>
+<?php }else if( ec_using_percentage_shipping( ) ){ ?>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have chosen to use percentage based shipping, but there doesn't appear to be any percentage triggers setup.</span></div>
+<?php }
+
+////////////////////////////
 // Method Based Shipping Check
 ////////////////////////////
 if( ec_using_method_shipping( ) && ec_method_shipping_setup( ) ){ ?>
@@ -191,6 +218,16 @@ if( ec_using_live_shipping( ) && ec_using_auspost_shipping( ) && ec_auspost_ship
 <?php }else if( ec_using_live_shipping( ) && ec_using_auspost_shipping( ) ){ ?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">Australia Post live shipping setup incorrectly.</span></div>
 <?php } 
+
+////////////////////////////
+// Fraktjakt Shipping Check
+////////////////////////////
+if( ec_using_fraktjakt_shipping( ) && ec_fraktjakt_shipping_setup( ) ){ ?>
+<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have successfully setup Fraktjakt live shipping.</span></div>
+<?php }else if( ec_using_fraktjakt_shipping( ) ){ ?>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">Fraktjakt live shipping is setup incorrectly.</span></div>
+<?php } 
+
 ///////////////////////////////////////////////
 // Tax Status Section
 ///////////////////////////////////////////////

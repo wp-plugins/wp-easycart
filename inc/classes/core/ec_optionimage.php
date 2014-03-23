@@ -13,12 +13,12 @@ class ec_optionimage{
 	}
 	
 	private function set_option_name(){
-		$sql = sprintf("SELECT optionitemname FROM optionitems WHERE optionitemID = '%s'", mysql_real_escape_string($this->OptinItemID));
-		$result = mysql_query($sql);
+		global $wpdb;
+		$sql = "SELECT optionitemname FROM optionitems WHERE optionitemID = %s";
+		$result = $wpdb->get_row( $wpdb->prepare( $sql, $this->OptinItemID ) );
 		
-		if(mysql_num_rows($result) > 0){
-			$row = mysql_fetch_assoc($result);
-			$this->OptionName = $row['optionitemname'];
+		if( isset( $result ) && isset( $result->optionitemname ) ){
+			$this->OptionName = $row->optionitemname;
 		}
 	}
 	

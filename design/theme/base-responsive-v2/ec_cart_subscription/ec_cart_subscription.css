@@ -1,0 +1,10 @@
+@charset "utf-8";
+/* CSS Document */
+
+.ec_cart_subscription_holder_left{
+	float:left; width:50%;
+}
+
+.ec_cart_subscription_holder_right{
+	float:right; width:50%;
+}

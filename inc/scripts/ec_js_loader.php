@@ -52,7 +52,8 @@ $ec_account_js = array(
 	'account_order_line',
 	'account_order_details_item_display',
 	'account_subscription_line',
-	'account_subscription_list'
+	'account_subscription_list',
+	'account_subscription_details'
 );
 
 $ec_widget_js = array(

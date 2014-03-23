@@ -36,6 +36,11 @@ class ec_prodimages{
 		$storepageid = get_option( 'ec_option_storepage' );
 		$this->store_page = get_permalink( $storepageid );
 		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+		}
+		
 		if( substr_count( $this->store_page, '?' ) )						$this->permalink_divider = "&";
 		else																$this->permalink_divider = "?";
 		

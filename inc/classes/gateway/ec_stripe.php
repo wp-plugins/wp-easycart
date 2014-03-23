@@ -29,7 +29,7 @@ class ec_stripe extends ec_gateway{
 		}
 	}
 	
-	function get_gateway_response( $gateway_url, $gateway_data = NULL, $gateway_headers = NULL ){
+	function get_gateway_response( $gateway_url ){
 		
 		$response = $this->insert_charge( $this->order_totals, $this->user, $this->credit_card, $this->order_id );
 		$this->handle_gateway_response( $response );
@@ -73,21 +73,20 @@ class ec_stripe extends ec_gateway{
 	public function insert_charge( $order_totals, $user, $card, $order_id ){
 		
 		$gateway_data = $this->get_insert_charge_data( $order_totals, $user, $card, $order_id );
-		$response = $this->call_stripe( $this->get_gateway_url( ), $gateway_data );
+		$response = $this->call_stripe( $gateway_url, $gateway_data );
+		$json = json_decode( $response );
+		return $json;
 		
-		if( $response )
-			return json_decode( $response );
-		else
-			return false;
-	
 	}
 	
 	public function get_charge( $charge_id ){
 		
 		$data = $this->get_get_charge_data( $charge_id );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/charges/", $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 		
@@ -97,7 +96,9 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_refund_charge_data( $charge_id, $amount );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/charges/" . $charge_id . "/refund", $data );
-		if( $response )
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
 			return false;
@@ -108,7 +109,9 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_capture_charge_data( $charge_id, $amount );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/charges/" . $charge_id . "/capture", $data );
-		if( $response )
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
 			return false;
@@ -119,8 +122,10 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_charge_list_data( $limit, $offset, $customer_id );
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/charges/", $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 		
@@ -130,46 +135,51 @@ class ec_stripe extends ec_gateway{
 	// PUBLIC SUBSCRIPTION FUNCTIONS
 	////////////////////////////////////////////////
 	
-	public function insert_subscription( $product, $user, $card, $coupon = NULL, $prorate = true, $trial_end = NULL, $quantity = 1 ){
+	public function insert_subscription( $product, $user, $card, $coupon = NULL, $prorate = "true", $trial_end = NULL, $quantity = 1 ){
 		
 		$data = $this->get_insert_subscription_data( $product, $user, $card, $coupon, $prorate, $trial_end, $quantity );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions", $data );
+		$json = json_decode( $response );
 		
-		if( $response ){
-			return json_decode( $response );
-		}else
-			return false;
-	
-	}
-	
-	public function get_subscription( $user, $subscription_id ){
-		
-		$data = $this->get_get_subscription_data( $user, $subscription_id );
-		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions/" . $subscription_id, $data );
-		if( $response )
-			return json_decode( $response );
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 	
 	}
 	
-	public function update_subscription( $product, $user, $card = NULL, $subscription_id, $coupon = NULL, $prorate = true, $trial_end = NULL, $card = NULL, $quantity = 1 ){
+	public function get_subscription( $customer_id, $subscription_id ){
 		
-		$data = $this->get_update_subscription_data( $product, $user, $card, $coupon, $prorate, $trial_end, $card, $quantity );
-		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions/" . $subscription_id, $data );
-		if( $response )
-			return json_decode( $response );
+		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers/" . $customer_id . "/subscriptions/" . $subscription_id, array( ) );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 	
 	}
 	
-	public function cancel_subscription( $user, $subscription_id, $cancel_at_end_of_current_period = false ){
+	public function update_subscription( $product, $user, $card = NULL, $subscription_id, $coupon = NULL, $prorate = "true", $trial_end = NULL, $quantity = 1 ){
 		
-		$data = $this->get_cancel_subscription_data( $user, $subscription_id, $cancel_at_end_of_current_period );
+		$data = $this->get_update_subscription_data( $product, $user, $card, $coupon, $prorate, $trial_end, $quantity );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions/" . $subscription_id, $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
+		else
+			return false;
+	
+	}
+	
+	public function cancel_subscription( $user, $subscription_id, $cancel_at_end_of_current_period = "false" ){
+		
+		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions/" . $subscription_id );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 	
@@ -179,8 +189,10 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_subscription_list_data( $user, $limit, $offset );
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions", $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 	
@@ -194,11 +206,11 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_insert_customer_data( $user, $card );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers", $data );
+		$json = json_decode( $response );
 		
-		if( $response ){
-			$response_json = json_decode( $response );
-			return $response_json->id;
-		}else
+		if( !$json->error )
+			return $json->id;
+		else
 			return false;
 	
 	}
@@ -206,8 +218,10 @@ class ec_stripe extends ec_gateway{
 	public function get_customer( $user ){
 		$data = $this->get_get_customer_data( $user );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id, $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 	}
@@ -215,16 +229,19 @@ class ec_stripe extends ec_gateway{
 	public function update_customer( ){
 		$data = $this->get_update_customer_data( $user );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id, $data );
-		if( $response )
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
 			return false;
 	}
 	
-	public function delete_customer( ){
-		$data = $this->get_delete_customer_data( $user );
-		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id, $data );
-		if( $response )
+	public function delete_customer( $user ){
+		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
 			return false;
@@ -233,8 +250,10 @@ class ec_stripe extends ec_gateway{
 	public function get_customer_list( $limit = 25, $offset = 0 ){
 		$data = $this->get_customer_list_data( $limit, $offset );
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers", $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 	}
@@ -245,8 +264,9 @@ class ec_stripe extends ec_gateway{
 	public function insert_plan( $product ){
 		$data = $this->get_insert_plan_data( $product );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/plans", $data );
+		$json = json_decode( $response );
 		
-		if( $response )
+		if( !$json->error )
 			return true;
 		else
 			return false;
@@ -255,8 +275,10 @@ class ec_stripe extends ec_gateway{
 	public function get_plan( $product ){
 		$data = $this->get_get_plan_data( $product );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/plans/" . $product->product_id, $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json-error )
+			return $json;
 		else
 			return false;
 	}
@@ -264,26 +286,31 @@ class ec_stripe extends ec_gateway{
 	public function update_plan( $product ){
 		$data = $this->get_update_plan_data( $product );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/plans/" . $product->product_id, $data );
-		if( $response )
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
 			return false;
 	}
 	
 	public function delete_plan( $product ){
-		$data = $this->get_delete_plan_data( $product );
-		$response = $this->call_stripe( "https://api.stripe.com/v1/plans/" . $product->product_id, $data );
-		if( $response )
+		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/plans/" . $product->product_id );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
-			return false;
+			return false; 
 	}
 	
 	public function get_plan_list( $limit = 25, $offset = 0 ){
 		$data = $this->get_plan_list_data( $product );
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/plans", $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 	}
@@ -296,10 +323,11 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_insert_card_data( $user, $card );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards", $data );
-		if( $response ){
-			$response_json = json_decode( $response );
-			return $response_json->id;
-		}else
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json->id;
+		else
 			return false;
 		
 	}
@@ -308,8 +336,10 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_get_card_data( $user, $card_id );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards/" . $card_id, $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 		
@@ -319,7 +349,9 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_update_card_data( $user, $exp_month, $exp_year, $card_name );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards/" . $card_id, $data );
-		if( $response )
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
 			return false;
@@ -327,22 +359,25 @@ class ec_stripe extends ec_gateway{
 	}
 	
 	public function delete_card( $user, $card_id ){
-	
-		$data = $this->get_delete_card_data( $user, $card_id );
-		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards/" . $card_id, $data );
-		if( $response )
+		
+		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards/" . $card_id );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
 			return false;
 		
 	}
 	
-	public function get_card_list( $user, $limit = 25, $offset = 0 ){
+	public function get_card_list( $customer_id, $limit = 25, $offset = 0 ){
 	
-		$data = $this->get_card_list_data( $user, $limit, $offset );
-		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards", $data );
-		if( $response )
-			return json_decode( $response );
+		$data = $this->get_card_list_data( $limit, $offset );
+		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers/" . $customer_id . "/cards", $data );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 		
@@ -356,10 +391,11 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_insert_coupon_data( $coupon );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/coupons", $data );
-		if( $response ){
-			$response_json = json_decode( $response );
-			return $response_json->id;
-		}else
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json->id;
+		else
 			return false;
 		
 	}
@@ -368,8 +404,10 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_update_coupon_data( $coupon );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/coupons" . $card_id, $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 		
@@ -377,9 +415,10 @@ class ec_stripe extends ec_gateway{
 	
 	public function delete_coupon( $coupon ){
 		
-		$data = $this->get_delete_coupon_data( $coupon );
-		$response = $this->call_stripe( "https://api.stripe.com/v1/coupons" . $card_id, $data );
-		if( $response )
+		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/coupons" . $card_id );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
 			return true;
 		else
 			return false;
@@ -390,8 +429,10 @@ class ec_stripe extends ec_gateway{
 		
 		$data = $this->get_coupon_list_data( $limit, $offset );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/coupons", $data );
-		if( $response )
-			return json_decode( $response );
+		$json = json_decode( $response );
+		
+		if( !$json->error )
+			return $json;
 		else
 			return false;
 		
@@ -432,6 +473,25 @@ class ec_stripe extends ec_gateway{
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headr );
 		curl_setopt($ch, CURLOPT_POST, false ); 
 		curl_setopt($ch, CURLOPT_HTTPGET, true );
+		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30);
+		$response = curl_exec($ch);
+		curl_close ($ch);
+		
+		return $response;
+		
+	}
+	
+	private function call_stripe_delete( $gateway_url ){
+		
+		$api_key = get_option( 'ec_option_stripe_api_key' );
+		$headr = array();
+		$headr[] = 'Authorization: Bearer ' . $api_key;
+		
+		$ch = curl_init( );
+		curl_setopt($ch, CURLOPT_URL, $gateway_url );
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headr );
 		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30);
 		$response = curl_exec($ch);
 		curl_close ($ch);
@@ -526,16 +586,7 @@ class ec_stripe extends ec_gateway{
 	
 	}
 	
-	private function get_get_subscription_data( $user, $subscription_id ){
-		
-		$gateway_data = array(	"id"					=> $subscription_id,
-								"customer"				=> $user->user_id );
-								
-		return $gateway_data;
-		
-	}
-	
-	private function get_update_subscription_data( $product, $user, $card, $coupon, $prorate, $trial_end, $card, $quantity ){
+	private function get_update_subscription_data( $product, $user, $card, $coupon, $prorate, $trial_end, $quantity ){
 		
 		if( $card != NULL ){
 			$card_array = array("number" 				=> $card->card_number,
@@ -560,12 +611,6 @@ class ec_stripe extends ec_gateway{
 								"quantity"				=> $quantity );
 		
 		return $gateway_data;
-		
-	}
-	
-	private function get_cancel_subscription_data( $user, $subscription_id, $cancel_at_end_of_current_period ){
-		
-		return array(			"at_period_end"			=> $cancel_at_end_of_current_period );
 		
 	}
 	
@@ -658,12 +703,6 @@ class ec_stripe extends ec_gateway{
 		
 	}
 	
-	private function get_delete_customer_data( $user ){
-		
-		return array( "id" => $user->user_id );
-		
-	}
-	
 	private function get_customer_list_data( $limit, $offset ){
 		
 		return array( "count" => $limit, "offset" => $offset );
@@ -681,7 +720,7 @@ class ec_stripe extends ec_gateway{
 								"amount"				=> number_format( $product->price * 100, 0, "", "" ),
 								"currency"				=> $currency,
 								"interval"				=> $this->convert_period_to_name( $product->subscription_bill_period ), //week, month, or year
-								"interval_count"		=> $product->subscription_biil_length,
+								"interval_count"		=> $product->subscription_bill_length,
 								"name"					=> $GLOBALS['language']->convert_text( $product->title ),
 								"trial_period_days"		=> $product->trial_period_days );
 								
@@ -700,14 +739,6 @@ class ec_stripe extends ec_gateway{
 	private function get_update_plan_data( $product ){
 		
 		$gateway_data = array(	"name"					=> $product->title );
-								
-		return $gateway_data;
-		
-	}
-	
-	private function get_delete_plan_data( $product ){
-		
-		$gateway_data = array(	"id"					=> $product->product_id );
 								
 		return $gateway_data;
 		
@@ -764,15 +795,9 @@ class ec_stripe extends ec_gateway{
 		
 	}
 	
-	private function get_delete_card_data( $user, $card_id ){
+	private function get_card_list_data( $limit, $offset ){
 		
-		return array( "id" => $card_id, "customer" => $user->user_id );
-		
-	}
-	
-	private function get_card_list_data( $user, $limit, $offset ){
-		
-		return array( "id" => $user->user_id, "count" => $limit, "offset" => $offset );
+		return array( "count" => $limit, "offset" => $offset );
 		
 	}
 	
@@ -812,12 +837,6 @@ class ec_stripe extends ec_gateway{
 	}
 	
 	private function get_update_coupon_data( $coupon ){
-		
-		return array( $id = $coupon->promocode_id );
-		
-	}
-	
-	private function get_delete_coupon_data( $coupon ){
 		
 		return array( $id = $coupon->promocode_id );
 		

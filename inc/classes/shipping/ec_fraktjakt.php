@@ -50,6 +50,24 @@ class ec_fraktjakt{
 		return $this->process_response( $response );
 		
 	}
+	
+	public function get_shipping_options_test( $user ){
+		$this->user = $user;
+		
+		$ship_data = $this->get_test_shipper_data( );
+		
+		$ch = curl_init( );
+		curl_setopt($ch, CURLOPT_URL, $this->fraktjakt_url );
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_POST, true); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, 'xml=' . urlencode( $ship_data ) );
+		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30);
+		$response = curl_exec($ch);
+		curl_close ($ch);
+		
+		return $response;
+	}
 		
 	public function insert_shipping_order( $shipment_id, $shipping_product_id ){
 		
@@ -113,6 +131,58 @@ class ec_fraktjakt{
 													 	 'weight'	=> $cartitem->weight );
 								}// close quantity loop
 							}// close cart item loop
+							
+							$parcel = $this->calculate_parcel( $products );
+							
+							// Add parcel to the query
+							$shipper_data .= '
+								<parcel>
+									<weight>' . $parcel['weight'] . '</weight>
+									<length>' . $parcel['length']  . '</length>
+									<width>' . $parcel['width']  . '</width>
+									<height>' . $parcel['height']  . '</height>
+								</parcel>';
+							
+							$shipper_data .= '
+							</parcels>
+							<address>
+								<street_address_1>' . $this->user->shipping->address_line_1 . '</street_address_1>
+								<postal_code>' . $this->user->shipping->zip . '</postal_code>
+								<city_name>' . $this->user->shipping->city . '</city_name>
+								<country_code>' . $this->user->shipping->country . '</country_code>';
+							
+							if( $this->user_has_state( ) ){
+								$shipper_data .= '
+								<country_subdivision_code>' . $this->user->shipping->state . '</country_subdivision_code>';
+							}
+							
+							$shipper_data .= '
+							</address>
+							
+						</shipment>';
+						
+						
+		return $shipper_data;
+	}
+	
+	private function get_test_shipper_data( ){
+		
+		$shipper_data = '<?xml version="1.0" encoding="ISO-8859-1"?>
+						<shipment>
+							<value>' . $this->convert_to_sek( "10.00" ) . '</value>
+							<consignor>
+								<id>' . $this->fraktjakt_customer_id . '</id>
+								<key>' . $this->fraktjakt_login_key . '</key>
+								<encoding>IOS-8859-1</encoding>
+							</consignor>
+							<parcels>';
+							
+							// Generate Product List
+							$products = array( );
+							$products[] = array( 'width' 	=> 10,
+												 'height'	=> 10,
+												 'length'	=> 10,
+												 'weight'	=> 3 );
 							
 							$parcel = $this->calculate_parcel( $products );
 							

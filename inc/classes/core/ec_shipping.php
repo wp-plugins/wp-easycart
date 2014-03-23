@@ -14,6 +14,7 @@ class ec_shipping{
 	private $weight_based = array();							// array of array[trigger_rate, shipping_rate]
 	private $method_based = array();							// array of array[shipping_rate, shipping_label, shippingrate_id]
 	private $quantity_based = array();							// array of array[trigger_rate, shipping_rate] 
+	private $percentage_based = array();						// array of array[trigger_rate, percentage] 
 	private $live_based = array();								// array of array[shipping_code, shipping_label, shippingrate_id, ship_type]
 	private $fraktjakt_shipping_options;						// Optional array of shipping options in array( shipment_id, id, description, price, arrival_time)
 	
@@ -42,6 +43,8 @@ class ec_shipping{
 		$this->shipper = new ec_shipper( );
 		
 		if( get_option( 'ec_option_use_shipping' ) ){
+			$setting_row = $this->mysqli->get_settings( );
+			$this->handling = $setting_row->shipping_handling_rate;
 			$this->shipping_method = $this->ec_setting->get_shipping_method( );
 			$shipping_rows = $this->mysqli->get_shipping_data( );
 			
@@ -115,6 +118,15 @@ class ec_shipping{
 				}else if( $shipping_row->is_quantity_based )			
 					array_push( $this->quantity_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
 				
+				// Percentage and Zoned Based
+				else if( $shipping_row->is_percentage_based && $shipping_row->zone_id > 0 ){
+					if( in_array( $shipping_row->zone_id, $zones ) )
+						array_push( $this->percentage_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
+					
+				// Percentage Based	
+				}else if( $shipping_row->is_percentage_based )			
+					array_push( $this->percentage_based, array( $shipping_row->trigger_rate, $shipping_row->shipping_rate ) );
+				
 				// Live and Zoned Based
 				else if( $this->is_live_based( $shipping_row ) && $shipping_row->zone_id > 0 ){
 					if( in_array( $shipping_row->zone_id, $zones ) )
@@ -173,6 +185,9 @@ class ec_shipping{
 			
 		else if( $this->shipping_method == "quantity" )
 			return $this->get_quantity_based_shipping_options( $standard_text, $express_text );
+			
+		else if( $this->shipping_method == "percentage" )
+			return $this->get_percentage_based_shipping_options( $standard_text, $express_text );
 			
 		else if( $this->shipping_method == "live" )
 			return $this->get_live_based_shipping_options( $standard_text, $express_text );
@@ -244,6 +259,17 @@ class ec_shipping{
 		}
 	}
 	
+	private function get_percentage_based_shipping_options( $standard_text, $express_text ){
+		if( count( $this->percentage_based ) > 0 ){
+			for( $i=0; $i<count($this->percentage_based); $i++){
+				if( $this->subtotal > $this->percentage_based[$i][0] )
+					return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->subtotal * ( $this->percentage_based[$i][1] / 100 ) );
+			}
+		}else{
+			return "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\">Shipping Rate Setup ERROR: Please visit the EasyCart Admin -> Store Admin -> Rates and add at least one quantity trigger. If you have done this, check to ensure no gaps in triggers.</div>";
+		}
+	}
+	
 	private function get_live_based_shipping_options( $standard_text, $express_text ){
 		
 		if( count( $this->live_based ) > 0 ){ 
@@ -296,7 +322,7 @@ class ec_shipping{
 			if( ( !$selected_method && $i == 0 ) || ( $selected_method == $shipping_option['id'] ) )
 				$ret_string .= " checked=\"checked\"";
 				
-			$ret_string .= ">" . $shipping_option['description'] . " (" . $GLOBALS['currency']->symbol . "<span id=\"ec_cart_standard_shipping_price\">" . $GLOBALS['currency']->get_number_only( $shipping_option['price'] ) . "</span>)</div>";
+			$ret_string .= ">" . $shipping_option['description'] . " (" . $GLOBALS['currency']->symbol . "<span id=\"ec_cart_standard_shipping_price\">" . $GLOBALS['currency']->get_number_only( $shipping_option['price'] + $this->handling ) . "</span>)</div>";
 			$i++;
 		}
 		return $ret_string;
@@ -313,7 +339,7 @@ class ec_shipping{
 		if( ( !isset( $_SESSION['ec_shipping_method'] ) && $i==0 ) || ( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] == $this->method_based[$i][2] ) )
 		$ret_string .= " checked=\"checked\"";
 		
-		$ret_string .= " /> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] ) . ")</div>";
+		$ret_string .= " /> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] + $this->handling ) . ")</div>";
 		
 		return $ret_string;
 	}
@@ -326,7 +352,7 @@ class ec_shipping{
 		if( ( !isset( $_SESSION['ec_shipping_method'] ) && $i==0 ) || ( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] == $this->method_based[$i][2] ) )
 		$ret_string .= " selected=\"selected\"";
 		
-		$ret_string .= "> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] ) . ")</option>";
+		$ret_string .= "> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] + $this->handling ) . ")</option>";
 		
 		return $ret_string;
 	}
@@ -335,7 +361,7 @@ class ec_shipping{
 		
 		$ret_string = "";
 		
-		$ret_string .= "<div class=\"ec_cart_shipping_method_row\ id=\"" . $this->method_based[$i][2] . "\"> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] ) . ")</div>";
+		$ret_string .= "<div class=\"ec_cart_shipping_method_row\ id=\"" . $this->method_based[$i][2] . "\"> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] + $this->handling ) . ")</div>";
 		
 		return $ret_string;
 	}
@@ -426,7 +452,7 @@ class ec_shipping{
 					else
 						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
 					
-					return $this->get_live_based_div( $i, $rate );
+					return $this->get_live_based_div( $i, $rate + $this->handling );
 				}
 			}
 		
@@ -501,6 +527,17 @@ class ec_shipping{
 			for( $i=0; $i<count( $this->quantity_based ); $i++ ){
 				if( $this->quantity >= $this->quantity_based[$i][0] ){
 					$rate = $this->quantity_based[$i][1];
+					break;
+				}
+				
+			}
+			if( $this->ship_express )
+				$rate = $rate + $this->express_price;
+			
+		}else if( $this->shipping_method == "percentage" ){
+			for( $i=0; $i<count( $this->percentage_based ); $i++ ){
+				if( $this->subtotal > $this->percentage_based[$i][0] ){
+					$rate = ( $this->subtotal * ( $this->percentage_based[$i][1] / 100 ) );
 					break;
 				}
 				

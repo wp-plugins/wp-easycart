@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,20 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.6 =
+* NEW FEATURE - Stripe Subscriptions and Memberships NOW AVAILABLE!!
+* NEW FEATURE - Sell subscriptions, renew, update, cancel, and more directly on your website
+* NEW FEATURE - Sell membership content to your customers and customize both the membership content and alternate non-member content.
+* NEW FEATURE - Wrap any content with any number of products with [ec_membership]CONTENT[/ec_membership] and [ec_membership_alt]NON MEMBER[/ec_membership_alt].
+* NEW FEATURE - Setup a single page with content for, say, a bronze, silver, and gold membership and display bronze content to all, silver content to silver and gold, and gold content to only gold.
+* NEW FEATURE - Connect multiple subscriptions into a subscription plan and allow customers to automatically upgrade their membership status or subscription status.
+* NEW FEATURE - A customer can update their subscription billing method automatically from their account.
+* NEW FEATURE - Third party pending orders now have a link in the order view to complete the payment.
+* NEW FEATURE - SagePay US has been added as a live payment gateway.
+* NEW FEATURE - Shipping rates based on a straight percentage of the subtotal.
+* Improvement - Information to users who need to manually create the wp-easycart-data folder provided, checks to prevent data loss on future updates.
+* Improvement - Grid items now allow for pricing adjustment, e.g. 2 XL with +2 and 3 S with no price adjustment will add 4 to total price, not unit price.
+* Bug Fix - Add to cart button shortcode now shows sold out text when the item is sold out.
 = 2.1.5 =
 * Fix - Estimate live shipping was not returning results until after the user entered the checkout info area.
 = 2.1.4 =

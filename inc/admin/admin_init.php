@@ -62,6 +62,15 @@ function ec_install_admin_notice() {
     </div>
     <?php	
 	}
+	
+	if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){ ?>
+	
+    <div class="error">
+        <p>Your server appears to be missing the wp-easycart-data folder, which could cause data loss on upgrade. Please <a href="http://www.wpeasycart.com/plugin-update-help" target="_blank">click here</a> to learn how to correct this issue.</p>
+    </div>
+    	
+	<?php
+    }
 }
 
 function ec_load_admin_scripts( ){
@@ -429,6 +438,7 @@ function ec_print_editor( ){
 	ec_print_editor_multiple_products( );// Multiple Products Shortcode Panel
 	ec_print_editor_add_to_cart( );// Add to Cart Shortcode Panel
 	// Cart Display shortcode, no options, nothing needed
+	ec_print_editor_membership_content( );// Add to Cart Shortcode Panel
 	// End Container Inner
 	echo "</div>";
 	echo "</div>";
@@ -449,6 +459,7 @@ function ec_print_editor_shortcode_menu( ){
 		echo "<li data-ecshortcode=\"ec_selecteditems\"><div>SELECT ITEMS</div></li>";
 		echo "<li data-ecshortcode=\"ec_addtocart\"><div>ADD TO CART BUTTON</div></li>";
 		echo "<li data-ecshortcode=\"ec_cartdisplay\"><div>CART DISPLAY</div></li>";
+		echo "<li data-ecshortcode=\"ec_membership\"><div>MEMBERSHIP CONTENT</div></li>";
 	echo "</ul>";
 }
 
@@ -763,6 +774,23 @@ function ec_print_editor_add_to_cart( ){
 	echo "</div>";
 }
 // Reusing the print product select option
+
+/***********************************************************************************
+* BEGIN FUNCTIONS FOR THE MEMBERSHIP CONTENT PANEL
+************************************************************************************/
+// Membership Content Creator Panel
+function ec_print_editor_membership_content( ){
+	echo "<div class=\"ec_editor_panel\" id=\"ec_membership_menu\">";
+		echo "<div class=\"ec_editor_select_row\"><input type=\"button\" value=\"BACK\" class=\"ec_editor_button backlink\"></div>";
+		echo "<div class=\"ec_editor_error\" id=\"ec_membership_error\"><span>Please Select at Least One Product</span></div>";
+		echo "<div class=\"ec_editor_help_text\">This shortcode allows you to require a user to be subscribed to a product or one product in a group of products. For example, you could create a single content page that has a bronze, silver, and gold membership level with content for all three, just silver and gold, and just gold. In addition, it gives you an alternate content area</div>";
+		echo "<div class=\"ec_editor_multiple_select_row\"><span class=\"ec_editor_select_row_label\">Product(s):</span><span class=\"ec_editor_select_row_input\">";
+		ec_print_product_multiple_select( 'ec_editor_membership_multiple_product_select' );
+		echo "</div>";
+		echo "<div class=\"ec_editor_submit_row\"><span class=\"ec_editor_select_row_input\"><input type=\"button\" value=\"ADD SHORTCODE\" id=\"ec_add_membership\" class=\"ec_editor_button\"></span></div>";
+		
+	echo "</div>";
+}
 
 
 ?>

@@ -306,6 +306,48 @@ function ec_weight_shipping_setup( ){
 	return $has_weight_shipping;
 }
 
+function ec_using_quantity_shipping( ){
+	$shipping_method = ec_get_shipping_method( );
+	if( $shipping_method == "quantity" )
+		return true;
+	else
+		return false;
+}
+
+function ec_quantity_shipping_setup( ){
+	$db = new ec_db_admin( );
+	$shippingrates = $db->get_shipping_data( );
+	$has_quantity_shipping = false;
+	foreach( $shippingrates as $shiprate ){
+		if( $shiprate->is_quantity_based ){
+			$has_quantity_shipping = true;
+			break;
+		}
+	}
+	return $has_quantity_shipping;
+}
+
+function ec_using_percentage_shipping( ){
+	$shipping_method = ec_get_shipping_method( );
+	if( $shipping_method == "percentage" )
+		return true;
+	else
+		return false;
+}
+
+function ec_percentage_shipping_setup( ){
+	$db = new ec_db_admin( );
+	$shippingrates = $db->get_shipping_data( );
+	$has_percentage_shipping = false;
+	foreach( $shippingrates as $shiprate ){
+		if( $shiprate->is_percentage_based ){
+			$has_percentage_shipping = true;
+			break;
+		}
+	}
+	return $has_percentage_shipping;
+}
+
 function ec_using_method_shipping( ){
 	$shipping_method = ec_get_shipping_method( );
 	if( $shipping_method == "method" )
@@ -553,6 +595,44 @@ function ec_auspost_shipping_setup( ){
 	return ( $auspost_has_settings && $auspost_setup );
 }
 
+function ec_using_fraktjakt_shipping( ){
+	$shipping_method = ec_get_shipping_method( );
+	if( $shipping_method == "fraktjakt" )
+		return true;
+	else
+		return false;
+}
+
+function ec_fraktjakt_shipping_setup( ){
+	$fraktjakt_has_settings = false;
+	$fraktjakt_setup = false;
+	$fraktjakt_error_reason = 0;
+	
+	$db = new ec_db_admin( );
+	$setting_row = $db->get_settings( );
+	$settings = new ec_setting( $setting_row );
+
+	if( $setting_row->fraktjakt_customer_id != "" && $setting_row->fraktjakt_login_key != "" ){
+		$fraktjakt_has_settings = true;
+		
+		// Run test of the settings
+		$fraktjakt_class = new ec_fraktjakt( $settings );
+		$test_user = new ec_user( "" );
+		$test_user->setup_shipping_info_data( "", "", "152-153 Fleet St", "London", "", "GB", "EC4A2DQ", "" );
+		
+		$fraktjakt_response = $fraktjakt_class->get_shipping_options_test( $test_user );
+		$xml = new SimpleXMLElement( $fraktjakt_response );
+		
+		if( $xml->code == "0" )
+			$fraktjakt_setup = true;
+		else
+			$fraktjakt_error_reason = "1";
+			
+	}
+	
+	return ( $fraktjakt_has_settings && $fraktjakt_setup );
+}
+
 function ec_get_shipping_method( ){
 	$db = new ec_db_admin( );
 	$setting_row = $db->get_settings( );
@@ -770,13 +850,18 @@ function ec_live_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $live_payment == "sagepayus" ){
+		if( get_option( 'ec_option_sagepayus_mid' ) != "" && get_option( 'ec_option_sagepayus_mkey' ) != "" && get_option( 'ec_option_sagepayus_application_id' ) != "" )
+			return true;
+		else
+			return false;
 	}else if( $live_payment == "securepay" ){
 		if( get_option( 'ec_option_securepay_merchant_id' ) != "" && get_option( 'ec_option_securepay_password' ) != "" )
 			return true;
 		else
 			return false;
 	}else if( $live_payment == "stripe" ){
-		if( get_option( 'ec_option_stripe_api_key' ) != "" && get_option( 'ec_option_stripe_currency' ) != "" )
+		if( get_option( 'ec_option_stripe_api_key' ) != "" )
 			return true;
 		else
 			return false;
@@ -809,6 +894,8 @@ function ec_get_live_payment_method( ){
 		return "Realex";
 	else if( $live_payment == "sagepay" )
 		return "Sagepay";
+	else if( $live_payment == "sagepayus" )
+		return "Sagepay US";
 	else if( $live_payment == "securepay" )
 		return "SecurePay";
 	else if( $live_payment == "stripe" )
@@ -1279,6 +1366,10 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_sagepay_vendor', $_POST['ec_option_sagepay_vendor'] );
 	update_option( 'ec_option_sagepay_currency', $_POST['ec_option_sagepay_currency'] );
 	update_option( 'ec_option_sagepay_testmode', $_POST['ec_option_sagepay_testmode'] );
+	//Sagepay US
+	update_option( 'ec_option_sagepayus_mid', $_POST['ec_option_sagepayus_mid'] );
+	update_option( 'ec_option_sagepayus_mkey', $_POST['ec_option_sagepayus_mkey'] );
+	update_option( 'ec_option_sagepayus_application_id', $_POST['ec_option_sagepayus_application_id'] );
 	//Securepay
 	update_option( 'ec_option_securepay_merchant_id', $_POST['ec_option_securepay_merchant_id'] );
 	update_option( 'ec_option_securepay_password', $_POST['ec_option_securepay_password'] );

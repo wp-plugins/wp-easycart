@@ -8,13 +8,12 @@ class ec_accountpage{
 	public $order;								// ec_orderitem structure
 	public $subscriptions;						// ec_subscription_list structure
 	public $subscription;						// ec_subscription_item structure
-	public $payment_methods;					// ec_payment_method_list structure
-	public $payment_method;						// ec_payment_method structure
 	
 	private $user_email;						// VARCHAR
 	private $user_password;						// VARCHAR
 	
 	private $account_page;						// VARCHAR
+	private $cart_page;							// VARCHAR
 	private $permalink_divider;					// CHAR
 	
 	////////////////////////////////////////////////////////
@@ -42,15 +41,19 @@ class ec_accountpage{
 		}
 		
 		if( isset( $_GET['subscription_id'] ) ){
-			$this->subscription = new ec_subscription( $_GET['subscription_id'] );
+			$subscription_row = $this->mysqli->get_subscription_row( $_GET['subscription_id'] );
+			$this->subscription = new ec_subscription( $subscription_row, true );
 		}
 		
 		$accountpageid = get_option('ec_option_accountpage');
+		$cartpageid = get_option('ec_option_cartpage');
 		$this->account_page = get_permalink( $accountpageid );
+		$this->cart_page = get_permalink( $cartpageid );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
 			$https_class = new WordPressHTTPS( );
-			$this->account_page = $https_class->getHttpsUrl( ) . substr( $this->account_page, strlen( get_option( 'home' ) ) );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
 		}
 		
 		if( substr_count( $this->account_page, '?' ) )				$this->permalink_divider = "&";
@@ -320,6 +323,12 @@ class ec_accountpage{
 				echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=print_receipt&order_id=" . $this->order->order_id . "\" target=\"_blank\"><img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
 			else
 				echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=print_receipt&order_id=" . $this->order->order_id . "\" target=\"_blank\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_account_order_details/print_icon.png" ) . "\" alt=\"print\" /></a>";
+		}
+	}
+	
+	public function display_complete_payment_link( ){
+		if( $this->order && $this->order->orderstatus_id == 8 ){
+			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_page=third_party&order_id=" . $this->order->order_id . "\" class=\"ec_account_complete_order_link\">Complete Order Payment</a> ";
 		}
 	}
 	/* END ORDER DETAILS FUNCTIONS*/
@@ -672,6 +681,10 @@ class ec_accountpage{
 			$this->process_update_shipping_information( );
 		else if( $action == "logout" )
 			$this->process_logout( );
+		else if( $action == "update_subscription" )
+			$this->process_update_subscription( );
+		else if( $action == "cancel_subscription" )
+			$this->process_cancel_subscription( );
 	}
 	
 	private function process_login( ){
@@ -960,6 +973,118 @@ class ec_accountpage{
 	
 		header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=login" );
 	}
+	
+	private function process_update_subscription( ){
+		
+		global $wpdb;
+		$products = $this->mysqli->get_product_list( $wpdb->prepare( " WHERE product.product_id = %d", $_POST['ec_selected_plan'] ), "", "", "" );
+		
+		// Check that a product was found
+		if( count( $products ) > 0 ){
+			
+			// Setup Re-usable vars
+			$product = new ec_product( $products[0] );
+			$payment_method = get_option( 'ec_option_payment_process_method' );
+			$success = false;
+			$plan_added = $product->stripe_plan_added;
+			
+			// Check if we need to add the plan to Stripe
+			if( $payment_method == "stripe" ){
+				$stripe = new ec_stripe( );
+				if( !$product->stripe_plan_added ){
+					$plan_added = $stripe->insert_plan( $product );
+					$this->mysqli->update_product_stripe_added( $product->product_id );
+				}
+				
+				if( $plan_added ){
+					$success = $stripe->update_subscription( $product, $this->user, $card, $_POST['stripe_subscription_id'] );
+				}else{
+					header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $_POST['subscription_id'] . "&account_error=subscription_update_failed&errcode=01" );
+				}
+			}
+						
+			
+			//Upgrade and billing adjustment
+			if( isset( $_POST['ec_card_holder_name'] ) && $_POST['ec_card_holder_name'] != "" ){
+				$first_name = $_POST['ec_account_billing_information_first_name'];
+				$last_name = $_POST['ec_account_billing_information_last_name'];
+				$address = $_POST['ec_account_billing_information_address'];
+				$city = $_POST['ec_account_billing_information_city'];
+				$state = $_POST['ec_account_billing_information_state'];
+				$zip = $_POST['ec_account_billing_information_zip'];
+				$country = $_POST['ec_account_billing_information_country'];
+				$phone = $_POST['ec_account_billing_information_phone'];
+				
+				$card_type = $_POST['ec_cart_payment_type'];
+				$card_holder_name = $_POST['ec_card_holder_name'];
+				$card_number = $_POST['ec_card_number'];
+				$exp_month = $_POST['ec_expiration_month'];
+				$exp_year = $_POST['ec_expiration_year'];
+				$security_code = $_POST['ec_security_code'];
+				
+				$address_id = $this->user->billing_id;
+				$this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $city, $state, $zip, $country, $phone );
+				$this->user->setup_billing_info_data( $first_name, $last_name, $address, $city, $state, $country, $zip, $phone );
+				$card = new ec_credit_card( $card_type, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
+				
+				if( $payment_method == "stripe" ){
+					$stripe = new ec_stripe( );
+					$success = $stripe->update_subscription( $product, $this->user, $card, $_POST['stripe_subscription_id'] );
+				}
+					
+				// Update our DB if the subscription was successfully updated
+				if( $success ){
+					$this->mysqli->update_subscription( $_POST['subscription_id'], $this->user, $product, $card );
+					$this->mysqli->update_user_default_card( $this->user, $card );
+				}
+				
+				if( $success ){
+					header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $_POST['subscription_id'] . "&account_success=subscription_updated" );
+				}else{
+					header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $_POST['subscription_id'] . "&account_error=subscription_update_failed&errcode=02" );
+				}
+				
+			// Only an upgrade, no change to billing	
+			}else{
+				
+				if( $payment_method == "stripe" ){
+					$stripe = new ec_stripe( );
+					$success = $stripe->update_subscription( $product, $this->user, NULL, $_POST['stripe_subscription_id'] );
+				}
+				
+				if( $success ){
+					$this->mysqli->upgrade_subscription( $_POST['subscription_id'], $product );
+				}
+				
+				if( $success ){
+					header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $_POST['subscription_id'] . "&account_success=subscription_updated" );
+				}else{
+					header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $_POST['subscription_id'] . "&account_error=subscription_update_failed&errcode=03" );
+				}
+
+			}// End Update of subscription
+			
+		}else{ // No product has been found error
+			
+			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $_POST['subscription_id'] . "&account_error=subscription_update_failed&errcode=04" );
+			
+		}
+		
+	}// End process update subscription
+	
+	private function process_cancel_subscription( ){
+		$subscription_id = $_POST['ec_account_subscription_id'];
+		$subscription_row = $this->mysqli->get_subscription_row( $subscription_id );
+		$stripe = new ec_stripe( );
+		$cancel_success = $stripe->cancel_subscription( $this->user, $subscription_row->stripe_subscription_id );
+		if( $cancel_success ){
+			$this->mysqli->cancel_subscription( $subscription_id );
+			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscriptions&account_success=subscription_canceled" );
+		}else{
+			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $subscription_id . "&account_error=subscription_cancel_failed" );
+		}
+	}
+	
 	/* END FORM ACTION FUNCTIONS */
 	
 	private function send_new_password_email( $email, $new_password ){
@@ -1016,6 +1141,90 @@ class ec_accountpage{
 			mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, implode("\r\n", $headers));
 	}
 	
+	public function ec_display_payment_method_input( $select_one_text ){
+		echo "<select name=\"ec_cart_payment_type\" id=\"ec_cart_payment_type\" class=\"ec_cart_payment_information_input_select\">";
+		
+		echo "<option value=\"0\">" . $select_one_text . "</option>";
+		
+		if( get_option('ec_option_use_visa') )
+		echo "<option value=\"visa\">Visa</option>";
+		
+		if( get_option('ec_option_use_delta') )
+		echo "<option value=\"delta\">Visa Debit/Delta</option>";
+		
+		if( get_option('ec_option_use_uke') )
+		echo "<option value=\"uke\">Visa Electron</option>";
+		
+		if( get_option('ec_option_use_discover') )
+		echo "<option value=\"discover\">Discover</option>";
+		
+		if( get_option('ec_option_use_mastercard') )
+		echo "<option value=\"mastercard\">Mastercard</option>";
+		
+		if( get_option('ec_option_use_mcdebit') )
+		echo "<option value=\"mcdebit\">Debit Mastercard</option>";
+		
+		if( get_option('ec_option_use_amex') )
+		echo "<option value=\"amex\">American Express</option>";
+		
+		if( get_option('ec_option_use_jcb') )
+		echo "<option value=\"jcb\">JCB</option>";
+		
+		if( get_option('ec_option_use_diners') )
+		echo "<option value=\"diners\">Diners</option>";
+		
+		if( get_option('ec_option_use_laser') )
+		echo "<option value=\"laser\">Laser</option>";
+		
+		if( get_option('ec_option_use_maestro') )
+		echo "<option value=\"maestro\">Maestro</option>";
+		
+		echo "</select>";
+	}
+	
+	public function ec_display_card_holder_name_input(){
+		echo "<input type=\"text\" name=\"ec_card_holder_name\" id=\"ec_card_holder_name\" class=\"ec_cart_payment_information_input_text\" value=\"\" />";
+	}
+	
+	public function ec_display_card_number_input(){
+		echo "<input type=\"text\" name=\"ec_card_number\" id=\"ec_card_number\" class=\"ec_cart_payment_information_input_text\" value=\"\" />";
+	}
+	
+	public function ec_display_card_expiration_month_input( $select_text ){
+		echo "<select name=\"ec_expiration_month\" id=\"ec_expiration_month\" class=\"ec_cart_payment_information_input_select\">";
+		echo "<option value=\"0\">" . $select_text . "</option>";
+		for( $i=1; $i<=12; $i++ ){
+			echo "<option value=\"";
+			if( $i<10 )										$month = "0" . $i;
+			else											$month = $i;
+			echo $month . "\">" . $month . "</option>";
+		}
+		echo "</select>";
+	}
+	
+	public function ec_display_card_expiration_year_input( $select_text ){
+		echo "<select name=\"ec_expiration_year\" id=\"ec_expiration_year\" class=\"ec_cart_payment_information_input_select\">";
+		echo "<option value=\"0\">" . $select_text . "</option>";
+		for( $i=date( 'Y' ); $i < date( 'Y' ) + 15; $i++ ){
+			echo "<option value=\"" . $i . "\">" . $i . "</option>";	
+		}
+		echo "</select>";
+	}
+	
+	public function ec_display_card_security_code_input(){
+		echo "<input type=\"text\" name=\"ec_security_code\" id=\"ec_security_code\" class=\"ec_cart_payment_information_input_select\" value=\"\" />";
+	}
+	
+	public function display_subscription_update_form_start( ){
+		echo "<form action=\"" . $this->account_page . "\" method=\"POST\">";
+	}
+	
+	public function display_subscription_update_form_end( ){
+		echo "<input type=\"hidden\" name=\"stripe_subscription_id\" value=\"" . $this->subscription->get_stripe_id( ) . "\" />";
+		echo "<input type=\"hidden\" name=\"subscription_id\" value=\"" . $_GET['subscription_id'] . "\" />";
+		echo "<input type=\"hidden\" name=\"ec_account_form_action\" value=\"update_subscription\" />";
+		echo "</form>";
+	}
 }
 
 ?>

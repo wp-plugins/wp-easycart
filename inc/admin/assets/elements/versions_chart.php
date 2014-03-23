@@ -43,6 +43,10 @@
             
             <li class="">PayPal Subscription Products</li>
             
+            <li class="">Stripe Subscriptions with Admin Management Tools</li>
+            
+            <li class="">Subscriptions with Membership Content</li>
+            
             <li class="">Product Options and Quantity Tracking</li>
             
             <li class="">Advanced Product Options (text input, file upload, etc...)</li>
@@ -132,6 +136,10 @@
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-39  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
@@ -206,6 +214,10 @@
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-34  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-34  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-34  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-34  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
@@ -274,6 +286,10 @@
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-16  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-17  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-18  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-18  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-18  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             

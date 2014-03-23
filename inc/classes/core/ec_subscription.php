@@ -4,7 +4,8 @@ class ec_subscription{
 	
 	private $mysqli;									// ec_db object
 	
-	private $subscription_id;							// DB ID OR Unique id relating the subscription to payment gateway
+	private $subscription_id;							// DB ID for Subscription
+	private $user_id;									// USER ID connecting subscription to user
 	private $title;										// title of the subscription
 	private $created;									// date created in UNIX timestamp format
 	private $amount;									// 12.00 format
@@ -14,20 +15,31 @@ class ec_subscription{
 	private $status;									// Active, Suspended, or Canceled
 	private $last_billed;								// date in UNIX timestamp format
 	private $next_payment;								// date in UNIX timestamp format
+	private $card_type;									// credit card type used
+	private $last4;										// last 4 digits of credit card
 	
-	private $account_page;						// VARCHAR
-	private $permalink_divider;					// CHAR
+	private $is_details;								// Get more details if this is details
+	private $stripe_subscription_id;					// ID of a Stripe Subscription
 	
-	function __construct( $subscription_row ){
+	public $upgrades;									// Array of possible upgrades
+	public $past_payments;								// Array of past payments
+	
+	public $membership_page;							// VARCHAR link
+	
+	private $account_page;								// VARCHAR
+	private $permalink_divider;							// CHAR
+	
+	function __construct( $subscription_row, $is_details = false ){
 		
 		$this->mysqli = new ec_db();
+		$this->is_details = $is_details;
 		
 		$accountpageid = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $accountpageid );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
 			$https_class = new WordPressHTTPS( );
-			$this->account_page = $https_class->getHttpsUrl( ) . substr( $this->account_page, strlen( get_option( 'home' ) ) );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
 		}
 		
 		if( substr_count( $this->account_page, '?' ) )				$this->permalink_divider = "&";
@@ -35,14 +47,10 @@ class ec_subscription{
 		
 		
 		// Initialize data
-		$payment_procesor = get_option( 'ec_option_payment_process_method' );
-		if( !is_object( $subscription_row ) ){
-			$subscription_data = $this->mysqli->get_subscription_row( $subscription_row );
-			$this->set_db_vars( $subscription_data );
-		}else{
-			if( $payment_procesor  == "stripe" )
-				$this->set_stripe_vars( $subscription_row );
-		}
+		$this->set_db_vars( $subscription_row );
+		$this->upgrades = $this->mysqli->get_subscription_upgrades( $this->subscription_id );
+		$this->past_payments = $this->mysqli->get_subscription_payments( $this->subscription_id );
+		
 	}
 	
 	//////////////////////////////////////////////////////////
@@ -69,6 +77,18 @@ class ec_subscription{
 		
 		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $this->subscription_id. "\">" . $text . "</a>";
 		
+	}
+	
+	public function has_membership_page( ){
+		if( $this->membership_page != "" ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public function display_membership_page_link( $link_text ){
+		echo "<a href=\"" . $this->membership_page . "\" class=\"ec_account_membership_page_link\">" . $link_text . "</a>";
 	}
 	
 	/////////////////////////////////////////////////////////
@@ -122,19 +142,96 @@ class ec_subscription{
 	
 	public function has_upgrades( ){
 		
-		return true;
+		if( count( $this->upgrades ) > 0 ){
+			foreach( $this->upgrades as $upgrade ){
+				if( $this->product_id == $upgrade->product_id ){
+					return true;
+				}
+			}
+		}
+		
+		echo "<input type=\"hidden\" name=\"ec_selected_plan\" value=\"" . $this->product_id . "\" />";
+		
+		return false;
 		
 	}
 	
 	public function display_upgrade_dropdown( ){
 		
-		echo "<select><option>Coming Soon</option></select>";
+		$found_this = false;
+		echo "<select name=\"ec_selected_plan\">";
+		foreach( $this->upgrades as $upgrade ){
+			if( $this->product_id == $upgrade->product_id ){
+				$found_this = true;
+			}
+			
+			if( $upgrade->can_downgrade || $found_this ){
+				echo "<option value=\"" . $upgrade->product_id . "\"";
+				if( $this->product_id == $upgrade->product_id ){
+					echo " selected=\"selected\"";
+				}
+				echo ">" . $GLOBALS['language']->convert_text( $upgrade->title ) . " " . $GLOBALS['currency']->get_currency_display( $upgrade->price ) . $this->get_new_bill_period_formatted( $upgrade->subscription_bill_length, $upgrade->subscription_bill_period ) . "</option>";
+			}
+		}
+		echo "</select>";
 		
+	}
+	
+	public function get_stripe_id( ){
+		return $this->stripe_subscription_id;
+	}
+	
+	public function display_past_payments( $date_format ){
+		foreach( $this->past_payments as $payment ){
+			echo date( $date_format, strtotime( $payment->order_date ) ) . " | " . $GLOBALS['currency']->get_currency_display( $payment->grand_total ) . " | <a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $payment->order_id . "\">View Order</a>";
+		}
+	}
+	
+	public function display_cancel_form( $button_text, $confirm_text ){
+		echo "<form method=\"POST\" action=\"" . $this->account_page . $this->permalink_divider . "ec_page=subscriptions\">";
+		echo "<input type=\"hidden\" name=\"ec_account_subscription_id\" value=\"" . $this->subscription_id . "\">";
+		echo "<input type=\"hidden\" name=\"ec_account_form_action\" value=\"cancel_subscription\">";
+		echo "<input type=\"submit\" value=\"" . $button_text . "\" onclick=\"return ec_cancel_subscription_check( '" . $confirm_text . "' );\">";
+		echo "</form>";
+	}
+	
+	public function is_canceled( ){
+		if( $this->status == "Canceled" ){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	/////////////////////////////////////////////////////////
 	//Help Functions
 	/////////////////////////////////////////////////////////
+	
+	private function get_new_bill_period_formatted( $length, $period ){
+		
+		$ret_string = "/";
+		
+		if( $length > 1 ){
+			$ret_string .= $length . " ";
+		}
+		
+		if( $period == "D" ){
+			$ret_string .= "day";
+		}else if( $period == "W" ){
+			$ret_string .= "week";
+		}else if( $period == "M" ){
+			$ret_string .= "month";
+		}else if( $period == "Y" ){
+			$ret_string .= "year";
+		}
+		
+		if( $length > 1 ){
+			$ret_string .= "s";
+		}
+		
+		return $ret_string;
+		
+	}
 	
 	private function get_bill_period_formatted( ){
 		
@@ -171,6 +268,7 @@ class ec_subscription{
 	private function set_db_vars( $db_row ){
 		
 		$this->subscription_id = $db_row->subscription_id;
+		$this->user_id = $db_row->user_id;
 		$this->title = $db_row->title;
 		$this->amount = $db_row->price;
 		$this->product_id = $db_row->product_id;
@@ -179,6 +277,10 @@ class ec_subscription{
 		$this->status = $db_row->subscription_status;
 		$this->last_billed = $db_row->last_payment_date;
 		$this->next_payment = $db_row->next_payment_date;
+		$this->card_type = $db_row->credit_card_type;
+		$this->last4 = $db_row->credit_card_last4;
+		$this->stripe_subscription_id = $db_row->stripe_subscription_id;
+		$this->membership_page = $db_row->membership_page;
 		
 	}
 	
@@ -190,7 +292,7 @@ class ec_subscription{
 	
 	private function set_stripe_vars( $subscription_row ){
 		
-		$this->subscription_id = $subscription_row->id;
+		$this->stripe_subscription_id = $subscription_row->id;
 		$this->title = $subscription_row->plan->name;
 		$this->created = $subscription_row->plan->created;
 		$this->amount = $this->convert_from_cents( $subscription_row->plan->amount );

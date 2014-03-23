@@ -208,3 +208,121 @@ function ec_cart_validate_checkout_submit_order( ){
 		return false;
 	}
 }
+
+function ec_cart_validate_subscription_order( ){
+	var errors = 0;
+	
+	var billing_country_code = document.getElementById('ec_cart_billing_country').value;
+	
+	var payment_method = document.getElementById('ec_cart_payment_type').value;
+	var card_holder_name = document.getElementById('ec_card_holder_name').value;
+	var card_number = document.getElementById('ec_card_number').value;
+	var exp_month = document.getElementById('ec_expiration_month').value;
+	var exp_year = document.getElementById('ec_expiration_year').value;
+	var sec_code = document.getElementById('ec_security_code').value;
+	
+	// Validate Billing Information
+	var input_names = ['first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country', 'phone'];
+	
+	for( var i=0; i< input_names.length; i++){
+		if( input_names[i] == "state" && document.getElementById( 'ec_cart_billing_' + input_names[i] ).options ){
+			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] ).options[document.getElementById( 'ec_cart_billing_' + input_names[i] ).selectedIndex].value;
+		}else{
+			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] ).value;
+		}
+		// validate billing
+		if( !ec_validation( "validate_" + input_names[i], value, billing_country_code ) ){
+			errors++;
+			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row_error";
+		}else{
+			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row";
+		}
+	}
+	
+	// Validate Credit Card Information
+	if( payment_method == "0" ){
+		errors++;
+		document.getElementById('ec_cart_payment_type_row').className = "ec_cart_payment_information_row_error";
+	}else{
+		document.getElementById('ec_cart_payment_type_row').className = "ec_cart_payment_information_row";
+	}
+	
+	if( !ec_validation( "validate_card_holder_name", card_holder_name, payment_method ) ){
+		errors++;
+		document.getElementById('ec_card_holder_name_row').className = "ec_cart_payment_information_row_error";
+	}else{
+		document.getElementById('ec_card_holder_name_row').className = "ec_cart_payment_information_row";
+	}
+	
+	if( !ec_validation( "validate_card_number", card_number, payment_method ) ){
+		errors++;
+		document.getElementById('ec_card_number_row').className = "ec_cart_payment_information_row_error";
+	}else{
+		document.getElementById('ec_card_number_row').className = "ec_cart_payment_information_row";
+	}
+	
+	if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) || !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
+		errors++;
+		document.getElementById('ec_expiration_date_row').className = "ec_cart_payment_information_row_error";
+	}else{
+		document.getElementById('ec_expiration_date_row').className = "ec_cart_payment_information_row";
+	}
+	
+	if( !ec_validation( "validate_security_code", sec_code, payment_method ) ){
+		errors++;
+		document.getElementById('ec_security_code_row').className = "ec_cart_payment_information_row_error";
+	}else{
+		document.getElementById('ec_security_code_row').className = "ec_cart_payment_information_row";
+	}
+	
+	// If new account, Validate Account Info
+	if( document.getElementById( 'ec_contact_email' ) ){
+		
+		var email = jQuery( '#ec_contact_email' ).val( );
+		var retype_email = jQuery( '#ec_contact_email_retype' ).val( );
+		var password = jQuery( '#ec_contact_password' ).val( );
+		var retype_password = jQuery( '#ec_contact_password_retype' ).val( );
+		
+		if( !ec_validation( "validate_email", email, billing_country_code ) ){
+			errors++;
+			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row_error";
+		}else{
+			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row";
+		}
+		
+
+
+
+
+		if( retype_email.length == 0 || email != retype_email ){
+			errors++;
+			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row_error";
+		}else{
+
+			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row";
+		}
+		
+			
+		if( !ec_validation( "validate_password", password, billing_country_code ) ){
+			errors++;
+			document.getElementById('ec_contact_password_row').className = "ec_cart_contact_information_row_error";
+		}else{
+
+			document.getElementById('ec_contact_password_row').className = "ec_cart_contact_information_row";
+		}
+		
+		if( retype_password.length == 0 || password != retype_password ){
+			errors++;
+			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_contact_information_row_error";
+		}else{
+			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_contact_information_row";
+		}
+		
+	}
+	
+	if( errors )
+		return false;
+	else
+		return true;
+	
+}

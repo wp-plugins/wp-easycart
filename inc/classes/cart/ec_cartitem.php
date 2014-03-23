@@ -203,20 +203,40 @@ class ec_cartitem{
 		
 		if( $this->use_advanced_optionset ){
 			foreach( $this->advanced_options as $advanced_option ){
-				if( $advanced_option->optionitem_price != 0 ){
-					$options_price = $options_price + $advanced_option->optionitem_price; 
-				}else if( $advanced_option->optionitem_price_onetime != 0 ){ 
-					$options_price_onetime = $options_price_onetime + $advanced_option->optionitem_price_onetime; 
-				}else if( $advanced_option->optionitem_price_override >= 0 ){
-					$cartitem_data->price = $advanced_option->optionitem_price_override;
-				}
-				
-				if( $advanced_option->optionitem_weight != 0 ){
-					$options_weight = $options_weight + $advanced_option->optionitem_weight; 
-				}else if( $advanced_option->optionitem_weight_onetime != 0 ){ 
-					$options_weight_onetime = $options_weight_onetime + $advanced_option->optionitem_weight_onetime; 
-				}else if( $advanced_option->optionitem_weight_override >= 0 ){
-					$this->weight = $advanced_option->optionitem_weight_override;
+				if( $advanced_option->option_type == "grid" ){
+					
+					if( $advanced_option->optionitem_price != 0 ){
+						$grid_price_change = $grid_price_change + ( $advanced_option->optionitem_price * $advanced_option->optionitem_value ); 
+					}else if( $advanced_option->optionitem_price_onetime != 0 ){ 
+						$grid_price_change = $grid_price_change + $advanced_option->optionitem_price_onetime; 
+					}else if( $advanced_option->optionitem_price_override >= 0 ){
+						$grid_price_change = $grid_price_change + ( ( $advanced_option->optionitem_price_override - $cartitem_data->price ) * $advanced_option->optionitem_value );
+					}
+					
+					if( $advanced_option->optionitem_weight != 0 ){
+						$grid_weight_change = $grid_weight_change + ( $advanced_option->optionitem_weight * $advanced_option->optionitem_value ); 
+					}else if( $advanced_option->optionitem_weight_onetime != 0 ){ 
+						$grid_weight_change = $grid_weight_change + $advanced_option->optionitem_weight_onetime; 
+					}else if( $advanced_option->optionitem_weight_override >= 0 ){
+						$grid_weight_change = $grid_weight_change + ( ( $advanced_option->optionitem_weight_override - $cartitem_data->weight ) * $advanced_option->optionitem_value );
+					}
+					
+				}else{
+					if( $advanced_option->optionitem_price != 0 ){
+						$options_price = $options_price + $advanced_option->optionitem_price; 
+					}else if( $advanced_option->optionitem_price_onetime != 0 ){ 
+						$options_price_onetime = $options_price_onetime + $advanced_option->optionitem_price_onetime; 
+					}else if( $advanced_option->optionitem_price_override >= 0 ){
+						$cartitem_data->price = $advanced_option->optionitem_price_override;
+					}
+					
+					if( $advanced_option->optionitem_weight != 0 ){
+						$options_weight = $options_weight + $advanced_option->optionitem_weight; 
+					}else if( $advanced_option->optionitem_weight_onetime != 0 ){ 
+						$options_weight_onetime = $options_weight_onetime + $advanced_option->optionitem_weight_onetime; 
+					}else if( $advanced_option->optionitem_weight_override >= 0 ){
+						$this->weight = $advanced_option->optionitem_weight_override;
+					}
 				}
 			}
 			for( $i=0; $i<count( $this->advanced_options ); $i++ ){
@@ -229,7 +249,7 @@ class ec_cartitem{
 		}
 		
 		// Update the weight from option item weight
-		$this->weight = $this->weight + $options_weight_onetime + $options_weight;
+		$this->weight = $this->weight + $options_weight_onetime + $options_weight + $grid_weight_change;
 		
 		// Look for role based pricing
 		if( isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
@@ -251,7 +271,7 @@ class ec_cartitem{
 			$this->unit_price = $cartitem_data->price + $options_price;	
 		}
 		
-		$this->total_price = ( $this->unit_price * $this->quantity ) + $options_price_onetime;
+		$this->total_price = ( $this->unit_price * $this->quantity ) + $options_price_onetime + $grid_price_change;
 		$this->handling_price = $cartitem_data->handling_price;
 		
 		if( $cartitem_data->vat_rate > 0 )
@@ -264,6 +284,12 @@ class ec_cartitem{
 		
 		$cart_page_id = get_option('ec_option_cartpage');
 		$this->cart_page = get_permalink( $cart_page_id );
+		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
+		}
 		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";

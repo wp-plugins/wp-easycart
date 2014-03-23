@@ -10,3 +10,5 @@
 <?php $this->display_account_password( ); ?>
 <?php $this->display_account_billing_information( ); ?>
 <?php $this->display_account_shipping_information( ); ?>
+<?php $this->display_account_subscriptions( ); ?>
+<?php $this->display_account_subscription_details( ); ?>

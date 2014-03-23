@@ -472,6 +472,27 @@
 				}
 			}
 		},
+		"cart_subscription_guest_checkout":{
+			"label":"Cart - Subscription No Account Checkout",
+			"options":{
+				"cart_subscription_guest_title":{
+					"title":"Cart, Login, Subscription No Account Title",
+					"value":"Create Account on Checkout"
+				},
+				"cart_subscription_guest_sub_title":{
+					"title":"Cart, Login, Subscription No Account Sub Title",
+					"value":"Not registered? Checkout without an existing account."
+				},
+				"cart_subscription_guest_message":{
+					"title":"Cart, Login, Subscription No Account Message",
+					"value":"No account? No problem.<br/>You will have an opportunity to create an account later."
+				},
+				"cart_subscription_guest_button":{
+					"title":"Cart, Login, Guest Checkout Button",
+					"value":"CONTINUE TO CHECKOUT"
+				}
+			}
+		},
 		"cart_billing_information":{
 			"label":"Cart - Billing Information",
 			"options":{
@@ -752,6 +773,10 @@
 				"cart_payment_complete_line_4":{
 					"title":"Cart, Payment Complete, Line 4",
 					"value":"Please keep this as a record of your order!"
+				},
+				"cart_payment_complete_line_5":{
+					"title":"Cart, Payment Complete, Line 5",
+					"value":"Click Here to View Your Membership Content"
 				},
 				"cart_payment_complete_billing_label":{
 					"title":"Cart, Payment Complete, Billing Label",
@@ -1354,6 +1379,10 @@
 					"title":"Account, Orders Details, VAT Total",
 					"value":"VAT Total:"
 				},
+				"account_orders_details_refund_total":{
+					"title":"Account, Orders Details, Refund Total",
+					"value":"Refunded Amount:"
+				},
 				"account_orders_details_grand_total":{
 					"title":"Account, Orders Details, Grand Total",
 					"value":"Order Total:"
@@ -1419,6 +1448,10 @@
 					"title":"Account, Subscriptions Title",
 					"value":"Your Active Subscriptions"
 				},
+				"account_canceled_subscriptions_title":{
+					"title":"Account, Canceled Subscriptions Title",
+					"value":"Your Canceled Subscriptions"
+				},
 				"account_subscriptions_header_1":{
 					"title":"Account, Subscriptions, Header 1",
 					"value":"Subscription Name"
@@ -1442,6 +1475,14 @@
 				"account_subscriptions_none_found":{
 					"title":"Account, Subscriptions, None Found",
 					"value":"There are no subscriptions associated with your account."
+				},
+				"cancel_subscription_button":{
+					"title":"Account, Subscription Details, Cancel Subscription Button",
+					"value":"CANCEL SUBSCRIPTION"
+				},
+				"cancel_subscription_confirm_text":{
+					"title":"Account, Subscription Details, Cancel Subscription Button",
+					"value":"Are you sure you would like to cancel this subscription?"
 				}
 			}
 		},
@@ -1519,6 +1560,14 @@
 				"not_activated":{
 					"title":"Account, Not Activated",
 					"value":"The account your are attempting to access has not been activated. Please activate your account through the activation email sent when you signed up for an account or contact us if you are having problems."
+				},
+				"subscription_update_failed":{
+					"title":"Account, Subscription Update Error",
+					"value":"There was a problem while updating your subscription, please try again or contact us if you continue to have problems."
+				},
+				"subscription_cancel_failed":{
+					"title":"Account, Subscription Cancel Error",
+					"value":"There was a problem while cancelling your subscription, please try again or contact us if you continue to have problems."
 				}
 			}
 		},
@@ -1564,6 +1613,14 @@
 				"validation_required":{
 					"title":"Account, Validation Required",
 					"value":"You have successfully created an account, but your email needs to be validated. An email has been sent to your account with instructions on how to complete the registration process. Contact us if you have any questions."
+				},
+				"subscription_updated":{
+					"title":"Account, Subscription Updated",
+					"value":"Your subscription has been updated successfully."
+				},
+				"subscription_canceled":{
+					"title":"Account, Subscription Canceled",
+					"value":"Your subscription has been canceled."
 				}
 			}
 		},

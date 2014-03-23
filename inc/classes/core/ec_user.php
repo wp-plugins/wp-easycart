@@ -20,6 +20,8 @@ class ec_user{
 	public $realauth_registered;						// BOOL
 	public $stripe_customer_id;							// VARCHAR 128
 	
+	public $card_type;
+	public $last4;
 	private $password;									// VARCHAR 255
 	
 	public $customfields = array();						// array of customfield objects
@@ -45,8 +47,6 @@ class ec_user{
 		
 		$user = $this->mysqli->get_user( $this->email, $this->password );
 		
-		
-		
 		if( isset( $_SESSION['ec_first_name'] ) )
 			$this->first_name = $_SESSION['ec_first_name'];
 		else
@@ -63,6 +63,8 @@ class ec_user{
 			$this->billing_id = $user->default_billing_address_id;
 			$this->shipping_id = $user->default_shipping_address_id;
 			$this->stripe_customer_id = $user->stripe_customer_id;
+			$this->card_type = $user->default_card_type;
+			$this->last4 = $user->default_card_last4;
 		}else{
 			$this->user_level = "";
 			$this->is_subscriber = "";
@@ -84,7 +86,7 @@ class ec_user{
 			$this->shipping = new ec_address( $_SESSION['ec_shipping_first_name'], $_SESSION['ec_shipping_last_name'], $_SESSION['ec_shipping_address'], "", $_SESSION['ec_shipping_city'], $_SESSION['ec_shipping_state'], $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], $_SESSION['ec_shipping_phone'] );
 		
 		// Live shipping estimate for zip and country
-		}else if( isset( $_SESSION['ec_shipping_zip'] ) && isset( $_SESSION['ec_shipping_country'] ) ){
+		}else if( isset( $_SESSION['ec_shipping_zip'] ) && isset( $_SESSION['ec_shipping_country'] ) && $_SESSION['ec_shipping_country'] != 0 ){
 			$this->shipping = new ec_address( "", "", "", "", "", "", $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], "" );
 		
 		// Live shipping estimate for zip only
@@ -189,6 +191,33 @@ class ec_user{
 		echo "<input type=\"text\" name=\"ec_user_custom_field_" . $this->customfields[$i][0] . "\" id=\"ec_user_custom_field_" . $this->customfields[$i][0] . "\" value=\"" . $this->customfields[$i][2] . "\" />" . $seperator;
 	}
 	
+	public function get_payment_list( ){
+		$ret_cards = array( );
+		if( get_option( 'ec_option_payment_process_method' ) == "stripe" ){
+			$stripe = new ec_stripe( );
+			$card_list = $stripe->get_card_list( $this->stripe_customer_id );
+			
+			foreach( $card_list->data as $card ){
+				$ret_cards[] = array( 'id' => $card->id, 'type' => $card->type, 'last4' => $card->last4, 'exp_month' => $card->exp_month, 'exp_year' => $card->exp_year );
+			}
+		}else{
+			return false;
+		}
+		
+		return $ret_cards;
+	}
+	
+	public function display_card_type( ){
+		
+		echo strtoupper( $this->card_type );
+		
+	}
+	
+	public function display_last4( ){
+		
+		echo $this->last4;
+	
+	}
 }
 
 ?>

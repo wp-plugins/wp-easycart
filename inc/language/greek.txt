@@ -23,7 +23,8 @@
 				"sort_by_newest":{
 					"title":"Product Page Sort Box Item 5",
 					"value":"\u039a\u03b1\u03b9\u03bd\u03bf\u03cd\u03c1\u03b3\u03b9\u03b1 \u03c0\u03c1\u03bf\u03ca\u03cc\u03bd\u03c4\u03b1 "
-				},"sort_by_rating":{
+				},
+				"sort_by_rating":{
 					"title":"Product Page Sort Box Item 6",
 					"value":"\u0397 \u03ba\u03b1\u03bb\u03cd\u03c4\u03b5\u03c1\u03b7 \u03b5\u03ba\u03c4\u03af\u03bc\u03b7\u03c3\u03b7"
 				},
@@ -137,6 +138,10 @@
 				"product_details_reduced_price":{
 					"title":"reduced price text",
 					"value":"\u0388\u03ba\u03c0\u03c4\u03c9\u03c3\u03b7"
+				},
+				"product_details_quantity":{
+					"title":"Quantity Label",
+					"value":"ποσότητα"
 				},
 				"product_details_description":{
 					"title":"Description Title",
@@ -330,6 +335,14 @@
 					"title":"Cart, Estimate Shipping Sub Title",
 					"value":"\u03a0\u03b1\u03c1\u03b1\u03ba\u03b1\u03bb\u03ce \u03b5\u03b9\u03c3\u03ac\u03b3\u03b5\u03c4\u03b5 \u03c4\u03bf\u03bd \u03a4.\u039a. \u03b3\u03b9\u03b1 \u03bd\u03b1 \u03c5\u03c0\u03bf\u03bb\u03bf\u03b3\u03af\u03c3\u03bf\u03c5\u03bc\u03b5 \u03c4\u03b1 \u03ad\u03be\u03bf\u03b4\u03b1 \u03b1\u03c0\u03bf\u03c3\u03c4\u03bf\u03bb\u03ae\u03c2"
 				},
+				"cart_estimate_shipping_input_country_label":{
+					"title":"Cart, Estimate Shipping, Input Label Country",
+					"value":"χώρα:"
+				},
+				"cart_estimate_shipping_select_one":{
+					"title":"Cart, Estimate Shipping, Select one for country box",
+					"value":"Επιλέξτε ένα"
+				},
 				"cart_estimate_shipping_input_label":{
 					"title":"Cart, Estimate Shipping Input Label",
 					"value":"\u03a4\u03b1\u03c7\u03c5\u03b4\u03c1\u03c9\u03bc\u03b9\u03ba\u03ce\u03c2 \u03ba\u03ce\u03b4\u03b9\u03ba\u03b1\u03c2"
@@ -456,6 +469,27 @@
 				"cart_guest_button":{
 					"title":"Cart, Login, Guest Checkout Button",
 					"value":"\u03a3\u03c5\u03bd\u03ad\u03c7\u03b5\u03b9\u03b1 \u03c3\u03c4\u03bf \u03c4\u03b1\u03bc\u03b5\u03af\u03bf"
+				}
+			}
+		},
+		"cart_subscription_guest_checkout":{
+			"label":"Cart - Subscription No Account Checkout",
+			"options":{
+				"cart_subscription_guest_title":{
+					"title":"Cart, Login, Subscription No Account Title",
+					"value":"Δημιουργία λογαριασμού στο Ταμείο"
+				},
+				"cart_subscription_guest_sub_title":{
+					"title":"Cart, Login, Subscription No Account Sub Title",
+					"value":"Δεν είστε εγγεγραμμένος; Ταμείο χωρίς έναν υπάρχοντα λογαριασμό."
+				},
+				"cart_subscription_guest_message":{
+					"title":"Cart, Login, Subscription No Account Message",
+					"value":"Δεν έχετε λογαριασμό; Δεν υπάρχει πρόβλημα. <br/> Θα έχετε την ευκαιρία να δημιουργήσετε ένα λογαριασμό αργότερα."
+				},
+				"cart_subscription_guest_button":{
+					"title":"Cart, Login, Guest Checkout Button",
+					"value":"ΣΥΝΕΧΕΙΑ ΣΤΟ ΤΑΜΕΙΟ"
 				}
 			}
 		},
@@ -739,6 +773,10 @@
 				"cart_payment_complete_line_4":{
 					"title":"Cart, Payment Complete, Line 4",
 					"value":"Παρακαλώ κρατήστε αυτό ως ένα αρχείο της παραγγελίας σας!"
+				},
+				"cart_payment_complete_line_5":{
+					"title":"Cart, Payment Complete, Line 5",
+					"value":"Κάντε κλικ εδώ για να δείτε το περιεχόμενο μέλους σας"
 				},
 				"cart_payment_complete_billing_label":{
 					"title":"Cart, Payment Complete, Billing Label",
@@ -1341,6 +1379,10 @@
 					"title":"Account, Orders Details, VAT Total",
 					"value":"Σύνολο Φ.π.α."
 				},
+				"account_orders_details_refund_total":{
+					"title":"Account, Orders Details, Refund Total",
+					"value":"επιστρέφεται ποσό:"
+				},
 				"account_orders_details_grand_total":{
 					"title":"Account, Orders Details, Grand Total",
 					"value":"Συνολική παραγγελίας"
@@ -1406,6 +1448,10 @@
 					"title":"Account, Subscriptions Title",
 					"value":"Ενεργά Συνδρομές σας"
 				},
+				"account_canceled_subscriptions_title":{
+					"title":"Account, Canceled Subscriptions Title",
+					"value":"Ακυρώθηκε συνδρομές σας"
+				},
 				"account_subscriptions_header_1":{
 					"title":"Account, Subscriptions, Header 1",
 					"value":"συνδρομή όνομα"
@@ -1429,6 +1475,14 @@
 				"account_subscriptions_none_found":{
 					"title":"Account, Subscriptions, None Found",
 					"value":"Δεν υπάρχουν συνδρομές που συνδέονται με το λογαριασμό σας."
+				},
+				"cancel_subscription_button":{
+					"title":"Account, Subscription Details, Cancel Subscription Button",
+					"value":"ΑΚΥΡΩΣΗ ΕΓΓΡΑΦΗ"
+				},
+				"cancel_subscription_confirm_text":{
+					"title":"Account, Subscription Details, Cancel Subscription Button",
+					"value":"Είστε σίγουροι ότι θέλετε να ακυρώσετε αυτή τη συνδρομή;"
 				}
 			}
 		},
@@ -1506,6 +1560,14 @@
 				"not_activated":{
 					"title":"Account, Not Activated",
 					"value":"Ο λογαριασμός σας προσπαθείτε να αποκτήσετε πρόσβαση δεν έχει ενεργοποιηθεί. Παρακαλούμε ενεργοποιήστε το λογαριασμό σας μέσω του ηλεκτρονικού ταχυδρομείου ενεργοποίησης αποστέλλονται όταν έχετε εγγραφεί για λογαριασμό ή επικοινωνήστε μαζί μας αν έχετε προβλήματα."
+				},
+				"subscription_update_failed":{
+					"title":"Account, Subscription Update Error",
+					"value":"Υπήρξε ένα πρόβλημα κατά την ενημέρωση της συνδρομής σας, παρακαλώ προσπαθήστε ξανά ή επικοινωνήστε μαζί μας, αν συνεχίσετε να έχετε προβλήματα."
+				},
+				"subscription_cancel_failed":{
+					"title":"Account, Subscription Cancel Error",
+					"value":"Υπήρξε ένα πρόβλημα κατά την ακύρωση της συνδρομής σας, παρακαλώ προσπαθήστε ξανά ή επικοινωνήστε μαζί μας, αν συνεχίσετε να έχετε προβλήματα."
 				}
 			}
 		},
@@ -1551,6 +1613,14 @@
 				"validation_required":{
 					"title":"Account, Validation Required",
 					"value":"Έχετε δημιουργήσει με επιτυχία ένα λογαριασμό, αλλά e-mail σας πρέπει να επικυρωθεί. Ένα email έχει σταλεί στο λογαριασμό σας με οδηγίες για το πώς να ολοκληρώσετε τη διαδικασία εγγραφής. Επικοινωνήστε μαζί μας εάν έχετε οποιεσδήποτε ερωτήσεις."
+				},
+				"subscription_updated":{
+					"title":"Account, Subscription Updated",
+					"value":"Η συνδρομή σας έχει ενημερωθεί με επιτυχία."
+				},
+				"subscription_canceled":{
+					"title":"Account, Subscription Canceled",
+					"value":"Η συνδρομή σας έχει ακυρωθεί."
 				}
 			}
 		},

@@ -44,6 +44,12 @@ class ec_payment{
 		$account_page_id = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $account_page_id );
 		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+		}
+		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
 		
@@ -72,6 +78,7 @@ class ec_payment{
 		else if($this->proccess_method == "realex"			)			$gateway = new ec_realex();
 		else if($this->proccess_method == "sagepay"			)			$gateway = new ec_sagepay();
 		else if($this->proccess_method == "sagepay3d"		)			$gateway = new ec_sagepay3d();
+		else if($this->proccess_method == "sagepayus"		)			$gateway = new ec_sagepayus();
 		else if($this->proccess_method == "securepay"		)			$gateway = new ec_securepay();
 		else if($this->proccess_method == "stripe"			)			$gateway = new ec_stripe();
 		else{

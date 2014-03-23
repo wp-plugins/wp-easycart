@@ -239,6 +239,55 @@
 	float: right;
 	text-align: right;
 }
+.ec_account_subscription_line_header {
+	width: 100%;
+	float: left;
+	background-color: #f7f7f7;
+	padding: 8px 0px;
+	margin: 0 0 4px 0;
+	border-bottom:solid 1px #eeeeee;
+}
+.ec_account_subscription_line_column1_header {
+	float: left;
+	padding-left: 20px;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color:[main_color];
+}
+.ec_account_subscription_line_column2_header {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color:[main_color];
+}
+.ec_account_subscription_line_column3_header {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color:[main_color];
+}
+.ec_account_subscription_line_column4_header {
+	float: left;
+	margin-top: 3px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: [content_font];
+	color:[main_color];
+}
+.ec_account_subscription_line_column5_header {
+	float: right;
+	text-align: right;
+}
 @media only screen and ( min-width: [size_level5_low]px ) {
 .ec_account_order_line_column1_header {
 	width: 75px;
@@ -253,6 +302,22 @@
 	width: 135px;
 }
 .ec_account_order_line_column5_header {
+	width: 125px;
+}
+
+.ec_account_subscription_line_column1_header {
+	width: 240px;
+}
+.ec_account_subscription_line_column2_header {
+	width: 120px;
+}
+.ec_account_subscription_line_column3_header {
+	width: 120px;
+}
+.ec_account_subscription_line_column4_header {
+	width: 110px;
+}
+.ec_account_subscription_line_column5_header {
 	width: 125px;
 }
 }
@@ -272,6 +337,22 @@
 .ec_account_order_line_column5_header {
 	width: 100px;
 }
+
+.ec_account_subscription_line_column1_header {
+	width: 240px;
+}
+.ec_account_subscription_line_column2_header {
+	width: 120px;
+}
+.ec_account_subscription_line_column3_header {
+	width: 120px;
+}
+.ec_account_subscription_line_column4_header {
+	width: 110px;
+}
+.ec_account_subscription_line_column5_header {
+	width: 100px;
+}
 }
  @media only screen and ( min-width: [size_level3_low]px ) and ( max-width: [size_level3_high]px ) {
 .ec_account_order_line_column1_header {
@@ -287,6 +368,22 @@
 	width: 135px;
 }
 .ec_account_order_line_column5_header {
+	width: 95px;
+}
+
+.ec_account_subscription_line_column1_header {
+	width: 240px;
+}
+.ec_account_subscription_line_column2_header {
+	width: 120px;
+}
+.ec_account_subscription_line_column3_header {
+	width: 120px;
+}
+.ec_account_subscription_line_column4_header {
+	width: 110px;
+}
+.ec_account_subscription_line_column5_header {
 	width: 95px;
 }
 }
@@ -310,6 +407,26 @@
 	text-align: center;
 	margin-top: 10px;
 }
+
+.ec_account_subscription_line_column1_header {
+	padding-left: 20px;
+	width: 81px;
+}
+.ec_account_subscription_line_column2_header {
+	width: 135px;
+	margin-right: 20px;
+	font-size: 11px;
+}
+.ec_account_subscription_line_column3_header {
+}
+.ec_account_subscription_line_column4_header {
+	display: none;
+}
+.ec_account_subscription_line_column5_header {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+}
 }
 @media only screen and ( max-width: [size_level1_high]px ) {
 	.ec_account_order_line_column1_header {
@@ -328,6 +445,30 @@
 		display: none;
 	}
 	.ec_account_order_line_column5_header {
+		width: 100%;
+		text-align: center;
+		margin-top: 10px;
+	}
+	.ec_account_dashboard_row_divider a {
+		width:100%;
+	}
+
+	.ec_account_subscription_line_column1_header {
+		padding-left: 10px;
+		width: 53px;
+	}
+	.ec_account_subscription_line_column2_header {
+		width: 120px;
+		margin-right: 10px;
+		font-size: 11px;
+	}
+	.ec_account_subscription_line_column3_header {
+		display: none;
+	}
+	.ec_account_subscription_line_column4_header {
+		display: none;
+	}
+	.ec_account_subscription_line_column5_header {
 		width: 100%;
 		text-align: center;
 		margin-top: 10px;

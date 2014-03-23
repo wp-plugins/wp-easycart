@@ -21,6 +21,27 @@
 	width: 100%;
 	float: left;
 }
+.ec_account_complete_payment_row{
+	width:100%; float:left;
+}
+.ec_account_complete_payment_button{
+	background-color: #333333;
+	width: 250px;
+	height: 35px;
+	text-align: center;
+	line-height: 35px;
+	font-weight: bold;
+	font-size: 14px;
+	box-shadow: 1px 1px 6px #333;
+	float: right;
+}
+.ec_account_complete_order_link{
+	color: #FFF !important;
+}
+.ec_account_complete_order_link:hover{
+	color: #E9E9E9 !important;
+	text-decoration:none;
+}
 .ec_account_order_details_right {
 	width: 70%;
 	float: right;

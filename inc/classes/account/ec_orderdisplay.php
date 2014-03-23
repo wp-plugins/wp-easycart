@@ -6,17 +6,19 @@ class ec_orderdisplay{
 	
 	public $order_id; 							// INT
 	public $order_date; 						// TIMESTAMP
+	public $orderstatus_id;						// INT
 	public $order_status; 						// VARCHAR 50
 	public $order_weight; 						// FLOAT 9,2
 	public $is_approved;						// BOOL
 	
-	public $sub_total;							// FLOAT 7,2
-	public $shipping_total; 					// FLOAT 7,2
-	public $tax_total; 							// FLOAT 7,2
-	public $duty_total; 						// FLOAT 7,2
-	public $vat_total; 							// FLOAT 7,2
-	public $discount_total;						// FLOAT 7,2
-	public $grand_total;  						// FLOAT 7,2
+	public $sub_total;							// FLOAT 15,3
+	public $shipping_total; 					// FLOAT 15,3
+	public $tax_total; 							// FLOAT 15,3
+	public $duty_total; 						// FLOAT 15,3
+	public $vat_total; 							// FLOAT 15,3
+	public $discount_total;						// FLOAT 15,3
+	public $grand_total;  						// FLOAT 15,3
+	public $refund_total;						// FLOAT 15,3
 	
 	public $promo_code;  						// VARCHAR 255
 	public $giftcard_id;  						// VARCHAR 20
@@ -71,11 +73,14 @@ class ec_orderdisplay{
 	
 	private $currency;							// ec_currency structure
 	
+	private $membership_page;					// VARCHAR 512
+	
 	function __construct( $order_row, $is_order_details = false ){
 		$this->mysqli = new ec_db( );
 		
 		$this->order_id = $order_row->order_id; 
 		$this->order_date = $order_row->order_date; 
+		$this->orderstatus_id = $order_row->orderstatus_id;
 		$this->order_status = $order_row->order_status; 
 		$this->order_weight = $order_row->order_weight; 
 		$this->is_approved = $order_row->is_approved;
@@ -87,6 +92,7 @@ class ec_orderdisplay{
 		$this->duty_total = $order_row->duty_total;
 		$this->vat_total = $order_row->vat_total;
 		$this->grand_total = $order_row->grand_total; 
+		$this->refund_total = $order_row->refund_total; 
 		
 		$this->promo_code = $order_row->promo_code; 
 		$this->giftcard_id = $order_row->giftcard_id; 
@@ -135,6 +141,12 @@ class ec_orderdisplay{
 		$this->paypal_email_id = $order_row->paypal_email_id; 
 		$this->paypal_payer_id = $order_row->paypal_payer_id;
 		
+		if( $this->subscription_id != 0 ){
+			$this->membership_page = $this->mysqli->get_membership_link( $this->subscription_id );
+		}else{
+			$this->membership_page = "";
+		}
+		
 		if( $is_order_details ){
 			$this->cart =(object) array('cart' => array( ) );
 			if( isset( $_SESSION['ec_email'] ) )
@@ -151,6 +163,11 @@ class ec_orderdisplay{
 		
 		$accountpageid = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $accountpageid );
+		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+		}
 		
 		if( substr_count( $this->account_page, '?' ) )				$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
@@ -201,6 +218,17 @@ class ec_orderdisplay{
 	
 	public function display_vat_total( ){
 		echo $this->currency->get_currency_display( $this->vat_total );
+	}
+	
+	public function has_refund( ){
+		if( $this->refund_total != 0 )
+			return true;
+		else
+			return false;	
+	}
+	
+	public function display_refund_total( ){
+		echo $this->currency->get_currency_display( $this->refund_total );
 	}
 	
 	public function display_discount_total( ){
@@ -371,6 +399,17 @@ class ec_orderdisplay{
 	
 	public function display_subscription_link( $text ){
 		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&amp;subscription_id=". $this->subscription_id ."\">" . $text . "</a>";
+	}
+	
+	public function has_membership_page( ){
+		if( $this->membership_page != "" )
+			return true;
+		else
+			return false;
+	}
+	
+	public function get_membership_page_link( ){
+		return $this->membership_page;
 	}
 	
 }

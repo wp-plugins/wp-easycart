@@ -93,6 +93,12 @@ class ec_product{
 		$this->store_page = get_permalink( $storepageid );
 		$this->cart_page = get_permalink( $cartpageid );
 		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
+		}
+		
 		if( substr_count( $this->store_page, '?' ) )						$this->permalink_divider = "&";
 		else																$this->permalink_divider = "?";
 	}
@@ -244,13 +250,12 @@ class ec_product{
 	public function display_product_details_form_start( ){
 		
 		// Go to the login page, at the same time save this subscription to session
-		//if( get_option( 'ec_option_payment_process_method' ) == 'stripe' && $this->is_subscription_item ){
-		//	echo "<form action=\"" . $this->cart_page . "\" method=\"post\" enctype=\"multipart/form-data\">";
-		//	
+		if( get_option( 'ec_option_payment_process_method' ) == 'stripe' && $this->is_subscription_item ){
+			echo "<form action=\"" . $this->cart_page . "\" method=\"post\" enctype=\"multipart/form-data\">";
+			
 		// Go to the subscription page for PayPal
-		//}else if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
-		if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
-			//this is actionscript version in flash
+		}else if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
+		
 			if( get_option( 'ec_option_paypal_use_sandbox' ) )			
 				$paypal_request = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 			else
@@ -284,14 +289,13 @@ class ec_product{
 	public function display_product_details_form_end( ){
 		global $language_data;
 		
-		/*if( get_option( 'ec_option_payment_process_method' ) == 'stripe' && $this->is_subscription_item ){
-		//	echo "<input name=\"model_number\" id=\"model_number\" type=\"hidden\" value=\"" . $this->model_number . "\" />";
-		//	echo "<input name=\"ec_cart_form_action\" id=\"ec_cart_form_action_" . $this->model_number . "\" value=\"purchase_subscription\" type=\"hidden\" />";
-		//	echo "<script>jQuery( '#ec_product_details_quantity_" . $this->model_number . "' ).hide( ); </script>";
-		//	echo "</form>";
-		//	
-		//}else if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){*/
-		if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
+		if( get_option( 'ec_option_payment_process_method' ) == 'stripe' && $this->is_subscription_item ){
+			echo "<input name=\"model_number\" id=\"model_number\" type=\"hidden\" value=\"" . $this->model_number . "\" />";
+			echo "<input name=\"ec_cart_form_action\" id=\"ec_cart_form_action_" . $this->model_number . "\" value=\"purchase_subscription\" type=\"hidden\" />";
+			echo "<script>jQuery( '#ec_product_details_quantity_" . $this->model_number . "' ).hide( ); </script>";
+			echo "</form>";
+			
+		}else if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
 			echo "<script>jQuery( '#ec_product_details_quantity_" . $this->model_number . "' ).hide( ); </script>";
 			echo "</form>";
 		}else{
@@ -523,8 +527,16 @@ class ec_product{
 		
 		$list_price = $GLOBALS['currency']->convert_price( $this->list_price );
 		$p_arr = explode( ".", $list_price );
-		$p_dollar = $p_arr[0];
-		$p_cent = $GLOBALS['currency']->format_cents( $p_arr[1] );
+		$p_cents = "";
+		$p_dollar = "";
+		if( count( $p_arr ) > 0 ){
+			$p_dollar = $p_arr[0];
+		}
+		
+		if( count( $p_arr ) > 1 ){
+			$p_cents = $p_arr[1];
+		}
+		$p_cent = $GLOBALS['currency']->format_cents( $p_cents );
 		
 		if( $this->list_price != "0.000" )
 			echo "<span class=\"ec_product_old_price\"><span class=\"currency\">" . $GLOBALS['currency']->get_symbol( ) . "</span><span class=\"dollar\">" . $p_dollar . "</span><span class=\"cent\">." . $p_cent . "</span></span>";
@@ -558,7 +570,7 @@ class ec_product{
 	public function display_product_add_to_cart_button( $title, $id ){
 		if( $this->stock_quantity > 0 ){
 			// Subscription Button
-			if( get_option( 'ec_option_payment_third_party' ) == 'paypal' && $this->is_subscription_item ){
+			if( ( get_option( 'ec_option_payment_process_method' ) == 'stripe' || get_option( 'ec_option_payment_third_party' ) == 'paypal' ) && $this->is_subscription_item ){
 				echo "<input type=\"submit\" value=\"" . $GLOBALS['language']->get_text( 'product_details', 'product_details_sign_up_now' ) . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\">";
 				
 			// Add to Cart Button
@@ -854,7 +866,15 @@ class ec_product{
 	
 	/* Display Description */
 	public function display_product_description( ){
-		echo nl2br( $this->description );
+		preg_match_all( '/(<table.+?\/table>)/s', $this->description, $table_array, PREG_PATTERN_ORDER );
+		$desc2 = preg_replace( '/(<table.+?\/table>)/s', '[TABLE]', $this->description );
+		$desc3 = nl2br( $desc2 );
+		
+		for( $i=0; $i<count( $table_array[0] ); $i++ ){
+			$desc3 = preg_replace( '/\[TABLE\]/s', $table_array[0][$i], $desc3, 1 );
+		}
+		
+		echo $desc3;
 	}
 	
 	/* Does this product have a description */
@@ -865,7 +885,15 @@ class ec_product{
 	
 	/* Display Specifications */
 	public function display_product_specifications( ){
-		echo nl2br( $this->specifications );
+		preg_match_all( '/(<table.+?\/table>)/s', $this->specifications, $table_array, PREG_PATTERN_ORDER );
+		$specs2 = preg_replace( '/(<table.+?\/table>)/s', '[TABLE]', $this->specifications );
+		$specs3 = nl2br( $specs2 );
+		
+		for( $i=0; $i<count( $table_array[0] ); $i++ ){
+			$specs3 = preg_replace( '/\[TABLE\]/s', $table_array[0][$i], $specs3, 1 );
+		}
+		
+		echo $specs3;
 	}
 	
 	/* Does this product have specifications */

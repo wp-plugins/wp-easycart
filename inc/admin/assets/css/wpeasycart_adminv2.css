@@ -20,7 +20,7 @@
 
 .ec_license_notification{
 	float:left;
-	width:1240px;
+	width:1220px;
 	background: #333333;
 	color:#FFF;
 	background-position:10px 5px;
@@ -115,7 +115,7 @@
 } 
 .ec_admin_mainmenu{
 	float:left;
-	width:1190px; height:48px;
+	width:1170px; height:48px;
 	background-color:#7bb141;
 	color:#FFF;
 	background-image:url(../images/wp-easycart-logo.png); background-repeat:no-repeat; padding-left:60px;
@@ -192,7 +192,7 @@
 }
 
 .ec_admin_holder{
-	float:left; width:1230px; border: 10px solid #7bb141;
+	float:left; width:1210px; border: 10px solid #7bb141;
 	background: #FFFFFF; /* Old browsers */
 	background: -moz-linear-gradient(left, #222222 0px, #222222 235px, #ffffff 235px); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, right top, color-stop(0px,#222222), color-stop(235px,#222222), color-stop(235px,#ffffff)); /* Chrome,Safari4+ */
@@ -205,7 +205,7 @@
 }
 
 .ec_admin_holder_console{
-	float:left; width:1230px; border: 10px solid #7bb141;
+	float:left; width:1210px; border: 10px solid #7bb141;
 	background: #FFFFFF; /* Old browsers */
 	margin-left:-20px;
 }

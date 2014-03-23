@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.1.5
+ * Version: 2.1.6
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.1.5
+ * @version 2.1.6
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_1_5' );
-define( 'EC_CURRENT_DB', '1_15' );
+define( 'EC_CURRENT_VERSION', '2_1_6' );
+define( 'EC_CURRENT_DB', '1_16' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -145,17 +145,20 @@ function ec_uninstall(){
 	$mysqli = new ec_db();
 	
 	$uninstall_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/uninstall_' .  get_option( 'ec_option_db_version' ) . '.sql';
-	$f = fopen( $uninstall_sql_url, "r" ) or die( "The plugin could not uninstall properly. This is most likely because the permissions set on the database plugin removal script does not allow us to access it. To fix this problem go to your default WordPress plugins folder and change the permissions on the following file to 775: wp-easycart/inc/admin/sql/uninstall_x_x.sql (look for the latest version). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance." );
-	$uninstall_sql = fread( $f, filesize( $uninstall_sql_url ) );
-	$uninstall_sql_array = explode(';', $uninstall_sql);
-	$mysqli->uninstall( $uninstall_sql_array );
+	
+	if( file_exists( $uninstall_sql_url ) ){
+		$f = fopen( $uninstall_sql_url, "r" );	
+		$uninstall_sql = fread( $f, filesize( $uninstall_sql_url ) );
+		$uninstall_sql_array = explode(';', $uninstall_sql);
+		$mysqli->uninstall( $uninstall_sql_array );
+	}
 	
 	//delete options
 	$wpoptions = new ec_wpoptionset();
 	$wpoptions->delete_options();
 	
 	$data_dir = WP_PLUGIN_DIR . "/wp-easycart-data/";
-	if( !is_writable( WP_PLUGIN_DIR ) ){
+	if( !is_writable( $data_dir ) ){
 		// Could not open the file, lets write it via ftp!
 		$ftp_server = $_POST['hostname'];
 		$ftp_user_name = $_POST['username'];
@@ -169,7 +172,7 @@ function ec_uninstall(){
 		
 		if( !$login_result ){
 			
-			die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your informaiton and try again." );
+			die( "Could not connect to your server via FTP to uninstall your wp-easycart. Please remove the files manually." );
 			
 		}else{
 			ec_delete_directory_ftp( $conn_id, $data_dir );
@@ -243,7 +246,7 @@ function load_ec_pre(){
 		mkdir( $banners, 0755 );
 		
 	if( !is_dir( $downloads ) )
-		mkdir( $downloads, 0755 );
+		mkdir( $downloads, 0751 );
 		
 	if( !is_dir( $pics1 ) )
 		mkdir( $pics1, 0755 );
@@ -264,7 +267,7 @@ function load_ec_pre(){
 		mkdir( $swatches, 0755 );
 		
 	if( !is_dir( $uploads ) )
-		mkdir( $uploads, 0755 );
+		mkdir( $uploads, 0751 );
 	
 	// END CHECK FOR PRODUCTS FOLDER
 	
@@ -287,7 +290,7 @@ function load_ec_pre(){
 		mkdir( $banners, 0755 );
 		
 	if( !is_dir( $downloads ) )
-		mkdir( $downloads, 0755 );
+		mkdir( $downloads, 0751 );
 		
 	if( !is_dir( $pics1 ) )
 		mkdir( $pics1, 0755 );
@@ -308,7 +311,7 @@ function load_ec_pre(){
 		mkdir( $swatches, 0755 );
 		
 	if( !is_dir( $uploads ) )
-		mkdir( $uploads, 0755 );
+		mkdir( $uploads, 0751 );
 	
 	// END CHECK FOR PRODUCTS FOLDER
 	
@@ -673,6 +676,7 @@ function ec_short_string($text, $length){
 //[ecstore]
 function load_ec_store( $atts ){
 	define( "DONOTCACHEPAGE", true );
+	define('DONOTCDN', true);
 	extract( shortcode_atts( array(
 		'menuid' => 'NOMENU',
 		'submenuid' => 'NOSUBMENU',
@@ -692,6 +696,7 @@ function load_ec_store( $atts ){
 //[eccart]
 function load_ec_cart( $atts ){
 	define( "DONOTCACHEPAGE", true );
+	define('DONOTCDN', true);
 	ob_start( );
 	$cart_page = new ec_cartpage( );
 	$cart_page->display_cart_page( );
@@ -701,6 +706,7 @@ function load_ec_cart( $atts ){
 //[ecaccount]
 function load_ec_account( $atts ){
 	define( "DONOTCACHEPAGE", true );
+	define('DONOTCDN', true);
 	ob_start( );
     $account_page = new ec_accountpage( );
 	if( isset( $_POST['ec_form_action'] ) )
@@ -794,90 +800,97 @@ function load_ec_addtocart( $atts ){
 	if( count( $products ) > 0 ){
 		$product = new ec_product( $products[0], 0, 0, 1 );
 		
-		echo "<div style=\"display:none;\">";
-		$product->display_product_details_image_set( "large", "ec_image_", "ec_image_click" );
-		$product->display_product_image_thumbnails("xsmall", "ec_thumb_", "ec_thumb_click" );
-		echo "</div>";
+		if( $product->stock_quantity > 0 ){
 		
-		$product->display_product_details_form_start( );
-		
-		if( $product->use_advanced_optionset ){
-			echo "<div class=\"ec_product_details_option_holder\">";
-			$product->display_all_advanced_optionsets( );
+			echo "<div style=\"display:none;\">";
+			$product->display_product_details_image_set( "large", "ec_image_", "ec_image_click" );
+			$product->display_product_image_thumbnails("xsmall", "ec_thumb_", "ec_thumb_click" );
 			echo "</div>";
-        }else{
-			if( $product->product_has_swatches( $product->options->optionset1 ) ){
-    			echo "<div class=\"ec_product_details_option1_swatches\">";
-				$product->display_product_option( $product->options->optionset1, "large", 1, "ec_swatch_", "ec_swatch_click" );
+			
+			$product->display_product_details_form_start( );
+			
+			if( $product->use_advanced_optionset ){
+				echo "<div class=\"ec_product_details_option_holder\">";
+				$product->display_all_advanced_optionsets( );
 				echo "</div>";
-    		}else if( $product->product_has_combo( $product->options->optionset1 ) ){
-				echo "<div class=\"ec_product_details_option1_combo\">";
-				$product->display_product_option( $product->options->optionset1, "large", 1, "ec_combo_", "" );
-				echo "</div>";
+			}else{
+				if( $product->product_has_swatches( $product->options->optionset1 ) ){
+					echo "<div class=\"ec_product_details_option1_swatches\">";
+					$product->display_product_option( $product->options->optionset1, "large", 1, "ec_swatch_", "ec_swatch_click" );
+					echo "</div>";
+				}else if( $product->product_has_combo( $product->options->optionset1 ) ){
+					echo "<div class=\"ec_product_details_option1_combo\">";
+					$product->display_product_option( $product->options->optionset1, "large", 1, "ec_combo_", "" );
+					echo "</div>";
+				}
+				
+				if( $product->product_has_swatches( $product->options->optionset2 ) ){
+					echo "<div class=\"ec_product_details_option2_swatches\">";
+					$product->display_product_option( $product->options->optionset2, "large", 2, "ec_swatch_", "ec_swatch_click" );
+					echo "</div>";
+				}else if( $product->product_has_combo( $product->options->optionset2 ) ){
+					echo "<div class=\"ec_product_details_option2_combo\">";
+					$product->display_product_option( $product->options->optionset2, "large", 2, "ec_combo_", "" );
+					echo "</div>";
+				}
+				
+				if( $product->product_has_swatches( $product->options->optionset3 ) ){
+					echo "<div class=\"ec_product_details_option3_swatches\">";
+					$product->display_product_option( $product->options->optionset3, "large", 3, "ec_swatch_", "ec_swatch_click" );
+					echo "</div>";
+				}else if( $product->product_has_combo( $product->options->optionset3 ) ){
+					echo "<div class=\"ec_product_details_option3_combo\">";
+					$product->display_product_option( $product->options->optionset3, "large", 3, "ec_combo_", "" );
+					echo "</div>";
+				}
+				
+				if( $product->product_has_swatches( $product->options->optionset4 ) ){
+					echo "<div class=\"ec_product_details_option4_swatches\">";
+					$product->display_product_option( $product->options->optionset4, "large", 4, "ec_swatch_", "ec_swatch_click" );
+					echo "</div>";
+				}else if( $product->product_has_combo( $product->options->optionset4 ) ){
+					echo "<div class=\"ec_product_details_option4_combo\">";
+					$product->display_product_option( $product->options->optionset4, "large", 4, "ec_combo_", "" );
+					echo "</div>";
+				}
+				
+				if( $product->product_has_swatches( $product->options->optionset5 ) ){
+					echo "<div class=\"ec_product_details_option5_swatches\">";
+					$product->display_product_option( $product->options->optionset5, "large", 5, "ec_swatch_", "ec_swatch_click" );
+					echo "</div>";
+				}else if( $product->product_has_combo( $product->options->optionset5 ) ){
+					echo "<div class=\"ec_product_details_option5_combo\">";
+					$product->display_product_option( $product->options->optionset5, "large", 5, "ec_combo_", "" );
+					echo "</div>";
+				}
+			
 			}
 			
-			if( $product->product_has_swatches( $product->options->optionset2 ) ){
-				echo "<div class=\"ec_product_details_option2_swatches\">";
-				$product->display_product_option( $product->options->optionset2, "large", 2, "ec_swatch_", "ec_swatch_click" );
-				echo "</div>";
-			}else if( $product->product_has_combo( $product->options->optionset2 ) ){
-				echo "<div class=\"ec_product_details_option2_combo\">";
-				$product->display_product_option( $product->options->optionset2, "large", 2, "ec_combo_", "" );
-				echo "</div>";
+			if( $product->is_giftcard ){
+				echo "<div class=\"ec_product_details_gift_card\">"; $product->display_gift_card_input(); echo "</div>";
 			}
 			
-			if( $product->product_has_swatches( $product->options->optionset3 ) ){
-				echo "<div class=\"ec_product_details_option3_swatches\">";
-				$product->display_product_option( $product->options->optionset3, "large", 3, "ec_swatch_", "ec_swatch_click" );
-				echo "</div>";
-    		}else if( $product->product_has_combo( $product->options->optionset3 ) ){
-				echo "<div class=\"ec_product_details_option3_combo\">";
-				$product->display_product_option( $product->options->optionset3, "large", 3, "ec_combo_", "" );
-				echo "</div>";
-    		}
-			
-			if( $product->product_has_swatches( $product->options->optionset4 ) ){
-        		echo "<div class=\"ec_product_details_option4_swatches\">";
-				$product->display_product_option( $product->options->optionset4, "large", 4, "ec_swatch_", "ec_swatch_click" );
-				echo "</div>";
-    		}else if( $product->product_has_combo( $product->options->optionset4 ) ){
-        		echo "<div class=\"ec_product_details_option4_combo\">";
-				$product->display_product_option( $product->options->optionset4, "large", 4, "ec_combo_", "" );
-				echo "</div>";
-    		}
-			
-			if( $product->product_has_swatches( $product->options->optionset5 ) ){
-				echo "<div class=\"ec_product_details_option5_swatches\">";
-				$product->display_product_option( $product->options->optionset5, "large", 5, "ec_swatch_", "ec_swatch_click" );
-				echo "</div>";
-			}else if( $product->product_has_combo( $product->options->optionset5 ) ){
-				echo "<div class=\"ec_product_details_option5_combo\">";
-				$product->display_product_option( $product->options->optionset5, "large", 5, "ec_combo_", "" );
+			if( !$product->has_grid_optionset ){
+				echo "<div class=\"";
+				if( $product->is_donation ){
+					echo "ec_product_details_quantity_donation"; 
+				}else{ 
+					echo "ec_product_details_quantity";
+				}
+				echo "\" id=\"ec_product_details_quantity_" . $product->model_number . "\">" . $GLOBALS['language']->get_text( 'product_details', 'product_details_quantity' );
+				$product->display_product_quantity_input("1");
 				echo "</div>";
 			}
-        
-        }
-		
-		if( $product->is_giftcard ){
-			echo "<div class=\"ec_product_details_gift_card\">"; $product->display_gift_card_input(); echo "</div>";
-    	}
-		
-		if( !$product->has_grid_optionset ){
-			echo "<div class=\"";
-			if( $product->is_donation ){
-				echo "ec_product_details_quantity_donation"; 
-			}else{ 
-				echo "ec_product_details_quantity";
-			}
-			echo "\" id=\"ec_product_details_quantity_" . $product->model_number . "\">" . $GLOBALS['language']->get_text( 'product_details', 'product_details_quantity' );
-			$product->display_product_quantity_input("1");
+			echo "<input type=\"hidden\" id=\"product_quantity_" . $product->model_number . "\" value=\"1\">";
+			echo "<div class=\"ec_product_details_add_to_cart\">";
+			$product->display_product_add_to_cart_button_no_validation( $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ), "ec_quick_view_error" );
 			echo "</div>";
-        }
-		echo "<input type=\"hidden\" id=\"product_quantity_" . $product->model_number . "\" value=\"1\">";
-    	echo "<div class=\"ec_product_details_add_to_cart\">";
-		$product->display_product_add_to_cart_button_no_validation( $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ), "ec_quick_view_error" );
-		echo "</div>";
-		$product->display_product_details_form_end( );
+			$product->display_product_details_form_end( );
+		
+		}else{
+			echo "<div class=\"ec_product_details_quantity\">" . $GLOBALS['language']->get_text( 'product_details', 'product_details_out_of_stock' ) . "</div>";
+		}
+		
 	}
     return ob_get_clean( );
 }
@@ -903,6 +916,83 @@ function load_ec_cartdisplay( $atts ){
 		echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
 	}
     return ob_get_clean( );
+}
+
+//[ec_membership productid=''][/ec_membership]
+function load_ec_membership( $atts, $content = NULL ){
+	extract( shortcode_atts( array(
+		'productid' => '',
+		'userroles' => ''
+	), $atts ) );
+	
+	if( is_user_logged_in( ) ){
+		
+		return "<h3>ADMIN ONLY - MEMBER CONTENT</h3><hr />" . $content . "<hr />";
+		
+	}else{
+		
+		$db = new ec_db( );
+		$is_member = false;
+		
+		if( $productid != '' ){
+			$is_member = $db->has_membership_product_ids( $productid );
+			
+		}else if( $userroles != '' ){
+			$user_role_array = explode( ',', $userroles );
+			$user = new ec_user( "" );
+			
+			if( in_array( $user->user_level, $user_role_array ) )
+				$is_member = true;
+			
+		}
+		
+		if( $is_member )
+			return $content;
+			
+		else
+			return "";
+		
+	}
+	
+}
+
+//[ec_membership_alt productid=''][/ec_membership_alt]
+function load_ec_membership_alt( $atts, $content = NULL ){
+	extract( shortcode_atts( array(
+		'productid' => '',
+		'userroles' => ''
+	), $atts ) );
+	
+	if( is_user_logged_in( ) ){
+		
+		return "<h3>ADMIN ONLY - ALTERNATE CONTENT</h3><hr />" . $content . "<hr />";
+		
+	}else{
+	
+		$db = new ec_db( );
+		$is_member = false;
+		
+		if( $productid != '' ){
+			$is_member = $db->has_membership_product_ids( $productid );
+			
+		}else if( $userroles != '' ){
+			$user_role_array = explode( ',', $userroles );
+			$user = new ec_user( "" );
+			
+			if( in_array( $user->user_level, $user_role_array ) )
+				$is_member = true;
+			
+		}
+		
+	
+		if( !$is_member )
+			return $content;
+			
+		else
+			return "";
+		
+	}
+	
 }
 
 function ec_wp_myplugin_property_title($data){ 
@@ -947,6 +1037,8 @@ add_shortcode( 'ec_account', 'load_ec_account' );
 add_shortcode( 'ec_product', 'load_ec_product' );
 add_shortcode( 'ec_addtocart', 'load_ec_addtocart' );
 add_shortcode( 'ec_cartdisplay', 'load_ec_cartdisplay' );
+add_shortcode( 'ec_membership', 'load_ec_membership' );
+add_shortcode( 'ec_membership_alt', 'load_ec_membership_alt' );
 
 add_filter( 'widget_text', 'do_shortcode');
 
@@ -1004,73 +1096,10 @@ function wpeasycart_copyr( $source, $dest ){
 }
 
 function wpeasycart_backup( ){
-	
-	if( !is_dir( dirname( __FILE__ ) . "/../wp-easycart-data/" ) ){
-	
-		if( !is_writable( WP_PLUGIN_DIR ) ){
-			
-			wpeasycart_backup_ftp( );
-			
-		}else{
-		
-			$to = dirname( __FILE__ ) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
-			$from = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
-			
-			 // Make destination directory
-			if( !is_dir( $to )) {
-				$success = mkdir( $to, 0755 );
-				if( !$success ){
-					$err_message = "wpeasycart - error creating backup directory. Updated halted.";
-					error_log( $err_message );
-					exit( $err_message );	
-				}
-			}
-			
-			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
-			if( !$success ){
-				$err_message = "wpeasycart - error backing up the products folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );	
-			}
-			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-			if( !$success ){
-				$err_message = "wpeasycart - error backing up the design folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );
-			}
-			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-			if( !$success ){
-				$err_message = "wpeasycart - error backing up the connection folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );
-			}
-		}
-	}
-}
-
-function wpeasycart_backup_ftp( ){
-	// Could not open the file, lets write it via ftp!
-	$ftp_server = $_POST['hostname'];
-	$ftp_user_name = $_POST['username'];
-	$ftp_user_pass = $_POST['password'];
-	
-	// set up basic connection
-	$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
-	
-	// login with username and password
-	$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
-	
-	if( !$login_result ){
-		
-		die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your informaiton and try again." );
-		
-	}else{
-		
-		ftp_rename( $conn_id, WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY, WP_PLUGIN_DIR . "/wp-easycart-backup" );
-		if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-backup" ) ){
-			die( "Could not move your wp-easycart plugin (to backup), process halted to save your data. If the problem persists you can either change the permissions of your wp-easycart plugin folder OR manually back this folder up and install the latest version manually." );	
-		}
-		
+	// Test for data folder
+	if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
+		echo "YOU DO NOT HAVE A WP EASYCART DATA FOLDER, PLEASE <a href=\"http://www.wpeasycart.com/plugin-update-help/\" target=\"_blank\">CLICK HERE TO READ HOW TO PREVENT DATA LOSS DURING THE UPDATE</a>";
+		die( );
 	}
 }
 
@@ -1171,214 +1200,7 @@ function ec_ran_list_n($rawlist, $path) {
     return $array;
 }
 
-function wpeasycart_recover( ){
-	
-	if( !is_dir( dirname( __FILE__ ) . "/../wp-easycart-data/" ) ){
-		
-		if( !is_writable( WP_PLUGIN_DIR ) ){
-			
-			wpeasycart_recover_ftp( );
-			
-		}else{
-		
-			$from = dirname(__FILE__) . "/../wp-easycart-backup/"; // <------- this back up directory will be made
-			$to = dirname( __FILE__ ) . "/"; // <------- this is the directory that will be backed up
-			
-			// REMOVE THE UPDATED PLUGIN FOLDERS TO BE REPLACED
-			$success = false;
-			if( is_dir( $to . "products" ) ) {
-				$success = ec_recursive_remove_directory( $to . "products" ); //<------- deletes the updated directory
-			}
-			if( !$success ){
-				$err_message = "wpeasycart - error removing the products folder from the upgraded plugin. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );	
-			}
-			
-			/**********************************************************
-			 * ANYONE PRIOR TO 1.1.7 WILL RUN THIS UPGRADE TO GET THEIR
-			 * THEMES UP TO SPEED WITH THE LATEST SOFTWARE
-			 **********************************************************/
-			
-			/* We are adding a few new files to every theme. Lets do this by copying from the new folder to backup IF IT DOESN"T EXIST */
-			$group_layout = $to . "design/layout/base-responsive-v1/ec_group_widget.php";
-			$group_css = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.css";
-			$group_js = $to . "design/theme/base-responsive-v1/ec_group_widget/ec_group_widget.js";
-			$rtl_file = $to . "design/theme/base-responsive-v1/rtl_support.css";
-			
-			//Cycle through design folders, add dir and files
-			$layout_list = array_filter( glob($from . 'design/layout/*'), 'is_dir' );
-			$theme_list = array_filter( glob($from . 'design/theme/*'), 'is_dir' );
-			
-			//Loop through the layout folders
-			for( $i=0; $i<count( $layout_list ); $i++ ){
-				if( !file_exists( $layout_list[$i] . "/ec_group_widget.php" ) )
-					copy( $group_layout, $layout_list[$i] . "/ec_group_widget.php" );
-			}
-			
-			//Loop through the theme folders
-			for( $i=0; $i<count( $theme_list ); $i++ ){
-				if( !is_dir( $theme_list[$i] . "/ec_group_widget" ) )
-					mkdir( $theme_list[$i] . "/ec_group_widget" );
-				if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" ) )
-					copy( $group_css, $theme_list[$i] . "/ec_group_widget/ec_group_widget.css" );
-				if( !file_exists( $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" ) )
-					copy( $group_js, $theme_list[$i] . "/ec_group_widget/ec_group_widget.js" );
-				if( !file_exists( $theme_list[$i] . "/rtl_support.css" ) )
-					copy( $rtl_file, $theme_list[$i] . "/rtl_support.css" );
-				
-			}
-			/**********************************************************
-			 * END 1.1.7 UPGRADE
-			 **********************************************************/
-			
-			$success = false;
-			if( is_dir( $to . "design" ) ) {
-				$success = ec_recursive_remove_directory( $to . "design" ); //<------- deletes the updated directory
-			}
-			if( !$success ){
-				$err_message = "wpeasycart - error removing the design folder from the upgraded plugin. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );	
-			}
-			
-			$success = false;
-			if( is_dir( $to . "connection" ) ) {
-				$success = ec_recursive_remove_directory( $to . "connection" ); //<------- deletes the updated directory
-			}
-			if( !$success ){
-				$err_message = "wpeasycart - error removing the connection folder from the upgraded plugin. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );	
-			}
-			
-			// COPY OVER THE BACKED UP DIRECTORIES
-			$success = wpeasycart_copyr( $from . "products", $to . "products" ); // <------- executes wpeasycart copy action
-			if( !$success ){
-				$err_message = "wpeasycart - error recovering the products folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );	
-			}
-			$success = wpeasycart_copyr( $from . "design", $to . "design" ); // <------- executes wpeasycart copy action
-			if( !$success ){
-				$err_message = "wpeasycart - error recovering the design folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );	
-			}
-			$success = wpeasycart_copyr( $from . "connection", $to . "connection" ); // <------- executes wpeasycart copy action
-			if( !$success ){
-				$err_message = "wpeasycart - error recovering the connection folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );	
-			}
-			
-			// MADE IT HERE WITHOUT AN ERROR, WE CAN NOW REMOVE THE BACKUP DIRECOTRY
-			$success = false;
-			if( is_dir( $from ) ) {
-				$success = ec_recursive_remove_directory( $from ); //<------- deletes the backup directory
-			}
-			if( !$success ){
-				$err_message = "wpeasycart - error removing the backup folder. Updated halted.";
-				error_log( $err_message );
-				exit( $err_message );	
-			}
-		}
-	}
-}
-
-function wpeasycart_recover_ftp( ){
-	
-	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-backup" ) ){
-		// Could not open the file, lets write it via ftp!
-		$ftp_server = $_POST['hostname'];
-		$ftp_user_name = $_POST['username'];
-		$ftp_user_pass = $_POST['password'];
-		
-		// set up basic connection
-		$conn_id = ftp_connect( $ftp_server ) or die("Couldn't connect to $ftp_server");
-		
-		// login with username and password
-		$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
-		
-		if( !$login_result ){
-			
-			die( "Could not connect to your server via FTP to backup your wp-easycart install. Please try re-entering your information and try again." );
-			
-		}else{
-			// Setup your pathing (relative to the plugins folder)
-			$wp_new = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
-			$wp_backup = WP_PLUGIN_DIR . "/wp-easycart-backup/";
-			
-			// Recover products images
-			ftp_rename( $conn_id, $wp_new . "products", $wp_new . "products_new" );
-			ftp_mkdir( $conn_id, $wp_new . "products" );
-			ec_ftp_recursive_copy( $conn_id, $wp_backup . "products",  $wp_new . "products" );
-			if( !is_dir( $wp_new . "products" ) ){
-				die( "Could not recover your products folder. Process halted. Your products are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
-			}else{
-				ec_recursive_ftp_remove_directory( $conn_id, $wp_new . "products_new" );
-			}
-			
-			// Recover Design Files
-			ftp_rename( $conn_id, $wp_new . "design", $wp_new . "design_new" );
-			ftp_mkdir( $conn_id, $wp_new . "design" );
-			ec_ftp_recursive_copy( $conn_id, $wp_backup . "design", $wp_new . "design" );
-			if( !is_dir( $wp_new . "design" ) ){
-				die( "Could not recover your design folder. Process halted. Your designs are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
-			}else{
-				ec_recursive_ftp_remove_directory( $conn_id, $wp_new . "design_new" );
-			}
-			
-			// Recover Connection Files
-			ftp_rename( $conn_id, $wp_new . "connection", $wp_new . "connection_new" );
-			ftp_mkdir( $conn_id, $wp_new . "connection" );
-			ec_ftp_recursive_copy( $conn_id, $wp_backup . "connection", $wp_new . "connection" );
-			if( !is_dir( $wp_new . "connection" ) ){
-				die( "Could not recover your connection folder. Process halted. Your connection are saved in the folder wp-easycart-backup, copy them to the new plugin to recover." );
-			}else{
-				ec_recursive_ftp_remove_directory( $conn_id, $wp_new . "connection_new" );
-			}
-			
-			// Remove the remaining folder
-			ec_recursive_ftp_remove_directory( $conn_id, $wp_backup );
-		}
-	}
-}
-
-function ec_ftp_recursive_copy( $conn_id, $src_dir, $dst_dir ){
-	$d = dir( $src_dir );
-    while( $file = $d->read( ) ){
-        if( $file != "." && $file != ".." ){
-            if( is_dir( $src_dir . "/" . $file ) ){
-                if( !@ftp_chdir( $conn_id, $dst_dir . "/" . $file ) ){
-                    ftp_mkdir( $conn_id, $dst_dir . "/" . $file );
-                }
-                ec_ftp_recursive_copy( $conn_id, $src_dir . "/" . $file, $dst_dir . "/" . $file );
-            } else {
-                $upload = ftp_put( $conn_id, $dst_dir . "/" . $file, $src_dir . "/" . $file, FTP_BINARY );
-            }
-        }
-    }
-    $d->close( );
-}
-
-function ec_recursive_ftp_remove_directory( $handle, $path ){
-	if( is_dir( $path ) ){
-		if( file_exists( $path . "/.htaccess" ) )
-			ftp_delete( $handle, $path . "/.htaccess" );
-			
-		if( $children = ftp_nlist( $handle, $path ) ){
-			foreach( $children as $p )
-				ec_recursive_ftp_remove_directory( $handle, $p );
-    	}
-		ftp_rmdir( $handle, $path );
-  	}else{
-		ftp_delete( $handle, $path );
-	}
-}
-
-add_filter( 'upgrader_pre_install', 'wpeasycart_backup', 10, 2 ); // <------- adds the wpeasycart_backup filter
-add_filter( 'upgrader_post_install', 'wpeasycart_recover', 10, 2 ); //<------- adds the wpeasycart_recover filter
+add_filter( 'upgrader_pre_install', 'wpeasycart_backup', 10, 2 );
 
 //////////////////////////////////////////////
 //END UPDATE FUNCTIONS

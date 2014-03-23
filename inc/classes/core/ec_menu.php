@@ -1,19 +1,24 @@
 <?php
 
 class ec_menu{
-	public $menu_array;											// array( subcat_array(), id, name )
-	private $storepage;											// VARCHAR
-	private $permalinkdivider;									// CHAR
+	public $menu_array;													// array( subcat_array(), id, name )
+	private $store_page;												// VARCHAR
+	private $permalinkdivider;											// CHAR
 	
 	function __construct( $menu_array ){
 		
 		$this->menu_array = $menu_array;
 		
 		$storepageid = get_option( 'ec_option_storepage' );
-		$this->storepage = get_permalink( $storepageid );
+		$this->store_page = get_permalink( $storepageid );
 		
-		if( substr_count( $this->storepage, '?' ) )					$this->permalinkdivider = "&";
-		else														$this->permalinkdivider = "?";
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+		}
+		
+		if( substr_count( $this->store_page, '?' ) )					$this->permalinkdivider = "&";
+		else															$this->permalinkdivider = "?";
 	
 	}
 	
@@ -128,11 +133,11 @@ class ec_menu{
 			return get_permalink( $postid );
 		}else{
 			if( $menu_level == 1 )
-				return $this->storepage . $this->permalinkdivider . "menuid=" . $this->get_menulevel1_id( $level1 ) . "&menuname=" . $this->get_menulevel1_name( $level1 );
+				return $this->store_page . $this->permalinkdivider . "menuid=" . $this->get_menulevel1_id( $level1 ) . "&menuname=" . $this->get_menulevel1_name( $level1 );
 			else if( $menu_level == 2 )
-				return $this->storepage . $this->permalinkdivider . "submenuid=" . $this->get_menulevel2_id( $level1, $level2 ) . "&submenuname=" . $this->get_menulevel2_name( $level1, $level2 );
+				return $this->store_page . $this->permalinkdivider . "submenuid=" . $this->get_menulevel2_id( $level1, $level2 ) . "&submenuname=" . $this->get_menulevel2_name( $level1, $level2 );
 			else if( $menu_level == 3 )
-				return $this->storepage . $this->permalinkdivider . "subsubmenuid=" . $this->get_menulevel3_id( $level1, $level2, $level3 ) . "&subsubmenuname=" . $this->get_menulevel3_name( $level1, $level2, $level3 );
+				return $this->store_page . $this->permalinkdivider . "subsubmenuid=" . $this->get_menulevel3_id( $level1, $level2, $level3 ) . "&subsubmenuname=" . $this->get_menulevel3_name( $level1, $level2, $level3 );
 		}
 		
 	}

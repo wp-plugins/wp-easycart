@@ -1,6 +1,6 @@
 <div class="ec_payment_type_holder<?php if( get_option( 'ec_option_payment_process_method' ) != "stripe" ){ echo '_inactive'; } ?>" id="stripe">
 
-	<div class="ec_payment_type_row"><span class="ec_payment_type_row_label">Stripe API Key:</span><span class="ec_payment_type_row_input"><input name="ec_option_stripe_api_key" id="ec_option_stripe_api_key" type="text" value="<?php echo get_option('ec_option_stripe_api_key'); ?>" style="width:250px;" /></span></div>
+	<div class="ec_payment_type_row"><span class="ec_payment_type_row_label">Stripe Secret API Key:</span><span class="ec_payment_type_row_input"><input name="ec_option_stripe_api_key" id="ec_option_stripe_api_key" type="text" value="<?php echo get_option('ec_option_stripe_api_key'); ?>" style="width:250px;" /></span></div>
     
     <div class="ec_payment_type_row"><span class="ec_payment_type_row_label">Stripe Currency Code:</span><span class="ec_payment_type_row_input"><select name="ec_option_stripe_currency" id="ec_option_stripe_currency">
                         <option value="USD" <?php if (get_option('ec_option_braintree_currency') == "USD") echo ' selected'; ?>>U.S. Dollar</option>
@@ -196,5 +196,8 @@
                         <option value="ZMK" <?php if (get_option('ec_option_braintree_currency') == "ZMK") echo ' selected'; ?>>Zambian Kwacha</option>
                         <option value="ZWD" <?php if (get_option('ec_option_braintree_currency') == "ZWD") echo ' selected'; ?>>Zimbabwean Dollar</option>
                       </select></span></div>
+	
+    <div class="ec_payment_type_row"><strong>To Do:</strong> We recommend you add the plugin Webhook listener to your Stripe account in order to optimize the checkout process for you and your customers. You can find the place to add this in your Stripe account by logging in and in the top right click "Your account" -> "Account Settings" -> "Webhooks" -> "+ Add URL".</div>
+    <div class="ec_payment_type_row"><strong>Stripe Webhook URL:</strong> <?php echo plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/stripe_webhook.php" ); ?></div>
 	    
 </div>

@@ -107,6 +107,11 @@ class ec_cartwidget extends WP_Widget{
 		$cartpageid = get_option('ec_option_cartpage');
 		$cart_page = get_permalink( $cartpageid );
 		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$cart_page = $https_class->makeUrlHttps( $cart_page );
+		}
+		
 		if( substr_count( $cart_page, '?' ) )						$permalink_divider = "&";
 		else														$permalink_divider = "?";
 		

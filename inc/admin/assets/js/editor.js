@@ -128,6 +128,10 @@ function ec_editor_show_panel( panel ){
 		// Just add the card display shortcode and hide the popup
 		tinyMCE.activeEditor.execCommand( 'mceInsertContent', 0, "[ec_cartdisplay]");
 		ec_close_editor( );
+	}else if( panel == "ec_membership" ){
+		jQuery( '#ec_shortcode_menu' ).hide( );
+		jQuery( '#ec_membership_menu' ).show( );
+		
 	}
 }
 
@@ -144,6 +148,7 @@ function ec_editor_hide_panels( ){
 	jQuery( '#ec_single_product' ).hide( );
 	jQuery( '#ec_multiple_products' ).hide( );
 	jQuery( '#ec_add_to_cart' ).hide( );
+	jQuery( '#ec_membership_menu' ).hide( );
 }
 
 /***************************************************************************
@@ -364,4 +369,40 @@ jQuery( '#ec_add_add_to_cart' ).click( function( ){
 function ec_reset_add_to_cart( ){
 	jQuery( '#ec_add_to_cart_error' ).hide( );
 	jQuery( '#ec_editor_add_to_cart_product_select' ).val( "0" );
+}
+
+/***************************************************************************
+/ Insert Membership Content Shortcode Functions
+/****************************************************************************/
+//Submit function for adding the membership content shortcode
+jQuery( '#ec_add_membership' ).click( function( ){
+	var productids = jQuery( '#ec_editor_membership_multiple_product_select' ).val( );
+	var selected_products = ""; 
+	var added = 0;
+
+	jQuery( '#ec_editor_membership_multiple_product_select option' ).each( function( ){
+		if( jQuery( this ).attr( "selected" ) ){
+			if( added ){
+				selected_products = selected_products + "," + jQuery( this ).val( );
+			}else{
+				selected_products = jQuery( this ).val( );
+			}
+			added++;
+		}
+	});
+	
+	if( added > 0 ){
+		tinyMCE.activeEditor.execCommand( 'mceInsertContent', 0, "[ec_membership productid=\"" + selected_products + "\"]MEMBER CONTENT HERE[/ec_membership][ec_membership_alt productid=\"" + selected_products + "\"]NON-MEMBER NOTICE HERE[/ec_membership_alt]" );
+		ec_close_editor( );
+		ec_reset_multiple_membership_products( );
+	}else{
+		//show error
+		jQuery( '#ec_membership_error' ).show( );
+	}
+});
+
+//Function to reset the product category panel
+function ec_reset_multiple_membership_products( ){
+	jQuery( '#ec_membership_error' ).hide( );
+	jQuery( '#ec_editor_membership_multiple_product_select > option' ).attr( "selected", false );
 }

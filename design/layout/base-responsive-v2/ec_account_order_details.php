@@ -1,5 +1,8 @@
 <div id="ec_account_order_details">
   <div class="ec_account_order_details_main_holder">
+	<?php if( $this->order->orderstatus_id == 8 ){ ?>
+	<div class="ec_account_complete_payment_row"><div class="ec_account_complete_payment_button"><?php $this->display_complete_payment_link( ); ?></div></div>
+    <?php }?>
     <div class="ec_account_order_details_left">
       <div class="ec_account_order_details_title"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_order_info_title' )?></div>
       <div class="ec_account_order_details_holder">
@@ -34,6 +37,11 @@
           <?php $this->order->display_order_tracking_number( ); ?>
         </div>
         <?php }?>
+		<?php if( $this->order->subscription_id ){?>
+        <div class="ec_account_order_details_row"><?php $this->order->display_subscription_link( $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_view_subscription' ) ); ?></b>
+          <?php $this->order->display_order_tracking_number( ); ?>
+        </div>
+        <?php }?>
         <div class="ec_account_order_details_row">&nbsp;&nbsp;&nbsp;</div>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_billing_label' )?></b></div>
         <div class="ec_account_order_details_row">
@@ -56,7 +64,7 @@
           <?php $this->order->display_order_billing_phone( ); ?>
         </div>
         <div class="ec_account_order_details_row">&nbsp;&nbsp;&nbsp;</div>
-        <?php if( get_option( 'ec_option_use_shipping' ) ){?>
+        <?php if( get_option( 'ec_option_use_shipping' ) && !$this->order->subscription_id ){?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_shipping_label' )?></b></div>
         <div class="ec_account_order_details_row">
           <?php $this->order->display_order_shipping_first_name( ); ?>
@@ -88,6 +96,7 @@
           <?php $this->order->display_payment_method( ); ?>
         </div>
         <?php }?>
+		<?php if( !$this->order->subscription_id ){ ?>
         <div class="ec_account_order_details_row">&nbsp;&nbsp;&nbsp;</div>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_subtotal' )?></b>
           <?php $this->order->display_sub_total( ); ?>
@@ -113,6 +122,12 @@
         <?php if( $this->order->has_vat( ) ){?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_vat_total' )?></b>
           <?php $this->order->display_vat_total( ); ?>
+        </div>
+        <?php } ?>
+		<?php } ?>
+        <?php if( $this->order->has_refund( ) ){?>
+        <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_refund_total' )?></b>
+          <?php $this->order->display_refund_total( ); ?>
         </div>
         <?php } ?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_grand_total' )?></b>

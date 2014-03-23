@@ -57,6 +57,11 @@ class ec_categorywidget extends WP_Widget{
 		$store_page_id = get_option('ec_option_storepage');
 		$store_page = get_permalink( $store_page_id );
 		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$store_page = $https_class->makeUrlHttps( $store_page );
+		}
+		
 		if( substr_count( $store_page, '?' ) )					$permalink_divider = "&";
 		else													$permalink_divider = "?";
 		//Required for old linking layouts //////DO NOT DELETE////

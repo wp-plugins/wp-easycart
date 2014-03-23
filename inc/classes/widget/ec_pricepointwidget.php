@@ -46,6 +46,11 @@ class ec_pricepointwidget extends WP_Widget{
 		$storepageid = get_option('ec_option_storepage');
 		$store_page = get_permalink( $storepageid );
 		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$store_page = $https_class->makeUrlHttps( $store_page );
+		}
+		
 		if( substr_count( $store_page, '?' ) )						$permalink_divider = "&";
 		else														$permalink_divider = "?";
 		

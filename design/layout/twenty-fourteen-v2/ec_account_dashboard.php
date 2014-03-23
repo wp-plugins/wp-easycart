@@ -106,6 +106,11 @@
         <div class="ec_account_dashboard_row_content">
           <?php $this->display_password_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_password' ) ); ?>
         </div>
+        <?php if( $this->using_subscriptions( ) ){ ?>
+        <div class="ec_account_dashboard_row_content">
+          <?php $this->display_subscriptions_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_subscriptions' )); ?>
+        </div>
+        <?php }?>
         <div class="ec_account_dashboard_row_content">
           <?php $this->display_logout_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_sign_out' )); ?>
         </div>

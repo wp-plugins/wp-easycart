@@ -32,6 +32,10 @@ class ec_credit_card{
 		else
 			return "20" . $this->expiration_year;
 	}
+	
+	public function get_last_four( ){
+		return substr( $this->card_number, -4 );
+	}
 		
 		
 }
