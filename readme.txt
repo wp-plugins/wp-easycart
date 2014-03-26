@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 2.1.6
+Stable tag: 2.1.7
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.7 =
+* Minor adjustments to the language and design files for all the new features to allow for complete translation of the new content.
+* Bug Fix - Stripe gateway URL was incorrect, checkout will now work.
 = 2.1.6 =
 * NEW FEATURE - Stripe Subscriptions and Memberships NOW AVAILABLE!!
 * NEW FEATURE - Sell subscriptions, renew, update, cancel, and more directly on your website

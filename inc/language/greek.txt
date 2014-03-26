@@ -1476,6 +1476,14 @@
 					"title":"Account, Subscriptions, None Found",
 					"value":"Δεν υπάρχουν συνδρομές που συνδέονται με το λογαριασμό σας."
 				},
+				"update_subscription_subtitle":{
+					"title":"Account, Subscription Details, Credit Card Note",
+					"value":"Δεν είστε υποχρεωμένοι να ενημερώσετε τα στοιχεία της πιστωτικής σας κάρτας."
+				},
+				"save_changes_button":{
+					"title":"Account, Subscription Details, Save Changes Button",
+					"value":"αποθηκεύσετε τις αλλαγές"
+				},
 				"cancel_subscription_button":{
 					"title":"Account, Subscription Details, Cancel Subscription Button",
 					"value":"ΑΚΥΡΩΣΗ ΕΓΓΡΑΦΗ"

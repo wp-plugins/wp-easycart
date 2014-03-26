@@ -249,7 +249,7 @@
 }
 .ec_account_subscription_line_column1_header {
 	float: left;
-	padding-left: 20px;
+	padding-left: 10px;
 	margin-top: 3px;
 	text-align: left;
 	font-size: 12px;
@@ -289,144 +289,140 @@
 	text-align: right;
 }
 @media only screen and ( min-width: [size_level5_low]px ) {
-.ec_account_order_line_column1_header {
-	width: 75px;
-}
-.ec_account_order_line_column2_header {
-	width: 170px;
-}
-.ec_account_order_line_column3_header {
-	width: 75px;
-}
-.ec_account_order_line_column4_header {
-	width: 135px;
-}
-.ec_account_order_line_column5_header {
-	width: 125px;
-}
-
-.ec_account_subscription_line_column1_header {
-	width: 240px;
-}
-.ec_account_subscription_line_column2_header {
-	width: 120px;
-}
-.ec_account_subscription_line_column3_header {
-	width: 120px;
-}
-.ec_account_subscription_line_column4_header {
-	width: 110px;
-}
-.ec_account_subscription_line_column5_header {
-	width: 125px;
-}
+	.ec_account_order_line_column1_header {
+		width: 75px;
+	}
+	.ec_account_order_line_column2_header {
+		width: 170px;
+	}
+	.ec_account_order_line_column3_header {
+		width: 75px;
+	}
+	.ec_account_order_line_column4_header {
+		width: 135px;
+	}
+	.ec_account_order_line_column5_header {
+		width: 125px;
+	}
+	
+	.ec_account_subscription_line_column1_header {
+		width: 150px;
+	}
+	.ec_account_subscription_line_column2_header {
+		width: 104px;
+	}
+	.ec_account_subscription_line_column3_header {
+		display:none;
+	}
+	.ec_account_subscription_line_column4_header {
+		width: 110px;
+	}
+	.ec_account_subscription_line_column5_header {
+		width: 125px;
+	}
 }
  @media only screen and ( min-width: [size_level4_low]px ) and ( max-width: [size_level4_high]px ) {
-.ec_account_order_line_column1_header {
-	width: 63px;
-}
-.ec_account_order_line_column2_header {
-	width: 150px;
-}
-.ec_account_order_line_column3_header {
-	width: 75px;
-}
-.ec_account_order_line_column4_header {
-	width: 135px;
-}
-.ec_account_order_line_column5_header {
-	width: 100px;
-}
-
-.ec_account_subscription_line_column1_header {
-	width: 240px;
-}
-.ec_account_subscription_line_column2_header {
-	width: 120px;
-}
-.ec_account_subscription_line_column3_header {
-	width: 120px;
-}
-.ec_account_subscription_line_column4_header {
-	width: 110px;
-}
-.ec_account_subscription_line_column5_header {
-	width: 100px;
-}
+	.ec_account_order_line_column1_header {
+		width: 63px;
+	}
+	.ec_account_order_line_column2_header {
+		width: 150px;
+	}
+	.ec_account_order_line_column3_header {
+		width: 75px;
+	}
+	.ec_account_order_line_column4_header {
+		width: 135px;
+	}
+	.ec_account_order_line_column5_header {
+		width: 100px;
+	}
+	
+	.ec_account_subscription_line_column1_header {
+		width: 150px;
+	}
+	.ec_account_subscription_line_column2_header {
+		width: 104px;
+	}
+	.ec_account_subscription_line_column3_header {
+		display:none;
+	}
+	.ec_account_subscription_line_column4_header {
+		width: 110px;
+	}
+	.ec_account_subscription_line_column5_header {
+		width: 125px;
+	}
 }
  @media only screen and ( min-width: [size_level3_low]px ) and ( max-width: [size_level3_high]px ) {
-.ec_account_order_line_column1_header {
-	width: 73px;
+	.ec_account_order_line_column1_header {
+		width: 73px;
+	}
+	.ec_account_order_line_column2_header {
+		width: 150px;
+	}
+	.ec_account_order_line_column3_header {
+		width: 75px;
+	}
+	.ec_account_order_line_column4_header {
+		width: 135px;
+	}
+	.ec_account_order_line_column5_header {
+		width: 95px;
+	}
+	
+	.ec_account_subscription_line_column1_header {
+		width: 150px;
+	}
+	.ec_account_subscription_line_column2_header {
+		width: 104px;
+	}
+	.ec_account_subscription_line_column3_header {
+		display:none;
+	}
+	.ec_account_subscription_line_column4_header {
+		width: 110px;
+	}
+	.ec_account_subscription_line_column5_header {
+		width: 125px;
+	}
 }
-.ec_account_order_line_column2_header {
-	width: 150px;
-}
-.ec_account_order_line_column3_header {
-	width: 75px;
-}
-.ec_account_order_line_column4_header {
-	width: 135px;
-}
-.ec_account_order_line_column5_header {
-	width: 95px;
-}
-
-.ec_account_subscription_line_column1_header {
-	width: 240px;
-}
-.ec_account_subscription_line_column2_header {
-	width: 120px;
-}
-.ec_account_subscription_line_column3_header {
-	width: 120px;
-}
-.ec_account_subscription_line_column4_header {
-	width: 110px;
-}
-.ec_account_subscription_line_column5_header {
-	width: 95px;
-}
-}
- @media only screen and ( max-width: [size_level2_high]px ) {
-.ec_account_order_line_column1_header {
-	padding-left: 20px;
-	width: 81px;
-}
-.ec_account_order_line_column2_header {
-	width: 135px;
-	margin-right: 20px;
-	font-size: 11px;
-}
-.ec_account_order_line_column3_header {
-}
-.ec_account_order_line_column4_header {
-	display: none;
-}
-.ec_account_order_line_column5_header {
-	width: 100%;
-	text-align: center;
-	margin-top: 10px;
-}
-
-.ec_account_subscription_line_column1_header {
-	padding-left: 20px;
-	width: 81px;
-}
-.ec_account_subscription_line_column2_header {
-	width: 135px;
-	margin-right: 20px;
-	font-size: 11px;
-}
-.ec_account_subscription_line_column3_header {
-}
-.ec_account_subscription_line_column4_header {
-	display: none;
-}
-.ec_account_subscription_line_column5_header {
-	width: 100%;
-	text-align: center;
-	margin-top: 10px;
-}
+@media only screen and ( max-width: [size_level2_high]px ) {
+	.ec_account_order_line_column1_header {
+		padding-left: 20px;
+		width: 81px;
+	}
+	.ec_account_order_line_column2_header {
+		width: 135px;
+		margin-right: 20px;
+		font-size: 11px;
+	}
+	.ec_account_order_line_column3_header {
+	}
+	.ec_account_order_line_column4_header {
+		display: none;
+	}
+	.ec_account_order_line_column5_header {
+		width: 100%;
+		text-align: center;
+		margin-top: 10px;
+	}
+	
+	.ec_account_subscription_line_column1_header {
+		width: 150px;
+	}
+	.ec_account_subscription_line_column2_header {
+		width: 104px;
+	}
+	.ec_account_subscription_line_column3_header {
+		display:none;
+	}
+	.ec_account_subscription_line_column4_header {
+		width: 110px;
+	}
+	.ec_account_subscription_line_column5_header {
+		width: 125px;
+	}
 }
 @media only screen and ( max-width: [size_level1_high]px ) {
 	.ec_account_order_line_column1_header {
@@ -454,27 +450,19 @@
 	}
 
 	.ec_account_subscription_line_column1_header {
-		padding-left: 10px;
-		width: 53px;
+		width: 150px;
 	}
 	.ec_account_subscription_line_column2_header {
-		width: 120px;
-		margin-right: 10px;
-		font-size: 11px;
+		display:none;
 	}
 	.ec_account_subscription_line_column3_header {
-		display: none;
+		display:none;
 	}
 	.ec_account_subscription_line_column4_header {
-		display: none;
+		width: 110px;
 	}
 	.ec_account_subscription_line_column5_header {
-		width: 100%;
-		text-align: center;
-		margin-top: 10px;
-	}
-	.ec_account_dashboard_row_divider a {
-		width:100%;
+		width: 125px;
 	}
 }
 

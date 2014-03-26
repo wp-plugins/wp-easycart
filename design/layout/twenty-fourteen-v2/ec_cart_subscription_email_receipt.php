@@ -13,6 +13,11 @@
 <body>
 
     <table width='539' border='0' align='center'>
+    	<tr>
+            <td colspan='4' align='left' class='style22'>
+                <img src='<?php echo $email_logo_url; ?>'>
+            </td>
+        </tr>
         <tr>
 			<td colspan='4' align='left' class='style22'>
             	<p><br><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_1" ) . " " . $order->billing_first_name . " " . $order->billing_last_name; ?>:</p>

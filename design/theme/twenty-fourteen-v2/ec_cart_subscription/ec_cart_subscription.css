@@ -2,9 +2,9 @@
 /* CSS Document */
 
 .ec_cart_subscription_holder_left{
-	float:left; width:50%;
+	float:left; width:100%;
 }
 
 .ec_cart_subscription_holder_right{
-	float:right; width:50%;
+	float:left; width:100%; margin-top:15px;
 }

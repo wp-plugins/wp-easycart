@@ -14,6 +14,13 @@
 	display:none;
 }
 
+.ec_account_subscription_subtitle{
+	width: 100%;
+	float: left;
+	margin-top: -20px;
+	margin-bottom: 20px;
+}
+
 .ec_account_subscription_button input[type="submit"]{
 	display: block;
 	float: left;

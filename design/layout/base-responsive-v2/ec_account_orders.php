@@ -21,6 +21,11 @@
         <div class="ec_account_orders_row">
           <?php $this->display_dashboard_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_dashboard' )); ?>
         </div>
+        <?php if( $this->using_subscriptions( ) ){ ?>
+        <div class="ec_account_orders_row">
+          <?php $this->display_subscriptions_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_subscriptions' )); ?>
+        </div>
+        <?php }?>
         <div class="ec_account_orders_row">
           <?php $this->display_personal_information_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_basic_inforamtion' ) ); ?>
         </div>

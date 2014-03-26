@@ -1143,7 +1143,7 @@ class ec_cartpage{
 	}
 	
 	public function ec_cart_display_card_security_code_input(){
-		echo "<input type=\"text\" name=\"ec_security_code\" id=\"ec_security_code\" class=\"ec_cart_payment_information_input_select\" value=\"\" />";
+		echo "<input type=\"text\" name=\"ec_security_code\" id=\"ec_security_code\" class=\"ec_cart_payment_information_input_text\" value=\"\" />";
 	}
 	/* END PAYMENT INFORMATION FUNCTIONS */
     

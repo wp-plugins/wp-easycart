@@ -52,8 +52,8 @@ class ec_stripe extends ec_gateway{
 	
 	function handle_gateway_response( $response ){
 		
-		$status = $response->failure_code;
-		$failure_message = $response->failure_message;
+		$status = $response->error;
+		$failure_message = $response->error->message;
 		
 		if( $status == NULL )
 			$this->is_success = 1;
@@ -73,7 +73,7 @@ class ec_stripe extends ec_gateway{
 	public function insert_charge( $order_totals, $user, $card, $order_id ){
 		
 		$gateway_data = $this->get_insert_charge_data( $order_totals, $user, $card, $order_id );
-		$response = $this->call_stripe( $gateway_url, $gateway_data );
+		$response = $this->call_stripe( $this->get_gateway_url( ), $gateway_data );
 		$json = json_decode( $response );
 		return $json;
 		

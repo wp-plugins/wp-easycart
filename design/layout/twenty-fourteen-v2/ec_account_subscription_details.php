@@ -10,7 +10,7 @@
 <h3>Current Billing Method</h3>
 <?php $this->display_subscription_update_form_start( ); ?>
 
-<div><?php $this->user->display_card_type( ); ?>: ############<?php $this->user->display_last4( ); ?> | <a href="#" onclick="return show_billing_info( );">change billing method</a></div>
+<div><?php $this->user->display_card_type( ); ?>: ############<?php $this->user->display_last4( ); ?> | <a href="#" onclick="return show_billing_info( );" class="ec_account_subscription_link">change billing method</a></div>
 <?php if( $this->subscription->has_upgrades( ) ){ ?>
 <div class="ec_account_subscription_upgrade_row"><?php $this->subscription->display_upgrade_dropdown( ); ?></div>
 <?php }?>
@@ -74,26 +74,31 @@
 <div id="ec_account_subscription_payment" class="ec_account_subscription_payment">
   	<div class="ec_account_billing_information_title"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_title' )?></div>
   	<div>
-        <div class="ec_cart_payment_information_row" id="ec_cart_payment_type_row">
-            <div class="ec_cart_payment_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_credit_card' )?></div>
-            <div class="ec_cart_payment_information_input"><?php $this->ec_display_payment_method_input( "Select One" ); ?></div>
+    	<div class="ec_account_subscription_subtitle"><?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'update_subscription_subtitle' ); ?></div>
+        <div class="ec_account_billing_information_row" id="ec_cart_payment_type_row">
+            <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_credit_card' )?></div>
+            <div class="ec_account_billing_information_input"><?php $this->ec_display_payment_method_input( "Select One" ); ?></div>
             
         </div>
-        <div class="ec_cart_payment_information_row" id="ec_card_holder_name_row">
-            <div class="ec_cart_payment_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_card_holder_name' )?></div>
-            <div class="ec_cart_payment_information_input"><?php $this->ec_display_card_holder_name_input(); ?></div>
+        <div class="ec_account_billing_information_row" id="ec_card_holder_name_row">
+            <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_card_holder_name' )?></div>
+            <div class="ec_account_billing_information_input"><?php $this->ec_display_card_holder_name_input(); ?></div>
         </div>
-        <div class="ec_cart_payment_information_row" id="ec_card_number_row">
-            <div class="ec_cart_payment_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_card_number' )?></div>
-            <div class="ec_cart_payment_information_input"><?php $this->ec_display_card_number_input(); ?></div>
+        <div class="ec_account_billing_information_row" id="ec_card_number_row">
+            <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_card_number' )?></div>
+            <div class="ec_account_billing_information_input"><?php $this->ec_display_card_number_input(); ?></div>
         </div>
-        <div class="ec_cart_payment_information_row" id="ec_expiration_date_row">
-            <div class="ec_cart_payment_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_expiration_date' )?></div>
-            <div class="ec_cart_payment_information_input"><?php $this->ec_display_card_expiration_month_input( "MM" ); ?><?php $this->ec_display_card_expiration_year_input( "YYYY" ); ?></div>
+        <div class="ec_account_billing_information_row" id="ec_expiration_date_row">
+            <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_expiration_date' )?></div>
+            <div class="ec_account_billing_information_input"><?php $this->ec_display_card_expiration_month_input( "MM" ); ?></div>
         </div>
-        <div class="ec_cart_payment_information_row" id="ec_security_code_row">
-            <div class="ec_cart_payment_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_security_code' )?></div>
-            <div class="ec_cart_payment_information_input"><?php $this->ec_display_card_security_code_input(); ?></div>
+        <div class="ec_account_billing_information_row" id="ec_expiration_date_row">
+        	<div class="ec_account_billing_information_label">&nbsp;&nbsp;&nbsp;</div>
+            <div class="ec_account_billing_information_input"><?php $this->ec_display_card_expiration_year_input( "YYYY" ); ?></div>
+        </div>
+        <div class="ec_account_billing_information_row" id="ec_security_code_row">
+            <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_security_code' )?></div>
+            <div class="ec_account_billing_information_input"><?php $this->ec_display_card_security_code_input(); ?></div>
         </div>
     </div>
 </div>
@@ -101,14 +106,13 @@
 
 <div>*NOTICE: any changes to the billing method or subscription plan will take effect in the next billing cycle. Pricing changes will be prorated beginning immediately and will be reflected on your next bill.</div>
 
-<div class="ec_account_subscription_button"><input type="submit" value="Save Changes" /></div>
+<div class="ec_account_subscription_button"><input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'save_changes_button' ); ?>" /></div>
 
 <?php $this->display_subscription_update_form_end( ); ?>
 
-<hr />
 <?php }?>
 <h3>Past Payments</h3>
-<?php $this->subscription->display_past_payments( 'M d, Y g:i A' ); ?>
+<div class="ec_account_subscriptions_past_payments"><?php $this->subscription->display_past_payments( 'M d, Y g:i A' ); ?></div>
 
 <?php if( !$this->subscription->is_canceled( ) ){ ?>
 <hr />
