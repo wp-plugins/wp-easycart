@@ -236,6 +236,10 @@ if (@$row_orderdetails['billing_address_line_1'] == "" && @$row_orderdetails['bi
           <td width="400"><div align="left"><span class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['billing_address_line_1']); ?></span></span></div></td>
         </tr>
         <tr>
+          <td width="400"><span class="sizesmallfont"><span class="fontstyle">&nbsp;<?php echo utf8_decode($row_orderdetails['shipping_address_line_2']); ?></span></span></td>
+          <td width="400"><div align="left"><span class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['billing_address_line_2']); ?></span></span></div></td>
+        </tr>
+        <tr>
           <td width="400"><span class="sizesmallfont"><span class="fontstyle">&nbsp;<?php echo utf8_decode($row_orderdetails['shipping_city']); ?>, <?php echo utf8_decode($row_orderdetails['shipping_state']); ?> <?php echo utf8_decode($row_orderdetails['shipping_zip']); ?></span></span></td>
           <td width="400"><div align="left"><span class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['billing_city']); ?>, <?php echo utf8_decode($row_orderdetails['billing_state']); ?> <?php echo utf8_decode($row_orderdetails['billing_zip']); ?></span></span></div></td>
         </tr>
@@ -264,7 +268,7 @@ if (@$row_orderdetails['billing_address_line_1'] == "" && @$row_orderdetails['bi
           <td width="134" class="sizesmallfont"><div align="left"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['order_id']); ?></span></div></td>
           <td width="148" class="sizesmallfont">&nbsp;</td>
           <td width="126" class="sizemediumfont"><div align="left"><span class="fontstyle"><strong>Order Date: </strong></span></div></td>
-          <td width="271" class="sizesmallfont"><div align="left"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['last_updated']); ?></span></div>
+          <td width="271" class="sizesmallfont"><div align="left"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['order_date']); ?></span></div>
             <div align="left"></div></td>
         </tr>
         <tr>
@@ -318,7 +322,7 @@ if (@$row_orderdetails['billing_address_line_1'] == "" && @$row_orderdetails['bi
           <td width="252" align="right" bgcolor="#CCCCCC"><span class="sizemediumfont"><span class="fontstyle">
             <div class="style2">
             <?php echo utf8_decode($row_orderdetails['shipping_carrier']); ?>&nbsp;&nbsp;<br>
-            <?php echo utf8_decode($row_orderdetails['shipping_carrier']); ?>&nbsp;&nbsp;<br>
+            <?php echo utf8_decode($row_orderdetails['tracking_number']); ?>&nbsp;&nbsp;<br>
             </span> </span>
             <div align="right"></div>
             <div align="right" class="style2"> <span class="sizemediumfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['shipping_method']); ?>&nbsp;&nbsp; </span></span></div></td>
