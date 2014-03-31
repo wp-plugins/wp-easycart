@@ -149,9 +149,9 @@ class ec_cartpage{
 			$order = new ec_orderdisplay( $order_row );
 			$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
 			
-			$this->user->setup_billing_info_data( $order->billing_first_name, $order->billing_last_name, $order->billing_address_line_1, $order->billing_city, $order->billing_state, $order->billing_country, $order->billing_zip, $order->billing_phone );
+			$this->user->setup_billing_info_data( $order->billing_first_name, $order->billing_last_name, $order->billing_address_line_1, $order->billing_address_line_2, $order->billing_city, $order->billing_state, $order->billing_country, $order->billing_zip, $order->billing_phone );
 			
-			$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone );
+			$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_address_line_2, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone );
 		
 			if( $order->subscription_id > 0 ){
 				
@@ -649,32 +649,112 @@ class ec_cartpage{
 				echo "<input type=\"text\" name=\"ec_cart_billing_country\" id=\"ec_cart_billing_country\" class=\"ec_cart_billing_input_text\" value=\"" . $selected_country . "\" />";
 			}
 		}else if( $name == "state" ){
-			if( get_option( 'ec_option_use_state_dropdown' ) ){
+			
+			if( get_option( 'ec_option_use_smart_states' ) ){
+			
 				// DISPLAY STATE DROP DOWN MENU
 				$states = $this->mysqli->get_states( );
 				if( isset( $_SESSION['ec_billing_state'] ) )
 					$selected_state = $_SESSION['ec_billing_state'];
 				else
 					$selected_state = $this->user->billing->get_value( "state" );
+					
+				if( isset( $_SESSION['ec_billing_country'] ) )
+						$selected_country = $_SESSION['ec_billing_country'];
+					else
+						$selected_country = $this->user->billing->get_value( "country2" );
 				
-				echo "<select name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\">";
-				echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_billing_information", "cart_billing_information_select_state" ) . "</option>";
+				$current_country = "";
+				$close_last_state = false;
+				$state_found = false;
+				$current_state_group = "";
+				$close_last_state_group = false;
+				
 				foreach($states as $state){
+					if( $current_country != $state->iso2_cnt ){
+						if( $close_last_state ){
+							echo "</select>";
+						}
+						echo "<select name=\"ec_cart_billing_state_" . $state->iso2_cnt . "\" id=\"ec_cart_billing_state_" . $state->iso2_cnt . "\" class=\"ec_cart_billing_input_text ec_billing_state_dropdown\"";
+						if( $state->iso2_cnt != $selected_country ){
+							echo " style=\"display:none;\"";
+						}else{
+							$state_found = true;
+						}
+						echo ">";
+						
+						if( $state->iso2_cnt == "CA" ){ // Canada
+							echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_billing_information", "cart_billing_information_select_province" ) . "</option>";
+						}else if( $state->iso2_cnt == "GB" ){ // United Kingdom
+							echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_billing_information", "cart_billing_information_select_county" ) . "</option>";
+						}else if( $state->iso2_cnt == "US" ){ //USA 
+							echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_billing_information", "cart_billing_information_select_state" ) . "</option>";
+						}else{
+							echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_billing_information", "cart_billing_information_select_other" ) . "</option>";
+						}
+						
+						$current_country = $state->iso2_cnt;
+						$close_last_state = true;
+					}
+					
+					if( $current_state_group != $state->group_sta && $state->group_sta != "" ){
+						if( $close_last_state_group ){
+							echo "</optgroup>";
+						}
+						echo "<optgroup label=\"" . $state->group_sta . "\">";
+						$current_state_group = $state->group_sta;
+						$close_last_state_group = true;
+					}
+					
 					echo "<option value=\"" . $state->code_sta . "\"";
 					if( $state->code_sta == $selected_state )
 						echo " selected=\"selected\"";
 					echo ">" . $state->name_sta . "</option>";
 				}
+				
+				if( $close_last_state_group ){
+					echo "</optgroup>";
+				}
+				
 				echo "</select>";
+				
+				// DISPLAY STATE TEXT INPUT	
+				echo "<input type=\"text\" name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\" value=\"" . $selected_state . "\"";
+				if( $state_found ){
+					echo " style=\"display:none;\"";
+				}
+				echo " />";
+				
 			}else{
-				// DISPLAY STATE TEXT INPUT
-				if( isset( $_SESSION['ec_billing_state'] ) )
-					$selected_state = $_SESSION['ec_billing_state'];
-				else
-					$selected_state = $this->user->billing->get_value( "state" );
+				// Use the basic method of old
+				if( get_option( 'ec_option_use_state_dropdown' ) ){
+					// DISPLAY STATE DROP DOWN MENU
+					$states = $this->mysqli->get_states( );
+					if( isset( $_SESSION['ec_billing_state'] ) )
+						$selected_state = $_SESSION['ec_billing_state'];
+					else
+						$selected_state = $this->user->billing->get_value( "state" );
 					
-				echo "<input type=\"text\" name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\" value=\"" . $selected_state . "\" />";
-			}
+					echo "<select name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\">";
+					echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_billing_information", "cart_billing_information_select_state" ) . "</option>";
+					foreach($states as $state){
+						echo "<option value=\"" . $state->code_sta . "\"";
+						if( $state->code_sta == $selected_state )
+							echo " selected=\"selected\"";
+						echo ">" . $state->name_sta . "</option>";
+					}
+					echo "</select>";
+				}else{
+					// DISPLAY STATE TEXT INPUT
+					if( isset( $_SESSION['ec_billing_state'] ) )
+						$selected_state = $_SESSION['ec_billing_state'];
+					else
+						$selected_state = $this->user->billing->get_value( "state" );
+						
+					echo "<input type=\"text\" name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\" value=\"" . $selected_state . "\" />";
+				}
+			}// Close if/else for state display type
+			
 		}else{
 		
 			$value = $this->user->billing->get_value( $name );
@@ -752,32 +832,112 @@ class ec_cartpage{
 				echo "<input type=\"text\" name=\"ec_cart_shipping_country\" id=\"ec_cart_shipping_country\" class=\"ec_cart_shipping_input_text\" value=\"" . $selected_country . "\" />";
 			}
 		}else if( $name == "state" ){
-			if( get_option( 'ec_option_use_state_dropdown' ) ){
+			
+			if( get_option( 'ec_option_use_smart_states' ) ){ // Use new method
 				// DISPLAY STATE DROP DOWN MENU
 				$states = $this->mysqli->get_states( );
 				if( isset( $_SESSION['ec_shipping_state'] ) )
 					$selected_state = $_SESSION['ec_shipping_state'];
 				else
 					$selected_state = $this->user->shipping->get_value( "state" );
+					
+				if( isset( $_SESSION['ec_shipping_country'] ) )
+						$selected_country = $_SESSION['ec_shipping_country'];
+					else
+						$selected_country = $this->user->shipping->get_value( "country2" );
 				
-				echo "<select name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\">";
-				echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_shipping_information", "cart_shipping_information_select_state" ) . "</option>";
+				$current_country = "";
+				$close_last_state = false;
+				$state_found = false;
+				$current_state_group = "";
+				$close_last_state_group = false;
+				
 				foreach($states as $state){
+					if( $current_country != $state->iso2_cnt ){
+						if( $close_last_state ){
+							echo "</select>";
+						}
+						echo "<select name=\"ec_cart_shipping_state_" . $state->iso2_cnt . "\" id=\"ec_cart_shipping_state_" . $state->iso2_cnt . "\" class=\"ec_cart_shipping_input_text ec_shipping_state_dropdown\"";
+						if( $state->iso2_cnt != $selected_country ){
+							echo " style=\"display:none;\"";
+						}else{
+							$state_found = true;
+						}
+						echo ">";
+						
+						if( $state->iso2_cnt == "CA" ){ // Canada
+							echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_shipping_information", "cart_shipping_information_select_province" ) . "</option>";
+						}else if( $state->iso2_cnt == "GB" ){ // United Kingdom
+							echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_shipping_information", "cart_shipping_information_select_county" ) . "</option>";
+						}else if( $state->iso2_cnt == "US" ){ //USA 
+							echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_shipping_information", "cart_shipping_information_select_state" ) . "</option>";
+						}else{
+							echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_shipping_information", "cart_shipping_information_select_other" ) . "</option>";
+						}
+						
+						$current_country = $state->iso2_cnt;
+						$close_last_state = true;
+					}
+					
+					if( $current_state_group != $state->group_sta && $state->group_sta != "" ){
+						if( $close_last_state_group ){
+							echo "</optgroup>";
+						}
+						echo "<optgroup label=\"" . $state->group_sta . "\">";
+						$current_state_group = $state->group_sta;
+						$close_last_state_group = true;
+					}
+					
 					echo "<option value=\"" . $state->code_sta . "\"";
 					if( $state->code_sta == $selected_state )
-					echo " selected=\"selected\"";
+						echo " selected=\"selected\"";
 					echo ">" . $state->name_sta . "</option>";
 				}
+				
+				if( $close_last_state_group ){
+					echo "</optgroup>";
+				}
+				
 				echo "</select>";
-			}else{
-				// DISPLAY STATE TEXT INPUT
-				if( isset( $_SESSION['ec_shipping_state'] ) )
-					$selected_state = $_SESSION['ec_shipping_state'];
-				else
-					$selected_state = $this->user->shipping->get_value( "state" );
+				
+				// DISPLAY STATE TEXT INPUT	
+				echo "<input type=\"text\" name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\" value=\"" . $selected_state . "\"";
+				if( $state_found ){
+					echo " style=\"display:none;\"";
+				}
+				echo " />";
+				
+			}else{// Use old method
+				
+				if( get_option( 'ec_option_use_state_dropdown' ) ){
+					// DISPLAY STATE DROP DOWN MENU
+					$states = $this->mysqli->get_states( );
+					if( isset( $_SESSION['ec_shipping_state'] ) )
+						$selected_state = $_SESSION['ec_shipping_state'];
+					else
+						$selected_state = $this->user->shipping->get_value( "state" );
 					
-				echo "<input type=\"text\" name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\" value=\"" . $selected_state . "\" />";
-			}
+					echo "<select name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\">";
+					echo "<option value=\"0\">" . $GLOBALS['language']->get_text( "cart_shipping_information", "cart_shipping_information_select_state" ) . "</option>";
+					foreach($states as $state){
+						echo "<option value=\"" . $state->code_sta . "\"";
+						if( $state->code_sta == $selected_state )
+						echo " selected=\"selected\"";
+						echo ">" . $state->name_sta . "</option>";
+					}
+					echo "</select>";
+				}else{
+					// DISPLAY STATE TEXT INPUT
+					if( isset( $_SESSION['ec_shipping_state'] ) )
+						$selected_state = $_SESSION['ec_shipping_state'];
+					else
+						$selected_state = $this->user->shipping->get_value( "state" );
+						
+					echo "<input type=\"text\" name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\" value=\"" . $selected_state . "\" />";
+				}
+				
+			}// Close if/else for state display type
+			
 		}else{
 			$value = $this->user->shipping->get_value( $name );
 			
@@ -940,8 +1100,24 @@ class ec_cartpage{
 		echo $this->user->billing->get_value( $name );
 	}
 	
+	public function has_billing_address_line2( ){
+		if( $this->user->billing->address_line_2 != "" ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	public function display_review_shipping( $name ){
 		echo $this->user->shipping->get_value( $name );
+	}
+	
+	public function has_shipping_address_line2( ){
+		if( $this->user->shipping->address_line_2 != "" ){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public function display_selected_shipping_method( ){
@@ -1589,6 +1765,7 @@ class ec_cartpage{
 		unset( $_SESSION['ec_billing_first_name'] );
 		unset( $_SESSION['ec_billing_last_name'] );
 		unset( $_SESSION['ec_billing_address'] );
+		unset( $_SESSION['ec_billing_address2'] );
 		unset( $_SESSION['ec_billing_city'] );
 		unset( $_SESSION['ec_billing_state'] );
 		unset( $_SESSION['ec_billing_zip'] );
@@ -1600,6 +1777,7 @@ class ec_cartpage{
 		unset( $_SESSION['ec_shipping_first_name'] );
 		unset( $_SESSION['ec_shipping_last_name'] );
 		unset( $_SESSION['ec_shipping_address'] );
+		unset( $_SESSION['ec_shipping_address2'] );
 		unset( $_SESSION['ec_shipping_city'] );
 		unset( $_SESSION['ec_shipping_state'] );
 		unset( $_SESSION['ec_shipping_zip'] );
@@ -1622,25 +1800,50 @@ class ec_cartpage{
 	}
 	
 	private function process_save_checkout_info( ){
+		$billing_country = $shipping_country = $_POST['ec_cart_billing_country'];
+		
 		$billing_first_name = $shipping_first_name = $_POST['ec_cart_billing_first_name'];
 		$billing_last_name = $shipping_last_name = $_POST['ec_cart_billing_last_name'];
 		$billing_address = $shipping_address = $_POST['ec_cart_billing_address'];
+		if( isset( $_POST['ec_cart_billing_address2'] ) ){
+			$billing_address2 = $shipping_address2 = $_POST['ec_cart_billing_address2'];
+		}else{
+			$billing_address2 = $shipping_address2 = "";
+		}
+		
 		$billing_city = $shipping_city = $_POST['ec_cart_billing_city'];
-		$billing_state = $shipping_state = $_POST['ec_cart_billing_state'];
+		if( isset( $_POST['ec_cart_billing_state_' . $billing_country] ) ){
+			$billing_state = $shipping_state = $_POST['ec_cart_billing_state_' . $billing_country];
+		}else{
+			$billing_state = $shipping_state = $_POST['ec_cart_billing_state'];
+		}
+		
 		$billing_zip = $shipping_zip = $_POST['ec_cart_billing_zip'];
-		$billing_country = $shipping_country = $_POST['ec_cart_billing_country'];
 		$billing_phone = $shipping_phone = $_POST['ec_cart_billing_phone'];
 		
 		$shipping_selector = $_POST['ec_shipping_selector'];
 		
 		if( $shipping_selector == "true" ){
+			$shipping_country = $_POST['ec_cart_shipping_country'];
+			
 			$shipping_first_name = $_POST['ec_cart_shipping_first_name'];
 			$shipping_last_name = $_POST['ec_cart_shipping_last_name'];
 			$shipping_address = $_POST['ec_cart_shipping_address'];
+			if( isset( $_POST['ec_cart_shipping_address2'] ) ){
+				$shipping_address2 = $_POST['ec_cart_shipping_address2'];
+			}else{
+				$shipping_address2 = "";
+			}
+			
 			$shipping_city = $_POST['ec_cart_shipping_city'];
-			$shipping_state = $_POST['ec_cart_shipping_state'];
+			
+			if( isset( $_POST['ec_cart_shipping_state_' . $shipping_country] ) ){
+				$shipping_state = $_POST['ec_cart_shipping_state_' . $shipping_country];
+			}else{
+				$shipping_state = $_POST['ec_cart_shipping_state'];
+			}
+			
 			$shipping_zip = $_POST['ec_cart_shipping_zip'];
-			$shipping_country = $_POST['ec_cart_shipping_country'];
 			$shipping_phone = $_POST['ec_cart_shipping_phone'];
 		}
 		
@@ -1652,10 +1855,10 @@ class ec_cartpage{
 		else
 			$create_account = false;
 		
-		
 		$_SESSION['ec_billing_first_name'] = $billing_first_name;
 		$_SESSION['ec_billing_last_name'] = $billing_last_name;
 		$_SESSION['ec_billing_address'] = $billing_address;
+		$_SESSION['ec_billing_address2'] = $billing_address2;
 		$_SESSION['ec_billing_city'] = $billing_city;
 		$_SESSION['ec_billing_state'] = $billing_state;
 		$_SESSION['ec_billing_zip'] = $billing_zip;
@@ -1667,6 +1870,7 @@ class ec_cartpage{
 		$_SESSION['ec_shipping_first_name'] = $shipping_first_name;
 		$_SESSION['ec_shipping_last_name'] = $shipping_last_name;
 		$_SESSION['ec_shipping_address'] = $shipping_address;
+		$_SESSION['ec_shipping_address2'] = $shipping_address2;
 		$_SESSION['ec_shipping_city'] = $shipping_city;
 		$_SESSION['ec_shipping_state'] = $shipping_state;
 		$_SESSION['ec_shipping_zip'] = $shipping_zip;
@@ -1690,9 +1894,9 @@ class ec_cartpage{
 			$password = md5( $_POST['ec_contact_password'] );
 			
 			// INSERT USER
-			$billing_id = $this->mysqli->insert_address( $billing_first_name, $billing_last_name, $billing_address, $billing_city, $billing_state, $billing_zip, $billing_country, $billing_phone );
+			$billing_id = $this->mysqli->insert_address( $billing_first_name, $billing_last_name, $billing_address, $billing_address2, $billing_city, $billing_state, $billing_zip, $billing_country, $billing_phone );
 			
-			$shipping_id = $this->mysqli->insert_address( $shipping_first_name, $shipping_last_name, $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country, $shipping_phone );
+			$shipping_id = $this->mysqli->insert_address( $shipping_first_name, $shipping_last_name, $shipping_address, $shipping_address2, $shipping_city, $shipping_state, $shipping_zip, $shipping_country, $shipping_phone );
 			
 			$user_level = "shopper";
 			if( isset( $_POST['ec_contact_is_subscriber'] ) )
@@ -1792,6 +1996,11 @@ class ec_cartpage{
 					$first_name = $_POST['ec_cart_billing_first_name'];
 					$last_name = $_POST['ec_cart_billing_last_name'];
 					$address = $_POST['ec_cart_billing_address'];
+					if( isset( $_POST['ec_cart_billing_address2'] ) )
+						$address2 = $_POST['ec_cart_billing_address'];
+					else
+						$address2 = "";
+						
 					$city = $_POST['ec_cart_billing_city'];
 					$state = $_POST['ec_cart_billing_state'];
 					$zip = $_POST['ec_cart_billing_zip'];
@@ -1810,7 +2019,7 @@ class ec_cartpage{
 						$email = $_POST['ec_contact_email'];
 						$password = md5( $_POST['ec_contact_password'] );
 						
-						$billing_id = $this->mysqli->insert_address( $first_name, $last_name, $address, $city, $state, $zip, $country, $phone );
+						$billing_id = $this->mysqli->insert_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone );
 						
 						$user_level = "shopper";
 						
@@ -1824,7 +2033,7 @@ class ec_cartpage{
 					// END CREATE ACCOUNT
 					
 					$user = new ec_user( "" );
-					$user->setup_billing_info_data( $first_name, $last_name, $address, $city, $state, $country, $zip, $phone );
+					$user->setup_billing_info_data( $first_name, $last_name, $address, "", $city, $state, $country, $zip, $phone );
 					$card = new ec_credit_card( $payment_method, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
 					$product = new ec_product( $products[0] );
 					$stripe = new ec_stripe( );

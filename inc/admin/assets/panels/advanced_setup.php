@@ -19,6 +19,15 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 <form action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-setup&ec_action=save_options" method="POST">
 
 <div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Advanced State Display</em>For version 2.1.8 and beyond, first time installs will automatically have this feature available. If you first installed a version prior to this, you will need to upgrade your design files to use this feature. This feature allows you to input multiple states from multiple countries and display these dropdown menus based on the selected country. If a country with no states is selected, a basic text box will be available.</span></a></span>
+    <span class="ec_setting_row_label">Use Advanced State Display:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_use_smart_states" id="ec_option_use_smart_states">
+            <option value="1" <?php if (get_option('ec_option_use_smart_states') == 1) echo ' selected'; ?>>Yes</option>
+            <option value="0" <?php if (get_option('ec_option_use_smart_states') == 0) echo ' selected'; ?>>No</option>
+          </select></span>
+</div>
+
+<div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>State Drop Downs</em>Depending on your country, you may choose to allow state drop downs or if disabled, customers will have an open text box to enter their state or province.  This varies from country to country.  You may edit the list in the drop down within the admin console software.</span></a></span>
     <span class="ec_setting_row_label">Use State Drop Down List for Addresses:</span>
     <span class="ec_setting_row_input"><select name="ec_option_use_state_dropdown" id="ec_option_use_state_dropdown">

@@ -39,6 +39,11 @@
           <?php $this->user->billing->display_address_line_1(); ?>
         </div>
         <?php } ?>
+        <?php if( $this->user->billing->address_line_2 != "" ){ ?>
+        <div class="ec_account_dashboard_row_content" id="ec_account_dashboard_billing_address_line_2">
+          <?php $this->user->billing->display_address_line_2( ); ?>
+        </div>
+        <?php } ?>
         <?php if( $this->user->billing->city || $this->user->billing->state || $this->user->billing->zip ){ ?>
         <div class="ec_account_dashboard_row_content" id="ec_account_dashboard_billing_address_line_2">
           <?php $this->user->billing->display_city(); ?>
@@ -71,6 +76,11 @@
         <?php if( $this->user->shipping->address_line_1 ){ ?>
         <div class="ec_account_dashboard_row_content" id="ec_account_dashboard_shipping_address_line_1">
           <?php $this->user->shipping->display_address_line_1(); ?>
+        </div>
+        <?php } ?>
+        <?php if( $this->user->shipping->address_line_2 != "" ){ ?>
+        <div class="ec_account_dashboard_row_content" id="ec_account_dashboard_shipping_address_line_2">
+          <?php $this->user->shipping->display_address_line_2( ); ?>
         </div>
         <?php } ?>
         <?php if( $this->user->shipping->city || $this->user->shipping->state || $this->user->shipping->zip ){ ?>

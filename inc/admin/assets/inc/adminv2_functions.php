@@ -1164,6 +1164,8 @@ function ec_save_basic_settings( ){
 	
 	// Cart Page Display Options
 	update_option( 'ec_option_default_payment_type', $_POST['ec_option_default_payment_type'] );
+	update_option( 'ec_option_display_country_top', $_POST['ec_option_display_country_top'] );
+	update_option( 'ec_option_use_address2', $_POST['ec_option_use_address2'] );
 	update_option( 'ec_option_allow_guest', $_POST['ec_option_allow_guest'] );
 	update_option( 'ec_option_use_shipping', $_POST['ec_option_use_shipping'] );
 	update_option( 'ec_option_user_order_notes', $_POST['ec_option_user_order_notes'] );
@@ -1174,12 +1176,14 @@ function ec_save_basic_settings( ){
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
 	update_option( 'ec_option_require_email_validation', $_POST['ec_option_require_email_validation'] );
+	update_option( 'ec_option_show_account_subscriptions_link', $_POST['ec_option_show_account_subscriptions_link'] );
 	
 	// Google Analytics Setup
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
 }
 
 function ec_update_advanced_setup( ){
+	update_option( 'ec_option_use_smart_states', $_POST['ec_option_use_smart_states'] );
 	update_option( 'ec_option_use_state_dropdown', $_POST['ec_option_use_state_dropdown'] );
 	update_option( 'ec_option_use_country_dropdown', $_POST['ec_option_use_country_dropdown'] );
 	update_option( 'ec_option_estimate_shipping_country', $_POST['ec_option_estimate_shipping_country'] );

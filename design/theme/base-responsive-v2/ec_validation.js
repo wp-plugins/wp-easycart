@@ -63,11 +63,15 @@ function ec_validation( function_name, input, country_code ){
 				
 		}
 	}else if( function_name == "validate_zip" ){
+		var no_zip_countries = ['AO', 'AG', 'AW', 'BS', 'BZ', 'BJ', 'BW', 'BF', 'BI', 'KM', 'CG', 'CK', 'CI', 'DJ', 'DM', 'TP', 'GQ', 'ER', 'FJ', 'GM', 'GH', 'GD', 'GN', 'GY', 'HK', 'IE', 'KI', 'MO', 'MW', 'ML', 'MR', 'MU', 'MS', 'NA', 'NR', 'NU', 'PA', 'QA', 'RW', 'KN', 'LC', 'ST', 'SC', 'SL', 'SB', 'SO', 'SR', 'SY', 'TK', 'TO', 'TT', 'TV', 'UG', 'AE', 'VU', 'YE', 'ZW'];
+		
 		if( country_code == "US" ){
 			if( /(^\d{5}$)|(^\d{5}-\d{4}$)/.test( input ) )
 				return true;
 			else
 				return false;
+		}else if( jQuery.inArray( country_code, no_zip_countries ) ){
+			return true;
 		}else{
 			if( input.length > 0 )
 				return true;

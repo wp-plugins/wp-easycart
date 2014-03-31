@@ -28,19 +28,12 @@ function ec_install_admin_notice() {
 	}
 	
 	$ec_selected_theme = wp_get_theme();
-	if( $ec_selected_theme->Name == "Twenty Fourteen" && ( get_option( 'ec_option_base_theme' ) != "twenty-fourteen-v2" || get_option( 'ec_option_base_layout' ) != "twenty-fourteen-v2" ) ){ 
-    
-	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/twenty-fourteen-v2/" ) ){;
-	?>
+	if( $ec_selected_theme->Name == "Twenty Fourteen" && substr( get_option( 'ec_option_base_theme' ), 0, 15 ) != "twenty-fourteen" ){ 
+    ?>
     <div class="updated">
         <p>EasyCart notices that you are using the Twenty Fourteen WordPress theme, but not the Twenty Fourteen store design. Make the change to the cart for best results by <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management">clicking here</a>.</p>
     </div>
-    <?php }else{ ?>
-    <div class="updated">
-        <p>EasyCart notices that you are using the Twenty Fourteen WordPress theme, but not the Twenty Fourteen store design. Learn how to upgrade by <a href="http://www.wpeasycart.com/forums/forum/customization-and-themes/general-theme-questions/individual-theme-support/base-and-default-theme/262-twenty-fourteen-wordpress-theme" target="_blank">clicking here for help</a>.</p>
-    </div>
     <?php
-	}// Close check for existing theme
 	}// Close check for latest WordPress theme
 	
 	// Check if the admin manage notice should be removed

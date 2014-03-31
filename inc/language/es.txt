@@ -1,36 +1,36 @@
 {
-	"label":"French",
+	"label":"Spanish",
 	"options":{
 		"sort_bar":{
 			"label":"Product Page Sort Menu",
 			"options":{
 				"sort_by_price_low":{
 					"title":"Product Page Sort Box Item 1",
-					"value":"Prix Bas-Haut"
+					"value":"Precio Menor-Mayor"
 				},
 				"sort_by_price_high":{
 					"title":"Product Page Sort Box Item 2",
-					"value":"Prix Haut-Bas"
+					"value":"Precio Mayor-Menor"
 				},
 				"sort_by_title_a":{
 					"title":"Product Page Sort Box Item 3",
-					"value":"Titre A-Z"
+					"value":"Título A-Z"
 				},
 				"sort_by_title_z":{
 					"title":"Product Page Sort Box Item 4",
-					"value":"Titre Z-A"
+					"value":"Título Z-A"
 				},
 				"sort_by_newest":{
 					"title":"Product Page Sort Box Item 5",
-					"value":"Le Plus Nouveau"
+					"value":"Novísimo"
 				},
 				"sort_by_rating":{
 					"title":"Product Page Sort Box Item 6",
-					"value":"Meilleure Revue"
+					"value":"Mejor Calificación"
 				},
 				"sort_by_most_viewed":{
 					"title":"Product Page Sort Box Item 7",
-					"value":"Le Plus Regarde"
+					"value":"Más Vistos"
 				}
 			}
 		},
@@ -39,23 +39,23 @@
 			"options":{
 				"product_quick_view":{
 					"title":"Product Quick View Label",
-					"value":"+Vue Rapide"
+					"value":"+Vista Rápida"
 				},
 				"product_no_results":{
 					"title":"Product Page No Results",
-					"value":"Aucun Resultat Trouve"
+					"value":"No Se Ha Encontrado"
 				},
 				"product_items_per_page":{
 					"title":"Product Page Items per Page",
-					"value":"Items Per Page:"
+					"value":"Artículos Por Página:"
 				},
 				"product_paging_page":{
 					"title":"Product Page Page in Page a of b",
-					"value":"Page"
+					"value":"Página"
 				},
 				"product_paging_of":{
 					"title":"Product Page of in Page a of b",
-					"value":"of"
+					"value":"de"
 				}
 			}
 		},
@@ -64,7 +64,7 @@
 			"options":{
 				"quick_view_gift_card_message":{
 					"title":"Gift Card Message Title",
-					"value":"MESSAGE SPECIAL"
+					"value":"MENSAJE ESPECIAL"
 				},
 				"quick_view_gift_card_to_name":{
 					"title":"Gift Card To Name Title",
@@ -72,27 +72,27 @@
 				},
 				"quick_view_gift_card_from_name":{
 					"title":"Gift Card From Name Title",
-					"value":"DE"
+					"value":"DESDE"
 				},
 				"quick_view_quantity":{
 					"title":"Quantity Title",
-					"value":"QUANTITE"
+					"value":"CANTIDAD"
 				},
 				"quick_view_remaining":{
 					"title":"label in x items remaining",
-					"value":"restant"
+					"value":"restantes"
 				},
 				"quick_view_add_to_cart":{
 					"title":"Add to Cart Button",
-					"value":"AJOUTE AU PANIER"
+					"value":"Añadir al Carro"
 				},
 				"quick_view_view_full_details":{
 					"title":"Link Text View Full Product Details",
-					"value":"Details complet du produit"
+					"value":"Más Detalles del Producto"
 				},
 				"quick_view_select_options":{
 					"title":"Product details missing options error text",
-					"value":"choisissez toutes options pour ce produit"
+					"value":"Por favor, seleccione todas las opciones para este producto."
 				}
 			}
 		},
@@ -101,15 +101,15 @@
 			"options":{
 				"product_details_donation_label":{
 					"title":"Your Donation Label",
-					"value":"Votre Don: "
+					"value":"Su Donación: "
 				},
 				"product_details_minimum_donation":{
 					"title":"Your Donation Minimum Label",
-					"value":"Don minimum:"
+					"value":"donación mínima:"
 				},
 				"product_details_gift_card_message":{
 					"title":"Gift Card Message Title",
-					"value":"MESSAGE SPECIAL"
+					"value":"MENSAJE ESPECIAL"
 				},
 				"product_details_gift_card_to_name":{
 					"title":"Gift Card To Name Title",
@@ -117,15 +117,15 @@
 				},
 				"product_details_gift_card_from_name":{
 					"title":"Gift Card From Name Title",
-					"value":"DE"
+					"value":"DESDE"
 				},
 				"product_details_quantity":{
-					"title":"Quantity Label",
-					"value":"Quantite"
+					"title":"Quantity Title",
+					"value":"Cantidad"
 				},
 				"product_details_remaining":{
 					"title":"x remaining",
-					"value":"restant"
+					"value":"restante"
 				},
 				"product_details_x_of_y":{
 					"title":"page text divider",
@@ -133,59 +133,59 @@
 				},
 				"product_details_model_number":{
 					"title":"model number text",
-					"value":"numero de modele"
+					"value":"número de modelo"
 				},
 				"product_details_reduced_price":{
 					"title":"reduced price text",
-					"value":"PRIX REDUIT VOUS ECONOMISEZ"
+					"value":"PRECIO REDUCIDO AHORRAS"
 				},
 				"product_details_quantity":{
 					"title":"Quantity Label",
-					"value":"Quantité"
+					"value":"Cantidad"
 				},
 				"product_details_description":{
 					"title":"Description Title",
-					"value":"Description"
+					"value":"Descripción"
 				},
 				"product_details_customer_reviews":{
 					"title":"Customer Reviews Title",
-					"value":"Avis du client"
+					"value":"Opiniones De Los Usuarios"
 				},
 				"product_details_specifications":{
 					"title":"Specifications Title",
-					"value":"Caracteristiques"
+					"value":"Especificación"
 				},
 				"product_details_featured_items":{
 					"title":"Featured Items Title",
-					"value":"Articles presentes"
+					"value":"Artículos Destacados"
 				},
 				"product_details_customer_rating":{
 					"title":"Customer Rating",
-					"value":"Revue generale du client"
+					"value":"Clasificación Global de los Clientes"
 				},
 				"product_details_review_based_on":{
 					"title":"Review Based ON",
-					"value":"Base sur"
+					"value":"basada en "
 				},
 				"product_details_review":{
 					"title":"Review",
-					"value":"Avis"
+					"value":"revisión"
 				},
 				"product_details_review_no_reviews":{
 					"title":"Product Details, Customer Reviews, No Reviews",
-					"value":"Soyez le premier a donner votre avis"
+					"value":"Sé el primero en escribir una reseña."
 				},
 				"product_details_add_to_cart":{
 					"title":"Add to Cart button text",
-					"value":"AJOUTEZ AU PANIER"
+					"value":"Añadir al Carro"
 				},
 				"product_details_out_of_stock":{
 					"title":"Out of Stock Text",
-					"value":"RUPTURE DE STOCK"
+					"value":"AGOTADO"
 				},
 				"product_details_sign_up_now":{
 					"title":"Sign Up Now Text",
-					"value":"INSCRIVEZ-VOUS"
+					"value":"REGISTRARSE"
 				}
 			}
 		},
@@ -194,76 +194,76 @@
 			"options":{
 				"customer_review_title":{
 					"title":"Product Details Rating Box Title",
-					"value":"Ecrivez votre Avis"
+					"value":"Escribe una Reseña"
 				},
 				"customer_review_choose_rating":{
 					"title":"Product Details Rating Box Choose Rating",
-					"value":"Choisissez une Revue"
+					"value":"elegir un valor de clasificación"
 				},
 				"customer_review_enter_title":{
 					"title":"Product Details Rating Box Choose Title",
-					"value":"Entrez le titre pour votre avis"
+					"value":"introduzca un título de revisión"
 				},
 				"customer_review_enter_description":{
 					"title":"Product Details Rating Box Choose Description",
-					"value":"entrez la description de votre avis"
+					"value":"introducir una descripción crítica"
 				},
 				"customer_review_select_option":{
 					"title":"Product Details Default Select Option Text",
-					"value":"choisissez une option"
+					"value":"seleccione una opción"
 				},
 				"customer_review_close_button":{
 					"title":"Product Details Rating Box Close Button",
-					"value":"Fermer"
+					"value":"Cerca"
 				},
 				"customer_review_submit_button":{
 					"title":"Product Details Rating Box Submit Button",
-					"value":"Soumettre votre Avis"
+					"value":"Enviar Comentario"
 				},
 				"product_details_write_a_review":{
 					"title":"Product Details Write a Review Button",
-					"value":"Write a Review"
+					"value":"Escribe una Reseña"
 				},
 				"product_details_review_submitted":{
 					"title":"Product Details Review Submitted Button",
-					"value":"Review Submitted"
+					"value":"Tu Opinion se ha Presentado"
 				}
 			}
-		},		
+		},
 		"cart":{
 			"label":"Cart",
 			"options":{
 				"cart_title":{
 					"title":"Checkout Cart Title",
-					"value":"Mon Panier d achat"
+					"value":"Mi Carrito"
 				},
 				"cart_empty_cart":{
 					"title":"Checkout, Empty Cart Message",
-					"value":"votre panier est vide"
+					"value":"No hay objetos en su carrito de compras."
 				},
 				"cart_checkout":{
 					"title":"Checkout Page, Checkout Button",
-					"value":"Passer votre commande"
+					"value":"Caja"
 				},
 				"cart_continue_shopping":{
 					"title":"Checkout Page, Continue Shopping Link",
-					"value":"Continuez vos achats"
+					"value":"Seguir Comprando"
 				},
 				"cart_header_column1":{
 					"title":"Cart Header, Column 1",
-					"value":"Produit"
+					"value":"Producto"
 				},
 				"cart_header_column2":{
 					"title":"Cart Header, Column 2",
-					"value":"Details"
+					"value":"Detalles"
 				},
 				"cart_header_column3":{
 					"title":"Cart Header, Column 3",
-					"value":"Prix Unitaire"
+					"value":"Precio Unitario"
 				},
 				"cart_header_column4":{
 					"title":"Cart Header, Column 4",
-					"value":"Quantite"
+					"value":"Cantidad"
 				},
 				"cart_header_column5":{
 					"title":"Cart Header, Column 5",
@@ -271,507 +271,507 @@
 				},
 				"cart_header_column6":{
 					"title":"Cart Header, Column 6",
-					"value":"Actions"
+					"value":"Acciones"
 				},
 				"cart_item_vat_text":{
 					"title":"Cart Item, Included Vat",
-					"value":"Inc. VAT @"
+					"value":"VAT @"
 				},
 				"cart_item_update_button":{
 					"title":"Cart Item, Update Button",
-					"value":"METTRE A JOUR"
+					"value":"ACTUALIZACIÓN"
 				},
 				"cart_item_remove_button":{
 					"title":"Cart Item, Remove Button",
-					"value":"ENLEVER"
+					"value":"RETIRAR"
 				},
 				"cart_item_adjustment":{
 					"title":"Cart Item, Adjustment per Item",
-					"value":" each"
+					"value":" cada"
 				},
 				"cart_item_new_price_option":{
 					"title":"Cart Item, Price Override Text",
-					"value":"New Unit Price: "
+					"value":"Nuevo Precio Unitario: "
 				}
 			}
-		},	
+		},
 		"cart_coupons":{
 			"label":"Cart - Enter Coupons and Gift Cards",
 			"options":{
 				"cart_coupon_title":{
 					"title":"Cart, Coupons Title",
-					"value":"Coupons et Cheques-cadeaux"
+					"value":"Cupones y Tarjetas de Regalo"
 				},
 				"cart_coupon_sub_title":{
 					"title":"Cart, Coupons Sub-Title",
-					"value":"Racheter codes coupon ou cheque-cadeau"
+					"value":"Canjear códigos promocionales o tarjetas de regalo mediante la introducción de ellos a continuación."
 				},
 				"cart_redeem_gift_card":{
 					"title":"Cart, Redeem Gift Card Button",
-					"value":"Solde de votre compte cheque-cadeau"
+					"value":"Canjear Tarjeta de Regalo"
 				},
 				"cart_apply_coupon":{
 					"title":"Cart, Apply Coupon Button",
-					"value":"Appliquer Coupon"
+					"value":"Aplicar Cupón"
 				},
 				"cart_invalid_coupon":{
 					"title":"Cart, Invalid Coupon",
-					"value":"Not a valid coupon code"
+					"value":"No es un código de descuento válido"
 				},
 				"cart_invalid_giftcard":{
 					"title":"Cart, Invalid Gift Card",
-					"value":"Not a valid gift card number"
+					"value":"No es un número de tarjeta de regalo válido"
 				}
 			}
-		},		
+		},
 		"cart_estimate_shipping":{
 			"label":"Cart - Estimate Shipping",
 			"options":{
 				"cart_estimate_shipping_title":{
 					"title":"Cart, Estimate Shipping Title",
-					"value":"Estimation couts de livraison"
+					"value":"Estimar Costes de Envío"
 				},
 				"cart_estimate_shipping_sub_title":{
 					"title":"Cart, Estimate Shipping Sub Title",
-					"value":"Entrez votre code postal pour estimer couts de livraison"
-				},
-				"cart_estimate_shipping_input_label":{
-					"title":"Cart, Estimate Shipping Input Label",
-					"value":"Code Postal:"
-				},
-				"cart_estimate_shipping_button":{
-					"title":"Cart, Estimate Shipping Button",
-					"value":"Estimation Livraison"
-				},
-				"cart_estimate_shipping_standard":{
-					"title":"Cart, Standard Shipping Label",
-					"value":"Livraison Standard"
-				},
-				"cart_estimate_shipping_express":{
-					"title":"Cart, Express Shipping Label",
-					"value":"Livraison Rapide"
+					"value":"Por favor, ingrese su código postal para calcular los costos de envío."
 				},
 				"cart_estimate_shipping_input_country_label":{
 					"title":"Cart, Estimate Shipping, Input Label Country",
-					"value":"Country:"
+					"value":"País:"
 				},
 				"cart_estimate_shipping_select_one":{
 					"title":"Cart, Estimate Shipping, Select one for country box",
-					"value":"Select One"
+					"value":"Seleccione Uno"
+				},
+				"cart_estimate_shipping_input_label":{
+					"title":"Cart, Estimate Shipping, Input Label Zip Code",
+					"value":"Código Postal:"
+				},
+				"cart_estimate_shipping_button":{
+					"title":"Cart, Estimate Shipping Button",
+					"value":"Estimar Envío"
+				},
+				"cart_estimate_shipping_standard":{
+					"title":"Cart, Standard Shipping Label",
+					"value":"El Envío Estándar"
+				},
+				"cart_estimate_shipping_express":{
+					"title":"Cart, Express Shipping Label",
+					"value":"Barco Expreso"
 				},
 				"cart_estimate_shipping_error":{
 					"title":"Cart, Mismatch Postal Code Error",
-					"value":"Votre code postal ne correspond pas \u00e0 notre magasins pays. Les frais d exp\u00e9dition seront d\u00e9termin\u00e9s apr\u00e8s avoir entr\u00e9 vos informations d exp\u00e9dition"
+					"value":"Su código postal no coincide con el país de nuestra tienda. Las tarifas de envío serán determinados después de haber introducido sus datos de envío."
 				}
 			}
-		},	
+		},
 		"cart_totals":{
 			"label":"Cart - Cart Totals",
 			"options":{
 				"cart_totals_title":{
 					"title":"Cart, Cart Totals Title",
-					"value":"Total panier"
+					"value":"Totales del Carrito"
 				},
 				"cart_totals_subtotal":{
 					"title":"Cart, Cart Totals, Subtotal",
-					"value":"Sous-Total Panier"
+					"value":"Carrito Subtotal"
 				},
 				"cart_totals_shipping":{
 					"title":"Cart, Cart Totals, Shipping",
-					"value":"Livraison"
+					"value":"Envío"
 				},
 				"cart_totals_tax":{
 					"title":"Cart, Cart Totals, Tax",
-					"value":"TTC"
+					"value":"Impuesto"
 				},
 				"cart_totals_discounts":{
 					"title":"Cart, Cart Totals, Discounts",
-					"value":"Remises"
+					"value":"Descuentos"
 				},
 				"cart_totals_vat":{
 					"title":"Cart, Cart Totals, VAT",
-					"value":"VAT Inclus"
+					"value":"VAT"
 				},
 				"cart_totals_duty":{
 					"title":"Cart, Cart Totals, Duty",
-					"value":"Taxes"
+					"value":"Derechos"
 				},
 				"cart_totals_grand_total":{
 					"title":"Cart, Cart Totals, Grand Total",
-					"value":"Grand Total"
+					"value":"Total General"
 				}
 			}
-		},		
+		},
 		"cart_login":{
 			"label":"Cart - Cart Login",
 			"options":{
 				"cart_login_title":{
 					"title":"Cart, Login Title",
-					"value":"Client deja existant"
+					"value":"Cliente Que Vuelve"
 				},
 				"cart_login_sub_title":{
 					"title":"Cart, Login Sub Title",
-					"value":"Pour regler avec un compte existant, connectez-vous si dessous."
+					"value":"Tramitar el pago con una cuenta existente, inicia sesión abajo."
 				},
 				"cart_login_email_label":{
 					"title":"Cart, Login, Email Label",
-					"value":"Adresse e-mail"
+					"value":"Dirección de Correo Electrónico"
 				},
 				"cart_login_password_label":{
 					"title":"Cart, Login, Password Label",
-					"value":"Mot de passe"
+					"value":"Contraseña"
 				},
 				"cart_login_button":{
 					"title":"Cart, Login Button",
-					"value":"SE CONNECTER"
+					"value":"ENTRAR"
 				},
 				"cart_login_forgot_password_link":{
 					"title":"Cart, Login, Forgot Password Link",
-					"value":"Vous avez oublie votre mot de passe?"
+					"value":"¿Has Olvidado Tu Contraseña?"
 				},
 				"cart_login_account_information_title":{
 					"title":"Cart, Login Complete Title",
-					"value":"Information de votre compte"
+					"value":"Información De La Cuenta"
 				},
 				"cart_login_account_information_text":{
 					"title":"Cart, Login Complete Text",
-					"value":"vous etes en cours de reglement comme"
-				},
-				"cart_login_account_information_text2":{
-					"title":"Cart, Login Complete Text Part 2",
-					"value":"Pour regler avec un different compte,"
-				},
-				"cart_login_account_information_logout_link":{
-					"title":"Cart, Login Complete, Logout Link",
-					"value":"cliquer ici"
+					"value":"En este momento está mirando como "
 				},
 				"cart_login_account_a_guest_text":{
 					"title":"Cart, Login Complete, a guest",
-					"value":"a guest"
+					"value":"invitado"
+				},
+				"cart_login_account_information_text2":{
+					"title":"Cart, Login Complete Text Part 2",
+					"value":". Tramitar el pago con una cuenta diferente,"
+				},
+				"cart_login_account_information_logout_link":{
+					"title":"Cart, Login Complete, Logout Link",
+					"value":"haga clic aquí"
 				}
 			}
-		},			
+		},
 		"cart_guest_checkout":{
 			"label":"Cart - Guest Checkout",
 			"options":{
 				"cart_guest_title":{
 					"title":"Cart, Login, Guest Checkout Title",
-					"value":"Regler sans un compte"
+					"value":"Pedido Sin Una Cuenta"
 				},
 				"cart_guest_sub_title":{
 					"title":"Cart, Login, Guest Checkout Sub Title",
-					"value":"Pas inscrit? Reglez sans un compte existant."
+					"value":"No se ha registrado? Pedido sin una cuenta existente."
 				},
 				"cart_guest_message":{
 					"title":"Cart, Login, Guest Checkout Message",
-					"value":"Pas de compte? Continuez comme un invite. Vous pourrez creer un compte plus tard."
+					"value":"¿No tienes cuenta? Continuar como invitado. <br/> Usted tendrá la oportunidad de crear una cuenta más tarde."
 				},
 				"cart_guest_button":{
 					"title":"Cart, Login, Guest Checkout Button",
-					"value":"CONTINUER REGLEMENT"
+					"value":"Continuar A La Caja"
 				}
 			}
-		},	
+		},
 		"cart_subscription_guest_checkout":{
 			"label":"Cart - Subscription No Account Checkout",
 			"options":{
 				"cart_subscription_guest_title":{
 					"title":"Cart, Login, Subscription No Account Title",
-					"value":"Créer un compte sur Commander"
+					"value":"Crear Una Cuenta De Pago"
 				},
 				"cart_subscription_guest_sub_title":{
 					"title":"Cart, Login, Subscription No Account Sub Title",
-					"value":"Pas encore inscrit? Commander sans un compte existant."
+					"value":"¿No se ha registrado? Salida sin una cuenta ya existente."
 				},
 				"cart_subscription_guest_message":{
 					"title":"Cart, Login, Subscription No Account Message",
-					"value":"Pas encore de compte? Pas de problème. <br/> Vous aurez l'occasion de créer un compte plus tard."
+					"value":"¿No cuenta? No hay problema.Usted tendrá la oportunidad de crear una cuenta más tarde."
 				},
 				"cart_subscription_guest_button":{
 					"title":"Cart, Login, Guest Checkout Button",
-					"value":"CONTINUER REGLEMENT"
+					"value":"Continuar A La Caja"
 				}
 			}
-		},	
+		},
 		"cart_billing_information":{
 			"label":"Cart - Billing Information",
 			"options":{
 				"cart_billing_information_title":{
 					"title":"Cart, Billing Information Title",
-					"value":"Information de Facturation"
+					"value":"Información de Facturación"
 				},
 				"cart_billing_information_first_name":{
 					"title":"Cart, Billing, First Name Label",
-					"value":"Prenom"
+					"value":"Primer Nombre"
 				},
 				"cart_billing_information_last_name":{
 					"title":"Cart, Billing, Last Name Label",
-					"value":"Nom de Famille"
+					"value":"Apellido"
 				},
 				"cart_billing_information_address":{
 					"title":"Cart, Billing, Address Label",
-					"value":"Adresse"
+					"value":"Dirección"
 				},
 				"cart_billing_information_address2":{
 					"title":"Cart, Billing, Address 2 Label",
-					"value":"Adresse 2"
+					"value":"Dirección 2"
 				},
 				"cart_billing_information_city":{
 					"title":"Cart, Billing, City Label",
-					"value":"Ville"
+					"value":"Ciudad"
 				},
 				"cart_billing_information_state":{
 					"title":"Cart, Billing, State Label",
-					"value":"Etat"
+					"value":"Provincia"
 				},
 				"cart_billing_information_select_state":{
 					"title":"Cart, Billing, Default No State Selected",
-					"value":"Choisissez une État"
+					"value":"Seleccione un Estado"
 				},
 				"cart_billing_information_select_province":{
 					"title":"Cart, Billing, Default No Province Selected",
-					"value":"Choisir une Province"
+					"value":"Seleccione un Estado"
 				},
 				"cart_billing_information_select_county":{
 					"title":"Cart, Billing, Default No County Selected",
-					"value":"Sélectionner un Comté"
+					"value":"Seleccione un Estado"
 				},
 				"cart_billing_information_select_other":{
 					"title":"Cart, Billing, Default None Selected",
-					"value":"Sélectionnez Un"
+					"value":"Seleccione Uno"
 				},
 				"cart_billing_information_country":{
 					"title":"Cart, Billing, Country Label",
-					"value":"Pays"
+					"value":"País"
 				},
 				"cart_billing_information_select_country":{
 					"title":"Cart, Billing, Country Menu, Default None Selected",
-					"value":"Choisir un Pays"
+					"value":"Seleccione un País"
 				},
 				"cart_billing_information_zip":{
 					"title":"Cart, Billing, Zip Label",
-					"value":"Code postal"
+					"value":"Código Postal"
 				},
 				"cart_billing_information_phone":{
 					"title":"Cart, Billing, Phone Label",
-					"value":"Telephone"
+					"value":"Teléfono"
 				},
 				"cart_billing_information_ship_to_this":{
 					"title":"Cart, Billing, Use Billing Radio",
-					"value":"Envoyer a cette Adresse"
+					"value":"Enviar a Esta Dirección"
 				},
 				"cart_billing_information_ship_to_different":{
 					"title":"Cart, Billing, Use Shipping Radio",
-					"value":"Envoyer a une differente Adresse"
+					"value":"Enviar a Una Dirección Diferente"
 				}
 			}
-		},	
+		},
 		"cart_shipping_information":{
 			"label":"Cart - Shipping Information",
 			"options":{
 				"cart_shipping_information_title":{
 					"title":"Cart, Shipping Information Title",
-					"value":"Information d expedition"
+					"value":"Información del Envío"
 				},
 				"cart_shipping_information_first_name":{
 					"title":"Cart, Shipping, First Name Label",
-					"value":"Prenom"
+					"value":"Primer Nombre"
 				},
 				"cart_shipping_information_last_name":{
 					"title":"Cart, Shipping, Last Name Label",
-					"value":"Nom de Famille"
+					"value":"Apellido"
 				},
 				"cart_shipping_information_address":{
 					"title":"Cart, Shipping, Address Label",
-					"value":"Adresse"
+					"value":"Dirección"
 				},
 				"cart_shipping_information_address2":{
 					"title":"Cart, Shipping, Address 2 Label",
-					"value":"Adresse 2"
+					"value":"Dirección 2"
 				},
 				"cart_shipping_information_city":{
 					"title":"Cart, Shipping, City Label",
-					"value":"Ville"
+					"value":"Ciudad"
 				},
 				"cart_shipping_information_state":{
 					"title":"Cart, Shipping, State Label",
-					"value":"Etat"
+					"value":"Provincia"
 				},
 				"cart_shipping_information_select_state":{
 					"title":"Cart, Shipping, Default No State Selected",
-					"value":"Choisissez une État"
+					"value":"Seleccione un Estado"
 				},
 				"cart_shipping_information_select_province":{
 					"title":"Cart, Shipping, Default No Province Selected",
-					"value":"Choisir une Province"
+					"value":"Seleccione un Estado"
 				},
 				"cart_shipping_information_select_county":{
 					"title":"Cart, Shipping, Default No County Selected",
-					"value":"Sélectionner un Comté"
+					"value":"Seleccione un Estado"
 				},
 				"cart_shipping_information_select_other":{
 					"title":"Cart, Shipping, Default None Selected",
-					"value":"Sélectionnez Un"
+					"value":"Seleccione Uno"
 				},
 				"cart_shipping_information_country":{
 					"title":"Cart, Shipping, Country Label",
-					"value":"Pays"
+					"value":"País"
 				},
 				"cart_shipping_information_select_country":{
 					"title":"Cart, Shipping, Country Menu, Default None Selected",
-					"value":"Choisir un Pays"
+					"value":"Seleccione un País"
 				},
 				"cart_shipping_information_zip":{
 					"title":"Cart, Shipping, Zip Label",
-					"value":"Code Postal"
+					"value":"Código Postal"
 				},
 				"cart_shipping_information_phone":{
 					"title":"Cart, Shipping, Phone Label",
-					"value":"Telephone"
+					"value":"Teléfono"
 				}
 			}
-		},	
+		},
 		"cart_contact_information":{
 			"label":"Cart - Contact Information",
 			"options":{
 				"cart_contact_information_title":{
 					"title":"Cart, Contact Information Title",
-					"value":"Information de Contact"
+					"value":"Información de Contacto"
 				},
 				"cart_contact_information_first_name":{
 					"title":"Cart, Contact Information, First Name Label",
-					"value":"Prenom"
+					"value":"Primer Nombre"
 				},
 				"cart_contact_information_last_name":{
 					"title":"Cart, Contact Information, Last Name Label",
-					"value":"Nom de Famille"
+					"value":"Apellido"
 				},
 				"cart_contact_information_email":{
 					"title":"Cart, Contact Information, Email Label",
-					"value":"e-mail"
+					"value":"Email"
 				},
 				"cart_contact_information_retype_email":{
 					"title":"Cart, Contact Information, Retype Email Label",
-					"value":"Retaper e-mail"
+					"value":"Reescribe Tu Email"
 				},
 				"cart_contact_information_create_account":{
 					"title":"Cart, Contact Information, Create Account Label",
-					"value":"Creer un Compte"
+					"value":"Crear Cuenta"
 				},
 				"cart_contact_information_password":{
 					"title":"Cart, Contact Information, Password Label",
-					"value":"Mot de Passe"
+					"value":"Contraseña"
 				},
 				"cart_contact_information_retype_password":{
 					"title":"Cart, Contact Information, Retype Password Label",
-					"value":"Retaper Mot de Passe"
+					"value":"Reescribe Tu Contraseña"
 				},
 				"cart_contact_information_subscribe":{
 					"title":"Cart, Contact Information, Subscribe Label",
-					"value":"Voulez vous recevoir des e-mails et nouveautes de notre part?"
+					"value":"¿Le gustaría recibir correos electrónicos y actualizaciones de nosotros?"
 				},
 				"cart_contact_information_continue_button":{
 					"title":"Cart, Contact Information, Continue Button",
-					"value":"CONTINUER"
-				}			
+					"value":"CONTINUAR"
+				}
 			}
-		},	
+		},
 		"cart_shipping_method":{
 			"label":"Cart - Shipping Method",
 			"options":{
 				"cart_shipping_method_title":{
 					"title":"Cart, Shipping Method, Title",
-					"value":"Methode de Livraison"
+					"value":"Método de Envío"
 				},
 				"cart_shipping_method_continue_button":{
 					"title":"Cart, Shipping Method Continue Button",
-					"value":"CONTINUER"
+					"value":"CONTINUAR"
 				}
 			}
-		},		
+		},
 		"cart_address_review":{
 			"label":"Cart - Address Review",
 			"options":{
 				"cart_address_review_title":{
 					"title":"Cart, Address Revie Title",
-					"value":"Verification dAdresse"
+					"value":"Review Dirección"
 				},
 				"cart_address_review_billing_title":{
 					"title":"Cart, Address Review, Billing Title",
-					"value":"Adresse de Facturation"
+					"value":"Dirección de Facturación"
 				},
 				"cart_address_review_shipping_title":{
 					"title":"Cart, Address Review, Shipping Title",
-					"value":"Adresse dExpedition"
+					"value":"Dirección de Envío"
 				},
 				"cart_address_review_edit_link":{
 					"title":"Cart, Address Review, Edit Link",
-					"value":"Choisir adresse et choix dExpedition"
+					"value":"Editar Dirección o Envío Opciones"
 				}
 			}
-		},	
+		},
 		"cart_payment_information":{
 			"label":"Cart - Payment Information",
 			"options":{
 				"cart_payment_information_title":{
 					"title":"Cart, Payment Information Title",
-					"value":"Information de paiement"
+					"value":"Condiciones de Venta"
 				},
 				"cart_payment_information_manual_payment":{
 					"title":"Cart, Payment Information, Manual Payment Label",
-					"value":"Paiement par depot direct"
+					"value":"Pago por Depósito Directo"
 				},
 				"cart_payment_information_third_party":{
 					"title":"Cart, Payment Information, Third Party Payment Label",
-					"value":"Paiement Utilisant"
+					"value":"Paga Con"
 				},
 				"cart_payment_information_third_party_first":{
 					"title":"Cart, Payment Information, Third Party Text, Part 1",
-					"value":"Vous serez dirige vers"
+					"value":"Usted será redirigido a"
 				},
 				"cart_payment_information_third_party_second":{
 					"title":"Cart, Payment Information, Third Party Text, Part 2",
-					"value":"cliquer soumettre commande pour completer votre commande."
+					"value":"al hacer clic en enviar para completar su pago."
 				},
 				"cart_payment_information_credit_card":{
 					"title":"Cart, Payment Information, Credit Card Payment Label",
-					"value":"Paiement par Carte de Credit"
+					"value":"Pagar con tarjeta de crédito"
 				},
 				"cart_payment_information_payment_method":{
 					"title":"Cart, Payment Information, Payment Method Label",
-					"value":"Methode de Paiement"
+					"value":"Método de Pago"
 				},
 				"cart_payment_information_card_holder_name":{
 					"title":"Cart, Payment Information, Card Holder Label",
-					"value":"Nom du Titulaire de la Carte"
+					"value":"Titular de la Tarjeta Nombre"
 				},
 				"cart_payment_information_card_number":{
 					"title":"Cart, Payment Information, Card Number Label",
-					"value":"Numero de la Carte"
+					"value":"Número de Tarjeta"
 				},
 				"cart_payment_information_expiration_date":{
 					"title":"Cart, Payment Information, Expiration Date Label",
-					"value":"Date dExpiration"
+					"value":"Fecha de Expiración"
 				},
 				"cart_payment_information_security_code":{
 					"title":"Cart, Payment Information, Security Code Label",
-					"value":"Code de Securite"
+					"value":"Código de Seguridad"
 				},
 				"cart_payment_information_checkout_text":{
 					"title":"Cart, Payment Information, Checkout Text",
-					"value":"En soumettant votre commande, vous acceptez les termes et conditions ainsi que les regles de confidentialite de notre site web. Une fois que vous cliquez envoyer la commande, le reglement est termine et aucune modification peut etre faite. Merci pour vos achats avec nous !"
+					"value":"Al enviar su solicitud, usted está aceptando los [terms] Términos y condiciones [/terms] y [privacy] Política de privacidad [/privacy] de nuestra página web. Una vez que hace clic en enviar pedido, el proceso de compra es completa y no se pueden hacer cambios a su pedido. Gracias por comprar con nosotros!"
 				},
 				"cart_payment_information_submit_order_button":{
 					"title":"Cart, Payment Information, Submit Order Button",
-					"value":"ENVOYER LA COMMANDE"
+					"value":"ENVIAR PEDIDO"
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Cart, Payment Information, Customer Notes Title",
-					"value":"Observations Particulieres"
+					"value":"Notas Especiales"
 				},
 				"cart_payment_information_order_notes_message":{
 					"title":"Cart, Payment Information, Customer Notes Message",
-					"value":"Si vous avez des demandes particulieres pour votre commande, inscrivez les ici."
+					"value":"Si usted tiene alguna petición especial para su orden, por favor ingrese aquí."
 				}
 			}
 		},
@@ -780,95 +780,95 @@
 			"options":{
 				"cart_payment_receipt_order_details_link":{
 					"title":"Email Receipt, Link to Account",
-					"value":"Afficher les details de Commande"
+					"value":"detalles de la orden"
 				},
 				"cart_payment_receipt_subscription_details_link":{
 					"title":"Email Receipt, Link to Subscription",
-					"value":"vue souscription détails"
+					"value":"ver detalles de suscripción"
 				},
 				"cart_payment_receipt_title":{
 					"title":"Email Receipt Title",
-					"value":"Confirmation de Commande - Nombre de Commande"
+					"value":"Confirmación del pedido - Número de pedido"
 				},
 				"cart_payment_complete_line_1":{
 					"title":"Cart, Payment Complete, Line 1",
-					"value":"Cher (e):"
+					"value":"Querido:"
 				},
 				"cart_payment_complete_line_2":{
 					"title":"Cart, Payment Complete, Line 2",
-					"value":"Merci de votre Commande! Votre Nombre de Reference est:"
+					"value":"Gracias por su pedido! Tu número de referencia es:"
 				},
 				"cart_payment_complete_line_3":{
 					"title":"Cart, Payment Complete, Line 3",
-					"value":"Ci-dessous est un resume de commande. Vous pouvez verifier le statut de votre commande et tout ses details en visitant notre site web en vous connectant sur votre compte. "
+					"value":"A continuación se muestra un resumen del pedido. Usted puede comprobar el estado de su pedido y todos los detalles por visitar nuestro sitio web y acceder a su cuenta."
 				},
 				"cart_payment_complete_line_4":{
 					"title":"Cart, Payment Complete, Line 4",
-					"value":"Veuillez conserver ceci comme une preuve de votre commande!"
+					"value":"Por favor, mantenga esto como un registro de su pedido!"
 				},
 				"cart_payment_complete_line_5":{
 					"title":"Cart, Payment Complete, Line 5",
-					"value":"Cliquez ici pour voir votre contenu d'adhésion"
+					"value":"Haga clic aquí para ver el contenido de Membresía"
 				},
 				"cart_payment_complete_billing_label":{
 					"title":"Cart, Payment Complete, Billing Label",
-					"value":"Adresse de Facturation"
+					"value":"Dirección de Facturación"
 				},
 				"cart_payment_complete_shipping_label":{
 					"title":"Cart, Payment Complete, Shipping Label",
-					"value":"Adresse dExpedition"
+					"value":"Dirección de Envío"
 				},
 				"cart_payment_complete_details_header_1":{
 					"title":"Cart, Payment Complete, Header 1",
-					"value":"Produit"
+					"value":"Producto"
 				},
 				"cart_payment_complete_details_header_2":{
 					"title":"Cart, Payment Complete, Header 2",
-					"value":"Qte"
+					"value":"Cantidad"
 				},
 				"cart_payment_complete_details_header_3":{
 					"title":"Cart, Payment Complete, Header 3",
-					"value":"Prix Unitaire"
+					"value":"Precio Unitario"
 				},
 				"cart_payment_complete_details_header_4":{
 					"title":"Cart, Payment Complete, Header 4",
-					"value":"Prix Ext"
+					"value":"Precio Ext"
 				},
 				"cart_payment_complete_order_totals_subtotal":{
 					"title":"Cart, Payment Complete, Subtotal",
-					"value":"Sous-Total"
+					"value":"Total Parcial"
 				},
 				"cart_payment_complete_order_totals_shipping":{
 					"title":"Cart, Payment Complete, Shipping",
-					"value":"Livraison"
+					"value":"Envío"
 				},
 				"cart_payment_complete_order_totals_tax":{
 					"title":"Cart, Payment Complete, Tax",
-					"value":"Taxes"
+					"value":"Impuesto"
 				},
 				"cart_payment_complete_order_totals_discount":{
 					"title":"Cart, Payment Complete, Discount",
-					"value":"Remise"
+					"value":"Descuento"
 				},
 				"cart_payment_complete_order_totals_vat":{
 					"title":"Cart, Payment Complete, VAT",
-					"value":"Inc. VAT @"
+					"value":"VAT @"
 				},
 				"cart_payment_complete_order_totals_duty":{
 					"title":"Cart, Payment Complete, Duty",
-					"value":"Taxes"
+					"value":"Derechos"
 				},
 				"cart_payment_complete_order_totals_grand_total":{
 					"title":"Cart, Payment Complete, Order Total",
-					"value":"Commande Totale"
+					"value":"Total Del Pedido"
 				},
 				"cart_payment_complete_bottom_line_1":{
 					"title":"Cart, Payment Complete, Bottom Line 1",
-					"value":"Verifiez votre commande lorsque vous la recevez et faites nous savoir tout de suite si il y a des problemes ou des questions. Nous apprecions toujours votre visite et esperons que vous apprecierez votre produit."
+					"value":"Por favor revise su orden cuando usted lo recibe y nos dejó saber inmediatamente si hay alguna duda o problema. Siempre valoramos su negocio y esperamos que disfrute de su producto."
 				},
 				"cart_payment_complete_bottom_line_2":{
 					"title":"Cart, Payment Complete, Bottom Line 2",
-					"value":"Merci Beaucoup!"
+					"value":"Muchas Gracias!"
 				}
 			}
 		},
@@ -877,56 +877,56 @@
 			"options":{
 				"account_login_title":{
 					"title":"Account, Login Title",
-					"value":"Retour Client"
+					"value":"Ya Soy Cliente"
 				},
 				"account_login_sub_title":{
 					"title":"Account, Login Sub Title",
-					"value":"A la caisse avec un compte existant, veuillez vous connecter ci-dessous"
+					"value":"Tramitar el pago con una cuenta existente, inicia sesión abajo."
 				},
 				"account_login_email_label":{
 					"title":"Account, Login, Email Label",
-					"value":"Adresse E-Mail"
+					"value":"Correo Electrónico"
 				},
 				"account_login_password_label":{
 					"title":"Account, Login, Password Label",
-					"value":"Mot de Passe"
+					"value":"Contraseña"
 				},
 				"account_login_button":{
 					"title":"Account, Login Button",
-					"value":"CONNECTEZ-VOUS"
+					"value":"ENTRAR"
 				},
 				"account_login_forgot_password_link":{
 					"title":"Account, Login, Forgot Password Link",
-					"value":"Vous avez oublie votre mot de passe?"
+					"value":"¿Has Olvidado Tu Contraseña?"
 				},
 				"account_login_account_information_title":{
 					"title":"Account, Login Complete Title",
-					"value":"Information du compte"
+					"value":"Información De La Cuenta"
 				},
 				"account_login_account_information_text":{
 					"title":"Account, Login Complete Text",
-					"value":"Vous etes en cours de verification de paiement comme utilisateur demo. Pour verifier paiement avec un different compte,"
+					"value":"En este momento está mirando como Demo usuario. Tramitar el pago con una cuenta diferente,"
 				},
 				"account_login_account_information_logout_link":{
 					"title":"Account, Login Complete, Logout Link",
-					"value":"cliquer ici"
+					"value":"haga clic aquí"
 				},
 				"account_new_user_title":{
 					"title":"Account, Login, New User Title",
-					"value":"Nouveau Client"
+					"value":"Nuevo Usuario"
 				},
 				"account_new_user_sub_title":{
 					"title":"Account, Login, New User Sub Title",
-					"value":"Pas Enregistre? Cliquez le bouton ci-dessous"
+					"value":"No se ha registrado? Haga clic en el botón de abajo."
 				},
 				"account_new_user_message":{
 					"title":"Account, Login, New User Message",
-					"value":"Pas de compte? Creez un compte pour profiter pleinement de ce site web."
+					"value":"¿No tienes cuenta? Cree una cuenta para sacar el máximo provecho de este sitio web."
 				},
 				"account_new_user_button":{
 					"title":"Account, Login, New User Button",
-					"value":"CREER COMPTE"
-				}			
+					"value":"CREAR CUENTA"
+				}
 			}
 		},
 		"account_forgot_password":{
@@ -934,15 +934,15 @@
 			"options":{
 				"account_forgot_password_title":{
 					"title":"Account, Retrieve Password Title",
-					"value":"Recherchez votre mot de passe"
+					"value":"Recuperar Su Contraseña"
 				},
 				"account_forgot_password_email_label":{
 					"title":"Account, Retrieve Password Email Label",
-					"value":"E-mail"
+					"value":"Correo Electrónico"
 				},
 				"account_forgot_password_button":{
 					"title":"Account, Retrieve Password Button",
-					"value":"RECHERCHE MOT DE PASSE"
+					"value":"Recuperar Contraseña"
 				}
 			}
 		},
@@ -951,15 +951,15 @@
 			"options":{
 				"account_validation_email_message":{
 					"title":"Account, Short Validate Email Message",
-					"value":"Pour activer votre compte, s'il vous plaît cliquez sur le lien ci-dessous."
+					"value":"Para activar su cuenta, por favor haga clic en el enlace de abajo."
 				},
 				"account_validation_email_title":{
-					"title":"Account, Activate Your Acocunt Title",
-					"value":"S'il vous plaît activer votre compte"
+					"title":"Account, Activate Your Account Title",
+					"value":"Active Su Cuenta"
 				},
 				"account_validation_email_link":{
-					"title":"Account, Activate Your Acocunt Link",
-					"value":"Cliquez ici pour activer"
+					"title":"Account, Activate Your Account Link",
+					"value":"Haga Clic Aquí Para Activar"
 				}
 			}
 		},
@@ -968,35 +968,35 @@
 			"options":{
 				"account_register_title":{
 					"title":"Account, Register Title",
-					"value":"Creer un compte"
+					"value":"Crear Una Cuenta"
 				},
 				"account_register_first_name":{
 					"title":"Account, Register, First Name Label",
-					"value":"Prenom"
+					"value":"Primer Nombre"
 				},
 				"account_register_last_name":{
 					"title":"Account, Register, Last Name Label",
-					"value":"Nom de famille"
+					"value":"Apellido"
 				},
 				"account_register_email":{
 					"title":"Account, Register, Email Label",
-					"value":"adresse e-mail"
+					"value":"Correo Electrónico"
 				},
 				"account_register_password":{
 					"title":"Account, Register, Password Label",
-					"value":"Mot de passe"
+					"value":"Contraseña"
 				},
 				"account_register_retype_password":{
 					"title":"Account, Register, Re-type Password Label",
-					"value":"Retaper Mot de passe"
+					"value":"Repetir Contraseña"
 				},
 				"account_register_subscribe":{
 					"title":"Account, Register, Subscribe Text",
-					"value":"Souhaitez-vous vous abonner a notre liste de messagerie?"
+					"value":"¿Quieres suscribirte a nuestra lista de correo electrónico?"
 				},
 				"account_register_button":{
 					"title":"Account, Register Button",
-					"value":"SINSCRIRE"
+					"value":"REGISTRO"
 				}
 			}
 		},
@@ -1005,35 +1005,35 @@
 			"options":{
 				"account_navigation_title":{
 					"title":"Account, Navigation Title",
-					"value":"Navigation sur le Compte"
+					"value":"Navegación Cuenta"
 				},
 				"account_navigation_basic_inforamtion":{
 					"title":"Account, Navigation, Edit Basic Information Link",
-					"value":"modifier information de base"
+					"value":"editar la información básica"
 				},
 				"account_navigation_orders":{
 					"title":"Account, Navigation, View Orders Link",
-					"value":"Affichage des commandes"
+					"value":"ver ordenes"
 				},
 				"account_navigation_password":{
 					"title":"Account, Navigation, Edit Password Link",
-					"value":"modifier mot de passe"
+					"value":"de cambio de contraseñas"
 				},
 				"account_navigation_subscriptions":{
 					"title":"Account, Navigation, Subscriptions Link",
-					"value":"gérer les abonnements"
+					"value":"administrar las suscripciones"
 				},
 				"account_navigation_payment_methods":{
 					"title":"Account, Navigation, Payments Link",
-					"value":"gérer les méthodes de paiement"
+					"value":"gestionar medios de pago"
 				},
 				"account_navigation_sign_out":{
 					"title":"Account, Navigation, Sign Out Link",
-					"value":"se deconnecter"
+					"value":"desconectarte"
 				},
 				"account_navigation_dashboard":{
 					"title":"Account, Navigation, Dashboard Link",
-					"value":"tableau du bord du compte"
+					"value":"cuenta salpicadero"
 				}
 			}
 		},
@@ -1042,85 +1042,85 @@
 			"options":{
 				"account_dashboard_recent_orders_title":{
 					"title":"Account, Dashboard, Recent Orders Title",
-					"value":"Commandes recentes"
+					"value":"Los Pedidos Recientes"
 				},
 				"account_dashboard_recent_orders_none":{
 					"title":"Account, Dashboard, Recent Order, No Orders",
-					"value":"Aucune commande n a ete passee"
+					"value":"No hay pedidos se han colocado"
 				},
 				"account_dashboard_all_orders_linke":{
 					"title":"Account, Dashboard, All Orders Link",
-					"value":"AFFICHER TOUTES COMMANDES"
+					"value":"VEA TODOS LOS PEDIDOS"
 				},
 				"account_dashboard_preference_title":{
 					"title":"Account, Dashboard, Preference Title",
-					"value":"Preferences de compte"
+					"value":"Preferencias de la cuenta"
 				},
 				"account_dashboard_email_title":{
 					"title":"Account, Dashboard, Email Title",
-					"value":"Votre adresse e-mail principale"
+					"value":"Su correo electrónico Primaria"
 				},
 				"account_dashboard_email_edit_link":{
 					"title":"Account, Dashboard, Email Edit Link",
-					"value":"modifier"
+					"value":"editar"
 				},
 				"account_dashboard_email_note":{
 					"title":"Account, Dashboard, Email Note",
-					"value":"(Ceci est utilise pour se connecter)"
+					"value":"(Esto se utiliza para iniciar sesión)"
 				},
 				"account_dashboard_billing_title":{
 					"title":"Account, Dashboard, Billing Title",
-					"value":"Adresse de Facturation"
+					"value":"Dirección de Facturación"
 				},
 				"account_dashboard_billing_link":{
 					"title":"Account, Dashboard, Billing Edit Link",
-					"value":"modifier adresse de facturation"
+					"value":"editar la dirección de facturación"
 				},
 				"account_dashboard_shipping_title":{
 					"title":"Account, Dashboard, Shipping Title",
-					"value":"Adresse d Expedition"
+					"value":"Dirección de Envío"
 				},
 				"account_dashboard_shipping_link":{
 					"title":"Account, Dashboard, Shipping Edit Link",
-					"value":"modifier adresse d expedition"
+					"value":"editar la dirección de envío"
 				}
 			}
-		},	
+		},
 		"account_personal_information":{
 			"label":"Account - Edit Personal Information",
 			"options":{
 				"account_personal_information_title":{
 					"title":"Account, Personal Information Title",
-					"value":"Information Personnelle"
+					"value":"Información Personal"
 				},
 				"account_personal_information_sub_title":{
 					"title":"Account, Personal Information Sub Title",
-					"value":"Veuillez noter: les modifications d information apportees a votre compte, y compris adresses d expeditions, ne concernera que les nouvelles commandes. Toutes les commandes precedentes seront envoyees a l adresse indiquee sur la date d achat."
+					"value":"Nota: Los cambios realizados en la información de su cuenta, incluyendo las direcciones de envío, sólo afectará a los nuevos pedidos. Todos los pedidos realizados antes serán enviados a la dirección que aparece en la fecha de compra."
 				},
 				"account_personal_information_first_name":{
 					"title":"Account, Personal Information, First Name Label",
-					"value":"Prenom"
+					"value":"Primer Nombre"
 				},
 				"account_personal_information_last_name":{
 					"title":"Account, Personal Information, Last Name Label",
-					"value":"Nom de Famille"
+					"value":"Apellido"
 				},
 				"account_personal_information_email":{
 					"title":"Account, Personal Information, Email Label",
-					"value":"Adresse e-mail"
+					"value":"Correo Electrónico"
 				},
 				"account_personal_information_subscribe":{
 					"title":"Account, Personal Information, Subscribe Label",
-					"value":"Souhaitez-vous vous abonner a notre bulletin d information?"
+					"value":"¿Desea suscribirse a nuestro boletín de noticias?"
 				},
 				"account_personal_information_update_button":{
 					"title":"Account, Personal Information, Update Button",
-					"value":"MISE A JOUR"
+					"value":"ACTUALIZACIÓN"
 				},
 				"account_personal_information_cancel_link":{
 					"title":"Account, Personal Information, Cancel Link",
-					"value":"ANNULER"
-				}			
+					"value":"CANCELAR"
+				}
 			}
 		},
 		"account_password":{
@@ -1128,35 +1128,35 @@
 			"options":{
 				"account_password_title":{
 					"title":"Account, Password Title",
-					"value":"Modifier votre mot de passe"
+					"value":"Editar Su Contraseña"
 				},
 				"account_password_sub_title":{
 					"title":"Account, Password Sub Title",
-					"value":"Veuillez noter: Une fois que vous modifiez votre mot de passe, il vous sera necessaire d utiler le nouveau mot de passe a chaque fois que vous vous connectez sur notre site."
+					"value":"Tenga en cuenta: Una vez que cambie su contraseña, tendrá que usar la nueva contraseña cada vez que inicie sesión en nuestro sitio."
 				},
 				"account_password_current_password":{
 					"title":"Account, Password, Current Password Label",
-					"value":"Actuel mot de passe"
+					"value":"Contraseña Actual"
 				},
 				"account_password_new_password":{
 					"title":"Account, Password, New Password Label",
-					"value":"Nouveau mot de passe"
+					"value":"Nueva Contraseña"
 				},
 				"account_password_retype_new_password":{
 					"title":"Account, Password, Retype New Password Label",
-					"value":"Retaper nouveau mot de passe"
+					"value":"Nueva Contraseña de Nuevo"
 				},
 				"account_password_update_button":{
 					"title":"Account, Password, Update Button",
-					"value":"MISE A JOUR"
+					"value":"ACTUALIZAR"
 				},
 				"account_password_cancel_button":{
 					"title":"Account, Password, Cancel Link",
-					"value":"ANNULER"
+					"value":"CANCELAR"
 				},
 				"account_password_email_title":{
 					"title":"Email title in password recovery email",
-					"value":"Votre nouveau mot de passe"
+					"value":"Su Nueva Contraseña"
 				}
 			}
 		},
@@ -1165,59 +1165,59 @@
 			"options":{
 				"account_billing_information_title":{
 					"title":"Account, Billing Information Title",
-					"value":"Information de facturation"
+					"value":"Información de Facturación"
 				},
 				"account_billing_information_first_name":{
 					"title":"Account, Billing Information, First Name Label",
-					"value":"Prenom"
+					"value":"Primer Nombre"
 				},
 				"account_billing_information_last_name":{
 					"title":"Account, Billing Information, Last Name Label",
-					"value":"Nom de Famille"
+					"value":"Apellido"
 				},
 				"account_billing_information_address":{
 					"title":"Account, Billing Information, Address Label",
-					"value":"Adresse"
+					"value":"Dirección"
 				},
 				"account_billing_information_address2":{
 					"title":"Account, Billing Information, Address 2 Label",
-					"value":"Adresse 2"
+					"value":"Dirección 2"
 				},
 				"account_billing_information_city":{
 					"title":"Account, Billing Information, City Label",
-					"value":"Ville"
+					"value":"Ciudad"
 				},
 				"account_billing_information_state":{
 					"title":"Account, Billing Information, State Label",
-					"value":"Etat"
+					"value":"Provincia"
 				},
 				"account_billing_information_default_no_state":{
 					"title":"Account, Billing Information, No State Label",
-					"value":"Choisir Etat"
+					"value":"Seleccione un Provincia"
 				},
 				"account_billing_information_zip":{
 					"title":"Account, Billing Information, Zip Label",
-					"value":"Code Postale"
+					"value":"Código Postal"
 				},
 				"account_billing_information_country":{
 					"title":"Account, Billing Information, Country Label",
-					"value":"Pays"
+					"value":"País"
 				},
 				"account_billing_information_default_no_country":{
 					"title":"Account, Billing Information, No Country Label",
-					"value":"Choisir un Pays"
+					"value":"Seleccione Un País"
 				},
 				"account_billing_information_phone":{
 					"title":"Account, Billing Information, Phone Label",
-					"value":"Telephone"
+					"value":"Teléfono"
 				},
 				"account_billing_information_update_button":{
 					"title":"Account, Billing Information, Update Button",
-					"value":"MISE A JOUR"
+					"value":"ACTUALIZACIÓN"
 				},
 				"account_billing_information_cancel":{
 					"title":"Account, Billing Information, Cancel Link",
-					"value":"ANNULER"
+					"value":"CANCELAR"
 				}
 			}
 		},
@@ -1226,59 +1226,59 @@
 			"options":{
 				"account_shipping_information_title":{
 					"title":"Account, Shipping Information Title",
-					"value":"Information d expedition"
+					"value":"Información Del Envío"
 				},
 				"account_shipping_information_first_name":{
 					"title":"Account, Shipping Information, First Name Label",
-					"value":"Prenom"
+					"value":"Primer Nombre"
 				},
 				"account_shipping_information_last_name":{
 					"title":"Account, Shipping Information, Last Name Label",
-					"value":"Nom de Famille"
+					"value":"Apellido"
 				},
 				"account_shipping_information_address":{
 					"title":"Account, Shipping Information, Address Label",
-					"value":"Adresse"
+					"value":"Dirección"
 				},
 				"account_shipping_information_address2":{
 					"title":"Account, Shipping Information, Address 2 Label",
-					"value":"Adresse 2"
+					"value":"Dirección 2"
 				},
 				"account_shipping_information_city":{
 					"title":"Account, Shipping Information, City Label",
-					"value":"Ville"
+					"value":"Ciudad"
 				},
 				"account_shipping_information_state":{
 					"title":"Account, Shipping Information, State Label",
-					"value":"Etat"
+					"value":"Provincia"
 				},
 				"account_shipping_information_default_no_state":{
 					"title":"Account, Shipping Information, No State Label",
-					"value":"Choisir un Etat"
+					"value":"Seleccione Un Provincia"
 				},
 				"account_shipping_information_zip":{
 					"title":"Account, Shipping Information, Zip Label",
-					"value":"Code Postale"
+					"value":"Código Postal"
 				},
 				"account_shipping_information_country":{
 					"title":"Account, Shipping Information, Country Label",
-					"value":"Pays"
+					"value":"País"
 				},
 				"account_shipping_information_default_no_country":{
 					"title":"Account, Shipping Information, No Country Label",
-					"value":"Choisir un Pays"
+					"value":"Seleccione Un País"
 				},
 				"account_shipping_information_phone":{
 					"title":"Account, Shipping Information, Phone Label",
-					"value":"Telephone"
+					"value":"Teléfono"
 				},
 				"account_shipping_information_update_button":{
 					"title":"Account, Shipping Information, Update Button",
-					"value":"MISE A JOUR"
+					"value":"ACTUALIZACIÓN"
 				},
 				"account_shipping_information_cancel":{
 					"title":"Account, Shipping Information, Cancel Link",
-					"value":"ANNULER"
+					"value":"CANCELAR"
 				}
 			}
 		},
@@ -1287,15 +1287,15 @@
 			"options":{
 				"account_orders_title":{
 					"title":"Account, Orders Title",
-					"value":"Historique de vos commandes"
+					"value":"Su Historial De Pedidos"
 				},
 				"account_orders_header_1":{
 					"title":"Account, Orders, Header 1",
-					"value":"Identite"
+					"value":"ID"
 				},
 				"account_orders_header_2":{
 					"title":"Account, Orders, Header 2",
-					"value":"Date"
+					"value":"Fecha"
 				},
 				"account_orders_header_3":{
 					"title":"Account, Orders, Header 3",
@@ -1303,11 +1303,11 @@
 				},
 				"account_orders_header_4":{
 					"title":"Account, Orders, Header 4",
-					"value":"Statut"
+					"value":"Estado"
 				},
 				"account_orders_view_order_button":{
 					"title":"Account, Orders, View Order Button",
-					"value":"VOIR COMMANDE"
+					"value":"VER PEIDO"
 				}
 			}
 		},
@@ -1316,23 +1316,23 @@
 			"options":{
 				"account_forgot_password_email_title":{
 					"title":"Account, Password Recovery Email, Email Title",
-					"value":"Votre Nouveau Mot de Passe"
+					"value":"Su Nueva Contraseña"
 				},
 				"account_forgot_password_email_dear":{
 					"title":"Account, Password Recovery Email, Dear User",
-					"value":"Cher(e)"
+					"value":"Querido"
 				},
 				"account_forgot_password_email_your_new_password":{
 					"title":"Account, Password Recovery Email, Your New Password",
-					"value":"Votre Nouveau Mot de Passe est:"
+					"value":"Su nueva contraseña es:"
 				},
 				"account_forgot_password_email_change_password":{
 					"title":"Account, Password Recovery Email, Change Password Text",
-					"value":"Assurez-vous de vous connecter a votre compte et de modifier votre mot de passe avec quelque chose de facile a retenir."
+					"value":"Asegúrese de iniciar sesión en su cuenta y cambiar la contraseña a algo que pueda recordar."
 				},
 				"account_forgot_password_email_thank_you":{
 					"title":"Account, Password Recovery Email, Thank You Text",
-					"value":"Merci Beaucoup!"
+					"value":"Muchas Gracias!"
 				}
 			}
 		},
@@ -1341,79 +1341,79 @@
 			"options":{
 				"account_orders_details_order_info_title":{
 					"title":"Account, Orders Details, Order Information Title",
-					"value":"Information commande"
+					"value":"Información Del Pedido"
 				},
 				"account_orders_details_your_order_title":{
 					"title":"Account, Orders Details, Your Order Title",
-					"value":"Votre Commande"
+					"value":"Su Pedido"
 				},
 				"account_orders_details_order_number":{
 					"title":"Account, Orders Details, Order Number Label",
-					"value":"Numero de Commande"
+					"value":"Número de Pedido:"
 				},
 				"account_orders_details_order_date":{
 					"title":"Account, Orders Details, Order Date Label",
-					"value":"Date de commande:"
+					"value":"Orden Fecha:"
 				},
 				"account_orders_details_order_status":{
 					"title":"Account, Orders Details, Order Status Label",
-					"value":"Statut Commande:"
+					"value":"Estado Del Pedido:"
 				},
 				"account_orders_details_order_tracking":{
 					"title":"Account, Orders Details, Order Tracking Label",
-					"value":"Numero de Suivi:"
+					"value":"El Número De Seguimiento:"
 				},
 				"account_orders_details_shipping_method":{
 					"title":"Account, Orders Details, Shipping Method Label",
-					"value":"Methode de Livraison"
+					"value":"Método de Envío:"
 				},
 				"account_orders_details_coupon_code":{
 					"title":"Account, Orders Details, Coupon Code Label",
-					"value":"Code Coupon:"
+					"value":"Código Del Cupón:"
 				},
 				"account_orders_details_gift_card":{
 					"title":"Account, Orders Details, Gift Card Label",
-					"value":"Cheque-Cadeau:"
+					"value":"Tarjeta de Regalo:"
 				},
 				"account_orders_details_view_subscription":{
 					"title":"Account, Orders Details, View Subscription",
-					"value":"Voir Détails de l'abonnement"
+					"value":"Ver Detalles Suscripción"
 				},
 				"account_orders_details_billing_label":{
 					"title":"Account, Orders Details, Billing Label",
-					"value":"Adresse de facturation"
+					"value":"Dirección de Facturación"
 				},
 				"account_orders_details_shipping_label":{
 					"title":"Account, Orders Details, Shipping Label",
-					"value":"Adresse d expedition"
+					"value":"Dirección de Envío"
 				},
 				"account_orders_details_payment_method":{
 					"title":"Account, Orders Details, Payment Method",
-					"value":"methode de Paiement"
+					"value":"Método De Pago:"
 				},
 				"account_order_details_payment_method_manual":{
 					"title":"Account, Order Details, Payment Method, Manual Bill Label",
-					"value":"Depot Direct"
+					"value":"Depósito Directo"
 				},
 				"account_orders_details_subtotal":{
 					"title":"Account, Orders Details, Subtotal",
-					"value":"Sous-Total:"
+					"value":"Total Parcial:"
 				},
 				"account_orders_details_tax_total":{
 					"title":"Account, Orders Details, Tax Total",
-					"value":"Total Taxes:"
+					"value":"Total Impuesto:"
 				},
 				"account_orders_details_shipping_total":{
 					"title":"Account, Orders Details, Shipping Total",
-					"value":"Total Livraison:"
+					"value":"Total Envío:"
 				},
 				"account_orders_details_discount_total":{
 					"title":"Account, Orders Details, Discount Total",
-					"value":"Total Remise:"
+					"value":"Total Descuento:"
 				},
 				"account_orders_details_duty_total":{
 					"title":"Account, Orders Details, Duty Total",
-					"value":"Total Duty:"
+					"value":"Total Deber:"
 				},
 				"account_orders_details_vat_total":{
 					"title":"Account, Orders Details, VAT Total",
@@ -1421,63 +1421,63 @@
 				},
 				"account_orders_details_refund_total":{
 					"title":"Account, Orders Details, Refund Total",
-					"value":"Montant Remboursé:"
+					"value":"Importe de la Devolución:"
 				},
 				"account_orders_details_grand_total":{
 					"title":"Account, Orders Details, Grand Total",
-					"value":"Total Commande:"
+					"value":"Total Pedido:"
 				},
 				"account_orders_details_header_1":{
 					"title":"Account, Orders Details, Header 1",
-					"value":"Produit"
+					"value":"Producto"
 				},
 				"account_orders_details_header_2":{
 					"title":"Account, Orders Details, Header 2",
-					"value":"Options"
+					"value":"Opciones"
 				},
 				"account_orders_details_header_3":{
 					"title":"Account, Orders Details, Header 3",
-					"value":"Prix Unitaire"
+					"value":"Precio Unitario"
 				},
 				"account_orders_details_header_4":{
 					"title":"Account, Orders Details, Header 4",
-					"value":"Quantite"
+					"value":"Cantidad"
 				},
 				"account_orders_details_header_5":{
 					"title":"Account, Orders Details, Header 5",
-					"value":"Prix Total"
+					"value":"Precio Total"
 				},
 				"account_orders_details_gift_message":{
 					"title":"Account, Orders Details, Gift Card Message",
-					"value":"message: "
+					"value":"mensaje: "
 				},
 				"account_orders_details_gift_from":{
 					"title":"Account, Orders Details, Gift Card From",
-					"value":"De: "
+					"value":"de: "
 				},
 				"account_orders_details_gift_to":{
 					"title":"Account, Orders Details, Gift Card To",
-					"value":"A: "
+					"value":"a: "
 				},
 				"account_orders_details_gift_card_id":{
 					"title":"Account, Orders Details, Gift Card ID",
-					"value":"Code Cheque-Cadeau: "
+					"value":"Código de la Tarjeta Regalo: "
 				},
 				"account_orders_details_print_online":{
 					"title":"Account, Orders Details, Print Online Link",
-					"value":"Imprimer en ligne"
+					"value":"Imprimir Online"
 				},
 				"account_orders_details_download":{
 					"title":"Account, Orders Details, Download",
-					"value":"Telecharger"
+					"value":"Descargar"
 				},
 				"account_orders_details_downloads_used":{
 					"title":"Account, Orders Details, Downloads Used",
-					"value":"Téléchargements Occasion"
+					"value":"Descargas Usados"
 				},
 				"account_orders_details_downloads_expire_time":{
 					"title":"Account, Orders Details, Download Expiration",
-					"value":"Télécharger Expire Le: "
+					"value":"Descargar Expira El:"
 				}
 			}
 		},
@@ -1486,51 +1486,51 @@
 			"options":{
 				"account_subscriptions_title":{
 					"title":"Account, Subscriptions Title",
-					"value":"Vos abonnements actifs"
+					"value":"Suscríbase Activo"
 				},
 				"account_canceled_subscriptions_title":{
 					"title":"Account, Canceled Subscriptions Title",
-					"value":"Vos Abonnements Annulés"
+					"value":"Suscríbase Cancelados"
 				},
 				"account_subscriptions_header_1":{
 					"title":"Account, Subscriptions, Header 1",
-					"value":"Nom Abonnement"
+					"value":"Nombre Suscripción"
 				},
 				"account_subscriptions_header_2":{
 					"title":"Account, Subscriptions, Header 2",
-					"value":"Suivant le projet de loi date"
+					"value":"Siguiente Bill Fecha"
 				},
 				"account_subscriptions_header_3":{
 					"title":"Account, Subscriptions, Header 3",
-					"value":"dernière mise en"
+					"value":"Última Charged"
 				},
 				"account_subscriptions_header_4":{
 					"title":"Account, Subscriptions, Header 4",
-					"value":"Prix/Cycle"
+					"value":"Precio/Ciclo"
 				},
 				"account_subscriptions_view_subscription_button":{
 					"title":"Account, Subscriptions, View Details Button",
-					"value":"VOIR DÉTAILS"
+					"value":"VER DETALLES"
 				},
 				"account_subscriptions_none_found":{
 					"title":"Account, Subscriptions, None Found",
-					"value":"Il n'y a pas les abonnements associés à votre compte."
+					"value":"No hay suscripciones asociadas a su cuenta."
 				},
 				"update_subscription_subtitle":{
 					"title":"Account, Subscription Details, Credit Card Note",
-					"value":"Vous n'êtes pas tenu de mettre à jour vos informations de carte de crédit."
+					"value":"Usted no está obligado a actualizar la información de su tarjeta de crédito."
 				},
 				"save_changes_button":{
 					"title":"Account, Subscription Details, Save Changes Button",
-					"value":"enregistrer les modifications"
+					"value":"GUARDAR CAMBIOS"
 				},
 				"cancel_subscription_button":{
 					"title":"Account, Subscription Details, Cancel Subscription Button",
-					"value":"Annuler Abonnement"
+					"value":"CANCELAR SUSCRIPCIÓN"
 				},
 				"cancel_subscription_confirm_text":{
 					"title":"Account, Subscription Details, Cancel Subscription Button",
-					"value":"Etes-vous sûr que vous souhaitez annuler cet abonnement?"
+					"value":"¿Está seguro que desea cancelar esta suscripción?"
 				}
 			}
 		},
@@ -1539,83 +1539,83 @@
 			"options":{
 				"login_failed":{
 					"title":"Account, User Login Failed",
-					"value":"Le nom d utilisateur ou le mot de passe que vous avez entre est incorrect."
+					"value":"El nombre de usuario o la contraseña introducida es incorrecta."
 				},
 				"register_email_error":{
 					"title":"Account Registration Email In Use Error",
-					"value":"L adresse e-mail que vous avez entre a deja un compte."
+					"value":"El correo electrónico no tiene ya una cuenta."
 				},
 				"no_reset_email_found":{
 					"title":"No Email Found Error",
-					"value":"L adresse e-mail que vous avez entre n a pas ete trouvee."
+					"value":"La dirección de correo electrónico que ha introducido no se encontró."
 				},
 				"personal_information_update_error":{
 					"title":"Account, updating personal info error",
-					"value":"Une erreur s est produite lors de la mise a jour de vos informations. personnelles."
+					"value":"Se ha producido un error al actualizar su información personal."
 				},
 				"password_wrong_current":{
 					"title":"Wrong password entered Error",
-					"value":"L actuel mot de passe que vous avez entre ne correspond pas au mot de passe de votre compte."
+					"value":"La contraseña actual que ha introducido no coincide con la contraseña de cuenta."
 				},
 				"password_no_match":{
 					"title":"Passwords do not match Error",
-					"value":"Le nouveau mot de passe et le nouveau mot de passe retape ne correspondent pas."
+					"value":"La nueva contraseña y los nuevos valores Repetir contraseña no coinciden."
 				},
 				"password_update_error":{
 					"title":"password update error",
-					"value":"Une erreur s est produite lors de la mise a jour de votre mot de passe."
+					"value":"Se ha producido un error al actualizar la contraseña."
 				},
 				"billing_information_error":{
 					"title":"Account, billing information update error",
-					"value":"Une erreur s est produite lors de la mise a jour de vos informations de facturation."
+					"value":"Se ha producido un error al actualizar su información de facturación."
 				},
 				"shipping_information_error":{
 					"title":"Account, shipping information update error",
-					"value":"Une erreur s est produite lors de la mise a jour de vos informations d expedition."
+					"value":"Se ha producido un error al actualizar su información de envío."
 				},
 				"email_exists_error":{
 					"title":"Cart, create account on checkout, email exists",
-					"value":"Ce e-mail a deja un compte. Veuillez vous connecter ou utiliser une autre adresse e-mail pour continuer."
+					"value":"Este correo electrónico ya tiene una cuenta. Por favor, inicie sesión o utilizar una dirección de correo electrónico diferente para continuar."
 				},
 				"3dsecure_failed":{
 					"title":"Cart, Optional, Error message when 3D Secure Fails, Gateway Dependent",
-					"value":"Votre paiement n a pas pu etre acheve car la methode de securite 3D a echouee. Veuillez essayer de nouveau votre paiement. Si le probleme persiste, veuillez nous contacter afain de regler ce malentendu."
+					"value":"Su pago no pudo completar porque el método 3D Secure falló. Por favor, inténtelo nuevamente su pago. Si el problema persiste, póngase en contacto con nosotros para tener el problema resuelto."
 				},
 				"manualbill_failed":{
 					"title":"Cart, Optional, Manual billing failed, Gateway Dependent",
-					"value":"Votre paiement n a pas pu etre acheve, le paiement manuel a echoue. veuillez essayer de nouveau."
+					"value":"Su pago no pudo completar, de facturación manuales falló. Por favor, inténtelo de nuevo."
 				},
 				"thirdparty_failed":{
 					"title":"Cart, Optional, Third Party Failed, Gateway Dependent",
-					"value":"Votre paiement n a pas pu etre acheve, le troisieme parti a echoue. Veuillez essayer de nouveau."
+					"value":"Su pago no pudo completar, tercero no. Por favor, inténtelo de nuevo."
 				},
 				"payment_failed":{
 					"title":"Cart, Optional, Credit Card Failed, Gateway Dependent",
-					"value":"Votre paiement n a pas pu etre acheve car votre carte de credit n a pas pu etre verifiee. Veuillez verifier les informations de votre carte et essayer de nouveau. si le probleme persiste, veuillez nous contacter pour valider votre paiement."
+					"value":"Su pago no pudo completar porque su tarjeta de crédito no pudo ser verificada. Por favor verifique su información de tarjeta de crédito y vuelva a intentarlo. Si el problema persiste, póngase en contacto con nosotros para completar el pago."
 				},
 				"already_subscribed":{
 					"title":"Cart, Optional, Already Subscribed, Gateway Dependent",
-					"value":"Vous avez déjà souscrit à ce produit. S'il vous plaît visitez votre compte pour gérer vos abonnements actifs."
+					"value":"Usted ya está suscrito a este producto. Por favor, visite su cuenta para administrar sus suscripciones activas."
 				},
 				"subscription_not_found":{
 					"title":"Cart, Optional, Subscription Not Found, Gateway Dependent",
-					"value":"Une erreur s'est produite lors du traitement de votre demande et la souscription demandée n'a pas été trouvée. Contactez-nous pour résoudre le problème."
+					"value":"Se ha producido un error al procesar su solicitud y no se encontró la suscripción solicitada. Póngase en contacto con nosotros para resolver el problema."
 				},
 				"activation_error":{
 					"title":"Account, Activation Error",
-					"value":"Une erreur s'est produite lors de la tentative pour activer votre compte. S'il vous plaît nous contacter pour avoir le problème résolu."
+					"value":"Se ha producido un error al intentar activar su cuenta. Por favor, póngase en contacto con nosotros para tener el problema resuelto."
 				},
 				"not_activated":{
 					"title":"Account, Not Activated",
-					"value":"Le compte de votre tentez d'accéder n'a pas été activée. S'il vous plaît activer votre compte via l'e-mail d'activation envoyé lorsque vous vous êtes inscrit à un compte ou nous contacter si vous rencontrez des problèmes."
+					"value":"La cuenta de su están intentando acceder no se ha activado. Por favor, active su cuenta a través del correo electrónico de activación se envía cuando se inscribió en una cuenta o se ponga en contacto con nosotros si usted está teniendo problemas."
 				},
 				"subscription_update_failed":{
 					"title":"Account, Subscription Update Error",
-					"value":"Il y avait un problème lors de la mise à jour de votre abonnement, s'il vous plaît essayer de nouveau ou contactez-nous si vous continuez à avoir des problèmes."
+					"value":"Hubo un problema al actualizar su suscripción, por favor vuelva a intentarlo o póngase en contacto con nosotros si los problemas persisten."
 				},
 				"subscription_cancel_failed":{
 					"title":"Account, Subscription Cancel Error",
-					"value":"Il y avait un problème lors de l'annulation de votre abonnement, s'il vous plaît essayer de nouveau ou contactez-nous si vous continuez à avoir des problèmes."
+					"value":"Hubo un problema al cancelar su suscripción, por favor vuelva a intentarlo o póngase en contacto con nosotros si los problemas persisten."
 				}
 			}
 		},
@@ -1624,51 +1624,51 @@
 			"options":{
 				"personal_information_updated":{
 					"title":"Account Personal Information Update Success",
-					"value":"Vos informations personnelles ont ete mise a jour avec succes."
+					"value":"Su información personal se ha actualizado correctamente."
 				},
 				"password_updated":{
 					"title":"Account Personal Information Update Success",
-					"value":"Votre mot de passe a ete mis a jour avec succes."
+					"value":"Su contraseña se ha actualizado correctamente."
 				},
 				"billing_information_updated":{
 					"title":"Account Billing Update Success",
-					"value":"Vos information de facturation ont ete mise a jour avec succes."
+					"value":"Su información de facturación se ha actualizado correctamente."
 				},
 				"shipping_information_updated":{
 					"title":"Account Shipping Update Success",
-					"value":"Vos information d expedition ont ete mise a jour avec succes."
+					"value":"Su información de envío se ha actualizado correctamente."
 				},
 				"reset_email_sent":{
 					"title":"Account Email Sent Success",
-					"value":"Votre nouveau mot de passe a ete envoye a votre adresse e-mail."
+					"value":"Su nueva contraseña ha sido enviada a su dirección de correo electrónico."
 				},
 				"cart_account_created":{
 					"title":"Cart, Create Account, Account Created Success Text",
-					"value":"Votre compte a ete cree, toutes vos commandes seront associees a votre nouveau compte."
+					"value":"Su cuenta ha sido creada, todos los pedidos serán ahora asociados con su nueva cuenta."
 				},
 				"cart_account_free_order":{
 					"title":"Cart, Order Type, Gift Card, Free Order",
-					"value":"Free Order"
+					"value":"Pida Gratis"
 				},
 				"store_added_to_cart":{
 					"title":"Store, Added Item to Cart",
-					"value":"Vous venez d'ajouter [prod_title] à votre panier."
+					"value":"Ha agregado [prod_title] a su carrito."
 				},
 				"activation_success":{
 					"title":"Account, Activation Success",
-					"value":"Vous avez activé avec succès votre compte"
+					"value":"Ha activado su cuenta"
 				},
 				"validation_required":{
 					"title":"Account, Validation Required",
-					"value":"Vous avez créé un compte, mais votre e-mail doit être validée. Un e-mail a été envoyé à votre compte avec des instructions sur la façon de compléter le processus d'inscription. Contactez-nous si vous avez des questions."
+					"value":"Ha creado una cuenta, pero su correo electrónico debe ser validado. Un correo electrónico ha sido enviado a su cuenta con instrucciones sobre cómo completar el proceso de registro. Póngase en contacto con nosotros si tiene alguna pregunta."
 				},
 				"subscription_updated":{
 					"title":"Account, Subscription Updated",
-					"value":"Votre souscription a été mis à jour."
+					"value":"Su suscripción ha sido actualizada correctamente."
 				},
 				"subscription_canceled":{
 					"title":"Account, Subscription Canceled",
-					"value":"Votre souscription a été annulée."
+					"value":"Su suscripción ha sido cancelada."
 				}
 			}
 		},
@@ -1677,11 +1677,11 @@
 			"options":{
 				"subtotal_text":{
 					"title":"Minicart Widget, Subtotal Text",
-					"value":"TOTAL PARTIEL"
+					"value":"TOTAL PARCIAL"
 				},
 				"checkout_button_text":{
 					"title":"Minicart Widget, Checkout Button Text",
-					"value":"PASSER VOTRE COMMANDE"
+					"value":"PAGO Y ENVÍO"
 				}
 			}
 		},
@@ -1690,11 +1690,11 @@
 			"options":{
 				"less_than":{
 					"title":"Less Than Text",
-					"value":"moins que"
+					"value":"Menor Que"
 				},
 				"greater_than":{
 					"title":"Greater Than Text",
-					"value":"supérieur"
+					"value":"Mayor Que"
 				}
 			}
 		},
@@ -1703,7 +1703,7 @@
 			"options":{
 				"code":{
 					"title":"Do Not Change",
-					"value":"FR"
+					"value":"SP"
 				}
 			}
 		}

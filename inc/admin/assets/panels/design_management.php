@@ -27,20 +27,13 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_design_options" )
 
 <?php
 	$ec_selected_theme = wp_get_theme();
-	if( $ec_selected_theme->Name == "Twenty Fourteen" && ( get_option( 'ec_option_base_theme' ) != "twenty-fourteen-v2" || get_option( 'ec_option_base_layout' ) != "twenty-fourteen-v2" ) ){ 
-    
-	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/twenty-fourteen-v2/" ) ){;
-	?>
+	if( $ec_selected_theme->Name == "Twenty Fourteen" && substr( get_option( 'ec_option_base_theme' ), 0, 15 ) != "twenty-fourteen" ){
+    ?>
     <div class="updated" style="float:left;">
         <p>To match the Twenty Fourteen WordPress theme up with the store, select 'twenty-fourteen-v2' for the EasyCart Theme and EasyCart Layout below.</p>
     </div>
-    <?php }else{ ?>
-    <div class="updated" style="float:left;">
-        <p>To match the Twenty Fourteen WordPress theme up with the store, read the article <a href="http://www.wpeasycart.com/forums/forum/customization-and-themes/general-theme-questions/individual-theme-support/base-and-default-theme/262-twenty-fourteen-wordpress-theme" target="_blank">here</a>.</p>
-    </div>
     <?php
-	}// Close check for existing theme
-	}// Close check for latest WordPress theme
+    }// Close check for latest WordPress theme
 ?>
 
 <div class="ec_setup_row">

@@ -2,6 +2,14 @@
   <div class="ec_account_shipping_information_title"><?php echo $GLOBALS['language']->get_text( 'account_shipping_information', 'account_shipping_information_title' )?></div>
   <div class="ec_account_shipping_information_holder">
     <?php $this->display_account_shipping_information_form_start(); ?>
+    <?php if( get_option( 'ec_option_display_country_top' ) ){ ?>
+    <div class="ec_account_shipping_information_row" id="ec_account_shipping_information_country_row">
+      <div class="ec_account_shipping_information_label"><?php echo $GLOBALS['language']->get_text( 'account_shipping_information', 'account_shipping_information_country' )?></div>
+      <div class="ec_account_shipping_information_input">
+        <?php $this->display_account_shipping_information_country_input(); ?>
+      </div>
+    </div>
+    <?php } ?>
     <div class="ec_account_shipping_information_row" id="ec_account_shipping_information_first_name_row">
       <div class="ec_account_shipping_information_label"><?php echo $GLOBALS['language']->get_text( 'account_shipping_information', 'account_shipping_information_first_name' )?></div>
       <div class="ec_account_shipping_information_input">
@@ -18,6 +26,12 @@
       <div class="ec_account_shipping_information_label"><?php echo $GLOBALS['language']->get_text( 'account_shipping_information', 'account_shipping_information_address' )?></div>
       <div class="ec_account_shipping_information_input">
         <?php $this->display_account_shipping_information_address_input(); ?>
+      </div>
+    </div>
+    <div class="ec_account_shipping_information_row" id="ec_account_shipping_information_address2_row">
+      <div class="ec_account_shipping_information_label"><?php echo $GLOBALS['language']->get_text( 'account_shipping_information', 'account_shipping_information_address2' )?></div>
+      <div class="ec_account_shipping_information_input">
+        <?php $this->display_account_shipping_information_address2_input(); ?>
       </div>
     </div>
     <div class="ec_account_shipping_information_row" id="ec_account_shipping_information_city_row">
@@ -38,12 +52,14 @@
         <?php $this->display_account_shipping_information_zip_input(); ?>
       </div>
     </div>
+    <?php if( !get_option( 'ec_option_display_country_top' ) ){ ?>
     <div class="ec_account_shipping_information_row" id="ec_account_shipping_information_country_row">
       <div class="ec_account_shipping_information_label"><?php echo $GLOBALS['language']->get_text( 'account_shipping_information', 'account_shipping_information_country' )?></div>
       <div class="ec_account_shipping_information_input">
         <?php $this->display_account_shipping_information_country_input(); ?>
       </div>
     </div>
+    <?php } ?>
     <div class="ec_account_shipping_information_row" id="ec_account_shipping_information_phone_row">
       <div class="ec_account_shipping_information_label"><?php echo $GLOBALS['language']->get_text( 'account_shipping_information', 'account_shipping_information_phone' )?></div>
       <div class="ec_account_shipping_information_input">

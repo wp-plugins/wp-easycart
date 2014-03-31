@@ -512,6 +512,10 @@
 					"title":"Winkelmand, Account, Label Adres",
 					"value":"Adres"
 				},
+				"cart_billing_information_address2":{
+					"title":"Winkelmand, Account, Label Adres 2",
+					"value":"Adres 2"
+				},
 				"cart_billing_information_city":{
 					"title":"Winkelmand, Account, Label Plaats",
 					"value":"Plaats"
@@ -521,8 +525,20 @@
 					"value":"Provincie"
 				},
 				"cart_billing_information_select_state":{
-					"title":"Winkelmand, Account, Provincieselectie",
-					"value":"Selecteer uw provincie"
+					"title":"Cart, Billing, Standaard No State Geselecteerde",
+					"value":"Kies een staat"
+				},
+				"cart_billing_information_select_province":{
+					"title":"Cart, Billing, Default No provincie geselecteerd",
+					"value":"Selecteer een Provincie"
+				},
+				"cart_billing_information_select_county":{
+					"title":"Cart, Billing, Default No County Geselecteerde",
+					"value":"Selecteer een Provincie"
+				},
+				"cart_billing_information_select_other":{
+					"title":"Cart, Billing, Default Niets geselecteerd",
+					"value":"Selecteer Een"
 				},
 				"cart_billing_information_country":{
 					"title":"Winkelmand, Account, Label Land",
@@ -569,6 +585,10 @@
 					"title":"Winkelmand, Verzenden, Adres Label",
 					"value":"Adres"
 				},
+				"cart_shipping_information_address2":{
+					"title":"Winkelmand, Verzenden, Adres 2 Label",
+					"value":"Adres 2"
+				},
 				"cart_shipping_information_city":{
 					"title":"Winkelmand, Verzenden, Plaats Label",
 					"value":"Plaats"
@@ -578,8 +598,20 @@
 					"value":"Provincie"
 				},
 				"cart_shipping_information_select_state":{
-					"title":"Winkelmand, Verzenden, Provinciemenu, Provincieselectie",
-					"value":"Selecteer de provincie"
+					"title":"Cart, Scheepvaart, Standaard No State Geselecteerde",
+					"value":"Kies een Staat"
+				},
+				"cart_shipping_information_select_province":{
+					"title":"Cart, Scheepvaart, Default No provincie geselecteerd",
+					"value":"Selecteer een Provincie"
+				},
+				"cart_shipping_information_select_county":{
+					"title":"Cart, Scheepvaart, Default No County Geselecteerde",
+					"value":"Selecteer een Provincie"
+				},
+				"cart_shipping_information_select_other":{
+					"title":"Cart, Scheepvaart, Default Niets geselecteerd",
+					"value":"Selecteer Een"
 				},
 				"cart_shipping_information_country":{
 					"title":"Winkelmand, Verzenden, Land Label",
@@ -1147,6 +1179,10 @@
 					"title":"Account, Factuurgegevens, Adres Label",
 					"value":"Adres"
 				},
+				"account_billing_information_address2":{
+					"title":"Account, Factuurgegevens, Adres 2 Label",
+					"value":"Adres 2"
+				},
 				"account_billing_information_city":{
 					"title":"Account, Factuurgegevens, Plaats Label",
 					"value":"Plaats"
@@ -1203,6 +1239,10 @@
 				"account_shipping_information_address":{
 					"title":"Account, Verzendgegevens, Adres Label",
 					"value":"Adres"
+				},
+				"account_shipping_information_address2":{
+					"title":"Account, Verzendgegevens, Adres 2 Label",
+					"value":"Adres 2"
 				},
 				"account_shipping_information_city":{
 					"title":"Account, Verzendgegevens, Plaats Label",

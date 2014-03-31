@@ -154,9 +154,9 @@ class ec_order{
 	}
 	
 	private function update_user_addresses( ){
-		$this->mysqli->update_user_address( $this->user->billing_id, $this->user->billing->first_name, $this->user->billing->last_name, $this->user->billing->address_line_1, $this->user->billing->city, $this->user->billing->state, $this->user->billing->zip, $this->user->billing->country, $this->user->billing->phone );
+		$this->mysqli->update_user_address( $this->user->billing_id, $this->user->billing->first_name, $this->user->billing->last_name, $this->user->billing->address_line_1, $this->user->billing->address_line_2, $this->user->billing->city, $this->user->billing->state, $this->user->billing->zip, $this->user->billing->country, $this->user->billing->phone );
 		
-		$this->mysqli->update_user_address( $this->user->shipping_id, $this->user->shipping->first_name, $this->user->shipping->last_name, $this->user->shipping->address_line_1, $this->user->shipping->city, $this->user->shipping->state, $this->user->shipping->zip, $this->user->shipping->country, $this->user->shipping->phone );
+		$this->mysqli->update_user_address( $this->user->shipping_id, $this->user->shipping->first_name, $this->user->shipping->last_name, $this->user->shipping->address_line_1, $this->user->shipping->address_line_2, $this->user->shipping->city, $this->user->shipping->state, $this->user->shipping->zip, $this->user->shipping->country, $this->user->shipping->phone );
 	}
 	
 	private function send_email_receipt(){
@@ -204,6 +204,7 @@ class ec_order{
 		unset( $_SESSION['ec_billing_first_name'] );
 		unset( $_SESSION['ec_billing_last_name'] );
 		unset( $_SESSION['ec_billing_address'] );
+		unset( $_SESSION['ec_billing_address2'] );
 		unset( $_SESSION['ec_billing_city'] );
 		unset( $_SESSION['ec_billing_state'] );
 		unset( $_SESSION['ec_billing_zip'] );
@@ -213,6 +214,7 @@ class ec_order{
 		unset( $_SESSION['ec_shipping_first_name'] );
 		unset( $_SESSION['ec_shipping_last_name'] );
 		unset( $_SESSION['ec_shipping_address'] );
+		unset( $_SESSION['ec_shipping_address2'] );
 		unset( $_SESSION['ec_shipping_city'] );
 		unset( $_SESSION['ec_shipping_state'] );
 		unset( $_SESSION['ec_shipping_zip'] );

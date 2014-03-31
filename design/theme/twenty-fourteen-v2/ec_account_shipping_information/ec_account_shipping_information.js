@@ -18,13 +18,19 @@
 function ec_account_shipping_information_update_click( ){
 	var errors = 0;
 	
+	var country = document.getElementById('ec_account_shipping_information_country').value;
 	var first_name = document.getElementById('ec_account_shipping_information_first_name').value;
 	var last_name = document.getElementById('ec_account_shipping_information_last_name').value;
 	var address = document.getElementById('ec_account_shipping_information_address').value;
 	var city = document.getElementById('ec_account_shipping_information_city').value;
 	var state = document.getElementById('ec_account_shipping_information_state').value;
+	
+	// Check for special drop down
+	if( document.getElementById( 'ec_account_shipping_information_state_' + country ) && document.getElementById( 'ec_account_shipping_information_state_' + country ).options ){
+		state = document.getElementById( 'ec_account_shipping_information_state_' + country ).options[document.getElementById( 'ec_account_shipping_information_state_' + country ).selectedIndex].value;
+	}
+	
 	var zip = document.getElementById('ec_account_shipping_information_zip').value;
-	var country = document.getElementById('ec_account_shipping_information_country').value;
 	var phone = document.getElementById('ec_account_shipping_information_phone').value;
 	
 	if( !ec_validation( "validate_first_name", first_name, country ) ){
@@ -90,3 +96,17 @@ function ec_account_shipping_information_update_click( ){
 		return true;
 	
 }
+
+jQuery( document ).ready( function( ){
+	jQuery( '#ec_account_shipping_information_country' ).change( function( ){
+		var country = jQuery( '#ec_account_shipping_information_country' ).val( );
+		if( document.getElementById( 'ec_account_shipping_information_state_' + country ) ){
+			jQuery( '.ec_account_shipping_information_input_field.ec_shipping_state_dropdown' ).hide( );
+			jQuery( '#ec_account_shipping_information_state' ).hide( );
+			jQuery( '#ec_account_shipping_information_state_' + country ).show( );
+		}else{
+			jQuery( '.ec_account_shipping_information_input_field.ec_shipping_state_dropdown' ).hide( );
+			jQuery( '#ec_account_shipping_information_state' ).show( );
+		}
+	} );
+} );

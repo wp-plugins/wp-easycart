@@ -51,6 +51,11 @@
         <div class="ec_account_order_details_row">
           <?php $this->order->display_order_billing_address_line_1( ); ?>
         </div>
+        <?php if( $this->order->billing_address_line_2 != "" ){ ?>
+        <div class="ec_account_order_details_row">
+          <?php echo $this->order->billing_address_line_2; ?>
+        </div>
+        <?php }?>
         <div class="ec_account_order_details_row">
           <?php $this->order->display_order_billing_city( ); ?>
           ,
@@ -73,6 +78,11 @@
         <div class="ec_account_order_details_row">
           <?php $this->order->display_order_shipping_address_line_1( ); ?>
         </div>
+        <?php if( $this->order->shipping_address_line_2 != "" ){ ?>
+        <div class="ec_account_order_details_row">
+          <?php echo $this->order->shipping_address_line_2; ?>
+        </div>
+        <?php }?>
         <div class="ec_account_order_details_row">
           <?php $this->order->display_order_shipping_city( ); ?>
           ,

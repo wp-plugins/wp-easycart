@@ -512,6 +512,10 @@
 					"title":"Cart, Billing, Address Label",
 					"value":"\u0394\u03b9\u03b5\u03cd\u03b8\u03c5\u03bd\u03c3\u03b7"
 				},
+				"cart_billing_information_address2":{
+					"title":"Cart, Billing, Address 2 Label",
+					"value":"\u0394\u03b9\u03b5\u03cd\u03b8\u03c5\u03bd\u03c3\u03b7 2"
+				},
 				"cart_billing_information_city":{
 					"title":"Cart, Billing, City Label",
 					"value":"Πόλη"
@@ -521,8 +525,20 @@
 					"value":"Πολιτεία"
 				},
 				"cart_billing_information_select_state":{
+					"title":"Cart, Billing, Default No State Selected",
+					"value":"Επιλέξτε ένα κράτος"
+				},
+				"cart_billing_information_select_province":{
+					"title":"Cart, Billing, Default No Province Selected",
+					"value":"Επιλέξτε Νομό"
+				},
+				"cart_billing_information_select_county":{
+					"title":"Cart, Billing, Default No County Selected",
+					"value":"Επιλέξτε έναν νομό"
+				},
+				"cart_billing_information_select_other":{
 					"title":"Cart, Billing, Default None Selected",
-					"value":"Επιλέξτε πολιτεία"
+					"value":"Επιλέξτε ένα"
 				},
 				"cart_billing_information_country":{
 					"title":"Cart, Billing, Country Label",
@@ -569,6 +585,10 @@
 					"title":"Cart, Shipping, Address Label",
 					"value":"\u0394\u03b9\u03b5\u03cd\u03b8\u03c5\u03bd\u03c3\u03b7"
 				},
+				"cart_shipping_information_address2":{
+					"title":"Cart, Shipping, Address 2 Label",
+					"value":"\u0394\u03b9\u03b5\u03cd\u03b8\u03c5\u03bd\u03c3\u03b7 2"
+				},
 				"cart_shipping_information_city":{
 					"title":"Cart, Shipping, City Label",
 					"value":"Πόλη"
@@ -578,8 +598,20 @@
 					"value":"Πολιτεία"
 				},
 				"cart_shipping_information_select_state":{
-					"title":"Cart, Shipping, State Menu, Default None Selected",
-					"value":"Επιλέξτε πολιτεία"
+					"title":"Cart, Shipping, Default No State Selected",
+					"value":"Επιλέξτε ένα κράτος"
+				},
+				"cart_shipping_information_select_province":{
+					"title":"Cart, Shipping, Default No Province Selected",
+					"value":"Επιλέξτε Νομό"
+				},
+				"cart_shipping_information_select_county":{
+					"title":"Cart, Shipping, Default No County Selected",
+					"value":"Επιλέξτε έναν νομό"
+				},
+				"cart_shipping_information_select_other":{
+					"title":"Cart, Shipping, Default None Selected",
+					"value":"Επιλέξτε ένα"
 				},
 				"cart_shipping_information_country":{
 					"title":"Cart, Shipping, Country Label",
@@ -1147,6 +1179,10 @@
 					"title":"Account, Billing Information, Address Label",
 					"value":"Διεύθυνση"
 				},
+				"account_billing_information_address2":{
+					"title":"Account, Billing Information, Address 2 Label",
+					"value":"Διεύθυνση 2"
+				},
 				"account_billing_information_city":{
 					"title":"Account, Billing Information, City Label",
 					"value":"Πόλη"
@@ -1203,6 +1239,10 @@
 				"account_shipping_information_address":{
 					"title":"Account, Shipping Information, Address Label",
 					"value":"Διεύθυνση"
+				},
+				"account_shipping_information_address2":{
+					"title":"Account, Shipping Information, Address 2 Label",
+					"value":"Διεύθυνση 2"
 				},
 				"account_shipping_information_city":{
 					"title":"Account, Shipping Information, City Label",

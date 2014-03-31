@@ -9,6 +9,11 @@
     <div class="ec_cart_address_review_row" id="ec_cart_billing_address_line_1_row">
       <?php $this->display_review_billing( "address" ); ?>
     </div>
+    <?php if( $this->has_billing_address_line2( ) ){ ?>
+    <div class="ec_cart_address_review_row" id="ec_cart_billing_address_line_1_row">
+      <?php $this->display_review_billing( "address2" ); ?>
+    </div>
+    <?php } ?>
     <div class="ec_cart_address_review_row" id="ec_cart_billing_address_line_2_row">
       <?php $this->display_review_billing( "city" ); ?>,
       <?php $this->display_review_billing( "state" ); ?>
@@ -30,6 +35,11 @@
     <div class="ec_cart_address_review_row" id="ec_cart_shipping_address_line_1_row">
       <?php $this->display_review_shipping( "address" ); ?>
     </div>
+    <?php if( $this->has_shipping_address_line2( ) ){ ?>
+    <div class="ec_cart_address_review_row" id="ec_cart_shipping_address_line_1_row">
+      <?php $this->display_review_shipping( "address2" ); ?>
+    </div>
+    <?php } ?>
     <div class="ec_cart_address_review_row" id="ec_cart_shipping_address_line_2_row">
       <?php $this->display_review_shipping( "city" ); ?>,
       <?php $this->display_review_shipping( "state" ); ?>

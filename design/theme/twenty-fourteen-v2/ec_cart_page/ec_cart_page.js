@@ -26,8 +26,8 @@ function ec_cart_validate_checkout_info( ){
 	var input_names = ['first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country', 'phone'];
 	
 	for( var i=0; i< input_names.length; i++){
-		if( input_names[i] == "state" && document.getElementById( 'ec_cart_billing_' + input_names[i] ).options ){
-			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] ).options[document.getElementById( 'ec_cart_billing_' + input_names[i] ).selectedIndex].value;
+		if( input_names[i] == "state" && document.getElementById( 'ec_cart_billing_' + input_names[i] + '_' + billing_country_code ).options ){
+			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] + '_' + billing_country_code ).options[document.getElementById( 'ec_cart_billing_' + input_names[i] + '_' + billing_country_code ).selectedIndex].value;
 		}else{
 			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] ).value;
 		}
@@ -42,8 +42,8 @@ function ec_cart_validate_checkout_info( ){
 	
 	if( shipping_selector ){
 		for( i=0; i < input_names.length; i++ ){
-			if( input_names[i] == "state" && document.getElementById( 'ec_cart_shipping_' + input_names[i] ).options ){
-				var value = document.getElementById( 'ec_cart_shipping_' + input_names[i] ).options[document.getElementById( 'ec_cart_shipping_' + input_names[i] ).selectedIndex].value;
+			if( input_names[i] == "state" && document.getElementById( 'ec_cart_shipping_' + input_names[i] + '_' + shipping_country_code ).options ){
+				var value = document.getElementById( 'ec_cart_shipping_' + input_names[i] + '_' + shipping_country_code ).options[document.getElementById( 'ec_cart_shipping_' + input_names[i] + '_' + shipping_country_code ).selectedIndex].value;
 			}else{
 				var value = document.getElementById( 'ec_cart_shipping_' + input_names[i] ).value;
 			}

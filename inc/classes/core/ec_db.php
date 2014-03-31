@@ -1587,18 +1587,19 @@ class ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( "DELETE FROM ec_order WHERE order_id = %d", $order_id ) );
 	}
 	
-	public function insert_address( $first_name, $last_name, $address_line_1, $city, $state, $zip, $country, $phone ){
+	public function insert_address( $first_name, $last_name, $address_line_1, $address_line_2, $city, $state, $zip, $country, $phone ){
 		$this->mysqli->insert(	'ec_address',
 								array(	"first_name"		=> $first_name,
 										"last_name"			=> $last_name,
 										"address_line_1"	=> $address_line_1,
+										"address_line_2"	=> $address_line_2,
 										"city"				=> $city,
 										"state"				=> $state,
 										"zip"				=> $zip,
 										"country"			=> $country,
 										"phone"				=> $phone
 									  ),
-								array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+								array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 							  );
 		
 		return $this->mysqli->insert_id;	
@@ -2357,11 +2358,12 @@ class ec_db{
 										array(	'%s', '%s', '%s' ) );
 	}
 	
-	public function update_user_address( $address_id, $first_name, $last_name, $address, $city, $state, $zip, $country, $phone ){
+	public function update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone ){
 		return $this->mysqli->update(	'ec_address', 
 										array(	'first_name'						=> $first_name,
 												'last_name'							=> $last_name,
 												'address_line_1'					=> $address,
+												'address_line_2'					=> $address2,
 												'city'								=> $city,
 												'state'								=> $state,
 												'zip'								=> $zip,
@@ -2369,7 +2371,7 @@ class ec_db{
 												'phone'								=> $phone 
 											 ),
 										array( 	'address_id' 						=> $address_id ), 
-										array( 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' )
+										array( 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' )
 								  );
 	}
 	
@@ -2470,7 +2472,7 @@ class ec_db{
 	}
 	
 	public function get_states( ){
-		$sql = "SELECT name_sta, code_sta FROM ec_state ORDER BY sort_order ASC";
+		$sql = "SELECT ec_state.name_sta, ec_state.code_sta, ec_country.iso2_cnt, ec_state.group_sta FROM ec_state LEFT JOIN ec_country ON ( ec_country.id_cnt = ec_state.idcnt_sta ) ORDER BY ec_country.iso2_cnt, ec_state.group_sta, ec_state.sort_order ASC";
 		return $this->mysqli->get_results( $sql );
 	}
 	

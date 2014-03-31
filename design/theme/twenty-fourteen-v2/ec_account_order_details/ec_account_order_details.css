@@ -171,7 +171,7 @@
 		width: 120px;
 	}
 	.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
-		width: 115px;
+		width: 110px;
 	}
 	.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
 		width: 85px;
@@ -192,29 +192,20 @@
 		width: 120px;
 	}
 	.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
-		width: 210px;
-	}
-	.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
 		width: 110px;
 	}
+	.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
+		width: 85px;
+	}
 	.ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
-		width: 80px;
+		width: 75px;
 	}
 	.ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
-		width: 85px;
+		width: 65px;
 	}
 }
 
 @media only screen and ( min-width: [size_level3_low]px ) and ( max-width: [size_level3_high]px ) {
-	.ec_account_order_details_right {
-		width: 100%;
-		float: none;
-	}
-	.ec_account_order_details_left {
-		width: 100%;
-		margin-right: 0;
-		float: none;
-	}
 	.ec_account_order_details_column1_header {
 		width: 112px;
 	}
@@ -222,16 +213,16 @@
 		width: 120px;
 	}
 	.ec_account_order_details_column2_header, .ec_account_order_details_item_display_column2 {
-		width: 295px;
+		width: 110px;
 	}
 	.ec_account_order_details_column3_header, .ec_account_order_details_item_display_column3 {
-		width: 100px;
+		width: 85px;
 	}
 	.ec_account_order_details_column4_header, .ec_account_order_details_item_display_column4 {
-		width: 54px;
+		width: 75px;
 	}
 	.ec_account_order_details_column5_header, .ec_account_order_details_item_display_column5 {
-		width: 61px;
+		width: 65px;
 	}
 }
 

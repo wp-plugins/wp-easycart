@@ -37,6 +37,8 @@ class ec_address{
 			return $this->last_name;
 		}else if( $name == "address" ){
 			return $this->address_line_1;
+		}else if( $name == "address2" ){
+			return $this->address_line_2;
 		}else if( $name == "address_line_1" ){
 			return $this->address_line_1;
 		}else if( $name == "address_line_2" ){

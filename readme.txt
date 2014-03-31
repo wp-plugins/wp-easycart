@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
-Tested up to: 3.8
-Stable tag: 2.1.7
+Tested up to: 3.8.1
+Stable tag: 2.1.8
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.8 =
+* Improvement - With updated design files, you can set the advanced option to use advanced states. This will allow for the state input to change with the country selected.
+* Addition - Added a second address line, new design files are needed to use, plus the option turned on.
+* Addition - Option to move the country box above the rest of the input boxes. This will allow the states to change with the country selected prior to seeing the state input box. New design files needed for this option.
 = 2.1.7 =
 * Minor adjustments to the language and design files for all the new features to allow for complete translation of the new content.
 * Bug Fix - Stripe gateway URL was incorrect, checkout will now work.

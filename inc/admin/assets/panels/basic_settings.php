@@ -275,6 +275,18 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 </div>
 
 <div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>International Country Box Position</em>If you expect international orders, it is best to display the country drop down box before the rest of the form. This allows the form to change based on the country selected and helps with compatibility for user inputs. This requires you have the latest design files.</span></a></span>
+    <span class="ec_setting_row_label">International Country Box Position:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_display_country_top" style="width:100px;"><option value="0"<?php if( get_option('ec_option_display_country_top') == "0" ){ echo " selected=\"selected\""; }?>>Below Zip</option><option value="1"<?php if( get_option('ec_option_display_country_top') == "1" ){ echo " selected=\"selected\""; }?>>Top of Form</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Use Second Address Line</em>Display two address lines for input on checkout form and account.</span></a></span>
+    <span class="ec_setting_row_label">Use Second Address Line:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_use_address2" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_address2') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_address2') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Enable Guest Checkout</em>When guest checkout is enabled a user has the option complete the checkout process without entering a password for an account. All the same information is recorded when a user checks out as a guest, but no user is created for that order. In addition, the customer cannot return to the site to see their past orders.</span></a></span>
     <span class="ec_setting_row_label">Enable Guest Checkout:</span>
     <span class="ec_setting_row_input"><select name="ec_option_allow_guest" style="width:100px;"><option value="0"<?php if( get_option('ec_option_allow_guest') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_allow_guest') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
@@ -324,6 +336,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Require Email Validation on Registration</em>Enabling this option will require a user to click a link in an email sent to their registered email account before they can use their account.</span></a></span>
     <span class="ec_setting_row_label">Require Email Validation on Registration:</span>
     <span class="ec_setting_row_input"><select name="ec_option_require_email_validation" style="width:100px;"><option value="0"<?php if( get_option('ec_option_require_email_validation') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_require_email_validation') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Manage Subscriptions Link</em>You should only leave this enabled if you are using subscriptions or memberships with the store, otherwise it will not apply to you. Additionally, since subscriptions and memberships are only available with the Stripe payment processor, you must have this selected for your credit card processor to display.</span></a></span>
+    <span class="ec_setting_row_label">Show Manage Subscriptions Link:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_account_subscriptions_link" style="width:100px;"><option value="0"<?php if( get_option('ec_option_show_account_subscriptions_link') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_show_account_subscriptions_link') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Google Analytics Setup</div></div>

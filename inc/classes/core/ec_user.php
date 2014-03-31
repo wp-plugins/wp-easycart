@@ -74,7 +74,7 @@ class ec_user{
 		}
 		
 		if( isset( $_SESSION['ec_billing_first_name'] ) && $_SESSION['ec_billing_first_name'] != "" ){
-			$this->billing = new ec_address( $_SESSION['ec_billing_first_name'], $_SESSION['ec_billing_last_name'], $_SESSION['ec_billing_address'], "", $_SESSION['ec_billing_city'], $_SESSION['ec_billing_state'], $_SESSION['ec_billing_zip'], $_SESSION['ec_billing_country'], $_SESSION['ec_billing_phone'] );
+			$this->billing = new ec_address( $_SESSION['ec_billing_first_name'], $_SESSION['ec_billing_last_name'], $_SESSION['ec_billing_address'], $_SESSION['ec_billing_address2'], $_SESSION['ec_billing_city'], $_SESSION['ec_billing_state'], $_SESSION['ec_billing_zip'], $_SESSION['ec_billing_country'], $_SESSION['ec_billing_phone'] );
 		}else if( $user && $user->billing_first_name ){
 			$this->billing = new ec_address( $user->billing_first_name, $user->billing_last_name, $user->billing_address_line_1, $user->billing_address_line_2, $user->billing_city, $user->billing_state, $user->billing_zip, $user->billing_country, $user->billing_phone );
 		}else{
@@ -83,7 +83,7 @@ class ec_user{
 		
 		// User has gone through the checkout info page
 		if( isset( $_SESSION['ec_shipping_first_name'] ) && $_SESSION['ec_shipping_first_name'] != "" ){
-			$this->shipping = new ec_address( $_SESSION['ec_shipping_first_name'], $_SESSION['ec_shipping_last_name'], $_SESSION['ec_shipping_address'], "", $_SESSION['ec_shipping_city'], $_SESSION['ec_shipping_state'], $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], $_SESSION['ec_shipping_phone'] );
+			$this->shipping = new ec_address( $_SESSION['ec_shipping_first_name'], $_SESSION['ec_shipping_last_name'], $_SESSION['ec_shipping_address'], $_SESSION['ec_shipping_address2'], $_SESSION['ec_shipping_city'], $_SESSION['ec_shipping_state'], $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], $_SESSION['ec_shipping_phone'] );
 		
 		// Live shipping estimate for zip and country
 		}else if( isset( $_SESSION['ec_shipping_zip'] ) && isset( $_SESSION['ec_shipping_country'] ) && $_SESSION['ec_shipping_country'] != 0 ){
@@ -129,15 +129,15 @@ class ec_user{
 	
 	}
 	
-	public function setup_billing_info_data( $bname, $blastname, $baddress, $bcity, $bstate, $bcountry, $bzip, $bphone ){
+	public function setup_billing_info_data( $bname, $blastname, $baddress, $baddress2, $bcity, $bstate, $bcountry, $bzip, $bphone ){
 		
-		$this->billing = new ec_address( $bname, $blastname, $baddress, "", $bcity, $bstate, $bzip, $bcountry, $bphone );
+		$this->billing = new ec_address( $bname, $blastname, $baddress, $baddress2, $bcity, $bstate, $bzip, $bcountry, $bphone );
 		
 	}
 	
-	public function setup_shipping_info_data( $sname, $slastname, $saddress, $scity, $sstate, $scountry, $szip, $sphone ){
+	public function setup_shipping_info_data( $sname, $slastname, $saddress, $saddress2, $scity, $sstate, $scountry, $szip, $sphone ){
 		
-		$this->shipping = new ec_address( $sname, $slastname, $saddress, "", $scity, $sstate, $szip, $scountry, $sphone );
+		$this->shipping = new ec_address( $sname, $slastname, $saddress, $saddress2, $scity, $sstate, $szip, $scountry, $sphone );
 		
 	}
 	

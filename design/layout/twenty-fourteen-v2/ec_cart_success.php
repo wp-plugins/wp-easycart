@@ -58,6 +58,13 @@
             <td>&nbsp;</td>
             <td class='ec_cart_success_style22'><?php if( get_option( 'ec_option_use_shipping' ) ){ ?><?php echo $this->user->shipping->address_line_1; ?><?php }?></td>
           </tr>
+          <?php if( $this->has_billing_address_line2( ) || ( $this->has_shipping_address_line2( ) &&  get_option( 'ec_option_use_shipping' ) ) ){ ?>
+          <tr>
+            <td class='ec_cart_success_style22'><?php echo $this->user->billing->address_line_2; ?></td>
+            <td>&nbsp;</td>
+            <td class='ec_cart_success_style22'><?php if( get_option( 'ec_option_use_shipping' ) ){ ?><?php echo $this->user->shipping->address_line_2; ?><?php }?></td>
+          </tr>
+          <?php }?>
           <tr>
             <td class='ec_cart_success_style22'><?php echo $this->user->billing->city; ?>, <?php echo $this->user->billing->state; ?> <?php echo $this->user->billing->zip; ?></td>
             <td>&nbsp;</td>

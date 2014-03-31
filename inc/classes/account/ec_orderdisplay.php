@@ -39,6 +39,7 @@ class ec_orderdisplay{
 	public $billing_state;  					// VARCHAR 255
 	public $billing_zip;  						// VARCHAR 32
 	public $billing_country; 					// VARCHAR 255 
+	public $billing_country_name; 				// VARCHAR 255 
 	public $billing_phone;  					// VARCHAR 32
 	
 	public $shipping_first_name;  				// VARCHAR 255
@@ -49,6 +50,7 @@ class ec_orderdisplay{
 	public $shipping_state;  					// VARCHAR 255
 	public $shipping_zip;  						// VARCHAR 32
 	public $shipping_country;  					// VARCHAR 255
+	public $shipping_country_name;  			// VARCHAR 255
 	public $shipping_phone;  					// VARCHAR 32
 	
 	public $order_customer_notes;				// BLOB
@@ -112,7 +114,8 @@ class ec_orderdisplay{
 		$this->billing_city = $order_row->billing_city; 
 		$this->billing_state = $order_row->billing_state; 
 		$this->billing_zip = $order_row->billing_zip; 
-		$this->billing_country = $this->mysqli->get_country_name( $order_row->billing_country ); 
+		$this->billing_country = $order_row->billing_country; 
+		$this->billing_country_name = $order_row->billing_country_name; 
 		$this->billing_phone = $order_row->billing_phone; 
 		
 		$this->shipping_first_name = $order_row->shipping_first_name; 
@@ -122,7 +125,8 @@ class ec_orderdisplay{
 		$this->shipping_city = $order_row->shipping_city; 
 		$this->shipping_state = $order_row->shipping_state; 
 		$this->shipping_zip = $order_row->shipping_zip; 
-		$this->shipping_country = $this->mysqli->get_country_name( $order_row->shipping_country ); 
+		$this->shipping_country = $order_row->shipping_country; 
+		$this->shipping_country_name = $order_row->shipping_country_name; 
 		$this->shipping_phone = $order_row->shipping_phone; 
 		
 		$this->order_customer_notes = $order_row->order_customer_notes;
@@ -133,8 +137,8 @@ class ec_orderdisplay{
 		$this->subscription_id = $order_row->subscription_id;
 		
 		$this->user = new ec_user( $this->user_email );
-		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1, $this->billing_city, $this->billing_state, $this->billing_country, $this->billing_zip, $this->billing_phone );
-		$this->user->setup_shipping_info_data( $this->shipping_first_name, $this->shipping_last_name, $this->shipping_address_line_1, $this->shipping_city, $this->shipping_state, $this->shipping_country, $this->shipping_zip, $this->shipping_phone );
+		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1, $this->billing_address_line_2, $this->billing_city, $this->billing_state, $this->billing_country, $this->billing_zip, $this->billing_phone );
+		$this->user->setup_shipping_info_data( $this->shipping_first_name, $this->shipping_last_name, $this->shipping_address_line_1, $this->shipping_address_line_2, $this->shipping_city, $this->shipping_state, $this->shipping_country, $this->shipping_zip, $this->shipping_phone );
 		
 		$this->payment_method = $order_row->payment_method; 
 		
@@ -307,7 +311,7 @@ class ec_orderdisplay{
 	}
 	
 	public function display_order_billing_country( ){
-		echo $this->billing_country;
+		echo $this->billing_country_name;
 	}
 	
 	public function display_order_billing_phone( ){
@@ -339,7 +343,7 @@ class ec_orderdisplay{
 	}
 	
 	public function display_order_shipping_country( ){
-		echo $this->shipping_country;
+		echo $this->shipping_country_name;
 	}
 	
 	public function display_order_shipping_phone( ){

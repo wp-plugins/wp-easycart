@@ -42,6 +42,13 @@
                         <td>&nbsp;</td>
                         <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->address_line_1; ?><?php }?></span></td>
                     </tr>
+				    <?php if( $this->user->billing->address_line_2 != "" || ( $this->user->shipping->address_line_2 != "" && get_option( 'ec_option_use_shipping' ) ) ){ ?>
+                    <tr>
+                      <td class='style22'><?php echo $this->user->billing->address_line_2; ?></td>
+                      <td>&nbsp;</td>
+                      <td class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){ ?><?php echo $this->user->shipping->address_line_2; ?><?php }?></td>
+                    </tr>
+                    <?php }?>
                     <tr>
                     	<td><span class='style22'><?php echo $this->user->billing->city; ?>, <?php echo $this->user->billing->state; ?> <?php echo $this->user->billing->zip; ?></span></td>
                         <td>&nbsp;</td>
