@@ -72,27 +72,13 @@ class ec_storepage{
 	
 	private function setup_details( ){
 		
-		$this->product_list = new ec_productlist( true, $this->menu_id, $this->submenu_id, $this->subsubmenu_id, $this->manufacturer_id, $this->group_id, $this->model_number );
-		if( $this->product_list->num_products > 0 ){
+		$db = new ec_db( );
+		global $wpdb;
+		$products = $db->get_product_list( $wpdb->prepare( " WHERE product.model_number = %s", $this->model_number ), "", "", "" );
+		
+		if( count( $products ) > 0 ){
 			
-			$this->previous_model_number = "";
-			$this->number_in_product_list = 0;
-			$this->count_of_product_list = count( $this->product_list->products );
-			$this->next_model_number = "";
-			
-			// Find current product
-			for( $i=0; $i< count( $this->product_list->products ); $i++ ){
-				if( $this->product_list->products[$i]->model_number == $this->model_number )
-					$this->number_in_product_list = $i+1;
-				else if( $this->number_in_product_list == 0 )
-					$this->previous_model_number = $this->product_list->products[$i]->model_number;
-				
-				if( $this->number_in_product_list > 0 && ($i+1) != $this->number_in_product_list && $this->next_model_number == ""  )
-					$this->next_model_number = $this->product_list->products[$i]->model_number;
-					
-			}
-			
-			$this->product = $this->product_list->products[$this->number_in_product_list-1];
+			$this->product = new ec_product( $products[0], 0, 1, 0 );
 		
 		}else{
 			

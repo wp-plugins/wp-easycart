@@ -135,7 +135,7 @@ class ec_admin_categories{
 							'post_title'	=> $GLOBALS['language']->convert_text( $categoryname ),
 							'post_type'		=> "ec_store"
 						  );
-			$post_id = wp_insert_post( $post, $wp_error );
+			$post_id = wp_insert_post( $post );
 			
 			// Update Category Post ID
 			$db = new ec_db( );

@@ -102,7 +102,7 @@ class ec_productlist{
 		if(substr_count($storepage, '?'))							$permalinkdivider = "&";
 		else														$permalinkdivider = "?";
 		
-		echo "<select name=\"sortfield\" id=\"sortfield\" onchange=\"change_product_sort('" . $this->filter->get_menu_id( ) . "', '" . $this->filter->get_menu_name( ) . "', '" . $this->filter->get_submenu_id( ) . "', '" . $this->filter->get_submenu_name( ) . "', '" . $this->filter->get_subsubmenu_id( ) . "', '" . $this->filter->get_subsubmenu_name( ) . "', '" . $this->filter->manufacturer->manufacturer_id . "', '" . $this->filter->pricepoint_id . "', '" . $this->paging->current_page . "', '" . $this->filter->perpage->selected . "', '" . $storepage . "', '" . $permalinkdivider . "');\" class=\"ec_sort_menu\">\n\n";
+		echo "<select name=\"sortfield\" id=\"sortfield\" onchange=\"change_product_sort('" . $this->filter->get_menu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_menu_name( ) ) . "', '" . $this->filter->get_submenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_submenu_name( ) ) . "', '" . $this->filter->get_subsubmenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_subsubmenu_name( ) ) . "', '" . $this->filter->manufacturer->manufacturer_id . "', '" . $this->filter->pricepoint_id . "', '" . $this->paging->current_page . "', '" . $this->filter->perpage->selected . "', '" . $storepage . "', '" . $permalinkdivider . "');\" class=\"ec_sort_menu\">\n\n";
 
 		if( get_option( 'ec_option_product_filter_1' ) ){
 			echo "<option value=\"1\""; if( $this->filter->is_sort_selected(1) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_price_low' ) . "</option>\n\n";

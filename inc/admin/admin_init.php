@@ -64,6 +64,14 @@ function ec_install_admin_notice() {
     	
 	<?php
     }
+	
+	if( get_option( 'ec_option_display_as_catalog' ) ){ ?>
+	
+    <div class="updated">
+        <p>You currently have your store in catalog only mode. This means that your customers can only view the products, not add to cart or checkout. If you think this was turned on by mistake, you can turn it off by <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-setup">clicking here</a> and set Display Store as Catalog to Off.</p>
+    </div>
+    
+	<?php }
 }
 
 function ec_load_admin_scripts( ){

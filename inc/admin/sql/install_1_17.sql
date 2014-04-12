@@ -1151,14 +1151,20 @@ CREATE TABLE IF NOT EXISTS `ec_zone_to_location` (
 AUTO_INCREMENT=257 CHARACTER SET 'utf8' COLLATE
 'utf8_general_ci' DEFAULT CHARSET=utf8
 ;
-INSERT INTO `ec_setting` (`setting_id`, `site_url`, `reg_code`, `storeversion`, `storetype`, `storepage`, `cartpage`, `accountpage`, `timezone`, `shipping_method`, `shipping_expedite_rate`, `shipping_handling_rate`, `ups_access_license_number`, `ups_user_id`, `ups_password`,
-    `ups_ship_from_zip`, `ups_shipper_number`, `ups_country_code`,
-     `ups_weight_type`, `usps_user_name`, `usps_ship_from_zip`, `fedex_key`,
-      `fedex_account_number`, `fedex_meter_number`, `fedex_password`,
-       `fedex_ship_from_zip`, `fedex_weight_units`, `fedex_country_code`)
-        VALUES(1, '', '', '1.0.0', 'wordpress', '6', '7', '8',
-         'America/Los_Angeles', 'price', 2, 0, '', '', '', '', '', '', '', '',
-          '', '', '', '', '', '', 'LB', 'US')
+INSERT INTO `ec_setting` (`setting_id`, `site_url`, `reg_code`, `storeversion`, `storetype`, `storepage`, `cartpage`, `accountpage`, `timezone`, `shipping_method`, `shipping_expedite_rate`, `shipping_handling_rate`, 
+  `ups_access_license_number`, `ups_user_id`, `ups_password`, `ups_ship_from_zip`, `ups_shipper_number`, `ups_country_code`, `ups_weight_type`, `ups_conversion_rate`, 
+  `usps_user_name`, `usps_ship_from_zip`, 
+  `fedex_key`, `fedex_account_number`, `fedex_meter_number`, `fedex_password`, `fedex_ship_from_zip`, `fedex_weight_units`, `fedex_country_code`, `fedex_conversion_rate`, `fedex_test_account`,
+  `auspost_api_key`, `auspost_ship_from_zip`, 
+  `dhl_site_id`, `dhl_password`, `dhl_ship_from_country`, `dhl_ship_from_zip`, `dhl_weight_unit`, `dhl_test_mode`,
+  `fraktjakt_customer_id`, `fraktjakt_login_key`, `fraktjakt_conversion_rate`, `fraktjakt_test_mode`)
+        VALUES(1, '', '', '1.0.0', 'wordpress', '6', '7', '8', 'America/Los_Angeles', 'price', 2, 0, 
+  '', '', '', '', '', '', '', '1.000',
+  '', '', 
+  '', '', '', '', '', 'LB', 'US', '1.000', 0,
+  '', '',
+  '', '', '', '', '', 0,
+  '', '', '1.000', 0 )
 ;
 INSERT INTO `ec_shippingrate` (`shippingrate_id`, `is_price_based`, `is_weight_based`, `is_method_based`, `is_ups_based`, `is_usps_based`, `is_fedex_based`, `trigger_rate`, `shipping_rate`, `shipping_label`, `shipping_order`, `shipping_code`, `shipping_override_rate`) VALUES
   (51,1,0,0,0,0,0,0,5,'',0,'',0)
@@ -1570,7 +1576,7 @@ INSERT INTO `ec_role` (`role_id`, `role_label`, `admin_access`) VALUES
   (2, 'shopper', 0)
 ;
 INSERT INTO `ec_state` (`id_sta`, `idcnt_sta`, `code_sta`, `name_sta`,`sort_order`, `group_sta`) VALUES
-  (1,38,'AL','Alabama',9, ''),
+  (1,223,'AL','Alabama',9, ''),
   (2,223,'AK','Alaska',10, ''),
   (4,223,'AZ','Arizona',11, ''),
   (5,223,'AR','Arkansas',12, ''),

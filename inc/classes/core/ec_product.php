@@ -140,7 +140,7 @@ class ec_product{
 		else
 			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], $this->get_additional_link_options(), $this->post_id );
 		
-		if(!$this->is_featured_product)
+		if(!$this->is_featured_product && $this->is_product_details)
 		$this->featured_products = new ec_featuredproducts($product_data['featured_product_id_1'], $product_data['featured_product_id_2'], $product_data['featured_product_id_3'], $product_data['featured_product_id_4']);
 		
 		$this->is_giftcard = $product_data['is_giftcard'];
