@@ -1,5 +1,8 @@
 jQuery(document).ready(
 	function() {
+		// In case a theme over-rides images, we need to make sure all inactive images get hidden on load
+		jQuery( ".ec_product_image_inactive" ).hide( );
+		
 		// Initialize the available quick view boxes
 		jQuery(".ec_product_quick_view_box_holder").each( function( ){
 			var temp_split = jQuery( this ).attr( "id" ).split( "ec_product_quick_view_box_" );

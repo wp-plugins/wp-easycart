@@ -52,7 +52,7 @@ class ec_cartpage{
 		}
 		
 		// Shipping
-		$this->shipping = new ec_shipping( $this->cart->shipping_subtotal, $this->cart->weight, $this->cart->total_items );
+		$this->shipping = new ec_shipping( $this->cart->shipping_subtotal, $this->cart->weight, $this->cart->shippable_total_items );
 		// Tax (no VAT here)
 		$sales_tax_discount = new ec_discount( $this->cart, $this->cart->subtotal, 0.00, $this->coupon_code, "", 0 );
 		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country );

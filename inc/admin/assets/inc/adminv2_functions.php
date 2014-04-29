@@ -820,6 +820,11 @@ function ec_live_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $live_payment == "nets" ){
+		if( get_option( 'ec_option_nets_merchant_id' ) != "" && get_option( 'ec_option_nets_token' ) != "" )
+			return true;
+		else
+			return false;
 	}else if( $live_payment == "paymentexpress" ){
 		if( get_option( 'ec_option_payment_express_username' ) != "" && get_option( 'ec_option_payment_express_password' ) != "" )
 			return true;
@@ -882,6 +887,8 @@ function ec_get_live_payment_method( ){
 		return "First Data Global Gateway e4";
 	else if( $live_payment == "goemerchant" )
 		return "GoeMerchant";
+	else if( $live_payment == "nets" )
+		return "Nets Payments";
 	else if( $live_payment == "paymentexpress" )
 		return "Payment Express PxPost";
 	else if( $live_payment == "paypal_pro" )
@@ -1323,6 +1330,10 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_goemerchant_gateway_id', $_POST['ec_option_goemerchant_gateway_id'] ); 
 	update_option( 'ec_option_goemerchant_processor_id', $_POST['ec_option_goemerchant_processor_id'] ); 
 	update_option( 'ec_option_goemerchant_trans_center_id', $_POST['ec_option_goemerchant_trans_center_id'] );          
+	//Nets
+	update_option( 'ec_option_nets_merchant_id', $_POST['ec_option_nets_merchant_id'] );
+	update_option( 'ec_option_nets_token', $_POST['ec_option_nets_token'] );
+	update_option( 'ec_option_nets_currency', $_POST['ec_option_nets_currency'] );
 	//PaymentExpress
 	update_option( 'ec_option_payment_express_username', $_POST['ec_option_payment_express_username'] );
 	update_option( 'ec_option_payment_express_password', $_POST['ec_option_payment_express_password'] );

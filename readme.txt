@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.8.1
-Stable tag: 2.1.9
+Stable tag: 2.1.10
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.10 =
+* Fix - Quantity Based shipping now calculates based on shippable items only.
+* Fix - Payment Express now submitting the first and last name for the TxnData1 value which becomes visible in live mode.
+* Fix - Payment Express PxPay 2.0, fix to only send email receipt once.
+* Fix - Some themes cause thumbnails and swatches to break because the theme forces all images to be visible. Some built in javascript has been added to correct for this.
+* Fix - Cart item now uses the image not found image from your theme, instead of requiring an image to be added to all products.
+* Addition - Nets Netaxept Payments added, but still in development.
 = 2.1.9 =
 * Improvement - Membership content and alternate content now runs shortcodes inside of that content. Great for adding a form or plugin data that is only available to members.
 * Improvement - Performance boost for all users on their store and product details pages. Eliminated a few duplicate mysql calls that were slowing performance.

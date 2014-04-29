@@ -62,6 +62,7 @@ class ec_cart{
 		$this->vat_subtotal = 0;
 		$this->weight = 0;
 		$this->total_items = 0;
+		$this->shippable_total_items = 0;
 		
 		for($i=0; $i<count( $this->cart ); $i++){
 			$this->subtotal = $this->subtotal + $this->cart[$i]->total_price;
@@ -79,6 +80,9 @@ class ec_cart{
 				$this->weight = $this->weight + $this->cart[$i]->get_weight();
 			
 			$this->total_items = $this->total_items + $this->cart[$i]->quantity;
+			
+			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation && $this->cart[$i]->weight > 0 )
+				$this->shippable_total_items = $this->shippable_total_items + $this->cart[$i]->quantity;
 		}
 	}
 	

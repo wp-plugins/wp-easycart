@@ -618,6 +618,9 @@ class ec_product{
 		}else{
 			echo $this->images->get_product_thumbnails( $size, $this->first_selection, $id_prefix, $js_function_name );
 		}
+		
+		// need some javascript added to guarantee the correct image is hidden
+		echo "<script>jQuery( document ).ready( function( ){ ec_thumb_quick_view_click('" . $this->model_number . "', 0, 1); } );</script>";
 	}
 	
 	public function has_thumbnails( ){
@@ -848,6 +851,9 @@ class ec_product{
 			
 			if( $show_input )
 				echo "<input type=\"hidden\" name=\"ec_option" . $level . "\" id=\"ec_option" . $level . "_" . $this->model_number . "\" value=\"" . $optionitem_id . "\" />";
+		
+			// need some javascript added to guarantee the correct image is hidden
+			echo "<script>jQuery( document ).ready( function( ){ ec_swatch_click('" . $this->model_number . "', 1, 0); } );</script>";
 			
 		}
 	}

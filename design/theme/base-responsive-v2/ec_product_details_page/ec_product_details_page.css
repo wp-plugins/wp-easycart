@@ -526,7 +526,7 @@
 	float: left;
 	margin-bottom: 5px;
 	width:100%;
-	color:#000000;
+	color:[title_color];
 	font-weight:bold;
 	font-family:[title_font];
 }

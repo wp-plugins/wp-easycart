@@ -21,9 +21,9 @@ class ec_paymentexpress_thirdparty extends ec_third_party{
 									<CurrencyInput>" . $payment_express_currency . "</CurrencyInput>
 									<MerchantReference>" . $this->order_id . "</MerchantReference>
 									<EmailAddress>" . $this->order->user_email . "</EmailAddress>
-									<TxnData1>" . htmlentities( $this->order->billing_address_line_1 ) . "d</TxnData1>
-									<TxnData2>" . htmlentities( $this->order->billing_city ) . "</TxnData2>
-									<TxnData3>" . $this->order->billing_country . "</TxnData3>
+									<TxnData1>" . htmlentities( $this->order->billing_first_name . " " . $this->order->billing_last_name ) . "</TxnData1>
+									<TxnData2>" . htmlentities( $this->order->billing_phone ) . "</TxnData2>
+									<TxnData3>" . htmlentities( $this->order->billing_address_line_1 . ", " . $this->order->billing_city . " " . $this->order->billing_zip ) . "</TxnData3>
 									<TxnType>Purchase</TxnType>
 									<TxnId>" . $this->order_id . "</TxnId>
 									<BillingId></BillingId>
@@ -69,27 +69,33 @@ class ec_paymentexpress_thirdparty extends ec_third_party{
 	}
 	
 	private function process_result( $response_body ){
+		
 		$xml = new SimpleXMLElement( $response_body );
 			
 		if( isset( $_GET['order_id'] ) ){
 			
 			$order_id = $_GET['order_id'];
+			
 			$mysqli = new ec_db( );
 			$mysqli->insert_response( $order_id, 0, "PaymentExpress Third Party", print_r( $response_body, true ) );
+			$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
 				
 			if( $xml->Success == '1' ){ 
 				
 				$mysqli->update_order_status( $order_id, "10" );
 				
-				// send email
-				$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
-				$order_display = new ec_orderdisplay( $order_row, true );
-				$order_display->send_email_receipt( );
-			
-				// Quickbooks Hook
-				if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
-					$quickbooks = new ec_quickbooks( );
-					$quickbooks->add_order( $order_id );
+				if( $order_row->orderstatus_id != "10" ){
+					// send email
+					$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+					$order_display = new ec_orderdisplay( $order_row, true );
+					$order_display->send_email_receipt( );
+					
+				
+					// Quickbooks Hook
+					if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+						$quickbooks = new ec_quickbooks( );
+						$quickbooks->add_order( $order_id );
+					}
 				}
 				
 			} else if( $_POST['AUTHCODE'] == 'refund' ){ 
@@ -97,7 +103,9 @@ class ec_paymentexpress_thirdparty extends ec_third_party{
 			} else {
 				$mysqli->update_order_status( $order_id, "8" );
 			}
+		
 		}
+	
 	}
 	
 }
