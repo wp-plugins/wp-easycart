@@ -172,7 +172,7 @@ class ec_admin_orders{
 		$sql = "DELETE FROM ec_order WHERE ec_order.order_id = %d";
 		$this->db->query( $this->db->prepare( $sql, $orderid ) );
 		
-		$sql = "DELETE FROM ec_detail WHERE ec_orderdetail.order_id = %d";
+		$sql = "DELETE FROM ec_orderdetail WHERE ec_orderdetail.order_id = %d";
 		$this->db->query( $this->db->prepare( $sql, $orderid ) );
 		
 		$sql = "DELETE FROM ec_download WHERE ec_download.orderid = %d";
