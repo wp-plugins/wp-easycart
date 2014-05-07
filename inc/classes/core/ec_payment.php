@@ -21,9 +21,10 @@ class ec_payment{
 	public $post_id = "";												// Used for 3D Auth
 	public $post_message_input_name = "";								// Used for 3D Auth
 	public $post_message = "";											// Used for 3D Auth
-	public $post_return_url_input_name = "";								// Used for 3D Auth
+	public $post_return_url_input_name = "";							// Used for 3D Auth
 	
 	function __construct( $credit_card, $payment_type ){
+		
 		$this->mysqli = new ec_db();
 		
 		if( $payment_type == "credit_card" )
@@ -105,9 +106,11 @@ class ec_payment{
 	}
 	
 	private function get_third_party( ){
-			 if( $this->third_party_type == "paypal" )					return new ec_paypal( );
-		else if( $this->third_party_type == "skrill" )					return new ec_skrill( );
-		else if( $this->third_party_type == "realex_thirdparty" )		return new ec_realex_thirdparty( );
+			 if( $this->third_party_type == "dwolla_thirdparty" )				return new ec_dwolla_thirdparty( );
+		else if( $this->third_party_type == "nets" )							return new ec_nets( );
+		else if( $this->third_party_type == "paypal" )							return new ec_paypal( );
+		else if( $this->third_party_type == "skrill" )							return new ec_skrill( );
+		else if( $this->third_party_type == "realex_thirdparty" )				return new ec_realex_thirdparty( );
 		else if( $this->third_party_type == "paymentexpress_thirdparty" )		return new ec_paymentexpress_thirdparty( );
 	}
 	

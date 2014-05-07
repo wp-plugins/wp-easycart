@@ -133,7 +133,11 @@ class ec_cartpage{
 							  "payment_failed" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed"),
 							  "card_error" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed"),
 							  "already_subscribed" => $GLOBALS['language']->get_text( "ec_errors", "already_subscribed"),
-							  "not_activated" => $GLOBALS['language']->get_text( "ec_errors", "not_activated")   
+							  "not_activated" => $GLOBALS['language']->get_text( "ec_errors", "not_activated"),
+							  "subscription_not_found" => $GLOBALS['language']->get_text( "ec_errors", "subscription_not_found"),
+							  "user_insert_error" => $GLOBALS['language']->get_text( "ec_errors", "user_insert_error"),
+							  "subscription_added_failed" => $GLOBALS['language']->get_text( "ec_errors", "subscription_added_failed"),
+							  "subscription_failed" => $GLOBALS['language']->get_text( "ec_errors", "subscription_failed")   
 							);
 		if( isset( $_GET['ec_cart_error'] ) ){
 			echo "<div class=\"ec_cart_error\"><div>" . $error_notes[ $_GET['ec_cart_error'] ] . "</div></div>";
@@ -1177,7 +1181,11 @@ class ec_cartpage{
 	}
 	
 	public function ec_cart_display_current_third_party_name( ){
-		if( get_option( 'ec_option_payment_third_party' ) == "paypal" )
+		if( get_option( 'ec_option_payment_third_party' ) == "dwolla_thirdparty" )
+			echo "Dwolla";
+		else if( get_option( 'ec_option_payment_third_party' ) == "nets" )
+			echo "Nets Netaxept";
+		else if( get_option( 'ec_option_payment_third_party' ) == "paypal" )
 			echo "PayPal";
 		else if( get_option( 'ec_option_payment_third_party' ) == "skrill" )
 			echo "Skrill";
@@ -1188,7 +1196,11 @@ class ec_cartpage{
 	}
 	
 	public function ec_cart_get_current_third_party_name( ){
-		if( get_option( 'ec_option_payment_third_party' ) == "paypal" )
+		if( get_option( 'ec_option_payment_third_party' ) == "dwolla_thirdparty" )
+			return "Dwolla";
+		else if( get_option( 'ec_option_payment_third_party' ) == "nets" )
+			return "Nets Netaxept";
+		else if( get_option( 'ec_option_payment_third_party' ) == "paypal" )
 			return "PayPal";
 		else if( get_option( 'ec_option_payment_third_party' ) == "skrill" )
 			return "Skrill";
@@ -1969,37 +1981,23 @@ class ec_cartpage{
 		}
 		
 		// If checkout out as new user and the email already exists, this is an error.
-		if( $user_error ){
-			
-			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=email_exists" );
-			
-		}else{
+		if( !$user_error ){
 		
 			if( count( $products > 0 ) ){
 				
 				// Try to get a subscription for this product and email address!
-				if( isset( $_POST['ec_contact_email'] ) ){
-					$email_test = $_POST['ec_contact_email'];
-				}else{
-					$email_test = $_SESSION['ec_email'];
-				}
+				if( isset( $_POST['ec_contact_email'] ) )	$email_test = $_POST['ec_contact_email'];
+				else										$email_test = $_SESSION['ec_email'];
 				
 				$subscription_list = $this->mysqli->find_subscription_match( $email_test, $products[0]['product_id'] );
 				
-				if( count( $subscription_list ) > 0 ){
-					
-					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=already_subscribed" );
-				
-				// This user has not bought this subscription product, move forward.
-				}else{
+				if( count( $subscription_list ) <= 0 ){
 			
 					$first_name = $_POST['ec_cart_billing_first_name'];
 					$last_name = $_POST['ec_cart_billing_last_name'];
 					$address = $_POST['ec_cart_billing_address'];
-					if( isset( $_POST['ec_cart_billing_address2'] ) )
-						$address2 = $_POST['ec_cart_billing_address'];
-					else
-						$address2 = "";
+					if( isset( $_POST['ec_cart_billing_address2'] ) )	$address2 = $_POST['ec_cart_billing_address'];
+					else												$address2 = "";
 						
 					$city = $_POST['ec_cart_billing_city'];
 					$state = $_POST['ec_cart_billing_state'];
@@ -2032,53 +2030,100 @@ class ec_cartpage{
 					}
 					// END CREATE ACCOUNT
 					
+					// Setup for processing
 					$user = new ec_user( "" );
 					$user->setup_billing_info_data( $first_name, $last_name, $address, "", $city, $state, $country, $zip, $phone );
 					$card = new ec_credit_card( $payment_method, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
 					$product = new ec_product( $products[0] );
 					$stripe = new ec_stripe( );
+					$customer_id = $user->stripe_customer_id;
 					
-					if( $user->stripe_customer_id == "" ){
-						//first insert customer
-						$customer_id = $stripe->insert_customer( $user, $card );
+					// Tests vars
+					$need_to_update_customer_id = false;
+					$customer_insert_test = false;
+					
+					if( $customer_id == "" ){
+						$customer_id = $stripe->insert_customer( $user );
+						$need_to_update_customer_id = true;
+					}
+						
+					
+					if( $need_to_update_customer_id && $customer_id ){ // Customer inserted to stripe successfully
 						$this->mysqli->update_user_stripe_id( $user->user_id, $customer_id );
 						$user->stripe_customer_id = $customer_id;
+						$customer_insert_test = true;
+					}else if( $need_to_update_customer_id && !$customer_id ){
+						$customer_insert_test = false;
+					}else{
+						$customer_insert_test = true;
 					}
 					
-					if( !$product->stripe_plan_added ){
-						// first insert plan
-						$stripe->insert_plan( $product );
-						$this->mysqli->update_product_stripe_added( $product->product_id );
-					}
-					
-					// Insert Subscription
-					$stripe_response = $stripe->insert_subscription( $product, $user, $card );
-					
-					if( !isset( $stripe_response->error ) ){
-						$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user, $card );
-						$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id );
-						$this->mysqli->update_user_default_card( $user, $card );
+					if( $customer_insert_test ){ // Customer inserted successfully (OR didn't need to be inserted)
 						
-						$subscription = new ec_subscription( $stripe_response );
-						$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-						$order = new ec_orderdisplay( $order_row );
-						$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-						$subscription->send_email_receipt( $user, $order, $order_details );
-					
-						header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );	
+						$card_result = $stripe->insert_card( $user, $card );
+							
+						
+						if( $card_result ){ //Card Submitted Successfully
+							
+							$plan_added = $product->stripe_plan_added;
+							
+							if( !$product->stripe_plan_added ){ // Add plan if needed
+								$plan_added = $stripe->insert_plan( $product );
+								$this->mysqli->update_product_stripe_added( $product->product_id );
+							}
+							
+							if( $plan_added ){ // Plan added successfully
+							
+								$stripe_response = $stripe->insert_subscription( $product, $user, $card );
+								
+								if( $stripe_response ){ // Subscription added successfully
+									
+									$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user, $card );
+									$subscription_row = $this->mysqli->get_subscription_row( $subscription_id );
+									$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id );
+									$this->mysqli->update_user_default_card( $user, $card );
+									
+									$subscription = new ec_subscription( $subscription_row );
+									$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+									$order = new ec_orderdisplay( $order_row );
+									$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+									$subscription->send_email_receipt( $user, $order, $order_details );
+								
+									header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );	
+								
+								}else{
+									header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_failed" );	
+								
+								}// Close check for subscription insertion
+								
+							}else{
+								header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_added_failed" );
+							
+							}// Close check for stripe plan insertion
+							
+						}else{
+							header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=card_error" );
+						
+						}// Close check for card insertion
 					
 					}else{
-						header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=" . $stripe_response->error->type );	
+						header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=user_insert_error" );
 					
-					}
-					
-				}
+					}// Close check for customer insertion to stripe check
+			
+				}else{
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=already_subscribed" );
+				
+				}// Close check for already subscribed error
 			
 			}else{
 				
 				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_not_found" );
 				
-			}
+			}// Close check for subscription existing
+			
+		}else{
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=email_exists" );
 			
 		}// Close user exists error for guest checkout
 		

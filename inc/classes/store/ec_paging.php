@@ -82,7 +82,10 @@ class ec_paging{
 	}
 	
 	public function get_limit_query( ){
-		return sprintf( " LIMIT %d, %d", mysql_real_escape_string( $this->start_item ), mysql_real_escape_string( $this->num_per_page ) );
+		if( is_numeric( $this->start_item ) && is_numeric( $this->num_per_page ) )
+			return sprintf( " LIMIT %d, %d", $this->start_item, $this->num_per_page );
+		else
+			return "";
 	}
 	
 }

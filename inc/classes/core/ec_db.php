@@ -2375,7 +2375,7 @@ class ec_db{
 								  );
 	}
 	
-	public function insert_user_address( $first_name, $last_name, $address, $city, $state, $zip, $country, $phone, $email, $password, $address_type ){
+	public function insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $email, $password, $address_type ){
 		$user_id = $this->mysqli->get_var(	$this->mysqli->prepare( "SELECT user_id FROM ec_user WHERE email = '%s' AND password = '%s'", $email, $password ) );
 		
 		$this->mysqli->insert(	'ec_address',
@@ -2383,6 +2383,7 @@ class ec_db{
 														'first_name'						=> $first_name,
 														'last_name'							=> $last_name,
 														'address_line_1'					=> $address,
+														'address_line_2'					=> $address2,
 														'city'								=> $city,
 														'state'								=> $state,
 														'zip'								=> $zip,

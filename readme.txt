@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
-Tested up to: 3.8.1
-Stable tag: 2.1.10
+Tested up to: 3.9
+Stable tag: 2.1.11
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.11 =
+* Addition - German text file now included as a language option.
+* Addition - Dwolla third party added as a payment option.
+* Addition - Latest design files now include better error notification for the user during checkout.
+* Addition - Nets Netaxept payments now accepted as a third party payment option.
+* Fix - Billing and shipping in account were not saving. This has been corrected.
 = 2.1.10 =
 * Fix - Quantity Based shipping now calculates based on shippable items only.
 * Fix - Payment Express now submitting the first and last name for the TxnData1 value which becomes visible in live mode.

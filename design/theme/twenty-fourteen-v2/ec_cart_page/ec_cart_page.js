@@ -35,8 +35,10 @@ function ec_cart_validate_checkout_info( ){
 		if( !ec_validation( "validate_" + input_names[i], value, billing_country_code ) ){
 			errors++;
 			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row_error";
+			jQuery( '#ec_cart_error_billing_' + input_names[i] ).show( );
 		}else{
 			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_error_billing_' + input_names[i] ).hide( );
 		}
 	}
 	
@@ -52,8 +54,10 @@ function ec_cart_validate_checkout_info( ){
 			if( !ec_validation( "validate_" + input_names[i], value, shipping_country_code ) ){
 				errors++;
 				document.getElementById('ec_cart_shipping_' + input_names[i] + '_row').className = "ec_cart_shipping_row_error";
+				jQuery( '#ec_cart_error_shipping_' + input_names[i] ).show( );
 			}else{
 				document.getElementById('ec_cart_shipping_' + input_names[i] + '_row').className = "ec_cart_shipping_row";
+				jQuery( '#ec_cart_error_shipping_' + input_names[i] ).hide( );
 			}	
 		}
 	}
@@ -61,23 +65,29 @@ function ec_cart_validate_checkout_info( ){
 	if( !ec_validation( "validate_first_name", first_name, billing_country_code ) ){
 		errors++;
 		document.getElementById('ec_contact_first_name_row').className = "ec_cart_contact_information_row_error";
+		jQuery( '#ec_cart_error_contact_first_name' ).show( );
 	}else{
 		document.getElementById('ec_contact_first_name_row').className = "ec_cart_contact_information_row";
+		jQuery( '#ec_cart_error_contact_first_name' ).hide( );
 	}
 	
 	if( !ec_validation( "validate_last_name", last_name, billing_country_code ) ){
 		errors++;
 		document.getElementById('ec_contact_last_name_row').className = "ec_cart_contact_information_row_error";
+		jQuery( '#ec_cart_error_contact_last_name' ).show( );
 	}else{
 		document.getElementById('ec_contact_last_name_row').className = "ec_cart_contact_information_row";
+		jQuery( '#ec_cart_error_contact_last_name' ).hide( );
 	}
 	
 	if( document.getElementById('ec_contact_email') ){
 		if( !ec_validation( "validate_email", email, billing_country_code ) ){
 			errors++;
 			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row_error";
+			jQuery( '#ec_cart_error_email' ).show( );
 		}else{
 			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row";
+			jQuery( '#ec_cart_error_email' ).hide( );
 		}
 		
 		if( retype_email.length == 0 || email != retype_email ){
@@ -85,6 +95,16 @@ function ec_cart_validate_checkout_info( ){
 			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row_error";
 		}else{
 			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row";
+		}
+		
+		if( retype_email.length == 0 ){
+			jQuery( '#ec_cart_error_retype_email' ).show( );
+		}else if( email != retype_email ){
+			jQuery( '#ec_cart_error_retype_email' ).hide( );
+			jQuery( '#ec_cart_error_email_match' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_retype_email' ).hide( );
+			jQuery( '#ec_cart_error_email_match' ).hide( );
 		}
 	}
 	
@@ -106,15 +126,40 @@ function ec_cart_validate_checkout_info( ){
 			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_contact_information_row";
 		}
 		
+		if( retype_password.length == 0 ){
+			jQuery( '#ec_cart_error_retype_password' ).show( );
+		}else if( password != retype_password ){
+			jQuery( '#ec_cart_error_retype_password' ).hide( );
+			jQuery( '#ec_cart_error_password_match' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_retype_password' ).hide( );
+			jQuery( '#ec_cart_error_password_match' ).hide( );
+		}
+		
+		if( password.length <= 0 ){
+			jQuery( '#ec_cart_error_password' ).show( );
+		}else if( password.length < 6 ){
+			jQuery( '#ec_cart_error_password_length' ).show( );
+			jQuery( '#ec_cart_error_password' ).hide( );
+		}else{
+			jQuery( '#ec_cart_error_password_length' ).hide( );
+			jQuery( '#ec_cart_error_password' ).hide( );
+		}
+		
 	}
 	
 	
 	
-	if( errors )
+	if( errors ){
+		jQuery( '#ec_cart_error_text' ).show( );
+		jQuery( 'html, body' ).animate( {
+			scrollTop: jQuery("#ec_cart_error_scroll").offset( ).top - 150
+		}, 750);
 		return false;
-	else
+	}else{
+		jQuery( '#ec_cart_error_text' ).hide( );
 		return true;
-	
+	}
 	
 }
 
@@ -134,79 +179,68 @@ function ec_cart_validate_checkout_shipping( ){
 		return true;
 }
 
-var ec_form_submit_started = false;
-
 function ec_cart_validate_checkout_submit_order( ){
-	if( !ec_form_submit_started ){
-		ec_form_submit_started = true;
-		jQuery( "#ec_submit_payment_button" ).css({ opacity: 0.5 });
+	var errors = 0;
+	
+	var payment_type = jQuery('input[name=ec_cart_payment_selection]:checked').val();
+	if( !document.getElementById( 'ec_cart_pay_by_manual_payment' ) && !document.getElementById( 'ec_cart_pay_by_third_party' ) && !document.getElementById( 'ec_cart_pay_by_credit_card_holder' ) ){
+		return true;
+	}else if( payment_type ){
+		jQuery('.ec_cart_payment_information_payment_type_row.error').removeClass('error');
+		if( payment_type == "credit_card" ){
 		
-		var errors = 0;
-		
-		var payment_type = jQuery('input[name=ec_cart_payment_selection]:checked').val();
-		if( !document.getElementById( 'ec_cart_pay_by_manual_payment' ) && !document.getElementById( 'ec_cart_pay_by_third_party' ) && !document.getElementById( 'ec_cart_pay_by_credit_card_holder' ) ){
-			return true;
-		}else if( payment_type ){
-			jQuery('.ec_cart_payment_information_payment_type_row.error').removeClass('error');
-			if( payment_type == "credit_card" ){
+			var payment_method = document.getElementById('ec_cart_payment_type').value;
+			var card_holder_name = document.getElementById('ec_card_holder_name').value;
+			var card_number = document.getElementById('ec_card_number').value;
+			var exp_month = document.getElementById('ec_expiration_month').value;
+			var exp_year = document.getElementById('ec_expiration_year').value;
+			var sec_code = document.getElementById('ec_security_code').value;
 			
-				var payment_method = document.getElementById('ec_cart_payment_type').value;
-				var card_holder_name = document.getElementById('ec_card_holder_name').value;
-				var card_number = document.getElementById('ec_card_number').value;
-				var exp_month = document.getElementById('ec_expiration_month').value;
-				var exp_year = document.getElementById('ec_expiration_year').value;
-				var sec_code = document.getElementById('ec_security_code').value;
-				
-				if( payment_method == "0" ){
-					errors++;
-					document.getElementById('ec_cart_payment_type_row').className = "ec_cart_payment_information_row_error";
-				}else{
-					document.getElementById('ec_cart_payment_type_row').className = "ec_cart_payment_information_row";
-				}
-				
-				if( !ec_validation( "validate_card_holder_name", card_holder_name, payment_method ) ){
-					errors++;
-					document.getElementById('ec_card_holder_name_row').className = "ec_cart_payment_information_row_error";
-				}else{
-					document.getElementById('ec_card_holder_name_row').className = "ec_cart_payment_information_row";
-				}
-				
-				if( !ec_validation( "validate_card_number", card_number, payment_method ) ){
-					errors++;
-					document.getElementById('ec_card_number_row').className = "ec_cart_payment_information_row_error";
-				}else{
-					document.getElementById('ec_card_number_row').className = "ec_cart_payment_information_row";
-				}
-				
-				if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) || !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
-					errors++;
-					document.getElementById('ec_expiration_date_row').className = "ec_cart_payment_information_row_error";
-				}else{
-					document.getElementById('ec_expiration_date_row').className = "ec_cart_payment_information_row";
-				}
-				
-				if( !ec_validation( "validate_security_code", sec_code, payment_method ) ){
-					errors++;
-					document.getElementById('ec_security_code_row').className = "ec_cart_payment_information_row_error";
-				}else{
-					document.getElementById('ec_security_code_row').className = "ec_cart_payment_information_row";
-				}
+			if( payment_method == "0" ){
+				errors++;
+				document.getElementById('ec_cart_payment_type_row').className = "ec_cart_payment_information_row_error";
+			}else{
+				document.getElementById('ec_cart_payment_type_row').className = "ec_cart_payment_information_row";
 			}
-		}else{
-			jQuery('.ec_cart_payment_information_payment_type_row').addClass('error');
-			errors++;
-		}
-		
-		if( errors ){
-			ec_form_submit_started = false;
-			jQuery( "#ec_submit_payment_button" ).css({ opacity: 1.0 });
-			return false;
-		}else{
-			return true;
+			
+			if( !ec_validation( "validate_card_holder_name", card_holder_name, payment_method ) ){
+				errors++;
+				document.getElementById('ec_card_holder_name_row').className = "ec_cart_payment_information_row_error";
+			}else{
+				document.getElementById('ec_card_holder_name_row').className = "ec_cart_payment_information_row";
+			}
+			
+			if( !ec_validation( "validate_card_number", card_number, payment_method ) ){
+				errors++;
+				document.getElementById('ec_card_number_row').className = "ec_cart_payment_information_row_error";
+			}else{
+				document.getElementById('ec_card_number_row').className = "ec_cart_payment_information_row";
+			}
+			
+			if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) || !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
+				errors++;
+				document.getElementById('ec_expiration_date_row').className = "ec_cart_payment_information_row_error";
+			}else{
+				document.getElementById('ec_expiration_date_row').className = "ec_cart_payment_information_row";
+			}
+			
+			if( !ec_validation( "validate_security_code", sec_code, payment_method ) ){
+				errors++;
+				document.getElementById('ec_security_code_row').className = "ec_cart_payment_information_row_error";
+			}else{
+				document.getElementById('ec_security_code_row').className = "ec_cart_payment_information_row";
+			}
 		}
 	}else{
-		return false;
+		jQuery('.ec_cart_payment_information_payment_type_row').addClass('error');
+		errors++;
 	}
+	
+	if( errors )
+		return false;
+	else
+		return true;
+	
 }
 
 function ec_cart_validate_subscription_order( ){
@@ -290,15 +324,10 @@ function ec_cart_validate_subscription_order( ){
 			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row";
 		}
 		
-
-
-
-
 		if( retype_email.length == 0 || email != retype_email ){
 			errors++;
 			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row_error";
 		}else{
-
 			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row";
 		}
 		
@@ -307,7 +336,6 @@ function ec_cart_validate_subscription_order( ){
 			errors++;
 			document.getElementById('ec_contact_password_row').className = "ec_cart_contact_information_row_error";
 		}else{
-
 			document.getElementById('ec_contact_password_row').className = "ec_cart_contact_information_row";
 		}
 		

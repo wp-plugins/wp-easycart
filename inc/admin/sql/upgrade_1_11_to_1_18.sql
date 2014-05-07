@@ -1,4 +1,7 @@
 ﻿;
+ALTER TABLE ec_taxrate ADD `tax_by_single_vat` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Vat tax all users the same if selected.';
+ALTER TABLE ec_taxrate ADD `vat_added` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Vat is added to the total at the end, not included in the products.';
+ALTER TABLE ec_taxrate ADD `vat_included` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Vat is included in the price of the product.';
 ALTER TABLE ec_order ADD `creditcard_digits` VARCHAR(4) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'If credit card checkout is used, saves the last four digits here.';
 ALTER TABLE ec_product ADD `is_subscription_item` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Makes this product a subscription product which is purchased individually.';
 ALTER TABLE ec_product ADD `subscription_bill_length` INTEGER(11) NOT NULL DEFAULT '1' COMMENT 'Number of the period times to charge the customer, e.g. 3 paired with month is charge once every 3 months.';
@@ -105,3 +108,4 @@ CREATE TABLE IF NOT EXISTS `ec_webhook` (
   PRIMARY KEY (`webhook_id`),
   UNIQUE KEY `webhook_id` (`webhook_id`)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 PACK_KEYS=0;
+ALTER TABLE ec_order ADD `nets_transaction_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Nets Transaction ID if Nets used.';

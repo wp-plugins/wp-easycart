@@ -15,3 +15,4 @@ CREATE TABLE IF NOT EXISTS `ec_webhook` (
   PRIMARY KEY (`webhook_id`),
   UNIQUE KEY `webhook_id` (`webhook_id`)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 PACK_KEYS=0;
+ALTER TABLE ec_order ADD `nets_transaction_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Nets Transaction ID if Nets used.';

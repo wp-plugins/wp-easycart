@@ -745,7 +745,17 @@ function ec_third_party_payment_selected( ){
 
 function ec_third_party_payment_setup( ){
 	$third_party = get_option( 'ec_option_payment_third_party' );
-	if( $third_party == "paypal" ){
+	if( $third_party == "dwolla_thirdparty" ){
+		if( get_option( 'ec_option_dwolla_thirdparty_key' ) != "" && get_option( 'ec_option_dwolla_thirdparty_secret' ) != "" )
+			return true;
+		else
+			return false;
+	}else if( $third_party == "nets" ){
+		if( get_option( 'ec_option_nets_merchant_id' ) != "" && get_option( 'ec_option_nets_token' ) != "" )
+			return true;
+		else
+			return false;
+	}else if( $third_party == "paypal" ){
 		if( get_option( 'ec_option_paypal_email' ) != "" )
 			return true;
 		else
@@ -770,7 +780,11 @@ function ec_third_party_payment_setup( ){
 
 function ec_get_third_party_method( ){
 	$third_party = get_option( 'ec_option_payment_third_party' );
-	if( $third_party == "paypal" )
+	if( $third_party == "dwolla_thirdparty" )
+		return "Dwolla";
+	else if( $third_party == "nets" )
+		return "Nets Netaxept";
+	else if( $third_party == "paypal" )
 		return "PayPal Standard";
 	else if( $third_party == "skrill" )
 		return "Skrill";
@@ -817,11 +831,6 @@ function ec_live_payment_setup( ){
 			return false;
 	}else if( $live_payment == "goemerchant" ){
 		if( get_option( 'ec_option_goemerchant_trans_center_id' ) != "" && get_option( 'ec_option_goemerchant_gateway_id' ) != "" &&  get_option( 'ec_option_goemerchant_processor_id' ) != "" )
-			return true;
-		else
-			return false;
-	}else if( $live_payment == "nets" ){
-		if( get_option( 'ec_option_nets_merchant_id' ) != "" && get_option( 'ec_option_nets_token' ) != "" )
 			return true;
 		else
 			return false;
@@ -887,8 +896,6 @@ function ec_get_live_payment_method( ){
 		return "First Data Global Gateway e4";
 	else if( $live_payment == "goemerchant" )
 		return "GoeMerchant";
-	else if( $live_payment == "nets" )
-		return "Nets Payments";
 	else if( $live_payment == "paymentexpress" )
 		return "Payment Express PxPost";
 	else if( $live_payment == "paypal_pro" )
@@ -1315,7 +1322,12 @@ function ec_update_payment_info( ){
     //chronopay
 	update_option( 'ec_option_chronopay_currency', $_POST['ec_option_chronopay_currency'] );
 	update_option( 'ec_option_chronopay_product_id', $_POST['ec_option_chronopay_product_id'] );
-	update_option( 'ec_option_chronopay_shared_secret', $_POST['ec_option_chronopay_shared_secret'] );            
+	update_option( 'ec_option_chronopay_shared_secret', $_POST['ec_option_chronopay_shared_secret'] );          
+    //dwolla third party
+	update_option( 'ec_option_dwolla_thirdparty_account_id', $_POST['ec_option_dwolla_thirdparty_account_id'] );
+	update_option( 'ec_option_dwolla_thirdparty_key', $_POST['ec_option_dwolla_thirdparty_key'] );
+	update_option( 'ec_option_dwolla_thirdparty_secret', $_POST['ec_option_dwolla_thirdparty_secret'] ); 
+	update_option( 'ec_option_dwolla_thirdparty_test_mode', $_POST['ec_option_dwolla_thirdparty_test_mode'] );            
     //eway
 	update_option( 'ec_option_eway_customer_id', $_POST['ec_option_eway_customer_id'] );
 	update_option( 'ec_option_eway_test_mode', $_POST['ec_option_eway_test_mode'] );  
@@ -1334,6 +1346,7 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_nets_merchant_id', $_POST['ec_option_nets_merchant_id'] );
 	update_option( 'ec_option_nets_token', $_POST['ec_option_nets_token'] );
 	update_option( 'ec_option_nets_currency', $_POST['ec_option_nets_currency'] );
+	update_option( 'ec_option_nets_test_mode', $_POST['ec_option_nets_test_mode'] );
 	//PaymentExpress
 	update_option( 'ec_option_payment_express_username', $_POST['ec_option_payment_express_username'] );
 	update_option( 'ec_option_payment_express_password', $_POST['ec_option_payment_express_password'] );

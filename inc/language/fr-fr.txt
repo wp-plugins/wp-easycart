@@ -295,6 +295,119 @@
 				}
 			}
 		},	
+		"cart_form_notices":{
+			"label":"Cart - Form Error Notices",
+			"options":{
+				"cart_notice_is_required":{
+					"title":"Cart, Notice, Is Required Field",
+					"value":"est un champ obligatoire"
+				},
+				"cart_notice_item_must_match":{
+					"title":"Cart, Notice, Items Must Match",
+					"value":"doit correspondre"
+				},
+				"cart_notice_billing_first_name":{
+					"title":"Cart, Notice, Billing, First Name",
+					"value":"Facturation Prénom"
+				},
+				"cart_notice_billing_last_name":{
+					"title":"Cart, Notice, Billing, Last Name",
+					"value":"Facturation Nom"
+				},
+				"cart_notice_billing_address":{
+					"title":"Cart, Notice, Billing, Address",
+					"value":"Adresse de Facturation"
+				},
+				"cart_notice_billing_city":{
+					"title":"Cart, Notice, Billing, City",
+					"value":"Facturation Ville"
+				},
+				"cart_notice_billing_state":{
+					"title":"Cart, Notice, Billing, State",
+					"value":"État de Facturation"
+				},
+				"cart_notice_billing_zip_code":{
+					"title":"Cart, Notice, Billing, Zip Code",
+					"value":"Facturation Code Postal"
+				},
+				"cart_notice_billing_country":{
+					"title":"Cart, Notice, Billing, Country",
+					"value":"Pays de Facturation"
+				},
+				"cart_notice_billing_phone":{
+					"title":"Cart, Notice, Billing, Phone",
+					"value":"Facturation Téléphone"
+				},
+				"cart_notice_shipping_first_name":{
+					"title":"Cart, Notice, Shipping, First Name",
+					"value":"Expédition Prénom"
+				},
+				"cart_notice_shipping_last_name":{
+					"title":"Cart, Notice, Shipping, Last Name",
+					"value":"Expédition Nom"
+				},
+				"cart_notice_shipping_address":{
+					"title":"Cart, Notice, Shipping, Address",
+					"value":"Adresse de Livraison"
+				},
+				"cart_notice_shipping_city":{
+					"title":"Cart, Notice, Shipping, City",
+					"value":"Frais de Port Ville"
+				},
+				"cart_notice_shipping_state":{
+					"title":"Cart, Notice, Shipping, State",
+					"value":"Etat de Livraison"
+				},
+				"cart_notice_shipping_zip_code":{
+					"title":"Cart, Notice, Shipping, Zip Code",
+					"value":"Frais de port Code postal"
+				},
+				"cart_notice_shipping_country":{
+					"title":"Cart, Notice, Shipping, Country",
+					"value":"Pays de Livraison"
+				},
+				"cart_notice_shipping_phone":{
+					"title":"Cart, Notice, Phone",
+					"value":"Frais de Port Téléphone"
+				},
+				"cart_notice_contact_first_name":{
+					"title":"Cart, Notice, Contact First Name",
+					"value":"Prénom du Contact"
+				},
+				"cart_notice_contact_last_name":{
+					"title":"Cart, Notice, Contact Last Name",
+					"value":"Contact Nom"
+				},
+				"cart_notice_email":{
+					"title":"Cart, Notice, Email",
+					"value":"Email"
+				},
+				"cart_notice_retype_email":{
+					"title":"Cart, Notice, Retype Email",
+					"value":"Confirmer Votre Email"
+				},
+				"cart_notice_emails_match":{
+					"title":"Cart, Notice, Shipping, Emails Match",
+					"value":"Emails"
+				},
+				"cart_notice_password":{
+					"title":"Cart, Notice, Password",
+					"value":"Mot de Passe"
+				},
+				"cart_notice_retype_password":{
+					"title":"Cart, Notice, Retype Password",
+					"value":"Confirmer mot de Passe"
+				},
+				"cart_notice_passwords_match":{
+					"title":"Cart, Notice, Passwords Match",
+					"value":"Les mots de Passe"
+				},
+				"cart_notice_length_error":{
+					"title":"Cart, Notice, Password Format",
+					"value":"la longueur doit être supérieure à six caractères"
+				}
+			}
+		},
 		"cart_coupons":{
 			"label":"Cart - Enter Coupons and Gift Cards",
 			"options":{
@@ -1616,6 +1729,30 @@
 				"subscription_cancel_failed":{
 					"title":"Account, Subscription Cancel Error",
 					"value":"Il y avait un problème lors de l'annulation de votre abonnement, s'il vous plaît essayer de nouveau ou contactez-nous si vous continuez à avoir des problèmes."
+				},
+				"subscription_not_found":{
+					"title":"Account, Subscription Not Found Error",
+					"value":"Une erreur inconnue s'est produite dans lequel l'abonnement que vous essayez d'achat n'a pas été trouvé dans notre système. S'il vous plaît essayer de nouveau et nous contacter si vous avez continué difficultés."
+				},
+				"user_insert_error":{
+					"title":"Account, Subscription User Insert Error",
+					"value":"Il y avait un problème la création de votre compte d'utilisateur dans notre système d'abonnement. S'il vous plaît nous contacter pour compléter votre transaction."
+				},
+				"subscription_added_failed":{
+					"title":"Account, Subscription Plan Added Error",
+					"value":"Il y avait un problème interne tout en créant ce produit dans notre service d'abonnement. S'il vous plaît nous contacter pour compléter votre transaction."
+				},
+				"subscription_failed":{
+					"title":"Account, Subscription Creation Error",
+					"value":"Il y avait un problème lors de la création de votre abonnement dans notre système. S'il vous plaît nous contacter pour compléter votre transaction."
+				},
+				"nets_processing":{
+					"title":"Account, Nets Error Level Authorize",
+					"value":"Tout en complétant votre commande à filets Netaxept, une erreur s'est produite. S'il vous plaît voir l'ordre qui a eu lieu dans l'erreur et choisissez pour effectuer le paiement sur ​​la page suivante. Contactez-nous si vous continuez à avoir des problèmes."
+				},
+				"nets_processing_payment":{
+					"title":"Account, Nets Error Level Capture",
+					"value":"Votre paiement a été autorisé à filets Netaxept, mais il semble avoir été un problème dans notre système. S'il vous plaît nous contacter pour compléter votre commande."
 				}
 			}
 		},

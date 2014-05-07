@@ -1,12 +1,50 @@
 <?php
-// This is a payment gateway basic structure,
-// child classes will be based on this class.
 
-class ec_nets extends ec_gateway{
+class ec_nets extends ec_third_party{
 	
-	/****************************************
-	* GATEWAY SPECIFIC HELPER FUNCTIONS
-	*****************************************/
+	public function display_form_start( ){ }// Lets ignore this for this gateway
+	
+	public function display_auto_forwarding_form( ){
+		
+		$test_mode = get_option( 'ec_option_nets_test_mode' );
+		
+		if( $test_mode ){
+			
+			$this->custom_nets_test_mode( );
+			
+		}else{
+		
+			$gateway_url = $this->get_gateway_url( );
+			$gateway_data = $this->get_gateway_data( );
+			
+			echo $gateway_url;
+			
+			$ch = curl_init( );
+			curl_setopt($ch, CURLOPT_URL, $gateway_url );
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt($ch, CURLOPT_POST, true ); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query( $gateway_data ) );
+			curl_setopt($ch, CURLOPT_TIMEOUT, (int)8);
+			$response = curl_exec($ch);
+			curl_close ($ch);
+			
+			$this->handle_gateway_response( $response );
+		
+		}
+	}
+	
+	function custom_nets_test_mode( ){
+		
+		$gateway_url = $this->get_gateway_url( );
+		$gateway_data = $this->get_gateway_data( );
+		
+		$response = file_get_contents( $gateway_url . "?" . http_build_query( $gateway_data ) );
+		
+		print_r( $response );
+		
+		die( );
+		
+	}
 	
 	function get_gateway_data( ){
 		
@@ -18,27 +56,24 @@ class ec_nets extends ec_gateway{
 		
 		$register_data = array( 'orderNumber' 			=>	$this->order_id,
 								'currencyCode'			=>	$currency_code,
-								'amount'				=>	number_format( $this->order_totals->grand_total * 100, 0, "", "" ),
+								'amount'				=>	number_format( $this->order->grand_total * 100, 0, "", "" ),
 								'webServicePlatform'	=>	"PHP5",
-								'customerNumber'		=> 	$this->user->user_id,
-								'customerEmail'			=> 	$this->user->email,
-								'customerPhoneNumber'	=>	$this->user->billing->phone,
-								'customerFirstName'		=>	$this->user->billing->first_name,
-								'customerLastName'		=>	$this->user->billing->last_name,
-								'customerAddress1'		=>	$this->user->billing->address_line_1,
-								'customerAddress2'		=>	$this->user->billing->address_line_2,
-								'customerPostcode'		=>	$this->user->billing->zip,
-								'customerTown'			=>	$this->user->billing->city,
-								'customerCountry'		=>	$this->user->billing->country,
-								'pan'					=>	$this->credit_card->card_number,
-								'expiryDate'			=>	$this->credit_card->expiration_month . $this->credit_card->get_expiration_year( 2 ),
-								'securityCode'			=>	$this->credit_card->security_code,
+								'customerEmail'			=> 	$this->order->user_email,
+								'customerPhoneNumber'	=>	$this->order->billing_phone,
+								'customerFirstName'		=>	$this->order->billing_first_name,
+								'customerLastName'		=>	$this->order->billing_last_name,
+								'customerAddress1'		=>	$this->order->billing_address_line_1,
+								'customerAddress2'		=>	$this->order->billing_address_line_2,
+								'customerPostcode'		=>	$this->order->billing_zip,
+								'customerTown'			=>	$this->order->billing_city,
+								'customerCountry'		=>	$this->order->billing_country,
 								'merchantID'			=>	$merchant_id,
-								'token'					=>	$token 
+								'token'					=>	$token,
+								'redirectUrl'			=>	$this->cart_page . $this->permalink_divider . "ec_page=nets_return"
 							);
 		
-		if( $this->order_totals->vat_total ){
-			$register_data['terminalVat'] = $this->order_totals->vat_total;
+		if( $this->order->vat_total ){
+			$register_data['terminalVat'] = $this->order->vat_total;
 		}
 		
 		return $register_data;
@@ -56,7 +91,7 @@ class ec_nets extends ec_gateway{
 								'operation'				=>	$operation,
 								'transactionId'			=>	$transaction_id );
 		
-		return $register_data;
+		return $process_data;
 		
 	}
 	
@@ -71,9 +106,18 @@ class ec_nets extends ec_gateway{
 
 	}
 	
-	function get_gateway_response( $gateway_url, $gateway_data, $gateway_headers ){
+	function get_gateway_process_url( ){
 		
-		print_r( $gateway_data );
+		$test_mode = get_option( 'ec_option_nets_test_mode' );
+		
+		if( $test_mode )
+			return "https://test.epayment.nets.eu/Netaxept/Process.aspx";
+		else
+			return "https://epayment.nets.eu/Netaxept/Process.aspx";
+		
+	}
+	
+	function get_gateway_response( $gateway_url, $gateway_data, $gateway_headers ){
 		
 		$ch = curl_init( );
 		curl_setopt($ch, CURLOPT_URL, $gateway_url );
@@ -89,29 +133,96 @@ class ec_nets extends ec_gateway{
 		
 	}
 	
-	function handle_gateway_response( $response ){
+	function forward_to_terminal( $transaction_id ){
 		
-		// Process the response, get the transaction id
-		// print_r( $response );
-		// die( );
-		$transaction_id = "";
+		$test_mode = get_option( 'ec_option_nets_test_mode' );
+		$merchant_id = get_option( 'ec_option_nets_merchant_id' );
 		
-		// Once you get the register, process the sale
-		$data = $this->get_process_data( $transaction_id );
-		
-		
-		if( $result_code == "1" )
-			$this->is_success = 1;
+		if( $test_mode )
+			header( "Location: https://test.epayment.nets.eu/Terminal/default.aspx?merchantId=" . $merchant_id . "&transactionId=" . $transaction_id );
 		else
-			$this->is_success = 0;
-		
-		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Nets Payments", $response_text );
-		
-		if( !$this->is_success )
-			$this->error_message = $result_message;
+			header( "Location: https://epayment.nets.eu/Terminal/default.aspx?merchantId=" . $merchant_id . "&transactionId=" . $transaction_id );
 			
 	}
 	
+	function handle_gateway_response( $response ){
+		
+		// Process the response, get the transaction id
+		$xml = new SimpleXMLElement( $response );
+		
+		foreach( $xml->TransactionId as $id ){
+			$transaction_id = $id;
+		}
+		
+		$transaction_id = (string)$transaction_id;
+		
+		global $wpdb;
+		$wpdb->query( $wpdb->prepare( "UPDATE ec_order SET ec_order.nets_transaction_id = %s WHERE ec_order.order_id = %d", $transaction_id, $this->order_id ) );
+		
+		$test_mode = get_option( 'ec_option_nets_test_mode' );
+		$merchant_id = get_option( 'ec_option_nets_merchant_id' );
+		
+		if( $test_mode ){
+			$url = "https://test.epayment.nets.eu/Terminal/default.aspx?merchantId=" . $merchant_id . "&transactionId=" . $transaction_id;
+		}else{
+			$url = "https://epayment.nets.eu/Terminal/default.aspx?merchantId=" . $merchant_id . "&transactionId=" . $transaction_id;
+		}
+		
+		// Forward to terminal
+		header( "location:" . $url );
+		
+		die( );
+	}
+	
+	function process_payment_final( $order_id, $transaction_id, $status_code ){
+		
+		$cart_page_id = get_option('ec_option_cartpage');
+		$this->cart_page = get_permalink( $cart_page_id );
+		
+		$account_page_id = get_option('ec_option_accountpage');
+		$this->account_page = get_permalink( $account_page_id );
+		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+		}
+				
+		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
+		else														$this->permalink_divider = "?";
+		
+		if( $status_code != "OK" ){
+			
+			header( "location:" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $order_id . "&account_error=nets_processing" );
+			
+		}else{
+			
+			$data = $this->get_process_data( $transaction_id );
+			$response_final = $this->get_gateway_response( $this->get_gateway_process_url( ), $data, "" );
+			
+			$xml = new SimpleXMLElement( $response_final );
+			$code = $xml->responsecode;
+			
+			if( $code == "OK" ){
+				$this->mysqli->update_order_status( $this->order_id, "10" );
+				$this->is_success = 1;
+			}else
+				$this->is_success = 0;
+			
+			$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Nets Payments", print_r( $xml, true ) );
+			
+			if( !$this->is_success )
+				$this->error_message = $result_message;
+				
+			if( $this->is_success ){
+				header( "location:" . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );
+			}else{
+				header( "location:" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $order_id . "&account_error=nets_processing_payment" );
+			}
+		}
+	}
+
 }
 
 ?>

@@ -295,6 +295,119 @@
 				}
 			}
 		},
+		"cart_form_notices":{
+			"label":"Cart - Form Error Notices",
+			"options":{
+				"cart_notice_is_required":{
+					"title":"Cart, Notice, Is Verplicht veld",
+					"value":"is a required field"
+				},
+				"cart_notice_item_must_match":{
+					"title":"Cart, Notice, Items moeten overeenkomen",
+					"value":"must match"
+				},
+				"cart_notice_billing_first_name":{
+					"title":"Cart, Notice, Billing, Voornaam",
+					"value":"Billing Voornaam"
+				},
+				"cart_notice_billing_last_name":{
+					"title":"Cart, Notice, Billing, Achternaam",
+					"value":"Billing Achternaam"
+				},
+				"cart_notice_billing_address":{
+					"title":"Cart, Notice, Billing, Adres",
+					"value":"Billing Adres"
+				},
+				"cart_notice_billing_city":{
+					"title":"Cart, Notice, Billing, City",
+					"value":"Billing City"
+				},
+				"cart_notice_billing_state":{
+					"title":"Cart, Notice, Billing, Staat",
+					"value":"Billing Staat"
+				},
+				"cart_notice_billing_zip_code":{
+					"title":"Cart, Notice, Billing, Postcode",
+					"value":"Billing Postcode"
+				},
+				"cart_notice_billing_country":{
+					"title":"Cart, Notice, Billing, Land",
+					"value":"Billing Land"
+				},
+				"cart_notice_billing_phone":{
+					"title":"Cart, Notice, Billing, Telefoon",
+					"value":"Billing Telefoon"
+				},
+				"cart_notice_shipping_first_name":{
+					"title":"Cart, Notice, Verzendkosten, Voornaam",
+					"value":"Verzendkosten Voornaam"
+				},
+				"cart_notice_shipping_last_name":{
+					"title":"Cart, Notice, Verzendkosten, Achternaam",
+					"value":"Verzendkosten Achternaam"
+				},
+				"cart_notice_shipping_address":{
+					"title":"Cart, Notice, Verzendkosten, Adres",
+					"value":"Verzendkosten Adres"
+				},
+				"cart_notice_shipping_city":{
+					"title":"Cart, Notice, Verzendkosten, City",
+					"value":"Verzendkosten City"
+				},
+				"cart_notice_shipping_state":{
+					"title":"Cart, Notice, Verzendkosten, Staat",
+					"value":"Verzendkosten Staat"
+				},
+				"cart_notice_shipping_zip_code":{
+					"title":"Cart, Notice, Verzendkosten, Postcode",
+					"value":"Verzendkosten Postcode"
+				},
+				"cart_notice_shipping_country":{
+					"title":"Cart, Notice, Verzendkosten, Land",
+					"value":"Verzendkosten Land"
+				},
+				"cart_notice_shipping_phone":{
+					"title":"Cart, Notice, Verzendkosten, Telefoon",
+					"value":"Verzendkosten Telefoon"
+				},
+				"cart_notice_contact_first_name":{
+					"title":"Cart, Notice, Contact Voornaam",
+					"value":"Contact Voornaam"
+				},
+				"cart_notice_contact_last_name":{
+					"title":"Cart, Notice, Contact Achternaam",
+					"value":"Contact Achternaam"
+				},
+				"cart_notice_email":{
+					"title":"Cart, Notice, Email",
+					"value":"Email"
+				},
+				"cart_notice_retype_email":{
+					"title":"Cart, Notice, Herhaal Email",
+					"value":"Herhaal Email"
+				},
+				"cart_notice_emails_match":{
+					"title":"Cart, Notice, Emails Wedstrijd",
+					"value":"Emails"
+				},
+				"cart_notice_password":{
+					"title":"Cart, Notice, Wachtwoord",
+					"value":"Wachtwoord"
+				},
+				"cart_notice_retype_password":{
+					"title":"Cart, Notice, Retype Wachtwoord",
+					"value":"Retype Wachtwoord"
+				},
+				"cart_notice_passwords_match":{
+					"title":"Cart, Notice, Wachtwoords Wedstrijd",
+					"value":"Wachtwoords"
+				},
+				"cart_notice_length_error":{
+					"title":"Cart, Notice, Wachtwoord Format",
+					"value":"lengte moet groter zijn dan zes tekens"
+				}
+			}
+		},
 		"cart_coupons":{
 			"label":"Winkel - Coupons en Cadeaubonnen",
 			"options":{
@@ -1614,8 +1727,32 @@
 					"value":"Er is een probleem opgetreden tijdens het updaten van uw abonnement, probeer het opnieuw of neem contact met ons op als u nog steeds problemen ondervindt."
 				},
 				"subscription_cancel_failed":{
-					"title":"ccount, Abonnement Annuleren Fout",
+					"title":"Account, Abonnement Annuleren Fout",
 					"value":"Er was een probleem bij het annuleren van uw abonnement, probeer het opnieuw of neem contact met ons op als u nog steeds problemen ondervindt."
+				},
+				"subscription_not_found":{
+					"title":"Account, Abonnement niet gevonden",
+					"value":"Er is een onbekende fout opgetreden waarin het abonnement dat u probeert te kopen werd niet teruggevonden in ons systeem. Probeert u op en neem contact met ons op als u zijn blijven moeilijkheden."
+				},
+				"user_insert_error":{
+					"title":"Account, Inschrijving Gebruiker Insert Error",
+					"value":"Er was een probleem met het maken van uw gebruikersaccount in het abonnement systeem. Neem dan contact met ons op om uw transactie te voltooien."
+				},
+				"subscription_added_failed":{
+					"title":"Account, abonnement toegevoegd Fout",
+					"value":"Er was een intern probleem bij het maken van dit product in onze abonnementsdienst. Neem dan contact met ons op om uw transactie te voltooien."
+				},
+				"subscription_failed":{
+					"title":"Account, Subscription Creation Error",
+					"value":"Er is een probleem opgetreden tijdens het maken van uw abonnement in ons systeem. Neem dan contact met ons op om uw transactie te voltooien."
+				},
+				"nets_processing":{
+					"title":"Account, Nets Error Level Authorize",
+					"value":"Bij het invullen van uw bestelling op Nets Netaxept, een fout is opgetreden. Kijk dan op de volgorde die zich in fout en ervoor kiezen om de betaling af te ronden op de volgende pagina. Contacteer ons als u nog steeds problemen hebben."
+				},
+				"nets_processing_payment":{
+					"title":"Account, Nets Error Level Capture",
+					"value":"Uw betaling is geautoriseerd bij Netten Netaxept, maar er lijkt een probleem in ons systeem te zijn geweest. Neem dan contact met ons op om uw bestelling af te ronden."
 				}
 			}
 		},

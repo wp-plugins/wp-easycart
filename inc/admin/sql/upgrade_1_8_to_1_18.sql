@@ -1,4 +1,11 @@
 ﻿;
+ALTER TABLE ec_setting ADD `dhl_weight_unit` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'LB' COMMENT 'Your DHL Weight Unit.';
+ALTER TABLE ec_product ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.';
+ALTER TABLE ec_menulevel1 ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.';
+ALTER TABLE ec_menulevel2 ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.';
+ALTER TABLE ec_menulevel3 ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.';
+ALTER TABLE ec_category ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.';
+ALTER TABLE ec_manufacturer ADD `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.';
 ALTER TABLE ec_product ADD `use_advanced_optionset` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If true, uses the advanced, unlimited option set type.';
 ALTER TABLE ec_option ADD `option_type` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'combo' COMMENT 'The type of input for the option.';
 ALTER TABLE ec_option ADD `option_required` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'Is this option required.';
@@ -468,3 +475,4 @@ CREATE TABLE IF NOT EXISTS `ec_webhook` (
   PRIMARY KEY (`webhook_id`),
   UNIQUE KEY `webhook_id` (`webhook_id`)
 ) ENGINE=MyISAM DEFAULT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 PACK_KEYS=0;
+ALTER TABLE ec_order ADD `nets_transaction_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Nets Transaction ID if Nets used.';

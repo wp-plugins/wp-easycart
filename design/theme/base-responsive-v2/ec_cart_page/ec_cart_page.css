@@ -16,6 +16,32 @@
 	border: thin solid [error_color2];
 	margin-bottom:20px;
 }
+ul.ec_cart_error {
+	list-style: none !important;
+	border-color:#c84e45 !important;
+	border-top: 5px solid #c84e45;
+	border-left: 1px solid #e8e8e3;
+	border-right: 1px solid #e8e8e3;
+	border-bottom: 1px solid #e8e8e3;
+	margin-right: 50px;
+	margin-left: 50px;
+	margin-top: 25px;
+	display: none;
+	background-color:#FFF;
+	margin-left:0px;
+}
+ul.ec_cart_error >li {
+	line-height: 15px;
+	padding: 10px;
+	margin-top: 5px;
+	font-size: 16px;
+	text-align:left;
+	font-size:13px;
+	color:#900;
+}
+ul.ec_cart_error >li > strong {
+	color:#900;
+}
 .ec_cart_error div{
 	padding: 15px;	
 }

@@ -593,7 +593,7 @@ class ec_shipping{
 			return "0.00";
 		}else{
 			// Add the Handling Rate
-			$rate = $rate + $this->handling;
+			$rate = doubleval( $rate ) + doubleval( $this->handling );
 			return doubleval( $rate ) - doubleval( $discount );
 		}
 	}

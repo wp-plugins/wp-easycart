@@ -1,4 +1,4 @@
-<div class="ec_payment_type_holder<?php if( get_option( 'ec_option_payment_process_method' ) != "nets" ){ echo '_inactive'; } ?>" id="nets">
+<div class="ec_payment_type_holder<?php if( get_option( 'ec_option_payment_third_party' ) != "nets" ){ echo '_inactive'; } ?>" id="nets">
 
 	<div class="ec_payment_type_row"><span class="ec_payment_type_row_label">Nets Merchant ID:</span><span class="ec_payment_type_row_input"><input name="ec_option_nets_merchant_id" id="ec_option_nets_merchant_id" type="text" value="<?php echo get_option('ec_option_nets_merchant_id'); ?>" style="width:250px;" /></span></div>
     
@@ -200,4 +200,11 @@
                         <option value="ZWD" <?php if (get_option('ec_option_nets_currency') == "ZWD") echo ' selected'; ?>>Zimbabwean Dollar</option>
                       </select></span></div>
 	    
+        <?php /* ISSUE WITH NETS PAYMENT TEST SERVERS, NO RESPONSE BACK! FOR NOW DO NOT ALLOW TEST MODE */
+		/*
+		<div class="ec_payment_type_row"><span class="ec_payment_type_row_label">Test Mode:</span><span class="ec_payment_type_row_input"><select name="ec_option_nets_test_mode" id="ec_option_nets_test_mode">
+                        <option value="1" <?php if (get_option('ec_option_nets_test_mode') == 1) echo ' selected'; ?>>Yes</option>
+                        <option value="0" <?php if (get_option('ec_option_nets_test_mode') == 0) echo ' selected'; ?>>No</option>
+                      </select></span></div>
+        */?>
 </div>

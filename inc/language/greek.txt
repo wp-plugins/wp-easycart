@@ -295,6 +295,119 @@
 				}
 			}
 		},
+		"cart_form_notices":{
+			"label":"Cart - Form Error Notices",
+			"options":{
+				"cart_notice_is_required":{
+					"title":"Cart, Notice, Is Required Field",
+					"value":"είναι υποχρεωτικό πεδίο"
+				},
+				"cart_notice_item_must_match":{
+					"title":"Cart, Notice, Items Must Match",
+					"value":"πρέπει να ταιριάζουν"
+				},
+				"cart_notice_billing_first_name":{
+					"title":"Cart, Notice, Billing, First Name",
+					"value":"Χρέωσης Όνομα"
+				},
+				"cart_notice_billing_last_name":{
+					"title":"Cart, Notice, Billing, Last Name",
+					"value":"Χρέωσης Επώνυμο"
+				},
+				"cart_notice_billing_address":{
+					"title":"Cart, Notice, Billing, Address",
+					"value":"Διεύθυνση χρέωσης"
+				},
+				"cart_notice_billing_city":{
+					"title":"Cart, Notice, Billing, City",
+					"value":"Πόλη χρέωσης"
+				},
+				"cart_notice_billing_state":{
+					"title":"Cart, Notice, Billing, State",
+					"value":"κατάσταση χρέωσης"
+				},
+				"cart_notice_billing_zip_code":{
+					"title":"Cart, Notice, Billing, Zip Code",
+					"value":"Χρέωση Τ.Κ."
+				},
+				"cart_notice_billing_country":{
+					"title":"Cart, Notice, Billing, Country",
+					"value":"Χώρα χρέωσης"
+				},
+				"cart_notice_billing_phone":{
+					"title":"Cart, Notice, Billing, Phone",
+					"value":"Χρέωση Τηλέφωνο"
+				},
+				"cart_notice_shipping_first_name":{
+					"title":"Cart, Notice, Shipping, First Name",
+					"value":"Ναυτιλία Όνομα"
+				},
+				"cart_notice_shipping_last_name":{
+					"title":"Cart, Notice, Shipping, Last Name",
+					"value":"Αποστολές Επώνυμο"
+				},
+				"cart_notice_shipping_address":{
+					"title":"Cart, Notice, Shipping, Address",
+					"value":"Διεύθυνση αποστολής"
+				},
+				"cart_notice_shipping_city":{
+					"title":"Cart, Notice, Shipping, City",
+					"value":"Αποστολές Πόλη"
+				},
+				"cart_notice_shipping_state":{
+					"title":"Cart, Notice, Shipping, State",
+					"value":"μέλος Αποστολής"
+				},
+				"cart_notice_shipping_zip_code":{
+					"title":"Cart, Notice, Shipping, Zip Code",
+					"value":"Αποστολές Τ.Κ."
+				},
+				"cart_notice_shipping_country":{
+					"title":"Cart, Notice, Shipping, Country",
+					"value":"Αποστολές Χώρα"
+				},
+				"cart_notice_shipping_phone":{
+					"title":"Cart, Notice, Phone",
+					"value":"Αποστολές Τηλέφωνο"
+				},
+				"cart_notice_contact_first_name":{
+					"title":"Cart, Notice, Contact First Name",
+					"value":"Επικοινωνία Ονομα"
+				},
+				"cart_notice_contact_last_name":{
+					"title":"Cart, Notice, Contact Last Name",
+					"value":"Επικοινωνία Επώνυμο"
+				},
+				"cart_notice_email":{
+					"title":"Cart, Notice, Email",
+					"value":"Email"
+				},
+				"cart_notice_retype_email":{
+					"title":"Cart, Notice, Retype Email",
+					"value":"Επαλήθευση Email"
+				},
+				"cart_notice_emails_match":{
+					"title":"Cart, Notice, Shipping, Emails Match",
+					"value":"Emails"
+				},
+				"cart_notice_password":{
+					"title":"Cart, Notice, Password",
+					"value":"Κωδικός"
+				},
+				"cart_notice_retype_password":{
+					"title":"Cart, Notice, Retype Password",
+					"value":"Πληκτρολογήστε ξανά τον κωδικό"
+				},
+				"cart_notice_passwords_match":{
+					"title":"Cart, Notice, Passwords Match",
+					"value":"Οι κωδικοί πρόσβασης"
+				},
+				"cart_notice_length_error":{
+					"title":"Cart, Notice, Password Format",
+					"value":"μήκος πρέπει να είναι μεγαλύτερο από έξι χαρακτήρες"
+				}
+			}
+		},
 		"cart_coupons":{
 			"label":"Cart - Enter Coupons and Gift Cards",
 			"options":{
@@ -1616,6 +1729,30 @@
 				"subscription_cancel_failed":{
 					"title":"Account, Subscription Cancel Error",
 					"value":"Υπήρξε ένα πρόβλημα κατά την ακύρωση της συνδρομής σας, παρακαλώ προσπαθήστε ξανά ή επικοινωνήστε μαζί μας, αν συνεχίσετε να έχετε προβλήματα."
+				},
+				"subscription_not_found":{
+					"title":"Account, Subscription Not Found Error",
+					"value":"Προέκυψε ένα άγνωστο σφάλμα κατά την οποία η συνδρομή που προσπαθείτε να της αγοράς δεν βρέθηκε στο σύστημά μας. Παρακαλώ δοκιμάστε ξανά και επικοινωνήστε μαζί μας αν έχετε συνέχισε δυσκολίες."
+				},
+				"user_insert_error":{
+					"title":"Account, Subscription User Insert Error",
+					"value":"Υπήρξε ένα πρόβλημα κατά τη δημιουργία του λογαριασμού χρήστη σας στο σύστημα εγγραφής μας. Παρακαλώ επικοινωνήστε μαζί μας για να ολοκληρώσετε τη συναλλαγή σας."
+				},
+				"subscription_added_failed":{
+					"title":"Account, Subscription Plan Added Error",
+					"value":"Υπήρξε ένα εσωτερικό πρόβλημα κατά τη δημιουργία αυτού του προϊόντος σε συνδρομητική υπηρεσία μας. Παρακαλώ επικοινωνήστε μαζί μας για να ολοκληρώσετε τη συναλλαγή σας."
+				},
+				"subscription_failed":{
+					"title":"Account, Subscription Creation Error",
+					"value":"Υπήρξε ένα πρόβλημα κατά τη δημιουργία της συνδρομής σας στο σύστημά μας. Παρακαλώ επικοινωνήστε μαζί μας για να ολοκληρώσετε τη συναλλαγή σας."
+				},
+				"nets_processing":{
+					"title":"Account, Nets Error Level Authorize",
+					"value":"Ενώ την ολοκλήρωση της παραγγελίας σας στο Δίχτυα Netaxept, ένα σφάλμα. Παρακαλείσθε να δείτε τη σειρά που εμφανίστηκε κατά λάθος και να επιλέξετε να ολοκληρώσετε την πληρωμή για την επόμενη σελίδα. Επικοινωνήστε μαζί μας αν συνεχίσετε να έχετε προβλήματα."
+				},
+				"nets_processing_payment":{
+					"title":"Account, Nets Error Level Capture",
+					"value":"Η πληρωμή σας έχει εγκριθεί σε Δίχτυα Netaxept, αλλά φαίνεται ότι υπήρξε ένα πρόβλημα στο σύστημά μας. Παρακαλώ επικοινωνήστε μαζί μας για να ολοκληρώσετε την παραγγελία σας."
 				}
 			}
 		},

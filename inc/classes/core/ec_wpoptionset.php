@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_17' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_18' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -208,6 +208,14 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_chronopay_shared_secret');			array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_dwolla_thirdparty_key');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_dwolla_thirdparty_secret');			array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_dwolla_thirdparty_test_mode');		array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_dwolla_thirdparty_account_id');		array_push($this->wp_option_defaults, '812-xxx-xxxx' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_versapay_id');						array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_versapay_password');					array_push($this->wp_option_defaults, '' );
@@ -253,6 +261,8 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_nets_token');							array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_nets_currency');						array_push($this->wp_option_defaults, 'USD' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_nets_test_mode');						array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_payment_express_username');			array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');

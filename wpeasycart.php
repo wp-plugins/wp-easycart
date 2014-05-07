@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.1.10
+ * Version: 2.1.11
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.1.10
+ * @version 2.1.11
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_1_10' );
-define( 'EC_CURRENT_DB', '1_17' );
+define( 'EC_CURRENT_VERSION', '2_1_11' );
+define( 'EC_CURRENT_DB', '1_18' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -428,12 +428,52 @@ function load_ec_pre(){
 	$storepage = get_permalink( $storepageid );
 	$cartpage = get_permalink( $cartpageid );
 	$accountpage = get_permalink( $accountpageid );
+			
+	if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+		$https_class = new WordPressHTTPS( );
+		$storepage = $https_class->makeUrlHttps( $storepage );
+		$cartpage = $https_class->makeUrlHttps( $cartpage );
+		$accountpage = $https_class->makeUrlHttps( $accountpage );
+	}
 	
 	if(substr_count($storepage, '?'))							$permalinkdivider = "&";
 	else														$permalinkdivider = "?";
 	
 	if( isset( $_SERVER['HTTPS'] ) )							$currentpageid = url_to_postid( "https://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] );
 	else														$currentpageid = url_to_postid( "http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] );
+	
+	if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_GET['error_description'] ) && get_option( 'ec_option_payment_third_party' ) == "dwolla_thirdparty" ){
+		$db = new ec_db( );
+		$db->insert_response( $_GET['order_id'], 1, "Dwolla Third Party", print_r( $_GET, true ) );
+		header( "location: " . $accountpage . $permalinkdivider . "ec_page=order_details&order_id=" . $_GET['order_id'] . "&ec_error=dwolla_error" );
+	
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && get_option( 'ec_option_payment_third_party' ) == "dwolla_thirdparty" && isset( $_GET['signature'] ) && isset( $_GET['checkoutId'] ) && isset( $_GET['amount'] ) ){
+		
+		$dwolla_verification = ec_dwolla_verify_signature( $_GET['signature'], $_GET['checkoutId'], $_GET['amount'] );
+		if( $dwolla_verification ){
+			$db = new ec_db( );
+			$db->update_order_status( $_GET['order_id'], "10" );
+				
+			// send email
+			$order_row = $db->get_order_row( $_GET['order_id'], "guest", "guest" );
+			$order_display = new ec_orderdisplay( $order_row, true );
+			$order_display->send_email_receipt( );
+
+			// Quickbooks Hook
+			if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->add_order( $order_id );
+			}
+			
+			header( "location: " . $cartpage . $permalinkdivider . "ec_page=checkout_success&order_id=" . $_GET['order_id'] );
+			
+		}else{
+			$db = new ec_db( );
+			$db->insert_response( $_GET['order_id'], 1, "Dwolla Third Party", print_r( $_GET, true ) );
+			header( "location: " . $accountpage . $permalinkdivider . "ec_page=order_details&order_id=" . $_GET['order_id'] . "&ec_error=dwolla_error" );
+	
+		}
+	}
 	
 	/* Update the Menu and Product Statistics */
 	if( isset( $_GET['model_number'] ) ){
@@ -472,6 +512,12 @@ function load_ec_pre(){
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "paymentexpress" ){
 		$ec_cartpage = new ec_cartpage();
 		$ec_cartpage->process_form_action( "paymentexpress_thirdparty_response" );
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "nets_return" && isset( $_GET['transactionId'] ) ){
+		global $wpdb;
+		$order_id = $wpdb->get_var( $wpdb->prepare( "SELECT ec_order.order_id FROM ec_order WHERE ec_order.nets_transaction_id = %s", $_GET['transactionId'] ) );
+		
+		$nets = new ec_nets( );
+		$nets->process_payment_final( $order_id, $_GET['transactionId'], $_GET['responseCode'] );
 	}
 	
 	/* Account Form Actions, Process Prior to WP Loading */
@@ -948,7 +994,7 @@ function load_ec_membership( $atts, $content = NULL ){
 			
 		}else if( $userroles != '' ){
 			$user_role_array = explode( ',', $userroles );
-			$user = new ec_user( "" );
+			$user = new ec_user( $_SESSION['ec_email'] );
 			
 			if( in_array( $user->user_level, $user_role_array ) )
 				$is_member = true;
@@ -986,7 +1032,7 @@ function load_ec_membership_alt( $atts, $content = NULL ){
 			
 		}else if( $userroles != '' ){
 			$user_role_array = explode( ',', $userroles );
-			$user = new ec_user( "" );
+			$user = new ec_user( $_SESSION['ec_email'] );
 			
 			if( in_array( $user->user_level, $user_role_array ) )
 				$is_member = true;
@@ -1675,6 +1721,14 @@ function ec_add_hook( $call_location, $function_name, $args = array(), $priority
 
 function ec_call_hook( $hook_array, $class_args ){
 	$hook_array[0]( $hook_array[1], $class_args );
+}
+
+function ec_dwolla_verify_signature( $proposedSignature, $checkoutId, $amount ){
+    $apiSecret = get_option( 'ec_option_dwolla_thirdparty_secret' );
+	$amount = number_format( $amount, 2 );
+    $signature = hash_hmac("sha1", "{$checkoutId}&{$amount}", $apiSecret);
+
+    return $signature == $proposedSignature;
 }
 
 ///////////////////HAVING ISSUES WITH OUT DURING ACTIVATION?? PRINT ERRORS!//////////////////

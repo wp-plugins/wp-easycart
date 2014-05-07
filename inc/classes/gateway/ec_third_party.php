@@ -24,6 +24,25 @@ class ec_third_party{
 		
 		$this->order_id = $order_id;
 		$order_row = $this->mysqli->get_order_row( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+
+		$store_page_id = get_option('ec_option_storepage');
+		$this->store_page = get_permalink( $store_page_id );
+		
+		$cart_page_id = get_option('ec_option_cartpage');
+		$this->cart_page = get_permalink( $cart_page_id );
+		
+		$account_page_id = get_option('ec_option_accountpage');
+		$this->account_page = get_permalink( $account_page_id );
+		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+		}
+		
+		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
+		else														$this->permalink_divider = "?";
 		
 		if( $order_row ){
 			$this->order = new ec_orderdisplay( $order_row );
@@ -34,17 +53,6 @@ class ec_third_party{
 				foreach( $order_details as $order_detail )
 					$this->order_details[] = new ec_orderdetail( $order_detail );
 				
-				$store_page_id = get_option('ec_option_storepage');
-				$this->store_page = get_permalink( $store_page_id );
-				
-				$cart_page_id = get_option('ec_option_cartpage');
-				$this->cart_page = get_permalink( $cart_page_id );
-				
-				$account_page_id = get_option('ec_option_accountpage');
-				$this->account_page = get_permalink( $account_page_id );
-				
-				if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
-				else														$this->permalink_divider = "?";
 			}else{
 				error_log( "no order details found on third-party checkout page." );
 				return false;
