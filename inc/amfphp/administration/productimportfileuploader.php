@@ -55,9 +55,9 @@ if ($users || is_user_logged_in()) {
 	$filetmpname = $_FILES['Filedata']['tmp_name'];	
 	$fileType = $_FILES["Filedata"]["type"];
 	$fileSizeMB = ($_FILES["Filedata"]["size"] / 1024 / 1000);
-	$explodedfilename = explode(".", $filename);
-	$nameoffile = $explodedfilename[0];
-	$fileextension = $explodedfilename[1];
+	$explodedfilename = pathinfo($filename);
+	$nameoffile = $explodedfilename['filename'];
+	$fileextension = $explodedfilename['extension'];
 	move_uploaded_file($_FILES['Filedata']['tmp_name'], "productimportfile.".$fileextension);
 
 } else {

@@ -72,11 +72,14 @@ if ($users || is_user_logged_in()) {
 
 	$fileSizeMB = ($_FILES["Filedata"]["size"] / 1024 / 1000);
 
-	$explodedfilename = explode(".", $filename);
+	//$explodedfilename = explode(".", $filename);
 
-	$nameoffile = $explodedfilename[0];
+	//$nameoffile = $explodedfilename[0];
 
-	$fileextension = $explodedfilename[1];
+	//$fileextension = $explodedfilename[1];
+	$explodedfilename = pathinfo($filename);
+	$nameoffile = $explodedfilename['filename'];
+	$fileextension = $explodedfilename['extension'];
 
 	
 
