@@ -6,44 +6,22 @@ class ec_nets extends ec_third_party{
 	
 	public function display_auto_forwarding_form( ){
 		
-		$test_mode = get_option( 'ec_option_nets_test_mode' );
-		
-		if( $test_mode ){
-			
-			$this->custom_nets_test_mode( );
-			
-		}else{
-		
-			$gateway_url = $this->get_gateway_url( );
-			$gateway_data = $this->get_gateway_data( );
-			
-			echo $gateway_url;
-			
-			$ch = curl_init( );
-			curl_setopt($ch, CURLOPT_URL, $gateway_url );
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
-			curl_setopt($ch, CURLOPT_POST, true ); 
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query( $gateway_data ) );
-			curl_setopt($ch, CURLOPT_TIMEOUT, (int)8);
-			$response = curl_exec($ch);
-			curl_close ($ch);
-			
-			$this->handle_gateway_response( $response );
-		
-		}
-	}
-	
-	function custom_nets_test_mode( ){
-		
 		$gateway_url = $this->get_gateway_url( );
 		$gateway_data = $this->get_gateway_data( );
 		
-		$response = file_get_contents( $gateway_url . "?" . http_build_query( $gateway_data ) );
+		echo $gateway_url;
 		
-		print_r( $response );
+		$ch = curl_init( );
+		curl_setopt($ch, CURLOPT_URL, $gateway_url );
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt($ch, CURLOPT_POST, true ); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query( $gateway_data ) );
+		curl_setopt($ch, CURLOPT_TIMEOUT, (int)8);
+		$response = curl_exec($ch);
+		curl_close ($ch);
 		
-		die( );
-		
+		$this->handle_gateway_response( $response );
+
 	}
 	
 	function get_gateway_data( ){
@@ -100,7 +78,7 @@ class ec_nets extends ec_third_party{
 		$test_mode = get_option( 'ec_option_nets_test_mode' );
 		
 		if( $test_mode )
-			return "https://test.epayment.nets.eu/Netaxept/Register.aspx";
+			return "https://epayment-test.bbs.no/Netaxept/Register.aspx";
 		else
 			return "https://epayment.nets.eu/Netaxept/Register.aspx";
 
@@ -111,7 +89,7 @@ class ec_nets extends ec_third_party{
 		$test_mode = get_option( 'ec_option_nets_test_mode' );
 		
 		if( $test_mode )
-			return "https://test.epayment.nets.eu/Netaxept/Process.aspx";
+			return "https://epayment-test.bbs.no/Netaxept/Process.aspx";
 		else
 			return "https://epayment.nets.eu/Netaxept/Process.aspx";
 		
@@ -202,7 +180,7 @@ class ec_nets extends ec_third_party{
 			$response_final = $this->get_gateway_response( $this->get_gateway_process_url( ), $data, "" );
 			
 			$xml = new SimpleXMLElement( $response_final );
-			$code = $xml->responsecode;
+			$code = $xml->ResponseCode;
 			
 			if( $code == "OK" ){
 				$this->mysqli->update_order_status( $this->order_id, "10" );

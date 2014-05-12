@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.11
+Stable tag: 2.1.12
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,15 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.12 =
+* Fix - Admin now accepting four character image extensions.
+* Fix - Nets Payments typo corrected in code.
+* Fix - USPS added first class added as an option.
+* Fix - Admin improved product importing.
+* Fix - Fraktjakt now shows the estimate shipping option.
+* Fix - Shortcode editor css improvements to prevent conflicts with themes or other tools.
+* Fix - Subscriptions, better error checking in the admin for price changes (not allowed by Stripe after creation).
+* Fix - Language for the account login improved (removed reference to checking out).
 = 2.1.11 =
 * Addition - German text file now included as a language option.
 * Addition - Dwolla third party added as a payment option.

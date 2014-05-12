@@ -200,11 +200,10 @@
                         <option value="ZWD" <?php if (get_option('ec_option_nets_currency') == "ZWD") echo ' selected'; ?>>Zimbabwean Dollar</option>
                       </select></span></div>
 	    
-        <?php /* ISSUE WITH NETS PAYMENT TEST SERVERS, NO RESPONSE BACK! FOR NOW DO NOT ALLOW TEST MODE */
-		/*
+        
 		<div class="ec_payment_type_row"><span class="ec_payment_type_row_label">Test Mode:</span><span class="ec_payment_type_row_input"><select name="ec_option_nets_test_mode" id="ec_option_nets_test_mode">
                         <option value="1" <?php if (get_option('ec_option_nets_test_mode') == 1) echo ' selected'; ?>>Yes</option>
                         <option value="0" <?php if (get_option('ec_option_nets_test_mode') == 0) echo ' selected'; ?>>No</option>
                       </select></span></div>
-        */?>
+                      
 </div>

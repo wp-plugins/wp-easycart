@@ -28,6 +28,9 @@ class ec_usps{
 		if( $destination_country != "US" ){
 			
 			$rate_codes = array(	"ALL" => "All",
+									"FIRST CLASS" => "PARCEL",
+									"FIRST CLASS COMMERCIAL" => "PARCEL",
+									"FIRST CLASS HFP COMMERCIAL" => "PARCEL",
 									"PACKAGE" => "Package",
 									"POSTCARDS" => "Postcards",
 									"ENVELOPE" => "Envelope",
@@ -53,6 +56,9 @@ class ec_usps{
 		}else{
 			
 			$rate_codes = array( 	"PRIORITY" => 1, 
+									"FIRST CLASS" => "PARCEL",
+									"FIRST CLASS COMMERCIAL" => "PARCEL",
+									"FIRST CLASS HFP COMMERCIAL" => "PARCEL",
 									"PRIORITY COMMERCIAL" => 1, 
 									"PRIORITY CPP" => 1, 
 									"PRIORITY HFP COMMERCIAL" => 33, 
@@ -139,6 +145,9 @@ class ec_usps{
 		if( $destination_country != "US" ){
 			
 			$rate_codes = array(	"ALL" => "All",
+									"FIRST CLASS" => "PARCEL",
+									"FIRST CLASS COMMERCIAL" => "PARCEL",
+									"FIRST CLASS HFP COMMERCIAL" => "PARCEL",
 									"PACKAGE" => "Package",
 									"POSTCARDS" => "Postcards",
 									"ENVELOPE" => "Envelope",
@@ -164,6 +173,9 @@ class ec_usps{
 		}else{
 			
 			$rate_codes = array( 	"PRIORITY" => 1, 
+									"FIRST CLASS" => "PARCEL",
+									"FIRST CLASS COMMERCIAL" => "PARCEL",
+									"FIRST CLASS HFP COMMERCIAL" => "PARCEL",
 									"PRIORITY COMMERCIAL" => 1, 
 									"PRIORITY CPP" => 1, 
 									"PRIORITY HFP COMMERCIAL" => 33, 

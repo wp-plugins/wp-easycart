@@ -994,7 +994,7 @@
 				},
 				"account_login_sub_title":{
 					"title":"Account, Login Sub Title",
-					"value":"To checkout with an existing account, please sign in below."
+					"value":"Sign in below to access your existing account."
 				},
 				"account_login_email_label":{
 					"title":"Account, Login, Email Label",
