@@ -160,6 +160,12 @@ class ec_nets extends ec_third_party{
 		$account_page_id = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $account_page_id );
 		
+		//added - jjones
+		$mysqli = new ec_db( );
+		$mysqli->insert_response( $order_id, 0, "NETS", print_r( $response_body, true ) );
+		$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+		//end addition - jjones
+		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
 			$https_class = new WordPressHTTPS( );
 			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
@@ -183,7 +189,25 @@ class ec_nets extends ec_third_party{
 			$code = $xml->ResponseCode;
 			
 			if( $code == "OK" ){
-				$this->mysqli->update_order_status( $this->order_id, "10" );
+				//addition - jjones
+				//$this->mysqli->update_order_status( $this->order_id, "10" );
+				$mysqli->update_order_status( $order_id, "10" );
+				
+				// send email
+				$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+				$order_display = new ec_orderdisplay( $order_row, true );
+				$order_display->send_email_receipt( );
+				
+			
+				// Quickbooks Hook
+				if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+					$quickbooks = new ec_quickbooks( );
+					$quickbooks->add_order( $order_id );
+				}
+				//end addition - jjones
+				
+				
+				
 				$this->is_success = 1;
 			}else
 				$this->is_success = 0;
@@ -194,6 +218,7 @@ class ec_nets extends ec_third_party{
 				$this->error_message = $result_message;
 				
 			if( $this->is_success ){
+
 				header( "location:" . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );
 			}else{
 				header( "location:" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $order_id . "&account_error=nets_processing_payment" );
