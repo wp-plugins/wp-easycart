@@ -15,7 +15,7 @@
 			if( $total_prods < 25 ){
 			
 				$ec_product_title = $_POST['ec_product_title'];
-				$ec_product_model_number = $_POST['ec_product_model_number'];
+				$ec_product_model_number = preg_replace( '/[^a-zA-Z0-9_\-]/s', '', $_POST['ec_product_model_number'] );
 				$ec_product_weight = $_POST['ec_product_weight'];
 				$ec_product_manufacturer = $_POST['ec_product_manufacturer'];
 				$ec_product_price = $_POST['ec_product_price'];
@@ -61,7 +61,7 @@
 			}
 		}else if( $_POST['ec_simple_admin_action'] == "update-product" ){
 			$ec_product_title = $_POST['ec_product_title'];
-			$ec_product_model_number = $_POST['ec_product_model_number'];
+			$ec_product_model_number = preg_replace( '/[^a-zA-Z0-9_\-]/s', '', $_POST['ec_product_model_number'] );
 			$ec_product_weight = $_POST['ec_product_weight'];
 			$ec_product_manufacturer = $_POST['ec_product_manufacturer'];
 			$ec_product_price = $_POST['ec_product_price'];
@@ -98,13 +98,13 @@
 				// End File Upload
 			
 				// Update Product
-				$sql = "UPDATE ec_product SET model_number = %s, title = %s, description = %s, price = %s, weight = %s, manufacturer_id = %d, image1 = %s";
-				$wpdb->query( $wpdb->prepare( $sql, $ec_product_model_number, $ec_product_title, $ec_product_description, $ec_product_price, $ec_product_weight, $manufacturer_id, $image_name ) );
+				$sql = "UPDATE ec_product SET model_number = %s, title = %s, description = %s, price = %s, weight = %s, manufacturer_id = %d, image1 = %s WHERE product_id = %d";
+				$wpdb->query( $wpdb->prepare( $sql, $ec_product_model_number, $ec_product_title, $ec_product_description, $ec_product_price, $ec_product_weight, $manufacturer_id, $image_name, $_POST['ec_product_product_id'] ) );
 				// End Product Update
 			}else{
 				// Update Product
-				$sql = "UPDATE ec_product SET model_number = %s, title = %s, description = %s, price = %s, weight = %s, manufacturer_id = %d";
-				$wpdb->query( $wpdb->prepare( $sql, $ec_product_model_number, $ec_product_title, $ec_product_description, $ec_product_price, $ec_product_weight, $manufacturer_id ) );
+				$sql = "UPDATE ec_product SET model_number = %s, title = %s, description = %s, price = %s, weight = %s, manufacturer_id = %d WHERE product_id = %d";
+				$wpdb->query( $wpdb->prepare( $sql, $ec_product_model_number, $ec_product_title, $ec_product_description, $ec_product_price, $ec_product_weight, $manufacturer_id, $_POST['ec_product_product_id'] ) );
 				// End Product Update
 			}
 			$isupdate = true;
@@ -269,6 +269,7 @@ $product = $wpdb->get_row( $wpdb->prepare( "SELECT ec_product.product_id, ec_pro
     <span class="ec_product_add_row_input"><input type="submit" value="UPDATE PRODUCT" onclick="return ec_check_edit_product( );"/></span>
 </div>
 <input type="hidden" name="ec_product_old_model_number" id="ec_product_old_model_number" value="<?php echo $product->model_number; ?>" />
+<input type="hidden" name="ec_product_product_id" id="ec_product_product_id" value="<?php echo $product->product_id; ?>" />
 <input type="hidden" name="ec_simple_admin_action" value="update-product" />
 </form>
 
