@@ -129,7 +129,7 @@ if (isset($_GET["OrderID"])) {
 }
 
 
-$query_orderdetails = sprintf("SELECT ec_order.*, ec_orderdetail.*, ec_orderstatus.order_status FROM ((ec_order LEFT JOIN ec_orderdetail ON ec_orderdetail.order_id = ec_order.order_id) LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id) WHERE ec_order.order_id = %s ORDER BY ec_orderdetail.product_id", GetSQLValueString($KTColParam1_orderdetails, "int"));
+$query_orderdetails = sprintf("SELECT ec_order.*, ec_orderdetail.*, ec_orderstatus.order_status, UNIX_TIMESTAMP(ec_order.order_date) AS orderdate_timestamp FROM ((ec_order LEFT JOIN ec_orderdetail ON ec_orderdetail.order_id = ec_order.order_id) LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id) WHERE ec_order.order_id = %s ORDER BY ec_orderdetail.product_id", GetSQLValueString($KTColParam1_orderdetails, "int"));
 
 $orderdetails = mysql_query($query_orderdetails) or die(mysql_error());
 
@@ -268,7 +268,7 @@ if (@$row_orderdetails['billing_address_line_1'] == "" && @$row_orderdetails['bi
           <td width="134" class="sizesmallfont"><div align="left"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['order_id']); ?></span></div></td>
           <td width="148" class="sizesmallfont">&nbsp;</td>
           <td width="126" class="sizemediumfont"><div align="left"><span class="fontstyle"><strong>Order Date: </strong></span></div></td>
-          <td width="271" class="sizesmallfont"><div align="left"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['order_date']); ?></span></div>
+          <td width="271" class="sizesmallfont"><div align="left"><span class="fontstyle"><?php echo date('F j, Y',$row_orderdetails['orderdate_timestamp']); ?></span></div>
             <div align="left"></div></td>
         </tr>
         <tr>
