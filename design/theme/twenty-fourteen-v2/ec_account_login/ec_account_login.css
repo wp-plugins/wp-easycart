@@ -234,7 +234,7 @@
 	font-size: 12px;
 	font-family: [content_font];
 }
-.ec_account_login_row_error .ec_account_login_label {
+.ec_account_login_row_error .ec_account_login_row_label {
 	color: [error_text];
 }
 .ec_account_login_row_error .ec_account_login_input_field {
