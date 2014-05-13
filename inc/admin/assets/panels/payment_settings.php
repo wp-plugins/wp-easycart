@@ -146,7 +146,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <?php }else if( !$license->is_registered( ) ){ ?>
        		Your store is currently not registered. Please purchase the Full version and register your store before setting up your live payment gateway.
         	<a href="http://www.wpeasycart.com/products/wp-easycart-full-version/" target="_blank" class="ec_full_version_link"></a>
-        <? }else{ ?>
+        <?php }else{ ?>
     		<?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/credit_cards.php" ); ?>
         <?php } ?>
     </div>
