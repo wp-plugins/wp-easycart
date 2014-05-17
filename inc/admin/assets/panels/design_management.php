@@ -9,6 +9,16 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_design_options" )
 }else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "upload_design" ){
 	ec_option_copy_layout( );
 	$isupdate = true;
+}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "update_cache_rules" ){
+	ec_update_cache_rules( );
+	ec_regenerate_css( );
+	ec_regenerate_js( );
+	$isupdate = true;
+}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "refresh_cache" ){
+	ec_regenerate_css( );
+	ec_regenerate_js( );
+	update_option( 'ec_option_cached_date', time( ) );
+	$isupdate = true;
 }
 ?>
 
@@ -120,3 +130,43 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_design_options" )
 
 <div class="ec_admin_page_title_secondary">Update to Latest Design</div>
 <div class="ec_adin_page_intro">If you have not edited the fileset, you may want to do a quick update to the latest design set. You can <a href="http://www.wpeasycart.com/latest-theme-downloads" target="_blank">click here</a> to go to the latest design file download page. Download the theme and layout zips and upload them to the "Upload Design Packages" above. There may also be additional free downloads for new themes and layouts.</div>
+
+<div class="ec_admin_page_title_secondary">CSS/JS Cache Management</div>
+<div class="ec_adin_page_intro">The goal of the EasyCart is to balance ease of use and setup with the ability for designers and developers to customize their install. As of version 2.1.14, we have implemented a system in which the css and js files are combined and saved for re-use (cached). You can also set it up to automatically regenerate these files every day, week, month, or year so that changes are recognized. For developers and designers, we also have an option to turn caching off for development. Finally, we give you the ability to manually refresh the design file set here.</div>
+
+
+<form action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management&ec_action=update_cache_rules" method="POST" enctype="multipart/form-data">
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Caching Mode</em>This option allows you to turn caching into production mode or testing mode.</span></a></span>
+    <span class="ec_setting_row_label">Caching Mode:</span>
+    <span class="ec_setting_row_input">
+    <select name="ec_option_caching_on">
+              <option value="0"<?php if(get_option('ec_option_caching_on') == '0') echo ' selected'; ?>>Development Mode</option>
+              <option value="1"<?php if(get_option('ec_option_caching_on') == '1') echo ' selected'; ?>>Production Mode</option>
+          </select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Cache Update Period</em>This option forces the css and js files to refresh the cached file after the expiry period set here.</span></a></span>
+    <span class="ec_setting_row_label">cache:</span>
+    <span class="ec_setting_row_input">
+    <select name="ec_option_cache_update_period">
+              <option value="0"<?php if(get_option('ec_option_cache_update_period') == '0') echo ' selected'; ?>>Never Update Automatically</option>
+              <option value="1"<?php if(get_option('ec_option_cache_update_period') == '1') echo ' selected'; ?>>Update Daily</option>
+              <option value="2"<?php if(get_option('ec_option_cache_update_period') == '2') echo ' selected'; ?>>Update Weekly</option>
+              <option value="3"<?php if(get_option('ec_option_cache_update_period') == '3') echo ' selected'; ?>>Update Monthly</option>
+              <option value="4"<?php if(get_option('ec_option_cache_update_period') == '4') echo ' selected'; ?>>Update Yearly</option>
+          </select></span>
+</div>
+
+<div class="ec_save_changes_row"><input type="submit" value="UPDATE SETTINGS" class="ec_save_changes_button" /></div>
+
+</form>
+
+<form action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management&ec_action=refresh_cache" method="POST" enctype="multipart/form-data">
+
+<div class="ec_adin_page_intro">Last CSS/JS Cache: <?php echo date( 'l jS \of F Y h:i:s A T', get_option( 'ec_option_cached_date' ) ); ?> | <a href="<?php echo plugins_url('wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store-css.css' ); ?>">Current CSS</a> | <a href="<?php echo plugins_url('wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store-js.js' ); ?>">Current JS</a></div>
+
+<div class="ec_save_changes_row"><input type="submit" value="REFRESH CACHE" class="ec_save_changes_button" /></div>
+
+</form>

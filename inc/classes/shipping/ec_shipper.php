@@ -16,11 +16,35 @@
 		
 		function __construct(  ){
 			$this->ec_setting = new ec_setting();
-			$this->ups = new ec_ups( $this->ec_setting );
-			$this->usps = new ec_usps( $this->ec_setting );
-			$this->fedex = new ec_fedex( $this->ec_setting );
-			$this->auspost = new ec_auspost( $this->ec_setting );
-			$this->dhl = new ec_dhl( $this->ec_setting );
+			
+			/* TEST FOR NECESSARY SHIPPING CLASSES */
+			$use_auspost = false; $use_dhl = false; $use_fedex = false; $use_ups = false; $use_usps = false;
+			global $wpdb;
+			$rates = $wpdb->get_results( "SELECT shippingrate_id, is_ups_based, is_usps_based, is_fedex_based, is_auspost_based, is_dhl_based FROM ec_shippingrate" );
+			
+			foreach( $rates as $rate ){
+				if( $rate->is_auspost_based )
+					$use_auspost = true;
+				else if( $rate->is_dhl_based )
+					$use_dhl = true;
+				else if( $rate->is_fedex_based )
+					$use_fedex = true;
+				else if( $rate->is_ups_based )
+					$use_ups = true;
+				else if( $rate->is_usps_based )
+					$use_usps = true;
+			}
+			
+			if( $use_ups )
+				$this->ups = new ec_ups( $this->ec_setting );
+			if( $use_usps )
+				$this->usps = new ec_usps( $this->ec_setting );
+			if( $use_fedex )
+				$this->fedex = new ec_fedex( $this->ec_setting );
+			if( $use_auspost )
+				$this->auspost = new ec_auspost( $this->ec_setting );
+			if( $use_dhl )
+				$this->dhl = new ec_dhl( $this->ec_setting );
 		}
 		
 		public function get_rate( $ship_company, $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10 ){

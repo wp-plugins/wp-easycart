@@ -47,7 +47,12 @@ class ec_admin_shipping
 		
 		//secure all of the services for logged in authenticated users only	
 		public function _getMethodRoles($methodName){
-		   if($methodName == 'getshippingsettings') return array('admin');
+		   if($methodName == 'upstest') return array('admin');
+		   else if($methodName == 'uspstest') return array('admin');
+		   else if($methodName == 'fedextest') return array('admin');
+		   else if($methodName == 'dhltest') return array('admin');
+		   else if($methodName == 'ausposttest') return array('admin');
+		   else if($methodName == 'getshippingsettings') return array('admin');
 		   else if($methodName == 'updateshippingmethodsetting') return array('admin');
 		   else if($methodName == 'updateshippingsettings') return array('admin');
 		   else if($methodName == 'getups') return array('admin');
@@ -108,6 +113,254 @@ class ec_admin_shipping
 				$args[0] = $sql; 
 				return call_user_func_array('sprintf', $args); 
 		} 
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		//Shipping Testers
+		/////////////////////////////////////////////////////////////////////////////////
+		function upstest() {
+			
+			$db = new ec_db_admin( );
+			$setting_row = $db->get_settings( );
+			$settings = new ec_setting( $setting_row );
+			
+			$message = "";
+			
+			if( $setting_row->ups_access_license_number && $setting_row->ups_user_id && $setting_row->ups_password && $setting_row->ups_ship_from_zip && $setting_row->ups_shipper_number && $setting_row->ups_country_code && $setting_row->ups_weight_type ){
+				// Run test of the settings
+				$ups_class = new ec_ups( $settings );
+				$ups_response = $ups_class->get_rate_test( "01", $setting_row->ups_ship_from_zip, $setting_row->ups_country_code, "1" );
+				$ups_xml = new SimpleXMLElement($ups_response);
+				
+				if( $ups_xml->Response->ResponseStatusCode == "1" ){
+					$result = 1;
+				}else if( $ups_xml->Response->Error->ErrorCode == "111210" ){
+					$result = 3;
+					$message = "The zip + country combination you have entered as your ship from location is invalid.";
+				}else{
+					$result = 3;
+					$message = (string) $ups_xml->Response->Error->ErrorDescription[0];
+				}
+			}else{
+				$result = 3;
+				$message = "You are missing some of the required settings. Please ensure you have something entered for the license number, user id, password, postal code, and shipper number.";
+			}	
+			
+			if( $setting_row->ups_conversion_rate <= 0 ){
+				$result = 2;
+				$message = "You have the conversion rate set to zero or less, which is typically an invalid value. This will return zero or less shipping values every time.";
+			}
+				
+			if ($result == 1) {
+				//if success (green light)
+				$finalresults->success_code = 1;
+				$finalresults->success_message = 'success';
+			} else if ($result == 2) {	
+				//if problem (yellow light)
+				$finalresults->success_code = 2;
+				$finalresults->success_message = $message;
+			} else if ($result == 3) {	
+				//if error (red light)
+				$finalresults->success_code = 3;
+				$finalresults->success_message = $message;
+			}
+			$returnArray[] = $finalresults;
+			return $returnArray;
+		}
+		
+		function uspstest() {
+			
+			$db = new ec_db_admin( );
+			$setting_row = $db->get_settings( );
+			$settings = new ec_setting( $setting_row );
+			$message = "";
+			
+			if( $setting_row->usps_user_name && $setting_row->usps_ship_from_zip ){
+				$usps_has_settings = true;
+				// Run test of the settings
+				$usps_class = new ec_usps( $settings );
+				$usps_response = $usps_class->get_rate_test( "PRIORITY", $setting_row->usps_ship_from_zip, "US", "1" );
+				$usps_xml = new SimpleXMLElement( $usps_response );
+				
+				if( $usps_xml->Number ){
+					$result = 3;
+					$message = (string) $usps_xml->Description;
+				}else if( $usps_xml->Package[0]->Error ){
+					$result = 3;
+					$message = (string) $usps_xml->Package[0]->Error->Description[0];
+				}else{
+					$result = 1;
+				}
+			}else{
+				$result = 3;
+				$message = "You are missing some of the required settings. Please ensure you have something entered for the user name and ship from postal code.";
+			}
+				
+			if ($result == 1) {
+				//if success (green light)
+				$finalresults->success_code = 1;
+				$finalresults->success_message = 'success';
+			} else if ($result == 2) {	
+				//if problem (yellow light)
+				$finalresults->success_code = 2;
+				$finalresults->success_message = 'There was a problem with your configuration or transmitting.';
+			} else if ($result == 3) {	
+				//if error (red light)
+				$finalresults->success_code = 3;
+				$finalresults->success_message = $message;
+			}
+			$returnArray[] = $finalresults;
+			return $returnArray;
+		}
+		
+		function fedextest() {
+			
+			$db = new ec_db_admin( );
+			$setting_row = $db->get_settings( );
+			$settings = new ec_setting( $setting_row );
+		
+			if( $setting_row->fedex_key && $setting_row->fedex_account_number && $setting_row->fedex_meter_number && $setting_row->fedex_password && $setting_row->fedex_ship_from_zip && $setting_row->fedex_weight_units && $setting_row->fedex_country_code ){
+				
+				
+				$fedex_class = new ec_fedex( $settings );
+				$fedex_response = $fedex_class->get_rate_test( "FEDEX_GROUND", $setting_row->fedex_ship_from_zip, $setting_row->fedex_country_code, "1" );
+				
+				if( $fedex_response->HighestSeverity == 'FAILURE' || $fedex_response->HighestSeverity == 'ERROR' || $fedex_response->HighestSeverity == 'WARNING' ){
+					if( isset( $fedex_response->Notifications ) ){
+						$result = 3;
+						
+						if( $fedex_response->Notifications->Code == "1000" )
+							$message = "FedEx returned an authentication error, meaning your access key + password was not a valid login in their system. It could also mean that you have or have not checked the test mode option to match with the account you are using.";
+						else if( $fedex_response->Notifications->Code == "556" )
+							$message = "There are no available services from the selected postal code + country. Likely you have an invalid postal code or have not selected the correct country to match.";
+						else if( $fedex_response->Notifications->Code == "803" )
+							$message = "FedEx has told us the meter number you have entered is incorrect.";
+						else if( $fedex_response->Notifications->Code == "860" )
+							$message = "FedEx has told us the account number you have entered is incorrect.";
+						else
+							$message = print_r( $fedex_response->Notifications, true );
+					
+					}else{
+						$result = 3;
+						$message= "Unknown error occurred.";
+					}
+				}else{
+					$result = 1;
+				}
+			}else{
+				$result = 3;
+				$message = "You are missing some of the required settings. Please ensure you have something entered for the access key, account number, meter number, postal code, and password.";
+			}
+			
+			if( $setting_row->fedex_conversion_rate <= 0 ){
+				$result = 2;
+				$message = "You have the conversion rate set to zero or less, which is typically an invalid value. This will return zero or less shipping values every time.";
+			}
+				
+			if ($result == 1) {
+				//if success (green light)
+				$finalresults->success_code = 1;
+				$finalresults->success_message = 'success';
+			} else if ($result == 2) {	
+				//if problem (yellow light)
+				$finalresults->success_code = 2;
+				$finalresults->success_message = $message;
+			} else if ($result == 3) {	
+				//if error (red light)
+				$finalresults->success_code = 3;
+				$finalresults->success_message = $message;
+			}
+			$returnArray[] = $finalresults;
+			return $returnArray;
+		}
+		
+		function dhltest() {
+			
+			$db = new ec_db_admin( );
+			$setting_row = $db->get_settings( );
+			$settings = new ec_setting( $setting_row );
+			
+			if( $setting_row->dhl_site_id && $setting_row->dhl_password && $setting_row->dhl_ship_from_country && $setting_row->dhl_ship_from_zip && $setting_row->dhl_weight_unit ){
+				
+				$dhl_class = new ec_dhl( $settings );
+				$dhl_response = $dhl_class->get_rate_test( "N", $setting_row->dhl_ship_from_zip, $setting_row->dhl_ship_from_country, "1" );
+				$dhl_xml = new SimpleXMLElement( $dhl_response );
+				
+				if( $dhl_xml && $dhl_xml->Response && $dhl_xml->Response->Status && $dhl_xml->Response->Status->ActionStatus && $dhl_xml->Response->Status->ActionStatus == "Error" ){
+					$result = 3;
+					if( $dhl_xml->Response->Status->Condition->ConditionCode == '100' ){
+						$message = "DHL failed because the site ID and/or password provided is incorrect.";
+					}else{
+						$message = print_r( $dhl_xml->Response->Status->Condition, true );
+					}
+				}else if( $dhl_xml && $dhl_xml->GetQuoteResponse && $dhl_xml->GetQuoteResponse->Note && $dhl_xml->GetQuoteResponse->Note->Condition ){
+					$result = 3;
+					$message = ( string ) $dhl_xml->GetQuoteResponse->Note->Condition->ConditionData;
+				}else{
+					$result = 1;
+				}
+			}else{
+				$result = 3;
+				$message = "You are missing some of the required settings. Please ensure you have something entered for the Site ID, Password, and Postal Code.";
+			}
+				
+			if ($result == 1) {
+				//if success (green light)
+				$finalresults->success_code = 1;
+				$finalresults->success_message = 'success';
+			} else if ($result == 2) {	
+				//if problem (yellow light)
+				$finalresults->success_code = 2;
+				$finalresults->success_message = 'There was a problem with your configuration or transmitting.';
+			} else if ($result == 3) {	
+				//if error (red light)
+				$finalresults->success_code = 3;
+				$finalresults->success_message = $message;
+			}
+			$returnArray[] = $finalresults;
+			return $returnArray;
+			
+		}
+		
+		function ausposttest() {
+			
+			$db = new ec_db_admin( );
+			$setting_row = $db->get_settings( );
+			$settings = new ec_setting( $setting_row );
+		
+			if( $setting_row->auspost_api_key && $setting_row->auspost_ship_from_zip ){
+				$auspost_has_settings = true;
+				
+				// Run test of the settings
+				$auspost_class = new ec_auspost( $settings );
+				$auspost_response = $auspost_class->get_rate_test( "AUS_PARCEL_EXPRESS", $setting_row->auspost_ship_from_zip, "AU", "1" );
+				
+				if( !$auspost_response ){
+					$result = 3;
+					$message = "No response was returned from Australia Post, this means your key is incorrect or the postal code entered is not a valid Australian postal code.";
+				}else
+					$result = 1;
+			}else{
+				$result = 3;
+				$message = "You are missing some of the required settings. Please ensure you have something entered for the API key and the postal code.";
+			}
+				
+			if ($result == 1) {
+				//if success (green light)
+				$finalresults->success_code = 1;
+				$finalresults->success_message = 'success';
+			} else if ($result == 2) {	
+				//if problem (yellow light)
+				$finalresults->success_code = 2;
+				$finalresults->success_message = 'There was a problem with your configuration or transmitting.';
+			} else if ($result == 3) {	
+				//if error (red light)
+				$finalresults->success_code = 3;
+				$finalresults->success_message = $message;
+			}
+			$returnArray[] = $finalresults;
+			return $returnArray;
+			
+		}
 		
 		/////////////////////////////////////////////////////////////////////////////////
 		//Shipping Zones 

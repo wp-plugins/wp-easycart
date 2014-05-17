@@ -1635,4 +1635,9 @@ function ec_send_test_email( ){
 		return false;
 	}
 }
+
+function ec_update_cache_rules( ){
+	update_option( 'ec_option_caching_on', $_POST['ec_option_caching_on'] );
+	update_option( 'ec_option_cache_update_period', $_POST['ec_option_cache_update_period'] );
+}
 ?>

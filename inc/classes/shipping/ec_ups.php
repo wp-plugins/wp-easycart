@@ -70,7 +70,7 @@ class ec_ups{
 		if( !$destination_country )
 			$destination_country = $this->ups_country_code;
 		
-		$shipper_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
+		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, 10, 10, 10 );
 		$request = new WP_Http;
 		$response = $request->request( $this->shipper_url, array( 'method' => 'POST', 'body' => $shipper_data ) );
 		if( is_wp_error( $response ) ){

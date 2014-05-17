@@ -382,6 +382,12 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
 		array_push($this->wp_option_names, 'ec_option_base_layout');						array_push($this->wp_option_defaults, 'base-responsive-v2' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
+		array_push($this->wp_option_names, 'ec_option_caching_on');							array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-base-design-group');
+		array_push($this->wp_option_names, 'ec_option_cache_update_period');				array_push($this->wp_option_defaults, '2' );
+																							array_push($this->wp_option_groups, 'ec-base-design-group');
+		array_push($this->wp_option_names, 'ec_option_cached_date');						array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-base-design-group');
 		array_push($this->wp_option_names, 'ec_option_custom_css');							array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-custom-css-design-group');
 																							

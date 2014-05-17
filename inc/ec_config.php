@@ -1,6 +1,4 @@
 <?php
-// Level Four Storefront Configuration File
-
 // Some servers do not set session path to a writable location. Fix this sometimes.
 if( strtoupper(substr(PHP_OS, 0, 3)) != 'WIN' && !is_writable( session_save_path( ) ) ){ // Linux
 	ini_set( 'session.save_path', '/tmp' );
@@ -30,42 +28,96 @@ if( isset( $_POST['ec_currency_conversion'] ) ){
 	$_SESSION['ec_convert_to'] = $_POST['ec_currency_conversion'];
 }
 
-// INCLUDE GATEWAY CLASSES
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_gateway.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_third_party.php' );
+// LIVE GATEWAY CLASSES
+if( get_option( 'ec_option_payment_process_method' ) != '0' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_gateway.php' );
+}
 
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_authorize.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_braintree.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_chronopay.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_dwolla_thirdparty.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_eway.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_firstdata.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_goemerchant.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_ipnlistener.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_nets.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paymentexpress.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paymentexpress_thirdparty.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypal.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypal_payments_pro.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypal_pro.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypoint.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_psigate.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_realex.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_realex_thirdparty.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_sagepay.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_sagepayus.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_securepay.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_skrill.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_stripe.php' );
+if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_authorize.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'braintree' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_braintree.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'chronopay' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_chronopay.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'eway' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_eway.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'firstdata' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_firstdata.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'goemerchant' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_goemerchant.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'paymentexpress' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paymentexpress.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'paypal_payments_pro' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypal_payments_pro.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'paypal_pro' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypal_pro.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'paypoint' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypoint.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'realex' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_realex.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'sagepay' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_sagepay.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'sagepayus' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_sagepayus.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'securepay' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_securepay.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_stripe.php' );
+}
+
+// THIRD PARTY GATEWAYS
+if( get_option( 'ec_option_payment_third_party' ) != '0' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_third_party.php' );
+}
+
+if( get_option( 'ec_option_payment_third_party' ) == 'dwolla_thirdparty' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_dwolla_thirdparty.php' );
+}else if( get_option( 'ec_option_payment_third_party' ) == 'paymentexpress_thirdparty' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paymentexpress_thirdparty.php' );
+}else if( get_option( 'ec_option_payment_third_party' ) == 'paypal' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypal.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_ipnlistener.php' );
+}else if( get_option( 'ec_option_payment_third_party' ) == 'nets' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_nets.php' );
+}else if( get_option( 'ec_option_payment_third_party' ) == 'realex_thirdparty' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_realex_thirdparty.php' );
+}else if( get_option( 'ec_option_payment_third_party' ) == 'skrill' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_skrill.php' );
+}
 
 // INCLUDE SHIPPER CLASSES
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_auspost.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_dhl.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_fedex.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_fraktjakt.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_ups.php' );
-include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_usps.php' );
+$use_auspost = false; $use_dhl = false; $use_fedex = false; $use_ups = false; $use_usps = false;
+global $wpdb;
+$rates = $wpdb->get_results( "SELECT shippingrate_id, is_ups_based, is_usps_based, is_fedex_based, is_auspost_based, is_dhl_based FROM ec_shippingrate" );
+$shipping_method = $wpdb->get_var( "SELECT shipping_method FROM ec_setting WHERE setting_id = 1" );
+
+foreach( $rates as $rate ){
+	if( $rate->is_auspost_based )
+		$use_auspost = true;
+	else if( $rate->is_dhl_based )
+		$use_dhl = true;
+	else if( $rate->is_fedex_based )
+		$use_fedex = true;
+	else if( $rate->is_ups_based )
+		$use_ups = true;
+	else if( $rate->is_usps_based )
+		$use_usps = true;
+}
+
+if( $shipping_method == 'live' && $use_auspost )
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_auspost.php' );
+if( $shipping_method == 'live' && $use_dhl )
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_dhl.php' );
+if( $shipping_method == 'live' && $use_fedex )
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_fedex.php' );
+if( $shipping_method == 'fraktjakt' )
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_fraktjakt.php' );
+if( $shipping_method == 'live' )
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
+if( $shipping_method == 'live' && $use_ups )
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_ups.php' );
+if( $shipping_method == 'live' && $use_usps )
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_usps.php' );
 
 // INCLUDE CORE CLASSES
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_address.php' );

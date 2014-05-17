@@ -578,9 +578,101 @@ function ec_custom_headers( ){
 	}
 }
 
+function ec_cache_management( ){
+	if( get_option( 'ec_option_caching_on' ) ){
+		// File does not exist at all
+		if( !file_exists( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-css.css" ) ){
+			ec_regenerate_css( );
+			ec_regenerate_js( );
+			update_option( 'ec_option_cached_date', time( ) );
+		}
+		
+		// Use cache management system
+		else if( get_option( 'ec_option_cache_update_period' ) ){
+			
+			$update_time = true;
+			$new_time = time( );
+			
+			// Use a automatic cache builder and the last update has not been set
+			if( get_option( 'ec_option_cache_update_period' ) && get_option( 'ec_option_cached_date' ) ){
+				ec_regenerate_css( );
+				ec_regenerate_js( );
+			}
+			
+			// Cache update daily
+			else if( get_option( 'ec_option_cache_update_period' ) == '1' && get_option( 'ec_option_cached_date' ) < strtotime("-1 day") ){
+				ec_regenerate_css( );
+				ec_regenerate_js( );				
+			}
+			
+			// Cache update weekly
+			else if( get_option( 'ec_option_cache_update_period' ) == '1' && get_option( 'ec_option_cached_date' ) < strtotime("-1 week") ){
+				ec_regenerate_css( );
+				ec_regenerate_js( );				
+			}
+			
+			// Cache update monthly
+			else if( get_option( 'ec_option_cache_update_period' ) == '1' && get_option( 'ec_option_cached_date' ) < strtotime("-1 month") ){
+				ec_regenerate_css( );
+				ec_regenerate_js( );				
+			}
+			
+			// Cache update yearly
+			else if( get_option( 'ec_option_cache_update_period' ) == '1' && get_option( 'ec_option_cached_date' ) < strtotime("-1 year") ){
+				ec_regenerate_css( );
+				ec_regenerate_js( );				
+			}
+			
+			// Do not update
+			else{
+				$update_time = false;
+			}
+			
+			if( $update_time ){
+				update_option( 'ec_option_cached_date', $new_time );
+			}
+		}
+	}else{
+		ec_regenerate_css( );
+		ec_regenerate_js( );
+		update_option( 'ec_option_cached_date', time( ) );
+	}
+}
+
+function ec_regenerate_css( ){
+	ob_start( "ec_save_css_file" );
+	include( plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_css_loader.php' ) );
+	ob_end_flush();
+}
+
+function ec_save_css_file( $buffer ){
+	file_put_contents( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-css.css", $buffer );
+}
+
+function ec_regenerate_js( ){
+	ob_start( "ec_save_js_file" );
+	include(plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_js_loader.php' ) );
+	ob_end_flush();
+}
+
+function ec_save_js_file( $buffer ){
+	file_put_contents( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-js.js", $buffer );
+}
+
 function ec_load_css( ){
-	wp_register_style( 'wpeasycart_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_css_loader.php' ) );
-	wp_enqueue_style( 'wpeasycart_css' );
+	
+	ec_cache_management( );
+	
+	if( file_exists( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-css.css" ) ){
+		// Load the cached file because it exists
+		wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store-css.css' ) );
+		wp_enqueue_style( 'wpeasycart_css' );
+	
+	}else{
+		// File did not exist, revert back to the development mode loader
+		wp_register_style( 'wpeasycart_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_css_loader.php' ) );
+		wp_enqueue_style( 'wpeasycart_css' );
+	}
 	
 	$gfont_list = "";
 	$font_list = explode( ":::", get_option( 'ec_option_font_replacements' ) );
@@ -624,8 +716,16 @@ function ec_load_css( ){
 
 function ec_load_js( ){
 	
-	wp_register_script( 'wpeasycart_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_js_loader.php' ), array( 'jquery' ) );
-	wp_enqueue_script( 'wpeasycart_js' );
+	if( file_exists( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-js.js" ) ){
+		// Load the cached file because it exists
+		wp_register_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store-js.js' ), array( 'jquery' ) );
+		wp_enqueue_script( 'wpeasycart_js' );
+	
+	}else{
+		// File did not exist, revert back to the development mode loader
+		wp_register_script( 'wpeasycart_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_js_loader.php' ), array( 'jquery' ) );
+		wp_enqueue_script( 'wpeasycart_js' );
+	}
 	
 	$ajax_subfolder = "";
 	if( file_exists( plugins_url( 'wp-easycart-data/ajax-subfolder.txt' ) ) ){

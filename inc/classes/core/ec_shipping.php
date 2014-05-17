@@ -35,17 +35,19 @@ class ec_shipping{
 	function __construct( $subtotal, $weight, $quantity = 1, $display_type = 'RADIO' ){
 		$this->mysqli = new ec_db();
 		$this->ec_setting = new ec_setting();
+		$this->shipping_method = $this->ec_setting->get_shipping_method( );
 		
 		$email_user = "";
 		if( isset( $_SESSION['ec_email'] ) )
 			$email_user = $_SESSION['ec_email'];
 		$this->user = new ec_user( $email_user );
-		$this->shipper = new ec_shipper( );
+		
+		if( $this->shipping_method == 'live' )
+			$this->shipper = new ec_shipper( );
 		
 		if( get_option( 'ec_option_use_shipping' ) ){
 			$setting_row = $this->mysqli->get_settings( );
 			$this->handling = $setting_row->shipping_handling_rate;
-			$this->shipping_method = $this->ec_setting->get_shipping_method( );
 			$shipping_rows = $this->mysqli->get_shipping_data( );
 			
 			// Set the destination zip code
