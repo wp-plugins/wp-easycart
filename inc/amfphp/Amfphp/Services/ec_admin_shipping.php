@@ -126,6 +126,14 @@ class ec_admin_shipping
 			$message = "";
 			
 			if( $setting_row->ups_access_license_number && $setting_row->ups_user_id && $setting_row->ups_password && $setting_row->ups_ship_from_zip && $setting_row->ups_shipper_number && $setting_row->ups_country_code && $setting_row->ups_weight_type ){
+				
+				if( !class_exists( "ec_shipper" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
+				}
+				if( !class_exists( "ec_ups" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_ups.php' );
+				}
+				
 				// Run test of the settings
 				$ups_class = new ec_ups( $settings );
 				$ups_response = $ups_class->get_rate_test( "01", $setting_row->ups_ship_from_zip, $setting_row->ups_country_code, "1" );
@@ -175,8 +183,14 @@ class ec_admin_shipping
 			$message = "";
 			
 			if( $setting_row->usps_user_name && $setting_row->usps_ship_from_zip ){
-				$usps_has_settings = true;
-				// Run test of the settings
+				
+				if( !class_exists( "ec_shipper" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
+				}
+				if( !class_exists( "ec_usps" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_usps.php' );
+				}
+				
 				$usps_class = new ec_usps( $settings );
 				$usps_response = $usps_class->get_rate_test( "PRIORITY", $setting_row->usps_ship_from_zip, "US", "1" );
 				$usps_xml = new SimpleXMLElement( $usps_response );
@@ -220,6 +234,12 @@ class ec_admin_shipping
 		
 			if( $setting_row->fedex_key && $setting_row->fedex_account_number && $setting_row->fedex_meter_number && $setting_row->fedex_password && $setting_row->fedex_ship_from_zip && $setting_row->fedex_weight_units && $setting_row->fedex_country_code ){
 				
+				if( !class_exists( "ec_shipper" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
+				}
+				if( !class_exists( "ec_fedex" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_fedex.php' );
+				}
 				
 				$fedex_class = new ec_fedex( $settings );
 				$fedex_response = $fedex_class->get_rate_test( "FEDEX_GROUND", $setting_row->fedex_ship_from_zip, $setting_row->fedex_country_code, "1" );
@@ -281,6 +301,13 @@ class ec_admin_shipping
 			
 			if( $setting_row->dhl_site_id && $setting_row->dhl_password && $setting_row->dhl_ship_from_country && $setting_row->dhl_ship_from_zip && $setting_row->dhl_weight_unit ){
 				
+				if( !class_exists( "ec_shipper" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
+				}
+				if( !class_exists( "ec_dhl" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_dhl.php' );
+				}
+				
 				$dhl_class = new ec_dhl( $settings );
 				$dhl_response = $dhl_class->get_rate_test( "N", $setting_row->dhl_ship_from_zip, $setting_row->dhl_ship_from_country, "1" );
 				$dhl_xml = new SimpleXMLElement( $dhl_response );
@@ -328,9 +355,14 @@ class ec_admin_shipping
 			$settings = new ec_setting( $setting_row );
 		
 			if( $setting_row->auspost_api_key && $setting_row->auspost_ship_from_zip ){
-				$auspost_has_settings = true;
 				
-				// Run test of the settings
+				if( !class_exists( "ec_shipper" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
+				}
+				if( !class_exists( "ec_auspost" ) ){
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_auspost.php' );
+				}
+				
 				$auspost_class = new ec_auspost( $settings );
 				$auspost_response = $auspost_class->get_rate_test( "AUS_PARCEL_EXPRESS", $setting_row->auspost_ship_from_zip, "AU", "1" );
 				
@@ -541,7 +573,7 @@ class ec_admin_shipping
 		
 		function getshippingsettings() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.ups_conversion_rate, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.fedex_conversion_rate, ec_setting.fedex_test_account, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip, ec_setting.dhl_site_id, ec_setting.dhl_password, ec_setting.dhl_ship_from_country, ec_setting.dhl_ship_from_zip, ec_setting.dhl_weight_unit, ec_setting.dhl_test_mode, ec_setting.fraktjakt_customer_id, ec_setting.fraktjakt_login_key, ec_setting.fraktjakt_conversion_rate, ec_setting.fraktjakt_test_mode FROM ec_setting  WHERE ec_setting.setting_id = 1");
+			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.ups_conversion_rate, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.fedex_conversion_rate, ec_setting.fedex_test_account, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip, ec_setting.dhl_site_id, ec_setting.dhl_password, ec_setting.dhl_ship_from_country, ec_setting.dhl_ship_from_zip, ec_setting.dhl_weight_unit, ec_setting.dhl_test_mode, ec_setting.fraktjakt_customer_id, ec_setting.fraktjakt_login_key, ec_setting.fraktjakt_conversion_rate, ec_setting.fraktjakt_test_mode, ec_setting.fraktjakt_address, ec_setting.fraktjakt_city, ec_setting.fraktjakt_state, ec_setting.fraktjakt_zip, ec_setting.fraktjakt_country FROM ec_setting  WHERE ec_setting.setting_id = 1");
 			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
 			  $totalrows = mysql_fetch_object($totalquery);
 			  
@@ -589,7 +621,7 @@ class ec_admin_shipping
 				//convert object to array
 			  $shippingsettings = (array)$shippingsettings;
 			  //Create SQL Query
-			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s', ec_setting.shipping_handling_rate='%s', ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.ups_conversion_rate ='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s',  ec_setting.fedex_conversion_rate ='%s', ec_setting.fedex_test_account='%s', ec_setting.auspost_api_key = '%s', ec_setting.auspost_ship_from_zip = '%s' , ec_setting.dhl_site_id = '%s', ec_setting.dhl_password = '%s', ec_setting.dhl_ship_from_country = '%s', ec_setting.dhl_ship_from_zip = '%s', ec_setting.dhl_weight_unit = '%s', ec_setting.dhl_test_mode = '%s', ec_setting.fraktjakt_customer_id = '%s', ec_setting.fraktjakt_login_key = '%s', ec_setting.fraktjakt_conversion_rate = '%s', ec_setting.fraktjakt_test_mode = '%s' WHERE ec_setting.setting_id = 1", 
+			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s', ec_setting.shipping_handling_rate='%s', ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.ups_conversion_rate ='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s',  ec_setting.fedex_conversion_rate ='%s', ec_setting.fedex_test_account='%s', ec_setting.auspost_api_key = '%s', ec_setting.auspost_ship_from_zip = '%s' , ec_setting.dhl_site_id = '%s', ec_setting.dhl_password = '%s', ec_setting.dhl_ship_from_country = '%s', ec_setting.dhl_ship_from_zip = '%s', ec_setting.dhl_weight_unit = '%s', ec_setting.dhl_test_mode = '%s', ec_setting.fraktjakt_customer_id = '%s', ec_setting.fraktjakt_login_key = '%s', ec_setting.fraktjakt_conversion_rate = '%s', ec_setting.fraktjakt_test_mode = '%s', ec_setting.fraktjakt_address = '%s', ec_setting.fraktjakt_city = '%s', ec_setting.fraktjakt_state = '%s', ec_setting.fraktjakt_zip = '%s', ec_setting.fraktjakt_country = '%s' WHERE ec_setting.setting_id = 1", 
 			 mysql_real_escape_string($shippingsettings['shippingmethod']), 
 			 mysql_real_escape_string($shippingsettings['handlingcharge']), 
 			 mysql_real_escape_string($shippingsettings['ups_access_license_number']), 
@@ -622,7 +654,12 @@ class ec_admin_shipping
 			 mysql_real_escape_string($shippingsettings['fj_customerid']),
 			 mysql_real_escape_string($shippingsettings['fj_loginkey']),
 			 mysql_real_escape_string($shippingsettings['fj_conversionrate']),
-			 mysql_real_escape_string($shippingsettings['fj_testmode']));
+			 mysql_real_escape_string($shippingsettings['fj_testmode']),
+			 mysql_real_escape_string($shippingsettings['fj_address']),
+			 mysql_real_escape_string($shippingsettings['fj_city']),
+			 mysql_real_escape_string($shippingsettings['fj_state']),
+			 mysql_real_escape_string($shippingsettings['fj_zip']),
+			 mysql_real_escape_string($shippingsettings['fj_country']));
 			//Run query on database;
 			  mysql_query($sql);
 			  //return mysql_error();
