@@ -241,6 +241,41 @@ class ec_setting{
 			return "";
 	}
 	
+	public function get_fraktjakt_address( ){
+		if( isset( $this->setting_row->fraktjakt_address ) )
+			return $this->setting_row->fraktjakt_address;
+		else
+			return "";
+	}
+	
+	public function get_fraktjakt_city( ){
+		if( isset( $this->setting_row->fraktjakt_city ) )
+			return $this->setting_row->fraktjakt_city;
+		else
+			return "";
+	}
+	
+	public function get_fraktjakt_state( ){
+		if( isset( $this->setting_row->fraktjakt_state ) )
+			return $this->setting_row->fraktjakt_state;
+		else
+			return "";
+	}
+	
+	public function get_fraktjakt_zip( ){
+		if( isset( $this->setting_row->fraktjakt_zip ) )
+			return $this->setting_row->fraktjakt_zip;
+		else
+			return "";
+	}
+	
+	public function get_fraktjakt_country( ){
+		if( isset( $this->setting_row->fraktjakt_country ) )
+			return $this->setting_row->fraktjakt_country;
+		else
+			return "";
+	}
+	
 }
 
 ?>

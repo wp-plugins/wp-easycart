@@ -1258,6 +1258,11 @@ function ec_update_advanced_setup( ){
 		$font_options .= $key . "=" . $val;
 	}
 	update_option( 'ec_option_font_replacements', $font_options );
+	
+	// CSS may have been updated, regenerate this file...
+	ec_regenerate_css( );
+	ec_regenerate_js( );
+	update_option( 'ec_option_cached_date', time( ) );
 }
 
 function ec_update_colors( ){

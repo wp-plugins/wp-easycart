@@ -2478,7 +2478,7 @@ class ec_db{
 	}
 	
 	public function get_settings( ){
-		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, ups_conversion_rate, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, fedex_conversion_rate, fedex_test_account, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode, fraktjakt_customer_id, fraktjakt_login_key, fraktjakt_conversion_rate, fraktjakt_test_mode FROM ec_setting WHERE setting_id = 1";
+		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, ups_conversion_rate, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, fedex_conversion_rate, fedex_test_account, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode, fraktjakt_customer_id, fraktjakt_login_key, fraktjakt_conversion_rate, fraktjakt_test_mode, fraktjakt_address, fraktjakt_city, fraktjakt_state, fraktjakt_zip, fraktjakt_country FROM ec_setting WHERE setting_id = 1";
 			return $this->mysqli->get_row( $sql );
 	}
 	

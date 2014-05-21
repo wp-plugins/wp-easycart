@@ -890,6 +890,16 @@ CREATE TABLE IF NOT EXISTS `ec_setting` (
    '1.000' COMMENT 'The conversion rate between your base currency and SEK.',
    `fraktjakt_test_mode` TINYINT(1) NOT NULL DEFAULT 
    '0' COMMENT 'Use test mode for Fraktjakt.',
+   `fraktjakt_address` VARCHAR(120) COLLATE utf8_general_ci NOT NULL DEFAULT 
+   '' COMMENT 'Fraktjakt used for shipping estimate.',
+   `fraktjakt_city` VARCHAR(55) COLLATE utf8_general_ci NOT NULL DEFAULT 
+   '' COMMENT 'Fraktjakt used for shipping estimate.',
+   `fraktjakt_state` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT 
+   '' COMMENT 'Fraktjakt used for shipping estimate.',
+   `fraktjakt_zip` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 
+   '' COMMENT 'Fraktjakt used for shipping estimate.',
+   `fraktjakt_country` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT 
+   '' COMMENT 'Fraktjakt used for shipping estimate.',
 
   PRIMARY KEY (`setting_id`)
 )ENGINE=MyISAM

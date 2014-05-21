@@ -282,9 +282,7 @@ class ec_shipping{
 				$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
 			
 			for( $i=0; $i<count( $this->live_based ); $i++){
-				if( $this->live_based[$i][4] < 0 )
-					$rate = "0.00";
-				else if( $this->live_based[$i][4] > 0 )
+				if( $this->live_based[$i][4] != NULL )
 					$rate = $this->live_based[$i][4];
 				else
 					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
@@ -447,12 +445,11 @@ class ec_shipping{
 		}else if( $this->shipping_method == "live" ){
 			for( $i=0; $i<count($this->live_based); $i++){
 				if( $this->live_based[$i][2] == $selected_shipping_method_id ){
-					if( $this->live_based[$i][4] < 0 )
-						$rate = "0.00";
-					else if( $this->live_based[$i][4] > 0 )
-						$rate = $this->live_based[$i][4];
-					else
-						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+					if( $this->live_based[$i][4] != NULL ){
+						$rate = $this->live_based[$i][4] + $this->handling;
+						return "<div id=\"" . $this->live_based[$i][0] . "\"> " . $this->live_based[$i][1] . " " . $GLOBALS['currency']->get_currency_display( $rate ) . "</div>";
+					}else
+						$rate = (float) $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
 					
 					return $this->get_live_based_div( $i, $rate + $this->handling );
 				}
@@ -550,9 +547,7 @@ class ec_shipping{
 		}else if( $this->shipping_method == "live" ){
 			if( !isset( $_SESSION['ec_shipping_method'] ) ){
 				if( isset( $this->live_based ) && count( $this->live_based ) > 0 && count( $this->live_based[0] ) > 3 ){
-					if( $this->live_based[0][4] < 0 )
-						$rate = "0.00";
-					else if( $this->live_based[0][4] > 0 )
+					if( $this->live_based[0][4] != NULL )
 						$rate = $this->live_based[0][4];
 					else
 						$rate = $this->shipper->get_rate( $this->live_based[0][3], $this->live_based[0][0], $this->destination_zip, $this->destination_country, $this->weight );
@@ -560,9 +555,7 @@ class ec_shipping{
 			}else{
 				for( $i=0; $i<count( $this->live_based ); $i++ ){
 					if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] ){
-						if( $this->live_based[$i][4] < 0 )
-							$rate = "0.00";
-						else if( $this->live_based[$i][4] > 0 )
+						if( $this->live_based[$i][4] != NULL )
 							$rate = $this->live_based[$i][4];
 						else
 							$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
@@ -576,14 +569,20 @@ class ec_shipping{
 				$selected_method = $_SESSION['ec_shipping_method'];
 			
 			if( $this->fraktjakt_shipping_options ){
-					
+				$backup = 0.00;
+				$frak_is_found = false;
 				foreach( $this->fraktjakt_shipping_options as $shipping_option ){
-					if( ( !$selected_method && $i == 0 ) || ( $selected_method == $shipping_option['id'] ) )
+					if( ( !$selected_method && $i == 0 ) || ( $selected_method == $shipping_option['id'] ) ){
 						$rate = $shipping_option['price'];
+						$frak_is_found = true;
+					}else if( $i == 0 )
+						$backup = $shipping_option['price'];
 						
 					$i++;
 				}
 				
+				if( !$frak_is_found )
+					$rate = $backup;
 			}
 		}
 		

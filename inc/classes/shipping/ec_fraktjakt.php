@@ -144,7 +144,11 @@ class ec_fraktjakt{
 								</parcel>';
 							
 							$shipper_data .= '
-							</parcels>
+							</parcels>';
+		
+		if( $this->user->shipping->address_line_1 != "" )	{
+			
+			$shipper_data .= '
 							<address>
 								<street_address_1>' . $this->user->shipping->address_line_1 . '</street_address_1>
 								<postal_code>' . $this->user->shipping->zip . '</postal_code>
@@ -157,7 +161,28 @@ class ec_fraktjakt{
 							}
 							
 							$shipper_data .= '
-							</address>
+							</address>';
+			
+		}else{
+		
+			$shipper_data .= '
+							<address>
+								<street_address_1>' . $this->setting->get_fraktjakt_address( ) . '</street_address_1>
+								<postal_code>' . $this->setting->get_fraktjakt_zip( ) . '</postal_code>
+								<city_name>' . $this->setting->get_fraktjakt_city( ) . '</city_name>
+								<country_code>' . $this->setting->get_fraktjakt_country( ) . '</country_code>';
+							
+							if( $this->setting->get_fraktjakt_state( ) != "" ){
+								$shipper_data .= '
+								<country_subdivision_code>' . $this->setting->get_fraktjakt_state( ) . '</country_subdivision_code>';
+							}
+							
+							$shipper_data .= '
+							</address>';
+							
+		}
+		
+		$shipper_data .= '
 							
 						</shipment>';
 						

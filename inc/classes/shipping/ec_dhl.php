@@ -171,12 +171,12 @@ class ec_dhl{
 			if( count( $xml->GetQuoteResponse->BkgDetails->QtdShp ) > 1 ){
 				for( $i=0; $i<count( $xml->GetQuoteResponse->BkgDetails->QtdShp ); $i++ ){
 					$rates[] = array( 	'rate_code' => $this->get_product_code( $xml->GetQuoteResponse->BkgDetails->QtdShp[$i]->ProductShortName ), 
-										'rate' => $xml->GetQuoteResponse->BkgDetails->QtdShp[$i]->ShippingCharge
+										'rate' => (string) $xml->GetQuoteResponse->BkgDetails->QtdShp[$i]->ShippingCharge
 									 );
 				}
 			}else{
 				$rates[] = array( 	'rate_code' => $this->get_product_code( $xml->GetQuoteResponse->BkgDetails->QtdShp->ProductShortName ), 
-										'rate' => $xml->GetQuoteResponse->BkgDetails->QtdShp->WeightCharge
+										'rate' => (string) $xml->GetQuoteResponse->BkgDetails->QtdShp->WeightCharge
 									 );
 			}
 		}

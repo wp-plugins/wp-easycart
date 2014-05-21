@@ -223,19 +223,20 @@ class ec_usps{
 	}
 	
 	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight ){
+				
+		$lbs = floor( $weight );
+		$ounces = floor( 16 * ( $weight - $lbs  ) );
 		
 		if( $destination_country != "US" ){
 			$db = new ec_db( );
 			$country_name = $db->get_country_name( $destination_country );
 			$this->use_international = true;
-			if( $weight < 1 )
-				$weight = 1;
 				
 			$shipper_data = "<IntlRateV2Request USERID='" . $this->usps_user_name . "' >
 							<Revision>2</Revision>
 							<Package ID='1ST' >
-								<Pounds>" . $weight . "</Pounds>
-								<Ounces>0</Ounces>
+								<Pounds>" . $lbs . "</Pounds>
+								<Ounces>" . $ounces . "</Ounces>
 								<Machinable>true</Machinable>
 								<MailType>" . $ship_code . "</MailType>
 								<GXG>
@@ -263,8 +264,8 @@ class ec_usps{
 								<Service>" . $ship_code . "</Service>
 								<ZipOrigination>" . $this->usps_ship_from_zip . "</ZipOrigination>
 								<ZipDestination>" . $destination_zip . "</ZipDestination>
-								<Pounds>" . $weight . "</Pounds>
-								<Ounces>0</Ounces>
+								<Pounds>" . $lbs . "</Pounds>
+								<Ounces>" . $ounces . "</Ounces>
 								<Container/>
 								<Size>REGULAR</Size>
 								<Machinable>true</Machinable>
@@ -277,19 +278,20 @@ class ec_usps{
 	}
 	
 	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+				
+		$lbs = floor( $weight );
+		$ounces = floor( 16 * ( $weight - $lbs  ) );
 		
 		if( $destination_country != "US" ){
 			$db = new ec_db( );
 			$country_name = $db->get_country_name( $destination_country );
 			$this->use_international = true;
-			if( $weight < 1 )
-				$weight = 1;
 				
 			$shipper_data = "<IntlRateV2Request USERID='" . $this->usps_user_name . "' >
 							<Revision>2</Revision>
 							<Package ID='1ST' >
-								<Pounds>" . $weight . "</Pounds>
-								<Ounces>0</Ounces>
+								<Pounds>" . $lbs . "</Pounds>
+								<Ounces>" . $ounces . "</Ounces>
 								<Machinable>true</Machinable>
 								<MailType>ALL</MailType>
 								<GXG>
@@ -317,8 +319,8 @@ class ec_usps{
 								<Service>ALL</Service>
 								<ZipOrigination>" . $this->usps_ship_from_zip . "</ZipOrigination>
 								<ZipDestination>" . $destination_zip . "</ZipDestination>
-								<Pounds>" . $weight . "</Pounds>
-								<Ounces>0</Ounces>
+								<Pounds>" . $lbs . "</Pounds>
+								<Ounces>" . $ounces . "</Ounces>
 								<Container/>
 								<Size>REGULAR</Size>
 								<Machinable>true</Machinable>
@@ -365,11 +367,20 @@ class ec_usps{
 		
 		if( $this->use_international ){
 			
+			$min_rate = (float) 99999.99;
 			
-			for( $i=0; $i<count( $xml->Package[0]->Postage ); $i++ ){
-				$rates[] = array( 'rate_code' => $rate_codes[ $xml->Package[0]->Postage[$i]['CLASSID'] ], 'rate' => $xml->Package[0]->Postage[$i]->Rate );
-			}
+			foreach( $xml->Package->Service as $service ){
 				
+				if( (float) $service->Postage < $min_rate )
+					$min_rate = $service->Postage;
+				
+			}
+			
+			if( $min_rate == 99999.99 )
+				$rates[] = array( 'rate_code' => 'ALL', 'rate' => 0.00 );
+			else
+				$rates[] = array( 'rate_code' => 'ALL', 'rate' => $min_rate );
+					
 		}else{
 			$rate_codes = array(	"1" => "PRIORITY",
 									"33" => "PRIORITY HFP COMMERCIAL", 

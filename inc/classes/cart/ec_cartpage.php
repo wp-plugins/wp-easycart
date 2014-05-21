@@ -407,7 +407,7 @@ class ec_cartpage{
 	}
 	
 	public function is_cart_type_three( ){
-		return ( ( $this->shipping->shipping_method == "live" || $this->shipping->shipping_method == "fraktjakt" ) && $this->cart->weight > 0 && ( !isset( $_GET['ec_page'] ) || !isset( $_SESSION['ec_email'] ) ) );
+		return ( ( $this->shipping->shipping_method == "live" ) && $this->cart->weight > 0 && ( !isset( $_GET['ec_page'] ) || !isset( $_SESSION['ec_email'] ) ) );
 	}
 	
 	public function display_total_items( ){

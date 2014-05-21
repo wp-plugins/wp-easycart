@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.13
+Stable tag: 2.1.14
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,16 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.14 =
+* Addition - Added tester option for all live shipping companies in the admin. You can now click a test button and recieve a detailed response about why the shipping setup is incorrect.
+* Addition - Added a css/js caching option in the design file management section. This allow for a static css/js file to be loaded in production mode. You can also set this to update every day/week/month/year or turn off for development.
+* Improvement - Improved the overall load time of the system and fixed some bottlenecks in the processing of the cart.
+* Fix - Fraktjakt does not allow for live shipping, this has been corrected to use an estimate prior to the user entering their shipping info.
+* Fix - Live shipping over-ride rates was not correct for user's who wanted to provide a free shipping option. This has been corrected.
+* Fix - USPS international rates had changed, this has been corrected to find proper values.
+* Fix - USPS was not working properly with decimal value weights. Needed to convert to lbs and ozs.
+* Fix - Display of final shipping rate was losing the decimal in one spot.
+* Fix - Moved shortcode editor forward to be compatible with more editing tools.
 = 2.1.13 =
 * Fix - Free store admin was not allowing the update of products, this has been corrected.
 = 2.1.12 =
