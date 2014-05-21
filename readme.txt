@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.14
+Stable tag: 2.1.15
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.15 =
+* Fix - Some servers are not allowing the writing of data to the cached css/js file. A fix has been implemented to revert these users to the previous css/js loading method.
 = 2.1.14 =
 * Addition - Added tester option for all live shipping companies in the admin. You can now click a test button and recieve a detailed response about why the shipping setup is incorrect.
 * Addition - Added a css/js caching option in the design file management section. This allow for a static css/js file to be loaded in production mode. You can also set this to update every day/week/month/year or turn off for development.
