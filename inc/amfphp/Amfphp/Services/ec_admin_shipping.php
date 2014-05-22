@@ -158,7 +158,7 @@ class ec_admin_shipping
 				$message = "You have the conversion rate set to zero or less, which is typically an invalid value. This will return zero or less shipping values every time.";
 			}
 				
-			$finalresults = new object();	
+			$finalresults = new StdClass;
 			if ($result == 1) {
 				//if success (green light)
 				$finalresults->success_code = 1;
@@ -210,7 +210,7 @@ class ec_admin_shipping
 				$message = "You are missing some of the required settings. Please ensure you have something entered for the user name and ship from postal code.";
 			}
 			
-			$finalresults = new object();	
+			$finalresults = new StdClass;	
 			if ($result == 1) {
 				//if success (green light)
 				$finalresults->success_code = 1;
@@ -278,7 +278,7 @@ class ec_admin_shipping
 				$message = "You have the conversion rate set to zero or less, which is typically an invalid value. This will return zero or less shipping values every time.";
 			}
 				
-			$finalresults = new object();	
+			$finalresults = new StdClass;	
 			if ($result == 1) {
 				//if success (green light)
 				$finalresults->success_code = 1;
@@ -333,7 +333,7 @@ class ec_admin_shipping
 				$message = "You are missing some of the required settings. Please ensure you have something entered for the Site ID, Password, and Postal Code.";
 			}
 			
-			$finalresults = new object();	
+			$finalresults = new StdClass;
 			if ($result == 1) {
 				//if success (green light)
 				$finalresults->success_code = 1;
@@ -380,7 +380,7 @@ class ec_admin_shipping
 				$message = "You are missing some of the required settings. Please ensure you have something entered for the API key and the postal code.";
 			}
 				
-			$finalresults = new object();	
+			$finalresults = new StdClass;	
 			if ($result == 1) {
 				//if success (green light)
 				$finalresults->success_code = 1;
