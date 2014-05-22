@@ -85,6 +85,30 @@ class ec_admin_settings
 			  }
 		}
 		
+		//convert our max upload file string from 32M or 64M size to bytes
+		function convertBytes( $value ) {
+			if ( is_numeric( $value ) ) {
+				return $value;
+			} else {
+				$value_length = strlen($value);
+				$qty = substr( $value, 0, $value_length - 1 );
+				$unit = strtolower( substr( $value, $value_length - 1 ) );
+				switch ( $unit ) {
+					case 'k':
+						$qty *= 1024;
+						break;
+					case 'm':
+						$qty *= 1048576;
+						break;
+					case 'g':
+						$qty *= 1073741824;
+						break;
+				}
+				return $qty;
+			}
+		}
+		
+		
 		//site settings functions
 		function getsitesettings() {
 			
@@ -93,6 +117,12 @@ class ec_admin_settings
 			} else {
 				$dbprefix = 'wp_'; //else use default
 			}
+			if(ini_get('upload_max_filesize')) {
+				$maxuploadsize = $this->convertBytes(ini_get('upload_max_filesize'));
+			} else {
+				$maxuploadsize = 10000000;
+			}
+			
 			//Create SQL Query
 			$query_settings = mysql_query( "SELECT ec_setting.* FROM ec_setting WHERE ec_setting.setting_id = 1" );
 			$query_options = mysql_query( "
@@ -121,6 +151,7 @@ class ec_admin_settings
 				$row->WP_decimal_symbol = $row2->WP_decimal_symbol;
 				$row->WP_decimal_places = $row2->WP_decimal_places;
 				$row->WP_currency_symbol = $row2->WP_currency_symbol;
+				$row->maxuploadsize = $maxuploadsize;
 				$returnArray[] = $row;
 				return($returnArray);
 			} else {
@@ -129,6 +160,7 @@ class ec_admin_settings
 				$row->WP_decimal_symbol = "";
 				$row->WP_decimal_places = "";
 				$row->WP_currency_symbol = "";
+				$row->maxuploadsize = $maxuploadsize;
 				$returnArray[] = $row;
 				return($returnArray);
 			}
