@@ -125,5 +125,27 @@
 			}
 		}
 		
+		public function validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
+			
+			if( isset( $this->ups ) )
+				return $this->ups->validate_address( $destination_city, $destination_state, $destination_zip, $destination_country );
+			
+			else if( isset( $this->usps ) )
+				return $this->usps->validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country );
+			
+			else if( isset( $this->fedex ) )
+				return $this->fedex->validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country );
+			
+			else if( isset( $this->auspost ) )
+				return $this->auspost->validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country );
+			
+			else if( isset( $this->dhl ) )
+				return $this->dhl->validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country );
+				
+			else
+				return true;
+			
+		}
+		
 	}
 ?>

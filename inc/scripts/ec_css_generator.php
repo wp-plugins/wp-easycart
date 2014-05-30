@@ -1,5 +1,31 @@
 <?php
+$css_content = "";
 
+if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-store-list.css' ) ){
+	
+	$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-store-list.css' );
+	
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-store-details.css' ) )
+		$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-store-details.css' );
+	
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-cart.css' ) )
+		$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-cart.css' );
+	
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-account.css' ) )
+		$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-account.css' );
+	
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-widgets.css' ) )
+		$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/css/ec-widgets.css' );
+		
+	if( get_option( 'ec_option_use_rtl' ) && file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' ) )
+	$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' );
+else if( get_option( 'ec_option_use_rtl' ) && file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' ) )
+	$css_content .= file_get_contents( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' );
+
+
+}else{
+	
+// USE OLD METHOD
 $ec_store_css = array(
 	'product',
 	'product_filter_bar',
@@ -64,8 +90,6 @@ $ec_widget_css = array(
 	'search_widget',
 	'specials_widget',
 );
-
-$css_content = "";
 
 // Additional CSS used for the product (single and multiple) shortcode for display type 3
 $css_content .= "
@@ -197,6 +221,8 @@ if( get_option( 'ec_option_use_rtl' ) && file_exists( WP_PLUGIN_DIR . '/wp-easyc
 	$css_content .= file_get_contents( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' );
 else if( get_option( 'ec_option_use_rtl' ) && file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' ) )
 	$css_content .= file_get_contents( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' );
+
+}// Close if/else new/old method
 
 // Theme css replacement
 $replacements_string = get_option( 'ec_option_css_replacements' );

@@ -620,6 +620,20 @@ class ec_shipping{
 		
 		return $this->fraktjakt->insert_shipping_order( $shipment_id, $_SESSION['ec_shipping_method'] );
 	}
+	
+	public function validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
+		
+		if( $this->shipping_method == "live" ){
+			
+			return $this->shipper->validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country );
+		
+		}else if( $this->shipping_method == "fraktjakt" ){
+			return $this->fraktjakt->validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country );
+		
+		}else
+			return true;
+			
+	}
 }
 
 ?>

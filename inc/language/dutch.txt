@@ -1714,6 +1714,10 @@
 					"title":"Kar, Optioneel Abonnement niet gevonden, Gateway Afhankelijke",
 					"value":"Er is een fout opgetreden tijdens het verwerken van uw verzoek en de gevraagde abonnement is niet gevonden. Contacteer ons om de kwestie op te lossen."
 				},
+				"invalid_address":{
+					"title":"Cart, Ongeldig Levende verzendadres",
+					"value":"Er is iets mis met het adres dat u hebt ingevoerd. Controleer uw stad, provincie, postcode en land te zorgen dat de waarden correct zijn."
+				},
 				"activation_error":{
 					"title":"Account, Activation Error",
 					"value":"Er is een fout opgetreden tijdens een poging om uw account te activeren. Neem contact met ons om het probleem opgelost."

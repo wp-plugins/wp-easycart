@@ -1714,6 +1714,10 @@
 					"title":"Cart, Optional, Subscription Not Found, Gateway Dependent",
 					"value":"Une erreur s'est produite lors du traitement de votre demande et la souscription demandée n'a pas été trouvée. Contactez-nous pour résoudre le problème."
 				},
+				"invalid_address":{
+					"title":"Cart, Invalid Live Shipping Address",
+					"value":"Quelque chose ne va pas avec l'adresse que vous avez indiquée. S'il vous plaît vérifier votre ville, état, code postal, et pays pour s'assurer que les valeurs sont correctes."
+				},
 				"activation_error":{
 					"title":"Account, Activation Error",
 					"value":"Une erreur s'est produite lors de la tentative pour activer votre compte. S'il vous plaît nous contacter pour avoir le problème résolu."

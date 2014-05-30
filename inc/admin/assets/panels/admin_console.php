@@ -13,7 +13,16 @@ $reqid = $admin_password_hash;
 
 
 //get the site url without http:// https:// or www.
-$input = site_url();
+if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+	$https_class = new WordPressHTTPS( );
+	$input = $https_class->getHttpsUrl( );
+	if(substr($input, -1) == '/') {
+		$input = substr($input, 0, -1);
+	}
+}else{
+	$input = site_url();
+}
+
 if (!preg_match('#^http(s)?://#', $input)) {
     $input = 'http://' . $input;
 }

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.16
+Stable tag: 2.1.17
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.17 =
+* Improvement - We have improved and minimized the css and js that is used in our new/upcoming themes. This will mean less load on your server when regenerating files, a faster plugin update, and easier editing of css.
+* Improvement - UPS, USPS, Australia Post, and DHL now validate the user's address and tell them if they have an error in their entry.
+* Improvement - Altered the downloads script to allow for large size zips to be downloaded properly. Now downloads stream in chunks from the server properly.
+* Fix - Sagepay improvement to correct the URL passed to the 3D secure servers.
+* Fix - For servers that use a different URL for HTTPS and HTTP mode, admin console will load on either if using the WP HTTPS plugin.
 = 2.1.16 =
 * Fix - Found a bug with the new caching system in which a php server setting caused the css/js file creator would fail. This has been resolved.
 = 2.1.15 =

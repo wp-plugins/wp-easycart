@@ -414,14 +414,24 @@ class ec_orderdetail{
 			if( ( $this->download_timelimit_seconds == 0 || $this->timecheck <= $this->download_timelimit_seconds ) && 
 				( $this->maximum_downloads_allowed  == 0 || $this->download_count <= $this->maximum_downloads_allowed  ) ) {
 	
-				ob_start();
-				$mm_type="application/octet-stream";
 				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $this->download->download_file_name ) )	
 					$file = WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $this->download->download_file_name;
 				else
 					$file = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/" . $this->download->download_file_name;
 				
 				$ext = substr( $this->download->download_file_name, strrpos( $this->download->download_file_name, '.' ) + 1);
+				
+				switch( $ext ){
+					case "pdf":
+						$mm_type="application/pdf";
+						break;
+					case "zip":
+						$mm_type="application/zip";
+						break;
+					default:
+						$mm_type="application/octet-stream";
+						break;
+				}
 				
 				$date = new DateTime();
 				$time_stamp = $date->getTimestamp();
@@ -440,13 +450,19 @@ class ec_orderdetail{
 				header( "Pragma: no-cache" );
 				header( "Content-Type: " . $mm_type );
 				header( "Content-Length: " . ( string )( filesize( $file ) ) );
-				header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+				header( 'Content-Disposition: attachment; filename="' . $file_start_name . '"' );
 				header( "Content-Transfer-Encoding: binary\n" );
-				ob_end_clean();
 				
-				flush( );
+				$fh = fopen( $file, "rb" );
 				
-				readfile( $file );
+				while( !feof( $fh ) ){
+					$buffer = fread( $fh, 8192 );
+					echo $buffer;
+					ob_flush( );
+					flush( ); 
+				}
+				
+				fclose( $fh );
 				
 				$this->mysqli->update_download_count( $this->download_id, $this->download_count );
 				

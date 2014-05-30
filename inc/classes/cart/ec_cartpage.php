@@ -128,16 +128,17 @@ class ec_cartpage{
 		$error_notes = array( "email_exists" => $GLOBALS['language']->get_text( "ec_errors", "email_exists_error" ),
 							  "login_failed" => $GLOBALS['language']->get_text( "ec_errors", "login_failed" ),
 							  "3dsecure_failed" => $GLOBALS['language']->get_text( "ec_errors", "3dsecure_failed" ),
-							  "manualbill_failed" => $GLOBALS['language']->get_text( "ec_errors", "manualbill_failed"),
-							  "thirdparty_failed" => $GLOBALS['language']->get_text( "ec_errors", "thirdparty_failed"),
-							  "payment_failed" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed"),
-							  "card_error" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed"),
-							  "already_subscribed" => $GLOBALS['language']->get_text( "ec_errors", "already_subscribed"),
-							  "not_activated" => $GLOBALS['language']->get_text( "ec_errors", "not_activated"),
-							  "subscription_not_found" => $GLOBALS['language']->get_text( "ec_errors", "subscription_not_found"),
-							  "user_insert_error" => $GLOBALS['language']->get_text( "ec_errors", "user_insert_error"),
-							  "subscription_added_failed" => $GLOBALS['language']->get_text( "ec_errors", "subscription_added_failed"),
-							  "subscription_failed" => $GLOBALS['language']->get_text( "ec_errors", "subscription_failed")   
+							  "manualbill_failed" => $GLOBALS['language']->get_text( "ec_errors", "manualbill_failed" ),
+							  "thirdparty_failed" => $GLOBALS['language']->get_text( "ec_errors", "thirdparty_failed" ),
+							  "payment_failed" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed" ),
+							  "card_error" => $GLOBALS['language']->get_text( "ec_errors", "payment_failed" ),
+							  "already_subscribed" => $GLOBALS['language']->get_text( "ec_errors", "already_subscribed" ),
+							  "not_activated" => $GLOBALS['language']->get_text( "ec_errors", "not_activated" ),
+							  "subscription_not_found" => $GLOBALS['language']->get_text( "ec_errors", "subscription_not_found" ),
+							  "user_insert_error" => $GLOBALS['language']->get_text( "ec_errors", "user_insert_error" ),
+							  "subscription_added_failed" => $GLOBALS['language']->get_text( "ec_errors", "subscription_added_failed" ),
+							  "subscription_failed" => $GLOBALS['language']->get_text( "ec_errors", "subscription_failed" ),
+							  "invalid_address" => $GLOBALS['language']->get_text( "ec_errors", "invalid_address" )  
 							);
 		if( isset( $_GET['ec_cart_error'] ) ){
 			echo "<div class=\"ec_cart_error\"><div>" . $error_notes[ $_GET['ec_cart_error'] ] . "</div></div>";
@@ -1935,12 +1936,23 @@ class ec_cartpage{
 				$_SESSION['ec_last_name'] = $last_name;
 				$_SESSION['ec_password'] = $password;
 				
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page . "&ec_cart_success=account_created");
+				if( $this->shipping->validate_address( $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country ) )
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page . "&ec_cart_success=account_created");
+				else
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_success=account_created&ec_cart_error=invalid_address");
+				
 			}else{
 				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=email_exists");
 			}
+		
 		}else{
-			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page);
+			
+			if( $this->shipping->validate_address( $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country ) )
+				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page);
+			
+			else
+				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=invalid_address");
+				
 		}
 	}
 	

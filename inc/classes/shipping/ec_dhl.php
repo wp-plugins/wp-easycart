@@ -448,5 +448,27 @@ class ec_dhl{
 				break;
 		}
 	}
+	
+	public function validate_address( $desination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
+		
+		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, '2' );
+		
+		$ch = curl_init(); //initiate the curl session 
+		curl_setopt($ch, CURLOPT_URL, $this->shipper_url); //set to url to post to
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // tell curl to return data in a variable 
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_POST, true); 
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $ship_data ); // post the xml 
+		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30); // set timeout in seconds 
+		$response = curl_exec($ch);
+		curl_close ($ch);
+		
+		$xml = new SimpleXMLElement( $response );
+		if( isset( $xml ) && isset( $xml->GetQuoteResponse ) && isset( $xml->GetQuoteResponse->Note ) )
+			return false;
+		else
+			return true;
+		
+	}
 }	
 ?>

@@ -405,5 +405,34 @@ class ec_usps{
 		
 		return $rates;
 	}
+	
+	public function validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
+		
+		$ship_code = 'ALL';
+		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, 5 );
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $this->shipper_url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_POST, true); 
+		if( $destination_country != 'US' )
+			curl_setopt($ch, CURLOPT_POSTFIELDS, 'API=IntlRateV2&XML=' . urlencode( $ship_data ) );
+		else
+			curl_setopt($ch, CURLOPT_POSTFIELDS, 'API=RateV4&XML=' . urlencode( $ship_data ) ); 
+		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30); 
+		$response = curl_exec($ch);
+		curl_close ($ch); 
+		
+		$xml = new SimpleXMLElement( $response );
+		if( isset( $xml->Package ) && isset( $xml->Package->Error ) ){
+			return false;
+			
+		}else{
+			return true;
+		}
+		
+	}
+	
 }	
 ?>

@@ -1286,6 +1286,11 @@ function ec_update_colors( ){
 	$ec_option_email_logo = strip_tags( stripslashes( $_POST["ec_option_email_logo"] ) );
     if( $ec_option_email_logo != "" )
 		update_option( 'ec_option_email_logo', $ec_option_email_logo );
+	
+	// CSS may have been updated, regenerate this file...
+	ec_regenerate_css( );
+	ec_regenerate_js( );
+	update_option( 'ec_option_cached_date', time( ) );
 }
 
 function ec_update_payment_info( ){

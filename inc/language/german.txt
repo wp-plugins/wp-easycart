@@ -1714,6 +1714,10 @@
 					"title":"Benutzerkonto, freiwillig, Abonnement nicht gefunden, Gateway Dependent",
 					"value":"Ein Fehler ist während der Bearbeitung Ihrer Anfrage aufgetreten und die angeforderte Bestellung wurde nicht gefunden. Kontaktieren Sie uns, um das Problem zu beheben."
 				},
+				"invalid_address":{
+					"title":"Cart, Live-Versandadresse ungültig",
+					"value":"Irgend etwas stimmt nicht mit der von Ihnen angegebenen Adresse. Bitte überprüfen Sie Ihre Stadt, Bundesland, Postleitzahl, Land und um sicherzustellen, dass die Werte korrekt sind."
+				},
 				"activation_error":{
 					"title":"Benutzerkonto, Aktivierungsfehler",
 					"value":"Währenddem Sie versuchen Ihr Benutzerkonto zu aktivieren, ist ein Fehler aufgetreten. Bitte kontaktieren Sie uns, damit das Problem behoben werden kann."

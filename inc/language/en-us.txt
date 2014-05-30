@@ -1714,6 +1714,10 @@
 					"title":"Cart, Optional, Subscription Not Found, Gateway Dependent",
 					"value":"An error has occurred while processing your request and the subscription requested was not found. Contact us to resolve the issue."
 				},
+				"invalid_address":{
+					"title":"Cart, Invalid Live Shipping Address",
+					"value":"Something is wrong with the address you have entered. Please check your city, state, zip, and country to make sure the values are correct."
+				},
 				"activation_error":{
 					"title":"Account, Activation Error",
 					"value":"An error has occurred while attempting to activate your account. Please contact us to have the issue resolved."

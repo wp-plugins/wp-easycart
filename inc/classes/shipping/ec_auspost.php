@@ -171,6 +171,44 @@ class ec_auspost{
 			return "ERROR";
 		}
 	}
+	
+	public function validate_address( $desination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
+		
+		if( !$destination_country )
+			$destination_country = "AU";
+			
+		if( $destination_country == "AU" )
+			$shipper_url = $this->domestic_getall_shipper_url;
+		else
+			$shipper_url = $this->international_getall_shipper_url;
+		
+		$shipper_url .= "?";
+		if( $destination_country == "AU" )
+			$shipper_url .= "from_postcode=" . $destination_zip . "&to_postcode=" . $this->auspost_ship_from_zip . "&length=10&width=10&height=10";
+		else
+			$shipper_url .= "country_code=" . $destination_country;
+		
+		$shipper_url .= "&weight=2";
+		
+		$request = new WP_Http;
+		$response = $request->request( $shipper_url, array( 'method' => 'GET', 'headers' => "AUTH-KEY:" . $this->auspost_api_key ) );
+		
+		
+		if( is_wp_error( $response ) ){
+			$error_message = $response->get_error_message();
+			error_log( "error in australian post get rate, " . $error_message );
+			return true;
+		}else{
+			$xml = json_decode( $response['body'] );
+			
+			if( isset( $xml->error ) )
+				return false;
+			else
+				return true;
+				
+		}
+		
+	}
 }
 	
 ?>

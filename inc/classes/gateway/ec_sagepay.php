@@ -45,6 +45,11 @@ class ec_sagepay extends ec_gateway{
 		$account_page_id = get_option('ec_option_accountpage');
 		$this->account_page = get_permalink( $account_page_id );
 		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+		}
+		
 		if( substr_count( $this->account_page, '?' ) )
 			$this->permalink_divider = "&";
 		else
@@ -73,7 +78,7 @@ class ec_sagepay extends ec_gateway{
 								"DeliveryFirstnames" => substr( $this->user->shipping->first_name, 0, 20 ),
 								"DeliveryAddress1" => substr( $this->user->shipping->address_line_1, 0, 100 ),
 								"DeliveryCity" => substr( $this->user->shipping->city, 0, 40 ),
-								"DeliveryPostCode" => substr( $this->user->shipping->zip, 0, 10 ),
+								"DeliveryPostCode" => preg_replace( "/[^A-Za-z0-9\-\s]/", '', substr( $this->user->shipping->zip, 0, 10 ) ),
 								"DeliveryCountry" => $this->user->shipping->country,
 								"DeliveryPhone" => substr( $this->user->shipping->phone, 0, 20 ),
 								"ClientIPAddress" => $_SERVER['REMOTE_ADDR'],

@@ -103,15 +103,16 @@ jQuery("#ec_product_quick_view_box_<?php echo $product->model_number; ?>").appen
 		<?php $product->display_product_image_set( "medium", "ec_image_", "" ); ?>
 		
     </div>
+    
+    <?php if($product->use_optionitem_images){ ?><div class="ec_product_swatches"><?php $product->display_product_option_swatches( $product->options->optionset1, "small", 1, "ec_swatch_", "ec_swatch_click", false ); ?></div><?php }?>
 	
     <div class="ec_product_left">
-        <div class="ec_product_title"><?php $product->display_product_title_link(); ?></div>
-        
         <?php if( $product->use_customer_reviews ){?><div class="ec_product_rating"><div class="ec_product_stars"><?php $product->display_product_stars(); ?></div><div class="ec_product_num_reviews"> (<?php $product->display_product_number_reviews(); ?>)</div></div><?php }?>
+        
+        <div class="ec_product_title"><?php $product->display_product_title_link(); ?></div>
     	
     </div>
     <div style="width:35%; float:right;">
     	<div class="ec_product_pricing"><?php $product->display_product_list_price(); ?><?php $product->display_price(); ?></div>
     </div>
-    <?php if($product->use_optionitem_images){ ?><div class="ec_product_swatches"><?php $product->display_product_option_swatches( $product->options->optionset1, "small", 1, "ec_swatch_", "ec_swatch_click", false ); ?></div><?php }?>
 </div>

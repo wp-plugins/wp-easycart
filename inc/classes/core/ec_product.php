@@ -319,8 +319,6 @@ class ec_product{
 				echo "<input name=\"ec_jquery_get_stock_quantity_file\" id=\"ec_jquery_get_stock_quantity_file_" . $this->model_number . "\" type=\"hidden\" value=\"" . plugins_url( EC_PLUGIN_DIRECTORY . '/design/theme/' . get_option( 'ec_option_base_theme' ) ."/ec_product_details_page/ec_product_details_page_get_stock_quantity.php" ) . "\" />";
 			echo "<input name=\"ec_cart_form_action\" id=\"ec_cart_form_action_" . $this->model_number . "\" value=\"add_to_cart\" type=\"hidden\" />";
 			echo "</form>";
-			echo "<div id=\"ec_product_details_loader_" . $this->model_number . "\" class=\"ec_product_details_loader_div\">LOADING</div>";
-			echo "<div id=\"ec_product_details_temp_cart_holder_" . $this->model_number . "\" class=\"ec_product_details_temp_cart_holder\"><div id=\"ec_product_details_temp_cart\" class=\"ec_product_details_temp_cart\">LOAD CART HERE!</div><div class=\"ec_product_details_temp_cart_button_holder\"><div class=\"ec_product_details_temp_cart_button_1\"><a href=\"#\" onclick=\"ec_continue_shopping_click();\">" . $language_data[11] . "</a></div><div class=\"ec_product_details_temp_cart_button_2\"><a href=\"" . $this->cart_page . "\">" . $language_data[12] . "</a></div></div></div>";
 		}
 	}
 	

@@ -293,6 +293,88 @@ class ec_fedex{
 		$string .= sprintf( "\r%s:- %s", date("D M j G:i:s T Y"), $client->__getLastRequest( ). "\n\n" . $client->__getLastResponse( ) );
 		return $string;
 	}
+	
+	public function validate_address( $desination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
+		return true;
+		/*
+		if( $this->fedex_test_account ){
+			return true; //Cannot test address in test mode environment!! STUPID FEDEX.
+		}else{
+			$path_to_wsdl = dirname(__FILE__) . "/fedex_address_validation_service_v2.wsdl";
+
+			ini_set("soap.wsdl_cache_enabled", "0");
+			 
+			$client = new SoapClient($path_to_wsdl, array('trace' => 1)); // Refer to http://us3.php.net/manual/en/ref.soap.php for more information
+			
+			$request['WebAuthenticationDetail'] = array(
+				'UserCredential' =>array(
+					'Key' => $this->fedex_key, 
+					'Password' => $this->fedex_password
+				)
+			); 
+			$request['ClientDetail'] = array(
+				'AccountNumber' => $this->fedex_account_number, 
+				'MeterNumber' => $this->fedex_meter_number
+			);
+			$request['Version'] = array(
+				'ServiceId' => 'aval', 
+				'Major' => '2', 
+				'Intermediate' => '0', 
+				'Minor' => '0'
+			);
+			
+			$request['RequestTimestamp'] = date( 'Y-m-d' ) . 'T' . date( 'H:i:sP' );
+			$request['AddressesToValidate'] = array(
+				0 => array( 
+					'Address' => $desination_address,
+					'City' => $destination_city,
+					'StateorProvinceCode' => $destination_state,
+					'PostalCode' => $destination_zip,
+					'CountryCode' => $destination_country
+				)
+			);
+			$request['Options'] = array(
+				'CheckResidentialStatus' => 1,
+				'MaximumNumberOfMatches' => 5,
+				'StreetAccuracy' => 'LOOSE',
+				'DirectionalAccuracy' => 'LOOSE',
+				'CompanyNameAccuracy' => 'LOOSE',
+				'ConvertToUpperCase' => 1,
+				'RecognizeAlternateCityNames' => 1,
+				'ReturnParsedElements' => 1
+			);
+			
+			try{
+				$response = $client->addressValidation( $request );
+			
+				print_r( $response );
+				die( );
+				
+				if( $response->HighestSeverity != 'FAILURE' && $response->HighestSeverity != 'ERROR' ){  	
+				
+					if( $response->ProposedAddressDetails->Score > 0 )
+						return true;
+						
+					else
+						return false;
+					
+				}else{
+					
+					return true;
+					
+				}
+					
+				return $response;
+			
+			}catch (SoapFault $exception){
+				
+				return true; // Do not let an error stop the checkout!
+			
+			}
+			
+		}
+		*/
+	}
 
 }
 ?>

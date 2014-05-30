@@ -227,6 +227,59 @@ class ec_ups{
 		return $rates;
 		
 	}
+	
+	public function validate_address( $destination_city, $destination_state, $destination_zip, $destination_country ){
+		
+		$shipper_data = "<?xml version=\"1.0\"?>
+			<AccessRequest xml:lang=\"en-US\">
+				<AccessLicenseNumber>$this->ups_access_license_number</AccessLicenseNumber>
+				<UserId>$this->ups_user_id</UserId>
+				<Password>$this->ups_password</Password>
+			</AccessRequest>
+			<?xml version=\"1.0\"?>
+			<AddressValidationRequest xml:lang=\"en-US\">
+				<Request>
+					<TransactionReference>
+						<CustomerContext>Validate Address</CustomerContext>
+						<XpciVersion>1.0001</XpciVersion>
+					</TransactionReference>
+					<RequestAction>AV</RequestAction>
+				</Request>
+				<Address>
+					<City>$destination_city</City>";
+		
+		if( $destination_state ){		
+			$shipper_data .= "
+					<StateProvinceCode>$destination_state</StateProvinceCode>";
+		}
+		
+		$shipper_data .= "
+					<PostalCode>$destination_zip</PostalCode>
+					<CountryCode>$destination_country</CountryCode>
+				</Address>
+			</AddressValidationRequest>";
+		
+		print_r( $shipper_data );
+		
+		$request = new WP_Http;
+		$response = $request->request( "https://onlinetools.ups.com/ups.app/xml/AV", array( 'method' => 'POST', 'body' => $shipper_data ) );
+		if( is_wp_error( $response ) ){
+			$error_message = $response->get_error_message();
+			error_log( "error in ups address validation, " . $error_message );
+			return false;
+		}else{
+			
+			$xml = new SimpleXMLElement( $response['body'] );
+			
+			if( $xml->Response->ResponseStatusCode == '0' )
+				return false;
+			else
+				return true;
+			
+		}
+			
+	}
+	
 }
 	
 ?>
