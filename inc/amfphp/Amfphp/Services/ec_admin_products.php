@@ -605,7 +605,7 @@ class ec_admin_products
 			
 			
 			//if using stripe and is subscription
-			if (get_option( 'ec_option_payment_process_method' ) == 'stripe') {
+			if (get_option( 'ec_option_payment_process_method' ) == 'stripe' && $product['issubscription'] == '1') {
 				//create an object for call to stripe
 				$stripe_plan = (object)array(
 				  "product_id" 					=> $productid,
@@ -758,7 +758,7 @@ class ec_admin_products
 
 
 			//if using stripe and is subscription, insert plan
-			if (get_option( 'ec_option_payment_process_method' ) == 'stripe') {
+			if (get_option( 'ec_option_payment_process_method' ) == 'stripe' && $product['issubscription'] == '1') {
 				//create an object for call to stripe
 				$stripe_plan = (object)array(
 				  "price" 						=> $product['listprice'],
