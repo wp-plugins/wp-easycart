@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.17
+Stable tag: 2.1.18
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.18 =
+* Fix - Removed printing of output from UPS, bug from last version.
+* Fix - Various admin updates.
+* UPDATE - Pricing has changed and is reflected in the plugin.
 = 2.1.17 =
 * Improvement - We have improved and minimized the css and js that is used in our new/upcoming themes. This will mean less load on your server when regenerating files, a faster plugin update, and easier editing of css.
 * Improvement - UPS, USPS, Australia Post, and DHL now validate the user's address and tell them if they have an error in their entry.

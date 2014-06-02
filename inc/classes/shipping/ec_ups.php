@@ -259,8 +259,6 @@ class ec_ups{
 				</Address>
 			</AddressValidationRequest>";
 		
-		//print_r( $shipper_data );
-		
 		$request = new WP_Http;
 		$response = $request->request( "https://onlinetools.ups.com/ups.app/xml/AV", array( 'method' => 'POST', 'body' => $shipper_data ) );
 		if( is_wp_error( $response ) ){
