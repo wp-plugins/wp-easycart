@@ -99,7 +99,11 @@ class ec_discount{
 		$giftcard_row = $this->mysqli->redeem_gift_card( $this->giftcard_code );
 		
 		if( $giftcard_row ){
-			$giftcard_discountable_total = $this->cart_grandtotal - $this->coupon_discount;
+			if( get_option( 'ec_option_gift_card_shipping_allowed' ) ){
+				$giftcard_discountable_total = $this->cart_grandtotal - $this->coupon_discount;
+			}else{
+				$giftcard_discountable_total = $this->cart_subtotal - $this->coupon_discount;
+			}
 			
 			if( $giftcard_discountable_total > $giftcard_row->amount )		
 																return $giftcard_row->amount;

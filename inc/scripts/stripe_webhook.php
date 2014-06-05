@@ -87,7 +87,8 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			// Update a subscription
 			
 		}else if( $webhook_type == "customer.subscription.deleted" ){
-			// Delete a subscription if it exists
+			$stripe_subscription_id = $webhook_data->id;
+			$mysqli->cancel_stripe_subscription( $stripe_subscription_id );
 			
 		}else if( $webhook_type == "customer.subscription.trial_will_end" ){
 			// This fires 3 days before trial ends

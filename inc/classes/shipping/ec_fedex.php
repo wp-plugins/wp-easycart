@@ -110,7 +110,39 @@ class ec_fedex{
 				if( $response->HighestSeverity != 'FAILURE' && $response->HighestSeverity != 'ERROR' ){  	
 					$rateReply = $response->RateReplyDetails;
 					$serviceType = $rateReply->ServiceType;
-					$amount = number_format( $rateReply->RatedShipmentDetails[0]->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", "," );
+					
+					$payor_account_package = 0.000;
+					$rated_account_package = 0.000;
+					$payor_list_package = 0.000;
+					$rated_list_package = 0.000;
+					$rate_other = 0.000;
+					
+					for( $j=0; $j<count( $response->RateReplyDetails[0]->RatedShipmentDetails ); $j++ ){
+						if( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "PAYOR_ACCOUNT_PACKAGE" ){
+							$payor_account_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}else if( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "RATED_ACCOUNT_PACKAGE" ){
+							$rated_account_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}else if( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "PAYOR_LIST_PACKAGE" ){
+							$payor_list_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}else if( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "RATED_LIST_PACKAGE" ){
+							$rated_list_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}else{
+							$rate_other = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}
+						
+					}
+					
+					if( $payor_list_package > 0 ){
+						$amount = $payor_list_package;
+					}else if( $payor_account_package > 0 ){
+						$amount = $payor_account_package;
+					}else if( $rated_list_package > 0 ){
+						$amount = $rated_list_package;
+					}else if( $rated_account_package > 0 ){
+						$amount = $rated_account_package;
+					}else{
+						$amount = $rate_other;
+					}
 					
 					$rate = floatval( $amount );
 					return ( $rate * $this->fedex_conversion_rate );
@@ -187,7 +219,42 @@ class ec_fedex{
 				$rates = array( );
 				
 				for( $i=0; $i<count( $response->RateReplyDetails ); $i++ ){
-					$rates[] = array( 'rate_code' => $response->RateReplyDetails[$i]->ServiceType, 'rate' => number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[0]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," ) );
+					$code = $response->RateReplyDetails[$i]->ServiceType;
+					$rate = 0.000;
+					$payor_account_package = 0.000;
+					$rated_account_package = 0.000;
+					$payor_list_package = 0.000;
+					$rated_list_package = 0.000;
+					$rate_other = 0.000;
+					
+					for( $j=0; $j<count( $response->RateReplyDetails[$i]->RatedShipmentDetails ); $j++ ){
+						if( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "PAYOR_ACCOUNT_PACKAGE" ){
+							$payor_account_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "RATED_ACCOUNT_PACKAGE" ){
+							$rated_account_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "PAYOR_LIST_PACKAGE" ){
+							$payor_list_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "RATED_LIST_PACKAGE" ){
+							$rated_list_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}else{
+							$rate_other = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+						}
+						
+					}
+					
+					if( $payor_list_package > 0 ){
+						$rate = $payor_list_package;
+					}else if( $payor_account_package > 0 ){
+						$rate = $payor_account_package;
+					}else if( $rated_list_package > 0 ){
+						$rate = $rated_list_package;
+					}else if( $rated_account_package > 0 ){
+						$rate = $rated_account_package;
+					}else{
+						$rate = $rate_other;
+					}
+					
+					$rates[] = array( 'rate_code' => $code, 'rate' =>$rate );
 				}
 				
 				return $rates;

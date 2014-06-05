@@ -1480,20 +1480,20 @@ class ec_cartpage{
 			else
 				$quantity = 1;
 			
-			$model_number = $_POST['model_number'];
+			$model_number = stripslashes( $_POST['model_number'] );
 			
 			//Optional Gift Card Info
 			$gift_card_message = "";
 			if( isset( $_POST['ec_gift_card_message'] ) )
-				$gift_card_message = $_POST['ec_gift_card_message'];
+				$gift_card_message = stripslashes( $_POST['ec_gift_card_message'] );
 			
 			$gift_card_to_name = "";
 			if( isset( $_POST['ec_gift_card_to_name'] ) )
-				$gift_card_to_name = $_POST['ec_gift_card_to_name'];
+				$gift_card_to_name = stripslashes( $_POST['ec_gift_card_to_name'] );
 			
 			$gift_card_from_name = "";
 			if( isset( $_POST['ec_gift_card_from_name'] ) )
-				$gift_card_from_name = $_POST['ec_gift_card_from_name'];
+				$gift_card_from_name = stripslashes( $_POST['ec_gift_card_from_name'] );
 			
 			// Optional Donation Price
 			$donation_price = 0.000;
@@ -1546,7 +1546,7 @@ class ec_cartpage{
 						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
 						foreach( $optionitems as $optionitem ){
 							if( isset( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) ){
-								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] );
+								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => stripslashes( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) );
 							}
 						}
 					}else if( $optionset->option_type == "grid" ){
@@ -1572,7 +1572,7 @@ class ec_cartpage{
 					}else{
 						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
 						foreach( $optionitems as $optionitem ){
-							$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_POST['ec_option_' . $optionset->option_id] );
+							$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => stripslashes( $_POST['ec_option_' . $optionset->option_id] ) );
 						}
 					}
 					
@@ -1631,7 +1631,7 @@ class ec_cartpage{
 			$payment_type = $GLOBALS['language']->get_text( "ec_success", "cart_account_free_order" );
 			
 		if( isset( $_POST['ec_order_notes'] ) )
-			$_SESSION['ec_order_notes'] = $_POST['ec_order_notes'];
+			$_SESSION['ec_order_notes'] = stripslashes( $_POST['ec_order_notes'] );
 			
 		$submit_return_val = $this->order->submit_order( $payment_type );
 		
@@ -1813,55 +1813,55 @@ class ec_cartpage{
 	}
 	
 	private function process_save_checkout_info( ){
-		$billing_country = $shipping_country = $_POST['ec_cart_billing_country'];
+		$billing_country = $shipping_country = stripslashes( $_POST['ec_cart_billing_country'] );
 		
-		$billing_first_name = $shipping_first_name = $_POST['ec_cart_billing_first_name'];
-		$billing_last_name = $shipping_last_name = $_POST['ec_cart_billing_last_name'];
-		$billing_address = $shipping_address = $_POST['ec_cart_billing_address'];
+		$billing_first_name = $shipping_first_name = stripslashes( $_POST['ec_cart_billing_first_name'] );
+		$billing_last_name = $shipping_last_name = stripslashes( $_POST['ec_cart_billing_last_name'] );
+		$billing_address = $shipping_address = stripslashes( $_POST['ec_cart_billing_address'] );
 		if( isset( $_POST['ec_cart_billing_address2'] ) ){
-			$billing_address2 = $shipping_address2 = $_POST['ec_cart_billing_address2'];
+			$billing_address2 = $shipping_address2 = stripslashes( $_POST['ec_cart_billing_address2'] );
 		}else{
 			$billing_address2 = $shipping_address2 = "";
 		}
 		
-		$billing_city = $shipping_city = $_POST['ec_cart_billing_city'];
+		$billing_city = $shipping_city = stripslashes( $_POST['ec_cart_billing_city'] );
 		if( isset( $_POST['ec_cart_billing_state_' . $billing_country] ) ){
-			$billing_state = $shipping_state = $_POST['ec_cart_billing_state_' . $billing_country];
+			$billing_state = $shipping_state = stripslashes( $_POST['ec_cart_billing_state_' . $billing_country] );
 		}else{
-			$billing_state = $shipping_state = $_POST['ec_cart_billing_state'];
+			$billing_state = $shipping_state = stripslashes( $_POST['ec_cart_billing_state'] );
 		}
 		
-		$billing_zip = $shipping_zip = $_POST['ec_cart_billing_zip'];
-		$billing_phone = $shipping_phone = $_POST['ec_cart_billing_phone'];
+		$billing_zip = $shipping_zip = stripslashes( $_POST['ec_cart_billing_zip'] );
+		$billing_phone = $shipping_phone = stripslashes( $_POST['ec_cart_billing_phone'] );
 		
 		$shipping_selector = $_POST['ec_shipping_selector'];
 		
 		if( $shipping_selector == "true" ){
-			$shipping_country = $_POST['ec_cart_shipping_country'];
+			$shipping_country = stripslashes( $_POST['ec_cart_shipping_country'] );
 			
-			$shipping_first_name = $_POST['ec_cart_shipping_first_name'];
-			$shipping_last_name = $_POST['ec_cart_shipping_last_name'];
-			$shipping_address = $_POST['ec_cart_shipping_address'];
+			$shipping_first_name = stripslashes( $_POST['ec_cart_shipping_first_name'] );
+			$shipping_last_name = stripslashes( $_POST['ec_cart_shipping_last_name'] );
+			$shipping_address = stripslashes( $_POST['ec_cart_shipping_address'] );
 			if( isset( $_POST['ec_cart_shipping_address2'] ) ){
-				$shipping_address2 = $_POST['ec_cart_shipping_address2'];
+				$shipping_address2 = stripslashes( $_POST['ec_cart_shipping_address2'] );
 			}else{
 				$shipping_address2 = "";
 			}
 			
-			$shipping_city = $_POST['ec_cart_shipping_city'];
+			$shipping_city = stripslashes( $_POST['ec_cart_shipping_city'] );
 			
 			if( isset( $_POST['ec_cart_shipping_state_' . $shipping_country] ) ){
-				$shipping_state = $_POST['ec_cart_shipping_state_' . $shipping_country];
+				$shipping_state = stripslashes( $_POST['ec_cart_shipping_state_' . $shipping_country] );
 			}else{
-				$shipping_state = $_POST['ec_cart_shipping_state'];
+				$shipping_state = stripslashes( $_POST['ec_cart_shipping_state'] );
 			}
 			
-			$shipping_zip = $_POST['ec_cart_shipping_zip'];
-			$shipping_phone = $_POST['ec_cart_shipping_phone'];
+			$shipping_zip = stripslashes( $_POST['ec_cart_shipping_zip'] );
+			$shipping_phone = stripslashes( $_POST['ec_cart_shipping_phone'] );
 		}
 		
-		$first_name = $_POST['ec_contact_first_name'];
-		$last_name = $_POST['ec_contact_last_name'];
+		$first_name = stripslashes( $_POST['ec_contact_first_name'] );
+		$last_name = stripslashes( $_POST['ec_contact_last_name'] );
 		
 		if( isset( $_POST['ec_contact_create_account'] ) )
 			$create_account = $_POST['ec_contact_create_account'];
@@ -2005,20 +2005,20 @@ class ec_cartpage{
 				
 				if( count( $subscription_list ) <= 0 ){
 			
-					$first_name = $_POST['ec_cart_billing_first_name'];
-					$last_name = $_POST['ec_cart_billing_last_name'];
-					$address = $_POST['ec_cart_billing_address'];
-					if( isset( $_POST['ec_cart_billing_address2'] ) )	$address2 = $_POST['ec_cart_billing_address'];
+					$first_name = stripslashes( $_POST['ec_cart_billing_first_name'] );
+					$last_name = stripslashes( $_POST['ec_cart_billing_last_name'] );
+					$address = stripslashes( $_POST['ec_cart_billing_address'] );
+					if( isset( $_POST['ec_cart_billing_address2'] ) )	$address2 = stripslashes( $_POST['ec_cart_billing_address'] );
 					else												$address2 = "";
 						
-					$city = $_POST['ec_cart_billing_city'];
-					$state = $_POST['ec_cart_billing_state'];
-					$zip = $_POST['ec_cart_billing_zip'];
-					$country = $_POST['ec_cart_billing_country'];
-					$phone = $_POST['ec_cart_billing_phone'];
+					$city = stripslashes( $_POST['ec_cart_billing_city'] );
+					$state = stripslashes( $_POST['ec_cart_billing_state'] );
+					$zip = stripslashes( $_POST['ec_cart_billing_zip'] );
+					$country = stripslashes( $_POST['ec_cart_billing_country'] );
+					$phone = stripslashes( $_POST['ec_cart_billing_phone'] );
 					
 					$payment_method = $_POST['ec_cart_payment_type'];
-					$card_holder_name = $_POST['ec_card_holder_name'];
+					$card_holder_name = stripslashes( $_POST['ec_card_holder_name'] );
 					$card_number = $_POST['ec_card_number'];
 					$exp_month = $_POST['ec_expiration_month'];
 					$exp_year = $_POST['ec_expiration_year'];

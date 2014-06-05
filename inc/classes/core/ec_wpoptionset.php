@@ -144,6 +144,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_show_account_subscriptions_link');	array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_gift_card_shipping_allowed');			array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
 		array_push($this->wp_option_names, 'ec_option_use_direct_deposit');					array_push($this->wp_option_defaults, '1' );
@@ -374,7 +376,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-language-group');
 		array_push($this->wp_option_names, 'ec_option_language_data');						array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-language-group');
-		array_push($this->wp_option_names, 'ec_option_use_seperate_language_forms');		array_push($this->wp_option_defaults, '0' );
+		array_push($this->wp_option_names, 'ec_option_use_seperate_language_forms');		array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-language-group');
 				
 		// Base Design Options	

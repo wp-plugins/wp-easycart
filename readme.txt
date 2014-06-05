@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.18
+Stable tag: 2.1.19
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.19 =
+* Addition - Date type field for product variations now added to the core, admin update to follow.
+* Addition - Gift cards can apply to the subtotal or grand total and can be selected in the advanced settings section.
+* Fix - FedEx rates now select your special account rates first if available.
+* Fix - Language editor and cart form elements now react correctly to escaped character.
+* Fix - Stripe subscriptions no longer try to insert twice to the Stripe system.
+* Fix - Stripe cancellations on the Stripe account now reflect the cancel on your EasyCart system.
 = 2.1.18 =
 * Fix - Removed printing of output from UPS, bug from last version.
 * Fix - Various admin updates.

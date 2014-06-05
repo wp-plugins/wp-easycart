@@ -96,6 +96,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
     <span class="ec_setting_row_input"><input type="text" name="ec_option_exchange_rates" style="width:350px;" value="<?php echo get_option('ec_option_exchange_rates'); ?>" /></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Gift Cards Apply to Grand Total</em>This option allows you to globally control if gift cards can be applied to the grand total or subtotal. If turned on, a customer can use the gift card to pay for shipping, but if it is turned off, it will only apply to the subtotal.</span></a></span>
+    <span class="ec_setting_row_label">Gift Cards Apply to Grand Total:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_gift_card_shipping_allowed" style="width:100px;"><option value="0"<?php if( get_option('ec_option_gift_card_shipping_allowed') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_gift_card_shipping_allowed') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title_secondary">Custom CSS</div>

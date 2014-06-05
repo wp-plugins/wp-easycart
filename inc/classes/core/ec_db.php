@@ -2799,9 +2799,9 @@ class ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $card->payment_method, $card->get_last_four( ), $user->user_id ) );
 	}
 	
-	public function get_subscription_payments( $subscription_id ){
-		$sql = "SELECT ec_order.order_id, ec_order.order_date, ec_order.grand_total FROM ec_order WHERE ec_order.subscription_id = %d";
-		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $subscription_id ) );
+	public function get_subscription_payments( $subscription_id, $user_id ){
+		$sql = "SELECT ec_order.order_id, ec_order.order_date, ec_order.grand_total FROM ec_order WHERE ec_order.subscription_id = %d AND ec_order.user_id = %d";
+		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $subscription_id, $user_id ) );
 	}
 	
 	public function update_stripe_order_status( $stripe_charge_id, $orderstatus_id, $refund_total ){
@@ -2871,6 +2871,13 @@ class ec_db{
 		else if( $interval == "year" )
 			return "Y";
 	
+	}
+	
+	public function cancel_stripe_subscription( $stripe_subscription_id ){
+		
+		$sql = "UPDATE ec_subscription SET subscription_status = 'Canceled' WHERE stripe_subscription_id = %s";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $stripe_subscription_id ) );
+		
 	}
 	
 }

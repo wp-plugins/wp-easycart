@@ -675,6 +675,8 @@ class ec_product{
 				$this->display_advanced_option_radio( $optionset, $i );
 			else if( $optionset->option_type == "grid" )
 				$this->display_advanced_option_grid( $optionset, $i );
+			else if( $optionset->option_type == "date" )
+				$this->display_advanced_option_date( $optionset, $i );
 				
 			$i++;
 		}
@@ -803,6 +805,10 @@ class ec_product{
 			$j++;
 		}
 		echo "</div>";
+	}
+	public function display_advanced_option_date( $optionset, $i ){
+		echo "<div class=\"ec_option_error_row\" id=\"ec_option" . $i . "_" . $this->model_number . "_error\"><div class=\"ec_option_error_row_inner\">" . $GLOBALS['language']->convert_text( $optionset->option_error_text ) . "</div></div>";
+		echo "<div class=\"ec_option_text_label_row\">" . $GLOBALS['language']->convert_text( $optionset->option_label ) . ":</div><div class=\"ec_option_text_row\"><input class=\"ec_option_text\" type=\"date\" name=\"ec_option_" . $optionset->option_id . "\" id=\"ec_option" . $i . "_" . $this->model_number . "\" data-ec-required=\"" . $optionset->option_required . "\" /></div>";
 	}
 	
 	/* Display product option swatches */

@@ -157,7 +157,7 @@ class ec_language{
 					foreach( $language_section->options as $language_item ){
 						$key3 = key( $language_section->options );
 						if( isset( $_POST['ec_' . $key1 . "_" . $key2 . "_" . $key3] ) ){
-							$language_item->value = $_POST['ec_' . $key1 . "_" . $key2 . "_" . $key3];
+							$language_item->value = htmlentities( stripslashes( $_POST['ec_' . $key1 . "_" . $key2 . "_" . $key3] ), ENT_QUOTES );
 						}
 					}	
 				}
@@ -224,7 +224,7 @@ class ec_language{
 	// decodes the language data
 	// Returns: json decoded language data in object format
 	private function get_decoded_language_data( ){
-		return json_decode( get_option( 'ec_option_language_data' ) );
+		return json_decode( html_entity_decode( get_option( 'ec_option_language_data' ) ) );
 	}
 	
 	//////////////////////////

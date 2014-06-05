@@ -1209,6 +1209,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_no_vat_on_shipping', $_POST['ec_option_no_vat_on_shipping'] );
 	update_option( 'ec_option_display_as_catalog', $_POST['ec_option_display_as_catalog'] );
 	update_option( 'ec_option_exchange_rates', $_POST['ec_option_exchange_rates'] );
+	update_option( 'ec_option_gift_card_shipping_allowed', $_POST['ec_option_gift_card_shipping_allowed'] );
 	
 	//update sizes
 	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 

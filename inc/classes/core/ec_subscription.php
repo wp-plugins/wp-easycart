@@ -49,7 +49,7 @@ class ec_subscription{
 		// Initialize data
 		$this->set_db_vars( $subscription_row );
 		$this->upgrades = $this->mysqli->get_subscription_upgrades( $this->subscription_id );
-		$this->past_payments = $this->mysqli->get_subscription_payments( $this->subscription_id );
+		$this->past_payments = $this->mysqli->get_subscription_payments( $this->subscription_id, $subscription_row->user_id );
 		
 	}
 	
@@ -182,8 +182,10 @@ class ec_subscription{
 	}
 	
 	public function display_past_payments( $date_format ){
-		foreach( $this->past_payments as $payment ){
-			echo date( $date_format, strtotime( $payment->order_date ) ) . " | " . $GLOBALS['currency']->get_currency_display( $payment->grand_total ) . " | <a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $payment->order_id . "\">View Order</a>";
+		if( $this->past_payments ){
+			foreach( $this->past_payments as $payment ){
+				echo date( $date_format, strtotime( $payment->order_date ) ) . " | " . $GLOBALS['currency']->get_currency_display( $payment->grand_total ) . " | <a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $payment->order_id . "\">View Order</a>";
+			}
 		}
 	}
 	
