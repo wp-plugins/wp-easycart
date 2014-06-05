@@ -55,7 +55,7 @@ class ec_admin_coupons{
 	
 	function deletecoupon( $promocodesid ){
 
-		$sql = "DELETE FROM ec_promocode WHERE ec_promocode.promocode_id  = %d";
+		$sql = "DELETE FROM ec_promocode WHERE ec_promocode.promocode_id  = %s";
 		$this->db->query( $this->db->prepare( $sql, $promocodesid ) );
 
 		if( !mysql_error( ) ){
