@@ -129,11 +129,12 @@ class ec_admin_options{
 		$option_id_parent = $this->db->insert_id;
 		
 		//Add ec_optionitem if file, text, or text area
-		if( $option['optiontype'] == 'file' || $option['optiontype'] == 'text' || $option['optiontype'] == 'textarea' ){
+		if( $option['optiontype'] == 'file' || $option['optiontype'] == 'text' || $option['optiontype'] == 'textarea' || $option['optiontype'] == 'date' ){
 		  
 			if ($option['optiontype'] == 'file') 		$op_name = 'File Field';
 			if ($option['optiontype'] == 'text') 		$op_name = 'Text Box Input';
 			if ($option['optiontype'] == 'textarea') 	$op_name = 'Text Area Input';
+			if ($option['optiontype'] == 'date') 		$op_name = 'Date Field';
 			
 			$sql = "INSERT INTO ec_optionitem( ec_optionitem.option_id, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price,  ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_order, ec_optionitem.optionitem_icon, ec_optionitem.optionitem_initial_value ) VALUES ( %d, %s, '0', '0', '-1', '0', '0', '-1', '1', '', '' )";
 			$this->db->query( $this->db->prepare( $sql, $option_id_parent, $op_name ) );
