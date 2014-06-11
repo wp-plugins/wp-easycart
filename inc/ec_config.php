@@ -45,6 +45,8 @@ if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_firstdata.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'goemerchant' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_goemerchant.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'moneris_ca' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_moneris_ca.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'paymentexpress' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paymentexpress.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'paypal_payments_pro' ){

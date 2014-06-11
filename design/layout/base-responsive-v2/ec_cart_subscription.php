@@ -7,6 +7,21 @@
 <?php $this->display_subscription_login_complete(); ?>
 <hr>
 
+<?php if( get_option( 'ec_option_show_coupons' ) ){ ?>
+<div class="ec_cart_billing_row">
+    <div class="ec_cart_billing_label"><?php echo $GLOBALS['language']->get_text( 'cart_coupons', 'cart_apply_coupon' ); ?></div>
+    <div class="ec_cart_billing_input">
+      <div class="ec_cart_coupon_row">
+		  <?php $this->display_coupon_input( $GLOBALS['language']->get_text( 'cart_coupons', 'cart_apply_coupon' ) ); ?>
+          <?php $this->display_coupon_loader(); ?>
+        </div>
+        <div class="ec_cart_coupon_row_message" id="ec_cart_coupon_row_message">
+          <?php $this->display_coupon_message( ); ?>
+        </div>
+    </div>
+</div>
+<?php }?>
+
 <div class="ec_cart_subscription_holder_left">
   <div class="ec_cart_billing_title"><?php echo $GLOBALS['language']->get_text( 'cart_billing_information', 'cart_billing_information_title' )?></div>
   <div class="ec_cart_billing_row" id="ec_cart_billing_first_name_row">

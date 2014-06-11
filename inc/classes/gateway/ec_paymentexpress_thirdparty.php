@@ -77,31 +77,38 @@ class ec_paymentexpress_thirdparty extends ec_third_party{
 			$order_id = $_GET['order_id'];
 			
 			$mysqli = new ec_db( );
-			$mysqli->insert_response( $order_id, 0, "PaymentExpress Third Party", print_r( $response_body, true ) );
 			$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+			
+			if( $_POST['AUTHCODE'] == 'refund' ){ 
+					$mysqli->update_order_status( $order_id, "16" );
+			
+			}else if( $order_row->orderstatus_id != "10" ){
+			
+				// Insert Response
+				$mysqli->insert_response( $order_id, 0, "PaymentExpress Third Party", print_r( $response_body, true ) );
 				
-			if( $xml->Success == '1' ){ 
-				
-				$mysqli->update_order_status( $order_id, "10" );
-				
-				if( $order_row->orderstatus_id != "10" ){
-					// send email
-					$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
-					$order_display = new ec_orderdisplay( $order_row, true );
-					$order_display->send_email_receipt( );
+				if( $xml->Success == '1' ){ 
 					
+					// Fix for PXPay in which the script is called twice very quickly.
+					$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+					
+					if( $order_row->orderstatus_id != "10" ){
+						$mysqli->update_order_status( $order_id, "10" );
 				
-					// Quickbooks Hook
-					if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
-						$quickbooks = new ec_quickbooks( );
-						$quickbooks->add_order( $order_id );
+						// send email
+						$order_display = new ec_orderdisplay( $order_row, true );
+						$order_display->send_email_receipt( );
+					
+						// Quickbooks Hook
+						if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+							$quickbooks = new ec_quickbooks( );
+							$quickbooks->add_order( $order_id );
+						}
+					
 					}
+					
 				}
 				
-			} else if( $_POST['AUTHCODE'] == 'refund' ){ 
-				$mysqli->update_order_status( $order_id, "16" );
-			} else {
-				$mysqli->update_order_status( $order_id, "8" );
 			}
 		
 		}

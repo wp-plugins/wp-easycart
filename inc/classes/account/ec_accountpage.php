@@ -1304,7 +1304,7 @@ class ec_accountpage{
 		return $rand_password;
 	}
 	
-	private function send_validation_email( $email ){
+	public function send_validation_email( $email ){
 	 	$key = md5( $email . "ecsalt" );
 		
 		// Get receipt

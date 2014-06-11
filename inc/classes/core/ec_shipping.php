@@ -474,8 +474,12 @@ class ec_shipping{
 	}
 	
 	public function get_single_shipping_price_content( $standard_text, $express_text, $standard_price ){
+		
+		$discount = new ec_discount( array(), 0.00, $standard_price, $_SESSION['ec_couponcode'], "", 0 );
+		$shipping_discount = $discount->shipping_discount;
+		
 		$ret_string = "";
-		$ret_string .= "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"radio\" name=\"ec_cart_shipping_method\" id=\"ec_cart_shipping_method\" value=\"standard\" checked=\"checked\" />" . $standard_text . " (" . $GLOBALS['currency']->symbol . "<span id=\"ec_cart_standard_shipping_price\">" . $GLOBALS['currency']->get_number_only( $standard_price ) . "</span>)</div>";
+		$ret_string .= "<div id=\"ec_cart_standard_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"radio\" name=\"ec_cart_shipping_method\" id=\"ec_cart_shipping_method\" value=\"standard\" checked=\"checked\" />" . $standard_text . " (" . $GLOBALS['currency']->symbol . "<span id=\"ec_cart_standard_shipping_price\">" . $GLOBALS['currency']->get_number_only( $standard_price + $this->handling - $shipping_discount ) . "</span>)</div>";
 		if( $this->express_price > 0 ){
 			$ret_string .= "<div id=\"ec_cart_express_shipping_row\" class=\"ec_cart_shipping_method_row\"><input type=\"checkbox\" name=\"ec_cart_ship_express\" id=\"ec_cart_ship_express\" value=\"shipexpress\"";
 			if( $this->ship_express )

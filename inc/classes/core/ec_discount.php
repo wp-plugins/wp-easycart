@@ -82,14 +82,16 @@ class ec_discount{
 																return $promocode_row->promo_dollar;
 			else												return $this->cart_subtotal;
 			
-		}else if( $promocode_row->is_percentage_based )			return ( $this->cart_subtotal * $promocode_row->promo_percentage / 100 );
+		}else if( $promocode_row->is_percentage_based ){		return ( $this->cart_subtotal * $promocode_row->promo_percentage / 100 );
 		 
-		 else if( $promocode_row->is_shipping_based ){				
+		}else if( $promocode_row->is_shipping_based ){				
 			
 			if($promocode_row->promo_shipping == "0.00" || $promocode_row->promo_shipping > $this->shipping_subtotal)			
-																return $this->shipping_subtotal;
-			else												return $promocode_row->promo_shipping;
-		
+																$this->shipping_discount = $this->shipping_subtotal;
+			else												$this->shipping_discount = $promocode_row->promo_shipping;
+			
+																return 0;
+		 
 		}else													return 0;
 	
 	}

@@ -413,9 +413,9 @@ class ec_stripe extends ec_gateway{
 		
 	}
 	
-	public function delete_coupon( $coupon ){
+	public function delete_coupon( $coupon_id ){
 		
-		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/coupons" . $card_id );
+		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/coupons/" . $coupon_id );
 		$json = json_decode( $response );
 		
 		if( !$json->error )
@@ -809,27 +809,25 @@ class ec_stripe extends ec_gateway{
 		
 		$currency = get_option( 'ec_option_stripe_currency' );
 		
-		if( $is_amount_off ){
+		if( $coupon['is_amount_off'] ){
 		
-		$gateway_data = array(	"id"					=> $coupon->promocode_id,
-								"duration"				=> $coupon->duration, //forever, once, or repeating
-								"amount_off"			=> $coupon,
-								"currency"				=> $currency,
-								"max_redemptions"		=> $coupon->max_redemptions );
+			$gateway_data = array(	"id"					=> $coupon['promocode_id'],
+									"duration"				=> $coupon['duration'], //forever, once, or repeating
+									"amount_off"			=> $coupon['amount_off'],
+									"currency"				=> $currency );
 								
 		}else{
 			
-		$gateway_data = array(	"id"					=> $coupon->promocode_id,
-								"duration"				=> $coupon->duration, //forever, once, or repeating
-								"percent_off"			=> $coupon,
-								"currency"				=> $currency,
-								"max_redemptions"		=> $coupon->max_redemptions );
+			$gateway_data = array(	"id"					=> $coupon['promocode_id'],
+									"duration"				=> $coupon['duration'], //forever, once, or repeating
+									"percent_off"			=> $coupon['percent_off'],
+									"currency"				=> $currency  );
 			
 		}
 								
 								
-		if( $coupon->duration == "repeating" ){
-			$gateway_data[ "duration_in_months" ] = $coupon-duration_in_months;
+		if( $coupon['duration'] == "repeating" ){
+			$gateway_data[ "duration_in_months" ] = $coupon['duration_in_months'];
 		}
 		
 		return $gateway_data;	

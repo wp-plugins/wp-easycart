@@ -59,6 +59,10 @@ class ec_admin_coupons{
 		$this->db->query( $this->db->prepare( $sql, $promocodesid ) );
 
 		if( !mysql_error( ) ){
+			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
+				$stripe = new ec_stripe( );
+				$stripe->delete_coupon( $promocodesid );
+			}
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -106,6 +110,20 @@ class ec_admin_coupons{
 												$promocode_id ) );
 		
 		if( !mysql_error( ) ){
+			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
+				$stripe = new ec_stripe( );
+				$stripe->delete_coupon( $promocode_id );
+				
+				$stripe = new ec_stripe( );
+				$coupon = array( "is_amount_off" => $promocode['usedollar'],
+								 "promocode_id" => $promocode_id,
+								 "duration" => "forever",
+								 "amount_off" => $promocode['dollaramount'] * 100,
+								 "percent_off" => $promocode['percentageamount'] );
+									
+				$stripe->insert_coupon( $coupon );
+			}
+			
 			return array( "success" );
 		}else{
 			$sqlerror = mysql_error( );
@@ -127,6 +145,16 @@ class ec_admin_coupons{
 		$this->db->query( $this->db->prepare( $sql, $promocode['promoid'], $promocode['dollaramount'], $promocode['usedollar'], $promocode['percentageamount'], $promocode['usepercentage'], $promocode['shippingamount'], $promocode['useshipping'], '0.00', $promocode['usefreeitem'], $promocode['promodescription'], $promocode['manufacturers'], $promocode['products'], $promocode['attachmanufacturer'], $promocode['attachproduct'], $promocode['attachall'] ) );
 		
 		if( !mysql_error( ) ){
+			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
+				$stripe = new ec_stripe( );
+				$coupon = array( "is_amount_off" => $promocode['usedollar'],
+								 "promocode_id" => $promocode['promoid'],
+								 "duration" => "forever",
+								 "amount_off" => $promocode['dollaramount'] * 100,
+								 "percent_off" => $promocode['percentageamount'] );
+									
+				$stripe->insert_coupon( $coupon );
+			}
 			return array( "success" );
 		}else{
 			$sqlerror = mysql_error( );

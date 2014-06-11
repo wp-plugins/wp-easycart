@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.19
+Stable tag: 2.1.20
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.20 =
+* Addition - Stripe coupons for subscriptions are now available.
+* Addition - Added Moneris Canada Payment Gateway.
+* Fix - Shipping discounts take directly away from the visible shipping cost rather than adding to the discounts section.
+* Fix - Global handling fee was not being added to the display price on the shipping methods panel.
+* Improvements - Various admin improvements, many more to come this week!
 = 2.1.19 =
 * Addition - Date type field for product variations now added to the core, admin update to follow.
 * Addition - Gift cards can apply to the subtotal or grand total and can be selected in the advanced settings section.

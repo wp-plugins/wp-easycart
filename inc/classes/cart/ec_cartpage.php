@@ -2005,6 +2005,27 @@ class ec_cartpage{
 				
 				if( count( $subscription_list ) <= 0 ){
 			
+					$coupon = NULL;
+					if( isset( $_POST['ec_cart_coupon_code'] ) && $_POST['ec_cart_coupon_code'] != "" ){
+						$coupon_row = $this->mysqli->redeem_coupon_code( $_POST['ec_cart_coupon_code'] );
+						$is_match = false;
+						if( $coupon_row->by_product_id ){
+							if( $products[0]['product_id'] == $coupon_row->product_id ){
+								$is_match = true;
+							}
+						}else if( $coupon_row->by_manufacturer_id ){
+							if( $products[0]['manufacturer_id'] == $coupon_row->manufacturer_id ){
+								$is_match = true;
+							}
+						}else{
+							$is_match = true;
+						}
+						
+						if( $is_match ){
+							$coupon = $_POST['ec_cart_coupon_code'];
+						}
+					}
+				
 					$first_name = stripslashes( $_POST['ec_cart_billing_first_name'] );
 					$last_name = stripslashes( $_POST['ec_cart_billing_last_name'] );
 					$address = stripslashes( $_POST['ec_cart_billing_address'] );
@@ -2086,7 +2107,7 @@ class ec_cartpage{
 							
 							if( $plan_added ){ // Plan added successfully
 							
-								$stripe_response = $stripe->insert_subscription( $product, $user, $card );
+								$stripe_response = $stripe->insert_subscription( $product, $user, $card, $coupon );
 								
 								if( $stripe_response ){ // Subscription added successfully
 									

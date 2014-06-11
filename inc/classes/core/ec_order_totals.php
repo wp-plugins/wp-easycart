@@ -28,6 +28,7 @@ class ec_order_totals{
 			}
 		}
 		$this->discount_total = number_format( $discount->discount_total, 2, '.', '' );
+		$this->shipping_total = $this->shipping_total - $discount->shipping_discount;
 		$this->grand_total = number_format( $this->get_grand_total( $tax ), 2, '.', '' );	
 	}
 	

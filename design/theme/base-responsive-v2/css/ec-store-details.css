@@ -65,7 +65,7 @@
 .ec_product_details_quantity_error{ float:left; width:100%; margin-top:15px; margin-bottom:30px; font-size:12px; font-weight:bold; font-family:[content_font]; color:[error_text]; }
 .ec_product_details_quantity_error input{ width:50px; text-align:center; background-color:[error_color]; border:2px solid [error_color2]; }
 .ec_product_details_add_to_cart{ float:left; width:100%; }
-.ec_product_details_add_to_cart_button{ width:200px; min-width:200px; height:43px; line-height:36px; background-color:[main_color] !important; color:#ffffff !important; text-align:center; font:bold 12px/1.2 [content_font]!important; border:1px solid #CCC !important; border-radius:0px !important; padding:15px 0px !important; }
+.ec_product_details_add_to_cart_button{ width:200px; min-width:200px; height:43px; line-height:36px; background-color:[main_color] !important; color:#ffffff !important; text-align:center; font:bold 12px/1.2 [content_font]!important; border:1px solid #CCC !important; border-radius:0px !important; }
 .ec_product_details_add_to_cart_button:hover{ cursor:pointer; color:[main_color] !important; background-color:#f7f7f7 !important; }
 .ec_product_details_social_media_icons{ float:left; width:100%; margin-top:15px; }
 .ec_product_details_social_media_icons img{ float:left; }

@@ -7,7 +7,7 @@
             </li>
             
             <li class="avia-pricing-row empty-table-cell">
-            	<span class="fallback-table-val">$80<br><small>per license</small></span>
+            	<span class="fallback-table-val">$50<br><small>per license</small></span>
             </li>
             
             <li class="avia-button-row empty-table-cell">
@@ -15,7 +15,7 @@
                 	<div class="avia-button-wrap avia-button-center  avia-builder-el-8  avia-builder-el-first">
                     	<a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center">
                         	<span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span>
-                        	<span class="avia_iconbox_title">Buy Now - $80</span>
+                        	<span class="avia_iconbox_title">Buy Now - $50</span>
                         </a>
                     </div>
                 </span>
@@ -91,7 +91,7 @@
             
             <li class="">Forum Support, Docs Use, and Developers Articles</li>
      
-     		<li class="avia-button-row empty-table-cell"><span class="fallback-table-val"><div class="avia-button-wrap avia-button-center  avia-builder-el-9  el_after_av_button  "><a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $80</span></a></div></span></li>
+     		<li class="avia-button-row empty-table-cell"><span class="fallback-table-val"><div class="avia-button-wrap avia-button-center  avia-builder-el-9  el_after_av_button  "><a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $50</span></a></div></span></li>
             
         </ul>
     
@@ -178,7 +178,7 @@
             
             <li class="">Unlimited</li>
             
-            <li class="avia-button-row empty-table-cell"><span class="fallback-table-val"><div class="avia-button-wrap avia-button-center  avia-builder-el-9  el_after_av_button  "><a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $80</span></a></div></span></li>
+            <li class="avia-button-row empty-table-cell"><span class="fallback-table-val"><div class="avia-button-wrap avia-button-center  avia-builder-el-9  el_after_av_button  "><a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $50</span></a></div></span></li>
             
         </ul>
     
@@ -191,10 +191,10 @@
         
         	<li class="avia-heading-row"><div class="first-table-item">Lite Plugin License</div><span class="pricing-extra"></span></li>
             
-            <li class="avia-pricing-row"><span class="currency-symbol">$</span>80<br>
+            <li class="avia-pricing-row"><span class="currency-symbol">$</span>50<br>
             <small>per license</small></li>
             
-            <li class="avia-button-row"><div class="avia-button-wrap avia-button-center  avia-builder-el-8  avia-builder-el-first  "><a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $80</span></a></div></li>
+            <li class="avia-button-row"><div class="avia-button-wrap avia-button-center  avia-builder-el-8  avia-builder-el-first  "><a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $50</span></a></div></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-34  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
@@ -266,12 +266,12 @@
             
             <li class="">Unlimited</li>
             
-            <li class="avia-button-row"><div class="avia-button-wrap avia-button-center  avia-builder-el-9  el_after_av_button  "><a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $80</span></a></div></li></ul></div><div class="pricing-table-wrap"><ul class="pricing-table avia-highlight-col"><li class="avia-heading-row"><div class="first-table-item">Standard Plugin License<br></div><span class="pricing-extra"></span></li>
+            <li class="avia-button-row"><div class="avia-button-wrap avia-button-center  avia-builder-el-9  el_after_av_button  "><a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $50</span></a></div></li></ul></div><div class="pricing-table-wrap"><ul class="pricing-table avia-highlight-col"><li class="avia-heading-row"><div class="first-table-item">Standard Plugin License<br></div><span class="pricing-extra"></span></li>
             
-            <li class="avia-pricing-row"><span class="currency-symbol">$</span>160<br>
+            <li class="avia-pricing-row"><span class="currency-symbol">$</span>80<br>
             <small>per license</small></li>
             
-            <li class="avia-button-row"><div class="avia-button-wrap avia-button-center  avia-builder-el-10  el_after_av_button  "><a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $160</span></a></div></li>
+            <li class="avia-button-row"><div class="avia-button-wrap avia-button-center  avia-builder-el-10  el_after_av_button  "><a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $80</span></a></div></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-34  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
@@ -343,6 +343,6 @@
             
             <li class="">Unlimited</li>
             
-            <li class="avia-button-row"><div class="avia-button-wrap avia-button-center  "><a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $160</span></a></div></li>
+            <li class="avia-button-row"><div class="avia-button-wrap avia-button-center  "><a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" class="avia-button avia-icon_select-yes avia-color-orange avia-size-large avia-position-center "><span class="avia_button_icon" aria-hidden="true" data-av_icon="" data-av_iconfont="entypo-fontello"></span><span class="avia_iconbox_title">Buy Now - $80</span></a></div></li>
             
             </ul></div></div>
