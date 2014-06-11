@@ -170,7 +170,24 @@ class ec_admin_promotions
 			
 			 //convert object to array
 			 $promotioninfo = (array)$promotioninfo; 
-			  if ($promotioninfo['startdate'] != '') {
+			
+			
+			if ($promotioninfo['startdate'] != '') {
+				$unixstartdate = $promotioninfo['startdate']->timeStamp / 1000;
+				$startdate = date("'Y-m-d H:i:s'", strtotime("midnight", $unixstartdate));
+			} else {
+				$startdate = 'NULL';
+			}
+			if ($promotioninfo['enddate'] != '') {
+				$unixenddate = $promotioninfo['enddate']->timeStamp / 1000;
+				$enddate = date("'Y-m-d H:i:s'", strtotime("tomorrow", $unixenddate) -1);
+			} else {
+				$enddate = 'NULL';
+			}
+			
+			
+			
+			/*  if ($promotioninfo['startdate'] != '') {
 				$startdate = date('Y-m-d H:i:s', ($promotioninfo['startdate']->timeStamp / 1000));
 			} else {
 				$startdate = 'NULL';
@@ -179,14 +196,14 @@ class ec_admin_promotions
 				$enddate = date('Y-m-d H:i:s', ($promotioninfo['enddate']->timeStamp / 1000));
 			} else {
 				$enddate = 'NULL';
-			}
+			}*/
 			
 			
 			
 			
 			  //Create SQL Query
 			  $sql = sprintf("Insert into ec_promotion(ec_promotion.promotion_id, ec_promotion.name, ec_promotion.type, ec_promotion.start_date, ec_promotion.end_date, ec_promotion.product_id_1, ec_promotion.manufacturer_id_1, ec_promotion.category_id_1, ec_promotion.price1, ec_promotion.price2, ec_promotion.percentage1)
-				values(NULL, '%s', '%s', '".$startdate."', '".$enddate."', '%s', '%s', '%s', '%s', '%s', '%s')",
+				values(NULL, '%s', '%s', ".$startdate.", ".$enddate.", '%s', '%s', '%s', '%s', '%s', '%s')",
 				mysql_real_escape_string($promotioninfo['promotionname']),
 				mysql_real_escape_string($promotioninfo['promotiontype']),
 				mysql_real_escape_string($promotioninfo['product1']),

@@ -56,7 +56,10 @@ class ec_admin_products
 		
 		//secure all of the services for logged in authenticated users only	
 		public function _getMethodRoles($methodName){
-			if ($methodName == 'deleteadvancedoption') return array('admin');
+			if ($methodName == 'removeproductcategory') return array('admin');
+			else if($methodName == 'createproductcategory') return array('admin');
+			else if($methodName == 'getproductcategories') return array('admin');
+			else if($methodName == 'deleteadvancedoption') return array('admin');
 			else if($methodName == 'updatealldownloadcustomers') return array('admin');
 			else if($methodName == 'deletealladvancedoption') return array('admin');
 			else if($methodName == 'addadvancedoption') return array('admin');
@@ -86,6 +89,97 @@ class ec_admin_products
 				$args[0] = $sql; 
 				return call_user_func_array('sprintf', $args); 
 		} 
+		
+		function createproductcategory($categoryname, $productid) {
+			$sql = "INSERT INTO ec_category( category_name ) VALUES( %s )";
+			$this->db->query( $this->db->prepare( $sql, $categoryname ) );
+			
+			if( !mysql_error( ) ){
+				// Insert a WordPress Custom post type post.
+				$category_id = $this->db->insert_id;
+				$post = array(	'post_content'	=> "[ec_store groupid=\"" . $category_id . "\"]",
+								'post_status'	=> "publish",
+								'post_title'	=> $GLOBALS['language']->convert_text( $categoryname ),
+								'post_type'		=> "ec_store"
+							  );
+				$post_id = wp_insert_post( $post );
+				
+				// Update Category Post ID
+				$db = new ec_db( );
+				$db->update_category_post_id( $category_id, $post_id );
+				
+				$sql = "SELECT SQL_CALC_FOUND_ROWS ec_category.* FROM ec_category";
+				$results = $this->db->get_results( $sql );
+				$totalquery = $this->db->get_var( "SELECT FOUND_ROWS()" );
+				
+				if( count( $results ) > 0 ){
+					$results[0]->totalrow = $totalquery;
+					return $results;
+				}else{
+					return array( "noresults" );
+				}
+			}else{
+				return array( "error" );
+			}
+			
+		}
+		
+		function getproductcategories($product_id) {
+			 //Create SQL Query
+			  $sql = $this->escape("SELECT 
+									  ec_category.category_id,
+									  ec_category.category_name,
+									  ec_categoryitem.product_id,
+									  ec_categoryitem.category_id
+									FROM
+									  ec_categoryitem
+									  LEFT JOIN ec_category ON (ec_categoryitem.category_id = ec_category.category_id)
+									WHERE
+									  ec_categoryitem.product_id = '".$product_id."'
+									ORDER BY
+									  ec_category.category_name");
+			  // Run query on database
+			  //return $sql;
+			  $result = mysql_query($sql);
+			  
+			  if(!mysql_error()) {
+				  while ($row=mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  if(count($row) > 0) {
+					  return($returnArray); //return array results if there are some
+				  } else {
+					  $returnArray[] = "noresults";
+				 	  return $returnArray; //return noresults if there are no results
+				  }
+			  } else {
+				  $returnArray[] = "error";
+				  return $returnArray; //return noresults if there are no results
+			  }
+
+		}
+		
+		function removeproductcategory($category_id, $product_id) {
+			  //Create SQL Query	
+			  $deletesql = $this->escape("DELETE FROM ec_categoryitem WHERE ec_categoryitem.product_id = '%s' AND ec_categoryitem.category_id = '%s'", $product_id, $category_id);
+			  //Run query on database;
+			  mysql_query($deletesql);
+			  
+			   			  
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				  $returnArray[] = "success";
+				  return($returnArray); //return array results if there are some
+			  } else {
+				  $returnArray[] = "error";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		
+		
+		
+		
+		
 		
 		function updatealldownloadcustomers($productid, $newdownloadid, $olddownloadid) {
 			  /////////////////////////////////////////////////////
@@ -372,6 +466,18 @@ class ec_admin_products
 				mysql_real_escape_string($row['quantity']));
 				mysql_query($sql);
 			}
+			
+			//duplicate category listings
+			$categorysql = sprintf("SELECT * FROM ec_cateogryitem WHERE ec_categoryitem.product_id = '%s'", mysql_real_escape_string($productid));
+			$result = mysql_query($categorysql);
+			
+			while($row = mysql_fetch_assoc($result)){
+				$sql = sprintf("INSERT INTO ec_cateogryitem(ec_categoryitem.product_id, ec_categoryitem.category_id) VALUES('%s', '%s')", 
+				mysql_real_escape_string($newid), 
+				mysql_real_escape_string($row['category_id']));
+				mysql_query($sql);
+			}
+			
 			
 			//duplicate B2B role pricing
 			$rolepricingsql = sprintf("SELECT * FROM ec_roleprice WHERE ec_roleprice.product_id = '%s'", mysql_real_escape_string($productid));
@@ -759,6 +865,9 @@ class ec_admin_products
 	
 				$updateimages = sprintf("UPDATE ec_optionitemimage SET ec_optionitemimage.product_id = '%s' WHERE ec_optionitemimage.product_id = '%s'", $newproductid, $product['product_id']);
 				mysql_query($updateimages);
+				
+				$updatecategories = sprintf("UPDATE ec_categoryitem SET ec_categoryitem.product_id = '%s' WHERE ec_categoryitem.product_id = '%s'", $newproductid, $product['product_id']);
+				mysql_query($updatecategories);
 
 
 			//if using stripe and is subscription, insert plan

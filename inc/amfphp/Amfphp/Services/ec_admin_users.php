@@ -62,6 +62,7 @@ class ec_admin_users
 		   else if($methodName == 'getuserroles') return array('admin');
 		   else if($methodName == 'deleteuserrole') return array('admin');
 		   else if($methodName == 'adduserrole') return array('admin');
+		   else if($methodName == 'resendverificationemail') return array('admin');
 		   else  return null;
 		}	
 		
@@ -77,6 +78,8 @@ class ec_admin_users
 				$args[0] = $sql; 
 				return call_user_func_array('sprintf', $args); 
 		} 
+		
+		
 		
 
 
@@ -470,7 +473,10 @@ class ec_admin_users
 				return $returnArray; //return noresults if there are no results
 			}
 		}
-		
+		function resendverificationemail($clientid, $email) {
+			$account = new ec_accountpage;
+			$account->send_validation_email( $email );
+		}
 
 
 	}//close class

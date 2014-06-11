@@ -52,7 +52,7 @@ class ec_admin_giftcards{
 	
 	function deletegiftcard( $cardid ){
 		$sql = "DELETE FROM ec_giftcard WHERE ec_giftcard.giftcard_id = %s";
-		$this->db->query( $sql, $cardid );
+		$this->db->query( $this->db->prepare( $sql, $cardid) );
 		
 		if( !mysql_error( ) ){
 			return array( "success" );
