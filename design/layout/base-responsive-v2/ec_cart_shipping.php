@@ -61,12 +61,14 @@
       </div>
     </div>
     <?php }?>
+    <?php if( get_option( 'ec_option_collect_user_phone' ) ){ ?>
     <div class="ec_cart_shipping_row" id="ec_cart_shipping_phone_row">
       <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_phone' )?></div>
       <div class="ec_cart_shipping_input">
         <?php $this->display_shipping_input( "phone" ); ?>
       </div>
     </div>
+    <?php }?>
   </div>
 </div>
 <?php 

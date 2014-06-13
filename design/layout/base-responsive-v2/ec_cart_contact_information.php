@@ -1,5 +1,8 @@
+<?php if( isset( $_SESSION['ec_email'] ) && $_SESSION['ec_email'] == "guest" ){ ?>
 <div class="ec_cart_contact_information_holder">
   <div class="ec_cart_contact_information_title"><?php echo $GLOBALS['language']->get_text( 'cart_contact_information', 'cart_contact_information_title' )?></div>
+  
+  <?php if( get_option( 'ec_option_use_contact_name' ) ){ ?>
   <div class="ec_cart_contact_information_row" id="ec_contact_first_name_row">
     <div class="ec_cart_contact_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_contact_information', 'cart_contact_information_first_name' )?></div>
     <div class="ec_cart_contact_information_input">
@@ -12,6 +15,9 @@
       <?php $this->ec_cart_display_contact_last_name_input(); ?>
     </div>
   </div>
+  
+  <?php } ?>
+  
   <?php if( $this->user->is_guest( ) ){ ?>
   <div class="ec_cart_contact_information_row" id="ec_contact_email_row">
     <div class="ec_cart_contact_information_label"><?php echo $GLOBALS['language']->get_text( 'cart_contact_information', 'cart_contact_information_email' )?></div>
@@ -58,3 +64,4 @@
 	</script>
   <?php }?>
 </div>
+<?php } ?>

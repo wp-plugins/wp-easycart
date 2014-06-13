@@ -61,12 +61,14 @@
     </div>
   </div>
   <?php } ?>
+  <?php if( get_option( 'ec_option_collect_user_phone' ) ){ ?>
   <div class="ec_cart_billing_row" id="ec_cart_billing_phone_row">
     <div class="ec_cart_billing_label"><?php echo $GLOBALS['language']->get_text( 'cart_billing_information', 'cart_billing_information_phone' )?></div>
     <div class="ec_cart_billing_input">
       <?php $this->display_billing_input( "phone" ); ?>
     </div>
   </div>
+  <?php } ?>
   <div class="ec_cart_billing_row">
     <?php $this->display_shipping_selector( $GLOBALS['language']->get_text( 'cart_billing_information', 'cart_billing_information_ship_to_this' ), $GLOBALS['language']->get_text( 'cart_billing_information', 'cart_billing_information_ship_to_different' ) ); ?>
   </div>

@@ -839,6 +839,8 @@ class ec_accountpage{
 			$this->process_update_subscription( );
 		else if( $action == "cancel_subscription" )
 			$this->process_cancel_subscription( );
+		else if( $action == "order_create_account" )
+			$this->process_order_create_account( );
 	}
 	
 	private function process_login( ){
@@ -1265,6 +1267,33 @@ class ec_accountpage{
 			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscriptions&account_success=subscription_canceled" );
 		}else{
 			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $subscription_id . "&account_error=subscription_cancel_failed" );
+		}
+	}
+	
+	private function process_order_create_account( ){
+		$order_id = $_POST['order_id'];
+		$email = $_POST['email_address'];
+		$password = $_POST['ec_password'];
+		
+		$order_row = $this->mysqli->get_order_row( $order_id, "guest", "guest" );
+		
+		if( $this->mysqli->does_user_exist( $email ) ){
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id . "&ec_cart_error=email_exists" );
+		}else if( $order_row->user_id == 0 ){
+			$billing_id = $this->mysqli->insert_address( $order_row->billing_first_name, $order_row->billing_last_name, $order_row->billing_address_line_1, $order_row->billing_address_line_2, $order_row->billing_city, $order_row->billing_state, $order_row->billing_zip, $order_row->billing_country, $order_row->billing_phone );
+			$shipping_id = $this->mysqli->insert_address( $order_row->shipping_first_name, $order_row->shipping_last_name, $order_row->shipping_address_line_1, $order_row->shipping_address_line_2, $order_row->shipping_city, $order_row->shipping_state, $order_row->shipping_zip, $order_row->shipping_country, $order_row->shipping_phone );
+			
+			$user_id = $this->mysqli->insert_user( $email, $password, $order_row->billing_first_name, $order_row->billing_last_name, $billing_id, $shipping_id, "shopper", 0 );
+			$this->mysqli->update_order_user( $user_id, $order_id );
+			
+			$_SESSION['ec_user_id'] = $user_id;
+			$_SESSION['ec_email'] = $email;
+			$_SESSION['ec_username'] = $order_row->billing_first_name . " " . $order_row->billing_last_name;
+			$_SESSION['ec_first_name'] = $order_row->billing_first_name;
+			$_SESSION['ec_last_name'] = $order_row->billing_last_name;
+			$_SESSION['ec_password'] = $password;
+			
+			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $order_id . "&account_success=cart_account_created" );
 		}
 	}
 	

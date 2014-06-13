@@ -287,6 +287,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 </div>
 
 <div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect User Phone Number</em>If enabled, the system will collect the phone number from the user.</span></a></span>
+    <span class="ec_setting_row_label">Collect User Phone Number:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_collect_user_phone" style="width:100px;"><option value="0"<?php if( get_option('ec_option_collect_user_phone') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_collect_user_phone') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Enable Guest Checkout</em>When guest checkout is enabled a user has the option complete the checkout process without entering a password for an account. All the same information is recorded when a user checks out as a guest, but no user is created for that order. In addition, the customer cannot return to the site to see their past orders.</span></a></span>
     <span class="ec_setting_row_label">Enable Guest Checkout:</span>
     <span class="ec_setting_row_input"><select name="ec_option_allow_guest" style="width:100px;"><option value="0"<?php if( get_option('ec_option_allow_guest') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_allow_guest') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
@@ -320,6 +326,24 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Return To Previous Page after Add to Cart Success</em>If enabled, the user will be returned to the store page or previous product page with a notice about add to cart success. This option actually returns to the previous page on the server, so if you use a widget or shortcode you may see a different result. If you leave this off the customer is still forwarded to the cart.</span></a></span>
     <span class="ec_setting_row_label">Return To Previous Page after Add to Cart:</span>
     <span class="ec_setting_row_input"><select name="ec_option_addtocart_return_to_product" style="width:100px;"><option value="0"<?php if( get_option('ec_option_addtocart_return_to_product') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_addtocart_return_to_product') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Skip Login Screen in Cart</em>If enabled, the system will skip the screen to log into your account first. This option will speed up checkout for new users and, if you have the latest design files, will still display the log in screen at the top.</span></a></span>
+    <span class="ec_setting_row_label">Skip Login Screen in Cart:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_skip_cart_login" style="width:100px;"><option value="0"<?php if( get_option('ec_option_skip_cart_login') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_skip_cart_login') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Skip Shipping Cart Panel</em>If enabled, the system will skip the panel in the cart where the user is asked to select their shipping method. This data is instead collected on the final checkout page if needed.</span></a></span>
+    <span class="ec_setting_row_label">Skip Shipping Cart Panel:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_skip_shipping_page" style="width:100px;"><option value="0"<?php if( get_option('ec_option_skip_shipping_page') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_skip_shipping_page') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Require Name for Contact Information</em>If enabled, the checkout will require a user to input their first and last name during the creation of an account (this is separate from the billing and shipping information).</span></a></span>
+    <span class="ec_setting_row_label">Require Name for Contact Information:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_use_contact_name" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_contact_name') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_contact_name') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>

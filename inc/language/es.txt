@@ -405,6 +405,55 @@
 				"cart_notice_length_error":{
 					"title":"Cart, Notice, Password Format",
 					"value":"La longitud debe ser mayor de seis caracteres"
+				},
+				"cart_notice_payment_card_type":{
+					"title":"Cart, Notice, Card Type",
+					"value":"Tipo de tarjeta"
+				},
+				"cart_notice_payment_card_holder_name":{
+					"title":"Cart, Notice, Card Holder Required",
+					"value":"Titular de la tarjeta Nombre"
+				},
+				"cart_notice_payment_card_number":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Número de tarjeta"
+				},
+				"cart_notice_payment_card_number_error":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"El número de tarjeta de crédito es incorrecto"
+				},
+				"cart_notice_payment_card_exp_month":{
+					"title":"Cart, Notice, EXP Month Required",
+					"value":"Mes de vencimiento"
+				},
+				"cart_notice_payment_card_exp_year":{
+					"title":"Cart, Notice, EXP Year Required",
+					"value":"Año de Vencimiento"
+				},
+				"cart_notice_payment_card_code":{
+					"title":"Cart, Notice, Security Code Required",
+					"value":"Código de Seguridad"
+				}
+			}
+		},
+		"cart_process":{
+			"label":"Cart - Progress Bar",
+			"options":{
+				"cart_process_cart_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Carro"
+				},
+				"cart_process_shipping_link":{
+					"title":"Cart, Progress, Address",
+					"value":"Envío"
+				},
+				"cart_process_review_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Revisión/Pago"
+				},
+				"cart_process_complete_link":{
+					"title":"Cart, Progress, Complete",
+					"value":"Completo"
 				}
 			}
 		},
@@ -820,6 +869,10 @@
 				"cart_address_review_edit_link":{
 					"title":"Cart, Address Review, Edit Link",
 					"value":"Editar Dirección o Envío Opciones"
+				},
+				"cart_address_review_edit_link2":{
+					"title":"Cart, Address Review, Edit Link",
+					"value":"Editar Dirección o Envío Opciones"
 				}
 			}
 		},
@@ -874,9 +927,21 @@
 					"title":"Cart, Payment Information, Checkout Text",
 					"value":"Al enviar su solicitud, usted está aceptando los [terms] Términos y condiciones [/terms] y [privacy] Política de privacidad [/privacy] de nuestra página web. Una vez que hace clic en enviar pedido, el proceso de compra es completa y no se pueden hacer cambios a su pedido. Gracias por comprar con nosotros!"
 				},
+				"cart_payment_information_review_checkout_text":{
+					"title":"Cart, Payment Information, Review Checkout Text",
+					"value":"Antes de enviar su orden y lo que es final, se le dará la oportunidad de revisar y confirmar los totales finales. Por favor, haga clic en el botón para revisión cuando usted está listo para revisar, confirmar y presentar su solicitud."
+				},
+				"cart_payment_information_review_order_button":{
+					"title":"Cart, Payment Information, Review Order Button",
+					"value":"ORDEN DE EXAMEN"
+				},
 				"cart_payment_information_submit_order_button":{
 					"title":"Cart, Payment Information, Submit Order Button",
 					"value":"ENVIAR PEDIDO"
+				},
+				"cart_payment_information_cancel_order_button":{
+					"title":"Cart, Payment Information, Cancel Order Button",
+					"value":"CANCELAR PEDIDO"
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Cart, Payment Information, Customer Notes Title",
@@ -982,6 +1047,42 @@
 				"cart_payment_complete_bottom_line_2":{
 					"title":"Cart, Payment Complete, Bottom Line 2",
 					"value":"Muchas Gracias!"
+				},
+				"cart_success_thank_you_title":{
+					"title":"Cart, Payment Complete, Thank You Title",
+					"value":"Gracias por su pedido"
+				},
+				"cart_success_order_number_is":{
+					"title":"Cart, Payment Complete, Your Order Number",
+					"value":"Número de orden es:"
+				},
+				"cart_success_will_receive_email":{
+					"title":"Cart, Payment Complete, Will receive email",
+					"value":"Usted recibirá un email de confirmación en breve en"
+				},
+				"cart_success_print_receipt_text":{
+					"title":"Cart, Payment Complete, Print Receipt Link Text",
+					"value":"Imprimir recibo"
+				},
+				"cart_success_save_order_text":{
+					"title":"Cart, Payment Complete, Save Your Info",
+					"value":"Guardar la información para la próxima vez"
+				},
+				"cart_success_create_password":{
+					"title":"Cart, Payment Complete, Create Password",
+					"value":"Crear contraseña:"
+				},
+				"cart_success_verify_password":{
+					"title":"Cart, Payment Complete, Verify Password",
+					"value":"Verifique su contraseña:"
+				},
+				"cart_success_password_hint":{
+					"title":"Cart, Payment Complete, Password Hint",
+					"value":"(6-12 Caracteres)"
+				},
+				"cart_success_create_account":{
+					"title":"Cart, Payment Complete, Create Account",
+					"value":"Crear Cuenta"
 				}
 			}
 		},

@@ -405,6 +405,55 @@
 				"cart_notice_length_error":{
 					"title":"Cart, Notice, Password Format",
 					"value":"Länge muss größer als sechs Zeichen lang sein"
+				},
+				"cart_notice_payment_card_type":{
+					"title":"Cart, Notice, Card Type",
+					"value":"Kartentyp"
+				},
+				"cart_notice_payment_card_holder_name":{
+					"title":"Cart, Notice, Card Holder Required",
+					"value":"Name des Karteninhabers"
+				},
+				"cart_notice_payment_card_number":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Kartennummer"
+				},
+				"cart_notice_payment_card_number_error":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Die eingegebene Kreditkartennummer ist ungültig"
+				},
+				"cart_notice_payment_card_exp_month":{
+					"title":"Cart, Notice, EXP Month Required",
+					"value":"Expiration Monat"
+				},
+				"cart_notice_payment_card_exp_year":{
+					"title":"Cart, Notice, EXP Year Required",
+					"value":"Expiration Jahr"
+				},
+				"cart_notice_payment_card_code":{
+					"title":"Cart, Notice, Security Code Required",
+					"value":"Sicherheits-Code"
+				}
+			}
+		},
+		"cart_process":{
+			"label":"Cart - Progress Bar",
+			"options":{
+				"cart_process_cart_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Einkaufswagen"
+				},
+				"cart_process_shipping_link":{
+					"title":"Cart, Progress, Address",
+					"value":"Versand"
+				},
+				"cart_process_review_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Bewertung/Pay"
+				},
+				"cart_process_complete_link":{
+					"title":"Cart, Progress, Complete",
+					"value":"Vollständig"
 				}
 			}
 		},
@@ -820,6 +869,10 @@
 				"cart_address_review_edit_link":{
 					"title":"Warenkorb, Adresse überprüfen, bearbeiten Link",
 					"value":"Adresse oder Versandoptionen bearbeiten"
+				},
+				"cart_address_review_edit_link2":{
+					"title":"Warenkorb, Adresse überprüfen, bearbeiten Link",
+					"value":"Adresse oder Versandoptionen bearbeiten"
 				}
 			}
 		},
@@ -874,9 +927,21 @@
 					"title":"Warenkorb, Zahlungsinformationen, Kasse Text",
 					"value":"Mit dem Absenden Ihrer Bestellung,stimmen Sie den [allgemeinen] Geschäftsbedingungen [/ terms] und [Datenschutz] Datenschutzrichtlinie [/ Datenschutz] der Webseiten zu. Sobald Sie Bestellung abschicken klicken, wird der Bezahlvorgang abgeschlossen und es werden keine Änderungen an Ihrer Bestellung vorgenommen. Danke für den Einkauf bei uns!"
 				},
+				"cart_payment_information_review_checkout_text":{
+					"title":"Cart, Payment Information, Review Checkout Text",
+					"value":"Bevor Sie Ihre Bestellung und damit endgültig, erhalten Sie eine Chance zu überprüfen und zu bestätigen, die endgültigen Summen gegeben werden. Bitte klicken Sie auf die Schaltfläche, um Kritik, wenn Sie bereit sind zu überprüfen, zu bestätigen, und schicken Sie Ihre Bestellung."
+				},
+				"cart_payment_information_review_order_button":{
+					"title":"Cart, Payment Information, Review Order Button",
+					"value":"Kommentieren"
+				},
 				"cart_payment_information_submit_order_button":{
 					"title":"Warenkorb, Zahlungsinformationen, Bestellung absenden Taste",
 					"value":"BESTELLUNG ABSENDEN"
+				},
+				"cart_payment_information_cancel_order_button":{
+					"title":"Cart, Payment Information, Cancel Order Button",
+					"value":"Bestellung stornieren"
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Warenkorb, Zahlungsinformationen, Kundennotizen Titel",
@@ -982,6 +1047,42 @@
 				"cart_payment_complete_bottom_line_2":{
 					"title":"Warenkorb, Zahlung abgeschlossen, Taste Linie 2",
 					"value":"Herzlichen Dank!"
+				},
+				"cart_success_thank_you_title":{
+					"title":"Cart, Payment Complete, Thank You Title",
+					"value":"Vielen Dank für Ihre Bestellung"
+				},
+				"cart_success_order_number_is":{
+					"title":"Cart, Payment Complete, Your Order Number",
+					"value":"Bestellnummer ist:"
+				},
+				"cart_success_will_receive_email":{
+					"title":"Cart, Payment Complete, Will receive email",
+					"value":"Sie erhalten eine E-Mail Bestätigung erhalten in Kürze unter"
+				},
+				"cart_success_print_receipt_text":{
+					"title":"Cart, Payment Complete, Print Receipt Link Text",
+					"value":"Quittung drucken"
+				},
+				"cart_success_save_order_text":{
+					"title":"Cart, Payment Complete, Save Your Info",
+					"value":"Speichern Sie Ihre Daten für die nächste Zeit"
+				},
+				"cart_success_create_password":{
+					"title":"Cart, Payment Complete, Create Password",
+					"value":"Passwort erstellen:"
+				},
+				"cart_success_verify_password":{
+					"title":"Cart, Payment Complete, Verify Password",
+					"value":"Passwort bestätigen:"
+				},
+				"cart_success_password_hint":{
+					"title":"Cart, Payment Complete, Password Hint",
+					"value":"(6-12 Characters)"
+				},
+				"cart_success_create_account":{
+					"title":"Cart, Payment Complete, Create Account",
+					"value":"Konto erstellen"
 				}
 			}
 		},

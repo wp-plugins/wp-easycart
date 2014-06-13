@@ -82,7 +82,9 @@ class ec_cartpage{
 		
 		// Credit Card
 		if( isset( $_POST['ec_cart_payment_type'] ) )
-			$credit_card = new ec_credit_card( $_POST['ec_cart_payment_type'], $_POST['ec_card_holder_name'], $_POST['ec_card_number'], $_POST['ec_expiration_month'], $_POST['ec_expiration_year'], $_POST['ec_security_code'] );
+			$credit_card = new ec_credit_card( $_POST['ec_cart_payment_type'], $_POST['ec_card_holder_name'], $this->sanatize_card_number( $_POST['ec_card_number'] ), $_POST['ec_expiration_month'], $_POST['ec_expiration_year'], $_POST['ec_security_code'] );
+		else if( isset( $_POST['ec_card_number'] ) )
+			$credit_card = new ec_credit_card( $this->get_payment_type( $this->sanatize_card_number( $_POST['ec_card_number'] ) ), $_POST['ec_card_holder_name'],  $this->sanatize_card_number( $_POST['ec_card_number'] ), $_POST['ec_expiration_month'], $_POST['ec_expiration_year'], $_POST['ec_security_code'] );
 		else
 			$credit_card = new ec_credit_card( "", "", "", "", "", "" );
 		
@@ -283,6 +285,41 @@ class ec_cartpage{
 			echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
 		}
 		echo "</div>";
+	}
+	
+	public function display_cart_process( ){
+		if(	$this->cart->total_items > 0 || ( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" ) ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_process.php' ) )	
+				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_process.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_process.php' );
+		}
+	}
+	
+	public function display_cart_process_cart_link( $link_text ){
+		if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" ){
+			echo $link_text;
+		}else{
+			echo "<a href=\"" . $this->cart_page . "\" class=\"ec_process_bar_link\">" . $link_text . "</a>";
+		}
+	}
+	
+	public function display_cart_process_shipping_link( $link_text ){
+		if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" ){
+			echo $link_text;
+		}else{
+			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info\" class=\"ec_process_bar_link\">" . $link_text . "</a>";
+		}
+	}
+	
+	public function display_cart_process_review_link( $link_text ){
+		if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" ){
+			echo $link_text;
+		}else if( isset( $_SESSION['ec_billing_first_name'] ) ){
+			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment\" class=\"ec_process_bar_link\">" . $link_text . "</a>";
+		}else{
+			echo $link_text;
+		}
 	}
 	
 	public function display_cart( $empty_cart_string ){
@@ -535,8 +572,15 @@ class ec_cartpage{
 	
 	public function display_checkout_button( $button_text ){
 		$checkout_page = "checkout_login";
-		if( isset( $_SESSION['ec_email'] ) )
-		$checkout_page = "checkout_info";
+		if( isset( $_SESSION['ec_email'] ) ){
+			$checkout_page = "checkout_info";
+			
+		}else if( get_option( 'ec_option_skip_cart_login' ) ){
+			$checkout_page = "checkout_info";
+			$_SESSION['ec_email'] = "guest";
+			$_SESSION['ec_username'] = "guest";
+			$_SESSION['ec_password'] = "guest";
+		}
 		echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $checkout_page . "\" class=\"ec_cart_checkout_link\">" . $button_text . "</a>";
 	}
 	/* END CART FUNCTIONS */
@@ -1084,6 +1128,14 @@ class ec_cartpage{
 		
 	}
 	
+	public function display_cancel_order_button( $button_text ){
+		echo "<input type=\"button\" id=\"ec_cancel_payment_button\" class=\"ec_cart_submit_order_button\" value=\"" . $button_text . "\" onclick=\"return ec_cart_cancel_order();\" />";
+	}
+	
+	public function display_order_review_button( $button_text ){
+		echo "<input type=\"button\" id=\"ec_review_payment_button\" class=\"ec_cart_submit_order_button\" value=\"" . $button_text . "\" onclick=\"if( ec_cart_validate_checkout_submit_order( ) ){ ec_cart_show_review_panel( ); } return false;\" />";
+	}
+	
 	/* START ADDRESS REVIEW FUNCTIONS */
 	public function display_address_review(){
 		if(	$this->cart->total_items > 0 ){
@@ -1234,29 +1286,39 @@ class ec_cartpage{
 	
 	public function ec_cart_display_credit_card_images(){
 		//display credit card icons
-		if( get_option('ec_option_use_visa') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visa.png") . "\" alt=\"Visa\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_visa\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visa_inactive.png") . "\" alt=\"Visa\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_visa_inactive\" />";
+		if( get_option('ec_option_use_visa') || get_option('ec_option_use_delta') || get_option('ec_option_use_uke') )
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visa.png") . "\" alt=\"Visa\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_visa\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visa_inactive.png") . "\" alt=\"Visa\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_visa_inactive\" />";
+		
+		/*
+		if( get_option('ec_option_use_delta') )
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visadebit.png") . "\" alt=\"Visa Debit\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_delta\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visadebit_inactive.png") . "\" alt=\"Visa Debit\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_delta_inactive\" />";
+			
+		if( get_option('ec_option_use_uke') )
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visaelectron.png") . "\" alt=\"Visa Electron\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_uke\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/visaelectron_inactive.png") . "\" alt=\"Visa Electron\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_uke_inactive\" />";
+		*/
 		
 		if( get_option('ec_option_use_discover') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/discover.png") . "\" alt=\"Discover\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_discover\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/discover_inactive.png") . "\" alt=\"Discover\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_discover_inactive\" />";
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/discover.png") . "\" alt=\"Discover\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_discover\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/discover_inactive.png") . "\" alt=\"Discover\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_discover_inactive\" />";
 		
-		if( get_option('ec_option_use_mastercard') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/mastercard.png") . "\" alt=\"Mastercard\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_mastercard\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/mastercard_inactive.png") . "\" alt=\"Mastercard\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_mastercard_inactive\" />";
+		if( get_option('ec_option_use_mastercard') || get_option('ec_option_use_mcdebit') )
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/mastercard.png") . "\" alt=\"Mastercard\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_mastercard\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/mastercard_inactive.png") . "\" alt=\"Mastercard\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_mastercard_inactive\" />";
 		
 		if( get_option('ec_option_use_amex') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/american_express.png") . "\" alt=\"AMEX\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_amex\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/american_express_inactive.png") . "\" alt=\"AMEX\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_amex_inactive\" />";
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/american_express.png") . "\" alt=\"AMEX\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_amex\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/american_express_inactive.png") . "\" alt=\"AMEX\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_amex_inactive\" />";
 		
 		if( get_option('ec_option_use_jcb') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/jcb.png") . "\" alt=\"JCB\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_jcb\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/jcb_inactive.png") . "\" alt=\"JCB\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_jcb_inactive\" />";
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/jcb.png") . "\" alt=\"JCB\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_jcb\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/jcb_inactive.png") . "\" alt=\"JCB\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_jcb_inactive\" />";
 		
 		if( get_option('ec_option_use_diners') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/diners.png") . "\" alt=\"Diners\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_diners\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/diners_inactive.png") . "\" alt=\"Diners\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_diners_inactive\" />";
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/diners.png") . "\" alt=\"Diners\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_diners\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/diners_inactive.png") . "\" alt=\"Diners\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_diners_inactive\" />";
 		
+		/*
 		if( get_option('ec_option_use_laser') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/laser.gif") . "\" alt=\"Laser\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_laser\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/laser_inactive.png") . "\" alt=\"Laser\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_laser_inactive\" />";
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/laser.png") . "\" alt=\"Laser\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_laser\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/laser_inactive.png") . "\" alt=\"Laser\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_laser_inactive\" />";
+		*/
 		
-		if( get_option('ec_option_use_maestro') )
-		echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/maestro.png") . "\" alt=\"Maestro\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_maestro\" />" . "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/maestro_inactive.png") . "\" alt=\"Maestro\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_maestro_inactive\" />";
+		if( get_option('ec_option_use_maestro') || get_option('ec_option_use_laser'))
+			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/maestro.png") . "\" alt=\"Maestro\" class=\"ec_cart_payment_information_credit_card_active\" id=\"ec_cart_payment_credit_card_icon_maestro\" />" . "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_cart_payment_information/maestro_inactive.png") . "\" alt=\"Maestro\" class=\"ec_cart_payment_information_credit_card_inactive\" id=\"ec_cart_payment_credit_card_icon_maestro_inactive\" />";
 		
 		
 	}
@@ -1304,6 +1366,10 @@ class ec_cartpage{
 	
 	public function ec_cart_display_card_holder_name_input(){
 		echo "<input type=\"text\" name=\"ec_card_holder_name\" id=\"ec_card_holder_name\" class=\"ec_cart_payment_information_input_text\" value=\"\" />";
+	}
+	
+	public function ec_cart_display_card_holder_name_hidden_input(){
+		echo "<input type=\"hidden\" name=\"ec_card_holder_name\" id=\"ec_card_holder_name\" class=\"ec_cart_payment_information_input_text\" value=\"" . $this->user->billing->first_name . " " . $this->user->billing->last_name . "\" />";
 	}
 	
 	public function ec_cart_display_card_number_input(){
@@ -1433,14 +1499,56 @@ class ec_cartpage{
 		if( get_option( 'ec_option_user_order_notes' ) ){
 			echo "<div class=\"ec_cart_payment_information_title\">" . $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_title' ) . "</div>";
 			echo "<div class=\"ec_cart_submit_order_message\">" . $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_message' ) . "</div>";	
-			echo "<div class=\"ec_cart_payment_information_row\"><textarea name=\"ec_order_notes\">";
+			echo "<div class=\"ec_cart_payment_information_row\"><textarea name=\"ec_order_notes\" id=\"ec_order_notes\">";
 			if( isset( $_SESSION['ec_order_notes'] ) )
 				echo $_SESSION['ec_order_notes'];
 			
-			echo "</textarea></div>";
+			echo "</textarea></div><hr />";
 		}
 	}
+	
+	public function display_order_finalize_panel( ){
+		if(	$this->cart->total_items > 0 ){
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_finalize_order.php' ) )	
+				include( WP_PLUGIN_DIR . "/" . 'wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_finalize_order.php' );
+			else
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_finalize_order.php' );
+		}
+	}
+	
+	public function display_ajax_loader( $img ){
+		echo "<img src=\"" .  plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ajax-loader.gif" ) . "\" class=\"ec_cart_final_loader\" />";
+	}
 	/* END SUBMIT ORDER DISPLAY FUNCTIONS */
+	
+	/* START SUCCESS PAGE FUNCTIONS */
+	public function display_print_receipt_link( $link_text, $order_id ){
+		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=print_receipt&order_id=" . $order_id . "\" target=\"_blank\">" . $link_text . "</a>";
+	}
+	
+	public function display_success_account_create_form_start( $order_id, $email ){
+		echo "<form action=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $order_id . "\" method=\"POST\">";
+		echo "<input type=\"hidden\" value=\"order_create_account\" name=\"ec_account_form_action\" />";
+		echo "<input type=\"hidden\" value=\"" . $order_id . "\" name=\"order_id\" />";
+		echo "<input type=\"hidden\" value=\"" . $email . "\" name=\"email_address\" />";
+	}
+	
+	public function display_success_create_password( ){
+		echo "<input type=\"password\" name=\"ec_password\" id=\"ec_password\" />";
+	}
+	
+	public function display_success_verify_password( ){
+		echo "<input type=\"password\" name=\"ec_verify_password\" id=\"ec_verify_password\" />";
+	}
+	
+	public function display_success_account_create_submit_button( $button_text ){
+		echo "<input type=\"submit\" value=\"" . $button_text . "\" onclick=\"return ec_check_success_passwords( );\" />";
+	}
+	
+	public function display_success_account_create_form_end( ){
+		echo "</form>";
+	}
+	/* END SUCCESS PAGE FUNCTIONS */
 	
 	/* START FORM PROCESSING FUNCTIONS */
 	// Process the cart page form action
@@ -1804,8 +1912,9 @@ class ec_cartpage{
 		
 		unset( $_SESSION['ec_order_notes'] );
 		
-		
-		if( isset( $_GET['subscription'] ) ){
+		if( get_option( 'ec_option_skip_cart_login' ) ){
+			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
+		}else if( isset( $_GET['subscription'] ) ){
 			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $_GET['subscription'] );
 		}else{
 			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login");
@@ -1832,7 +1941,11 @@ class ec_cartpage{
 		}
 		
 		$billing_zip = $shipping_zip = stripslashes( $_POST['ec_cart_billing_zip'] );
-		$billing_phone = $shipping_phone = stripslashes( $_POST['ec_cart_billing_phone'] );
+		if( isset( $_POST['ec_cart_billing_phone'] ) ){
+			$billing_phone = $shipping_phone = stripslashes( $_POST['ec_cart_billing_phone'] );
+		}else{
+			$billing_phone = "";
+		}
 		
 		$shipping_selector = $_POST['ec_shipping_selector'];
 		
@@ -1857,11 +1970,23 @@ class ec_cartpage{
 			}
 			
 			$shipping_zip = stripslashes( $_POST['ec_cart_shipping_zip'] );
-			$shipping_phone = stripslashes( $_POST['ec_cart_shipping_phone'] );
+			if( isset( $_POST['ec_cart_shipping_phone'] ) ){
+				$shipping_phone = stripslashes( $_POST['ec_cart_shipping_phone'] );
+			}else{
+				$shipping_phone = "";
+			}
 		}
 		
-		$first_name = stripslashes( $_POST['ec_contact_first_name'] );
-		$last_name = stripslashes( $_POST['ec_contact_last_name'] );
+		if( isset( $_POST['ec_contact_first_name'] ) ){
+			$first_name = stripslashes( $_POST['ec_contact_first_name'] );
+		}else{
+			$first_name = "";
+		}
+		if( isset( $_POST['ec_contact_last_name'] ) ){
+			$last_name = stripslashes( $_POST['ec_contact_last_name'] );
+		}else{
+			$last_name = "";
+		}
 		
 		if( isset( $_POST['ec_contact_create_account'] ) )
 			$create_account = $_POST['ec_contact_create_account'];
@@ -1895,6 +2020,9 @@ class ec_cartpage{
 		
 		$next_page = "checkout_shipping";
 		if( !get_option( 'ec_option_use_shipping' ) || $this->cart->weight == 0 )
+			$next_page = "checkout_payment";
+			
+		if( get_option( 'ec_option_skip_shipping_page' ) )
 			$next_page = "checkout_payment";
 		
 		if( $_SESSION['ec_email'] == "guest" ){
@@ -2194,6 +2322,45 @@ class ec_cartpage{
 			}
 		}
 		return false;
+	}
+	
+	private function sanatize_card_number( $card_number ){
+		
+		return preg_replace( "/[^0-9]/", "", $card_number );
+	
+	}
+	
+	private function get_payment_type( $card_number ){
+		
+		if (ereg("^5[1-5][0-9]{14}$", $card_number))
+                return "mastercard";
+ 
+        else if (ereg("^4[0-9]{12}([0-9]{3})?$", $card_number))
+                return "visa";
+ 
+        else if (ereg("^3[47][0-9]{13}$", $card_number))
+                return "amex";
+ 
+        else if (ereg("^3(0[0-5]|[68][0-9])[0-9]{11}$", $card_number))
+                return "diners";
+ 
+        else if (ereg("^6011[0-9]{12}$", $card_number))
+                return "discover";
+ 
+        else if (ereg("^(3[0-9]{4}|2131|1800)[0-9]{11}$", $card_number))
+                return "jcb";
+				
+		else
+				return "Credit Card";
+		
+	}
+	
+	public function display_order_number_link( $order_id ){
+		if( $_SESSION['ec_password'] == "guest" ){
+			echo $order_id;
+		}else{
+			echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $order_id . "\">" . $order_id . "</a>";
+		}
 	}
 }
 

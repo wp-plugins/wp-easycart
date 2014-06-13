@@ -1193,6 +1193,10 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_show_giftcards', $_POST['ec_option_show_giftcards'] );
 	update_option( 'ec_option_show_coupons', $_POST['ec_option_show_coupons'] );
 	update_option( 'ec_option_addtocart_return_to_product', $_POST['ec_option_addtocart_return_to_product'] );
+	update_option( 'ec_option_skip_cart_login', $_POST['ec_option_skip_cart_login'] );
+	update_option( 'ec_option_use_contact_name', $_POST['ec_option_use_contact_name'] );
+	update_option( 'ec_option_collect_user_phone', $_POST['ec_option_collect_user_phone'] );
+	update_option( 'ec_option_skip_shipping_page', $_POST['ec_option_skip_shipping_page'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );

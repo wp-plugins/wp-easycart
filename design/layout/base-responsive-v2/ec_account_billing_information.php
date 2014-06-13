@@ -60,12 +60,14 @@
       </div>
     </div>
     <?php } ?>
+    <?php if( get_option( 'ec_option_collect_user_phone' ) ){ ?>
     <div class="ec_account_billing_information_row" id="ec_account_billing_information_phone_row">
       <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'account_billing_information', 'account_billing_information_phone' )?></div>
       <div class="ec_account_billing_information_input">
         <?php $this->display_account_billing_information_phone_input(); ?>
       </div>
     </div>
+    <?php }?>
     <div class="ec_account_billing_information_row">
       <div class="ec_account_billing_information_label">&nbsp;&nbsp;&nbsp;</div>
       <div class="ec_account_billing_information_input">

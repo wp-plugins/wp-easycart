@@ -2880,6 +2880,13 @@ class ec_db{
 		
 	}
 	
+	public function update_order_user( $user_id, $order_id ){
+		
+		$sql = "UPDATE ec_order SET user_id = %d WHERE order_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $user_id, $order_id ) );
+	
+	}
+	
 }
 
 ?>

@@ -405,6 +405,55 @@
 				"cart_notice_length_error":{
 					"title":"Cart, Notice, Password Format",
 					"value":"μήκος πρέπει να είναι μεγαλύτερο από έξι χαρακτήρες"
+				},
+				"cart_notice_payment_card_type":{
+					"title":"Cart, Notice, Card Type",
+					"value":"Τύπος κάρτας"
+				},
+				"cart_notice_payment_card_holder_name":{
+					"title":"Cart, Notice, Card Holder Required",
+					"value":"Κάτοχος Κάρτας Όνομα"
+				},
+				"cart_notice_payment_card_number":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Αριθμός Κάρτας"
+				},
+				"cart_notice_payment_card_number_error":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Ο αριθμός της πιστωτικής κάρτας δεν είναι έγκυρο"
+				},
+				"cart_notice_payment_card_exp_month":{
+					"title":"Cart, Notice, EXP Month Required",
+					"value":"Μήνας Λήξης"
+				},
+				"cart_notice_payment_card_exp_year":{
+					"title":"Cart, Notice, EXP Year Required",
+					"value":"Έτος Λήξης"
+				},
+				"cart_notice_payment_card_code":{
+					"title":"Cart, Notice, Security Code Required",
+					"value":"Κωδικός Ασφαλείας"
+				}
+			}
+		},
+		"cart_process":{
+			"label":"Cart - Progress Bar",
+			"options":{
+				"cart_process_cart_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"καλάθι"
+				},
+				"cart_process_shipping_link":{
+					"title":"Cart, Progress, Address",
+					"value":"ναυτιλία"
+				},
+				"cart_process_review_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Κριτική/Pay"
+				},
+				"cart_process_complete_link":{
+					"title":"Cart, Progress, Complete",
+					"value":"πλήρης"
 				}
 			}
 		},
@@ -820,6 +869,10 @@
 				"cart_address_review_edit_link":{
 					"title":"Cart, Address Review, Edit Link",
 					"value":"Επεξεργασία διεύθυνσης ή επιλογές αποστολής"
+				},
+				"cart_address_review_edit_link2":{
+					"title":"Cart, Address Review, Edit Link",
+					"value":"Επεξεργασία διεύθυνσης ή επιλογές αποστολής"
 				}
 			}
 		},
@@ -874,9 +927,21 @@
 					"title":"Cart, Payment Information, Checkout Text",
 					"value":"Με την υποβολή της παραγγελίας σας, συμφωνείτε με τους όρους και τις προϋποθέσεις και την Προστασία Προσωπικών Δεδομένων σύμφωνα με την ιστοσελίδας μας. Μόλις κάνετε κλικ στο κουμπί υποβολής της παραγγελίας, η διαδικασία αγοράς είναι πλήρης και δεν μπορούν να γίνουν αλλαγές στην παραγγελία σας. Σας ευχαριστούμε για τις αγορές σας!"
 				},
+				"cart_payment_information_review_checkout_text":{
+					"title":"Cart, Payment Information, Review Checkout Text",
+					"value":"Πριν από την υποβολή της παραγγελίας σας και καθιστώντας το τελικό, θα σας δοθεί η ευκαιρία να επανεξετάσει και να επιβεβαιώσει τις τελικές σύνολα. Παρακαλώ κάντε κλικ στο κουμπί εντολής επανεξέτασης, όταν είστε έτοιμοι να επανεξετάσουμε, να επιβεβαιώσει και να υποβάλλουν την παραγγελία σας."
+				},
+				"cart_payment_information_review_order_button":{
+					"title":"Cart, Payment Information, Review Order Button",
+					"value":"ΑΝΑΣΚΟΠΗΣΗ ΠΑΡΑΓΓΕΛΙΑ"
+				},
 				"cart_payment_information_submit_order_button":{
 					"title":"Cart, Payment Information, Submit Order Button",
 					"value":"Επιβεβαίωση παραγγελίας"
+				},
+				"cart_payment_information_cancel_order_button":{
+					"title":"Cart, Payment Information, Cancel Order Button",
+					"value":"ΑΚΥΡΩΣΗ ΠΑΡΑΓΓΕΛΙΑΣ"
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Cart, Payment Information, Customer Notes Title",
@@ -982,6 +1047,42 @@
 				"cart_payment_complete_bottom_line_2":{
 					"title":"Cart, Payment Complete, Bottom Line 2",
 					"value":"Σας ευχαριστούμε πάρα πολύ!"
+				},
+				"cart_success_thank_you_title":{
+					"title":"Cart, Payment Complete, Thank You Title",
+					"value":"Σας ευχαριστούμε για την παραγγελία σας"
+				},
+				"cart_success_order_number_is":{
+					"title":"Cart, Payment Complete, Your Order Number",
+					"value":"Αύξων αριθμός είναι:"
+				},
+				"cart_success_will_receive_email":{
+					"title":"Cart, Payment Complete, Will receive email",
+					"value":"Θα λάβετε ένα email επιβεβαίωσης σύντομα σε"
+				},
+				"cart_success_print_receipt_text":{
+					"title":"Cart, Payment Complete, Print Receipt Link Text",
+					"value":"Τυπώστε Απόδειξη"
+				},
+				"cart_success_save_order_text":{
+					"title":"Cart, Payment Complete, Save Your Info",
+					"value":"Αποθηκεύστε τις πληροφορίες σας για την επόμενη φορά"
+				},
+				"cart_success_create_password":{
+					"title":"Cart, Payment Complete, Create Password",
+					"value":"Δημιουργία κωδικού πρόσβασης:"
+				},
+				"cart_success_verify_password":{
+					"title":"Cart, Payment Complete, Verify Password",
+					"value":"Επιβεβαίωση Κωδικού:"
+				},
+				"cart_success_password_hint":{
+					"title":"Cart, Payment Complete, Password Hint",
+					"value":"(6-12 χαρακτήρες)"
+				},
+				"cart_success_create_account":{
+					"title":"Cart, Payment Complete, Create Account",
+					"value":"Δημιουργία λογαριασμού"
 				}
 			}
 		},

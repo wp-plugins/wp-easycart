@@ -405,6 +405,55 @@
 				"cart_notice_length_error":{
 					"title":"Cart, Notice, Password Format",
 					"value":"la longueur doit être supérieure à six caractères"
+				},
+				"cart_notice_payment_card_type":{
+					"title":"Cart, Notice, Card Type",
+					"value":"Type de carte"
+				},
+				"cart_notice_payment_card_holder_name":{
+					"title":"Cart, Notice, Card Holder Required",
+					"value":"Titulaire de la carte Nom"
+				},
+				"cart_notice_payment_card_number":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Numéro de la carte"
+				},
+				"cart_notice_payment_card_number_error":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Le numéro de carte de crédit indiquée est invalide"
+				},
+				"cart_notice_payment_card_exp_month":{
+					"title":"Cart, Notice, EXP Month Required",
+					"value":"mois d'expiration"
+				},
+				"cart_notice_payment_card_exp_year":{
+					"title":"Cart, Notice, EXP Year Required",
+					"value":"Année d'expiration"
+				},
+				"cart_notice_payment_card_code":{
+					"title":"Cart, Notice, Security Code Required",
+					"value":"code de sécurité"
+				}
+			}
+		},
+		"cart_process":{
+			"label":"Cart - Progress Bar",
+			"options":{
+				"cart_process_cart_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Panier"
+				},
+				"cart_process_shipping_link":{
+					"title":"Cart, Progress, Address",
+					"value":"Navigation"
+				},
+				"cart_process_review_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Revue/Pay"
+				},
+				"cart_process_complete_link":{
+					"title":"Cart, Progress, Complete",
+					"value":"Compléter"
 				}
 			}
 		},
@@ -820,6 +869,10 @@
 				"cart_address_review_edit_link":{
 					"title":"Cart, Address Review, Edit Link",
 					"value":"Choisir adresse et choix dExpedition"
+				},
+				"cart_address_review_edit_link2":{
+					"title":"Cart, Address Review, Edit Link",
+					"value":"Choisir adresse et choix dExpedition"
 				}
 			}
 		},	
@@ -874,9 +927,21 @@
 					"title":"Cart, Payment Information, Checkout Text",
 					"value":"En soumettant votre commande, vous acceptez les termes et conditions ainsi que les regles de confidentialite de notre site web. Une fois que vous cliquez envoyer la commande, le reglement est termine et aucune modification peut etre faite. Merci pour vos achats avec nous !"
 				},
+				"cart_payment_information_review_checkout_text":{
+					"title":"Cart, Payment Information, Review Checkout Text",
+					"value":"Avant de soumettre votre commande et de le rendre définitif, vous recevrez une chance d'examiner et de confirmer les totaux finaux. S'il vous plaît cliquer sur le bouton avis d'ordre quand vous êtes prêt à examiner, confirmer, et validez votre commande."
+				},
+				"cart_payment_information_review_order_button":{
+					"title":"Cart, Payment Information, Review Order Button",
+					"value":"ORDRE DE REVUE"
+				},
 				"cart_payment_information_submit_order_button":{
 					"title":"Cart, Payment Information, Submit Order Button",
 					"value":"ENVOYER LA COMMANDE"
+				},
+				"cart_payment_information_cancel_order_button":{
+					"title":"Cart, Payment Information, Cancel Order Button",
+					"value":"ANNULATION COMMANDE"
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Cart, Payment Information, Customer Notes Title",
@@ -982,6 +1047,42 @@
 				"cart_payment_complete_bottom_line_2":{
 					"title":"Cart, Payment Complete, Bottom Line 2",
 					"value":"Merci Beaucoup!"
+				},
+				"cart_success_thank_you_title":{
+					"title":"Cart, Payment Complete, Thank You Title",
+					"value":"Merci pour votre commande"
+				},
+				"cart_success_order_number_is":{
+					"title":"Cart, Payment Complete, Your Order Number",
+					"value":"Numéro de commande est:"
+				},
+				"cart_success_will_receive_email":{
+					"title":"Cart, Payment Complete, Will receive email",
+					"value":"Vous recevrez un email de confirmation sous peu à"
+				},
+				"cart_success_print_receipt_text":{
+					"title":"Cart, Payment Complete, Print Receipt Link Text",
+					"value":"Imprimer le reçu"
+				},
+				"cart_success_save_order_text":{
+					"title":"Cart, Payment Complete, Save Your Info",
+					"value":"Enregistrez vos informations pour la prochaine fois"
+				},
+				"cart_success_create_password":{
+					"title":"Cart, Payment Complete, Create Password",
+					"value":"créer Mot de passe:"
+				},
+				"cart_success_verify_password":{
+					"title":"Cart, Payment Complete, Verify Password",
+					"value":"Vérifiez Mot de passe:"
+				},
+				"cart_success_password_hint":{
+					"title":"Cart, Payment Complete, Password Hint",
+					"value":"(6-12 caractères)"
+				},
+				"cart_success_create_account":{
+					"title":"Cart, Payment Complete, Create Account",
+					"value":"créer un compte"
 				}
 			}
 		},

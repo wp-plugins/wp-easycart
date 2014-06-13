@@ -405,6 +405,55 @@
 				"cart_notice_length_error":{
 					"title":"Cart, Notice, Password Format",
 					"value":"length must be greater than six characters"
+				},
+				"cart_notice_payment_card_type":{
+					"title":"Cart, Notice, Card Type",
+					"value":"Card Type"
+				},
+				"cart_notice_payment_card_holder_name":{
+					"title":"Cart, Notice, Card Holder Required",
+					"value":"Card Holder Name"
+				},
+				"cart_notice_payment_card_number":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Card Number"
+				},
+				"cart_notice_payment_card_number_error":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"The credit card number entered is invalid"
+				},
+				"cart_notice_payment_card_exp_month":{
+					"title":"Cart, Notice, EXP Month Required",
+					"value":"Expiration Month"
+				},
+				"cart_notice_payment_card_exp_year":{
+					"title":"Cart, Notice, EXP Year Required",
+					"value":"Expiration Year"
+				},
+				"cart_notice_payment_card_code":{
+					"title":"Cart, Notice, Security Code Required",
+					"value":"Security Code"
+				}
+			}
+		},
+		"cart_process":{
+			"label":"Cart - Progress Bar",
+			"options":{
+				"cart_process_cart_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Cart"
+				},
+				"cart_process_shipping_link":{
+					"title":"Cart, Progress, Address",
+					"value":"Address"
+				},
+				"cart_process_review_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Review/Pay"
+				},
+				"cart_process_complete_link":{
+					"title":"Cart, Progress, Complete",
+					"value":"Complete"
 				}
 			}
 		},
@@ -806,8 +855,8 @@
 			"label":"Cart - Address Review",
 			"options":{
 				"cart_address_review_title":{
-					"title":"Cart, Address Revie Title",
-					"value":"Address Review"
+					"title":"Cart, Address Information Title",
+					"value":"Address Information"
 				},
 				"cart_address_review_billing_title":{
 					"title":"Cart, Address Review, Billing Title",
@@ -820,6 +869,10 @@
 				"cart_address_review_edit_link":{
 					"title":"Cart, Address Review, Edit Link",
 					"value":"Edit Address or Shipping Options"
+				},
+				"cart_address_review_edit_link2":{
+					"title":"Cart, Address Review, Edit Link",
+					"value":"Edit Address Information"
 				}
 			}
 		},
@@ -874,9 +927,21 @@
 					"title":"Cart, Payment Information, Checkout Text",
 					"value":"By submitting your order, you are agreeing to the [terms]terms and conditions[/terms] and [privacy]privacy policy[/privacy] of our website.  Once you click submit order, the checkout process is complete and no changes can be made to your order. Thank you for shopping with us!"
 				},
+				"cart_payment_information_review_checkout_text":{
+					"title":"Cart, Payment Information, Review Checkout Text",
+					"value":"Before submitting your order and making it final, you will be given a chance to review and confirm the final totals. Please click the review order button when you are ready to review, confirm, and submit your order."
+				},
+				"cart_payment_information_review_order_button":{
+					"title":"Cart, Payment Information, Review Order Button",
+					"value":"REVIEW ORDER"
+				},
 				"cart_payment_information_submit_order_button":{
 					"title":"Cart, Payment Information, Submit Order Button",
 					"value":"SUBMIT ORDER"
+				},
+				"cart_payment_information_cancel_order_button":{
+					"title":"Cart, Payment Information, Edit Order Button",
+					"value":"EDIT ORDER"
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Cart, Payment Information, Customer Notes Title",
@@ -982,6 +1047,42 @@
 				"cart_payment_complete_bottom_line_2":{
 					"title":"Cart, Payment Complete, Bottom Line 2",
 					"value":"Thank You Very much!"
+				},
+				"cart_success_thank_you_title":{
+					"title":"Cart, Payment Complete, Thank You Title",
+					"value":"Thank you for your order"
+				},
+				"cart_success_order_number_is":{
+					"title":"Cart, Payment Complete, Your Order Number",
+					"value":"Order number is:"
+				},
+				"cart_success_will_receive_email":{
+					"title":"Cart, Payment Complete, Will receive email",
+					"value":"You will receive an email confirmation shortly at"
+				},
+				"cart_success_print_receipt_text":{
+					"title":"Cart, Payment Complete, Print Receipt Link Text",
+					"value":"Print Receipt"
+				},
+				"cart_success_save_order_text":{
+					"title":"Cart, Payment Complete, Save Your Info",
+					"value":"Save your information for next time"
+				},
+				"cart_success_create_password":{
+					"title":"Cart, Payment Complete, Create Password",
+					"value":"Create Password:"
+				},
+				"cart_success_verify_password":{
+					"title":"Cart, Payment Complete, Verify Password",
+					"value":"Verify Password:"
+				},
+				"cart_success_password_hint":{
+					"title":"Cart, Payment Complete, Password Hint",
+					"value":"(6-12 Characters)"
+				},
+				"cart_success_create_account":{
+					"title":"Cart, Payment Complete, Create Account",
+					"value":"Create Account"
 				}
 			}
 		},

@@ -405,6 +405,55 @@
 				"cart_notice_length_error":{
 					"title":"Cart, Notice, Wachtwoord Format",
 					"value":"lengte moet groter zijn dan zes tekens"
+				},
+				"cart_notice_payment_card_type":{
+					"title":"Cart, Notice, Card Type",
+					"value":"Card Type"
+				},
+				"cart_notice_payment_card_holder_name":{
+					"title":"Cart, Notice, Card Holder Required",
+					"value":"Naam kaarthouder"
+				},
+				"cart_notice_payment_card_number":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Kaartnummer"
+				},
+				"cart_notice_payment_card_number_error":{
+					"title":"Cart, Notice, Card Number Required",
+					"value":"Het creditcardnummer is ongeldig"
+				},
+				"cart_notice_payment_card_exp_month":{
+					"title":"Cart, Notice, EXP Month Required",
+					"value":"Expiratie Maand"
+				},
+				"cart_notice_payment_card_exp_year":{
+					"title":"Cart, Notice, EXP Year Required",
+					"value":"Expiratie Jaar"
+				},
+				"cart_notice_payment_card_code":{
+					"title":"Cart, Notice, Security Code Required",
+					"value":"Beveiligingscode"
+				}
+			}
+		},
+		"cart_process":{
+			"label":"Cart - Progress Bar",
+			"options":{
+				"cart_process_cart_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Winkelwagen"
+				},
+				"cart_process_shipping_link":{
+					"title":"Cart, Progress, Address",
+					"value":"Scheepvaart"
+				},
+				"cart_process_review_link":{
+					"title":"Cart, Progress, Cart",
+					"value":"Herziening/Betalen"
+				},
+				"cart_process_complete_link":{
+					"title":"Cart, Progress, Complete",
+					"value":"Compleet"
 				}
 			}
 		},
@@ -820,6 +869,10 @@
 				"cart_address_review_edit_link":{
 					"title":"Winkelmand, Adresgegevens, Wijzigen Link",
 					"value":"Wijzig adres- of verzendgegevens"
+				},
+				"cart_address_review_edit_link2":{
+					"title":"Winkelmand, Adresgegevens, Wijzigen Link",
+					"value":"Wijzig adres- of verzendgegevens"
 				}
 			}
 		},
@@ -874,9 +927,21 @@
 					"title":"Winkelmand, Betaalinformatie, Afrekenen Text",
 					"value":"Door het verzenden van uw order, gaat u akkoord met onze [terms]Algemene Voorwaarden[/terms] en [privacy]Privacy Policy[/privacy] van onze webwinkel.<br />Na het klikken op verzend order is het bestelproces voltooid.<br />Alvast bedankt voor uw bestelling!"
 				},
+				"cart_payment_information_review_checkout_text":{
+					"title":"Cart, Payment Information, Review Checkout Text",
+					"value":"Alvorens uw bestelling en het maken van het definitieve, krijgt u een kans om te controleren en te bevestigen de definitieve totalen. Klik op de beoordeling bestel knop wanneer u klaar bent om te beoordelen zijn, bevestigen, en uw bestelling plaatsen."
+				},
+				"cart_payment_information_review_order_button":{
+					"title":"Cart, Payment Information, Review Order Button",
+					"value":"HERZIENING ORDER"
+				},
 				"cart_payment_information_submit_order_button":{
 					"title":"Winkelmand, Betaalinformatie, Verzend Order Button",
 					"value":"VERZEND ORDER"
+				},
+				"cart_payment_information_cancel_order_button":{
+					"title":"Cart, Payment Information, Cancel Order Button",
+					"value":"ANNULEREN ORDER"
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Winkelmand, Betaalinformatie, Klantnotities Titel",
@@ -982,6 +1047,42 @@
 				"cart_payment_complete_bottom_line_2":{
 					"title":"Winkelmand, Betaling Compleet, Onderregel 2",
 					"value":"Bedankt en veel plezier met uw aankoop!"
+				},
+				"cart_success_thank_you_title":{
+					"title":"Cart, Payment Complete, Thank You Title",
+					"value":"Dank u voor uw bestelling"
+				},
+				"cart_success_order_number_is":{
+					"title":"Cart, Payment Complete, Your Order Number",
+					"value":"Ordernummer is:"
+				},
+				"cart_success_will_receive_email":{
+					"title":"Cart, Payment Complete, Will receive email",
+					"value":"U ontvangt een e-mailbevestiging bij Binnenkort ontvangt"
+				},
+				"cart_success_print_receipt_text":{
+					"title":"Cart, Payment Complete, Print Receipt Link Text",
+					"value":"Print Receipt"
+				},
+				"cart_success_save_order_text":{
+					"title":"Cart, Payment Complete, Save Your Info",
+					"value":"Sla uw gegevens op voor de volgende keer"
+				},
+				"cart_success_create_password":{
+					"title":"Cart, Payment Complete, Create Password",
+					"value":"Maak wachtwoord:"
+				},
+				"cart_success_verify_password":{
+					"title":"Cart, Payment Complete, Verify Password",
+					"value":"Bevestig wachtwoord:"
+				},
+				"cart_success_password_hint":{
+					"title":"Cart, Payment Complete, Password Hint",
+					"value":"(6-12 Letters)"
+				},
+				"cart_success_create_account":{
+					"title":"Cart, Payment Complete, Create Account",
+					"value":"Account aanmaken"
 				}
 			}
 		},

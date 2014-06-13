@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.1.20
+ * Version: 2.1.21
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.1.20
+ * @version 2.1.21
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_1_20' );
+define( 'EC_CURRENT_VERSION', '2_1_21' );
 define( 'EC_CURRENT_DB', '1_19' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -1205,6 +1205,10 @@ add_filter( 'widget_text', 'do_shortcode');
 
 add_action('wp_head', 'ec_facebook_metadata');
 
+add_action( 'wp_enqueue_scripts', 'ec_load_dashicons' );
+function ec_load_dashicons() {
+    wp_enqueue_style( 'dashicons' );
+}
 
 //////////////////////////////////////////////
 //UPDATE FUNCTIONS
@@ -1617,6 +1621,46 @@ function ec_get_order_totals( ){
 	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $GLOBALS['currency']->get_number_only( $grand_total ) + $GLOBALS['currency']->get_number_only( $tax->vat_total ) );
 	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
 	return $order_totals;
+}
+
+add_action( 'wp_ajax_ec_ajax_get_cart', 'ec_ajax_get_cart' );
+add_action( 'wp_ajax_nopriv_ec_ajax_get_cart', 'ec_ajax_get_cart' );
+function ec_ajax_get_cart( ){
+	
+	//Get the variables from the AJAX call
+	$cart = new ec_cart( session_id() );
+	$retarray = array( );
+	
+	foreach( $cart->cart as $cartitem ){
+		$retarray[] = array( "cartitem_id"	=> $cartitem->cartitem_id, 
+							 "title"		=> $cartitem->title,
+							 "quantity"		=> $cartitem->quantity, 
+							 "unit_price"	=> $GLOBALS['currency']->get_currency_display( $cartitem->unit_price ) );
+	}
+	
+	echo json_encode( $retarray );
+	
+	die(); // this is required to return a proper result
+}
+
+add_action( 'wp_ajax_ec_ajax_get_cart_totals', 'ec_ajax_get_cart_totals' );
+add_action( 'wp_ajax_nopriv_ec_ajax_get_cart_totals', 'ec_ajax_get_cart_totals' );
+function ec_ajax_get_cart_totals( ){
+	
+	//Get the variables from the AJAX call
+	$cartpage = new ec_cartpage( );
+	
+	$retarray = array( 	"sub_total"			=> $GLOBALS['currency']->get_currency_display( $cartpage->order_totals->sub_total ), 
+						"tax_total"			=> $GLOBALS['currency']->get_currency_display( $cartpage->order_totals->tax_total ), 
+						"shipping_total"	=> $GLOBALS['currency']->get_currency_display( $cartpage->order_totals->shipping_total ), 
+						"duty_total"		=> $GLOBALS['currency']->get_currency_display( $cartpage->order_totals->duty_total ), 
+						"vat_total"			=> $GLOBALS['currency']->get_currency_display( $cartpage->order_totals->vat_total ), 
+						"discount_total"	=> $GLOBALS['currency']->get_currency_display( $cartpage->order_totals->discount_total ), 
+						"grand_total"		=> $GLOBALS['currency']->get_currency_display( $cartpage->order_totals->grand_total ) );
+	
+	echo json_encode( $retarray );
+	
+	die(); // this is required to return a proper result
 }
 // End AJAX helper function for cart.
 

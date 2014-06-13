@@ -1,5 +1,6 @@
 <?php $this->display_cart_success( ); ?>
 <?php $this->display_cart_error( ); ?>
+<?php $this->display_cart_process( ); ?>
 <?php /* Cart page shows specific elements based on the checkout page being viewed */ ?>
 <div class="ec_cart_page_cart"><?php $this->display_cart(  $GLOBALS['language']->get_text( 'cart', 'cart_empty_cart' ) ); ?></div>
 
@@ -78,13 +79,26 @@ if( $this->should_display_login( ) ){
     <?php } // END CHECKOUT_SHIPPING PAGE ?>
     
     <?php if( $this->should_display_page_three( ) ){ ?>
-        <?php $this->display_page_three_form_start(); ?>
         <?php $this->display_address_review(); ?>
+        <?php if( get_option( 'ec_option_skip_shipping_page' ) ){ ?>
+        <?php $this->display_page_two_form_start(); ?>
+            <?php if( $this->shipping->shipping_method == "live" && $this->cart->weight > 0 ){ 
+			$this->display_shipping_method( ); ?>
+            <div class="ec_cart_page_continue_to_payment_button"><?php $this->display_continue_to_payment_button( 'Update Totals' ); ?></div>
+			<hr />
+            <?php }else{ ?>
+            <div class="ec_cart_page_no_shipping_buffer"></div>
+            <?php }?>
+        <?php $this->display_page_two_form_end(); ?>
+        <?php }else{ ?>
+            <div class="ec_cart_page_no_shipping_buffer"></div>
+        <?php }?>
+		<?php $this->display_page_three_form_start(); ?>
         <?php $this->display_payment_information(); ?>
         <?php $this->display_customer_order_notes(); ?>
-        <div class="ec_cart_submit_order_message"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_checkout_text' )?></div>
-        <div class="ec_cart_page_submit_order_button"><?php $this->display_submit_order_button( $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_submit_order_button' ) ); ?></div>
-        
+        <div class="ec_cart_checkout_review_info"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_review_checkout_text' ); ?></div>
+        <?php $this->display_order_review_button( $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_review_order_button' ) ); ?>
+        <?php $this->display_order_finalize_panel( ); ?>
     <?php $this->display_page_three_form_end(); ?>
     <?php } // END CHECKOUT_PAYMENT PAGE ?>
 <?php }?>
