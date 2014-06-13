@@ -103,7 +103,7 @@ class ec_admin_orders{
 	
 	function getorderdetails( $orderid ){
 		  
-		  $sql = "SELECT ec_orderdetail.*, ec_order.*, ec_orderstatus.order_status, UNIX_TIMESTAMP(ec_order.order_date) AS order_date,  ec_download.date_created, ec_download.download_count FROM (((ec_order LEFT JOIN ec_orderdetail ON ec_orderdetail.order_id = ec_order.order_id) LEFT JOIN ec_download ON ec_orderdetail.download_key = ec_download.download_id) LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id) WHERE ec_order.order_id = %d ORDER BY ec_orderdetail.product_id";
+		  $sql = "SELECT ec_orderdetail.*, ec_order.*, ec_orderstatus.order_status, ec_orderdetail.giftcard_id as product_giftcard_id, UNIX_TIMESTAMP(ec_order.order_date) AS order_date,  ec_download.date_created, ec_download.download_count FROM (((ec_order LEFT JOIN ec_orderdetail ON ec_orderdetail.order_id = ec_order.order_id) LEFT JOIN ec_download ON ec_orderdetail.download_key = ec_download.download_id) LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id) WHERE ec_order.order_id = %d ORDER BY ec_orderdetail.product_id";
 		  
 		  $results = $this->db->get_results( $this->db->prepare( $sql, $orderid ) );
 		  
