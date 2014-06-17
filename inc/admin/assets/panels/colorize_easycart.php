@@ -126,6 +126,7 @@ jQuery( document ).ready( function( $ ){
 		custom_uploader.on( 'select', function( ){
 			attachment = custom_uploader.state( ).get( 'selection' ).first( ).toJSON( );
 			jQuery( '#email_logo_image' ).attr( "src", attachment.url );
+			jQuery( '#ec_option_email_logo' ).val( attachment.url );
 		} );
  
 		custom_uploader.open( );
