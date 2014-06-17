@@ -63,6 +63,8 @@ class ec_admin_users
 		   else if($methodName == 'deleteuserrole') return array('admin');
 		   else if($methodName == 'adduserrole') return array('admin');
 		   else if($methodName == 'resendverificationemail') return array('admin');
+		   else if($methodName == 'getsecuritylevel') return array('admin');
+		   else if($methodName == 'savesecuritylevel') return array('admin');
 		   else  return null;
 		}	
 		
@@ -78,6 +80,9 @@ class ec_admin_users
 				$args[0] = $sql; 
 				return call_user_func_array('sprintf', $args); 
 		} 
+		
+		
+		
 		
 		
 		
@@ -473,11 +478,78 @@ class ec_admin_users
 				return $returnArray; //return noresults if there are no results
 			}
 		}
+		
+		
 		function resendverificationemail($clientid, $email) {
 			$account = new ec_accountpage;
 			$account->send_validation_email( $email );
 		}
-
+		
+		
+		function getsecuritylevel($role_label) {
+			//Create SQL Query
+			$sql = sprintf("SELECT ec_roleaccess.* FROM ec_roleaccess WHERE ec_roleaccess.role_label = '%s'", mysql_real_escape_string($role_label));
+			
+			$result = mysql_query($sql);
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				  while ($row = mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  if($row != false) {
+					  return($returnArray); //return array results if there are some
+				  } else {
+					  $returnArray[] = "noresults";
+				 	  return $returnArray; //return noresults if there are no results
+				  }
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
+		
+		function savesecuritylevel($role_label, $role_access) {
+			  $role_access = (array)$role_access;
+			  
+			  //remove all role levels currently set
+			  $deletesql = $this->escape("DELETE FROM ec_roleaccess WHERE ec_roleaccess.role_label = '%s'", $role_label);
+			  //Run query on database;
+			  mysql_query($deletesql);
+			  
+			  //now loop through adn insert all roles and access panels
+			  foreach ($role_access as $key => $value) {
+				  //now insert all the new ones	 
+				  $sql = sprintf("INSERT into ec_roleaccess (ec_roleaccess.roleaccess_id, ec_roleaccess.role_label, ec_roleaccess.admin_panel)
+					values( null, '%s', '%s')",
+				  mysql_real_escape_string($role_label),
+				  mysql_real_escape_string($value));
+				  //Run query on database;
+				  mysql_query($sql);
+			  }
+				
+				
+			  //now get them all in one result
+			  $sql = sprintf("SELECT ec_roleaccess.* FROM ec_roleaccess WHERE ec_roleaccess.role_label = '%s'", mysql_real_escape_string($role_label));
+			
+			  $result = mysql_query($sql);
+			  
+			  
+			  //if results, convert to an array for use in flash
+			  if(!mysql_error()) {
+				  while ($row = mysql_fetch_object($result)) {
+					  $returnArray[] = $row;
+				  }
+				  if($row != false) {
+					  return($returnArray); //return array results if there are some
+				  } else {
+					  $returnArray[] = "noresults";
+				 	  return $returnArray; //return noresults if there are no results
+				  }
+			  } else {
+				  $returnArray[] = "noresults";
+				  return $returnArray; //return noresults if there are no results
+			  }
+		}
 
 	}//close class
 ?>
