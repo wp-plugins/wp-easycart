@@ -491,19 +491,19 @@ class ec_admin_users
 			$sql = sprintf("SELECT ec_roleaccess.* FROM ec_roleaccess WHERE ec_roleaccess.role_label = '%s'", mysql_real_escape_string($role_label));
 			
 			$result = mysql_query($sql);
-			  //if results, convert to an array for use in flash
+
 			  if(!mysql_error()) {
 				  while ($row = mysql_fetch_object($result)) {
 					  $returnArray[] = $row;
 				  }
-				  if($row != false) {
-					  return($returnArray); //return array results if there are some
+				  if($returnArray) {
+					  return $returnArray; //return array results if there are some
 				  } else {
 					  $returnArray[] = "noresults";
 				 	  return $returnArray; //return noresults if there are no results
 				  }
 			  } else {
-				  $returnArray[] = "noresults";
+				  $returnArray[] = "error";
 				  return $returnArray; //return noresults if there are no results
 			  }
 		}
@@ -534,19 +534,18 @@ class ec_admin_users
 			  $result = mysql_query($sql);
 			  
 			  
-			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
 				  while ($row = mysql_fetch_object($result)) {
 					  $returnArray[] = $row;
 				  }
-				  if($row != false) {
-					  return($returnArray); //return array results if there are some
+				  if($returnArray) {
+					  return $returnArray; //return array results if there are some
 				  } else {
 					  $returnArray[] = "noresults";
 				 	  return $returnArray; //return noresults if there are no results
 				  }
 			  } else {
-				  $returnArray[] = "noresults";
+				  $returnArray[] = "error";
 				  return $returnArray; //return noresults if there are no results
 			  }
 		}
