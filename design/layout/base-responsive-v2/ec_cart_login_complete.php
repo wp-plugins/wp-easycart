@@ -48,7 +48,6 @@
             </div>
             <?php $this->display_cart_login_form_end(); ?>
             <?php $this->display_cart_login_form_guest_start(); ?>
-            </div>
     	</div>
     </div>
 </div>

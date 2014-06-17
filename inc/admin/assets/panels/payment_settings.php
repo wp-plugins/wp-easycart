@@ -14,9 +14,9 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 
 <div class="ec_admin_page_title">Payment Setup</div>
 <div class="ec_adin_page_intro"><ul>
-                  <li><strong>Manual or Direct Deposit(Free, Lite, and Full Versions)</strong> - Customer orders are placed, but receipt of payment is manual and must be verified by you the business owner.</li>
-                  <li><strong>Third Party Payment Gateway(Lite and Full Versions)</strong> - Customers orders are placed and the customer is redirected to the payment page. Customers will leave your website and pay, business owners should verify payment before shipping.</li>
-                  <li><strong>Live Payment Gateway(Full Version Only)</strong> - Customer orders are verified immediately using a gateway. Customers will never leave your website and pay directly via your EasyCart payment page.</li>
+                  <li><strong>Manual or Direct Deposit(Free, Lite, and Standard Versions)</strong> - Customer orders are placed, but receipt of payment is manual and must be verified by you the business owner.</li>
+                  <li><strong>Third Party Payment Gateway(Lite and Standard Versions)</strong> - Customers orders are placed and the customer is redirected to the payment page. Customers will leave your website and pay, business owners should verify payment before shipping.</li>
+                  <li><strong>Live Payment Gateway(Standard Version Only)</strong> - Customer orders are verified immediately using a gateway. Customers will never leave your website and pay directly via your EasyCart payment page.</li>
                 </ul></div>
 
 <form action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=payment-settings&ec_action=save_options" method="POST">
@@ -39,8 +39,8 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 <div class="ec_payment_section" id="ec_third_party">
     <div class="ec_payment_section_padding">
 		<?php if( !$license->is_registered( ) ){ ?>
-        Your store is currently not registered. Please purchase a Lite or Full version and register your store before setting up your third party payment gateway.
-        <a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" target="_blank" class="ec_lite_version_link"></a><a href="http://www.wpeasycart.com/products/wp-easycart-full-version/" target="_blank" class="ec_full_version_link"></a>
+        Your store is currently not registered. Please purchase a Lite or Standard version and register your store before setting up your third party payment gateway.
+        <a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" target="_blank" class="ec_lite_version_link"></a><a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank" class="ec_standard_version_link"></a>
         <? }else{ ?><?php } ?><?php if( $license->is_registered( ) ){ ?>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_third_party' ) != "0" ){ echo '_inactive'; } ?>" id="none_title">No Third Party Selected</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_third_party' ) != "dwolla_thirdparty" ){ echo '_inactive'; } ?>" id="dwolla_thirdparty_title">Dwolla</div>
@@ -75,11 +75,11 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 <div class="ec_payment_section" id="ec_live_payment">
     <div class="ec_payment_section_padding">
 		<?php if( $license->is_registered( ) && $license->is_lite_version( ) ){ ?>
-        Your store is registered, but you have the Lite version. To use live payment gateways, you need the full version. Click the link below to upgrade to upgrade and unlock this feature.
-        <a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_full_version_link"></a>
+        Your store is registered, but you have the Lite version. To use live payment gateways, you need the standard version. Click the link below to upgrade to upgrade and unlock this feature.
+        <a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_standard_version_link"></a>
         <?php }else if( !$license->is_registered( ) ){ ?>
-        Your store is currently not registered. Please purchase the Full version and register your store before setting up your live payment gateway.
-        <a href="http://www.wpeasycart.com/products/wp-easycart-full-version/" target="_blank" class="ec_full_version_link"></a>
+        Your store is currently not registered. Please purchase the Standard version and register your store before setting up your live payment gateway.
+        <a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank" class="ec_standard_version_link"></a>
         <? }else{ ?><?php } ?><?php if( $license->is_registered( ) && !$license->is_lite_version( ) ){ ?>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "0" ){ echo '_inactive'; } ?>" id="none_live_title">No Live Gateway Selected</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "authorize" ){ echo '_inactive'; } ?>" id="authorize_title">Authorize.Net</div>
@@ -144,11 +144,11 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 <div class="ec_payment_section" id="ec_credit_cards">
     <div class="ec_payment_section_padding">
 		<?php if( $license->is_registered( ) && $license->is_lite_version( ) ){ ?>
-        	Your store is registered, but you have the Lite version. To use live payment gateways, you need the full version. Click the link below to upgrade to upgrade and unlock this feature.
-        	<a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_full_version_link"></a>
+        	Your store is registered, but you have the Lite version. To use live payment gateways, you need the standard version. Click the link below to upgrade to upgrade and unlock this feature.
+        	<a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_standard_version_link"></a>
         <?php }else if( !$license->is_registered( ) ){ ?>
-       		Your store is currently not registered. Please purchase the Full version and register your store before setting up your live payment gateway.
-        	<a href="http://www.wpeasycart.com/products/wp-easycart-full-version/" target="_blank" class="ec_full_version_link"></a>
+       		Your store is currently not registered. Please purchase the standard version and register your store before setting up your live payment gateway.
+        	<a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank" class="ec_standard_version_link"></a>
         <?php }else{ ?>
     		<?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/credit_cards.php" ); ?>
         <?php } ?>

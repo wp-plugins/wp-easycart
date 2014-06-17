@@ -883,6 +883,10 @@
 	float:left; width:250px; height:250px; background-image:url(../images/plugin_box_full.png);
 }
 
+.ec_standard_version_link{
+	float:left; width:250px; height:250px; background-image:url(../images/plugin_box_standard.png);
+}
+
 .ec_selected_payment_title{
 	float:left; width:300px; font-size:18px; font-weight:bold; color:#333; line-height:45px;
 }

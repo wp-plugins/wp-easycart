@@ -402,5 +402,9 @@ class ec_fraktjakt{
 			
 		
 	}
+	
+	public function validate_address( ){
+		return true;
+	}
 }	
 ?>

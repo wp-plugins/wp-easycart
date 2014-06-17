@@ -47,10 +47,7 @@
         <?php } ?>
         <?php if( $this->user->billing->city || $this->user->billing->state || $this->user->billing->zip ){ ?>
         <div class="ec_account_dashboard_row_content" id="ec_account_dashboard_billing_address_line_2">
-          <?php $this->user->billing->display_city(); ?>
-          ,
-          <?php $this->user->billing->display_state(); ?>
-          <?php $this->user->billing->display_zip(); ?>
+          <?php $this->user->billing->display_city(); ?>, <?php $this->user->billing->display_state(); ?> <?php $this->user->billing->display_zip(); ?>
         </div>
         <?php } ?>
         <?php if( $this->user->billing->country ){ ?>
@@ -86,10 +83,7 @@
         <?php } ?>
         <?php if( $this->user->shipping->city || $this->user->shipping->state || $this->user->shipping->zip ){ ?>
         <div class="ec_account_dashboard_row_content" id="ec_account_dashboard_shipping_address_line_2">
-          <?php $this->user->shipping->display_city(); ?>
-          ,
-          <?php $this->user->shipping->display_state(); ?>
-          <?php $this->user->shipping->display_zip(); ?>
+          <?php $this->user->shipping->display_city(); ?>, <?php $this->user->shipping->display_state(); ?> <?php $this->user->shipping->display_zip(); ?>
         </div>
         <?php } ?>
         <?php if( $this->user->shipping->country ){ ?>

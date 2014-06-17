@@ -1515,6 +1515,9 @@ function ec_cart_validate_checkout_submit_order( ){
 		return false;
 	}else{
 		jQuery('#ec_cart_payment_error_text').hide( );
+		if( document.getElementById( 'ec_cart_final_review_holder' ) && jQuery( '#ec_cart_final_review_holder' ).is( ':visible' ) ){
+			jQuery( '#ec_submit_order_form' ).submit( );
+		}
 		return true;
 	}
 }
@@ -3176,3 +3179,8 @@ function ec_show_cc_type( type ){
 		}
 	}
 }
+
+jQuery( document ).ready( function( ){
+	jQuery( '.ec_cart_final_review_background' ).appendTo( document.body );
+	jQuery( '.ec_cart_final_review_holder' ).appendTo( document.body );
+} );

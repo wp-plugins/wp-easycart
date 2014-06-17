@@ -78,10 +78,7 @@ function ec_load_admin_scripts( ){
 	
 	include( 'style.php' );
 	
-	wp_enqueue_script('thickbox');  
-	wp_enqueue_style('thickbox');  
-
-	wp_enqueue_script('media-upload'); 
+	wp_enqueue_media();
 	
 	wp_register_script( 'wpeasycart_admin_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/admin_ajax_functions.js' ), array( 'jquery' ) );
 	wp_enqueue_script( 'wpeasycart_admin_js' );

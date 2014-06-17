@@ -20,18 +20,17 @@
 	ga('ecommerce:send');
 	
 </script>
-
 <?php $this->display_cart_process( ); ?>
 
-<h2><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_thank_you_title' ); ?></h2>
+<h2 class="ec_cart_success_title"><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_thank_you_title' ); ?></h2>
 <hr />
-<p><strong><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_order_number_is' ); ?> <?php $this->display_order_number_link( $order_id ); ?></strong></p>
-<p><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_will_receive_email' ); ?> <?php echo $order->user_email; ?></p>
-<p><?php $this->display_print_receipt_link( $GLOBALS['language']->get_text( 'cart_success', 'cart_success_print_receipt_text' ), $order_id ); ?></p>
+<p class="ec_cart_success_info"><strong><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_order_number_is' ); ?> <?php $this->display_order_number_link( $order_id ); ?></strong></p>
+<p class="ec_cart_success_info"><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_will_receive_email' ); ?> <?php echo $order->user_email; ?></p>
+<p class="ec_cart_success_info"><?php $this->display_print_receipt_link( $GLOBALS['language']->get_text( 'cart_success', 'cart_success_print_receipt_text' ), $order_id ); ?></p>
 <hr />
 <?php if( $_SESSION['ec_password'] == "guest" ){?>
 
-<h4><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_save_order_text' ); ?></h4>
+<h4 class="ec_cart_success_subtitle"><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_save_order_text' ); ?></h4>
 <ul class="ec_cart_error" id="ec_cart_success_error_text">
     <li id="ec_cart_error_password_length" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_length_error' ); ?></strong>.</li>
     <li id="ec_cart_error_password_match" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_passwords_match' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_item_must_match' ); ?>.</li>

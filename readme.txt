@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.21
+Stable tag: 2.1.22
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.22 =
+* Improvement - Major enhancements to help the base design work with any theme. If you are having troubles with your current theme design, download the latest through the design file management page in your WordPress Admin.
+* Fix - Logo uploader fixed.
+* Fix - Skip login option, when logging in fails, wasn't going to the checkout info page, this has been corrected.
 = 2.1.21 =
 * Improvement - The checkout process has been greatly improved and can be accessed by updating your design files.
 * Improvement - Many admin improvements have been included.

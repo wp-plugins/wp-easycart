@@ -417,7 +417,7 @@ class ec_cartpage{
 	}
 	
 	public function display_page_three_form_start(){
-		echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=checkout_submit_order\" method=\"post\">";
+		echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=checkout_submit_order\" method=\"post\" id=\"ec_submit_order_form\">";
 		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" value=\"submit_order\" />";
 	}
 	
@@ -1869,7 +1869,11 @@ class ec_cartpage{
 					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
 				}
 			}else{
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login&ec_cart_error=login_failed");
+				if( get_option( 'ec_option_skip_cart_login' ) ){
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=login_failed");
+				}else{
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login&ec_cart_error=login_failed");
+				}
 			}
 		}
 	}
@@ -1979,11 +1983,15 @@ class ec_cartpage{
 		
 		if( isset( $_POST['ec_contact_first_name'] ) ){
 			$first_name = stripslashes( $_POST['ec_contact_first_name'] );
+		}else if( isset( $_POST['ec_cart_billing_first_name'] ) ){
+			$first_name = stripslashes( $_POST['ec_cart_billing_first_name'] );
 		}else{
 			$first_name = "";
 		}
 		if( isset( $_POST['ec_contact_last_name'] ) ){
 			$last_name = stripslashes( $_POST['ec_contact_last_name'] );
+		}else if( isset( $_POST['ec_cart_billing_last_name'] ) ){
+			$last_name = stripslashes( $_POST['ec_cart_billing_last_name'] );
 		}else{
 			$last_name = "";
 		}

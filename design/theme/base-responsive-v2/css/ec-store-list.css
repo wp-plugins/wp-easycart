@@ -9,7 +9,7 @@
 .ec_filter_bar_left{ width: 25%; float:left; margin-top:-10px; }
 .ec_filter_bar_right{ width:60%; float:right; text-align:right; }
 .ec_sort_menu{ cursor:pointer; margin:10px 0; text-transform:capitalize; }
-.ec_per_page_link{ text-decoration:none; }
+.ec_per_page_link{ text-decoration:none; color:#666; }
 .ec_per_page_selected{ font-weight:bold; color:#141414; }
 .ec_selected_page{ font-weight:bold; color:#333; }
 .ec_page_link{ color:#666; text-decoration:none; }
@@ -29,14 +29,14 @@
 .ec_product_right{ width:35%; float:right; }
 
 /* Product Quick View Button */
-.ec_product_quick_view_holder{ float:left; min-width:75px; margin-top:15px; padding-top:5px; padding-bottom:5px; }
+.ec_product_quick_view_holder{ float:left; min-width:75px; margin-top:15px; padding-top:5px; padding-bottom:5px; font-family:[content_font]; }
 .ec_product_quick_view { background-color:[main_color]; color:white; font-weight:bold; padding:7px 8px 7px 5px; }
-.ec_product_quick_view a { text-decoration:none; color:white !important; font-size:10px; }
+.ec_product_quick_view a { text-decoration:none; color:white !important; font-size:10px; text-decoration:none !important; }
 .ec_product_quick_view a:hover { color:#f7f7f7 !important; }
 
 /* Product Item Images */
 .ec_product_images{ width:100%; float:left; position:relative; }
-.ec_product_images .ec_product_image img{ max-width:175px; max-height:175px; }
+.ec_product_images .ec_product_image img{ width:175px; }
 .ec_product_image:hover{ border:1px #cccccc solid; }
 .ec_product .ec_product_images a{ float:left; padding:2px; display:block; border:1px #eeeeee solid; z-index: 4; max-width:175px; max-height:175px; }
 .ec_product .ec_product_images a:hover{ }
@@ -45,12 +45,12 @@
 .ec_product_images .ec_product_image_inactive img{ max-width:175px; max-height:175px; outline:none !important; }
 
 /* Product Item Title */
-.ec_product_title{ width:100%; float:left; margin-top:2px; margin-left:3px; }
-.ec_product_title a{ font-weight:bold; color:#333 !important; text-decoration:none; }
+.ec_product_title{ width:100%; float:left; margin-top:5px; margin-left:3px; font-family:[title_font]; }
+.ec_product_title a{ font-weight:bold; color:#333 !important; text-decoration:none !important; }
 .ec_product_title a:hover{ color: #000 !important; }
 
 /* Product Item Pricing */
-.ec_product_pricing{ width:100%; float:right; margin-top:8px; margin-right:3px; }
+.ec_product_pricing{ width:100%; float:right; margin-top:8px; margin-right:3px; font-family:[content_font]; }
 
 .ec_product_price{ font-size:12px; width:100%; float:right; text-align:right; }
 .ec_product_price .currency{ vertical-align:super; }
@@ -67,7 +67,7 @@
 /* Product Star Rating */
 .ec_product_rating{ width:100%; float:left; margin-top:12px; margin-left:3px; }
 .ec_product_stars{ float:left; }
-.ec_product_num_reviews{ float:left; margin-left:5px; margin-top:-3px; font-weight:bold; font-size:11px; letter-spacing:1px; color:#999; }
+.ec_product_num_reviews{ float:left; margin-left:5px; font-weight:bold; font-size:11px; letter-spacing:1px; color:#999; font-family:[content_font]; line-height:12px; }
 .ec_product_star_on{ border-color:transparent !important; border-bottom:5px solid  [main_color] !important;
 					 margin:5px 0; float:left; position:relative; display:block; color:[main_color]; width:0px; height:0px; 
 					 border-right:8px solid transparent; border-bottom:5px  solid [main_color]; border-left:8px solid transparent;
@@ -231,7 +231,7 @@
 	.ec_product_quick_view_box_content_thumbnails .ec_product_image{ margin-right:3px; margin-left:3px; }
 	.ec_product_quick_view_box_content_thumbnails img{ max-width:25px; max-height:25px; width:25px; height:25px; }
 	.ec_product_quick_view_box_content_image{ max-width:150px; max-height:150px; width:150px; height:150px; margin-top:20px; margin-left:10px; }
-	.ec_product_quick_view_box_content_image img{ max-width:150px; max-height:150px;; }
+	.ec_product_quick_view_box_content_image img{ max-width:150px; max-height:150px; }
 	.ec_product_quick_view_box_content_right{ width:220px; margin-top:20px; margin-left:10px; }
 	.ec_product_quick_view_box_content_row .title{ font-size:18px; }
 	.ec_product_quick_view_box_content_option_row .ec_product_details_option_combo{ width:175px; }

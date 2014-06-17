@@ -102,24 +102,36 @@ function ec_update_color_preview( color ){
 	jQuery( '#link_hover_color_block' ).css( 'cssText', 'background-color:' + color + " !important;" );
 }
 
-jQuery( document ).ready(
-	function( ){
- 		jQuery( '#upload_logo_button' ).click(
-			function( ){
-				formfield = jQuery( '#ec_option_email_logo' ).attr( 'name' );
-				tb_show( '', 'media-upload.php?type=image&amp;TB_iframe=true' );
-				return false;
-			}
-		);
+jQuery( document ).ready( function( $ ){
+	
+	var custom_uploader;
+	
+	jQuery( '#upload_logo_button' ).click( function( e ){
  
-		window.send_to_editor = function( html ){
-			imgurl = jQuery( 'img', html ).attr( 'src' );
-			jQuery( '#ec_option_email_logo' ).val( imgurl );
-			jQuery( '#email_logo_image' ).attr( "src", imgurl );
-			tb_remove();
+		e.preventDefault( );
+		
+		if( custom_uploader ){
+			custom_uploader.open( );
+			return;
 		}
- 	}
-);
+
+		custom_uploader = wp.media.frames.file_frame = wp.media( {
+			title: 'Choose Image',
+			button: {
+				text: 'Choose Image'
+			},
+			multiple: false
+		} );
+ 
+		custom_uploader.on( 'select', function( ){
+			attachment = custom_uploader.state( ).get( 'selection' ).first( ).toJSON( );
+			jQuery( '#email_logo_image' ).attr( "src", attachment.url );
+		} );
+ 
+		custom_uploader.open( );
+ 
+	});
+} );
 </script>
 
 <?php if( $isupdate ) { ?>
