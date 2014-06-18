@@ -122,7 +122,7 @@ class ec_admin_productimporter
 					//11 handling_price
 					
 					//12 stock_quantity
-					if ($excel->sheets[0]['cells'][$x][12] == '' || !is_numeric($excel->sheets[0]['cells'][$x][12])) {
+					if (!is_numeric($excel->sheets[0]['cells'][$x][12])) {
 						$errorfound = true;
 						return "Error at record ".$x.", all products require you enter a stock quantity for the product." ;
 					}
