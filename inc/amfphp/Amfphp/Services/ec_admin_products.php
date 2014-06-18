@@ -468,11 +468,11 @@ class ec_admin_products
 			}
 			
 			//duplicate category listings
-			$categorysql = sprintf("SELECT * FROM ec_cateogryitem WHERE ec_categoryitem.product_id = '%s'", mysql_real_escape_string($productid));
+			$categorysql = sprintf("SELECT * FROM ec_categoryitem WHERE ec_categoryitem.product_id = '%s'", mysql_real_escape_string($productid));
 			$result = mysql_query($categorysql);
 			
 			while($row = mysql_fetch_assoc($result)){
-				$sql = sprintf("INSERT INTO ec_cateogryitem(ec_categoryitem.product_id, ec_categoryitem.category_id) VALUES('%s', '%s')", 
+				$sql = sprintf("INSERT INTO ec_categoryitem(ec_categoryitem.product_id, ec_categoryitem.category_id) VALUES('%s', '%s')", 
 				mysql_real_escape_string($newid), 
 				mysql_real_escape_string($row['category_id']));
 				mysql_query($sql);
