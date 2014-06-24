@@ -108,6 +108,9 @@ class ec_usps{
 		
 	public function get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height ){
 		
+		if( strlen( $destination_zip ) <= 0 )
+			$destination_zip = $this->usps_ship_from_zip;
+		
 		if( $weight == 0 )
 			return "0.00";
 			
