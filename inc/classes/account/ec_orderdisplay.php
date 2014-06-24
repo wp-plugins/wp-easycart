@@ -401,6 +401,35 @@ class ec_orderdisplay{
 		
 	}
 	
+	public function send_failed_payment( ){
+		
+		$subscription = $this->mysqli->get_subscription_row( $this->subscription_id );
+		$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
+	 	
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = "Content-Type: text/html; charset=utf-8";
+		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "X-Mailer: PHP/".phpversion();
+		
+		ob_start();
+        if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_payment_failed.php' ) )	
+			include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_payment_failed.php';	
+		else
+			include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_payment_failed.php';
+        $message = ob_get_clean();
+		
+		
+		if( get_option( 'ec_option_use_wp_mail' ) ){
+			wp_mail( $this->user_email, $GLOBALS['language']->get_text( "ec_errors", "subscription_payment_failed_title" ), $message, implode("\r\n", $headers) );
+			wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "ec_errors", "subscription_payment_failed_title" ), $message, implode("\r\n", $headers) );
+		}else{
+			mail( $this->user_email, $GLOBALS['language']->get_text( "ec_errors", "subscription_payment_failed_title" ), $message, implode("\r\n", $headers) );
+			mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "ec_errors", "subscription_payment_failed_title" ), $message, implode("\r\n", $headers) );
+		}
+	}
+	
 	public function display_subscription_link( $text ){
 		echo "<a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&amp;subscription_id=". $this->subscription_id ."\">" . $text . "</a>";
 	}

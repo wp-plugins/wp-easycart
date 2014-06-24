@@ -1745,6 +1745,26 @@
 				"cancel_subscription_confirm_text":{
 					"title":"Account, Abonnementsgegevens, Abonnement opzeggen Button",
 					"value":"Weet u zeker dat u wilt dit abonnement opzeggen?"
+				},
+				"subscription_details_next_billing":{
+					"title":"Account, Subscription Details, Next Billing Date",
+					"value":"Volgende Billing Datum"
+				},
+				"subscription_details_last_payment":{
+					"title":"Account, Subscription Details, Last Payment Date",
+					"value":"Laatste betaaldatum"
+				},
+				"subscription_details_current_billing":{
+					"title":"Account, Subscription Details, Current Billing Title",
+					"value":"Huidige Billing Methode"
+				},
+				"subscription_details_notice":{
+					"title":"Account, Subscription Details, User Notice",
+					"value":"* LET OP: wijzigingen in de betaalmethode of abonnement wordt van kracht in de volgende factureringscyclus. Prijswijzigingen vindt plaats evenredig met onmiddellijke ingang en zal worden doorgevoerd op uw volgende factuur."
+				},
+				"subscription_details_past_payments":{
+					"title":"Account, Subscription Details, Past Payments Title",
+					"value":"verleden Betalingen"
 				}
 			}
 		},
@@ -1858,6 +1878,18 @@
 				"nets_processing_payment":{
 					"title":"Account, Nets Error Level Capture",
 					"value":"Uw betaling is geautoriseerd bij Netten Netaxept, maar er lijkt een probleem in ons systeem te zijn geweest. Neem dan contact met ons op om uw bestelling af te ronden."
+				},
+				"subscription_payment_failed_title":{
+					"title":"Cart, Subscription Payment Failed",
+					"value":"betaling mislukt"
+				},
+				"subscription_payment_failed_text":{
+					"title":"Cart, Subscription Payment Failed Text",
+					"value":"De betaling is mislukt om een van uw abonnementen. Klik op de link hieronder om uw credit card gegevens bij te werken."
+				},
+				"subscription_payment_failed_link":{
+					"title":"Cart, Subscription Payment Failed Link",
+					"value":"Klik om Billing bijwerken"
 				}
 			}
 		},

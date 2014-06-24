@@ -876,15 +876,10 @@ class ec_product{
 	
 	/* Display Description */
 	public function display_product_description( ){
-		preg_match_all( '/(<table.+?\/table>)/s', $this->description, $table_array, PREG_PATTERN_ORDER );
-		$desc2 = preg_replace( '/(<table.+?\/table>)/s', '[TABLE]', $this->description );
-		$desc3 = nl2br( $desc2 );
 		
-		for( $i=0; $i<count( $table_array[0] ); $i++ ){
-			$desc3 = preg_replace( '/\[TABLE\]/s', $table_array[0][$i], $desc3, 1 );
-		}
+		$content = $this->process_special_content( $this->description );
+		echo $content;
 		
-		echo $desc3;
 	}
 	
 	/* Does this product have a description */
@@ -895,21 +890,119 @@ class ec_product{
 	
 	/* Display Specifications */
 	public function display_product_specifications( ){
-		preg_match_all( '/(<table.+?\/table>)/s', $this->specifications, $table_array, PREG_PATTERN_ORDER );
-		$specs2 = preg_replace( '/(<table.+?\/table>)/s', '[TABLE]', $this->specifications );
-		$specs3 = nl2br( $specs2 );
 		
-		for( $i=0; $i<count( $table_array[0] ); $i++ ){
-			$specs3 = preg_replace( '/\[TABLE\]/s', $table_array[0][$i], $specs3, 1 );
-		}
-		
-		echo $specs3;
+		$content = $this->process_special_content( $this->specifications );
+		echo $content;
+	
 	}
 	
 	/* Does this product have specifications */
 	public function product_has_specifications( ){
 		if( $this->use_specifications )							return true;
 		else													return false;	
+	}
+	
+	public function process_special_content( $content ){
+		
+		preg_match_all( '/(<table.+?\/table>)/s', $content, $table_array, PREG_PATTERN_ORDER );
+		$desc2 = preg_replace( '/(<table.+?\/table>)/s', '[TABLE]', $content );
+		$content = nl2br( $desc2 );
+		
+		for( $i=0; $i<count( $table_array[0] ); $i++ ){
+			$content = preg_replace( '/\[TABLE\]/s', $table_array[0][$i], $content, 1 );
+		}
+		
+		// NORMAL ROWS //////
+		// Replace [ecrow1_1] shortcode
+		$content = preg_replace( "/\[ecrow_11\](.*?)\[\/ecrow_11\]/", "<div class='ecrow_11 ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow1_2] shortcode
+		$content = preg_replace( "/\[ecrow_12\](.*?)\[\/ecrow_12\]/", "<div class='ecrow_12 ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow1_3] shortcode
+		$content = preg_replace( "/\[ecrow_13\](.*?)\[\/ecrow_13\]/", "<div class='ecrow_13 ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow2_3] shortcode
+		$content = preg_replace( "/\[ecrow_23\](.*?)\[\/ecrow_23\]/", "<div class='ecrow_23 ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow1_4] shortcode
+		$content = preg_replace( "/\[ecrow_14\](.*?)\[\/ecrow_14\]/", "<div class='ecrow_14 ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow3_4] shortcode
+		$content = preg_replace( "/\[ecrow_34\](.*?)\[\/ecrow_34\]/", "<div class='ecrow_34 ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow1_5] shortcode
+		$content = preg_replace( "/\[ecrow_15\](.*?)\[\/ecrow_15\]/", "<div class='ecrow_15 ec_row_padding'>$1</div>", $content );
+		
+		// FIRST ROW //////
+		// Replace [ecrow1_1] shortcode
+		$content = preg_replace( "/\[ecrow_11 first\](.*?)\[\/ecrow_11\]/", "<div class='ecrow_11'>$1</div>", $content );
+		
+		// Replace [ecrow1_2] shortcode
+		$content = preg_replace( "/\[ecrow_12 first\](.*?)\[\/ecrow_12\]/", "<div class='ecrow_12'>$1</div>", $content );
+		
+		// Replace [ecrow1_3] shortcode
+		$content = preg_replace( "/\[ecrow_13 first\](.*?)\[\/ecrow_13\]/", "<div class='ecrow_13'>$1</div>", $content );
+		
+		// Replace [ecrow2_3] shortcode
+		$content = preg_replace( "/\[ecrow_23 first\](.*?)\[\/ecrow_23\]/", "<div class='ecrow_23'>$1</div>", $content );
+		
+		// Replace [ecrow1_4] shortcode
+		$content = preg_replace( "/\[ecrow_14 first\](.*?)\[\/ecrow_14\]/", "<div class='ecrow_14'>$1</div>", $content );
+		
+		// Replace [ecrow3_4] shortcode
+		$content = preg_replace( "/\[ecrow_34 first\](.*?)\[\/ecrow_34\]/", "<div class='ecrow_34'>$1</div>", $content );
+		
+		// Replace [ecrow1_5] shortcode
+		$content = preg_replace( "/\[ecrow_15 first\](.*?)\[\/ecrow_15\]/", "<div class='ecrow_15'>$1</div>", $content );
+		
+		// 2+ Column //////
+		// Replace [ecrow1_2 after] shortcode
+		$content = preg_replace( "/\[ecrow_12 after\](.*?)\[\/ecrow_12\]/", "<div class='ecrow_12_after ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow1_3] shortcode
+		$content = preg_replace( "/\[ecrow_13 after\](.*?)\[\/ecrow_13\]/", "<div class='ecrow_13_after ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow2_3] shortcode
+		$content = preg_replace( "/\[ecrow_23 after\](.*?)\[\/ecrow_23\]/", "<div class='ecrow_23_after ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow1_4] shortcode
+		$content = preg_replace( "/\[ecrow_14 after\](.*?)\[\/ecrow_14\]/", "<div class='ecrow_14_after ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow3_4] shortcode
+		$content = preg_replace( "/\[ecrow_34 after\](.*?)\[\/ecrow_34\]/", "<div class='ecrow_34_after ec_row_padding'>$1</div>", $content );
+		
+		// Replace [ecrow1_5] shortcode
+		$content = preg_replace( "/\[ecrow_15 after\](.*?)\[\/ecrow_15\]/", "<div class='ecrow_15_after ec_row_padding'>$1</div>", $content );
+		
+		// SPECIAL ELEMENTS //////
+		// Replace [echeading]HEADER[/echeading] shortcode
+		$content = preg_replace( "/\[echeading\](.*?)\[\/echeading\]/", "<h1 class='ec_special_heading'>$1</h1>", $content );
+		
+		// Replace [ecdivider] shortcode
+		$content = preg_replace( "/\[ecdivider\]/", "<hr class='ec_special_divider' />", $content );
+		
+		// Replace [ecicon]ICONNAME[/ecicon] shortcode
+		$content = preg_replace( "/\[ecicon\](.*?)\[\/ecicon\]/", "<div class='ec_special_icon dashicons dashicons-$1'></div>", $content );
+		
+		// Replace [eciconbox icon='' title='']ICON CONTENT[/eciconbox] shortcode
+		$content = preg_replace( "/\[eciconbox icon='(.*?)' title='(.*?)'\](.*?)\[\/eciconbox\]/", "<div class='ec_special_iconbox'><div class='ec_special_icon dashicons dashicons-$1'></div><h3>$2</h3><span>$3</span></div>", $content );
+		
+		// Replace [eciconboxtop icon='' title='']ICON CONTENT[/eciconboxtop] shortcode
+		$content = preg_replace( "/\[eciconboxtop icon='(.*?)' title='(.*?)'\](.*?)\[\/eciconboxtop\]/", "<div class='ec_special_iconbox_center'><div class='ec_special_icon_center dashicons dashicons-$1'></div><h3>$2</h3><span>$3</span></div>", $content );
+		
+		// Replace [eciconlist][eciconlistitem icon='' title='']ICON CONTENT[/iconlistitem]...[/eciconlist] shortcode
+		$content = preg_replace( "/\[eciconlist\](.*?)\[\/eciconlist\]/", "<div class='ec_special_iconlist'>$1</div>", $content );
+		
+		$content = preg_replace( "/\[eciconlistitem icon='(.*?)' title='(.*?)'\](.*?)\[\/eciconlistitem\]/", "<div class='ec_special_iconlist_item'><div class='ec_special_icon_list dashicons dashicons-$1'></div><div class='ec_special_iconlist_content'><h3>$2</h3><span>$3</span></div></div>", $content );
+		
+		// Replace [ecvideo]URL[/ecvideo] shortcode
+		$content = preg_replace( "/\[ecvideo\](.*?)\[\/ecvideo\]/", "<div class='ec_special_video' itemprop='video' itemtype='https://schema.org/VideoObject'><div class='ec_special_videowrap'><iframe width='1500' height='844' src='$1?feature=oembed&amp;wmode=opaque' frameborder='0' allowfullscreen=''></iframe></div></div>", $content );
+		
+		// Replace [ecimage]URL[/ecimage] shortcode
+		$content = preg_replace( "/\[ecimage\](.*?)\[\/ecimage\]/", "<div class='ec_special_image'><img src='$1' /></div>", $content );
+		
+		return $content;
 	}
 	
 	/* Display Ratings */

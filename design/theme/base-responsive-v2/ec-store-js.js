@@ -1523,69 +1523,70 @@ function ec_cart_validate_checkout_submit_order( ){
 }
 
 function ec_cart_validate_subscription_order( ){
-	var errors = 0;
+	var info_errors = 0;
+	var card_errors = 0;
 	
 	var billing_country_code = document.getElementById('ec_cart_billing_country').value;
 	
-	var payment_method = document.getElementById('ec_cart_payment_type').value;
-	var card_holder_name = document.getElementById('ec_card_holder_name').value;
+	var payment_method = "";
 	var card_number = document.getElementById('ec_card_number').value;
 	var exp_month = document.getElementById('ec_expiration_month').value;
 	var exp_year = document.getElementById('ec_expiration_year').value;
 	var sec_code = document.getElementById('ec_security_code').value;
 	
 	// Validate Billing Information
-	var input_names = ['first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country', 'phone'];
+	var input_names = ['first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country'];
+	if( document.getElementById( 'ec_cart_billing_phone' ) ){
+		input_names.push( 'phone' );
+	}
 	
 	for( var i=0; i< input_names.length; i++){
-		if( input_names[i] == "state" && document.getElementById( 'ec_cart_billing_' + input_names[i] ).options ){
-			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] ).options[document.getElementById( 'ec_cart_billing_' + input_names[i] ).selectedIndex].value;
+		if( input_names[i] == "state" && document.getElementById( 'ec_cart_billing_' + input_names[i] + '_' + billing_country_code ) && document.getElementById( 'ec_cart_billing_' + input_names[i] + '_' + billing_country_code ).options ){
+			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] + '_' + billing_country_code ).options[document.getElementById( 'ec_cart_billing_' + input_names[i] + '_' + billing_country_code ).selectedIndex].value;
 		}else{
 			var value = document.getElementById( 'ec_cart_billing_' + input_names[i] ).value;
 		}
 		// validate billing
 		if( !ec_validation( "validate_" + input_names[i], value, billing_country_code ) ){
-			errors++;
+			info_errors++;
 			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row_error";
+			jQuery( '#ec_cart_error_billing_' + input_names[i] ).show( );
 		}else{
 			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_error_billing_' + input_names[i] ).hide( );
 		}
 	}
 	
 	// Validate Credit Card Information
-	if( payment_method == "0" ){
-		errors++;
-		document.getElementById('ec_cart_payment_type_row').className = "ec_cart_payment_information_row_error";
-	}else{
-		document.getElementById('ec_cart_payment_type_row').className = "ec_cart_payment_information_row";
-	}
-	
-	if( !ec_validation( "validate_card_holder_name", card_holder_name, payment_method ) ){
-		errors++;
-		document.getElementById('ec_card_holder_name_row').className = "ec_cart_payment_information_row_error";
-	}else{
-		document.getElementById('ec_card_holder_name_row').className = "ec_cart_payment_information_row";
-	}
-	
 	if( !ec_validation( "validate_card_number", card_number, payment_method ) ){
-		errors++;
-		document.getElementById('ec_card_number_row').className = "ec_cart_payment_information_row_error";
+		card_errors++;
+		jQuery( '#ec_cart_error_payment_card_number' ).show( );
 	}else{
-		document.getElementById('ec_card_number_row').className = "ec_cart_payment_information_row";
+		jQuery( '#ec_cart_error_payment_card_number' ).hide( );
+	}
+	
+	if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) ){
+		jQuery( '#ec_cart_error_payment_card_exp_month' ).show( );
+	}else{
+		jQuery( '#ec_cart_error_payment_card_exp_month' ).hide( );
+	}
+	
+	if( !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
+		jQuery( '#ec_cart_error_payment_card_exp_year' ).show( );
+	}else{
+		jQuery( '#ec_cart_error_payment_card_exp_year' ).hide( );
 	}
 	
 	if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) || !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
-		errors++;
-		document.getElementById('ec_expiration_date_row').className = "ec_cart_payment_information_row_error";
-	}else{
-		document.getElementById('ec_expiration_date_row').className = "ec_cart_payment_information_row";
+		
+		card_errors++;
 	}
 	
 	if( !ec_validation( "validate_security_code", sec_code, payment_method ) ){
-		errors++;
-		document.getElementById('ec_security_code_row').className = "ec_cart_payment_information_row_error";
+		card_errors++;
+		jQuery( '#ec_cart_error_payment_card_code' ).show( );
 	}else{
-		document.getElementById('ec_security_code_row').className = "ec_cart_payment_information_row";
+		jQuery( '#ec_cart_error_payment_card_code' ).hide( );
 	}
 	
 	// If new account, Validate Account Info
@@ -1597,37 +1598,83 @@ function ec_cart_validate_subscription_order( ){
 		var retype_password = jQuery( '#ec_contact_password_retype' ).val( );
 		
 		if( !ec_validation( "validate_email", email, billing_country_code ) ){
-			errors++;
-			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row_error";
+			info_errors++;
+			document.getElementById('ec_contact_email_row').className = "ec_cart_billing_row_error";
+			jQuery( '#ec_cart_error_email' ).show( );
 		}else{
-			document.getElementById('ec_contact_email_row').className = "ec_cart_contact_information_row";
+			document.getElementById('ec_contact_email_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_error_email' ).hide( );
+		}
+		
+		if( retype_email.length == 0 ){
+			jQuery( '#ec_cart_error_retype_email' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_retype_email' ).hide( );
+		}
+		
+		if( email != retype_email ){
+			jQuery( '#ec_cart_error_email_match' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_email_match' ).hide( );
 		}
 		
 		if( retype_email.length == 0 || email != retype_email ){
-			errors++;
-			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row_error";
+			info_errors++;
+			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_billing_row_error";
 		}else{
-			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_contact_information_row";
+			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_billing_row";
 		}
 		
 			
 		if( !ec_validation( "validate_password", password, billing_country_code ) ){
-			errors++;
-			document.getElementById('ec_contact_password_row').className = "ec_cart_contact_information_row_error";
+			info_errors++;
+			document.getElementById('ec_contact_password_row').className = "ec_cart_billing_row_error";
+			jQuery( '#ec_cart_error_password' ).show( );
 		}else{
-			document.getElementById('ec_contact_password_row').className = "ec_cart_contact_information_row";
+			document.getElementById('ec_contact_password_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_error_password' ).hide( );
+		}
+		
+		if( retype_password.length == 0 ){
+			jQuery( '#ec_cart_error_retype_password' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_retype_password' ).hide( );
+		}
+		
+		if( password != retype_password ){
+			jQuery( '#ec_cart_error_password_match' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_password_match' ).hide( );
+		}
+		
+		if( password.length < 6 ){
+			jQuery( '#ec_cart_error_password_length' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_password_length' ).hide( );
 		}
 		
 		if( retype_password.length == 0 || password != retype_password ){
-			errors++;
-			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_contact_information_row_error";
+			info_errors++;
+			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_billing_row_error";
 		}else{
-			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_contact_information_row";
+			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_billing_row";
 		}
 		
 	}
 	
-	if( errors )
+	if( info_errors ){
+		jQuery( '#ec_cart_billing_error_text' ).show( );
+	}else{
+		jQuery( '#ec_cart_billing_error_text' ).hide( );
+	}
+	
+	if( card_errors ){
+		jQuery( '#ec_cart_payment_error_text' ).show( );
+	}else{
+		jQuery( '#ec_cart_payment_error_text' ).hide( );
+	}
+	
+	if( info_errors || card_errors )
 		return false;
 	else
 		return true;
@@ -2081,23 +2128,6 @@ function ec_text_field_highlight_error( field ){
 function ec_text_field_highlight_error_remove( field ){
 	field.style.backgroundColor = 'White';
 }
-// JavaScript Document// JavaScript Document// Base Theme - EC Cart Third Party Javascript Document////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// Base Theme - EC Account Billing Information Javascript Document
 
 function ec_account_billing_information_update_click( ){
 	var errors = 0;
@@ -2194,38 +2224,7 @@ jQuery( document ).ready( function( ){
 		}
 	} );
 } );
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Base Theme - EC Account Dashboard Javascript Document
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Base Theme - EC Account Login Javascript Document
 function ec_account_login_button_click( ){
 	var errors = 0;
 	
@@ -2250,68 +2249,8 @@ function ec_account_login_button_click( ){
 		return false;
 	else
 		return true;
-}////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
 
-// Base Theme - EC Account Order Details Javascript Document/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Base Theme - EC Account Orders Javascript Document
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Base Theme - EC Account Page Javascript Document////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Base Theme - EC Account Password Javascript Document
 function ec_account_password_button_click( ){
 	var errors = 0;
 	
@@ -2345,22 +2284,8 @@ function ec_account_password_button_click( ){
 	else
 		return true;
 	
-}////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
 
-// Base Theme - EC Account Personal Information Javascript Document
 function ec_account_personal_information_update_click( ){
 	var errors = 0;
 	
@@ -2394,22 +2319,6 @@ function ec_account_personal_information_update_click( ){
 	else
 		return true;
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Base Theme - EC Account Shipping Information Javascript Document
 	
 function ec_account_shipping_information_update_click( ){
 	var errors = 0;
@@ -2506,22 +2415,6 @@ jQuery( document ).ready( function( ){
 		}
 	} );
 } );
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Base Theme - EC Account Forgot Password Javascript Document
 
 function ec_account_forgot_password_button_click( ){
 	var errors = 0;
@@ -2540,22 +2433,6 @@ function ec_account_forgot_password_button_click( ){
 	else
 		return true;
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Base Theme - EC Account Register Javascript Document
 
 function ec_account_register_button_click( ){
 	var errors = 0;
@@ -2617,38 +2494,8 @@ function ec_account_register_button_click2( ){
 	}else{
 		return false;
 	}
-}////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
 
-// Base Theme - Account Order Line Javascript Document
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Base Theme - EC Account Order Details Item Display Javascript Document
 function update_download_count( orderdetail_id ){
 	if( document.getElementById( 'ec_download_count_' + orderdetail_id ) ){
 		var count = Number(document.getElementById( 'ec_download_count_' + orderdetail_id ).innerHTML);
@@ -2658,27 +2505,13 @@ function update_download_count( orderdetail_id ){
 			document.getElementById( 'ec_download_count_' + orderdetail_id ).innerHTML = count;
 		}
 	}
-}////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//All Code and Design is copyrighted by Level Four Development, llc
-//
-//Level Four Development, LLC provides this code "as is" without warranty of any kind, either express or implied,     
-//including but not limited to the implied warranties of merchantability and/or fitness for a particular purpose.         
-//
-//Only licnesed users may use this code and storfront for live purposes. All other use is prohibited and may be 
-//subject to copyright violation laws. If you have any questions regarding proper use of this code, please
-//contact Level Four Development, llc and EasyCart prior to use.
-//
-//All use of this storefront is subject to our terms of agreement found on Level Four Development, llc's  website.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
 
-// Base Theme - Account Order Line Javascript Document
 function show_billing_info( ){
-	jQuery( '#ec_account_subscription_billing_information' ).fadeIn( );
-	jQuery( '#ec_account_subscription_payment' ).fadeIn( );
+	jQuery( '#ec_account_subscription_billing_information' ).slideToggle(600);
 	return false;
 }
+
 
 function ec_cancel_subscription_check( confirm_text ){
 	return confirm( confirm_text );
@@ -3184,3 +3017,161 @@ jQuery( document ).ready( function( ){
 	jQuery( '.ec_cart_final_review_background' ).appendTo( document.body );
 	jQuery( '.ec_cart_final_review_holder' ).appendTo( document.body );
 } );
+
+function ec_check_update_subscription_info( ){
+	var info_errors = 0;
+	var card_errors = 0;
+	
+	var billing_country_code = document.getElementById('ec_account_billing_information_country').value;
+	
+	var payment_method = "";
+	var card_number = document.getElementById('ec_card_number').value;
+	var exp_month = document.getElementById('ec_expiration_month').value;
+	var exp_year = document.getElementById('ec_expiration_year').value;
+	var sec_code = document.getElementById('ec_security_code').value;
+	
+	// Validate Billing Information
+	var input_names = ['first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country'];
+	if( document.getElementById( 'ec_cart_billing_phone' ) ){
+		input_names.push( 'phone' );
+	}
+	
+	for( var i=0; i< input_names.length; i++){
+		if( input_names[i] == "state" && document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ) && document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).options ){
+			var value = document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).options[document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).selectedIndex].value;
+		}else{
+			var value = document.getElementById( 'ec_account_billing_information_' + input_names[i] ).value;
+		}
+		// validate billing
+		if( !ec_validation( "validate_" + input_names[i], value, billing_country_code ) ){
+			info_errors++;
+			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row_error";
+			jQuery( '#ec_cart_error_billing_' + input_names[i] ).show( );
+		}else{
+			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_error_billing_' + input_names[i] ).hide( );
+		}
+	}
+	
+	// Validate Credit Card Information
+	if( !ec_validation( "validate_card_number", card_number, payment_method ) ){
+		card_errors++;
+		jQuery( '#ec_cart_error_payment_card_number' ).show( );
+	}else{
+		jQuery( '#ec_cart_error_payment_card_number' ).hide( );
+	}
+	
+	if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) ){
+		jQuery( '#ec_cart_error_payment_card_exp_month' ).show( );
+	}else{
+		jQuery( '#ec_cart_error_payment_card_exp_month' ).hide( );
+	}
+	
+	if( !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
+		jQuery( '#ec_cart_error_payment_card_exp_year' ).show( );
+	}else{
+		jQuery( '#ec_cart_error_payment_card_exp_year' ).hide( );
+	}
+	
+	if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) || !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
+		
+		card_errors++;
+	}
+	
+	if( !ec_validation( "validate_security_code", sec_code, payment_method ) ){
+		card_errors++;
+		jQuery( '#ec_cart_error_payment_card_code' ).show( );
+	}else{
+		jQuery( '#ec_cart_error_payment_card_code' ).hide( );
+	}
+	
+	// If new account, Validate Account Info
+	if( document.getElementById( 'ec_contact_email' ) ){
+		
+		var email = jQuery( '#ec_contact_email' ).val( );
+		var retype_email = jQuery( '#ec_contact_email_retype' ).val( );
+		var password = jQuery( '#ec_contact_password' ).val( );
+		var retype_password = jQuery( '#ec_contact_password_retype' ).val( );
+		
+		if( !ec_validation( "validate_email", email, billing_country_code ) ){
+			info_errors++;
+			document.getElementById('ec_contact_email_row').className = "ec_cart_billing_row_error";
+			jQuery( '#ec_cart_error_email' ).show( );
+		}else{
+			document.getElementById('ec_contact_email_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_error_email' ).hide( );
+		}
+		
+		if( retype_email.length == 0 ){
+			jQuery( '#ec_cart_error_retype_email' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_retype_email' ).hide( );
+		}
+		
+		if( email != retype_email ){
+			jQuery( '#ec_cart_error_email_match' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_email_match' ).hide( );
+		}
+		
+		if( retype_email.length == 0 || email != retype_email ){
+			info_errors++;
+			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_billing_row_error";
+		}else{
+			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_billing_row";
+		}
+		
+			
+		if( !ec_validation( "validate_password", password, billing_country_code ) ){
+			info_errors++;
+			document.getElementById('ec_contact_password_row').className = "ec_cart_billing_row_error";
+			jQuery( '#ec_cart_error_password' ).show( );
+		}else{
+			document.getElementById('ec_contact_password_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_error_password' ).hide( );
+		}
+		
+		if( retype_password.length == 0 ){
+			jQuery( '#ec_cart_error_retype_password' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_retype_password' ).hide( );
+		}
+		
+		if( password != retype_password ){
+			jQuery( '#ec_cart_error_password_match' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_password_match' ).hide( );
+		}
+		
+		if( password.length < 6 ){
+			jQuery( '#ec_cart_error_password_length' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_password_length' ).hide( );
+		}
+		
+		if( retype_password.length == 0 || password != retype_password ){
+			info_errors++;
+			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_billing_row_error";
+		}else{
+			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_billing_row";
+		}
+		
+	}
+	
+	if( info_errors ){
+		jQuery( '#ec_cart_billing_error_text' ).show( );
+	}else{
+		jQuery( '#ec_cart_billing_error_text' ).hide( );
+	}
+	
+	if( card_errors ){
+		jQuery( '#ec_cart_payment_error_text' ).show( );
+	}else{
+		jQuery( '#ec_cart_payment_error_text' ).hide( );
+	}
+	
+	if( info_errors || card_errors )
+		return false;
+	else
+		return true;
+}

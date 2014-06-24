@@ -161,7 +161,7 @@
           <div class="ec_account_order_details_column5_header"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_5' )?></div>
         </div>
         <?php $this->display_order_detail_product_list( ); ?>
-        <?php if( get_option( 'ec_option_user_order_notes' ) ){ ?>
+        <?php if( get_option( 'ec_option_user_order_notes' ) && strlen( trim( $this->order->order_customer_notes ) ) > 0 ){ ?>
             <div class="ec_account_order_notes">
                 <h4><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_title' ); ?></h4>
                 <p><?php echo nl2br( $this->order->order_customer_notes ); ?></p>

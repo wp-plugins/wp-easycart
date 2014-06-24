@@ -857,6 +857,8 @@ class ec_stripe extends ec_gateway{
 			return "day";	
 		}else if( $period == "Y" ){
 			return "year";
+		}else if( $period == "W" ){
+			return "week";
 		}
 	}
 	

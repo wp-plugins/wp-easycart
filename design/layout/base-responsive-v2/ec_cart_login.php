@@ -19,13 +19,11 @@
         </div>
       </div>
       <div class="ec_cart_login_row">
-        <div class="ec_cart_login_row_label">&nbsp;&nbsp;&nbsp;</div>
         <div class="ec_cart_login_row_input">
           <?php $this->display_cart_login_login_button( $GLOBALS['language']->get_text( 'cart_login', 'cart_login_button' ) ); ?>
         </div>
       </div>
       <div class="ec_cart_login_row">
-        <div class="ec_cart_login_row_label">&nbsp;&nbsp;&nbsp;</div>
         <div class="ec_cart_login_row_input">
           <?php $this->display_cart_login_forgot_password_link( $GLOBALS['language']->get_text( 'cart_login', 'cart_login_forgot_password_link' ) ); ?>
         </div>

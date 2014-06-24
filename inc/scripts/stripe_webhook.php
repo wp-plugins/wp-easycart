@@ -114,12 +114,30 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			if( $subscription->last_payment_date == $payment_timestamp ){
 				$mysqli->update_stripe_order( $subscription->subscription_id, $stripe_charge_id );
 			}else{
-				$mysqli->insert_stripe_order( $subscription->subscription_id, $webhook_data );
+				$order_id = $mysqli->insert_stripe_order( $subscription, $webhook_data );
 				$mysqli->update_stripe_subscription( $subscription_id, $webhook_data );
+				$order_row = $mysql->get_order_row( $order_id, "guest", "guest" );
+				$order = new ec_orderdisplay( $order_row );
+				$order->send_email_receipt( );
 			}
 			
 		}else if( $webhook_type == "invoice.payment_failed" ){
+			$payment_timestamp = $webhook_data->date;
+			$stripe_subscription_id = $webhook_data->subscription;
+			$stripe_charge_id = $webhook_data->charge;
+			$subscription = $mysqli->get_stripe_subscription( $stripe_subscription_id );
 			
+			error_log( "FAILED, SUBSCRIPTION FOUND: " . $stripe_subscription_id );
+			error_log( print_r( $subscription, true ) );
+			
+			$order_id = $mysqli->insert_stripe_failed_order( $subscription, $webhook_data );
+			$mysqli->update_stripe_subscription_failed( $subscription_id, $webhook_data );
+			
+			$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+			$order = new ec_orderdisplay( $order_row );
+			
+			$order->send_failed_payment( );
+		
 		}else if( $webhook_type == "invoiceitem.created" ){
 			
 		}else if( $webhook_type == "invoiceitem.updated" ){

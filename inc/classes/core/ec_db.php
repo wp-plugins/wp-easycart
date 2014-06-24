@@ -2753,7 +2753,7 @@ class ec_db{
 	}
 	
 	public function get_stripe_subscription( $stripe_subscription_id ){
-		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.user_id, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id FROM ec_subscription WHERE ec_subscription.stripe_subscription_id = %s";
+		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.user_id, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id, ec_product.image1 FROM ec_subscription LEFT JOIN ec_product ON ec_product.product_id = ec_subscription.product_id WHERE ec_subscription.stripe_subscription_id = %s";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $stripe_subscription_id ) );
 	}
 			
@@ -2762,17 +2762,100 @@ class ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $stripe_charge_id, $subscription_id ) );
 	}
 	
-	public function insert_stripe_order( $subscription_id, $webhook_data ){
+	public function insert_stripe_order( $subscription, $webhook_data ){
+		
 		$user = $this->get_stripe_user( $webhook_data->customer );
 		
-		$sql = "INSERT INTO ec_order(user_id, user_email, user_level, order_date, orderstatus_id, sub_total, grand_total, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, payment_method, creditcard_digits, stripe_charge_id, subscription_id) VALUES( %d, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d )";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->billing_first_name, $user->billing_last_name, $user->billing_address_line_1, $user->billing_city, $user->billing_state, $user->billing_country, $user->billing_zip, $user->billing_phone, $user->default_card_type, $user->default_card_last4, $webhook_data->charge, $subscription_id ) );
+		$this->mysqli->insert( 	'ec_order',
+						array( 	'user_id'					=> $user->user_id,
+								'user_email'				=> $user->email,
+								'user_level'				=> $user->user_level,
+								'orderstatus_id'			=> 6,
+								'sub_total'					=> number_format( ( $webhook_data->subtotal / 100 ), 3, '.', '' ),
+								'grand_total'				=> number_format( ( $webhook_data->total / 100 ), 3, '.', '' ),
+								'billing_first_name'		=> $user->first_name,
+								'billing_last_name'			=> $user->last_name,
+								'billing_address_line_1'	=> $user->address_line_1,
+								'billing_city'				=> $user->city,
+								'billing_state'				=> $user->state,
+								'billing_country'			=> $user->country,
+								'billing_zip'				=> $user->zip,
+								'billing_phone'				=> $user->phone,
+								'payment_method'			=> $user->default_card_type,
+								'creditcard_digits'			=> $user->default_card_last4,
+								'stripe_charge_id'			=> $webhook_data->charge,
+								'subscription_id'			=> $subscription->subscription_id ),
+						array( '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ) );
+		
+		$order_id = $this->mysqli->insert_id;
+		
+		$this->mysqli->insert( 	'ec_orderdetail',
+						array(	'order_id'		=> $order_id,
+								'product_id'	=> $subscription->product_id,
+								'title'			=> $subscription->title,
+								'model_number'	=> $subscription->model_number,
+								'order_date'	=> 'NOW( )',
+								'unit_price'	=> $subscription->price,
+								'total_price'	=> $subscription->price,
+								'quantity'		=> 1,
+								'image1'		=> $subscription->image1 ),
+						array( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s' ) );
+		
+		return $order_id;
+		
+	}
+	
+	public function insert_stripe_failed_order( $subscription, $webhook_data ){
+		
+		$user = $this->get_stripe_user( $webhook_data->customer );
+		
+		$this->mysqli->insert( 	'ec_order',
+						array( 	'user_id'					=> $user->user_id,
+								'user_email'				=> $user->email,
+								'user_level'				=> $user->user_level,
+								'orderstatus_id'			=> 7,
+								'sub_total'					=> number_format( ( $webhook_data->subtotal / 100 ), 3, '.', '' ),
+								'grand_total'				=> number_format( ( $webhook_data->total / 100 ), 3, '.', '' ),
+								'billing_first_name'		=> $user->first_name,
+								'billing_last_name'			=> $user->last_name,
+								'billing_address_line_1'	=> $user->address_line_1,
+								'billing_city'				=> $user->city,
+								'billing_state'				=> $user->state,
+								'billing_country'			=> $user->country,
+								'billing_zip'				=> $user->zip,
+								'billing_phone'				=> $user->phone,
+								'payment_method'			=> $user->default_card_type,
+								'creditcard_digits'			=> $user->default_card_last4,
+								'stripe_charge_id'			=> $webhook_data->charge,
+								'subscription_id'			=> $subscription->subscription_id ),
+						array( '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ) );
+		
+		$order_id = $this->mysqli->insert_id;
+		
+		$this->mysqli->insert( 	'ec_orderdetail',
+						array(	'order_id'		=> $order_id,
+								'product_id'	=> $subscription->product_id,
+								'title'			=> $subscription->title,
+								'model_number'	=> $subscription->model_number,
+								'order_date'	=> 'NOW( )',
+								'unit_price'	=> $subscription->price,
+								'total_price'	=> $subscription->price,
+								'quantity'		=> 1,
+								'image1'		=> $subscription->image1 ),
+						array( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s' ) );
+		
+		return $order_id;
 		
 	}
 	
 	public function update_stripe_subscription( $subscription_id, $webhook_data ){
 		$sql = "UPDATE ec_subscription SET title = %s, product_id = %d, price = %s, payment_length = %d, payment_period = %s, last_payment_data = %s, next_payment_data = %s, number_payments_completed = number_paymentes_completed + 1 WHERE subscription_id = %d";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $webhook_data->data[0]->plan->name, $webhook_data->data[0]->plan->id, ( $webhook_data->data[0]->plan->amount /100 ), $webhook_data->data[0]->plan->interval_count, $this->get_stripe_subscription_period( $webhook_data->data[0]->plan->interval ), $webhook_data->period_start, $webhook_data->period_end, $subscription_id ) );
+	}
+	
+	public function update_stripe_subscription_failed( $subscription_id, $webhook_data ){
+		$sql = "UPDATE ec_subscription SET subscription_status = 'Failed' WHERE subscription_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $subscription_id ) );
 	}
 	
 	public function get_stripe_user( $stripe_customer_id ){

@@ -1745,6 +1745,26 @@
 				"cancel_subscription_confirm_text":{
 					"title":"Account, Subscription Details, Cancel Subscription Button",
 					"value":"¿Está seguro que desea cancelar esta suscripción?"
+				},
+				"subscription_details_next_billing":{
+					"title":"Account, Subscription Details, Next Billing Date",
+					"value":"Siguiente Fecha de facturación"
+				},
+				"subscription_details_last_payment":{
+					"title":"Account, Subscription Details, Last Payment Date",
+					"value":"Última Fecha de Pago"
+				},
+				"subscription_details_current_billing":{
+					"title":"Account, Subscription Details, Current Billing Title",
+					"value":"Método de facturación actual"
+				},
+				"subscription_details_notice":{
+					"title":"Account, Subscription Details, User Notice",
+					"value":"* AVISO: cualquier cambio en el método de facturación o plan de suscripción entrarán en vigor en el próximo ciclo de facturación. Cambios de precios serán prorrateados comenzando inmediatamente y se reflejará en su próxima factura."
+				},
+				"subscription_details_past_payments":{
+					"title":"Account, Subscription Details, Past Payments Title",
+					"value":"Los pagos anteriores"
 				}
 			}
 		},
@@ -1858,6 +1878,18 @@
 				"nets_processing_payment":{
 					"title":"Account, Nets Error Level Capture",
 					"value":"Su pago se ha autorizado a los Nets Netaxept, pero no parece haber sido un problema en nuestro sistema. Por favor, póngase en contacto con nosotros para completar su pedido."
+				},
+				"subscription_payment_failed_title":{
+					"title":"Cart, Subscription Payment Failed",
+					"value":"Pago Error"
+				},
+				"subscription_payment_failed_text":{
+					"title":"Cart, Subscription Payment Failed Text",
+					"value":"El pago ha fallado por uno de sus suscripciones. Por favor, haz clic en el enlace de abajo para actualizar su información de tarjeta de crédito."
+				},
+				"subscription_payment_failed_link":{
+					"title":"Cart, Subscription Payment Failed Link",
+					"value":"Haga clic para actualizar la facturación"
 				}
 			}
 		},
