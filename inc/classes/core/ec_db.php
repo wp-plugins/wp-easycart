@@ -254,6 +254,7 @@ class ec_db{
 				product.list_price,
 				product.vat_rate,
 				product.stock_quantity,
+				product.min_purchase_quantity,
 				product.weight,
 				product.width,
 				product.height,
@@ -449,7 +450,8 @@ class ec_db{
 						"price" => $row->price, 
 						"list_price" => $row->list_price, 
 						"vat_rate" => $row->vat_rate,
-						"stock_quantity" => $row->stock_quantity, 
+						"stock_quantity" => $row->stock_quantity,
+						"min_purchase_quantity" => $row->min_purchase_quantity,
 						"weight" => $row->weight,  
 						"width" => $row->width,  
 						"height" => $row->height,  
@@ -1258,7 +1260,7 @@ class ec_db{
 		$optionitem_id_5 = $tempcart_item->optionitem_id_5;
 		
 		// Get the limit on this product
-		$product_sql = "SELECT show_stock_quantity, stock_quantity, use_optionitem_quantity_tracking FROM ec_product WHERE product_id = %d";
+		$product_sql = "SELECT show_stock_quantity, stock_quantity, use_optionitem_quantity_tracking, min_purchase_quantity FROM ec_product WHERE product_id = %d";
 		$optionitem_sql = "SELECT quantity FROM ec_optionitemquantity WHERE product_id = %d AND optionitem_id_1 = %d AND optionitem_id_2 = %d AND optionitem_id_3 = %d AND optionitem_id_4 = %d AND optionitem_id_5 = %d";
 		$tempcart_optionitem_sql = "SELECT quantity FROM ec_tempcart WHERE tempcart_id = %d";
 		$tempcart_sql = "SELECT SUM(quantity) as quantity FROM ec_tempcart WHERE session_id = '%s' AND product_id = %d";
@@ -1294,6 +1296,11 @@ class ec_db{
 		}else if( $product->use_optionitem_quantity_tracking == 1 && $quantity > $stock_quantity ){			
 			$quantity = $stock_quantity;
 		
+		}
+		
+		// Don't allow less than the minimum
+		if( $product->min_purchase_quantity > 0 && $quantity < $product->min_purchase_quantity ){
+			$quantity = $product->min_purchase_quantity;
 		}
 		
 		// Don't allow negative quantities!
@@ -2273,6 +2280,8 @@ class ec_db{
 				ec_user.stripe_customer_id,
 				ec_user.default_card_type, 
 				ec_user.default_card_last4,
+				ec_user.exclude_tax,
+				ec_user.exclude_shipping,
 				
 				billing.first_name as billing_first_name, 
 				billing.last_name as billing_last_name, 

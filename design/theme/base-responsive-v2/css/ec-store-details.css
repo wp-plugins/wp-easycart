@@ -58,6 +58,7 @@
 .ec_product_details_option_combo_error{ background-color:[error_color]; border:2px solid [error_color2]; }
 .ec_product_details_option_error_text{ font-size:11px; color:[error_text]; display:none; }
 .ec_product_details_gift_card{ margin-top:15px; margin-bottom:15px; width:100%; float:left; }
+.ec_min_quantity_amount_text{ float:left; width:100%; margin-bottom:15px; font-weight:bold; }
 .ec_product_details_quantity{ float:left; width:100%; margin-top:15px; margin-bottom:30px; font-size:12px; font-weight:bold; font-family:[content_font]; color:#333; }
 .ec_product_details_quantity_donation{ display:none; }
 .ec_product_details_quantity input[type="number"]{ width:50px; text-align:center; }

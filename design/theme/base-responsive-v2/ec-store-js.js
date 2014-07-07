@@ -1451,6 +1451,9 @@ function ec_cart_validate_checkout_submit_order( ){
 	
 	var payment_type = jQuery('input[name=ec_cart_payment_selection]:checked').val();
 	if( !document.getElementById( 'ec_cart_pay_by_manual_payment' ) && !document.getElementById( 'ec_cart_pay_by_third_party' ) && !document.getElementById( 'ec_cart_pay_by_credit_card_holder' ) ){
+		if( document.getElementById( 'ec_cart_final_review_holder' ) && jQuery( '#ec_cart_final_review_holder' ).is( ':visible' ) ){
+			jQuery( '#ec_submit_order_form' ).submit( );
+		}
 		return true;
 	}else if( payment_type ){
 		jQuery('.ec_cart_payment_information_payment_type_row.error').removeClass('error');

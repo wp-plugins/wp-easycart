@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9
-Stable tag: 2.1.23
+Stable tag: 2.1.24
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+= 2.1.24 =
+* Addition - Minimum quantity required for purchase.
+* Addition - Exclude tax for a specific user.
+* Addition - Exclude shipping for a specific user.
+* Improvement - Various design improvements.
+* Fix - Payment Express PxPay 2.0 correction so that
 = 2.1.23 =
 * Fix - Stripe subscriptions with the new design files were not working, corrections made.
 * Improvement - Stripe subscriptions screen has a nicer look and faster checkout.

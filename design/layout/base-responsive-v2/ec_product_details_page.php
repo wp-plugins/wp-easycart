@@ -112,6 +112,8 @@
     	<div class="<?php if( $this->product->is_donation ){ echo "ec_product_details_quantity_donation"; }else{ echo "ec_product_details_quantity"; } ?>" id="ec_product_details_quantity_<?php echo $this->product->model_number; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_quantity' )?> <?php $this->product->display_product_quantity_input("1"); ?>
     	</div>
         <?php } ?>
+    	
+        <?php $this->product->display_minimum_purchase_amount( ); ?>
     
     	<div class="ec_product_details_add_to_cart"><?php $this->product->display_product_add_to_cart_button($GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ), "ec_quick_view_error" ); ?></div>
     

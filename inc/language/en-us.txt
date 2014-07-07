@@ -1890,6 +1890,10 @@
 				"subscription_payment_failed_link":{
 					"title":"Cart, Subscription Payment Failed Link",
 					"value":"Click to Update Billing"
+				},
+				"minquantity":{
+					"title":"Store, Minimum Quantity Error",
+					"value":"This product requires a minimum purchase quantity."
 				}
 			}
 		},

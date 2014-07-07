@@ -14,6 +14,7 @@ class ec_product{
 	public $list_price;							// Float 7,2
 	public $vat_rate;							// FLOAT 11,2
 	public $stock_quantity;						// INT
+	public $min_purchase_quantity;				// INT
 	public $weight;								// Float 9,2
 	public $width;								// DOUBLE 15,3
 	public $height;								// DOUBLE 15,3
@@ -116,6 +117,7 @@ class ec_product{
 		$this->list_price = $product_data['list_price'];
 		$this->vat_rate = $product_data['vat_rate'];
 		$this->stock_quantity = $product_data['stock_quantity'];
+		$this->min_purchase_quantity = $product_data['min_purchase_quantity'];
 		$this->weight = $product_data['weight'];
 		$this->width = $product_data['width'];
 		$this->height = $product_data['height'];
@@ -559,8 +561,17 @@ class ec_product{
 		echo $this->model_number;
 	}
 	
+	/* Display the minimum purchase amount if needed */
+	public function display_minimum_purchase_amount( ){
+		if( $this->min_purchase_quantity > 0 ){
+			echo "<div class=\"ec_min_quantity_amount_text\">" . sprintf( "Minimum purchase amount of %d is required ", $this->min_purchase_quantity ) . "</div>";
+		}
+	}
+	
 	/* Display the quantity input box */
 	public function display_product_quantity_input( $default ){
+		if( $this->min_purchase_quantity > 0 ){ $default = $this->min_purchase_quantity; }
+		
 		echo "<input type=\"number\" value=\"" . $default . "\" name=\"product_quantity\" id=\"product_quantity_" . $this->model_number . "\" class=\"product_quantity_input\" />";
 	}
 	

@@ -52,7 +52,9 @@ class ec_tax{
 	private $shipping_state;								// VARCHAR 255
 	private $shipping_country;								// VARCHAR 255
 	
-	function __construct( $cart_subtotal, $taxable_subtotal, $vatable_total, $shipping_state, $shipping_country ){
+	private $taxfree;										// BOOLEAN
+	
+	function __construct( $cart_subtotal, $taxable_subtotal, $vatable_total, $shipping_state, $shipping_country, $taxfree = false ){
 		
 		// Initialize Structures and Lists
 		$this->mysqli 							= 			new ec_db();
@@ -67,6 +69,8 @@ class ec_tax{
 		// Save the User Entered Data
 		$this->shipping_state 					= 			strtoupper( $shipping_state );
 		$this->shipping_country 				= 			strtoupper( $shipping_country );
+		
+		$this->taxfree							=			$taxfree;
 		
 		// Initialize the Values to Zero/False
 		$this->initialize_tax_values( );
@@ -160,32 +164,34 @@ class ec_tax{
 		$this->duty_total 						= 			0;
 		$this->vat_total 						= 			0;
 		
-		// Calculate State Tax
-		if( $this->state_tax_enabled && $this->state_tax_match )
-			$this->state_tax = $this->taxable_subtotal * $this->state_tax_rate / 100;
-		
-		// Calculate Country Tax
-		if( $this->country_tax_enabled && $this->country_tax_match )
-			$this->country_tax = $this->taxable_subtotal * $this->country_tax_rate / 100;
-		
-		// Calculate All Tax
-		if( $this->all_tax_enabled )
-			$this->all_tax = $this->taxable_subtotal * $this->all_tax_rate / 100;	
-		
-		//Calculate Sales Tax Total
-		$this->tax_total = $this->state_tax + $this->country_tax + $this->all_tax;
-		
-		// Calculate Duty
-		if( $this->duty_enabled && $this->duty_country_match )
-			$this->duty_total = $this->cart_subtotal * $this->duty_rate / 100;
-		
-		// Calculate VAT Values
-		if( $this->vat_enabled ){
-			$GLOBALS['ec_vat_rate'] = $this->vat_rate;
-			if( $this->vat_included ){
-				$this->vat_total = ( $this->vatable_total / ( ( $this->vat_rate / 100 ) + 1 ) ) * ( $this->vat_rate / 100 );
-			}else{
-				$this->vat_total = $this->vatable_total * $this->vat_rate / 100;
+		if( !$this->taxfree ){
+			// Calculate State Tax
+			if( $this->state_tax_enabled && $this->state_tax_match )
+				$this->state_tax = $this->taxable_subtotal * $this->state_tax_rate / 100;
+			
+			// Calculate Country Tax
+			if( $this->country_tax_enabled && $this->country_tax_match )
+				$this->country_tax = $this->taxable_subtotal * $this->country_tax_rate / 100;
+			
+			// Calculate All Tax
+			if( $this->all_tax_enabled )
+				$this->all_tax = $this->taxable_subtotal * $this->all_tax_rate / 100;	
+			
+			//Calculate Sales Tax Total
+			$this->tax_total = $this->state_tax + $this->country_tax + $this->all_tax;
+			
+			// Calculate Duty
+			if( $this->duty_enabled && $this->duty_country_match )
+				$this->duty_total = $this->cart_subtotal * $this->duty_rate / 100;
+			
+			// Calculate VAT Values
+			if( $this->vat_enabled ){
+				$GLOBALS['ec_vat_rate'] = $this->vat_rate;
+				if( $this->vat_included ){
+					$this->vat_total = ( $this->vatable_total / ( ( $this->vat_rate / 100 ) + 1 ) ) * ( $this->vat_rate / 100 );
+				}else{
+					$this->vat_total = $this->vatable_total * $this->vat_rate / 100;
+				}
 			}
 		}
 	}

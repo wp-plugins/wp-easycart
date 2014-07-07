@@ -545,6 +545,7 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
   `vat_rate` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'VAT rate for this product, used in store calculations.',
   `handling_price` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'This price represents an extra handling charge  added to the shipping.',
   `stock_quantity` INTEGER(7) NOT NULL DEFAULT 0 COMMENT 'Simple stock quantity control, used to check overall stock total.',
+  `min_purchase_quantity` INT(11) NOT NULL DEFAULT '0' COMMENT 'Optional minimum amount required for during purchase.',
   `weight` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Weight for the product.',
   `width` DOUBLE(15,3) NOT NULL DEFAULT '1.000' COMMENT 'Width of the product in the default shipping unit.',
   `height` DOUBLE(15,3) NOT NULL DEFAULT '1.000' COMMENT 'Height of the product in the default shipping unit.',
@@ -1119,7 +1120,8 @@ CREATE TABLE IF NOT EXISTS `ec_user` (
   `stripe_customer_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Stripe Customer ID if subscription created with Stripe.',
   `default_card_type` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Used for subscription display of where billed to.',
   `default_card_last4` VARCHAR(8) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Used for subscription display of where billed to.',
-  
+  `exclude_tax` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Give customer tax free purchases.',
+  `exclude_shipping` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Give free shipping to this customer.',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id` (`user_id`),
   UNIQUE KEY `email_2` (`email`),

@@ -90,8 +90,13 @@ class ec_order{
 						
 						$this->send_email_receipt(); //leave it to third party to send email
 					}
-					$this->clear_session();
-					$this->mysqli->clear_tempcart( session_id() );
+					
+					if( $payment_type == 'third_party' && get_option( 'ec_option_payment_third_party' ) == "paymentexpress_thirdparty" ){
+						// Try not clearing session for this provider.
+					}else{
+						$this->clear_session();
+						$this->mysqli->clear_tempcart( session_id() );
+					}
 					
 					if( $this->discount->giftcard_code )
 						$this->mysqli->update_giftcard_total( $this->discount->giftcard_code, $this->discount->giftcard_discount );

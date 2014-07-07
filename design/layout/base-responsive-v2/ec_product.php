@@ -86,6 +86,9 @@
             <?php if( $product->show_stock_quantity || $product->use_optionitem_quantity_tracking ){ ?>
             <div class="ec_product_quick_view_box_content_row"><span id="in_stock_amount_text_<?php echo $product->model_number; ?>"><?php $product->display_product_stock_quantity(); ?></span> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_remaining' )?></div>
             <?php }?>
+    	
+        	<?php $product->display_minimum_purchase_amount( ); ?>
+            
             <div class="ec_product_quick_view_box_content_row"><?php $product->display_product_add_to_cart_button( $GLOBALS['language']->get_text( 'quick_view', 'quick_view_add_to_cart' ), "ec_quick_view_error" ); ?></div>
             <?php } //Close advanced options if ?>
             <div class="ec_product_quick_view_box_content_row"><?php $product->display_product_link( $GLOBALS['language']->get_text( 'quick_view', 'quick_view_view_full_details' ) ); ?></div>

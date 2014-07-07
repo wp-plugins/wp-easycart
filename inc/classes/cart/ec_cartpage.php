@@ -52,10 +52,10 @@ class ec_cartpage{
 		}
 		
 		// Shipping
-		$this->shipping = new ec_shipping( $this->cart->shipping_subtotal, $this->cart->weight, $this->cart->shippable_total_items );
+		$this->shipping = new ec_shipping( $this->cart->shipping_subtotal, $this->cart->weight, $this->cart->shippable_total_items, 'RADIO', $this->user->freeshipping );
 		// Tax (no VAT here)
 		$sales_tax_discount = new ec_discount( $this->cart, $this->cart->subtotal, 0.00, $this->coupon_code, "", 0 );
-		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country );
+		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country, $this->user->taxfree );
 		// Duty (Based on Product Price) - already calculated in tax
 		// Get Total Without VAT, used only breifly
 		if( get_option( 'ec_option_no_vat_on_shipping' ) ){
@@ -74,7 +74,7 @@ class ec_cartpage{
 		if( $vatable_subtotal < 0 )
 			$vatable_subtotal = 0;
 		// Get Tax Again For VAT
-		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, $vatable_subtotal, $this->user->shipping->state, $this->user->shipping->country );
+		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, $vatable_subtotal, $this->user->shipping->state, $this->user->shipping->country, $this->user->taxfree );
 		// Discount for Gift Card
 		$this->discount = new ec_discount( $this->cart, $this->cart->subtotal, $this->shipping->get_shipping_price( ), $this->coupon_code, $this->gift_card, $GLOBALS['currency']->get_number_only( $total_without_vat_or_discount ) + $GLOBALS['currency']->get_number_only( $this->tax->vat_total ) );
 		// Order Totals
@@ -335,7 +335,7 @@ class ec_cartpage{
 	}
 	
 	public function should_display_login( ){
-		return ( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_login" && !isset( $_SESSION['ec_email'] ) );
+		return ( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_login" && ( !isset( $_SESSION['ec_email'] ) || $_SESSION['ec_email'] == "" || $_SESSION['ec_email'] == "guest" ) );
 	}
 	
 	public function payment_processor_requires_billing( ){
@@ -1543,145 +1543,179 @@ class ec_cartpage{
 	// Process the add to cart form submission
 	private function process_add_to_cart(){
 		
-		//add_to_cart_replace Hook
-		if( isset( $GLOBALS['ec_hooks']['add_to_cart_replace'] ) ){
-			$class_args = array( "cart_page" => $this->cart_page, "permalink_divider" => $this->permalink_divider );
-			for( $i=0; $i<count( $GLOBALS['ec_hooks']['add_to_cart_replace'] ); $i++ ){
-				ec_call_hook( $GLOBALS['ec_hooks']['add_to_cart_replace'][$i], $class_args );
-			}
+		if( !$this->check_quantity( $_POST['product_id'], $_POST['product_quantity'] ) ){
+			header( "location: " . $this->store_page . $this->permalink_divider . "model_number=" . $_POST['model_number'] . "&ec_store_error=minquantity" );
+			
 		}else{
-			//Product Info
-			$session_id = session_id( );
-			$product_id = $_POST['product_id'];
-			if( isset( $_POST['product_quantity'] ) )
-				$quantity = $_POST['product_quantity'];
-			else
-				$quantity = 1;
 			
-			$model_number = stripslashes( $_POST['model_number'] );
-			
-			//Optional Gift Card Info
-			$gift_card_message = "";
-			if( isset( $_POST['ec_gift_card_message'] ) )
-				$gift_card_message = stripslashes( $_POST['ec_gift_card_message'] );
-			
-			$gift_card_to_name = "";
-			if( isset( $_POST['ec_gift_card_to_name'] ) )
-				$gift_card_to_name = stripslashes( $_POST['ec_gift_card_to_name'] );
-			
-			$gift_card_from_name = "";
-			if( isset( $_POST['ec_gift_card_from_name'] ) )
-				$gift_card_from_name = stripslashes( $_POST['ec_gift_card_from_name'] );
-			
-			// Optional Donation Price
-			$donation_price = 0.000;
-			if( isset( $_POST['ec_product_input_price'] ) )
-				$donation_price = $_POST['ec_product_input_price'];
-			
-			$use_advanced_optionset = false;
-			//Product Options
-			if( isset( $_POST['ec_use_advanced_optionset'] ) && $_POST['ec_use_advanced_optionset'] ){
-				$option1 = "";
-				$option2 = "";
-				$option3 = "";
-				$option4 = "";
-				$option5 = "";
-				$use_advanced_optionset = true;
+			//add_to_cart_replace Hook
+			if( isset( $GLOBALS['ec_hooks']['add_to_cart_replace'] ) ){
+				$class_args = array( "cart_page" => $this->cart_page, "permalink_divider" => $this->permalink_divider );
+				for( $i=0; $i<count( $GLOBALS['ec_hooks']['add_to_cart_replace'] ); $i++ ){
+					ec_call_hook( $GLOBALS['ec_hooks']['add_to_cart_replace'][$i], $class_args );
+				}
 			}else{
-				$option1 = "";
-				if( isset( $_POST['ec_option1'] ) )
-					$option1 = $_POST['ec_option1'];
+				//Product Info
+				$session_id = session_id( );
+				$product_id = $_POST['product_id'];
+				if( isset( $_POST['product_quantity'] ) )
+					$quantity = $_POST['product_quantity'];
+				else
+					$quantity = 1;
 				
-				$option2 = "";
-				if( isset( $_POST['ec_option2'] ) )
-					$option2 = $_POST['ec_option2'];
+				$model_number = stripslashes( $_POST['model_number'] );
 				
-				$option3 = "";
-				if( isset( $_POST['ec_option3'] ) )
-					$option3 = $_POST['ec_option3'];
+				//Optional Gift Card Info
+				$gift_card_message = "";
+				if( isset( $_POST['ec_gift_card_message'] ) )
+					$gift_card_message = stripslashes( $_POST['ec_gift_card_message'] );
 				
-				$option4 = "";
-				if( isset( $_POST['ec_option4'] ) )
-					$option4 = $_POST['ec_option4'];
+				$gift_card_to_name = "";
+				if( isset( $_POST['ec_gift_card_to_name'] ) )
+					$gift_card_to_name = stripslashes( $_POST['ec_gift_card_to_name'] );
 				
-				$option5 = "";
-				if( isset( $_POST['ec_option5'] ) )
-					$option5 = $_POST['ec_option5'];
+				$gift_card_from_name = "";
+				if( isset( $_POST['ec_gift_card_from_name'] ) )
+					$gift_card_from_name = stripslashes( $_POST['ec_gift_card_from_name'] );
+				
+				// Optional Donation Price
+				$donation_price = 0.000;
+				if( isset( $_POST['ec_product_input_price'] ) )
+					$donation_price = $_POST['ec_product_input_price'];
+				
+				$use_advanced_optionset = false;
+				//Product Options
+				if( isset( $_POST['ec_use_advanced_optionset'] ) && $_POST['ec_use_advanced_optionset'] ){
+					$option1 = "";
+					$option2 = "";
+					$option3 = "";
+					$option4 = "";
+					$option5 = "";
+					$use_advanced_optionset = true;
+				}else{
+					$option1 = "";
+					if( isset( $_POST['ec_option1'] ) )
+						$option1 = $_POST['ec_option1'];
 					
+					$option2 = "";
+					if( isset( $_POST['ec_option2'] ) )
+						$option2 = $_POST['ec_option2'];
+					
+					$option3 = "";
+					if( isset( $_POST['ec_option3'] ) )
+						$option3 = $_POST['ec_option3'];
+					
+					$option4 = "";
+					if( isset( $_POST['ec_option4'] ) )
+						$option4 = $_POST['ec_option4'];
+					
+					$option5 = "";
+					if( isset( $_POST['ec_option5'] ) )
+						$option5 = $_POST['ec_option5'];
+						
+				}
+				
+				$tempcart_id = $this->mysqli->add_to_cart( $product_id, $session_id, $quantity, $option1, $option2, $option3, $option4, $option5, $gift_card_message, $gift_card_to_name, $gift_card_from_name, $donation_price, $use_advanced_optionset, false );
+				
+				$option_vals = array( );
+				// Now insert the advanced option set tempcart table if needed
+				if( $use_advanced_optionset ){
+					
+					$optionsets = $this->mysqli->get_advanced_optionsets( $product_id );
+					$grid_quantity = 0;
+					
+					foreach( $optionsets as $optionset ){
+						if( $optionset->option_type == "checkbox" ){
+							$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+							foreach( $optionitems as $optionitem ){
+								if( isset( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) ){
+									$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => stripslashes( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) );
+								}
+							}
+						}else if( $optionset->option_type == "grid" ){
+							$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+							foreach( $optionitems as $optionitem ){
+								if( isset( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) && $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] > 0 ){
+									$grid_quantity = $grid_quantity + $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id];
+									$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] );
+								}
+							}
+						}else if( $optionset->option_type == "combo" || $optionset->option_type == "swatch" || $optionset->option_type == "radio" ){
+							$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+							foreach( $optionitems as $optionitem ){
+								if( $optionitem->optionitem_id == $_POST['ec_option_' . $optionset->option_id] ){
+									$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $optionitem->optionitem_name );
+								}
+							}
+						}else if( $optionset->option_type == "file" ){
+							$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+							foreach( $optionitems as $optionitem ){
+								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_FILES['ec_option_' . $optionset->option_id]['name'] );
+							}
+						}else{
+							$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+							foreach( $optionitems as $optionitem ){
+								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => stripslashes( $_POST['ec_option_' . $optionset->option_id] ) );
+							}
+						}
+						
+						if( $optionset->option_type == "file" ){
+							//upload the file
+							$this->upload_customer_file( $tempcart_id, 'ec_option_' . $optionset->option_id );
+						}
+					}
+				}
+				
+				for( $i=0; $i<count( $option_vals ); $i++ ){
+					$this->mysqli->add_option_to_cart( $tempcart_id, $option_vals[$i] );
+				}
+				
+				if( $grid_quantity > 0 ){
+					$this->mysqli->update_tempcart_grid_quantity( $tempcart_id, $grid_quantity );
+				}
+				
+				if( get_option( 'ec_option_addtocart_return_to_product' ) ){
+					$return_url = $_SERVER['HTTP_REFERER'];
+					$return_url = str_replace( "ec_store_success=addtocart", "", $return_url );
+					$divider = "?";
+					if( substr_count( $return_url, '?' ) )
+						$divider = "&";
+					
+					
+					header( "location: " . $return_url . $divider . "ec_store_success=addtocart&model=" . $_POST['model_number'] );
+				}else{
+					header( "location: " . $this->cart_page );
+				}
 			}
-			
-			$tempcart_id = $this->mysqli->add_to_cart( $product_id, $session_id, $quantity, $option1, $option2, $option3, $option4, $option5, $gift_card_message, $gift_card_to_name, $gift_card_from_name, $donation_price, $use_advanced_optionset, false );
-			
-			$option_vals = array( );
-			// Now insert the advanced option set tempcart table if needed
-			if( $use_advanced_optionset ){
-				
-				$optionsets = $this->mysqli->get_advanced_optionsets( $product_id );
-				$grid_quantity = 0;
-				
-				foreach( $optionsets as $optionset ){
-					if( $optionset->option_type == "checkbox" ){
-						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-						foreach( $optionitems as $optionitem ){
-							if( isset( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) ){
-								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => stripslashes( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) );
-							}
-						}
-					}else if( $optionset->option_type == "grid" ){
-						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-						foreach( $optionitems as $optionitem ){
-							if( isset( $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] ) && $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] > 0 ){
-								$grid_quantity = $grid_quantity + $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id];
-								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_POST['ec_option_' . $optionset->option_id . "_" . $optionitem->optionitem_id] );
-							}
-						}
-					}else if( $optionset->option_type == "combo" || $optionset->option_type == "swatch" || $optionset->option_type == "radio" ){
-						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-						foreach( $optionitems as $optionitem ){
-							if( $optionitem->optionitem_id == $_POST['ec_option_' . $optionset->option_id] ){
-								$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $optionitem->optionitem_name );
-							}
-						}
-					}else if( $optionset->option_type == "file" ){
-						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-						foreach( $optionitems as $optionitem ){
-							$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_FILES['ec_option_' . $optionset->option_id]['name'] );
-						}
-					}else{
-						$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
-						foreach( $optionitems as $optionitem ){
-							$option_vals[] = array( "option_id" => $optionset->option_id, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => stripslashes( $_POST['ec_option_' . $optionset->option_id] ) );
-						}
-					}
-					
-					if( $optionset->option_type == "file" ){
-						//upload the file
-						$this->upload_customer_file( $tempcart_id, 'ec_option_' . $optionset->option_id );
-					}
+		}
+	}
+	
+	private function check_quantity( $product_id, $quantity ){
+		
+		global $wpdb;
+		$min_quantity = $wpdb->get_var( $wpdb->prepare( "SELECT ec_product.min_purchase_quantity FROM ec_product WHERE ec_product.product_id = %d", $product_id ) );
+		
+		if( $min_quantity > 0 ){
+			$current_amount = $quantity;
+			foreach( $this->cart->cart as $cartitem ){
+				if( $cartitem->product_id == $product_id ){
+					$current_amount = $current_amount + $cartitem->quantity;
 				}
 			}
 			
-			for( $i=0; $i<count( $option_vals ); $i++ ){
-				$this->mysqli->add_option_to_cart( $tempcart_id, $option_vals[$i] );
-			}
-			
-			if( $grid_quantity > 0 ){
-				$this->mysqli->update_tempcart_grid_quantity( $tempcart_id, $grid_quantity );
-			}
-			
-			if( get_option( 'ec_option_addtocart_return_to_product' ) ){
-				$return_url = $_SERVER['HTTP_REFERER'];
-				$return_url = str_replace( "ec_store_success=addtocart", "", $return_url );
-				$divider = "?";
-				if( substr_count( $return_url, '?' ) )
-					$divider = "&";
+			if( $min_quantity <= $current_amount ){
+				return true;
 				
-				
-				header( "location: " . $return_url . $divider . "ec_store_success=addtocart&model=" . $_POST['model_number'] );
 			}else{
-				header( "location: " . $this->cart_page );
+				return false;
+				
 			}
+		
+		
+		}else{
+			return true;
 		}
+		
 	}
 	
 	private function process_update_cartitem( $cartitem_id, $new_quantity ){
@@ -1800,6 +1834,8 @@ class ec_cartpage{
 	private function process_paymentexpress_thirdparty_response( ){
 		$gateway = new ec_paymentexpress_thirdparty( );
 		$gateway->update_order_status( );
+		$db = new ec_db( );
+		$db->clear_tempcart( session_id() );
 		header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $_GET['order_id'] );
 	}
 	

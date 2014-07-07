@@ -120,8 +120,15 @@ class ec_storepage{
 		}
 	}
 	
+	public function display_store_error(){
+		$error_notes = array( "minquantity" => $GLOBALS['language']->get_text( "ec_errors", "minquantity" ) 
+							);
+		echo "<div class=\"ec_cart_error\"><div>" . $error_notes[ $_GET['ec_store_error'] ] . "</div></div>";
+	}
+	
 	public function display_store_page( ){
 		if( isset( $_GET['ec_store_success'] ) )			$this->display_store_success( );
+		if( isset( $_GET['ec_store_error'] ) )				$this->display_store_error( );
 		if(	!$this->is_details )							$this->display_products_page( );
 		else												$this->display_product_details_page( );
 	}

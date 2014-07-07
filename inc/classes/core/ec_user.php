@@ -26,6 +26,9 @@ class ec_user{
 	
 	public $customfields = array();						// array of customfield objects
 	
+	public $taxfree;									// Boolean
+	public $freeshipping;								// Boolean
+	
 	function __construct( $email ){ 
 		
 		$this->mysqli = new ec_db();
@@ -65,12 +68,16 @@ class ec_user{
 			$this->stripe_customer_id = $user->stripe_customer_id;
 			$this->card_type = $user->default_card_type;
 			$this->last4 = $user->default_card_last4;
+			$this->taxfree = $user->exclude_tax;
+			$this->freeshipping = $user->exclude_shipping;
 		}else{
 			$this->user_level = "";
 			$this->is_subscriber = "";
 			$this->billing_id = "";
 			$this->shipping_id = "";
 			$this->stripe_customer_id = "";
+			$this->taxfree = false;
+			$this->freeshipping = false;
 		}
 		
 		if( isset( $_SESSION['ec_billing_first_name'] ) && $_SESSION['ec_billing_first_name'] != "" ){

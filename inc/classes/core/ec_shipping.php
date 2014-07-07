@@ -32,7 +32,9 @@ class ec_shipping{
 	
 	public $shipping_promotion_text;							// TEXT
 	
-	function __construct( $subtotal, $weight, $quantity = 1, $display_type = 'RADIO' ){
+	private $freeshipping;										// Boolean
+	
+	function __construct( $subtotal, $weight, $quantity = 1, $display_type = 'RADIO', $freeshipping = false ){
 		$this->mysqli = new ec_db();
 		$this->ec_setting = new ec_setting();
 		$this->shipping_method = $this->ec_setting->get_shipping_method( );
@@ -44,6 +46,8 @@ class ec_shipping{
 		
 		if( $this->shipping_method == 'live' )
 			$this->shipper = new ec_shipper( );
+			
+		$this->freeshipping = $freeshipping;
 		
 		if( get_option( 'ec_option_use_shipping' ) ){
 			$setting_row = $this->mysqli->get_settings( );
@@ -490,6 +494,10 @@ class ec_shipping{
 	}
 	
 	public function get_shipping_price( ){
+		if( $this->freeshipping ){
+			return "0.00";
+		}
+		
 		$rate = "ERROR";
 		if( $this->shipping_method == "price" ){
 			for( $i=0; $i<count( $this->price_based ); $i++ ){

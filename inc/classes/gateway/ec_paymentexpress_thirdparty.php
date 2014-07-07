@@ -89,6 +89,8 @@ class ec_paymentexpress_thirdparty extends ec_third_party{
 				
 				if( $xml->Success == '1' ){ 
 					
+					$this->clear_session( );
+					
 					// Fix for PXPay in which the script is called twice very quickly.
 					$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
 					
@@ -113,6 +115,42 @@ class ec_paymentexpress_thirdparty extends ec_third_party{
 		
 		}
 	
+	}
+	
+	private function clear_session( ){
+		unset( $_SESSION['ec_billing_first_name'] );
+		unset( $_SESSION['ec_billing_last_name'] );
+		unset( $_SESSION['ec_billing_address'] );
+		unset( $_SESSION['ec_billing_address2'] );
+		unset( $_SESSION['ec_billing_city'] );
+		unset( $_SESSION['ec_billing_state'] );
+		unset( $_SESSION['ec_billing_zip'] );
+		unset( $_SESSION['ec_billing_country'] );
+		unset( $_SESSION['ec_billing_phone'] );
+		
+		unset( $_SESSION['ec_shipping_first_name'] );
+		unset( $_SESSION['ec_shipping_last_name'] );
+		unset( $_SESSION['ec_shipping_address'] );
+		unset( $_SESSION['ec_shipping_address2'] );
+		unset( $_SESSION['ec_shipping_city'] );
+		unset( $_SESSION['ec_shipping_state'] );
+		unset( $_SESSION['ec_shipping_zip'] );
+		unset( $_SESSION['ec_shipping_country'] );
+		unset( $_SESSION['ec_shipping_phone'] );
+		
+		unset( $_SESSION['ec_use_shipping'] );
+		unset( $_SESSION['ec_shipping_method'] );
+		unset( $_SESSION['ec_expedited_shipping'] ); 
+		
+		if( isset( $_SESSION['ec_create_account'] ) ){
+			unset( $_SESSION['ec_first_name'] );
+			unset( $_SESSION['ec_last_name'] );
+		}
+		
+		unset( $_SESSION['ec_create_account'] );
+		unset( $_SESSION['ec_couponcode'] );
+		unset( $_SESSION['ec_giftcard'] );
+		unset( $_SESSION['ec_order_notes'] );
 	}
 	
 }

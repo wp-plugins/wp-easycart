@@ -1890,6 +1890,10 @@
 				"subscription_payment_failed_link":{
 					"title":"Cart, Subscription Payment Failed Link",
 					"value":"Klik om Billing bijwerken"
+				},
+				"minquantity":{
+					"title":"Store, Minimum Quantity Error",
+					"value":"Dit product vereist een minimale afname hoeveelheid."
 				}
 			}
 		},

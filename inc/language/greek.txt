@@ -1890,6 +1890,10 @@
 				"subscription_payment_failed_link":{
 					"title":"Cart, Subscription Payment Failed Link",
 					"value":"Κάντε κλικ για να ενημερώσετε χρεώσεων"
+				},
+				"minquantity":{
+					"title":"Store, Minimum Quantity Error",
+					"value":"Αυτό το προϊόν απαιτεί μια ελάχιστη ποσότητα αγοράς."
 				}
 			}
 		},
