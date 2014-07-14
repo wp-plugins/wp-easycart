@@ -409,9 +409,9 @@ class ec_admin_shipping
 									FROM
 									  ec_zone_to_location
 									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
+									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta AND ec_country.id_cnt = ec_state.idcnt_sta )
 									WHERE
-									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC");
+									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt, ec_state.name_sta ASC");
 			  // Run query on database
 			  $result = mysql_query($sql);
 			  //if results, convert to an array for use in flash
@@ -441,7 +441,7 @@ class ec_admin_shipping
 									FROM
 									  ec_zone_to_location
 									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
+									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta AND ec_country.id_cnt = ec_state.idcnt_sta)
 									WHERE
 									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC");
 				  // Run query on database
@@ -463,12 +463,18 @@ class ec_admin_shipping
 		}
 
 		function insertzonedetails($zone_id, $zonecountry, $zonestate) {
+			$statesql = $this->escape("SELECT ec_state.code_sta FROM ec_state WHERE ec_state.id_sta = '".$zonestate."' ");
+			$result = mysql_query($statesql);
+			$statecode = '';
+			while ($row=mysql_fetch_array($result)) {
+				$statecode = $row["code_sta"];
+			}
 			
 			$sql = sprintf("Insert into ec_zone_to_location(ec_zone_to_location.zone_to_location_id, ec_zone_to_location.zone_id, ec_zone_to_location.iso2_cnt, ec_zone_to_location.code_sta)
 					values(null, '%s', '%s', '%s')",
 					mysql_real_escape_string($zone_id),
 					mysql_real_escape_string($zonecountry),
-					mysql_real_escape_string($zonestate));
+					mysql_real_escape_string($statecode));
 
 			//Run query on database;
 			mysql_query($sql);
@@ -479,9 +485,9 @@ class ec_admin_shipping
 									FROM
 									  ec_zone_to_location
 									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
+									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta AND ec_country.id_cnt = ec_state.idcnt_sta)
 									WHERE
-									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC");
+									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt, ec_state.name_sta ASC");
 			  // Run query on database
 			  $result = mysql_query($sql);
 			  //if results, convert to an array for use in flash
