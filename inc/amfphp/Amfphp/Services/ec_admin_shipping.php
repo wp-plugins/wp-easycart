@@ -463,18 +463,11 @@ class ec_admin_shipping
 		}
 
 		function insertzonedetails($zone_id, $zonecountry, $zonestate) {
-			$statesql = $this->escape("SELECT ec_state.code_sta FROM ec_state WHERE ec_state.id_sta = '".$zonestate."' ");
-			$result = mysql_query($statesql);
-			$statecode = '';
-			while ($row=mysql_fetch_array($result)) {
-				$statecode = $row["code_sta"];
-			}
-			
 			$sql = sprintf("Insert into ec_zone_to_location(ec_zone_to_location.zone_to_location_id, ec_zone_to_location.zone_id, ec_zone_to_location.iso2_cnt, ec_zone_to_location.code_sta)
 					values(null, '%s', '%s', '%s')",
 					mysql_real_escape_string($zone_id),
 					mysql_real_escape_string($zonecountry),
-					mysql_real_escape_string($statecode));
+					mysql_real_escape_string($zonestate));
 
 			//Run query on database;
 			mysql_query($sql);
