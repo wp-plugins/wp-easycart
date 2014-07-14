@@ -734,7 +734,7 @@ class ec_admin_products
 					$stripe = new ec_stripe;
 					$response = $stripe->insert_plan($stripe_plan);
 					if ($response) {
-						$updatestripeboolean = sprintf("UPDATE ec_product SET ec_product.stripe_plan_added = '1' WHERE ec_product.product_id = '%s'", $product['product_id']);
+						$updatestripeboolean = sprintf("UPDATE ec_product SET ec_product.stripe_plan_added = '1' WHERE ec_product.product_id = '%s'", $productid);
 						mysql_query($updatestripeboolean);
 					}
 				}
@@ -886,7 +886,7 @@ class ec_admin_products
 				$stripe = new ec_stripe;
 				$response = $stripe->insert_plan($stripe_plan);
 				if ($response) {
-					$updatestripeboolean = sprintf("UPDATE ec_product SET ec_product.stripe_plan_added = '1' WHERE ec_product.product_id = '%s'", $product['product_id']);
+					$updatestripeboolean = sprintf("UPDATE ec_product SET ec_product.stripe_plan_added = '1' WHERE ec_product.product_id = '%s'", $newproductid);
 					mysql_query($updatestripeboolean);
 				}
 			}
