@@ -1004,27 +1004,27 @@ class ec_admin_products
 			  //determine image location and then update databse and remove images and thumbnails			
 			  if ($imagelocation == 1) {
 					//Create SQL Query
-					$sql = $this->escape("UPDATE ec_optionitemimage SET image1='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitemimage_id = '%s'", $productid, $optionitemid);
+					$sql = $this->escape("UPDATE ec_optionitemimage SET image1='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitem_id = '%s'", $productid, $optionitemid);
 					if (file_exists("../../../products/pics1/".$imagename)) unlink("../../../products/pics1/".$imagename);
 			  }
 			  if ($imagelocation == 2) {
 					//Create SQL Query
-					$sql = $this->escape("UPDATE ec_optionitemimage SET image2='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitemimage_id = '%s'", $productid, $optionitemid);
+					$sql = $this->escape("UPDATE ec_optionitemimage SET image2='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitem_id = '%s'", $productid, $optionitemid);
 					if (file_exists("../../../products/pics2/".$imagename)) unlink("../../../products/pics2/".$imagename);
 			  }
 			  if ($imagelocation == 3) {
 					//Create SQL Query
-					$sql = $this->escape("UPDATE ec_optionitemimage SET image3='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitemimage_id = '%s'", $productid, $optionitemid);
+					$sql = $this->escape("UPDATE ec_optionitemimage SET image3='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitem_id = '%s'", $productid, $optionitemid);
 					if (file_exists("../../../products/pics3/".$imagename)) unlink("../../../products/pics3/".$imagename);
 			  }
 			  if ($imagelocation == 4) {
 					//Create SQL Query
-					$sql = $this->escape("UPDATE ec_optionitemimage SET image4='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitemimage_id = '%s'", $productid, $optionitemid);
+					$sql = $this->escape("UPDATE ec_optionitemimage SET image4='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitem_id = '%s'", $productid, $optionitemid);
 					if (file_exists("../../../products/pics4/".$imagename)) unlink("../../../products/pics4/".$imagename);
 			  }
 			  if ($imagelocation == 5) {
 					//Create SQL Query
-					$sql = $this->escape("UPDATE ec_optionitemimage SET image5='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitemimage_id = '%s'", $productid, $optionitemid);
+					$sql = $this->escape("UPDATE ec_optionitemimage SET image5='' WHERE ec_optionitemimage.product_id = '%s' AND ec_optionitemimage.optionitem_id = '%s'", $productid, $optionitemid);
 					if (file_exists("../../../products/pics5/".$imagename)) unlink("../../../products/pics5/".$imagename);
 			  }
 
