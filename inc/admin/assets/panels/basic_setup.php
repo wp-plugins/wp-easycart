@@ -45,7 +45,7 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_selected_pages" )
 <?php }?> 
 
 <div class="ec_admin_page_title">BASIC SETUP</div>
-<div class="ec_adin_page_intro">Welcome to the WP EasyCart. To begin the setup of your plugin, please start by selecting the page you are uing for your store, account, and cart. If you need to create a page, click the "create page" button. You need to also add the [ec_store], [ec_account], and [ec_cart] shortcodes to each page. Do this automatically by clicking the "Add Shortcode" link once you have selected the correct page.</div>
+<div class="ec_adin_page_intro">Welcome to the WP EasyCart. To begin the setup of your plugin, please start by selecting the page you are using for your store, account, and cart. If you need to create a page, click the "create page" button. You need to also add the [ec_store], [ec_account], and [ec_cart] shortcodes to each page. Do this automatically by clicking the "Add Shortcode" link once you have selected the correct page.</div>
 
 <form action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-setup&ec_action=save_selected_pages" method="POST">
 <div class="ec_setup_row">

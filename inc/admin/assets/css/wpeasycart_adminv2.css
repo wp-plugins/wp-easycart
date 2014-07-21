@@ -398,6 +398,73 @@
 	float:left; width:424px; margin-left:25px; border:1px solid #CCC;
 }
 
+
+
+.ec_statistics_section_title{
+	float: left;
+	width: 875px;
+	border: 1px solid #CCC;
+	margin-bottom: 2px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #333;
+}
+
+.ec_statistics_section_title_padding{
+	padding:15px;
+}
+
+
+
+/**************************************
+/* STORE STATUS button sections
+/**************************************/
+.ec_stats_section {
+	float:inherit;
+	width: 875px;
+	height: 175px;
+	border: 1px solid #CCC;	
+	margin-bottom: 20px;
+	margin-top: 5px;
+}
+.ec_stats_heading {
+	padding-top: 10px;
+	padding-left: 10px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #390;
+	float: left;
+	height: 28px;
+	width: 100%;	
+}
+.ec_stats_button_container {
+	display: inline;
+}
+.ec_stats_button {
+	float: left;
+	padding: 10px;
+	height: 175px;
+	width: 145px;	
+}
+.ec_stats_button img{
+	padding-top: 25px;
+	padding-left: 8px;
+}
+.ec_stats_button_img{
+	text-align: center;
+	height: 90px;
+	width: 100%;
+	background-image: url(../images/dashboard_buttons/button_bg.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.ec_stats_button_label {
+	font-size: 14px;
+	font-weight: normal;
+	color: #333;
+	text-align: center;	
+}
+
 /**************************************
 /* STORE STATUS CSS
 /**************************************/

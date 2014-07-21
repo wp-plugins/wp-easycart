@@ -78,26 +78,27 @@ $last_orders = $db->get_last_ten_orders( );
 
 $highest_point = $high_point + $split;
 ?>
+
 <div class="ec_statistics_row">
-<div class="ec_statistics_quad1">
-	<div class="ec_statistics_tab_holder">
-    	<div class="ec_statistcs_tab<?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=days">Days</a></div>
-    	<div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=weeks">Weeks</a></div>
-    	<div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=months">Months</a></div>
-    	<div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=years">Years</a></div>
+  <div class="ec_statistics_quad1">
+    <div class="ec_statistics_tab_holder">
+      <div class="ec_statistcs_tab<?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=days">Days</a></div>
+      <div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=weeks">Weeks</a></div>
+      <div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=months">Months</a></div>
+      <div class="ec_statistcs_tab<?php if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ echo "_selected"; } ?>"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=statistics&ec_stat=years">Years</a></div>
     </div>
     <div class="ec_statistics_holder">
-    	<div class="ec_statistics_scale">
-        	<div class="ec_statistics_scale_item_top"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
-        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
-        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
-        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
-        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
-        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
-        	<div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( 0 ); ?></div>
-        </div>
-        <div class="ec_statistics_content">
-        	<?php 
+      <div class="ec_statistics_scale">
+        <div class="ec_statistics_scale_item_top"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        <div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        <div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        <div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        <div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        <div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( $next_point ); $next_point = $next_point - $split; ?></div>
+        <div class="ec_statistics_scale_item"><?php echo $GLOBALS['currency']->get_currency_display( 0 ); ?></div>
+      </div>
+      <div class="ec_statistics_content">
+        <?php 
 			$last_total = 0;
 			if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){
 				$last_used_order_index = 0;
@@ -135,8 +136,8 @@ $highest_point = $high_point + $split;
 					else
 						$percent_height = 0;
 				?>
-				<div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
-            <?php 
+        <div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
+        <?php 
 				}
 				$current_day_number = date( 'd' ); 
 				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_day != $current_day_number )
@@ -157,8 +158,8 @@ $highest_point = $high_point + $split;
 					else
 						$percent_height = 0;
 				?>
-				<div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
-            <?php 
+        <div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
+        <?php 
 				}
 				$current_week_number = date( 'W', strtotime( '-1 weeks' ) ); 
 				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_week != $current_week_number )
@@ -180,8 +181,8 @@ $highest_point = $high_point + $split;
 					else
 						$percent_height = 0;
 				?>
-				<div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
-            <?php 
+        <div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
+        <?php 
 				}
 				$current_month_number = date( 'n' ); 
 				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_month != $current_month_number )
@@ -203,63 +204,193 @@ $highest_point = $high_point + $split;
 					else
 						$percent_height = 0;
 				?>
-				<div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
-            <?php 
+        <div class="ec_statistics_bar_item" style="margin-top:<?php echo ( 210 * ( 1 - $percent_height ) ); ?>px; height:<?php echo ( 210 * $percent_height ); ?>px;"></div>
+        <?php 
 				}
 				$current_year_number = date( 'Y' ); 
 				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_year != $current_year_number )
 					$last_total = 0;
 			}?>
-        </div>
-        <div class="ec_statistics_dates">
-        	<?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ ?>
-			<div class="ec_statistics_date_first_item"><?php echo date( 'M d', strtotime( '-10 days' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-8 days' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-6 days' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-4 days' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-2 days' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-0 days' ) ); ?></div>
-            <?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ ?>
-			<div class="ec_statistics_date_first_item"><?php echo date( 'M d', strtotime( '-10 weeks' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-8 weeks' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-6 weeks' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-4 weeks' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-2 weeks' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-0 weeks' ) ); ?></div>
-			<?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ ?>
-			<div class="ec_statistics_date_first_item"><?php echo date( 'M, Y', strtotime( '-10 months' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-8 months' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-6 months' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-4 months' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-2 months' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-0 months' ) ); ?></div>
-			<?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ ?>
-			<div class="ec_statistics_date_first_item"><?php echo date( 'Y', strtotime( '-10 years' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-8 years' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-6 years' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-4 years' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-2 years' ) ); ?></div>
-        	<div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-0 years' ) ); ?></div>
-			<?php }?>
-        </div>
-        <div class="ec_statistics_todate_label"><?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ echo "Today"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ echo "This Week"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ echo "This Month"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ echo "This Year"; } ?></div>
-        <div class="ec_statistics_todate_value"><?php echo $GLOBALS['currency']->get_currency_display( $last_total ); ?></div>
-        <div class="ec_statistics_todate_label2">Sales</div>
+      </div>
+      <div class="ec_statistics_dates">
+        <?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ ?>
+        <div class="ec_statistics_date_first_item"><?php echo date( 'M d', strtotime( '-10 days' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-8 days' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-6 days' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-4 days' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-2 days' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-0 days' ) ); ?></div>
+        <?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ ?>
+        <div class="ec_statistics_date_first_item"><?php echo date( 'M d', strtotime( '-10 weeks' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-8 weeks' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-6 weeks' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-4 weeks' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-2 weeks' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M d', strtotime( '-0 weeks' ) ); ?></div>
+        <?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ ?>
+        <div class="ec_statistics_date_first_item"><?php echo date( 'M, Y', strtotime( '-10 months' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-8 months' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-6 months' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-4 months' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-2 months' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'M, Y', strtotime( '-0 months' ) ); ?></div>
+        <?php }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ ?>
+        <div class="ec_statistics_date_first_item"><?php echo date( 'Y', strtotime( '-10 years' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-8 years' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-6 years' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-4 years' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-2 years' ) ); ?></div>
+        <div class="ec_statistics_date_item"><?php echo date( 'Y', strtotime( '-0 years' ) ); ?></div>
+        <?php }?>
+      </div>
+      <div class="ec_statistics_todate_label">
+        <?php if( !isset( $_GET['ec_stat'] ) || ( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "days" ) ){ echo "Today"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){ echo "This Week"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "months" ){ echo "This Month"; }else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "years" ){ echo "This Year"; } ?>
+      </div>
+      <div class="ec_statistics_todate_value"><?php echo $GLOBALS['currency']->get_currency_display( $last_total ); ?></div>
+      <div class="ec_statistics_todate_label2">Sales</div>
     </div>
+  </div>
+</div>
+
+
+
+<div class="ec_statistics_section_title">
+<div class="ec_statistics_section_title_padding">
+<a href="#" onclick="ec_show_stats_section( 'ec_statistics_more' ); return false;" id="ec_statistics_more_expand" class="ec_payment_expand_button"></a>
+<a href="#" onclick="ec_hide_stats_section( 'ec_statistics_more' ); return false;" id="ec_statistics_more_contract" class="ec_payment_contract_button"></a>Show More Statistics
 </div>
 </div>
-<div class="ec_statistics_row">
-<div class="ec_statistics_quad2">
-    <div class="ec_statistics_title_bar"><div class="ec_statistics_holder_square">Top 10 Viewed Products</div></div>
-    <?php for( $i=0; $i<count( $top_products ); $i++ ){ ?>
-    <div class="ec_statistics_lineitem<?php echo $i%2; ?>"><div class="ec_statistics_holder_square"><span class="ec_statistics_lineitem_label"><?php echo $top_products[$i]->title; ?></span><span class="ec_statistics_lineitem_value"><?php echo $top_products[$i]->views; ?> views</span></div></div>
-    <?php }?>
-</div>
-<div class="ec_statistics_quad3">
-    <div class="ec_statistics_title_bar"><div class="ec_statistics_holder_square">Last 10 Orders</div></div>
-    <?php for( $i=0; $i<count( $last_orders ); $i++ ){ ?>
-    <div class="ec_statistics_lineitem<?php echo $i%2; ?>"><div class="ec_statistics_holder_square"><span class="ec_statistics_lineitem_label"><?php echo $last_orders[$i]->billing_first_name . " " . $last_orders[$i]->billing_last_name; ?></span><span class="ec_statistics_lineitem_value"><?php echo $GLOBALS['currency']->get_currency_display( $last_orders[$i]->grand_total ); ?></span></div></div>
-    <?php }?>
-</div>
-</div>
+
+
+    <div class="ec_statistics_row" id="ec_statistics_more">
+        <div class="ec_statistics_quad2">
+            <div class="ec_statistics_title_bar"><div class="ec_statistics_holder_square">Top 10 Viewed Products</div></div>
+            <?php for( $i=0; $i<count( $top_products ); $i++ ){ ?>
+            <div class="ec_statistics_lineitem<?php echo $i%2; ?>"><div class="ec_statistics_holder_square"><span class="ec_statistics_lineitem_label"><?php echo $top_products[$i]->title; ?></span><span class="ec_statistics_lineitem_value"><?php echo $top_products[$i]->views; ?> views</span></div></div>
+            <?php }?>
+        </div>
+        <div class="ec_statistics_quad3">
+            <div class="ec_statistics_title_bar"><div class="ec_statistics_holder_square">Last 10 Orders</div></div>
+            <?php for( $i=0; $i<count( $last_orders ); $i++ ){ ?>
+            <div class="ec_statistics_lineitem<?php echo $i%2; ?>"><div class="ec_statistics_holder_square"><span class="ec_statistics_lineitem_label"><?php echo $last_orders[$i]->billing_first_name . " " . $last_orders[$i]->billing_last_name; ?></span><span class="ec_statistics_lineitem_value"><?php echo $GLOBALS['currency']->get_currency_display( $last_orders[$i]->grand_total ); ?></span></div></div>
+            <?php }?>
+        </div>
+    </div>
+
+
+
+
+
+  <div class="ec_stats_section">
+    <div class="ec_stats_heading">Setup</div>
+    <div class="ec_stats_button_container">
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-setup">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/setup.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Basic Setup</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-settings"> 
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/settings.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Basic Settings</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-setup">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/advancedsettings.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Advanced Settings</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=payment-settings">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/payment.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Payment Setup</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-language">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/language.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Language Editor</div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+   <div class="ec_stats_section">
+    <div class="ec_stats_heading">Design</div>
+    <div class="ec_stats_button_container">
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=colorize-easycart">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/colorize.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Colorize</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-setup"> 
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/advancedesign.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Advanced Design</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/designfiles.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Design Files</div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+   <div class="ec_stats_section">
+    <div class="ec_stats_heading">Management</div>
+    <div class="ec_stats_button_container">
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/storeadmin.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Store Admin</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=store-status"> 
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/status.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Store Status</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=backup-store">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/backup.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Store Backup</div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+   <div class="ec_stats_section">
+    <div class="ec_stats_heading">Support</div>
+    <div class="ec_stats_button_container">
+      <div class="ec_stats_button"><a href="http://www.wpeasycart.com/forums" target="_blank">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/forums.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Online Forums</div>
+      </div>
+      <div class="ec_stats_button"><a href="http://www.wpeasycart.com/video-tutorials" target="_blank"> 
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/video.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Video Tutorials</div>
+      </div>
+      <div class="ec_stats_button"><a href="http://www.wpeasycart.com/docs" target="_blank">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/onlinedocs.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Online Docs</div>
+      </div>
+      <div class="ec_stats_button"><a href="http://www.wpeasycart.com/support-ticket/" target="_blank">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/ticket.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Support Ticket</div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+
 <div style="clear:both;"></div>
+
+<script>
+function ec_show_stats_section( section ){
+	jQuery( '#' + section ).slideDown( "slow" );
+	jQuery( '#' + section + "_expand" ).hide( );
+	jQuery( '#' + section + "_contract" ).show( );
+}
+
+function ec_hide_stats_section( section ){
+	jQuery( '#' + section ).slideUp( "slow" );
+	jQuery( '#' + section + "_expand" ).show( );
+	jQuery( '#' + section + "_contract" ).hide( );
+}
+
+jQuery( '#' + "ec_statistics_more" ).slideUp( 0);
+jQuery( '#' + "ec_statistics_more_expand" ).show( );
+jQuery( '#' + "ec_statistics_more_contract" ).hide( );
+
+</script>
