@@ -15,8 +15,6 @@ $ec_license = new ec_license( );
 		}else{
 			// Hide this section
 		}
-	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "online-demos" ){
-		//include( "assets/menus/leftmenu_online_demos.php" );
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "help-support" ){
 		//include( "assets/menus/leftmenu_help.php" );
 	}else{
@@ -27,8 +25,6 @@ $ec_license = new ec_license( );
     <?php 
 	if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "admin" ){
 		include( "assets/panels/admin_console.php" );
-	} else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "demos" ){
-		include( "assets/panels/demos.php" );
 	} else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "support" ){
 		include( "assets/panels/support.php" );
 	} else { ?>

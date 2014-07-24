@@ -115,12 +115,19 @@
 } 
 .ec_admin_mainmenu{
 	float:left;
-	width:1170px; height:48px;
+	width:1230px; height:48px;
 	background-color:#7bb141;
 	color:#FFF;
-	background-image:url(../images/wp-easycart-logo.png); background-repeat:no-repeat; padding-left:60px;
-	background-position:10px 5px;
 	margin-left:-20px;
+}
+
+.ec_easycart_logo{
+	background-image:url(../images/wp-easycart-logo.png); background-repeat:no-repeat; 
+	padding-left:48px;
+	position:relative;
+	top:-8px;
+	height:48px;
+	float:left;
 }
 
 .ec_admin_mainmenu_inner{

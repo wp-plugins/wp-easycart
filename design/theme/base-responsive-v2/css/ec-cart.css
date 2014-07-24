@@ -266,12 +266,6 @@ ul.ec_cart_error >li > strong{ color:#900; }
 .ec_success_create_password_button input[type="submit"]:hover{ cursor:pointer; color:[main_color] !important; background-color:#f7f7f7 !important; }
 
 /* Responsive CSS */
-@media print{ 
-	body *{ visibility:hidden; } 
-	#printable, #printable *{ visibility:visible; } 
-	#printable{ position:absolute; left:0; top:0; } 
-}
-
 @media only screen and ( min-width:[size_level5_low]px ){
 
 }

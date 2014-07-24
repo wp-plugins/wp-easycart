@@ -98,12 +98,17 @@ class ec_cartpage{
 		$this->order = new ec_order( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->payment );
 		
 		$store_page_id = get_option('ec_option_storepage');
-		$this->store_page = get_permalink( $store_page_id );
-		
 		$cart_page_id = get_option('ec_option_cartpage');
-		$this->cart_page = get_permalink( $cart_page_id );
-		
 		$account_page_id = get_option('ec_option_accountpage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$store_page_id = icl_object_id( $store_page_id, 'page', true, ICL_LANGUAGE_CODE );
+			$cart_page_id = icl_object_id( $cart_page_id, 'page', true, ICL_LANGUAGE_CODE );
+			$account_page_id = icl_object_id( $account_page_id, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
+		$this->store_page = get_permalink( $store_page_id );
+		$this->cart_page = get_permalink( $cart_page_id );
 		$this->account_page = get_permalink( $account_page_id );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

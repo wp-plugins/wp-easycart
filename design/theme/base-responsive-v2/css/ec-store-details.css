@@ -183,42 +183,49 @@
 .ec_gift_card_from_name_error{ width:250px; background-color:#FF9D9D !important; border:2px solid #900 !important; }
 
 /* Price Tiers */
-#ec_pricepointwidget-2{ margin-top:30px; background:#cccccc; }
 .et_lb_widget-title{ font-size:16px; color:#000000; }
 
 /* Description Short Codes */
-.ecrow_11{ float:left; width:100%; }
-.ecrow_12{ float:left; width:45.5%; }
-.ecrow_13{ float:left; width:28.5%; }
-.ecrow_23{ float:left; width:61.5%; }
-.ecrow_14{ float:left; width:20.5%; }
-.ecrow_34{ float:left; width:70.5%; }
-.ecrow_15{ float:left; width:15.5%; }
-.ecrow_12_after{ float:left; width:45.5%; margin-left:4.6%; }
-.ecrow_13_after{ float:left; width:28.5%; margin-left:4.6%; }
-.ecrow_23_after{ float:left; width:61.5%; margin-left:4.6%; }
-.ecrow_14_after{ float:left; width:20.5%; margin-left:4.6%; }
-.ecrow_34_after{ float:left; width:70.5%; margin-left:4.6%; }
-.ecrow_15_after{ float:left; width:15.5%; margin-left:4.6%; }
+.ecrow_11{ float:left; width:100%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_12{ float:left; width:47.7%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_13{ float:left; width:30.2%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_23{ float:left; width:65.2%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_14{ float:left; width:21.5%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_34{ float:left; width:73.7%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_15{ float:left; width:16.3%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_25{ float:left; width:37.2%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_35{ float:left; width:58.1%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_45{ float:left; width:79.0%; margin-top:20px; margin-bottom:10px; clear:left; }
+.ecrow_12.after{ float:left; width:47.7%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
+.ecrow_13.after{ float:left; width:30.2%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
+.ecrow_23.after{ float:left; width:65.2%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
+.ecrow_14.after{ float:left; width:21.5%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
+.ecrow_34.after{ float:left; width:73.7%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
+.ecrow_15.after{ float:left; width:16.3%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
+.ecrow_25.after{ float:left; width:37.2%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
+.ecrow_35.after{ float:left; width:58.1%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
+.ecrow_45.after{ float:left; width:79.0%; margin-left:4.6%; margin-top:20px; margin-bottom:10px; clear:none; }
 .ec_row_padding{ padding-top:30px; }
 .ec_special_divider{ float:left; width:100%; margin-top:15px; }
 .ec_special_heading{ float:left; width:100%; font-size:22px; font-family:[title_font]; color:[main_color]; }
 
-.ec_special_icon{ background-color:[main_color]; color:#FFF; float:left; padding:15px; border-radius:100px; -webkit-box-sizing:content-box; -moz-box-sizing:content-box; box-sizing:content-box; font-size:20px; line-height:24px; margin-bottom:10px; margin-right:10px; }
-.ec_special_iconbox{ float:left; height:auto; text-align:left; padding:15px; background-color:#FFF; border:1px solid #333; }
-.ec_special_iconbox > h3{ float:left; font-size:24px; margin-top:13px; margin-left:15px; font-family:[title_font]; }
-.ec_special_iconbox > span{ float:left; width:100%; font-size:12px; font-family:[title_font]; }
+.ec_special_icon{ background-color:[main_color]; color:#FFF; float:left; padding:15px; border-radius:100px; -webkit-box-sizing:content-box; -moz-box-sizing:content-box; box-sizing:content-box; font-size:20px; line-height:24px; margin-bottom:10px; margin-right:18px; }
+.ec_special_icon a{ color:#FFF !important; }
+.ec_special_iconbox_left{ float:left; height:auto; text-align:left; padding:15px; background-color:#FFF; border:1px solid #333; width:100%; }
+.ec_special_iconbox_left > .ec_special_iconlist_content > h3{ float:none; font-size:24px; font-family:[title_font]; }
+.ec_special_iconbox_left > .ec_special_iconlist_content > span{ float:left; width:100%; font-size:12px; font-family:[title_font]; }
 
-.ec_special_icon_center{ background-color:[main_color]; color:#FFF; float:none; left:50%; top:-26px; padding:15px; border-radius:100px; -webkit-box-sizing:content-box; -moz-box-sizing:content-box; box-sizing:content-box; font-size:20px; line-height:24px; margin-bottom:10px; margin-top:-30px; }
-.ec_special_iconbox_center{ float:left; height:auto; text-align:center; padding:15px; background-color:#FFF; border:1px solid #333; }
-.ec_special_iconbox_center > h3{ float:left; width:100%; font-size:18px; font-family:[title_font]; }
-.ec_special_iconbox_center > span{ float:left; width:100%; font-size:12px; font-family:[title_font]; }
+.ec_special_iconbox_top{ float:left; position:relative; height:auto; padding:15px; background-color:#FFF; border:1px solid #333; width:100%; margin-top:15px; }
+.ec_special_iconbox_top > .ec_special_icon{ float:none; position:absolute; left:50%; top:-26px; margin:0 0 0 -26px; padding:15px; border-radius:100px; -webkit-box-sizing:content-box; -moz-box-sizing:content-box; box-sizing:content-box; font-size:20px; line-height:24px; margin-bottom:10px; margin-right:10px;}
+.ec_special_iconbox_top > .ec_special_iconlist_content > h3{ float:left; width:100%; text-align:center; padding-top:18px; font-size:18px; font-family:[title_font]; }
+.ec_special_iconbox_top > .ec_special_iconlist_content > span{ float:left; width:100%; font-size:12px; font-family:[title_font]; }
 
 .ec_special_icon_list{ background-color:[main_color]; color:#FFF; float:left; padding:15px; border-radius:100px; -webkit-box-sizing:content-box; -moz-box-sizing:content-box; box-sizing:content-box; font-size:20px; line-height:24px; margin-bottom:10px; margin-right:10px; }
 .ec_special_iconlist{ float:left; height:auto; text-align:center; padding:15px; background-color:#FFF; }
 .ec_special_iconlist_item{ float:left; height:auto; text-align:center; padding:15px; background-color:#FFF; }
+.ec_special_icon_list > a{ color:#FFF !important; text-decoration:none; }
 .ec_special_iconlist_item > .ec_special_iconlist_content{ margin-left:65px; }
-.ec_special_iconlist_item > .ec_special_iconlist_content > h3{ float:left; font-size:24px; margin-left:10px; font-family:[title_font]; }
+.ec_special_iconlist_item > .ec_special_iconlist_content > h3{ float:left; width:100%; text-align:left; font-size:24px; margin-left:10px; font-family:[title_font]; }
 .ec_special_iconlist_item > .ec_special_iconlist_content > span{ float:left; font-size:12px; font-family:[title_font]; margin-left:10px; text-align:left; }
 
 .ec_special_video{ clear:both; position:relative; margin-bottom:20px; }

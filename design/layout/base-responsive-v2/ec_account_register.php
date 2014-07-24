@@ -43,6 +43,15 @@
 	if( get_option( 'ec_option_require_account_address' ) ){ ?>
      <div class="ec_account_billing_information_title"><?php echo $GLOBALS['language']->get_text( 'account_billing_information', 'account_billing_information_title' )?></div>
      
+    <?php if( get_option( 'ec_option_display_country_top' ) ){ ?>
+    <div class="ec_account_billing_information_row" id="ec_account_billing_information_country_row">
+      <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'account_billing_information', 'account_billing_information_country' )?></div>
+      <div class="ec_account_billing_information_input">
+        <?php $this->display_account_billing_information_country_input(); ?>
+      </div>
+    </div>
+    <?php }?> 
+     
     <div class="ec_account_billing_information_row" id="ec_account_billing_information_first_name_row">
       <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'account_billing_information', 'account_billing_information_first_name' )?></div>
       <div class="ec_account_billing_information_input">
@@ -61,6 +70,14 @@
         <?php $this->display_account_billing_information_address_input(); ?>
       </div>
     </div>
+    <?php if( get_option( 'ec_option_use_address2' ) ){ ?>
+    <div class="ec_account_billing_information_row" id="ec_account_billing_information_address_row2">
+      <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'account_billing_information', 'account_billing_information_address2' )?></div>
+      <div class="ec_account_billing_information_input">
+        <?php $this->display_account_billing_information_address2_input(); ?>
+      </div>
+    </div>
+    <?php }?>
     <div class="ec_account_billing_information_row" id="ec_account_billing_information_city_row">
       <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'account_billing_information', 'account_billing_information_city' )?></div>
       <div class="ec_account_billing_information_input">
@@ -79,19 +96,22 @@
         <?php $this->display_account_billing_information_zip_input(); ?>
       </div>
     </div>
+    <?php if( !get_option( 'ec_option_display_country_top' ) ){ ?>
     <div class="ec_account_billing_information_row" id="ec_account_billing_information_country_row">
       <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'account_billing_information', 'account_billing_information_country' )?></div>
       <div class="ec_account_billing_information_input">
         <?php $this->display_account_billing_information_country_input(); ?>
       </div>
     </div>
+    <?php }?>
+    <?php if( get_option( 'ec_option_collect_user_phone' ) ){ ?>
     <div class="ec_account_billing_information_row" id="ec_account_billing_information_phone_row">
       <div class="ec_account_billing_information_label"><?php echo $GLOBALS['language']->get_text( 'account_billing_information', 'account_billing_information_phone' )?></div>
       <div class="ec_account_billing_information_input">
         <?php $this->display_account_billing_information_phone_input(); ?>
       </div>
     </div>
-    
+    <?php }?>
 	<?php }?>
     
     <div class="ec_account_register_row">

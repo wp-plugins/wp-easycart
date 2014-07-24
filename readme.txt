@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
-Tested up to: 3.9
-Stable tag: 2.1.24
+Tested up to: 3.9.1
+Stable tag: 2.1.25
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -116,7 +116,17 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 4. Complete administrative software for desktops and mobile devices!
 
 == Changelog ==
-NOTE: ALWAYS BACKUP THE products, design, and connection FOLDERS IN YOUR PLUGIN.
+NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 2.1.25 =
+* New Feature - We now offer an advanced description editor! Add icons, icon boxes, videos, links, images, and more to your product descriptions and specifications! All done with a new drag and drop management tool.
+* Addition - Add a shopping cart to the end of any menu.
+* Addition - Tested and fully integrated with WPML. Documentation and certification soon to come.
+* Improvement - New dashboard view on the main WordPress page.
+* Improvement - Back up the store features enhanced and descriptions on how to revert to a store added.
+* Improvement - If you update your design files, you will now see a notice when new design files are posted.
+* Fix - Country position, address line 2, and optional phone are now reflected in the account.
+* Fix - Promotions with a price limit for use now work with percentage off.
+* Fix - Excel Downloads now function correctly.
 = 2.1.24 =
 * Addition - Minimum quantity required for purchase.
 * Addition - Exclude tax for a specific user.

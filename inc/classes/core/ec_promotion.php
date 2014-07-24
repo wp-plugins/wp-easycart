@@ -35,10 +35,8 @@ class ec_promotion{
 						}
 					// Discount cart by percentage 1
 					}else if( $this->promotions[$i]->percentage1 != 0 ){
-						if( ( $cart->subtotal * $this->promotions[$i]->percentage1 / 100 ) > $cart_discount_total ){
-							$cart_discount_total = ( $cart->subtotal * $this->promotions[$i]->percentage1 / 100 );
-							$total_promotion_text = $this->promotions[$i]->promotion_name;
-						}
+						$cart_discount_total = ( $subtotal * $this->promotions[$i]->percentage1 / 100 );
+						$total_promotion_text = $this->promotions[$i]->promotion_name;
 					}
 				}
 			}

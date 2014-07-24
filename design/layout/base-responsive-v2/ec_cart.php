@@ -29,8 +29,11 @@ if( $this->should_display_cart( ) ){
   <?php if( $this->has_cart_total_promotion( ) ){ ?><div class="ec_cart_success"><div><?php echo $this->display_cart_total_promotion( ); ?></div></div><?php }?>
   <?php if( $this->has_cart_shipping_promotion( ) ){ ?><div class="ec_cart_success"><div><?php echo $this->display_cart_shipping_promotion( ); ?></div></div><?php }?>
   <div class="ec_cart_lower_left">
+    <?php if( get_option( 'ec_option_show_coupons' ) || get_option( 'ec_option_show_giftcards' ) ){ ?>
     <div class="ec_cart_lower_left_title"><?php echo $GLOBALS['language']->get_text( 'cart_coupons', 'cart_coupon_title' )?></div>
     <div class="ec_cart_lower_left_subtitle"><?php echo $GLOBALS['language']->get_text( 'cart_coupons', 'cart_coupon_sub_title' )?></div>
+    <?php }?>
+    <?php if( get_option( 'ec_option_show_giftcards' ) ){ ?>
     <div class="ec_cart_gift_card_row">
       <?php $this->display_gift_card_input( $GLOBALS['language']->get_text( 'cart_coupons', 'cart_redeem_gift_card' ) ); ?>
       <?php $this->display_gift_card_loader(); ?>
@@ -38,6 +41,8 @@ if( $this->should_display_cart( ) ){
     <div class="ec_cart_gift_card_row_message" id="ec_cart_gift_card_row_message">
       <?php $this->display_gift_card_message( ); ?>
     </div>
+    <?php }?>
+    <?php if( get_option( 'ec_option_show_coupons' ) ){ ?>
     <div class="ec_cart_coupon_row">
       <?php $this->display_coupon_input( $GLOBALS['language']->get_text( 'cart_coupons', 'cart_apply_coupon' ) ); ?>
       <?php $this->display_coupon_loader(); ?>
@@ -45,6 +50,7 @@ if( $this->should_display_cart( ) ){
     <div class="ec_cart_coupon_row_message" id="ec_cart_coupon_row_message">
       <?php $this->display_coupon_message( ); ?>
     </div>
+    <?php }?>
     <?php if( $this->is_cart_type_three( ) ){ ?>
     <?php if( get_option( 'ec_option_use_shipping' ) ){?>
     <div class="ec_cart_lower_left_title"><?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_title' )?></div>

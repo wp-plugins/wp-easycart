@@ -155,10 +155,6 @@
 					"title":"Specifications Title",
 					"value":"Specifications"
 				},
-				"product_details_featured_items":{
-					"title":"Featured Items Title",
-					"value":"Featured Items"
-				},
 				"product_details_customer_rating":{
 					"title":"Customer Rating",
 					"value":"Overall Customer Rating"
@@ -292,6 +288,14 @@
 				"cart_item_new_price_option":{
 					"title":"Cart Item, Price Override Text",
 					"value":"New Unit Price: "
+				},
+				"cart_menu_icon_label":{
+					"title":"Cart in Menu, Item",
+					"value":"Item"
+				},
+				"cart_menu_icon_label_plural":{
+					"title":"Cart in Menu, Items",
+					"value":"Items"
 				}
 			}
 		},

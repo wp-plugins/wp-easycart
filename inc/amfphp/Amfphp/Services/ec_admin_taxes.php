@@ -17,218 +17,119 @@
 */
 
 
-class ec_admin_taxes
-	{		
+class ec_admin_taxes{		
 	
-		function ec_admin_taxes() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
-		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
-			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);
+	private $db;
 
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);	
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 
+	function ec_admin_taxes() {
+		
+		global $wpdb;
+		$this->db = $wpdb;
 
-		}	
-		
-		
-		//secure all of the services for logged in authenticated users only	
-		public function _getMethodRoles($methodName){
-		   if ($methodName == 'gettaxes') return array('admin');
-		   else if($methodName == 'savetax') return array('admin');
-		   else if($methodName == 'deletetax') return array('admin');
-		   else  return null;
-		}	
-		
-		//HELPER - used to escape out SQL calls
-		function escape($sql) 
-		{ 
-			  $args = func_get_args(); 
-				foreach($args as $key => $val) 
-				{ 
-					$args[$key] = mysql_real_escape_string($val); 
-				} 
-				 
-				$args[0] = $sql; 
-				return call_user_func_array('sprintf', $args); 
-		} 
-		
+	}
+	
+	public function _getMethodRoles($methodName){
+	   if ($methodName == 'gettaxes') return array('admin');
+	   else if($methodName == 'savetax') return array('admin');
+	   else if($methodName == 'deletetax') return array('admin');
+	   else  return null;
+	}
 
-
-		//tax functions
-		function gettaxes() {
-			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_taxrate.* FROM ec_taxrate");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
-			  
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+	function gettaxes() {
+		
+		$sql = "SELECT SQL_CALC_FOUND_ROWS ec_taxrate.* FROM ec_taxrate";
+		$results = $this->db->get_results( $sql );
+		$totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
+		
+		if( $totalrows > 0 ){
+			$totalrows = array( "FOUND_ROWS( )" => $totalrows );
+			foreach( $results as $row ){
+				$row->totalrows = $totalrows;
+				$returnArray[] = $row;
+			}
+			return $returnArray;
+		}else{
+			return array( "noresults" );
 		}
-		function savetax($taxrates) {
-			//convert object to array 
-			  $taxrates = (array)$taxrates;
-			  
-			  //country tax
-			  if($taxrates['taxcountryenable'] == 1) {
-				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_country = 1");
-				  mysql_query($sql);
-				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.country_code, ec_taxrate.country_rate, ec_taxrate.tax_by_country)
-					values(null, '%s', '%s', 1)",
-					mysql_real_escape_string($taxrates['taxcountryid']),
-					mysql_real_escape_string($taxrates['taxcountryrate']));
-			  }
-			  
-			  //all tax
-			  if($taxrates['taxallenable'] == 1) {
-				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_all = 1");
-				  mysql_query($sql);
-				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.all_rate, ec_taxrate.tax_by_all)
-					values(null, '%s',  1 )",
-					mysql_real_escape_string($taxrates['taxallrate']));
-			  }
-			  
-			  //duty tax
-			  if($taxrates['taxdutyenable'] == 1) {
-				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_duty = 1");
-				  mysql_query($sql);
-				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.duty_exempt_country_code, ec_taxrate.duty_rate, ec_taxrate.tax_by_duty)
-					values(null, '%s', '%s', 1)",
-					mysql_real_escape_string($taxrates['taxdutycountryid']),
-					mysql_real_escape_string($taxrates['taxdutyrate']));
-			  }
-			  
-			  //vat tax
-			  if($taxrates['vattaxcountry'] == 1) {
-				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1");
-				  mysql_query($sql);
-				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.vat_country_code, ec_taxrate.vat_rate, ec_taxrate.tax_by_vat, ec_taxrate.vat_added, ec_taxrate.vat_included)
-					values(null, '%s', '%s', 1, '%s', '%s')",
-					mysql_real_escape_string($taxrates['taxvatcountryid']),
-					mysql_real_escape_string($taxrates['taxvatrate']),
-					mysql_real_escape_string($taxrates['vatadded']),
-					mysql_real_escape_string($taxrates['vatincluded']));
-			  }
-			  
-			  //vat tax globally
-			  if($taxrates['vattaxglobally'] == 1) {
-				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1");
-				  mysql_query($sql);
-				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.vat_country_code, ec_taxrate.vat_rate, ec_taxrate.tax_by_single_vat, ec_taxrate.vat_added, ec_taxrate.vat_included)
-					values(null, '%s', '%s', 1, '%s', '%s')",
-					mysql_real_escape_string($taxrates['taxvatcountryid']),
-					mysql_real_escape_string($taxrates['taxvatrate']),
-					mysql_real_escape_string($taxrates['vatadded']),
-					mysql_real_escape_string($taxrates['vatincluded']));
-			  }
+		
+	}
+	
+	function savetax( $taxrates ){
+		
+		// Delete, then add to prevent errors
+		if( $taxrates->taxcountryenable == 1 ){
+			$success1 = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_country = 1" );
+			$sql = "INSERT into ec_taxrate( country_code, country_rate, tax_by_country ) VALUES( %s, %s, 1 )";
+			$success2 = $this->db->query( $this->db->prepare( $sql, $taxrates->taxcountryid, $taxrates->taxcountryrate ) );
 			
-			  
-			  
-			  //state tax
-			  if($taxrates['taxstateenable'] == 1 && $taxrates['taxstaterate'] != '') {
-				  $sql = $this->escape("DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_state = 1 AND ec_taxrate.state_code = '".$taxrates['taxstateid']."'");
-				  mysql_query($sql);
-				  $sql = sprintf("INSERT into ec_taxrate(ec_taxrate.taxrate_id, ec_taxrate.state_code, ec_taxrate.state_rate, ec_taxrate.tax_by_state)
-					values(null, '%s', '%s', 1)",
-					mysql_real_escape_string($taxrates['taxstateid']),
-					mysql_real_escape_string($taxrates['taxstaterate']));
-			  }
-			  
-			  //Create SQL Query
-			  
-			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$sqlerror = mysql_error();
-				$error = explode(" ", $sqlerror);
-				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
-			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults  if there are no results
-				}
-			}
-		}	
+		}else if($taxrates->taxallenable == 1) {
+			$success1 = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_all = 1" );
+			$sql = "INSERT into ec_taxrate( all_rate, tax_by_all ) VALUES( %s, 1 )";
+			$success2 = $this->db->query( $this->db->prepare( $sql, $taxrates->taxallrate ) );
+			
+		}else if($taxrates->taxdutyenable == 1) {
+			$success1 = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_duty = 1" );
+			$sql = "INSERT into ec_taxrate( duty_exempt_country_code, duty_rate, tax_by_duty ) VALUES( %s, %s, 1 )";
+			$success2 = $this->db->query( $this->db->prepare( $sql, $taxrates->taxdutycountryid, $taxrates->taxdutyrate ) );
+			
+		}else if($taxrates->vattaxcountry == 1) {
+			$success1 = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1" );
+			$sql = "INSERT into ec_taxrate( vat_country_code, vat_rate, tax_by_vat, vat_added, vat_included ) VALUES( %s, %s, 1, %s, %s )";
+			$success2 = $this->db->query( $this->db->prepare( $sql, $taxrates->taxvatcountryid, $taxrates->taxvatrate, $taxrates->vatadded, $taxrates->vatincluded ) );
 		
-		function deletetax($taxrates) {
-			//convert object to array
-			  $taxrates = (array)$taxrates;
-			  
-			  //country tax
-			  if($taxrates['removetaxcountry'] == 1) {
-				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_country = 1";
-			  }
-			  
-			  //all tax
-			  if($taxrates['removetaxall'] == 1) {
-				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_all = 1";
-			  }
-			  
-			  //duty tax
-			  if($taxrates['removetaxduty'] == 1) {
-				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_duty = 1";
-			  }
-			  
-			  //vat tax
-			  if($taxrates['removetaxvat'] == 1) {
-				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1";
-			  }
-			  			  
-			  //remove individual state tax
-			  if($taxrates['removetaxstate'] == 1) {
-				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_state = 1 AND ec_taxrate.taxrate_id = ".$taxrates['keyfield']."";
-			  }
-			  
-			  //Delete all states, it has been disabled
-			  if($taxrates['removetaxstate'] == 2) {
-				  $sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_state = 1";
-			  }
-
-			  
-
-			  
-			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
-			}
-		}		
+		}else if($taxrates->vattaxglobally == 1) {
+			$success1 = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1" );
+			$sql = "INSERT into ec_taxrate( vat_country_code, vat_rate, tax_by_single_vat, vat_added, vat_included ) VALUES( %s, %s, 1, %s, %s )";
+			$success2 = $this->db->query( $this->db->prepare( $sql, $taxrates->taxvatcountryid, $taxrates->taxvatrate, $taxrates->vatadded, $taxrates->vatincluded ) );
 		
-
-
-	}//close class
+		}else if($taxrates->taxstateenable == 1 && $taxrates->taxstaterate != '') {
+			$sql = "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_state = 1 AND ec_taxrate.state_code = %s";
+			$success1 = $this->db->query( $this->db->prepare( $sql, $taxrates->taxstateid ) );
+			$sql = "INSERT into ec_taxrate( state_code, state_rate, tax_by_state ) VALUES( %s, %s, 1 )";
+			$success2 = $this->db->query( $this->db->prepare( $sql, $taxrates->taxstateid, $taxrates->taxstaterate ) );
+		
+		}else{ // Should never hit here, but we don't want random non-existent errors?
+			$success1 = $success2 = true;
+		}
+		
+		if( $success1 === FALSE ){
+			return array( "error" );
+		}else if( $success2 === FALSE ){
+			return array( "error" );
+		}else{
+			return array( "success" );
+		}
+		
+	}	
+	
+	function deletetax($taxrates) {
+		
+		$success = true; // In case something happens where none of the if/else are hit.
+		if( $taxrates->removetaxcountry == 1 )
+			$success = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_country = 1" );
+		
+		else if( $taxrates->removetaxall == 1 )
+			$success = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_all = 1" );
+		  
+		else if( $taxrates->removetaxduty == 1 )
+			$success = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_duty = 1" );
+		  
+		else if( $taxrates->removetaxvat == 1 )
+			$success = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_vat = 1 OR ec_taxrate.tax_by_single_vat = 1" );
+			
+		else if( $taxrates->removetaxstate == 1 )
+			$success = $this->db->query( $this->db->prepare( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_state = 1 AND ec_taxrate.taxrate_id = %s", $taxrates->keyfield ) );
+			
+		else if( $taxrates->removetaxstate == 2 )
+			$success = $this->db->query( "DELETE FROM ec_taxrate WHERE ec_taxrate.tax_by_state = 1" );
+		
+		if( $success === FALSE ){
+			return array( "error" );
+		}else{
+			return array( "success" );
+		}
+		
+	}		
+	
+}
 ?>

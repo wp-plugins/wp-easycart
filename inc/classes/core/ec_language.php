@@ -8,17 +8,20 @@ class ec_language{
 	public $language_data;											// OBJECT
 	public $languages;												// ARRAY of VARCHAR
 	
-	function __construct( ){
+	function __construct( $selected_language = 'NONE' ){
 		
-		$this->selected_language = get_option( 'ec_option_language' );
+		if( $selected_language == 'NONE' ){
+			$this->selected_language = get_option( 'ec_option_language' );
 		
-		// WPML Integration or EC Widget Integration
-		if( defined( 'ICL_LANGUAGE_CODE' ) ){
-			$this->language_code = strtoupper( ICL_LANGUAGE_CODE );
-		}else if( isset( $_SESSION['ec_translate_to'] ) ){
-			$this->language_code = strtoupper( $_SESSION['ec_translate_to'] );
+			if( isset( $_SESSION['ec_translate_to'] ) ){
+				$this->language_code = strtoupper( $_SESSION['ec_translate_to'] );
+			}else{
+				$this->language_code = "NEEDTOSET";
+			}
 		}else{
-			$this->language_code = "NEEDTOSET";
+			$this->selected_language = $selected_language;
+			$this->language_code = $selected_language;
+			$_SESSION['ec_translate_to'] = strtoupper( $selected_language );
 		}
 		
 		// Decode the language packs

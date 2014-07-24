@@ -13,6 +13,7 @@ class ec_discount{
 	private $shipping_subtotal;									// Float 15,3
 	private $cart_subtotal;										// Float 15,3
 	private $cart_grandtotal;									// FLOAT 15,3
+	private $cart_apply_quantity;								// INT
 	
 	function __construct( $cart, $cart_subtotal, $shipping_subtotal, $coupon_code, $giftcard_code, $cart_grandtotal ){
 		$this->mysqli = new ec_db( );
@@ -22,6 +23,7 @@ class ec_discount{
 		$this->cart_grandtotal = $cart_grandtotal;
 		$this->coupon_code = $coupon_code;
 		$this->giftcard_code = $giftcard_code;
+		$this->cart_apply_quantity = 1;
 		
 		$this->set_discounts( );
 	}
@@ -64,11 +66,13 @@ class ec_discount{
 	
 	private function has_product_match( $product_id ){
 		$this->cart_subtotal = 0;
+		$this->cart_apply_quantity = 0;
 		$return_val = false;
 		for( $i=0; $i<count( $this->cart->cart ); $i++){
 			if( $this->cart->cart[$i]->product_id == $product_id ){
 				$return_val = true;	
 				$this->cart_subtotal = $this->cart_subtotal + $this->cart->cart[$i]->total_price;
+				$this->cart_apply_quantity = $this->cart_apply_quantity + $this->cart->cart[$i]->quantity;
 			}
 		}
 		return $return_val;
@@ -78,8 +82,8 @@ class ec_discount{
 		
 		if( $promocode_row->is_dollar_based ){
 			
-			if( $this->cart_subtotal > $promocode_row->promo_dollar )
-																return $promocode_row->promo_dollar;
+			if( $this->cart_subtotal > ( $promocode_row->promo_dollar * $this->cart_apply_quantity ) )
+																return ( $promocode_row->promo_dollar * $this->cart_apply_quantity );
 			else												return $this->cart_subtotal;
 			
 		}else if( $promocode_row->is_percentage_based ){		return ( $this->cart_subtotal * $promocode_row->promo_percentage / 100 );

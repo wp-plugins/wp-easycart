@@ -106,6 +106,11 @@ class ec_orderdetail{
 		}
 		
 		$accountpageid = get_option('ec_option_accountpage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$accountpageid = icl_object_id( $accountpageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
 		$this->account_page = get_permalink( $accountpageid );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
@@ -427,6 +432,12 @@ class ec_orderdetail{
 						break;
 					case "zip":
 						$mm_type="application/zip";
+						break;
+					case "xlsx":
+						$mm_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+						break;
+					case "xls":
+						$mm_type="application/vnd.ms-excel";
 						break;
 					default:
 						$mm_type="application/octet-stream";

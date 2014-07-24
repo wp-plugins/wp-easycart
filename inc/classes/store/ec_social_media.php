@@ -38,6 +38,11 @@ class ec_social_media{
 		$this->image = $image;
 		
 		$store_page_id = get_option('ec_option_storepage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$store_page_id = icl_object_id( $store_page_id, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
 		$this->store_page = get_permalink( $store_page_id );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

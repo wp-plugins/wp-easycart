@@ -141,10 +141,10 @@
 	</div>
 
 	<div class="ec_account_subscription_details_notice"><?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'subscription_details_notice' ); ?></div>
-
-	<div class="ec_account_subscription_button"><input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'save_changes_button' ); ?>" onclick="return ec_check_update_subscription_info( );" /></div>
     
 </div>
+
+<div class="ec_account_subscription_button"><input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'save_changes_button' ); ?>" onclick="return ec_check_update_subscription_info( );" /></div>
 
 <?php $this->display_subscription_update_form_end( ); ?>
 

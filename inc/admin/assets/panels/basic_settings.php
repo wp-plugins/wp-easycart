@@ -59,6 +59,34 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
               <option value="kgs"<?php if(get_option('ec_option_weight') == 'kgs') echo ' selected'; ?>>KGS</option>
           </select></span>
 </div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Cart Icon Link in Menu</em>If you turn this on and select a menu to display this item in, a cart icon with total and number of items in cart is displayed in your menu.</span></a></span>
+    <span class="ec_setting_row_label">Show Cart Icon Link in Menu:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_menu_cart_icon" style="width:100px;"><option value="0"<?php if( get_option('ec_option_show_menu_cart_icon') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_show_menu_cart_icon') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row" style="height:auto">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Cart Icon Menu</em>If you turn on the option to show cart icon link in the menu, then you can select the menu in which you want the icon to appear for this option.</span></a></span>
+    <span class="ec_setting_row_label">Cart Icon Menu:</span>
+    <span class="ec_setting_row_input">
+    <select multiple name="ec_option_cart_menu_id[]" style="width:auto; max-width:350px;">
+    	<option value="0"<?php if( get_option('ec_option_cart_menu_id') == "0" ){ echo " selected=\"selected\""; }?>>No Menu</option>
+        <?php 
+		$ids = explode( '***', get_option('ec_option_cart_menu_id') );
+		
+		$menus = get_registered_nav_menus( );
+		$keys = array_keys( $menus );
+		foreach ( $keys as $key ) {
+			echo '<option value="' . $key . '"';
+			if( in_array( $key, $ids ) ){ 
+				echo " selected=\"selected\""; 
+			}
+			echo '>' . $menus[$key] . '</option>';
+		}
+		?>
+    </select></span>
+</div>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Currency Display: <?php echo $GLOBALS['currency']->get_currency_display( 1999.990 ); ?></div></div>
@@ -338,6 +366,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Skip Shipping Cart Panel</em>If enabled, the system will skip the panel in the cart where the user is asked to select their shipping method. This data is instead collected on the final checkout page if needed.</span></a></span>
     <span class="ec_setting_row_label">Skip Shipping Cart Panel:</span>
     <span class="ec_setting_row_input"><select name="ec_option_skip_shipping_page" style="width:100px;"><option value="0"<?php if( get_option('ec_option_skip_shipping_page') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_skip_shipping_page') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Skip Review Order Screen</em>If enabled, the system will submit the order directly after they enter their payment information. The review screen is useful for orders that require shipping and often have multiple items.</span></a></span>
+    <span class="ec_setting_row_label">Skip Review Order Screen:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_skip_reivew_screen" style="width:100px;"><option value="0"<?php if( get_option('ec_option_skip_reivew_screen') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_skip_reivew_screen') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_setting_row">

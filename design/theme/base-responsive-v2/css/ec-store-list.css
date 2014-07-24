@@ -40,7 +40,7 @@
 .ec_product_image:hover{ border:1px #cccccc solid; }
 .ec_product .ec_product_images a{ float:left; padding:2px; display:block; border:1px #eeeeee solid; z-index: 4; max-width:175px; max-height:175px; }
 .ec_product .ec_product_images a:hover{ }
-.ec_product_image_inactive{ float:left; padding:2px; display:none; border:1px #eeeeee solid; z-index:4; }
+.ec_product_image_inactive{ float:left; padding:2px; display:none !important; border:1px #eeeeee solid; z-index:4; }
 .ec_product_image_inactive:hover{ }
 .ec_product_images .ec_product_image_inactive img{ max-width:175px; max-height:175px; outline:none !important; }
 

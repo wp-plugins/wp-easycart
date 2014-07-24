@@ -280,9 +280,14 @@ class ec_cartitem{
 			$this->vat_enabled = false;
 			
 		$store_page_id = get_option('ec_option_storepage');
-		$this->store_page = get_permalink( $store_page_id );
-		
 		$cart_page_id = get_option('ec_option_cartpage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$store_page_id = icl_object_id( $store_page_id, 'page', true, ICL_LANGUAGE_CODE );
+			$cart_page_id = icl_object_id( $cart_page_id, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
+		$this->store_page = get_permalink( $store_page_id );
 		$this->cart_page = get_permalink( $cart_page_id );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

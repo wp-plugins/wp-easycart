@@ -35,6 +35,11 @@ class ec_subscription{
 		$this->is_details = $is_details;
 		
 		$accountpageid = get_option('ec_option_accountpage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$accountpageid = icl_object_id( $accountpageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
 		$this->account_page = get_permalink( $accountpageid );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

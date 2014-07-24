@@ -1151,6 +1151,8 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_terms_link', $_POST['ec_option_terms_link'] );
 	update_option( 'ec_option_privacy_link', $_POST['ec_option_privacy_link'] );
 	update_option( 'ec_option_weight', $_POST['ec_option_weight'] );
+	update_option( 'ec_option_show_menu_cart_icon', $_POST['ec_option_show_menu_cart_icon'] );
+	update_option( 'ec_option_cart_menu_id', implode( '***', $_POST['ec_option_cart_menu_id'] ) );
 	
 	// Currency Display
 	update_option( 'ec_option_base_currency', $_POST['ec_option_base_currency'] );
@@ -1197,6 +1199,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_use_contact_name', $_POST['ec_option_use_contact_name'] );
 	update_option( 'ec_option_collect_user_phone', $_POST['ec_option_collect_user_phone'] );
 	update_option( 'ec_option_skip_shipping_page', $_POST['ec_option_skip_shipping_page'] );
+	update_option( 'ec_option_skip_reivew_screen', $_POST['ec_option_skip_reivew_screen'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );

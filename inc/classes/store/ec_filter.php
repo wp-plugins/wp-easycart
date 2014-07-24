@@ -46,6 +46,11 @@ class ec_filter{
 		$this->model_number = $this->get_model_number();
 		
 		$store_page_id = get_option('ec_option_storepage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$store_page_id = icl_object_id( $store_page_id, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
 		$this->store_page = get_permalink( $store_page_id );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
@@ -284,15 +289,20 @@ class ec_filter{
 			}else{
 				$post_id = 0;
 			}
-			$manufacturer = $this->mysqli->get_manufacturer_id_from_post_id( $post_id );
-			$product = $this->mysqli->get_product_from_post_id( $post_id );
-			if( ( isset( $manufacturer ) && $leave_out == 3 ) || ( isset( $product ) && $leave_out == 3 ) || ( isset( $product ) && $leave_out == 4 ) )
-				$ret_string = $this->store_page . $this->permalink_divider;
-			else{
-				if( $has_store_shortcode )
-					$ret_string = $this->ec_get_permalink( $post_id, "store" ) . $this->permalink_divider;
-				else
+			
+			if( $post_id && $post_id != get_option('ec_option_storepage') ){
+				$ret_string = get_permalink( $post_id ) . $this->permalink_divider;
+			}else{
+				$manufacturer = $this->mysqli->get_manufacturer_id_from_post_id( $post_id );
+				$product = $this->mysqli->get_product_from_post_id( $post_id );
+				if( ( isset( $manufacturer ) && $leave_out == 3 ) || ( isset( $product ) && $leave_out == 3 ) || ( isset( $product ) && $leave_out == 4 ) )
 					$ret_string = $this->store_page . $this->permalink_divider;
+				else{
+					if( $has_store_shortcode )
+						$ret_string = $this->ec_get_permalink( $post_id, "store" ) . $this->permalink_divider;
+					else
+						$ret_string = $this->store_page . $this->permalink_divider;
+				}
 			}
 		}else{
 			$ret_string = $this->store_page . $this->permalink_divider;

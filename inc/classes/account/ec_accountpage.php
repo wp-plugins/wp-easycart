@@ -47,6 +47,12 @@ class ec_accountpage{
 		
 		$accountpageid = get_option('ec_option_accountpage');
 		$cartpageid = get_option('ec_option_cartpage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$accountpageid = icl_object_id( $accountpageid, 'page', true, ICL_LANGUAGE_CODE );
+			$cartpageid = icl_object_id( $cartpageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
 		$this->account_page = get_permalink( $accountpageid );
 		$this->cart_page = get_permalink( $cartpageid );
 		
@@ -884,13 +890,29 @@ class ec_accountpage{
 							  "last_name"	=> $_POST['ec_account_billing_information_last_name'],
 							  "address"		=> $_POST['ec_account_billing_information_address'],
 							  "city"		=> $_POST['ec_account_billing_information_city'],
-							  "state"		=> $_POST['ec_account_billing_information_state'],
 							  "zip_code"	=> $_POST['ec_account_billing_information_zip'],
 							  "country"		=> $_POST['ec_account_billing_information_country'],
-							  "phone"		=> $_POST['ec_account_billing_information_phone']
 							);
+							
+			if( isset( $_POST['ec_account_billing_information_state_' . $billing['country']] ) ){
+				$billing['state'] = stripslashes( $_POST['ec_account_billing_information_state_' . $billing['country']] );
+			}else{
+				$billing['state'] = stripslashes( $_POST['ec_account_billing_information_state'] );
+			}
 			
-			$billing_id = $this->mysqli->insert_address( $billing["first_name"], $billing["last_name"], $billing["address"], $billing["city"], $billing["state"], $billing["zip_code"], $billing["country"], $billing["phone"] );
+			if( isset( $_POST['ec_account_billing_information_address2'] ) ){
+				$billing['address2'] = stripslashes( $_POST['ec_account_billing_information_address2'] );
+			}else{
+				$billing['address2'] = "";
+			}
+			
+			if( isset( $_POST['ec_account_billing_information_phone'] ) ){
+				$billing['phone'] = stripslashes( $_POST['ec_account_billing_information_phone'] );
+			}else{
+				$billing['phone'] = "";
+			}
+			
+			$billing_id = $this->mysqli->insert_address( $billing["first_name"], $billing["last_name"], $billing["address"], $billing["address2"], $billing["city"], $billing["state"], $billing["zip_code"], $billing["country"], $billing["phone"] );
 		}
 		
 		// Insert the user
@@ -1190,7 +1212,7 @@ class ec_accountpage{
 						
 			
 			//Upgrade and billing adjustment
-			if( isset( $_POST['ec_card_holder_name'] ) && $_POST['ec_card_holder_name'] != "" ){
+			if( isset( $_POST['ec_card_number'] ) && $_POST['ec_card_number'] != "" ){
 				$first_name = $_POST['ec_account_billing_information_first_name'];
 				$last_name = $_POST['ec_account_billing_information_last_name'];
 				$address = $_POST['ec_account_billing_information_address'];

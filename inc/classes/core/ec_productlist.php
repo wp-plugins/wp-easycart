@@ -87,22 +87,27 @@ class ec_productlist{
 		
 	}
 	
+	private function get_current_page_url( ){
+		$uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
+		$pageURL = 'http';
+		if( $_SERVER["HTTPS"] == "on" ){
+			$pageURL .= "s";
+		}
+		$pageURL .= "://";
+		$pageURL .= $_SERVER['HTTP_HOST'] . $uri_parts[0];
+		return $pageURL;
+	}
+	
 	public function display_filter_combo( ){
 		
 		global $language_data;
 		
-		$storepageid = get_option('ec_option_storepage');
-		$cartpageid = get_option('ec_option_cartpage');
-		$accountpageid = get_option('ec_option_accountpage');
+		$current_page = $this->get_current_page_url( );
 		
-		$storepage = get_permalink( $storepageid );
-		$cartpage = get_permalink( $cartpageid );
-		$accountpage = get_permalink( $accountpageid );
+		if(substr_count($current_page, '?'))						$permalink_divider .= "&";
+		else														$permalink_divider .= "?";
 		
-		if(substr_count($storepage, '?'))							$permalinkdivider = "&";
-		else														$permalinkdivider = "?";
-		
-		echo "<select name=\"sortfield\" id=\"sortfield\" onchange=\"change_product_sort('" . $this->filter->get_menu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_menu_name( ) ) . "', '" . $this->filter->get_submenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_submenu_name( ) ) . "', '" . $this->filter->get_subsubmenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_subsubmenu_name( ) ) . "', '" . $this->filter->manufacturer->manufacturer_id . "', '" . $this->filter->pricepoint_id . "', '" . $this->paging->current_page . "', '" . $this->filter->perpage->selected . "', '" . $storepage . "', '" . $permalinkdivider . "');\" class=\"ec_sort_menu\">\n\n";
+		echo "<select name=\"sortfield\" id=\"sortfield\" onchange=\"change_product_sort('" . $this->filter->get_menu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_menu_name( ) ) . "', '" . $this->filter->get_submenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_submenu_name( ) ) . "', '" . $this->filter->get_subsubmenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_subsubmenu_name( ) ) . "', '" . $this->filter->manufacturer->manufacturer_id . "', '" . $this->filter->pricepoint_id . "', '" . $this->paging->current_page . "', '" . $this->filter->perpage->selected . "', '" . $current_page . "', '" . $permalink_divider . "');\" class=\"ec_sort_menu\">\n\n";
 
 		if( get_option( 'ec_option_product_filter_1' ) ){
 			echo "<option value=\"1\""; if( $this->filter->is_sort_selected(1) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_price_low' ) . "</option>\n\n";

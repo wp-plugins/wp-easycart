@@ -45,6 +45,9 @@ class ec_manufacturerwidget extends WP_Widget{
 		
 		//Required for old linking layouts /////DO NOT DELETE////
 		$store_page_id = get_option('ec_option_storepage');
+		if( function_exists( 'icl_object_id' ) ){
+			$store_page_id = icl_object_id( $store_page_id, 'page', true, ICL_LANGUAGE_CODE );
+		}
 		$store_page = get_permalink( $store_page_id );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

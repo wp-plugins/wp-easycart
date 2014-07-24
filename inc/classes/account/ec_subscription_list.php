@@ -17,6 +17,11 @@ class ec_subscription_list{
 		$this->set_subscription_list( );
 		
 		$accountpageid = get_option('ec_option_accountpage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$accountpageid = icl_object_id( $accountpageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
 		$this->account_page = get_permalink( $accountpageid );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

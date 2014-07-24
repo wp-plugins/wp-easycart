@@ -40,9 +40,14 @@ class ec_payment{
 		$this->third_party = $this->get_third_party( );
 		
 		$cart_page_id = get_option('ec_option_cartpage');
-		$this->cart_page = get_permalink( $cart_page_id );
-		
 		$account_page_id = get_option('ec_option_accountpage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$cart_page_id = icl_object_id( $cart_page_id, 'page', true, ICL_LANGUAGE_CODE );
+			$account_page_id = icl_object_id( $account_page_id, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
+		$this->cart_page = get_permalink( $cart_page_id );
 		$this->account_page = get_permalink( $account_page_id );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

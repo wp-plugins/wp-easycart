@@ -105,6 +105,9 @@ class ec_cartwidget extends WP_Widget{
 		$subtotal = $cart->subtotal;
 		
 		$cartpageid = get_option('ec_option_cartpage');
+		if( function_exists( 'icl_object_id' ) ){
+			$cartpageid = icl_object_id( $cartpageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
 		$cart_page = get_permalink( $cartpageid );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

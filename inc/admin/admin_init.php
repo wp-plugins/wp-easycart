@@ -27,15 +27,6 @@ function ec_install_admin_notice() {
     <?php
 	}
 	
-	$ec_selected_theme = wp_get_theme();
-	if( $ec_selected_theme->Name == "Twenty Fourteen" && substr( get_option( 'ec_option_base_theme' ), 0, 15 ) != "twenty-fourteen" ){ 
-    ?>
-    <div class="updated">
-        <p>EasyCart notices that you are using the Twenty Fourteen WordPress theme, but not the Twenty Fourteen store design. Make the change to the cart for best results by <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management">clicking here</a>.</p>
-    </div>
-    <?php
-	}// Close check for latest WordPress theme
-	
 	// Check if the admin manage notice should be removed
 	if( isset( $_GET['page'] ) && $_GET['page'] == "ec_adminv2" && isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "admin-console" && isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "admin" && isset( $_GET['ec_notice'] ) && $_GET['ec_notice'] == "dismiss" ){
 		update_option( 'ec_option_hide_admin_notice', '1' );
@@ -72,6 +63,18 @@ function ec_install_admin_notice() {
     </div>
     
 	<?php }
+	
+	// Check for newer layout/theme files
+	$current_version_design = file_get_contents( "http://www.wpeasycart.com/latest-design-version.txt" );
+	$this_design = get_option( 'ec_option_base_theme' );
+	$has_matches = preg_match( "/([0-9]+?\-[0-3][0-9]\-[0-9][0-9][0-9][0-9])/", $this_design, $matches );
+	if( $has_matches && $matches[0] != $current_version_design ){?>
+	
+    <div class="updated">
+        <p>There is a new version of the store design available (<?php echo $current_version_design; ?>). Please visit your <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management">design file management page</a> and follow the directions to upgrade.</p>
+	</div>
+    
+    <?php }
 }
 
 function ec_load_admin_scripts( ){
@@ -103,15 +106,15 @@ function ec_load_admin_scripts( ){
 function ec_register_settings() {
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ), array(), '2.1.2' );
+	wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ), array(), '2.1.3' );
 	wp_enqueue_style( 'wpeasycart_admin_css' );
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_adminv2_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/wpeasycart_adminv2.css' ), array(), '2.1.2' );
+	wp_register_style( 'wpeasycart_adminv2_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/wpeasycart_adminv2.css' ), array(), '2.1.3' );
 	wp_enqueue_style( 'wpeasycart_adminv2_css' );
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_editor_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/editor.css' ), array(), '2.1.2' );
+	wp_register_style( 'wpeasycart_editor_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/editor.css' ), array(), '2.1.3' );
 	wp_enqueue_style( 'wpeasycart_editor_css' );
 		
 	//register options
@@ -168,21 +171,26 @@ function ec_custom_downloads( ){
 		$zip->close( );
 		
 		if( file_exists( $zipname ) ){
-			header( "Cache-Control: must-revalidate, post-check=0, pre-check=0");
-			header( "Cache-Control: private",false);
+			header( "Cache-Control: public, must-revalidate" );
+			header( "Pragma: no-cache" );
 			header( 'Content-Type: application/zip' );
-			header( 'Content-Disposition: attachment; filename="' . $zip_shortname . '";' );
-			header( 'Content-Length: ' . ( string )( filesize( $zipname ) ) );
-			header( "Content-Transfer-Encoding: binary" );
-			header( 'Expires: 0');
-			header( 'Cache-Control: private');
-			header( 'Pragma: private');
-			ob_clean();
-			flush();
+			header( "Content-Length: " . ( string )( filesize( $zip ) ) );
+			header( 'Content-Disposition: attachment; filename="' . $zip_shortname . '"' );
+			header( "Content-Transfer-Encoding: binary\n" );
 			
-			readfile( $zipname );
+			$fh = fopen( $zipname, "rb" );
+				
+			while( !feof( $fh ) ){
+				$buffer = fread( $fh, 8192 );
+				echo $buffer;
+				ob_flush( );
+				flush( ); 
+			}
+			
+			fclose( $fh );
 			
 			unlink( $zipname );
+			exit;
 		
 		}else{
 			exit( "Could not find the zip to be downloaded" );
@@ -280,8 +288,10 @@ function ec_mysqldump( $mysql_database ){
 	$result = mysql_query($sql);
 	if( $result ){
 		while( $row = mysql_fetch_row( $result ) ){
-			$return_string .= ec_mysqldump_table_structure( $row[0] );
-			$return_string .= ec_mysqldump_table_data( $row[0] );
+			if( substr( $row[0], 0, 3 ) == "ec_" ){
+				//$return_string .= ec_mysqldump_table_structure( $row[0] );
+				$return_string .= ec_mysqldump_table_data( $row[0] );
+			}
 		}
 	}else{
 		$return_string .= "/* no tables in $mysql_database */\n";

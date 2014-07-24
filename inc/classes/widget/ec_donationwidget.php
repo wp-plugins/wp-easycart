@@ -54,6 +54,9 @@ class ec_donationwidget extends WP_Widget{
 			$filter = new ec_filter(0);
 			
 			$storepageid = get_option('ec_option_storepage');
+			if( function_exists( 'icl_object_id' ) ){
+				$storepageid = icl_object_id( $storepageid, 'page', true, ICL_LANGUAGE_CODE );
+			}
 			$store_page = get_permalink( $storepageid );
 			
 			if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

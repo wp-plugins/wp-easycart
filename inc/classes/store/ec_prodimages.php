@@ -34,6 +34,11 @@ class ec_prodimages{
 		$this->image5 = $image5;
 		
 		$storepageid = get_option( 'ec_option_storepage' );
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$storepageid = icl_object_id( $storepageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
 		$this->store_page = get_permalink( $storepageid );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){

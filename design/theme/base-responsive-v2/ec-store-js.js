@@ -17,27 +17,27 @@ function ec_product_hide_quick_view( modelnum ){
 function ec_thumb_quick_view_click( modelnum, level, imgnum ){
 	
 	if( document.getElementById( 'ec_image_quick_view_' + modelnum + "_" + 1 + "_" + level ) ){
-		jQuery('#ec_image_quick_view_' + modelnum + "_" + 1 + "_" + level ).hide();
+		jQuery('#ec_image_quick_view_' + modelnum + "_" + 1 + "_" + level ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 	}
 		
 		
 	if( document.getElementById( 'ec_image_quick_view_' + modelnum + "_" + 2 + "_" + level ) )
-		jQuery('#ec_image_quick_view_' + modelnum + "_" + 2 + "_" + level ).hide();
+		jQuery('#ec_image_quick_view_' + modelnum + "_" + 2 + "_" + level ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 		
 		
 	if( document.getElementById( 'ec_image_quick_view_' + modelnum + "_" + 3 + "_" + level ) )
-		jQuery('#ec_image_quick_view_' + modelnum + "_" + 3 + "_" + level ).hide();
+		jQuery('#ec_image_quick_view_' + modelnum + "_" + 3 + "_" + level ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 		
 		
 	if( document.getElementById( 'ec_image_quick_view_' + modelnum + "_" + 4 + "_" + level ) )
-		jQuery('#ec_image_quick_view_' + modelnum + "_" + 4 + "_" + level ).hide();
+		jQuery('#ec_image_quick_view_' + modelnum + "_" + 4 + "_" + level ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 		
 		
 	if( document.getElementById( 'ec_image_quick_view_' + modelnum + "_" + 5 + "_" + level ) )
-		jQuery('#ec_image_quick_view_' + modelnum + "_" + 5 + "_" + level ).hide();
+		jQuery('#ec_image_quick_view_' + modelnum + "_" + 5 + "_" + level ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 	
-	jQuery('#ec_image_quick_view_' + modelnum + "_" + imgnum + "_" + level ).show();
-	
+	jQuery('#ec_image_quick_view_' + modelnum + "_" + imgnum + "_" + level ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+	jQuery('#ec_image_quick_view_' + modelnum + "_" + imgnum + "_" + level ).show( );
 }
 
 function ec_image_quick_view_click( modelnum, level, imgnum ){
@@ -78,55 +78,55 @@ function ec_image_quick_view_update( modelnum, level, imgnum ){
 		while( this.document.getElementById( 'ec_swatch_' + modelnum + "_" + level + "_" + i ) ){
 			
 			if(this.document.getElementById( 'ec_image_quick_view_'  + modelnum + "_" + 1 + "_" + i ))
-				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 1 + "_" + i ).hide();
+				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 1 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_image_quick_view_'  + modelnum + "_" + 2 + "_" + i ))
-				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 2 + "_" + i ).hide();
+				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 2 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_image_quick_view_'  + modelnum + "_" + 3 + "_" + i ))
-				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 3 + "_" + i ).hide();
+				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 3 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_image_quick_view_'  + modelnum + "_" + 4 + "_" + i ))
-				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 4 + "_" + i ).hide();
+				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 4 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_image_quick_view_'  + modelnum + "_" + 5 + "_" + i ))
-				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 5 + "_" + i ).hide();
+				jQuery('#ec_image_quick_view_'  + modelnum + "_" + 5 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 1 + "_" + i ))
-				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 1 + "_" + i ).hide();
+				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 1 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 2 + "_" + i ))
-				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 2 + "_" + i ).hide();
+				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 2 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 3 + "_" + i ))
-				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 3 + "_" + i ).hide();
+				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 3 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 4 + "_" + i ))
-				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 4 + "_" + i ).hide();
+				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 4 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			if(this.document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 5 + "_" + i ))
-				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 5 + "_" + i ).hide();
+				jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 5 + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			i++;
 				
 		}
 		
-		jQuery('#ec_image_quick_view_'  + modelnum + "_" + 1 + "_" + imgnum ).show();
+		jQuery('#ec_image_quick_view_'  + modelnum + "_" + 1 + "_" + imgnum ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 			
 		if( document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 1 + "_" + imgnum ) )
-			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 1 + "_" + imgnum ).show();
+			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 1 + "_" + imgnum ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 		
 		if( document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 2 + "_" + imgnum ) )
-			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 2 + "_" + imgnum ).show();
+			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 2 + "_" + imgnum ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 		
 		if( document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 3 + "_" + imgnum ) )
-			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 3 + "_" + imgnum ).show();
+			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 3 + "_" + imgnum ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 		
 		if( document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 4 + "_" + imgnum ) )
-			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 4 + "_" + imgnum ).show();
+			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 4 + "_" + imgnum ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 		
 		if( document.getElementById( 'ec_thumb_quick_view_'  + modelnum + "_" + 5 + "_" + imgnum ) )
-			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 5 + "_" + imgnum ).show();
+			jQuery('#ec_thumb_quick_view_'  + modelnum + "_" + 5 + "_" + imgnum ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 		
 	}
 	
@@ -144,11 +144,11 @@ function ec_product_details_swap_image( modelnum, level, imgnum ){
 	
 	var i=1;
 	while(	document.getElementById( 'ec_image_quick_view_' + modelnum + '_' + i + '_' + level ) ){
-		document.getElementById( 'ec_image_quick_view_' + modelnum + '_' + i + '_' + level ).className = 'ec_product_image_inactive';
+		jQuery( '#ec_image_quick_view_' + modelnum + '_' + i + '_' + level ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 		i++;
 	}
 	
-	document.getElementById( 'ec_image_quick_view_' + modelnum + '_' + imgnum + '_' + level ).className = 'ec_product_image';
+	jQuery( '#ec_image_quick_view_' + modelnum + '_' + imgnum + '_' + level ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 }
 
 var content_width = 1000;
@@ -252,7 +252,7 @@ function change_product_sort(menu_id, menu_name, submenu_id, submenu_name, subsu
 }jQuery(document).ready(
 	function() {
 		// In case a theme over-rides images, we need to make sure all inactive images get hidden on load
-		jQuery( ".ec_product_image_inactive" ).hide( );
+		jQuery( ".ec_product_image_inactive" ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 		
 		// Initialize the available quick view boxes
 		jQuery(".ec_product_quick_view_box_holder").each( function( ){
@@ -497,13 +497,15 @@ function ec_thumb_click( modelnum, image_index, image_number ){
 	var i=1;
 	
 	while( document.getElementById( 'ec_image_' + model_number + "_" + i + "_" + image_index ) ){
-		jQuery('#ec_image_' + model_number + "_" + i + "_" + image_index ).hide();
-		jQuery('#ec_image_quick_view_' + model_number + "_" + i + "_" + image_index ).hide();
+		jQuery('#ec_image_' + model_number + "_" + i + "_" + image_index ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
+		jQuery('#ec_image_quick_view_' + model_number + "_" + i + "_" + image_index ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 		i++;
 	}
 	
-	jQuery('#ec_image_' + model_number + "_" + image_number + "_" + image_index ).show();
-	jQuery('#ec_image_quick_view_' + model_number + "_" + image_number + "_" + image_index ).show();
+	jQuery('#ec_image_' + model_number + "_" + image_number + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+	jQuery('#ec_image_' + model_number + "_" + image_number + "_" + image_index ).show( );
+	jQuery('#ec_image_quick_view_' + model_number + "_" + image_number + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+	jQuery('#ec_image_quick_view_' + model_number + "_" + image_number + "_" + image_index ).show( );
 	
 }
 
@@ -856,8 +858,8 @@ function ec_update_product_details_images( image_index, image_number ){
 		j=1;
 		
 		while( document.getElementById( 'ec_image_' + model_number + "_" + j + "_" + i ) ){
-			jQuery('#ec_image_' + model_number + "_" + j + "_" + i ).hide();
-			jQuery('#ec_thumb_' + model_number + "_" + j + "_" + i ).hide();
+			jQuery('#ec_image_' + model_number + "_" + j + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
+			jQuery('#ec_thumb_' + model_number + "_" + j + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			j++;
 		}
@@ -865,8 +867,8 @@ function ec_update_product_details_images( image_index, image_number ){
 		j=1;
 		
 		while( document.getElementById( 'ec_image_quick_view_' + model_number + "_" + j + "_" + i ) ){
-			jQuery('#ec_image_quick_view_' + model_number + "_" + j + "_" + i ).hide();
-			jQuery('#ec_thumb_quick_view_' + model_number + "_" + j + "_" + i ).hide();
+			jQuery('#ec_image_quick_view_' + model_number + "_" + j + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
+			jQuery('#ec_thumb_quick_view_' + model_number + "_" + j + "_" + i ).removeClass( 'ec_product_image' ).addClass( 'ec_product_image_inactive' );
 			
 			j++;
 		}
@@ -875,30 +877,33 @@ function ec_update_product_details_images( image_index, image_number ){
 			
 	}
 	
-	jQuery( '#ec_image_' + model_number + "_" + 1 + "_" + image_index ).show();
-	jQuery( '#ec_image_quick_view_' + model_number + "_" + 1 + "_" + image_index ).show();
+	jQuery( '#ec_image_' + model_number + "_" + 1 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+	jQuery( '#ec_image_quick_view_' + model_number + "_" + 1 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+	
+	jQuery( '#ec_image_' + model_number + "_" + 1 + "_" + image_index ).show( );
+	jQuery( '#ec_image_quick_view_' + model_number + "_" + 1 + "_" + image_index ).show( );
 	
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 1 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 1 + "_" + image_index ).show();
+		jQuery('#ec_thumb_' + model_number + "_" + 1 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 2 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 2 + "_" + image_index ).show();
+		jQuery('#ec_thumb_' + model_number + "_" + 2 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 3 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 3 + "_" + image_index ).show();
+		jQuery('#ec_thumb_' + model_number + "_" + 3 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 4 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 4 + "_" + image_index ).show();
+		jQuery('#ec_thumb_' + model_number + "_" + 4 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 5 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 5 + "_" + image_index ).show();
+		jQuery('#ec_thumb_' + model_number + "_" + 5 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 1 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 1 + "_" + image_index ).show();
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 1 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 2 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 2 + "_" + image_index ).show();
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 2 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 3 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 3 + "_" + image_index ).show();
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 3 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 4 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 4 + "_" + image_index ).show();
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 4 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 5 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 5 + "_" + image_index ).show();
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 5 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
 	
 }
 
@@ -1778,6 +1783,8 @@ function ec_cart_item_update_finished( data, cartitem_id ){
 		if( document.getElementById('ec_cart_grandtotal') )
 		document.getElementById('ec_cart_grandtotal').innerHTML = data_split[9];
 		
+		jQuery( '.ec_menu_cart_text' ).html( data_split[10] );
+		
 	}
 }
 
@@ -1833,6 +1840,8 @@ function ec_cart_item_delete_finished( data, cartitem_id ){
 		
 		if( document.getElementById('ec_cart_grandtotal') )
 		document.getElementById('ec_cart_grandtotal').innerHTML = data_split[7];
+		
+		jQuery( '.ec_menu_cart_text' ).html( data_split[8] );
 	
 	}
 }
@@ -2837,11 +2846,11 @@ function ec_cart_load_finalize_cart_totals( data ){
 	if( document.getElementById( 'ec_cart_final_shipping' ) )
 		document.getElementById( 'ec_cart_final_shipping' ).innerHTML = json.shipping_total;
 	if( document.getElementById( 'ec_cart_final_discount' ) )
-		document.getElementById( 'ec_cart_final_discount' ).innerHTML = json.duty_total;
+		document.getElementById( 'ec_cart_final_discount' ).innerHTML = json.discount_total;
 	if( document.getElementById( 'ec_cart_final_duty' ) )
-		document.getElementById( 'ec_cart_final_duty' ).innerHTML = json.vat_total;
+		document.getElementById( 'ec_cart_final_duty' ).innerHTML = json.duty_total;
 	if( document.getElementById( 'ec_cart_final_vat' ) )
-		document.getElementById( 'ec_cart_final_vat' ).innerHTML = json.discount_total;
+		document.getElementById( 'ec_cart_final_vat' ).innerHTML = json.vat_total;
 	if( document.getElementById( 'ec_cart_final_grand_total' ) )
 		document.getElementById( 'ec_cart_final_grand_total' ).innerHTML = json.grand_total;
 	
@@ -3022,159 +3031,165 @@ jQuery( document ).ready( function( ){
 } );
 
 function ec_check_update_subscription_info( ){
-	var info_errors = 0;
-	var card_errors = 0;
-	
-	var billing_country_code = document.getElementById('ec_account_billing_information_country').value;
-	
-	var payment_method = "";
-	var card_number = document.getElementById('ec_card_number').value;
-	var exp_month = document.getElementById('ec_expiration_month').value;
-	var exp_year = document.getElementById('ec_expiration_year').value;
-	var sec_code = document.getElementById('ec_security_code').value;
-	
-	// Validate Billing Information
-	var input_names = ['first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country'];
-	if( document.getElementById( 'ec_cart_billing_phone' ) ){
-		input_names.push( 'phone' );
-	}
-	
-	for( var i=0; i< input_names.length; i++){
-		if( input_names[i] == "state" && document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ) && document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).options ){
-			var value = document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).options[document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).selectedIndex].value;
-		}else{
-			var value = document.getElementById( 'ec_account_billing_information_' + input_names[i] ).value;
-		}
-		// validate billing
-		if( !ec_validation( "validate_" + input_names[i], value, billing_country_code ) ){
-			info_errors++;
-			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row_error";
-			jQuery( '#ec_cart_error_billing_' + input_names[i] ).show( );
-		}else{
-			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row";
-			jQuery( '#ec_cart_error_billing_' + input_names[i] ).hide( );
-		}
-	}
-	
-	// Validate Credit Card Information
-	if( !ec_validation( "validate_card_number", card_number, payment_method ) ){
-		card_errors++;
-		jQuery( '#ec_cart_error_payment_card_number' ).show( );
-	}else{
-		jQuery( '#ec_cart_error_payment_card_number' ).hide( );
-	}
-	
-	if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) ){
-		jQuery( '#ec_cart_error_payment_card_exp_month' ).show( );
-	}else{
-		jQuery( '#ec_cart_error_payment_card_exp_month' ).hide( );
-	}
-	
-	if( !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
-		jQuery( '#ec_cart_error_payment_card_exp_year' ).show( );
-	}else{
-		jQuery( '#ec_cart_error_payment_card_exp_year' ).hide( );
-	}
-	
-	if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) || !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
 		
-		card_errors++;
-	}
-	
-	if( !ec_validation( "validate_security_code", sec_code, payment_method ) ){
-		card_errors++;
-		jQuery( '#ec_cart_error_payment_card_code' ).show( );
-	}else{
-		jQuery( '#ec_cart_error_payment_card_code' ).hide( );
-	}
-	
-	// If new account, Validate Account Info
-	if( document.getElementById( 'ec_contact_email' ) ){
+	if( jQuery( '#ec_account_subscription_billing_information' ).is(":visible") ){
+		var info_errors = 0;
+		var card_errors = 0;
 		
-		var email = jQuery( '#ec_contact_email' ).val( );
-		var retype_email = jQuery( '#ec_contact_email_retype' ).val( );
-		var password = jQuery( '#ec_contact_password' ).val( );
-		var retype_password = jQuery( '#ec_contact_password_retype' ).val( );
+		var billing_country_code = document.getElementById('ec_account_billing_information_country').value;
 		
-		if( !ec_validation( "validate_email", email, billing_country_code ) ){
-			info_errors++;
-			document.getElementById('ec_contact_email_row').className = "ec_cart_billing_row_error";
-			jQuery( '#ec_cart_error_email' ).show( );
-		}else{
-			document.getElementById('ec_contact_email_row').className = "ec_cart_billing_row";
-			jQuery( '#ec_cart_error_email' ).hide( );
+		var payment_method = "";
+		var card_number = document.getElementById('ec_card_number').value;
+		var exp_month = document.getElementById('ec_expiration_month').value;
+		var exp_year = document.getElementById('ec_expiration_year').value;
+		var sec_code = document.getElementById('ec_security_code').value;
+		
+		// Validate Billing Information
+		var input_names = ['first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country'];
+		if( document.getElementById( 'ec_cart_billing_phone' ) ){
+			input_names.push( 'phone' );
 		}
 		
-		if( retype_email.length == 0 ){
-			jQuery( '#ec_cart_error_retype_email' ).show( );
-		}else{
-			jQuery( '#ec_cart_error_retype_email' ).hide( );
+		for( var i=0; i< input_names.length; i++){
+			if( input_names[i] == "state" && document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ) && document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).options ){
+				var value = document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).options[document.getElementById( 'ec_account_billing_information_' + input_names[i] + '_' + billing_country_code ).selectedIndex].value;
+			}else{
+				var value = document.getElementById( 'ec_account_billing_information_' + input_names[i] ).value;
+			}
+			// validate billing
+			if( !ec_validation( "validate_" + input_names[i], value, billing_country_code ) ){
+				info_errors++;
+				document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row_error";
+				jQuery( '#ec_cart_error_billing_' + input_names[i] ).show( );
+			}else{
+				document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row";
+				jQuery( '#ec_cart_error_billing_' + input_names[i] ).hide( );
+			}
 		}
 		
-		if( email != retype_email ){
-			jQuery( '#ec_cart_error_email_match' ).show( );
+		// Validate Credit Card Information
+		if( !ec_validation( "validate_card_number", card_number, payment_method ) ){
+			card_errors++;
+			jQuery( '#ec_cart_error_payment_card_number' ).show( );
 		}else{
-			jQuery( '#ec_cart_error_email_match' ).hide( );
+			jQuery( '#ec_cart_error_payment_card_number' ).hide( );
 		}
 		
-		if( retype_email.length == 0 || email != retype_email ){
-			info_errors++;
-			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_billing_row_error";
+		if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) ){
+			jQuery( '#ec_cart_error_payment_card_exp_month' ).show( );
 		}else{
-			document.getElementById('ec_contact_email_retype_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_error_payment_card_exp_month' ).hide( );
 		}
 		
+		if( !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
+			jQuery( '#ec_cart_error_payment_card_exp_year' ).show( );
+		}else{
+			jQuery( '#ec_cart_error_payment_card_exp_year' ).hide( );
+		}
+		
+		if( !ec_validation( "validate_expiration_month", exp_month, payment_method ) || !ec_validation( "validate_expiration_year", exp_year, payment_method ) ){
 			
-		if( !ec_validation( "validate_password", password, billing_country_code ) ){
-			info_errors++;
-			document.getElementById('ec_contact_password_row').className = "ec_cart_billing_row_error";
-			jQuery( '#ec_cart_error_password' ).show( );
-		}else{
-			document.getElementById('ec_contact_password_row').className = "ec_cart_billing_row";
-			jQuery( '#ec_cart_error_password' ).hide( );
+			card_errors++;
 		}
 		
-		if( retype_password.length == 0 ){
-			jQuery( '#ec_cart_error_retype_password' ).show( );
+		if( !ec_validation( "validate_security_code", sec_code, payment_method ) ){
+			card_errors++;
+			jQuery( '#ec_cart_error_payment_card_code' ).show( );
 		}else{
-			jQuery( '#ec_cart_error_retype_password' ).hide( );
+			jQuery( '#ec_cart_error_payment_card_code' ).hide( );
 		}
 		
-		if( password != retype_password ){
-			jQuery( '#ec_cart_error_password_match' ).show( );
-		}else{
-			jQuery( '#ec_cart_error_password_match' ).hide( );
+		// If new account, Validate Account Info
+		if( document.getElementById( 'ec_contact_email' ) ){
+			
+			var email = jQuery( '#ec_contact_email' ).val( );
+			var retype_email = jQuery( '#ec_contact_email_retype' ).val( );
+			var password = jQuery( '#ec_contact_password' ).val( );
+			var retype_password = jQuery( '#ec_contact_password_retype' ).val( );
+			
+			if( !ec_validation( "validate_email", email, billing_country_code ) ){
+				info_errors++;
+				document.getElementById('ec_contact_email_row').className = "ec_cart_billing_row_error";
+				jQuery( '#ec_cart_error_email' ).show( );
+			}else{
+				document.getElementById('ec_contact_email_row').className = "ec_cart_billing_row";
+				jQuery( '#ec_cart_error_email' ).hide( );
+			}
+			
+			if( retype_email.length == 0 ){
+				jQuery( '#ec_cart_error_retype_email' ).show( );
+			}else{
+				jQuery( '#ec_cart_error_retype_email' ).hide( );
+			}
+			
+			if( email != retype_email ){
+				jQuery( '#ec_cart_error_email_match' ).show( );
+			}else{
+				jQuery( '#ec_cart_error_email_match' ).hide( );
+			}
+			
+			if( retype_email.length == 0 || email != retype_email ){
+				info_errors++;
+				document.getElementById('ec_contact_email_retype_row').className = "ec_cart_billing_row_error";
+			}else{
+				document.getElementById('ec_contact_email_retype_row').className = "ec_cart_billing_row";
+			}
+			
+				
+			if( !ec_validation( "validate_password", password, billing_country_code ) ){
+				info_errors++;
+				document.getElementById('ec_contact_password_row').className = "ec_cart_billing_row_error";
+				jQuery( '#ec_cart_error_password' ).show( );
+			}else{
+				document.getElementById('ec_contact_password_row').className = "ec_cart_billing_row";
+				jQuery( '#ec_cart_error_password' ).hide( );
+			}
+			
+			if( retype_password.length == 0 ){
+				jQuery( '#ec_cart_error_retype_password' ).show( );
+			}else{
+				jQuery( '#ec_cart_error_retype_password' ).hide( );
+			}
+			
+			if( password != retype_password ){
+				jQuery( '#ec_cart_error_password_match' ).show( );
+			}else{
+				jQuery( '#ec_cart_error_password_match' ).hide( );
+			}
+			
+			if( password.length < 6 ){
+				jQuery( '#ec_cart_error_password_length' ).show( );
+			}else{
+				jQuery( '#ec_cart_error_password_length' ).hide( );
+			}
+			
+			if( retype_password.length == 0 || password != retype_password ){
+				info_errors++;
+				document.getElementById('ec_contact_password_retype_row').className = "ec_cart_billing_row_error";
+			}else{
+				document.getElementById('ec_contact_password_retype_row').className = "ec_cart_billing_row";
+			}
+			
 		}
 		
-		if( password.length < 6 ){
-			jQuery( '#ec_cart_error_password_length' ).show( );
+		if( info_errors ){
+			jQuery( '#ec_cart_billing_error_text' ).show( );
 		}else{
-			jQuery( '#ec_cart_error_password_length' ).hide( );
+			jQuery( '#ec_cart_billing_error_text' ).hide( );
 		}
 		
-		if( retype_password.length == 0 || password != retype_password ){
-			info_errors++;
-			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_billing_row_error";
+		if( card_errors ){
+			jQuery( '#ec_cart_payment_error_text' ).show( );
 		}else{
-			document.getElementById('ec_contact_password_retype_row').className = "ec_cart_billing_row";
+			jQuery( '#ec_cart_payment_error_text' ).hide( );
 		}
 		
-	}
-	
-	if( info_errors ){
-		jQuery( '#ec_cart_billing_error_text' ).show( );
+		if( info_errors || card_errors )
+			return false;
+		else
+			return true;
+			
 	}else{
-		jQuery( '#ec_cart_billing_error_text' ).hide( );
-	}
-	
-	if( card_errors ){
-		jQuery( '#ec_cart_payment_error_text' ).show( );
-	}else{
-		jQuery( '#ec_cart_payment_error_text' ).hide( );
-	}
-	
-	if( info_errors || card_errors )
-		return false;
-	else
 		return true;
+	}
 }
