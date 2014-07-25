@@ -21,26 +21,11 @@ class ec_admin_shipping
 	{		
 	
 		function ec_admin_shipping() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
-		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
+			
 			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);
+			$this->db = $wpdb;
 
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);	
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 	
+			define ('WP_PREFIX', $wpdb->prefix);
 
 		}	
 			
@@ -405,24 +390,20 @@ class ec_admin_shipping
 		
 		function getzonedetails($zone_id) {
 			  //Create SQL Query
-			  $sql = $this->escape("SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
+			  $sql = "SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
 									FROM
 									  ec_zone_to_location
 									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta AND ec_country.id_cnt = ec_state.idcnt_sta )
+									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
 									WHERE
-									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt, ec_state.name_sta ASC");
+									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC";
 			  // Run query on database
-			  $result = mysql_query($sql);
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($result) > 0) {
-				  while ($row=mysql_fetch_object($result)) {
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+			  $results = $this->db->get_results( $sql );
+			  
+			  if( count( $results ) > 0 ){
+				  return $results;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 		
@@ -431,71 +412,58 @@ class ec_admin_shipping
 			  //$keyfield = (array)$keyfield;
 			  //$zone_id = (array)$zone_id;
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_zone_to_location WHERE ec_zone_to_location.zone_to_location_id = '".$keyfield."'");
+			  $deletesql = "DELETE FROM ec_zone_to_location WHERE ec_zone_to_location.zone_to_location_id = '".$keyfield."'";
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $result = $this->db->query( $deletesql );
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
 				  //Create SQL Query
-				  $sql = $this->escape("SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
+				  $sql = "SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
 									FROM
 									  ec_zone_to_location
 									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta AND ec_country.id_cnt = ec_state.idcnt_sta)
+									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
 									WHERE
-									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC");
+									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC";
 				  // Run query on database
-				  $result = mysql_query($sql);
+				  $this->db->get_results( $sql );
 				  //if results, convert to an array for use in flash
-				  if(mysql_num_rows($result) > 0) {
-					  while ($row=mysql_fetch_object($result)) {
-						  $returnArray[] = $row;
-					  }
-					  return($returnArray); //return array results if there are some
+				  if( count($results) > 0) {
+					  return $results;
 				  } else {
-					  $returnArray[] = "noresults";
-					  return $returnArray; //return noresults if there are no results
+					  return array( "noresults" );
 				  }
 			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
+				  return array( "error" );
 			  }
 		}
 
 		function insertzonedetails($zone_id, $zonecountry, $zonestate) {
-			$sql = sprintf("Insert into ec_zone_to_location(ec_zone_to_location.zone_to_location_id, ec_zone_to_location.zone_id, ec_zone_to_location.iso2_cnt, ec_zone_to_location.code_sta)
-					values(null, '%s', '%s', '%s')",
-					mysql_real_escape_string($zone_id),
-					mysql_real_escape_string($zonecountry),
-					mysql_real_escape_string($zonestate));
+			
+			$sql = "Insert into ec_zone_to_location(ec_zone_to_location.zone_to_location_id, ec_zone_to_location.zone_id, ec_zone_to_location.iso2_cnt, ec_zone_to_location.code_sta)values(null, '%s', '%s', '%s')";
 
 			//Run query on database;
-			mysql_query($sql);
+			$results = $this->db->query( $this->db->prepare( $sql, $zone_id, $zonecountry, $zonestate));
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
 				//Create SQL Query
-			  $sql = $this->escape("SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
-									FROM
-									  ec_zone_to_location
-									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta AND ec_country.id_cnt = ec_state.idcnt_sta)
-									WHERE
-									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt, ec_state.name_sta ASC");
-			  // Run query on database
-			  $result = mysql_query($sql);
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($result) > 0) {
-				  while ($row=mysql_fetch_object($result)) {
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+				$sql = "SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
+									  FROM
+										ec_zone_to_location
+										LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
+										LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
+									  WHERE
+										ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC";
+				// Run query on database
+				$results = $this->db->get_results( $sql );
+				//if results, convert to an array for use in flash
+				if( count($results) > 0) {
+					  return $results;
+				} else {
+					return array( "noresults" );
+				}
 			} else {
-				$returnArray[] ="error";
-				return($returnArray); //return array results if there are some
+				return array( "error" );
 			}
 		}
 		
@@ -505,56 +473,47 @@ class ec_admin_shipping
 		
 		function getshippingzones() {
 			  //Create SQL Query
-			  $sql = $this->escape("SELECT ec_zone.* FROM ec_zone ORDER BY ec_zone.zone_id ASC");
+			  $sql = "SELECT ec_zone.* FROM ec_zone ORDER BY ec_zone.zone_id ASC";
 			  // Run query on database
-			  $result = mysql_query($sql);
+			  $results = $this->db->get_results( $sql );
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($result) > 0) {
-				  while ($row=mysql_fetch_object($result)) {
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+			  if( count( $results ) > 0 ){
+				  return $results;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 		
 		function deleteshippingzone($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_zone WHERE ec_zone.zone_id = '%s'", $keyfield);
+			  $deletesql = "DELETE FROM ec_zone WHERE ec_zone.zone_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $results = $this->db->query( $this->db->prepare( $deletesql, $keyfield));
 			  
-			  $deletesql = $this->escape("DELETE FROM ec_zone_to_location WHERE ec_zone_to_location.zone_id = '".$keyfield."'");
+			  $deletesql = "DELETE FROM ec_zone_to_location WHERE ec_zone_to_location.zone_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $results = $this->db->query( $this->db->prepare( $deletesql, $keyfield));
 			  
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
+				 return array( "success" );
+			  }else{
+				  return array( "error" );
 			  }
 		}
 
 		function insertshippingzone($zonename) {
 			
-			$sql = sprintf("Insert into ec_zone(ec_zone.zone_id, ec_zone.zone_name)
-					values(null, '%s')",
-					mysql_real_escape_string($zonename));
+			$sql = "Insert into ec_zone(ec_zone.zone_id, ec_zone.zone_name) values(null, '%s')";
 
 			//Run query on database;
-			mysql_query($sql);
+			$results = $this->db->query( $this->db->prepare( $sql, $zonename));
+			
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] ="error";
-				return($returnArray); //return array results if there are some
+			   return array( "success" );
+			}else{
+				return array( "error" );
 			}
 		}
 		
@@ -577,45 +536,37 @@ class ec_admin_shipping
 		
 		function getshippingsettings() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.ups_conversion_rate, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.fedex_conversion_rate, ec_setting.fedex_test_account, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip, ec_setting.dhl_site_id, ec_setting.dhl_password, ec_setting.dhl_ship_from_country, ec_setting.dhl_ship_from_zip, ec_setting.dhl_weight_unit, ec_setting.dhl_test_mode, ec_setting.fraktjakt_customer_id, ec_setting.fraktjakt_login_key, ec_setting.fraktjakt_conversion_rate, ec_setting.fraktjakt_test_mode, ec_setting.fraktjakt_address, ec_setting.fraktjakt_city, ec_setting.fraktjakt_state, ec_setting.fraktjakt_zip, ec_setting.fraktjakt_country FROM ec_setting  WHERE ec_setting.setting_id = 1");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.ups_conversion_rate, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.fedex_conversion_rate, ec_setting.fedex_test_account, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip, ec_setting.dhl_site_id, ec_setting.dhl_password, ec_setting.dhl_ship_from_country, ec_setting.dhl_ship_from_zip, ec_setting.dhl_weight_unit, ec_setting.dhl_test_mode, ec_setting.fraktjakt_customer_id, ec_setting.fraktjakt_login_key, ec_setting.fraktjakt_conversion_rate, ec_setting.fraktjakt_test_mode, ec_setting.fraktjakt_address, ec_setting.fraktjakt_city, ec_setting.fraktjakt_state, ec_setting.fraktjakt_zip, ec_setting.fraktjakt_country FROM ec_setting  WHERE ec_setting.setting_id = 1";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
+
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some 
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results 
+			  if( count( $results ) > 0 ){
+				  $results[0]->totalrows = $totalrows;
+				  return $results;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 		
 		function updateshippingmethodsetting($shippingmethod, $handlingcharge) {
 			
 			  //Create SQL Query
-			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s', ec_setting.shipping_handling_rate='%s' WHERE ec_setting.setting_id = 1", 
-			   mysql_real_escape_string($shippingmethod),
-			   mysql_real_escape_string($handlingcharge));
+			  $sql = "UPDATE ec_setting SET ec_setting.shipping_method='%s', ec_setting.shipping_handling_rate='%s' WHERE ec_setting.setting_id = 1";
 			//Run query on database;
-			  mysql_query($sql);
+			 $results = $this->db->query( $this->db->prepare( $sql, $shippingmethod, $handlingcharge));
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if th ere are no results
+					return array( "error" );
 				}
 			}
 		}	 
@@ -625,62 +576,60 @@ class ec_admin_shipping
 				//convert object to array
 			  $shippingsettings = (array)$shippingsettings;
 			  //Create SQL Query
-			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_method='%s', ec_setting.shipping_handling_rate='%s', ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.ups_conversion_rate ='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s',  ec_setting.fedex_conversion_rate ='%s', ec_setting.fedex_test_account='%s', ec_setting.auspost_api_key = '%s', ec_setting.auspost_ship_from_zip = '%s' , ec_setting.dhl_site_id = '%s', ec_setting.dhl_password = '%s', ec_setting.dhl_ship_from_country = '%s', ec_setting.dhl_ship_from_zip = '%s', ec_setting.dhl_weight_unit = '%s', ec_setting.dhl_test_mode = '%s', ec_setting.fraktjakt_customer_id = '%s', ec_setting.fraktjakt_login_key = '%s', ec_setting.fraktjakt_conversion_rate = '%s', ec_setting.fraktjakt_test_mode = '%s', ec_setting.fraktjakt_address = '%s', ec_setting.fraktjakt_city = '%s', ec_setting.fraktjakt_state = '%s', ec_setting.fraktjakt_zip = '%s', ec_setting.fraktjakt_country = '%s' WHERE ec_setting.setting_id = 1", 
-			 mysql_real_escape_string($shippingsettings['shippingmethod']), 
-			 mysql_real_escape_string($shippingsettings['handlingcharge']), 
-			 mysql_real_escape_string($shippingsettings['ups_access_license_number']), 
-			 mysql_real_escape_string($shippingsettings['ups_user_id']),  
-			 mysql_real_escape_string($shippingsettings['ups_password']), 
-			 mysql_real_escape_string($shippingsettings['ups_ship_from_zip']), 
-			 mysql_real_escape_string($shippingsettings['ups_shipper_number']), 
-			 mysql_real_escape_string($shippingsettings['ups_country_code']), 
-			 mysql_real_escape_string($shippingsettings['ups_weight_type']),
-			 mysql_real_escape_string($shippingsettings['ups_conversion_rate']),
-			 mysql_real_escape_string($shippingsettings['usps_user_name']), 
-			 mysql_real_escape_string($shippingsettings['usps_ship_from_zip']),
-			 mysql_real_escape_string($shippingsettings['fedex_key']), 
-			 mysql_real_escape_string($shippingsettings['fedex_account_number']), 
-			 mysql_real_escape_string($shippingsettings['fedex_meter_number']), 
-			 mysql_real_escape_string($shippingsettings['fedex_password']), 
-			 mysql_real_escape_string($shippingsettings['fedex_ship_from_zip']),
-			 mysql_real_escape_string($shippingsettings['fedex_weight_units']), 
-			 mysql_real_escape_string($shippingsettings['fedex_country_code']),
-			 mysql_real_escape_string($shippingsettings['fedex_conversion_rate']),
-			 mysql_real_escape_string($shippingsettings['fedex_test_account']),
-			 mysql_real_escape_string($shippingsettings['auspost_api_key']), 
-			 mysql_real_escape_string($shippingsettings['auspost_ship_from_zip']),
-			 mysql_real_escape_string($shippingsettings['dhl_site_id']), 
-			 mysql_real_escape_string($shippingsettings['dhl_password']),
-			 mysql_real_escape_string($shippingsettings['dhl_ship_from_country']), 
-			 mysql_real_escape_string($shippingsettings['dhl_ship_from_zip']),
-			 mysql_real_escape_string($shippingsettings['dhl_weight_unit']),
-			 mysql_real_escape_string($shippingsettings['dhl_test_mode']),
-			 mysql_real_escape_string($shippingsettings['fj_customerid']),
-			 mysql_real_escape_string($shippingsettings['fj_loginkey']),
-			 mysql_real_escape_string($shippingsettings['fj_conversionrate']),
-			 mysql_real_escape_string($shippingsettings['fj_testmode']),
-			 mysql_real_escape_string($shippingsettings['fj_address']),
-			 mysql_real_escape_string($shippingsettings['fj_city']),
-			 mysql_real_escape_string($shippingsettings['fj_state']),
-			 mysql_real_escape_string($shippingsettings['fj_zip']),
-			 mysql_real_escape_string($shippingsettings['fj_country']));
-			//Run query on database;
-			  mysql_query($sql);
+			  $sql = "UPDATE ec_setting SET ec_setting.shipping_method='%s', ec_setting.shipping_handling_rate='%s', ec_setting.ups_access_license_number='%s', ec_setting.ups_user_id='%s', ec_setting.ups_password='%s', ec_setting.ups_ship_from_zip='%s', ec_setting.ups_shipper_number='%s', ec_setting.ups_country_code='%s', ec_setting.ups_weight_type='%s', ec_setting.ups_conversion_rate ='%s', ec_setting.usps_user_name='%s', ec_setting.usps_ship_from_zip='%s', ec_setting.fedex_key='%s', ec_setting.fedex_account_number='%s', ec_setting.fedex_meter_number='%s', ec_setting.fedex_password='%s', ec_setting.fedex_ship_from_zip='%s', ec_setting.fedex_weight_units='%s', ec_setting.fedex_country_code='%s',  ec_setting.fedex_conversion_rate ='%s', ec_setting.fedex_test_account='%s', ec_setting.auspost_api_key = '%s', ec_setting.auspost_ship_from_zip = '%s' , ec_setting.dhl_site_id = '%s', ec_setting.dhl_password = '%s', ec_setting.dhl_ship_from_country = '%s', ec_setting.dhl_ship_from_zip = '%s', ec_setting.dhl_weight_unit = '%s', ec_setting.dhl_test_mode = '%s', ec_setting.fraktjakt_customer_id = '%s', ec_setting.fraktjakt_login_key = '%s', ec_setting.fraktjakt_conversion_rate = '%s', ec_setting.fraktjakt_test_mode = '%s', ec_setting.fraktjakt_address = '%s', ec_setting.fraktjakt_city = '%s', ec_setting.fraktjakt_state = '%s', ec_setting.fraktjakt_zip = '%s', ec_setting.fraktjakt_country = '%s' WHERE ec_setting.setting_id = 1";
+			  
+			 $this->db->query( $this->db->prepare( $sql, 
+			  $shippingsettings['shippingmethod'], 
+			  $shippingsettings['handlingcharge'], 
+			  $shippingsettings['ups_access_license_number'], 
+			  $shippingsettings['ups_user_id'],  
+			  $shippingsettings['ups_password'], 
+			  $shippingsettings['ups_ship_from_zip'], 
+			  $shippingsettings['ups_shipper_number'], 
+			  $shippingsettings['ups_country_code'], 
+			  $shippingsettings['ups_weight_type'],
+			  $shippingsettings['ups_conversion_rate'],
+			  $shippingsettings['usps_user_name'], 
+			  $shippingsettings['usps_ship_from_zip'],
+			  $shippingsettings['fedex_key'], 
+			  $shippingsettings['fedex_account_number'], 
+			  $shippingsettings['fedex_meter_number'], 
+			  $shippingsettings['fedex_password'], 
+			  $shippingsettings['fedex_ship_from_zip'],
+			  $shippingsettings['fedex_weight_units'], 
+			  $shippingsettings['fedex_country_code'],
+			  $shippingsettings['fedex_conversion_rate'],
+			  $shippingsettings['fedex_test_account'],
+			  $shippingsettings['auspost_api_key'], 
+			  $shippingsettings['auspost_ship_from_zip'],
+			  $shippingsettings['dhl_site_id'], 
+			  $shippingsettings['dhl_password'],
+			  $shippingsettings['dhl_ship_from_country'], 
+			  $shippingsettings['dhl_ship_from_zip'],
+			  $shippingsettings['dhl_weight_unit'],
+			  $shippingsettings['dhl_test_mode'],
+			  $shippingsettings['fj_customerid'],
+			  $shippingsettings['fj_loginkey'],
+			  $shippingsettings['fj_conversionrate'],
+			  $shippingsettings['fj_testmode'],
+			  $shippingsettings['fj_address'],
+			  $shippingsettings['fj_city'],
+			  $shippingsettings['fj_state'],
+			  $shippingsettings['fj_zip'],
+			  $shippingsettings['fj_country']));
+
 			  //return mysql_error();
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
-				//$sqlerror = mysql_error();
+				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}	
@@ -691,38 +640,31 @@ class ec_admin_shipping
 		
 		function getdhl() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_dhl_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_dhl_based = 1 ORDER BY ec_shippingrate.shipping_order ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+			  if( count( $results ) > 0 ){
+				  $results[0]->totalrows = $totalrows;
+				  return $results;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 		
 		function deletedhl($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			  $deletesql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
-			  
+			  $results = $this->db->query( $this->db->prepare( $deletesql, $keyfield));
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			   return array( "success" );
+			}else{
+				return array( "error" );
+			}
 		}
 		function updatedhl($keyfield, $info) {
 			//convert object to array
@@ -730,37 +672,28 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s','%s', '%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s','%s', '%s', 1, '%s')";
+					$results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s', '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s', '%s', null, 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
 			//Run query on database;
-			mysql_query($sql);
+			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -770,37 +703,27 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
-					values(null, '%s', '%s','%s','%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s','%s','%s', 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
-					values(null, '%s', '%s', '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s', '%s', null, 1, '%s')";
+				   $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
-			//Run query on database;
-			  mysql_query($sql);
+
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -812,38 +735,31 @@ class ec_admin_shipping
 		
 		function getauspost() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_auspost_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_auspost_based = 1 ORDER BY ec_shippingrate.shipping_order ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+			  if( count( $results ) > 0 ){
+				  $results[0]->totalrows = $totalrows;
+				  return $results;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 		
 		function deleteauspost($keyfield) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			   //Create SQL Query	
+			  $deletesql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
-			  
+			  $results = $this->db->query( $this->db->prepare( $deletesql, $keyfield));
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			   return array( "success" );
+			}else{
+				return array( "error" );
+			}
 		}
 		function updateauspost($keyfield, $info) {
 			//convert object to array
@@ -851,37 +767,28 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s','%s', '%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s','%s', '%s', 1, '%s')";
+					$results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s', '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s', '%s', null, 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
 			//Run query on database;
-			mysql_query($sql);
+			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -891,37 +798,27 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
-					values(null, '%s', '%s','%s','%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s','%s','%s', 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
-					values(null, '%s', '%s', '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s', '%s', null, 1, '%s')";
+				   $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
-			//Run query on database;
-			  mysql_query($sql);
+
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -931,38 +828,31 @@ class ec_admin_shipping
 		
 		function getups() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_ups_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_ups_based = 1 ORDER BY ec_shippingrate.shipping_order ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+			  if( count( $results ) > 0 ){
+				  $results[0]->totalrows = $totalrows;
+				  return $results;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 		
 		function deleteups($keyfield) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			   //Create SQL Query	
+			  $deletesql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
-			  
+			  $results = $this->db->query( $this->db->prepare( $deletesql, $keyfield));
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			   return array( "success" );
+			}else{
+				return array( "error" );
+			}
 		}
 		function updateups($keyfield, $info) {
 			//convert object to array
@@ -970,39 +860,28 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s','%s', '%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s','%s', '%s', 1, '%s')";
+					$results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s', '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s', '%s', null, 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
-			  
-		
 			//Run query on database;
-			mysql_query($sql);
+			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1012,37 +891,27 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
-					values(null, '%s', '%s','%s','%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s','%s','%s', 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
-					values(null, '%s', '%s', '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s', '%s', null, 1, '%s')";
+				   $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
-			//Run query on database;
-			  mysql_query($sql);
+
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1053,38 +922,31 @@ class ec_admin_shipping
 		
 		function getusps() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_usps_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_usps_based = 1 ORDER BY ec_shippingrate.shipping_order ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+			  if( count( $results ) > 0 ){
+				  $results[0]->totalrows = $totalrows;
+				  return $results;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 		
 		function deleteusps($keyfield) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			   //Create SQL Query	
+			  $deletesql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
-			  
+			  $results = $this->db->query( $this->db->prepare( $deletesql, $keyfield));
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			   return array( "success" );
+			}else{
+				return array( "error" );
+			}
 		}
 		function updateusps($keyfield, $info) {
 			//convert object to array
@@ -1092,37 +954,28 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s','%s','%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s','%s', '%s', 1, '%s')";
+					$results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s','%s', '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s', '%s', null, 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
 			//Run query on database;
-			mysql_query($sql);
+			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1132,40 +985,30 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-					$sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
-					values(null, '%s', '%s','%s','%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s','%s','%s', 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
-					values(null, '%s', '%s', '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s', '%s', null, 1, '%s')";
+				   $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
-			//Run query on database;
-			  mysql_query($sql);
+
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
-		}	
+		}
 		
 		/////////////////////////////////////////////////////////////////////////////////
 		//FedEx BASED SHIPPING
@@ -1173,38 +1016,31 @@ class ec_admin_shipping
 		
 		function getfedex() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_fedex_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_fedex_based = 1 ORDER BY ec_shippingrate.shipping_order ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+			  if( count( $results ) > 0 ){
+				  $results[0]->totalrows = $totalrows;
+				  return $results;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 		
 		function deletefedex($keyfield) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			   //Create SQL Query	
+			  $deletesql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
-			  
+			  $results = $this->db->query( $this->db->prepare( $deletesql, $keyfield));
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			   return array( "success" );
+			}else{
+				return array( "error" );
+			}
 		}
 		function updatefedex($keyfield, $info) {
 			//convert object to array
@@ -1212,37 +1048,28 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order,ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s', '%s','%s', 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s','%s', '%s', 1, '%s')";
+					$results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
-					values('".$keyfield."', '%s', '%s',  '%s', null, 1, '%s')",
-					mysql_real_escape_string($info['shippinglabel']),
-					mysql_real_escape_string($info['shippingcode']),
-					mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
+					values('".$keyfield."', '%s', '%s', '%s', null, 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
 			//Run query on database;
-			mysql_query($sql);
+			
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1252,63 +1079,53 @@ class ec_admin_shipping
 			  
 			  //Create SQL Query
 			  if($info['shippingoverride'] != '') {
-			 	 $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order,ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
-				values(null, '%s', '%s','%s', '%s', 1, '%s')",
-				mysql_real_escape_string($info['shippinglabel']),
-				mysql_real_escape_string($info['shippingcode']),
-				mysql_real_escape_string($info['shipping_order']),
-				mysql_real_escape_string($info['shippingoverride']),
-					mysql_real_escape_string($info['zoneid']));
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s','%s','%s', 1, '%s')";
+					
+				  $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 			  } else {
-				$sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
-				values(null, '%s','%s', '%s', null, 1, '%s')",
-				mysql_real_escape_string($info['shippinglabel']),
-				mysql_real_escape_string($info['shippingcode']),
-				mysql_real_escape_string($info['shipping_order']),
-					mysql_real_escape_string($info['zoneid']));  
+				  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
+					values(null, '%s', '%s', '%s', null, 1, '%s')";
+				   $results = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
 			  }
-			//Run query on database;
-			  mysql_query($sql);
+
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
-		}							
+		}		
 	
+
+
+
+
 		
 		//shipping functions
 		function updateexpeditedrates($rate) {
-			  //Create SQL Query
-			  $sql = sprintf("UPDATE ec_setting SET ec_setting.shipping_expedite_rate='%s' WHERE ec_setting.setting_id = 1", 
-			 mysql_real_escape_string($rate));
+			//Create SQL Query
+			$sql = "UPDATE ec_setting SET ec_setting.shipping_expedite_rate='%s' WHERE ec_setting.setting_id = 1";
 			//Run query on database;
-			  mysql_query($sql);
+			$results = $this->db->query( $this->db->prepare( $sql, $rate));
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1319,38 +1136,32 @@ class ec_admin_shipping
 			//METHOD BASED SHIPPING
 			/////////////////////////////////////////////////////////////////////////////////
 	
-			function getmethodshippingrates() {
+		function getmethodshippingrates() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_method_based = 1 ORDER BY ec_shippingrate.shipping_order ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql= "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_method_based = 1 ORDER BY ec_shippingrate.shipping_order ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			 //if results, convert to an array for use in flash
+			if( count( $results ) > 0 ){
+				$results[0]->totalrows = $totalrows;
+				return $results;
+			}else{
+				return array( "noresults" );
+			}
 		}
 		function deleteshippingmethodrate($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			  $sql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $results = $this->db->query( $this->db->prepare( $sql, $keyfield));
 			  
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
+				 return array( "success" );
+			  }else{
+				  return array( "error" );
 			  }
 		}
 		function updateshippingmethodrate($keyfield, $rate) {
@@ -1358,28 +1169,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id,  ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order,  ec_shippingrate.is_method_based, ec_shippingrate.zone_id)
-				values('".$keyfield."', '%s', '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['shippingrate']),
-				mysql_real_escape_string($rate['shippinglabel']),
-				mysql_real_escape_string($rate['shippingorder']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id,  ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order,  ec_shippingrate.is_method_based, ec_shippingrate.zone_id)
+				values('".$keyfield."', '%s', '%s', '%s', 1, '%s')";
 			//Run query on database;
-			mysql_query($sql);
+			$results = $this->db->query( $this->db->prepare( $sql, $rate['shippingrate'],$rate['shippinglabel'], $rate['shippingorder'], $rate['zoneid'] ));
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1388,28 +1192,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id,  ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order,  ec_shippingrate.is_method_based, ec_shippingrate.zone_id)
-				values(null, '%s', '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['shippingrate']),
-				mysql_real_escape_string($rate['shippinglabel']),
-				mysql_real_escape_string($rate['shippingorder']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id,  ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order,  ec_shippingrate.is_method_based, ec_shippingrate.zone_id)
+				values(null, '%s', '%s', '%s', 1, '%s')";
 			//Run query on database;
-			  mysql_query($sql);
+			 $results = $this->db->query( $this->db->prepare( $sql, $rate['shippingrate'],$rate['shippinglabel'], $rate['shippingorder'], $rate['zoneid'] ));
 			  //if no errors, return their  current Client ID
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1425,27 +1222,23 @@ class ec_admin_shipping
 		
 		function getweightshippingrates() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_weight_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_weight_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			  if( count( $results ) > 0 ){
+				$results[0]->totalrows = $totalrows;
+				return $results;
+			}else{
+				return array( "noresults" );
+			}
 		}
 		function deleteshippingweightrate($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			  $sql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $this->db->query( $this->db->prepare( $sql, $keyfield));
 			  
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
@@ -1462,27 +1255,20 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_weight_based, ec_shippingrate.zone_id)
-				values('".$keyfield."', '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['triggerrate']),
-				mysql_real_escape_string($rate['shippingrate']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_weight_based, ec_shippingrate.zone_id)
+				values('".$keyfield."', '%s', '%s', 1, '%s')";
 			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
+			$results = $this->db->query( $this->db->prepare( $sql, $rate['triggerrate'],$rate['shippingrate'],  $rate['zoneid']));
+
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1491,27 +1277,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_weight_based, ec_shippingrate.zone_id)
-				values(null, '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['triggerrate']),
-				mysql_real_escape_string($rate['shippingrate']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_weight_based, ec_shippingrate.zone_id)
+				values(null, '%s', '%s', 1, '%s')";
 			//Run query on database;
-			  mysql_query($sql);
+			  $results = $this->db->query( $this->db->prepare( $sql, $rate['triggerrate'],$rate['shippingrate'],  $rate['zoneid']));
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			 if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1526,28 +1306,24 @@ class ec_admin_shipping
 		
 		function getpriceshippingrates() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_price_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_price_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			 if( count( $results ) > 0 ){
+				$results[0]->totalrows = $totalrows;
+				return $results;
+			}else{
+				return array( "noresults" );
+			}
 		}
 		
 		function deleteshippingpricerate($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			  $sql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $this->db->query( $this->db->prepare( $sql, $keyfield));
 			  
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
@@ -1564,27 +1340,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_price_based, ec_shippingrate.zone_id)
-				values('".$keyfield."', '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['triggerrate']),
-				mysql_real_escape_string($rate['shippingrate']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_price_based, ec_shippingrate.zone_id)
+				values('".$keyfield."', '%s', '%s', 1, '%s')";
 			//Run query on database;
-			mysql_query($sql);
+			$results = $this->db->query( $this->db->prepare( $sql, $rate['triggerrate'],$rate['shippingrate'],  $rate['zoneid']));
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1593,27 +1363,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_price_based, ec_shippingrate.zone_id)
-				values(null, '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['triggerrate']),
-				mysql_real_escape_string($rate['shippingrate']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_price_based, ec_shippingrate.zone_id)
+				values(null, '%s', '%s', 1, '%s')";
 			//Run query on database;
-			  mysql_query($sql);
+			  $results = $this->db->query( $this->db->prepare( $sql, $rate['triggerrate'],$rate['shippingrate'],  $rate['zoneid']));
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			 if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1625,28 +1389,24 @@ class ec_admin_shipping
 		
 		function getpercentageshippingrates() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_percentage_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_percentage_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			  if( count( $results ) > 0 ){
+				$results[0]->totalrows = $totalrows;
+				return $results;
+			}else{
+				return array( "noresults" );
+			}
 		}
 		
 		function deleteshippingpercentagerate($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			  $sql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $this->db->query( $this->db->prepare( $sql, $keyfield));
 			  
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
@@ -1663,27 +1423,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_percentage_based, ec_shippingrate.zone_id)
-				values('".$keyfield."', '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['triggerrate']),
-				mysql_real_escape_string($rate['shippingrate']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_percentage_based, ec_shippingrate.zone_id)
+				values('".$keyfield."', '%s', '%s', 1, '%s')";
 			//Run query on database;
-			mysql_query($sql);
+			$results = $this->db->query( $this->db->prepare( $sql, $rate['triggerrate'],$rate['shippingrate'],  $rate['zoneid']));
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1692,27 +1446,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_percentage_based, ec_shippingrate.zone_id)
-				values(null, '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['triggerrate']),
-				mysql_real_escape_string($rate['shippingrate']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_percentage_based, ec_shippingrate.zone_id)
+				values(null, '%s', '%s', 1, '%s')";
 			//Run query on database;
-			  mysql_query($sql);
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			$results = $this->db->query( $this->db->prepare( $sql, $rate['triggerrate'],$rate['shippingrate'],  $rate['zoneid']));
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1725,28 +1473,24 @@ class ec_admin_shipping
 		
 		function getquantityshippingrates() {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_quantity_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_quantity_based = 1 ORDER BY ec_shippingrate.trigger_rate ASC";
+			  $results = $this->db->get_results( $sql );
+			  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+			  if( count( $results ) > 0 ){
+				$results[0]->totalrows = $totalrows;
+				return $results;
+			}else{
+				return array( "noresults" );
+			}
 		}
 		
 		function deleteshippingquantityrate($keyfield) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'", $keyfield);
+			  $sql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $this->db->query( $this->db->prepare( $sql, $keyfield));
 			  
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
@@ -1763,27 +1507,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_quantity_based, ec_shippingrate.zone_id)
-				values('".$keyfield."', '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['triggerrate']),
-				mysql_real_escape_string($rate['shippingrate']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_quantity_based, ec_shippingrate.zone_id)
+				values('".$keyfield."', '%s', '%s', 1, '%s')";
 			//Run query on database;
-			mysql_query($sql);
+			$results = $this->db->query( $this->db->prepare( $sql, $rate['triggerrate'],$rate['shippingrate'],  $rate['zoneid']));
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = "error";
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}
@@ -1792,27 +1530,21 @@ class ec_admin_shipping
 			  $rate = (array)$rate;
 			  
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_quantity_based, ec_shippingrate.zone_id)
-				values(null, '%s', '%s', 1, '%s')",
-				mysql_real_escape_string($rate['triggerrate']),
-				mysql_real_escape_string($rate['shippingrate']),
-					mysql_real_escape_string($rate['zoneid']));
+			  $sql = "Insert into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.is_quantity_based, ec_shippingrate.zone_id)
+				values(null, '%s', '%s', 1, '%s')";
 			//Run query on database;
-			  mysql_query($sql);
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
+			 $results = $this->db->query( $this->db->prepare( $sql, $rate['triggerrate'],$rate['shippingrate'],  $rate['zoneid']));
+			//if no errors, return their current Client ID
+			//if results, convert to an array for use in flash
+			if(!mysql_error()) {
+				return array( "success" );
 			} else {
 				$sqlerror = mysql_error();
 				$error = explode(" ", $sqlerror);
 				if ($error[0] == "Duplicate") {
-					$returnArray[] = "duplicate";
-					return $returnArray; //return noresults if there are no results
+					return array( "duplicate" );
 			    } else {  
-					$returnArray[] = mysql_error();
-					return $returnArray; //return noresults if there are no results
+					return array( "error" );
 				}
 			}
 		}	

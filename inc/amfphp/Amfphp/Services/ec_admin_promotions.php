@@ -17,113 +17,74 @@
 */
 
 
-class ec_admin_promotions
-	{		
+class ec_admin_promotions{		
+		
+	private $db;
 	
-		function ec_admin_promotions() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
+	function ec_admin_promotions( ){
 		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
-			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);
+		global $wpdb;
+		$this->db = $wpdb;
 
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);	
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 
-
-		}	
-		
-		
-		//secure all of the services for logged in authenticated users only	
-		public function _getMethodRoles($methodName){
-		   if ($methodName == 'getpromotions') return array('admin');
-		   else if($methodName == 'deletepromotion') return array('admin');
-		   else if($methodName == 'updatepromotion') return array('admin');
-		   else if($methodName == 'addpromotion') return array('admin');
-		   else  return null;
-		}
-			
-		
-		//HELPER - used to escape out SQL calls
-		function escape($sql) 
-		{ 
-			  $args = func_get_args(); 
-				foreach($args as $key => $val) 
-				{ 
-					$args[$key] = mysql_real_escape_string($val); 
-				} 
-				 
-				$args[0] = $sql; 
-				return call_user_func_array('sprintf', $args); 
-		} 
-		
-
-		//promotion functions
-		function getpromotions($startrecord, $limit, $orderby, $ordertype, $filter) {
-			
-				$timezone = mysql_query("SELECT ec_setting.timezone from ec_setting");
-			 	$timezoneobject = mysql_fetch_object($timezone);
-				date_default_timezone_set($timezoneobject->timezone);
-				
-			
-				$serverdtz = date_default_timezone_get();
-				$dtz = new DateTimeZone($serverdtz);
-				$server_time = new DateTime('now', $dtz);
-				$offset = $dtz->getOffset( $server_time );
+	}
 	
-			
-			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS ec_promotion.*, ec_promotion.start_date AS original_start_date, ec_promotion.end_date AS original_end_date, UNIX_TIMESTAMP(ec_promotion.start_date) AS start_date, UNIX_TIMESTAMP(ec_promotion.end_date) AS end_date FROM ec_promotion  WHERE ec_promotion.promotion_id != '' ".$filter." ORDER BY ".  $orderby ." ".  $ordertype . " LIMIT ".  $startrecord .", ".  $limit."");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
-			  
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $row->timezone=$serverdtz;
-					  $phpstarttime = strtotime($row->original_start_date);
-					  $phpendtime = strtotime($row->original_end_date);
-					  $row->offset = $offset;
-					  $row->offset_start_date = strval($phpstarttime);
-					  $row->offset_end_date = strval($phpendtime);
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+	public function _getMethodRoles($methodName){
+	   if ($methodName == 'getpromotions') return array('admin');
+	   else if($methodName == 'deletepromotion') return array('admin');
+	   else if($methodName == 'updatepromotion') return array('admin');
+	   else if($methodName == 'addpromotion') return array('admin');
+	   else  return null;
+	}
+	
+	function getpromotions( $startrecord, $limit, $orderby, $ordertype, $filter ) {
+		
+		$timezonesql = "SELECT ec_setting.timezone FROM ec_setting";
+		$timezone = $this->db->get_var( $timezonesql );
+		date_default_timezone_set( $timezone );
+		
+		$serverdtz = date_default_timezone_get( );
+		$dtz = new DateTimeZone( $serverdtz );
+		$server_time = new DateTime( 'now', $dtz );
+		$offset = $dtz->getOffset( $server_time );
+		
+		$sql = "SELECT SQL_CALC_FOUND_ROWS ec_promotion.*, ec_promotion.start_date AS original_start_date, ec_promotion.end_date AS original_end_date, UNIX_TIMESTAMP( ec_promotion.start_date ) AS start_date, UNIX_TIMESTAMP( ec_promotion.end_date ) AS end_date FROM ec_promotion WHERE ec_promotion.promotion_id != '' " . $filter . " ORDER BY " . $orderby . " " . $ordertype . " LIMIT ". $startrecord . ", " . $limit;
+		$results = $this->db->get_results( $sql );
+		$totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
+		$returnArray = array( );
+		
+		if( count( $results ) > 0 ){
+			foreach( $results as $row ){
+				$row->timezone = $serverdtz;
+				$phpstarttime = strtotime( $row->original_start_date );
+				$phpendtime = strtotime( $row->original_end_date );
+				$row->offset = $offset;
+				$row->offset_start_date = strval( $phpstarttime );
+				$row->offset_end_date = strval( $phpendtime );
+				$row->totalrows = $totalrows;
+				$returnArray[] = $row;
+		  	}
+		  	return $returnArray;
+		
+		}else{
+		  return array( "noresults" );
 		}
 		
-		function deletepromotion($promotionid) {
-			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_promotion WHERE ec_promotion.promotion_id = '%s'", $promotionid);
-			  //Run query on database;
-			  mysql_query($deletesql);
-			  
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
-			  }
+	}
+	
+	function deletepromotion( $promotionid ){
+		  
+		$sql = "DELETE FROM ec_promotion WHERE ec_promotion.promotion_id = %s";
+		$success = $this->db->query( $this->db->prepare( $sql, $promotionid ) );
+		
+		if( $success === FALSE ){
+			return array( "error" );
+		}else{
+			return array( "success" );
 		}
-		function updatepromotion($promotionid, $promotioninfo) {
+	
+	}
+	
+	function updatepromotion($promotionid, $promotioninfo) {
 			
 			//convert object to array
 			 $promotioninfo = (array)$promotioninfo;
@@ -142,31 +103,26 @@ class ec_admin_promotions
 				$enddate = 'NULL';
 			}
 			  //Create SQL Query
-			  $sql = sprintf("Replace into ec_promotion(ec_promotion.promotion_id, ec_promotion.name, ec_promotion.type, ec_promotion.start_date, ec_promotion.end_date, ec_promotion.product_id_1, ec_promotion.manufacturer_id_1, ec_promotion.category_id_1, ec_promotion.price1, ec_promotion.price2, ec_promotion.percentage1)
-				values('".$promotionid."', '%s', '%s', ".$startdate.", ".$enddate.", '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($promotioninfo['promotionname']),
-				mysql_real_escape_string($promotioninfo['promotiontype']),
-				mysql_real_escape_string($promotioninfo['product1']),
-				mysql_real_escape_string($promotioninfo['manufacturer1']),
-				mysql_real_escape_string($promotioninfo['category1']),
-				mysql_real_escape_string($promotioninfo['price1']),
-				mysql_real_escape_string($promotioninfo['price2']),
-				mysql_real_escape_string($promotioninfo['percentage1']));
+			  $sql = "Replace into ec_promotion(ec_promotion.promotion_id, ec_promotion.name, ec_promotion.type, ec_promotion.start_date, ec_promotion.end_date, ec_promotion.product_id_1, ec_promotion.manufacturer_id_1, ec_promotion.category_id_1, ec_promotion.price1, ec_promotion.price2, ec_promotion.percentage1)
+				values('".$promotionid."', '%s', '%s', ".$startdate.", ".$enddate.", '%s', '%s', '%s', '%s', '%s', '%s')";
 			
 	
-			//Run query on database;
-			mysql_query($sql);
+			$this->db->query( $this->db->prepare( $sql,  $promotioninfo['promotionname'],
+				 $promotioninfo['promotiontype'],
+				 $promotioninfo['product1'],
+				 $promotioninfo['manufacturer1'],
+				 $promotioninfo['category1'],
+				 $promotioninfo['price1'],
+				 $promotioninfo['price2'],
+				 $promotioninfo['percentage1']));
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				return mysql_error();
-				return $returnArray; //return noresults if there are no results
-			}
+			
+			return array( "success" );
+			
 		}
-		function addpromotion($promotioninfo) {
+	
+	function addpromotion($promotioninfo) {
 			
 			 //convert object to array
 			 $promotioninfo = (array)$promotioninfo; 
@@ -187,48 +143,24 @@ class ec_admin_promotions
 			
 			
 			
-			/*  if ($promotioninfo['startdate'] != '') {
-				$startdate = date('Y-m-d H:i:s', ($promotioninfo['startdate']->timeStamp / 1000));
-			} else {
-				$startdate = 'NULL';
-			}
-			if ($promotioninfo['enddate'] != '') {
-				$enddate = date('Y-m-d H:i:s', ($promotioninfo['enddate']->timeStamp / 1000));
-			} else {
-				$enddate = 'NULL';
-			}*/
-			
-			
-			
 			
 			  //Create SQL Query
-			  $sql = sprintf("Insert into ec_promotion(ec_promotion.promotion_id, ec_promotion.name, ec_promotion.type, ec_promotion.start_date, ec_promotion.end_date, ec_promotion.product_id_1, ec_promotion.manufacturer_id_1, ec_promotion.category_id_1, ec_promotion.price1, ec_promotion.price2, ec_promotion.percentage1)
-				values(NULL, '%s', '%s', ".$startdate.", ".$enddate.", '%s', '%s', '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($promotioninfo['promotionname']),
-				mysql_real_escape_string($promotioninfo['promotiontype']),
-				mysql_real_escape_string($promotioninfo['product1']),
-				mysql_real_escape_string($promotioninfo['manufacturer1']),
-				mysql_real_escape_string($promotioninfo['category1']),
-				mysql_real_escape_string($promotioninfo['price1']),
-				mysql_real_escape_string($promotioninfo['price2']),
-				mysql_real_escape_string($promotioninfo['percentage1']));
+			  $sql = "Insert into ec_promotion(ec_promotion.promotion_id, ec_promotion.name, ec_promotion.type, ec_promotion.start_date, ec_promotion.end_date, ec_promotion.product_id_1, ec_promotion.manufacturer_id_1, ec_promotion.category_id_1, ec_promotion.price1, ec_promotion.price2, ec_promotion.percentage1)
+				values(NULL, '%s', '%s', ".$startdate.", ".$enddate.", '%s', '%s', '%s', '%s', '%s', '%s')";
 				
-			// return $sql;
-			 //Run query on database;
-			  mysql_query($sql);
-			  //if no errors, return their current Client ID
-			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  return mysql_error();
-				  //return $returnArray; //return noresults if there are no results
-			  }
+			 $this->db->query( $this->db->prepare( $sql,
+				 $promotioninfo['promotionname'],
+				 $promotioninfo['promotiontype'],
+				 $promotioninfo['product1'],
+				 $promotioninfo['manufacturer1'],
+				 $promotioninfo['category1'],
+				 $promotioninfo['price1'],
+				 $promotioninfo['price2'],
+				 $promotioninfo['percentage1']));
+				
+			  return array( "success" );
+			  
 		}
 
-
-
-
-	}//close class
+}
 ?>

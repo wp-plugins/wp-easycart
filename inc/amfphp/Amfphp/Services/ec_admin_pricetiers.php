@@ -17,127 +17,76 @@
 */
 
 
-class ec_admin_pricetiers
-	{		
+class ec_admin_pricetiers{
 	
-		function ec_admin_pricetiers() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
+	private $db;	
+	
+	function ec_admin_pricetiers( ){
 		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
-			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);	
+		global $wpdb;
+		$this->db = $wpdb;
 
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);	
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 	
-
-		}	
+	}	
+	
+	public function _getMethodRoles($methodName){
+	   if ($methodName == 'getpricetier') return array('admin');
+	   else if($methodName == 'updatepricetier') return array('admin');
+	   else if($methodName == 'deletepricetier') return array('admin');
+	   else if($methodName == 'addpricetier') return array('admin');
+	   else  return null;
+	}	
+	
+	function getpricetier( $productid ){
 		
+		$sql = "SELECT ec_pricetier.* FROM ec_pricetier WHERE ec_pricetier.product_id = %d ORDER BY ec_pricetier.quantity ASC";
+		$results = $this->db->get_results( $this->db->prepare( $sql, $productid ) );
 		
-		//secure all of the services for logged in authenticated users only	
-		public function _getMethodRoles($methodName){
-		   if ($methodName == 'getpricetier') return array('admin');
-		   else if($methodName == 'updatepricetier') return array('admin');
-		   else if($methodName == 'deletepricetier') return array('admin');
-		   else if($methodName == 'addpricetier') return array('admin');
-		   else  return null;
-		}	
-		
-		//HELPER - used to escape out SQL calls
-		function escape($sql) 
-		{ 
-			  $args = func_get_args(); 
-				foreach($args as $key => $val) 
-				{ 
-					$args[$key] = mysql_real_escape_string($val); 
-				} 
-				 
-				$args[0] = $sql; 
-				return call_user_func_array('sprintf', $args); 
-		} 
-		
-		
-		//price tier functions
-		function getpricetier($productid) {
-			//Create SQL Query
-			$sql = sprintf("SELECT ec_pricetier.* FROM ec_pricetier WHERE ec_pricetier.product_id = '%s' ORDER BY ec_pricetier.quantity ASC", mysql_real_escape_string($productid));
-			
-			$result = mysql_query($sql);
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($result) > 0) {
-				  while ($row=mysql_fetch_object($result)) {
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
-			  }
+		if( count( $results ) > 0 ){
+			return $results;
+		}else{
+			return array( "noresults" );
 		}
 		
-		function updatepricetier($id, $price, $quantity) {
-			//Create SQL Query
-			$sql = $this->escape("UPDATE ec_pricetier SET ec_pricetier.price = '%s', ec_pricetier.quantity = '%s' WHERE ec_pricetier.pricetier_id = '%s'", $price, $quantity,  $id);
-			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
-			}
-		}	
-		function deletepricetier($tierid, $productid) {
-			//Create SQL Query
-			$sql = $this->escape("DELETE FROM ec_pricetier WHERE ec_pricetier.pricetier_id = %s", $tierid);
-			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] = $productid;
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
-			}
-		}	
-		function addpricetier($price, $quantity, $productid) {
-			
-			
-			//Create SQL Query
-			$sql = sprintf("Insert into ec_pricetier(ec_pricetier.pricetier_id, ec_pricetier.price, ec_pricetier.quantity, ec_pricetier.product_id)
-				values(null, '%s', '%s', '%s')",
-				mysql_real_escape_string($price),
-				mysql_real_escape_string($quantity),
-				mysql_real_escape_string($productid));
-			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] = $productid;
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
-			}
+	}
+	
+	function updatepricetier( $id, $price, $quantity ){
+		
+		$sql = "UPDATE ec_pricetier SET ec_pricetier.price = %s, ec_pricetier.quantity = %s WHERE ec_pricetier.pricetier_id = %d";
+		$success = $this->db->query( $this->db->prepare( $sql, $price, $quantity, $id ) );
+		
+		if( $success === FALSE ){
+			return array( "error" );
+		}else{
+			return array( "success" );
 		}
 		
+	}
+	
+	function deletepricetier( $tierid, $productid ){
+		
+		$sql = "DELETE FROM ec_pricetier WHERE ec_pricetier.pricetier_id = %d";
+		$success = $this->db->query( $this->db->prepare( $sql, $tierid ) );
+		
+		if( $success === FALSE ){
+			return array( "error" );
+		}else{
+			return array( $productid );
+		}
+		
+	}
+	
+	function addpricetier( $price, $quantity, $productid ){
+		
+		$sql = "INSERT INTO ec_pricetier( price, quantity, product_id ) VALUES ( %s, %s, %d )";
+		$success = $this->db->query( $this->db->prepare( $sql, $price, $quantity, $productid ) );
+		
+		if( $success === FALSE ){
+			return array( "error" );
+		}else{
+			return array( $productid );
+		}
+		
+	}
 
-	}//close class
+}
 ?>

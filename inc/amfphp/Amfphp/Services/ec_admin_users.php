@@ -51,7 +51,6 @@ class ec_admin_users{
 		$totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 		
 		if( $totalrows > 0 ){
-			$totalrows = array( "FOUND_ROWS( )" => $totalrows );
 			$returnArray = array( );
 			
 			foreach( $results as $row ){

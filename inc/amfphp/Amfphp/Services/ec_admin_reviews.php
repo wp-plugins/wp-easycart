@@ -21,26 +21,9 @@ class ec_admin_reviews
 	{		
 	
 		function ec_admin_reviews() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
-		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
+			
 			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);
-
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);	
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 
+			$this->db = $wpdb;
 
 		}	
 		
@@ -71,36 +54,31 @@ class ec_admin_reviews
 		//review functions
 		function getreviews($startrecord, $limit, $orderby, $ordertype, $filter) {
 			  //Create SQL Query
-			  $query= mysql_query("SELECT SQL_CALC_FOUND_ROWS  ec_review.*, UNIX_TIMESTAMP(ec_review.date_submitted) AS date_submitted, ec_product.model_number, ec_product.title as product_title, ec_product.activate_in_store, ec_product.image1, ec_product.price  FROM ec_review LEFT JOIN ec_product ON ec_product.product_id = ec_review.product_id WHERE ec_review.review_id != '' ".$filter." ORDER BY ".  $orderby ." ".  $ordertype . " LIMIT ".  $startrecord .", ".  $limit."");
-			  $totalquery=mysql_query("SELECT FOUND_ROWS()");
-			  $totalrows = mysql_fetch_object($totalquery);
+			  $sql = "SELECT SQL_CALC_FOUND_ROWS  ec_review.*, UNIX_TIMESTAMP(ec_review.date_submitted) AS date_submitted, ec_product.model_number, ec_product.title as product_title, ec_product.activate_in_store, ec_product.image1, ec_product.price  FROM ec_review LEFT JOIN ec_product ON ec_product.product_id = ec_review.product_id WHERE ec_review.review_id != '' ".$filter." ORDER BY ".  $orderby ." ".  $ordertype . " LIMIT ".  $startrecord .", ".  $limit."";
+			  $results = $this->db->get_results( $sql );
+			  $totalquery = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 			  
-			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($query) > 0) {
-				  while ($row=mysql_fetch_object($query)) {
-					  $row->totalrows=$totalrows;
-					  $returnArray[] = $row;
-				  }
-				  return($returnArray); //return array results if there are some
+			  if( count( $results) > 0 ){
+				  $results[0]->totalrows = $totalquery;
+				  return $results;
 			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+				  return array( "noresults" );
 			  }
 		}
+		
+		
 		function deletereview($reviewid) {
 			  //Create SQL Query	
-			  $deletesql = $this->escape("DELETE FROM ec_review WHERE ec_review.review_id = '%s'", $reviewid);
+			  $deletesql = "DELETE FROM ec_review WHERE ec_review.review_id = '%s'";
 			  //Run query on database;
-			  mysql_query($deletesql);
+			  $success = $this->db->query( $this->db->prepare( $deletesql, $reviewid));
 			  
 			  //if no errors, return their current Client ID
 			  //if results, convert to an array for use in flash
-			  if(!mysql_error()) {
-				  $returnArray[] ="success";
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "error";
-				  return $returnArray; //return noresults if there are no results
+			  if( $success === FALSE ) {
+				  return array( "error" );
+			  }else{
+				  return array( "success" );
 			  }
 		}
 		function updatereview($reviewid, $review) {
@@ -109,19 +87,17 @@ class ec_admin_reviews
 			  
 			  
 			  //Create SQL Query
-			   $sql = $this->escape("UPDATE ec_review SET ec_review.approved='%s', ec_review.title='%s', ec_review.description='%s', ec_review.rating='%s' WHERE ec_review.review_id = '%s'", $review['approved'], $review['reviewtitle'],$review['reviewdescription'],$review['rating'],$reviewid);
+			   $sql = "UPDATE ec_review SET ec_review.approved='%s', ec_review.title='%s', ec_review.description='%s', ec_review.rating='%s' WHERE ec_review.review_id = '%s'";
 
 			//Run query on database;
-			mysql_query($sql);
+			$success = $this->db->query( $this->db->prepare( $sql, $review['approved'], $review['reviewtitle'],$review['reviewdescription'],$review['rating'],$reviewid));
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
-			}
+			if( $success === FALSE ) {
+			  return array( "error" );
+		  }else{
+			  return array( "success" );
+		  }
 		}
 
 

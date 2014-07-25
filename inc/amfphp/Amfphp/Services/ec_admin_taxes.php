@@ -42,7 +42,6 @@ class ec_admin_taxes{
 		$totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 		
 		if( $totalrows > 0 ){
-			$totalrows = array( "FOUND_ROWS( )" => $totalrows );
 			foreach( $results as $row ){
 				$row->totalrows = $totalrows;
 				$returnArray[] = $row;

@@ -63,7 +63,7 @@ function ec_install_admin_notice() {
     </div>
     
 	<?php }
-	
+	/*
 	// Check for newer layout/theme files
 	$current_version_design = file_get_contents( "http://www.wpeasycart.com/latest-design-version.txt" );
 	$this_design = get_option( 'ec_option_base_theme' );
@@ -74,7 +74,7 @@ function ec_install_admin_notice() {
         <p>There is a new version of the store design available (<?php echo $current_version_design; ?>). Please visit your <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management">design file management page</a> and follow the directions to upgrade.</p>
 	</div>
     
-    <?php }
+    <?php }*/
 }
 
 function ec_load_admin_scripts( ){
