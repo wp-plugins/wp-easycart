@@ -993,7 +993,7 @@ class ec_product{
 		$content = preg_replace( "/\<[F,f][O,o][N,n][T,t]/", "<div", $content );
 		$content = preg_replace( "/\<\/[F,f][O,o][N,n][T,t]/", "</div", $content );
 		$content = preg_replace( "/\<\/[P,p]/", "</div", $content );
-		$content = preg_replace( "/\<[B,b]/", "<B style=\"color:inherit !important;\"", $content );
+		$content = preg_replace( "/\<[B,b] /", "<B style=\"color:inherit !important;\"", $content );
 		$content = preg_replace( "/FACE=\"(.*?)\" SIZE=\"(.*?)\" COLOR=\"(.*?)\"(.*?)\>/", "style=\"font-family:$1; font-size:$2px; color:$3;\"\>", $content );
 		$content = preg_replace( "/\<[D,d][I,i][V,v][\s][C,c][O,o][L,l][O,o][R,r]\=[\"\'](.*?)[\"\']\>.*?\<[A,a][\s][H,h][R,r][E,e][F,f]\=[\"\'](.*?)[\"\'][\s][T,t][A,a][R,r][G,g][E,e][T,t]\=[\"\'](.*?)[\"\']\>(.*?)\<\/[A,a]\>.*?\<\/[D,d][I,i][V,v]\>/", "<a href=\"$2\" target=\"$3\" style=\"color:$1 !important;\">$4</a>", $content );
 		
