@@ -62,13 +62,13 @@ class ec_admin_downloads{
 	
 	}//deletedownload
 	
-	function updatedownload( $downloadid, $downloads, $downloadname ){
+	function updatedownload( $download){
 		
-		$sql = "UPDATE ec_download SET ec_download.download_count = %s, ec_download.download_file_name = %s WHERE ec_download.download_id = %s";
-		$this->db->query( $this->db->prepare( $sql, $downloads, $downloadname, $downloadid ) );
+		$sql = "UPDATE ec_download SET ec_download.download_count = %s, ec_download.download_file_name = %s, ec_download.is_amazon_download = %s,  ec_download.amazon_key = %s WHERE ec_download.download_id = %s";
+		$this->db->query( $this->db->prepare( $sql, $download->totaldownloads, $download->downloadproductid, $download->is_amazon_download, $download->amazon_key, $download->uniqueid) );
 		
-		$sql = "UPDATE ec_orderdetail SET ec_orderdetail.download_file_name = %s WHERE ec_orderdetail.download_key = %s";
-		$this->db->query( $this->db->prepare( $sql, $downloadname, $downloadid ) );
+		$sql = "UPDATE ec_orderdetail SET ec_orderdetail.download_file_name = %s, ec_orderdetail.is_amazon_download = %s, ec_orderdetail.amazon_key = %s WHERE ec_orderdetail.download_key = %s";
+		$this->db->query( $this->db->prepare( $sql, $download->downloadproductid, $download->is_amazon_download, $download->amazon_key, $download->uniqueid ) );
 		
 		if( !mysql_error( ) ){
 			return array( "success" );

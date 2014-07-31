@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */ 
-
+use Aws\S3\S3Client;
 
 class ec_admin_products{
 	
@@ -41,6 +41,7 @@ class ec_admin_products{
 		else if($methodName == 'getproductcategories') return array('admin');
 		else if($methodName == 'deleteadvancedoption') return array('admin');
 		else if($methodName == 'updatealldownloadcustomers') return array('admin');
+		else if($methodName == 'updateallamazondownloadcustomers') return array('admin');
 		else if($methodName == 'deletealladvancedoption') return array('admin');
 		else if($methodName == 'addadvancedoption') return array('admin');
 		else if($methodName == 'getadvancedproductoptions') return array('admin');
@@ -54,6 +55,7 @@ class ec_admin_products{
 		else if($methodName == 'deleteimage') return array('admin');
 		else if($methodName == 'deleteoptionitemimage') return array('admin');
 		else if($methodName == 'deletefiledownload') return array('admin');
+		else if($methodName == 'getawsfiles') return array('admin');
 		else  return null;
 	}
 	
@@ -122,8 +124,23 @@ class ec_admin_products{
 		/////////////////////////////////////////////////////
 		//currently only changing customers who have matching file names, but can use product id if necessary to do all customers on this product.
 		/////////////////////////////////////////////////////
-		$sql = "UPDATE ec_download SET ec_download.download_file_name = %s WHERE ec_download.product_id = %d";
+		$sql = "UPDATE ec_download SET ec_download.download_file_name = %s, ec_download.is_amazon_download = 0, ec_download.amazon_key = '' WHERE ec_download.product_id = %d";
 		$success = $this->db->query( $this->db->prepare( $sql, $newdownloadid, $productid ) );
+		
+		if( $success === FALSE ){
+			return array( "error" );
+		}else{
+			return array( "success" );
+		}
+		
+	}
+	function updateallamazondownloadcustomers( $productid, $newamazonkey, $oldamazonkey ){
+		
+		/////////////////////////////////////////////////////
+		//currently only changing customers who have matching file names, but can use product id if necessary to do all customers on this product.
+		/////////////////////////////////////////////////////
+		$sql = "UPDATE ec_download SET ec_download.download_file_name = '', ec_download.is_amazon_download = 1, ec_download.amazon_key = %s WHERE ec_download.product_id = %d";
+		$success = $this->db->query( $this->db->prepare( $sql, $newamazonkey, $productid ) );
 		
 		if( $success === FALSE ){
 			return array( "error" );
@@ -484,9 +501,9 @@ class ec_admin_products{
 		if( $product->vatrate )
 			$vat_rate = $product->vatrate;
 		
-		$sql = "UPDATE ec_product SET price = %s, title = %s, description = %s, model_number = %s, activate_in_store = %s, manufacturer_id = %s, image1 = %s, image2 = %s, image3 = %s, image4 = %s, image5 = %s, is_giftcard = %s, download_file_name = %s, is_taxable = %s, is_download = %s, weight = %s, stock_quantity = %s, show_on_startup = %s, menulevel1_id_1 = %s, menulevel1_id_2 = %s, menulevel1_id_3 = %s, menulevel2_id_1 = %s, menulevel2_id_2 = %s, menulevel2_id_3 = %s, menulevel3_id_1 = %s, menulevel3_id_2 = %s, menulevel3_id_3 = %s, option_id_1 = %s, option_id_2 = %s, option_id_3 = %s, option_id_4 = %s, option_id_5 = %s, featured_product_id_1 = %s, featured_product_id_2 = %s, featured_product_id_3 = %s, featured_product_id_4 = %s, seo_description = %s, use_specifications = %s, use_customer_reviews = %s, specifications = %s, list_price = %s, seo_keywords = %s, is_special = %s, use_optionitem_images = %s, use_optionitem_quantity_tracking = %s, is_donation = %s, show_stock_quantity = %s, maximum_downloads_allowed = %s, download_timelimit_seconds = %s, handling_price = %s, vat_rate= %s, use_advanced_optionset = %s, is_subscription_item = %s, subscription_bill_length = %s, subscription_bill_period = %s, height = %s, width = %s, length = %s, trial_period_days = %s, allow_multiple_subscription_purchases = %s, subscription_plan_id = %s, membership_page = %s, min_purchase_quantity = %s WHERE product_id = %d";
+		$sql = "UPDATE ec_product SET price = %s, title = %s, description = %s, model_number = %s, activate_in_store = %s, manufacturer_id = %s, image1 = %s, image2 = %s, image3 = %s, image4 = %s, image5 = %s, is_giftcard = %s, download_file_name = %s, is_taxable = %s, is_download = %s, weight = %s, stock_quantity = %s, show_on_startup = %s, menulevel1_id_1 = %s, menulevel1_id_2 = %s, menulevel1_id_3 = %s, menulevel2_id_1 = %s, menulevel2_id_2 = %s, menulevel2_id_3 = %s, menulevel3_id_1 = %s, menulevel3_id_2 = %s, menulevel3_id_3 = %s, option_id_1 = %s, option_id_2 = %s, option_id_3 = %s, option_id_4 = %s, option_id_5 = %s, featured_product_id_1 = %s, featured_product_id_2 = %s, featured_product_id_3 = %s, featured_product_id_4 = %s, seo_description = %s, use_specifications = %s, use_customer_reviews = %s, specifications = %s, list_price = %s, seo_keywords = %s, is_special = %s, use_optionitem_images = %s, use_optionitem_quantity_tracking = %s, is_donation = %s, show_stock_quantity = %s, maximum_downloads_allowed = %s, download_timelimit_seconds = %s, handling_price = %s, vat_rate= %s, use_advanced_optionset = %s, is_subscription_item = %s, subscription_bill_length = %s, subscription_bill_period = %s, height = %s, width = %s, length = %s, trial_period_days = %s, allow_multiple_subscription_purchases = %s, subscription_plan_id = %s, membership_page = %s, min_purchase_quantity = %s, is_amazon_download = %s, amazon_key = %s WHERE product_id = %d";
 		
-		$success = $this->db->get_results( $this->db->prepare( $sql, $product->listprice, $product->producttitle, $product->productdescription, $product->modelnumber, $product->listproduct, $product->productmanufacturer, $product->Image1, $product->Image2, $product->Image3, $product->Image4, $product->Image5, $product->isgiftcard, $product->downloadid, $product->taxableproduct, $product->isdownload, $product->productweight, $product->quantity, $product->featuredproduct, $product->Cat1Name, $product->Cat2Name, $product->Cat3Name, $product->Cat1bName, $product->Cat2bName, $product->Cat3bName, $product->Cat1cName, $product->Cat2cName, $product->Cat3cName, $product->option1, $product->option2, $product->option3, $product->option4, $product->option5, $product->featureproduct1, $product->featureproduct2, $product->featureproduct3, $product->featureproduct4, $product->seoshortdescription, $product->usespecs, $product->allowreviews, $product->specifications, $product->previousprice, $product->seokeywords, $product->isspecial, $product->useoptionitemimages, $product->usequantitytracking, $product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $product->handling_price, $product->vatrate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, $product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, $product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $productid ) );
+		$success = $this->db->get_results( $this->db->prepare( $sql, $product->listprice, $product->producttitle, $product->productdescription, $product->modelnumber, $product->listproduct, $product->productmanufacturer, $product->Image1, $product->Image2, $product->Image3, $product->Image4, $product->Image5, $product->isgiftcard, $product->downloadid, $product->taxableproduct, $product->isdownload, $product->productweight, $product->quantity, $product->featuredproduct, $product->Cat1Name, $product->Cat2Name, $product->Cat3Name, $product->Cat1bName, $product->Cat2bName, $product->Cat3bName, $product->Cat1cName, $product->Cat2cName, $product->Cat3cName, $product->option1, $product->option2, $product->option3, $product->option4, $product->option5, $product->featureproduct1, $product->featureproduct2, $product->featureproduct3, $product->featureproduct4, $product->seoshortdescription, $product->usespecs, $product->allowreviews, $product->specifications, $product->previousprice, $product->seokeywords, $product->isspecial, $product->useoptionitemimages, $product->usequantitytracking, $product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $product->handling_price, $product->vatrate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, $product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, $product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $product->is_amazon_download, $product->amazon_key, $productid ) );
 		
 		// Enqueue Quickbooks Update Customer
 		if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
@@ -549,10 +566,10 @@ class ec_admin_products{
 		if( $product->vatrate )
 			$vat_rate = $product->vatrate;
 		
-		$sql = "INSERT INTO ec_product( ec_product.price, ec_product.title, ec_product.description, ec_product.model_number, ec_product.activate_in_store, ec_product.manufacturer_id, ec_product.image1, ec_product.image2, ec_product.image3, ec_product.image4, ec_product.image5, ec_product.is_giftcard, ec_product.download_file_name, ec_product.is_taxable, ec_product.is_download, ec_product.weight, ec_product.stock_quantity, ec_product.show_on_startup, ec_product.menulevel1_id_1, ec_product.menulevel1_id_2, ec_product.menulevel1_id_3, ec_product.menulevel2_id_1, ec_product.menulevel2_id_2, ec_product.menulevel2_id_3, ec_product.menulevel3_id_1, ec_product.menulevel3_id_2, ec_product.menulevel3_id_3, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_product.featured_product_id_1, ec_product.featured_product_id_2, ec_product.featured_product_id_3, ec_product.featured_product_id_4, ec_product.seo_description, ec_product.use_specifications, ec_product.use_customer_reviews, ec_product.specifications, ec_product.list_price, ec_product.seo_keywords, ec_product.is_special, ec_product.use_optionitem_images, ec_product.use_optionitem_quantity_tracking, ec_product.is_donation, ec_product.show_stock_quantity, ec_product.maximum_downloads_allowed, ec_product.download_timelimit_seconds, ec_product.handling_price, ec_product.vat_rate, ec_product.use_advanced_optionset, ec_product.is_subscription_item, ec_product.subscription_bill_length, ec_product.subscription_bill_period, ec_product.height, ec_product.width, ec_product.length, ec_product.trial_period_days, ec_product.allow_multiple_subscription_purchases, ec_product.subscription_plan_id, ec_product.membership_page, ec_product.min_purchase_quantity )
-		VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+		$sql = "INSERT INTO ec_product( ec_product.price, ec_product.title, ec_product.description, ec_product.model_number, ec_product.activate_in_store, ec_product.manufacturer_id, ec_product.image1, ec_product.image2, ec_product.image3, ec_product.image4, ec_product.image5, ec_product.is_giftcard, ec_product.download_file_name, ec_product.is_taxable, ec_product.is_download, ec_product.weight, ec_product.stock_quantity, ec_product.show_on_startup, ec_product.menulevel1_id_1, ec_product.menulevel1_id_2, ec_product.menulevel1_id_3, ec_product.menulevel2_id_1, ec_product.menulevel2_id_2, ec_product.menulevel2_id_3, ec_product.menulevel3_id_1, ec_product.menulevel3_id_2, ec_product.menulevel3_id_3, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_product.featured_product_id_1, ec_product.featured_product_id_2, ec_product.featured_product_id_3, ec_product.featured_product_id_4, ec_product.seo_description, ec_product.use_specifications, ec_product.use_customer_reviews, ec_product.specifications, ec_product.list_price, ec_product.seo_keywords, ec_product.is_special, ec_product.use_optionitem_images, ec_product.use_optionitem_quantity_tracking, ec_product.is_donation, ec_product.show_stock_quantity, ec_product.maximum_downloads_allowed, ec_product.download_timelimit_seconds, ec_product.handling_price, ec_product.vat_rate, ec_product.use_advanced_optionset, ec_product.is_subscription_item, ec_product.subscription_bill_length, ec_product.subscription_bill_period, ec_product.height, ec_product.width, ec_product.length, ec_product.trial_period_days, ec_product.allow_multiple_subscription_purchases, ec_product.subscription_plan_id, ec_product.membership_page, ec_product.min_purchase_quantity, ec_product.is_amazon_download , ec_product.amazon_key  )
+		VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
 		
-		$success = $this->db->query( $this->db->prepare( $sql, $product->listprice, $product->producttitle, $product->productdescription, $product->modelnumber, $product->listproduct, $product->productmanufacturer, $product->Image1, $product->Image2, $product->Image3, $product->Image4, $product->Image5, $product->isgiftcard, $product->downloadid, $product->taxableproduct, $product->isdownload, $product->productweight, $product->quantity, $product->featuredproduct, $product->Cat1Name, $product->Cat2Name, $product->Cat3Name, $product->Cat1bName, $product->Cat2bName, $product->Cat3bName, $product->Cat1cName, $product->Cat2cName, $product->Cat3cName, $product->option1, $product->option2, $product->option3, $product->option4, $product->option5, $product->featureproduct1, $product->featureproduct2, $product->featureproduct3, $product->featureproduct4, $product->seoshortdescription, $product->usespecs, $product->allowreviews, $product->specifications, $product->previousprice, $product->seokeywords, $product->isspecial, $product->useoptionitemimages, $product->usequantitytracking, $product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $handling_price, $vat_rate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, $product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, $product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity ) );
+		$success = $this->db->query( $this->db->prepare( $sql, $product->listprice, $product->producttitle, $product->productdescription, $product->modelnumber, $product->listproduct, $product->productmanufacturer, $product->Image1, $product->Image2, $product->Image3, $product->Image4, $product->Image5, $product->isgiftcard, $product->downloadid, $product->taxableproduct, $product->isdownload, $product->productweight, $product->quantity, $product->featuredproduct, $product->Cat1Name, $product->Cat2Name, $product->Cat3Name, $product->Cat1bName, $product->Cat2bName, $product->Cat3bName, $product->Cat1cName, $product->Cat2cName, $product->Cat3cName, $product->option1, $product->option2, $product->option3, $product->option4, $product->option5, $product->featureproduct1, $product->featureproduct2, $product->featureproduct3, $product->featureproduct4, $product->seoshortdescription, $product->usespecs, $product->allowreviews, $product->specifications, $product->previousprice, $product->seokeywords, $product->isspecial, $product->useoptionitemimages, $product->usequantitytracking, $product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $handling_price, $vat_rate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, $product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, $product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $product->is_amazon_download , $product->amazon_key  ) );
 		
 		if( $success === FALSE) {
 			return array( "duplicate" );
@@ -660,6 +677,31 @@ class ec_admin_products{
 			return array( "error" );
 		}else{
 			return array( "success" );
+		}
+		
+	}
+	
+	function getawsfiles( ){
+		
+		$returnArray = array( );
+		
+		$client = S3Client::factory(array(
+			'key' 		=> get_option( 'ec_option_amazon_key' ),
+			'secret' 	=> get_option( 'ec_option_amazon_secret' )
+		));
+		
+		$result = $client->listObjects( array( 'Bucket' => get_option( 'ec_option_amazon_bucket' ) ) );
+
+		foreach( $result['Contents'] as $object ){
+			if( substr( $object['Key'], 0, 5 ) != "logs/" ){
+				$returnArray[] = $object['Key'];
+			}
+		}
+		
+		if( count( $returnArray ) > 0 ){
+			return $returnArray;
+		}else{
+			return array( "noresults" );
 		}
 		
 	}
