@@ -685,21 +685,29 @@ class ec_admin_products{
 		
 		$returnArray = array( );
 		
-		$client = S3Client::factory(array(
-			'key' 		=> get_option( 'ec_option_amazon_key' ),
-			'secret' 	=> get_option( 'ec_option_amazon_secret' )
-		));
-		
-		$result = $client->listObjects( array( 'Bucket' => get_option( 'ec_option_amazon_bucket' ) ) );
-
-		foreach( $result['Contents'] as $object ){
-			if( substr( $object['Key'], 0, 5 ) != "logs/" ){
-				$returnArray[] = $object['Key'];
+		if( ( get_option( 'ec_option_amazon_key' ) != '' && get_option( 'ec_option_amazon_key' ) != '0' ) && 
+			( get_option( 'ec_option_amazon_secret' ) != '' && get_option( 'ec_option_amazon_secret' ) != '0' ) &&
+			( get_option( 'ec_option_amazon_bucket' ) != '' && get_option( 'ec_option_amazon_bucket' ) != '0' ) ){
+				
+			$client = S3Client::factory(array(
+				'key' 		=> get_option( 'ec_option_amazon_key' ),
+				'secret' 	=> get_option( 'ec_option_amazon_secret' )
+			));
+			
+			$result = $client->listObjects( array( 'Bucket' => get_option( 'ec_option_amazon_bucket' ) ) );
+	
+			foreach( $result['Contents'] as $object ){
+				if( substr( $object['Key'], 0, 5 ) != "logs/" ){
+					$returnArray[] = $object['Key'];
+				}
 			}
-		}
-		
-		if( count( $returnArray ) > 0 ){
-			return $returnArray;
+			
+			if( count( $returnArray ) > 0 ){
+				return $returnArray;
+			}else{
+				return array( "noresults" );
+			}
+			
 		}else{
 			return array( "noresults" );
 		}

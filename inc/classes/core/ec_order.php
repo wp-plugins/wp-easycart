@@ -133,7 +133,7 @@ class ec_order{
 														$cart_item->giftcard_id = $giftcard_id;
 																
 														$download_id = 0;
-				if( $cart_item->is_download )			$download_id = $this->mysqli->insert_new_download( 	$this->order_id, $cart_item->download_file_name, $cart_item->product_id );
+				if( $cart_item->is_download )			$download_id = $this->mysqli->insert_new_download( 	$this->order_id, $cart_item->download_file_name, $cart_item->product_id, $cart_item->is_amazon_download, $cart_item->amazon_key );
 														$cart_item->download_id = $download_id;
 				
 				$orderdetail_id = $this->mysqli->insert_order_detail( $this->order_id, $giftcard_id, $download_id, $cart_item );

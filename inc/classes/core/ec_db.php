@@ -43,10 +43,12 @@ class ec_db{
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
-				ec_orderdetail.download_file_name, 
+				ec_download.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
 				ec_orderdetail.download_timelimit_seconds,
+				ec_download.is_amazon_download,
+				ec_download.amazon_key,
 				";
 		
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
@@ -66,6 +68,9 @@ class ec_db{
 				
 				LEFT JOIN ec_product
 				ON ec_product.product_id = ec_orderdetail.product_id
+				
+				LEFT JOIN ec_download
+				ON ec_download.download_id = ec_orderdetail.download_key
 				
 				LEFT JOIN ec_customfield
 				ON ec_customfield.table_name = 'ec_orderdetail'
@@ -119,10 +124,12 @@ class ec_db{
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
-				ec_orderdetail.download_file_name, 
+				ec_download.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
 				ec_orderdetail.download_timelimit_seconds,
+				ec_download.is_amazon_download,
+				ec_download.amazon_key,
 				
 				";
 		
@@ -143,6 +150,9 @@ class ec_db{
 				
 				LEFT JOIN ec_product
 				ON ec_product.product_id = ec_orderdetail.product_id
+				
+				LEFT JOIN ec_download
+				ON ec_download.download_id = ec_orderdetail.download_key
 				
 				LEFT JOIN ec_customfield
 				ON ec_customfield.table_name = 'ec_orderdetail'
@@ -849,6 +859,8 @@ class ec_db{
 				product.maximum_downloads_allowed,
 				product.download_timelimit_seconds,
 				product.use_advanced_optionset,
+				product.is_amazon_download,
+				product.amazon_key,
 				
 				tempcart.tempcart_id as cartitem_id,
 				tempcart.quantity,
@@ -1701,7 +1713,10 @@ class ec_db{
 								'download_file_name'			=> $cart_item->download_file_name,
 								'download_key'					=> $download_key,
 								'maximum_downloads_allowed'		=> $cart_item->maximum_downloads_allowed,
-								'download_timelimit_seconds'	=> $cart_item->download_timelimit_seconds );
+								'download_timelimit_seconds'	=> $cart_item->download_timelimit_seconds,
+								
+								'is_amazon_download'			=> $cart_item->is_amazon_download,
+								'amazon_key'					=> $cart_item->amazon_key );
 								
 										
 		$percent_array = array( '%d', '%d', '%s', '%s', '%s',
@@ -1711,7 +1726,8 @@ class ec_db{
 								'%s', '%s', '%s', '%s', '%s',
 								'%d', '%s', '%s',
 								'%s', '%s', '%d', '%d', 
-								'%d', '%s', '%s', '%d', '%d' );
+								'%d', '%s', '%s', '%d', '%d', 
+								'%d', '%s' );
 								
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
 			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
@@ -1781,16 +1797,18 @@ class ec_db{
 		return $giftcard_id;
 	}
 	
-	public function insert_new_download( $order_id, $download_file_name, $product_id ){
+	public function insert_new_download( $order_id, $download_file_name, $product_id, $is_amazon_download, $amazon_key ){
 		$download_id = uniqid( md5( rand( ) ) );
 		
 		$this->mysqli->insert( 	'ec_download', 
 								array( 	'download_id'			=> $download_id, 
 										'order_id' 				=> $order_id, 
 										'download_file_name' 	=> $download_file_name,
-										'product_id'			=> $product_id 
+										'product_id'			=> $product_id,
+										'is_amazon_download'	=> $is_amazon_download,
+										'amazon_key'			=> $amazon_key
 									), 
-								array( 	'%s', '%d', '%s', '%d' ) );
+								array( 	'%s', '%d', '%s', '%d', '%d', '%s' ) );
 		return $download_id;
 	}
 	
@@ -2149,10 +2167,12 @@ class ec_db{
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
-				ec_orderdetail.download_file_name, 
+				ec_download.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
 				ec_orderdetail.download_timelimit_seconds,
+				ec_download.is_amazon_download,
+				ec_download.amazon_key,
 				
 				";
 		
@@ -2170,6 +2190,9 @@ class ec_db{
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
 				FROM ec_orderdetail
+				
+				LEFT JOIN ec_download
+				ON ec_download.download_id = ec_orderdetail.download_key
 				
 				LEFT JOIN ec_customfield
 				ON ec_customfield.table_name = 'ec_orderdetail'

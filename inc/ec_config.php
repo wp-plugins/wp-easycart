@@ -1,4 +1,9 @@
 <?php
+// Start up the Amazon S3 Loader
+if( get_option( 'ec_option_amazon_bucket' ) != "" ){
+	require WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/aws/aws-autoloader.php';
+}
+
 // Some servers do not set session path to a writable location. Fix this sometimes.
 if( strtoupper(substr(PHP_OS, 0, 3)) != 'WIN' && !is_writable( session_save_path( ) ) ){ // Linux
 	ini_set( 'session.save_path', '/tmp' );

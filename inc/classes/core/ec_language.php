@@ -12,7 +12,8 @@ class ec_language{
 		
 		if( $selected_language == 'NONE' ){
 			$this->selected_language = get_option( 'ec_option_language' );
-		
+			$_SESSION['ec_translate_to'] = strtoupper( $selected_language );
+			
 			if( isset( $_SESSION['ec_translate_to'] ) ){
 				$this->language_code = strtoupper( $_SESSION['ec_translate_to'] );
 			}else{

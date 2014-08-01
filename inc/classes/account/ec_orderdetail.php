@@ -1,5 +1,5 @@
 <?php
-
+use Aws\S3\S3Client;
 class ec_orderdetail{
 	protected $mysqli;									// ec_db structure
 	
@@ -40,6 +40,8 @@ class ec_orderdetail{
 	public $download_id;      							// VARCHAR 255
 	public $maximum_downloads_allowed;       			// INT
 	public $download_timelimit_seconds;      			// INT
+	public $is_amazon_download;							// BOOL
+	public $amazon_key;									// VARCHAR 255
 	
 	public $custom_vars = array();						// Array
 	
@@ -50,6 +52,7 @@ class ec_orderdetail{
 	public $customfields = array();						// array of ec_customfield objects
 	
 	function __construct( $orderdetail_row, $download_now = 0 ){
+		
 		$this->mysqli = new ec_db( );
 		
 		$this->orderdetail_id = $orderdetail_row->orderdetail_id; 
@@ -89,6 +92,8 @@ class ec_orderdetail{
 		$this->download_id = $orderdetail_row->download_key;
 		$this->maximum_downloads_allowed = $orderdetail_row->maximum_downloads_allowed;
 		$this->download_timelimit_seconds = $orderdetail_row->download_timelimit_seconds;
+		$this->is_amazon_download = $orderdetail_row->is_amazon_download;
+		$this->amazon_key = $orderdetail_row->amazon_key;
 		
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
 			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
@@ -419,66 +424,90 @@ class ec_orderdetail{
 			if( ( $this->download_timelimit_seconds == 0 || $this->timecheck <= $this->download_timelimit_seconds ) && 
 				( $this->maximum_downloads_allowed  == 0 || $this->download_count <= $this->maximum_downloads_allowed  ) ) {
 	
-				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $this->download->download_file_name ) )	
-					$file = WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $this->download->download_file_name;
-				else
-					$file = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/" . $this->download->download_file_name;
 				
-				$ext = substr( $this->download->download_file_name, strrpos( $this->download->download_file_name, '.' ) + 1);
-				
-				switch( $ext ){
-					case "pdf":
-						$mm_type="application/pdf";
-						break;
-					case "zip":
-						$mm_type="application/zip";
-						break;
-					case "xlsx":
-						$mm_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-						break;
-					case "xls":
-						$mm_type="application/vnd.ms-excel";
-						break;
-					default:
-						$mm_type="application/octet-stream";
-						break;
+				if( $this->is_amazon_download ){
+					
+					$client = S3Client::factory(array(
+						'key' 		=> get_option( 'ec_option_amazon_key' ),
+						'secret' 	=> get_option( 'ec_option_amazon_secret' )
+					));
+					
+					$command = $client->getCommand('GetObject', array(
+						'Bucket' => get_option( 'ec_option_amazon_bucket' ),
+						'Key' => $this->amazon_key,
+						'ResponseContentDisposition' => 'attachment; filename="' . $this->amazon_key . '"'
+					));
+					
+					$signedUrl = $command->createPresignedUrl('+10 seconds');
+					
+					$this->mysqli->update_download_count( $this->download_id, $this->download_count );
+					
+					header( "location:" . $signedUrl );
+					
+					die( );
+					
+				}else{
+					
+					if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $this->download->download_file_name ) )	
+						$file = WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $this->download->download_file_name;
+					else
+						$file = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/" . $this->download->download_file_name;
+					
+					$ext = substr( $this->download->download_file_name, strrpos( $this->download->download_file_name, '.' ) + 1);
+					
+					switch( $ext ){
+						case "pdf":
+							$mm_type="application/pdf";
+							break;
+						case "zip":
+							$mm_type="application/zip";
+							break;
+						case "xlsx":
+							$mm_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+							break;
+						case "xls":
+							$mm_type="application/vnd.ms-excel";
+							break;
+						default:
+							$mm_type="application/octet-stream";
+							break;
+					}
+					
+					$date = new DateTime();
+					$time_stamp = $date->getTimestamp();
+					
+					$filename_arr = explode( "_", $this->download->download_file_name );
+					$file_start_name = "";
+					for( $i=0; $i<count($filename_arr)-1; $i++ ){
+						if( $i>0 )
+							$file_start_name .= "_";
+						$file_start_name .= $filename_arr[$i];
+					}
+					
+					$filename = $file_start_name . "_" . $time_stamp . "." . $ext;
+					
+					header( "Cache-Control: public, must-revalidate" );
+					header( "Pragma: no-cache" );
+					header( "Content-Type: " . $mm_type );
+					header( "Content-Length: " . ( string )( filesize( $file ) ) );
+					header( 'Content-Disposition: attachment; filename="' . $file_start_name . "." . $ext . '"' );
+					header( "Content-Transfer-Encoding: binary\n" );
+					
+					$fh = fopen( $file, "rb" );
+					
+					while( !feof( $fh ) ){
+						$buffer = fread( $fh, 8192 );
+						echo $buffer;
+						ob_flush( );
+						flush( ); 
+					}
+					
+					fclose( $fh );
+					
+					$this->mysqli->update_download_count( $this->download_id, $this->download_count );
+					
+					die( );
 				}
-				
-				$date = new DateTime();
-				$time_stamp = $date->getTimestamp();
-				
-				$filename_arr = explode( "_", $this->download->download_file_name );
-				$file_start_name = "";
-				for( $i=0; $i<count($filename_arr)-1; $i++ ){
-					if( $i>0 )
-						$file_start_name .= "_";
-					$file_start_name .= $filename_arr[$i];
-				}
-				
-				$filename = $file_start_name . "_" . $time_stamp . "." . $ext;
-				
-				header( "Cache-Control: public, must-revalidate" );
-				header( "Pragma: no-cache" );
-				header( "Content-Type: " . $mm_type );
-				header( "Content-Length: " . ( string )( filesize( $file ) ) );
-				header( 'Content-Disposition: attachment; filename="' . $file_start_name . '"' );
-				header( "Content-Transfer-Encoding: binary\n" );
-				
-				$fh = fopen( $file, "rb" );
-				
-				while( !feof( $fh ) ){
-					$buffer = fread( $fh, 8192 );
-					echo $buffer;
-					ob_flush( );
-					flush( ); 
-				}
-				
-				fclose( $fh );
-				
-				$this->mysqli->update_download_count( $this->download_id, $this->download_count );
-				
-				die( );
-	
 			}
 		}
 	}	

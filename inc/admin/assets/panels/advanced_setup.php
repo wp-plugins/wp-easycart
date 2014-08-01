@@ -104,6 +104,30 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
+<div class="ec_admin_page_title">Amazon S3 Setup</div>
+<div class="ec_adin_page_intro">If you plan to use Amazon S3 for downloads, you will want to enter your setup data here.</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Amazon Key</em>This option is the key used to access your S3 buckets.</span></a></span>
+    <span class="ec_setting_row_label">Amazon Key:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_amazon_key" style="width:350px;" value="<?php echo get_option('ec_option_amazon_key'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Amazon Secret</em>This option is the secret used to access your S3 buckets.</span></a></span>
+    <span class="ec_setting_row_label">Amazon Secret:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_amazon_secret" style="width:350px;" value="<?php echo get_option('ec_option_amazon_secret'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Amazon Download Bucket</em>This option is the bucket name you will be using to store/access your downloadable products.</span></a></span>
+    <span class="ec_setting_row_label">Amazon Download Bucket:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_amazon_bucket" style="width:350px;" value="<?php echo get_option('ec_option_amazon_bucket'); ?>" /></span>
+</div>
+
+
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
+
 <div class="ec_admin_page_title_secondary">Custom CSS</div>
 <div class="ec_adin_page_intro">Any CSS you add here will over-ride the css in your EasyCart theme files. If you have an error in CSS here, it may effect your entire site, so please be cautious and pay attention to syntax errors.</div>
 <div class="ec_adin_page_intro"><textarea style="width:100%; height:250px;" name="ec_option_custom_css"><?php echo get_option( 'ec_option_custom_css' ); ?></textarea></div>

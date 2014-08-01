@@ -34,6 +34,7 @@ class ec_cartitem{
 	public $is_download;											// BOOL
 	public $is_donation;											// BOOL
 	public $is_taxable;												// BOOL
+	public $is_amazon_download;										// BOOL
 	
 	public $image1;													// VARCHAR 255
 	public $image1_optionitem;										// VARCHAR 255
@@ -75,6 +76,7 @@ class ec_cartitem{
 	
 	public $download_id = 0;										// INT
 	public $download_file_name;										// VARCHAR 255
+	public $amazon_key;												// VARCHAR 255
 	public $use_optionitem_quantity_tracking;						// BOOL
 	
 	public $promotions;												// array of promtions
@@ -109,6 +111,7 @@ class ec_cartitem{
 		$this->is_download = $cartitem_data->is_download;
 		$this->is_donation = $cartitem_data->is_donation;
 		$this->is_taxable = $cartitem_data->is_taxable;
+		$this->is_amazon_download = $cartitem_data->is_amazon_download;
 		
 		$this->image1 = $cartitem_data->image1;
 		$this->image1_optionitem = $cartitem_data->optionitemimage_image1;
@@ -179,6 +182,7 @@ class ec_cartitem{
 		$this->gift_card_to_name = $cartitem_data->gift_card_to_name;
 		
 		$this->download_file_name = $cartitem_data->download_file_name;
+		$this->amazon_key = $cartitem_data->amazon_key;
 		$this->maximum_downloads_allowed = $cartitem_data->maximum_downloads_allowed;
 		$this->download_timelimit_seconds = $cartitem_data->download_timelimit_seconds;
 		

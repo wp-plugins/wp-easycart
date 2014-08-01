@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_19' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_21' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -159,6 +159,12 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_show_menu_cart_icon');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_cart_menu_id');						array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_amazon_key');							array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_amazon_secret');						array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_amazon_bucket');						array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
