@@ -15,8 +15,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */ 
-use Aws\S3\S3Client;
-
 class ec_admin_products{
 	
 	private $db;
@@ -689,7 +687,7 @@ class ec_admin_products{
 			( get_option( 'ec_option_amazon_secret' ) != '' && get_option( 'ec_option_amazon_secret' ) != '0' ) &&
 			( get_option( 'ec_option_amazon_bucket' ) != '' && get_option( 'ec_option_amazon_bucket' ) != '0' ) ){
 				
-			$client = S3Client::factory(array(
+			$client = Aws\S3\S3Client::factory(array(
 				'key' 		=> get_option( 'ec_option_amazon_key' ),
 				'secret' 	=> get_option( 'ec_option_amazon_secret' )
 			));

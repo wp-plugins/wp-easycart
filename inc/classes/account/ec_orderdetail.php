@@ -1,5 +1,4 @@
 <?php
-use Aws\S3\S3Client;
 class ec_orderdetail{
 	protected $mysqli;									// ec_db structure
 	
@@ -427,7 +426,7 @@ class ec_orderdetail{
 				
 				if( $this->is_amazon_download ){
 					
-					$client = S3Client::factory(array(
+					$client = Aws\S3\S3Client::factory(array(
 						'key' 		=> get_option( 'ec_option_amazon_key' ),
 						'secret' 	=> get_option( 'ec_option_amazon_secret' )
 					));
