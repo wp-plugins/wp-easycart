@@ -396,9 +396,9 @@ class ec_admin_shipping
 									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
 									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
 									WHERE
-									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC";
+									  ec_zone_to_location.zone_id = '%s' AND ec_country.id_cnt = ec_state.idcnt_sta ORDER BY ec_country.name_cnt ASC";
 			  // Run query on database
-			  $results = $this->db->get_results( $sql );
+			  $results = $this->db->get_results( $this->db->prepare( $sql, $zone_id ));
 			  
 			  if( count( $results ) > 0 ){
 				  return $results;
@@ -424,9 +424,9 @@ class ec_admin_shipping
 									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
 									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
 									WHERE
-									  ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC";
+									  ec_zone_to_location.zone_id = '%s' AND ec_country.id_cnt = ec_state.idcnt_sta ORDER BY ec_country.name_cnt ASC";
 				  // Run query on database
-				  $this->db->get_results( $sql );
+				  $results = $this->db->get_results( $this->db->prepare( $sql, $zone_id ));
 				  //if results, convert to an array for use in flash
 				  if( count($results) > 0) {
 					  return $results;
@@ -453,9 +453,9 @@ class ec_admin_shipping
 										LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
 										LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
 									  WHERE
-										ec_zone_to_location.zone_id = '".$zone_id."' ORDER BY ec_country.name_cnt ASC";
+										ec_zone_to_location.zone_id = '%s' AND ec_country.id_cnt = ec_state.idcnt_sta  ORDER BY ec_country.name_cnt ASC";
 				// Run query on database
-				$results = $this->db->get_results( $sql );
+				$results = $this->db->get_results( $this->db->prepare(  $sql, $zone_id));
 				//if results, convert to an array for use in flash
 				if( count($results) > 0) {
 					  return $results;
@@ -466,6 +466,7 @@ class ec_admin_shipping
 				return array( "error" );
 			}
 		}
+		
 		
 		
 		
