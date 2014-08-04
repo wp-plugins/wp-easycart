@@ -426,24 +426,14 @@ class ec_orderdetail{
 				
 				if( $this->is_amazon_download ){
 					
-					$client = Aws\S3\S3Client::factory(array(
-						'key' 		=> get_option( 'ec_option_amazon_key' ),
-						'secret' 	=> get_option( 'ec_option_amazon_secret' )
-					));
+					if( phpversion( ) >= 5.3 ){
 					
-					$command = $client->getCommand('GetObject', array(
-						'Bucket' => get_option( 'ec_option_amazon_bucket' ),
-						'Key' => $this->amazon_key,
-						'ResponseContentDisposition' => 'attachment; filename="' . $this->amazon_key . '"'
-					));
-					
-					$signedUrl = $command->createPresignedUrl('+10 seconds');
-					
-					$this->mysqli->update_download_count( $this->download_id, $this->download_count );
-					
-					header( "location:" . $signedUrl );
-					
-					die( );
+						require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/classes/account/ec_amazons3.php" );
+						$amazons3 = new ec_amazons3( );
+						$this->mysqli->update_download_count( $this->download_id, $this->download_count );
+						$amazons3->download_file( $this->amazon_key );
+						
+					}
 					
 				}else{
 					

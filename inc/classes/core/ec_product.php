@@ -893,8 +893,13 @@ class ec_product{
 	/* Display Description */
 	public function display_product_description( ){
 		
-		$content = $this->process_special_content( $this->description );
-		echo $content;
+		if( substr( $this->description, 0, 3 ) == "[ec" ){
+			$content = $this->process_special_content( $this->description );
+			echo $content;
+		}else{
+			$content = $this->process_normal_content( $this->description );
+			echo $content;
+		}
 		
 	}
 	
@@ -907,8 +912,15 @@ class ec_product{
 	/* Display Specifications */
 	public function display_product_specifications( ){
 		
-		$content = $this->process_special_content( $this->specifications );
-		echo $content;
+		
+		if( substr( $this->description, 0, 3 ) == "[ec" ){
+			$content = $this->process_special_content( $this->specifications );
+			echo $content;
+		}else{
+			$content = $this->process_normal_content( $this->specifications );
+			echo $content;
+		}
+		
 	
 	}
 	
@@ -916,6 +928,20 @@ class ec_product{
 	public function product_has_specifications( ){
 		if( $this->use_specifications )							return true;
 		else													return false;	
+	}
+	
+	public function process_normal_content( $content ){
+		
+		preg_match_all( '/(<table.+?\/table>)/s', $content, $table_array, PREG_PATTERN_ORDER );
+		$desc2 = preg_replace( '/(<table.+?\/table>)/s', '[TABLE]', $content );
+		$content = nl2br( $desc2 );
+		
+		for( $i=0; $i<count( $table_array[0] ); $i++ ){
+			$content = preg_replace( '/\[TABLE\]/s', $table_array[0][$i], $content, 1 );
+		}
+		
+		return $content;
+		
 	}
 	
 	public function process_special_content( $content ){

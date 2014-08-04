@@ -687,17 +687,16 @@ class ec_admin_products{
 			( get_option( 'ec_option_amazon_secret' ) != '' && get_option( 'ec_option_amazon_secret' ) != '0' ) &&
 			( get_option( 'ec_option_amazon_bucket' ) != '' && get_option( 'ec_option_amazon_bucket' ) != '0' ) ){
 				
-			$client = Aws\S3\S3Client::factory(array(
-				'key' 		=> get_option( 'ec_option_amazon_key' ),
-				'secret' 	=> get_option( 'ec_option_amazon_secret' )
-			));
+			if( phpversion( ) >= 5.3 ){
+					
+				require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/classes/account/ec_amazons3.php" );
+				$amazons3 = new ec_amazons3( );
+				$returnArray = $amazons3->get_aws_files( );
 			
-			$result = $client->listObjects( array( 'Bucket' => get_option( 'ec_option_amazon_bucket' ) ) );
-	
-			foreach( $result['Contents'] as $object ){
-				if( substr( $object['Key'], 0, 5 ) != "logs/" ){
-					$returnArray[] = $object['Key'];
-				}
+			}else{
+				
+				$returnArray[] = "PHP 5.3+ Required";
+				
 			}
 			
 			if( count( $returnArray ) > 0 ){

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9.1
-Stable tag: 2.1.29
+Stable tag: 2.1.30
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 2.1.30 =
+* Bug Fix - PHP 5.2 was not compatible with the standard Amazon S3 namespace set up. This issue is now blocked for 5.2 and below users so that the plugin can be installed. The S3 API is simply not compatible with 5.2 or below.
 = 2.1.29 =
 * Bug Fix - PHP 5.2 was not compatible with the standard Amazon S3 namespace set up. This has been reworked to be compatible with PHP 5.2+
 = 2.1.28 =
