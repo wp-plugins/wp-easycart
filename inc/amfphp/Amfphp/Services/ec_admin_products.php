@@ -335,7 +335,7 @@ class ec_admin_products{
 					}else if( $key == 'views' ){
 						$sql .= '`'.$key.'` = "0", ';
 					}else{
-						$sql .= '`'.$key.'` = "' . $value .'", ';
+						$sql .= '`'.$key.'` = "' . mysql_real_escape_string($value) .'", ';
 					}
 				}
 
