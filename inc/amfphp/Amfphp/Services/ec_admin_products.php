@@ -335,7 +335,7 @@ class ec_admin_products{
 					}else if( $key == 'views' ){
 						$sql .= '`'.$key.'` = "0", ';
 					}else{
-						$sql .= '`'.$key.'` = "' . mysql_real_escape_string($value) .'", ';
+						$sql .= '`'.$key.'` = ' . $this->db->prepare( '%s', $value ) .', ';
 					}
 				}
 
@@ -343,7 +343,7 @@ class ec_admin_products{
 			
 			$sql = substr( $sql, 0, strlen( $query ) - 2 ); # lop off the extra trailing comma
 			$sql .= " WHERE product_id = " . $newid;
-			$this->db->query( $sql );
+			$this->db->query( $this->db->prepare( $sql) );
 			// END DUPLICATION INSERT
 			
 			// Duplicate Option Image Rows
