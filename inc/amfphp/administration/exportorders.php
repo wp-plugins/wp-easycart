@@ -56,7 +56,7 @@ if ($users || is_user_logged_in()) {
 
 	$data = "";
 	
-	$sqlquery = sprintf("select * from ec_order order by ec_order.order_id asc");
+	$sqlquery = sprintf("SELECT  ec_orderdetail.*, ec_order.* FROM  ec_order  LEFT OUTER JOIN ec_orderdetail ON (ec_order.order_id = ec_orderdetail.order_id)  order by ec_order.order_id asc");
 
 	$result = mysql_query($sqlquery) or die(mysql_error());
 	
@@ -66,16 +66,17 @@ if ($users || is_user_logged_in()) {
 
 	for ($i = 0; $i < $count; $i++){
 
-		$header .= mysql_field_name($result, $i)."\t";
+		$header .= mysql_field_name($result, $i) ."\t";
 
 	}
+	$header .= "advanced_product_options" ."\t";  //add the product options to the end
 
 	while($row = mysql_fetch_row($result)){
 
 		$line = '';
 
 		foreach($row as $value){
-
+			//add order table info
 			if(!isset($value) || $value == ""){
 
 				$value = "\t";
@@ -95,11 +96,20 @@ if ($users || is_user_logged_in()) {
 			}
 
 			$line .= $value;
-
 		}
+		
+		$optionquery = sprintf("SELECT ec_order_option.option_value FROM  ec_order_option where ec_order_option.orderdetail_id = '".$row[0]."'");
 
+		$optionresults = mysql_query($optionquery) or die(mysql_error());
+		$optionlist = '';
+		while($optionrow = mysql_fetch_row($optionresults)){
+			$optionlist .= $optionrow[0] . ', ';
+		}
+		
+		$line .= $optionlist . "\t";
+		
+		//create the line item and next row
 		$data .= trim($line)."\n";
-
 	}
 
 	# this line is needed because returns embedded in the data have "\r"
