@@ -34,6 +34,15 @@
         <li id="ec_cart_error_billing_country" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_billing_country' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
         <li id="ec_cart_error_billing_phone" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_billing_phone' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
         
+        <li id="ec_cart_error_shipping_first_name" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_shipping_first_name' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
+        <li id="ec_cart_error_shipping_last_name" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_shipping_last_name' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
+        <li id="ec_cart_error_shipping_address" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_shipping_address' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
+        <li id="ec_cart_error_shipping_city" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_shipping_city' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
+        <li id="ec_cart_error_shipping_state" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_shipping_state' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
+        <li id="ec_cart_error_shipping_zip" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_shipping_zip_code' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
+        <li id="ec_cart_error_shipping_country" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_shipping_country' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
+        <li id="ec_cart_error_shipping_phone" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_shipping_phone' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
+        
         <li id="ec_cart_error_email" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_email' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
         <li id="ec_cart_error_retype_email" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_retype_email' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_is_required' ); ?>.</li>
         <li id="ec_cart_error_email_match" style="display: none;"><strong><?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_emails_match' ); ?></strong> <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_item_must_match' ); ?>.</li>
@@ -103,6 +112,76 @@
         </div>
     </div>
     <?php }?>
+
+<?php if( get_option( 'ec_option_collect_shipping_for_subscriptions' ) ){ ?>    
+</div>
+<div class="ec_cart_subscription_holder_middle">
+
+    <div class="ec_cart_payment_information_title"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_title' )?></div>
+    
+    <?php if( get_option( 'ec_option_display_country_top' ) ){ ?>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_country_row">
+        <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_country' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "country" ); ?>
+        </div>
+    </div>
+    <?php }?>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_first_name_row">
+    	<div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_first_name' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "first_name" ); ?>
+        </div>
+    </div>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_last_name_row">
+        <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_last_name' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "last_name" ); ?>
+        </div>
+    </div>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_address_row">
+        <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_address' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "address" ); ?>
+        </div>
+    </div>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_city_row">
+        <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_city' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "city" ); ?>
+        </div>
+    </div>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_state_row">
+        <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_state' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "state" ); ?>
+        </div>
+    </div>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_zip_row">
+        <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_zip' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "zip" ); ?>
+        </div>
+    </div>
+    <?php if( !get_option( 'ec_option_display_country_top' ) ){ ?>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_country_row">
+        <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_country' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "country" ); ?>
+        </div>
+    </div>
+    <?php }?>
+    <?php if( get_option( 'ec_option_collect_user_phone' ) ){ ?>
+    <div class="ec_cart_shipping_row" id="ec_cart_shipping_phone_row">
+        <div class="ec_cart_shipping_label"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_phone' )?></div>
+        <div class="ec_cart_shipping_input">
+          <?php $this->display_shipping_input( "phone" ); ?>
+        </div>
+    </div>
+    <?php }?>
+    
+    <?php } //Close use shipping option ?>
+    
     <?php if( !isset( $_SESSION['ec_email'] ) || $_SESSION['ec_email'] == "guest" || $_SESSION['ec_email'] == "" ){ ?>
     </div>
     <div class="ec_cart_subscription_holder_middle">

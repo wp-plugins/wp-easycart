@@ -66,6 +66,10 @@
             <option value="1" <?php if (get_option('ec_option_paypal_use_sandbox') == 1) echo ' selected'; ?>>Yes</option>
             <option value="0" <?php if (get_option('ec_option_paypal_use_sandbox') == 0) echo ' selected'; ?>>No</option>
           </select></span></div>
+    <div class="ec_payment_type_row"><span class="ec_payment_type_row_label">PayPal Require Verfied Shipping Address:</span><span class="ec_payment_type_row_input"><select name="ec_option_paypal_collect_shipping" id="ec_option_paypal_collect_shipping">
+            <option value="1" <?php if (get_option('ec_option_paypal_collect_shipping') == 1) echo ' selected'; ?>>Yes</option>
+            <option value="0" <?php if (get_option('ec_option_paypal_collect_shipping') == 0) echo ' selected'; ?>>No</option>
+          </select></span></div>
     <div class="ec_payment_type_row"><strong>To Do:</strong> We recommend you add the plugin IPN listener to your PayPal account in order to optimize the checkout process for you and your customers. You will need to upgrade your standard account to a standard business account, if you haven't already, to use this feature.</div>
     <div class="ec_payment_type_row"><strong>PayPal IPN URL:</strong> <?php echo plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/paypal_payment_complete.php" ); ?></div>
 </div>

@@ -591,9 +591,9 @@ class ec_product{
 			}else{
 				echo "<input type=\"submit\" value=\"" . $title . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\" ";
 				if( $this->use_advanced_optionset )
-					echo "onclick=\"return ec_product_details_add_to_cart_advanced( '" . $this->model_number . "' );\" />";
+					echo "onclick=\"ec_google_addToCart( ); return ec_product_details_add_to_cart_advanced( '" . $this->model_number . "' );\" />";
 				else
-					echo "onclick=\"return ec_product_details_add_to_cart( '" . $this->model_number . "' );\" />";
+					echo "onclick=\"ec_google_addToCart( ); return ec_product_details_add_to_cart( '" . $this->model_number . "' );\" />";
 					
 				echo "<div class=\"ec_error_message_box\" id=\"" . $id . "_" . $this->model_number . "\">error text here</div>";
 			}
@@ -1015,10 +1015,10 @@ class ec_product{
 		$content = preg_replace_callback( "/\[ecshortcode\](.*?)\[\/ecshortcode\]/", array($this, "replace_shortcode" ), $content );
 		
 		// Before returning, alter format all text from the flash editor
-		$content = preg_replace( "/\<[P,p][\s][A,a][L,l][I,i][G,g][N,n]=\"(.+?)\"\>/", "<div style=\"text-align:$1;\">", $content );
-		$content = preg_replace( "/\<[F,f][O,o][N,n][T,t]/", "<div", $content );
-		$content = preg_replace( "/\<\/[F,f][O,o][N,n][T,t]/", "</div", $content );
-		$content = preg_replace( "/\<\/[P,p]/", "</div", $content );
+		$content = preg_replace( "/\<[P,p][\s][A,a][L,l][I,i][G,g][N,n]=\"(.+?)\"\>/", "<p style=\"text-align:$1;\">", $content );
+		$content = preg_replace( "/\<[F,f][O,o][N,n][T,t]/", "<span", $content );
+		$content = preg_replace( "/\<\/[F,f][O,o][N,n][T,t]/", "</span", $content );
+		$content = preg_replace( "/\<\/[P,p]/", "</p", $content );
 		$content = preg_replace( "/\<[B,b] /", "<B style=\"color:inherit !important;\"", $content );
 		$content = preg_replace( "/FACE=\"(.*?)\" SIZE=\"(.*?)\" COLOR=\"(.*?)\"(.*?)\>/", "style=\"font-family:$1; font-size:$2px; color:$3;\"\>", $content );
 		$content = preg_replace( "/\<[D,d][I,i][V,v][\s][C,c][O,o][L,l][O,o][R,r]\=[\"\'](.*?)[\"\']\>.*?\<[A,a][\s][H,h][R,r][E,e][F,f]\=[\"\'](.*?)[\"\'][\s][T,t][A,a][R,r][G,g][E,e][T,t]\=[\"\'](.*?)[\"\']\>(.*?)\<\/[A,a]\>.*?\<\/[D,d][I,i][V,v]\>/", "<a href=\"$2\" target=\"$3\" style=\"color:$1 !important;\">$4</a>", $content );

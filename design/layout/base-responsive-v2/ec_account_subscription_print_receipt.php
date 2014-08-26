@@ -31,32 +31,32 @@
         <tr>
           <td width='47%' bgcolor='#F3F1ED' class='style20'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_billing_label" ); ?></td>
           <td width='3%'>&nbsp;</td>
-          <td width='50%' bgcolor='#F3F1ED' class='style20'></td>
+          <td width='50%' bgcolor='#F3F1ED' class='style20'><?php if( get_option( 'ec_option_collect_shipping_for_subscriptions' ) ){ echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_shipping_label" ); } ?></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_first_name; ?> <?php echo $order->billing_last_name; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_collect_shipping_for_subscriptions' ) ){ echo $order->shipping_first_name . ' ' . $order->shipping_last_name; } ?></span></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_address_line_1; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_collect_shipping_for_subscriptions' ) ){ echo $order->shipping_address_line_1; } ?></span></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_city; ?>, <?php echo $order->billing_state; ?> <?php echo $order->billing_zip; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_collect_shipping_for_subscriptions' ) ){ echo $order->shipping_city . ', ' . $order->shipping_state . ' ' . $order->shipping_zip; } ?></span></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_country; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_collect_shipping_for_subscriptions' ) ){ echo $order->shipping_country; } ?></span></td>
         </tr>
         <tr>
           <td><span class='style22'><?php echo $order->billing_phone; ?></span></td>
           <td>&nbsp;</td>
-          <td><span class='style22'></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_collect_shipping_for_subscriptions' ) ){ echo $order->shipping_phone; } ?></span></td>
         </tr>
       </table></td>
   </tr>

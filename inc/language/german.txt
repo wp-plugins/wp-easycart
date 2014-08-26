@@ -86,6 +86,10 @@
 					"title":"zur Warenkorb Taste",
 					"value":"zum Warenkorb"
 				},
+				"quick_view_select_options":{
+					"title":"Select Options Button",
+					"value":"Wählen Sie Optionen"
+				},
 				"quick_view_view_full_details":{
 					"title":"Link Text vollständige Produkt Details sehen",
 					"value":"vollständige Produkt Details sehen"
@@ -174,6 +178,10 @@
 				"product_details_add_to_cart":{
 					"title":"In den Warenkorb Taste Text",
 					"value":"IN DEN WARENKORB"
+				},
+				"product_details_select_options":{
+					"title":"Select Options Button",
+					"value":"wählen Sie Optionen"
 				},
 				"product_details_out_of_stock":{
 					"title":"Ausverkauft Text",

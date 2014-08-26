@@ -217,3 +217,5 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+
+.et_pb_modal_settings_container{ z-index:9998 !important; }

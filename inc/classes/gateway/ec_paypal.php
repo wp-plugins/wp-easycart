@@ -30,7 +30,11 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"weight_cart\" id=\"weight_cart\" type=\"hidden\" value=\"" . $this->order->order_weight . "\" />";
 		echo "<input name=\"weight_unit\" id=\"weight_unit\" type=\"hidden\" value=\"" . $paypal_weight_unit . "\" />";
 		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->grand_total, 2) . "\" />";
-		echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"1\" />";
+		if( get_option( 'ec_option_paypal_collect_shipping' ) ){
+			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"2\" />";
+		}else{
+			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"1\" />";
+		}
 		echo "<input name=\"lc\" id=\"lc\" type=\"hidden\" value=\"" . $paypal_lc . "\" />";
 		echo "<input name=\"rm\" id=\"rm\" type=\"hidden\" value=\"2\" />";
 		echo "<input name=\"notify_url\" id=\"notify_url\" type=\"hidden\" value=\"".  plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/paypal_payment_complete.php" ) ."\" />";
@@ -87,7 +91,11 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"weight_cart\" id=\"weight_cart\" type=\"hidden\" value=\"" . $this->order->order_weight . "\" />";
 		echo "<input name=\"weight_unit\" id=\"weight_unit\" type=\"hidden\" value=\"" . $paypal_weight_unit . "\" />";
 		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->grand_total, 2) . "\" />";
-		echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"1\" />";
+		if( get_option( 'ec_option_paypal_collect_shipping' ) ){
+			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"2\" />";
+		}else{
+			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"1\" />";
+		}
 		echo "<input name=\"lc\" id=\"lc\" type=\"hidden\" value=\"" . $paypal_lc . "\" />";
 		echo "<input name=\"rm\" id=\"rm\" type=\"hidden\" value=\"2\" />";
 		echo "<input name=\"notify_url\" id=\"notify_url\" type=\"hidden\" value=\"".  plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/paypal_payment_complete.php" ) ."\" />";

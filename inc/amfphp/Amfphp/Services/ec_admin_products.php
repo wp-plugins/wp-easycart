@@ -531,7 +531,7 @@ class ec_admin_products{
 				$response = $stripe->insert_plan( $stripe_plan );
 				if( $response ){
 					$updatestripeboolean = "UPDATE ec_product SET ec_product.stripe_plan_added = '1' WHERE ec_product.product_id = %d";
-					$this->db->query( $this->db->prepare( $updatestripeboolean, $product->product_id ) );
+					$this->db->query( $this->db->prepare( $updatestripeboolean, $productid ) );
 				}
 			}
 		} // Close Stripe Subscription Check
@@ -600,7 +600,7 @@ class ec_admin_products{
 			$response = $stripe->insert_plan( $stripe_plan );
 			if( $response ){
 				$sql = "UPDATE ec_product SET ec_product.stripe_plan_added = '1' WHERE ec_product.product_id = %d";
-				$this->db->query( $this->db->prepare( $sql, $product->product_id ) );
+				$this->db->query( $this->db->prepare( $sql, $newproductid ) );
 			}
 		}
 		

@@ -1535,6 +1535,7 @@ function ec_cart_validate_subscription_order( ){
 	var card_errors = 0;
 	
 	var billing_country_code = document.getElementById('ec_cart_billing_country').value;
+	var shipping_country_code = document.getElementById('ec_cart_shipping_country').value;
 	
 	var payment_method = "";
 	var card_number = document.getElementById('ec_card_number').value;
@@ -1562,6 +1563,25 @@ function ec_cart_validate_subscription_order( ){
 		}else{
 			document.getElementById('ec_cart_billing_' + input_names[i] + '_row').className = "ec_cart_billing_row";
 			jQuery( '#ec_cart_error_billing_' + input_names[i] ).hide( );
+		}
+	}
+	
+	if( document.getElementById( 'ec_cart_shipping_first_name' ) ){
+		for( var i=0; i< input_names.length; i++){
+			if( input_names[i] == "state" && document.getElementById( 'ec_cart_shipping_' + input_names[i] + '_' + shipping_country_code ) && document.getElementById( 'ec_cart_shipping_' + input_names[i] + '_' + shipping_country_code ).options ){
+				var value = document.getElementById( 'ec_cart_shipping_' + input_names[i] + '_' + shipping_country_code ).options[document.getElementById( 'ec_cart_shipping_' + input_names[i] + '_' + shipping_country_code ).selectedIndex].value;
+			}else{
+				var value = document.getElementById( 'ec_cart_shipping_' + input_names[i] ).value;
+			}
+			// validate shipping
+			if( !ec_validation( "validate_" + input_names[i], value, shipping_country_code ) ){
+				info_errors++;
+				document.getElementById('ec_cart_shipping_' + input_names[i] + '_row').className = "ec_cart_shipping_row_error";
+				jQuery( '#ec_cart_error_shipping_' + input_names[i] ).show( );
+			}else{
+				document.getElementById('ec_cart_shipping_' + input_names[i] + '_row').className = "ec_cart_shipping_row";
+				jQuery( '#ec_cart_error_shipping_' + input_names[i] ).hide( );
+			}
 		}
 	}
 	

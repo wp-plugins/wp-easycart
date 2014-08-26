@@ -154,6 +154,71 @@ class ec_cartpage{
 	
 	public function display_cart_page(){
 		
+		if( get_option( 'ec_option_googleanalyticsid' ) != "UA-XXXXXXX-X" && get_option( 'ec_option_googleanalyticsid' ) != "" ){
+			echo "<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			ga('create', '" . get_option( 'ec_option_googleanalyticsid' ) . "', 'auto');
+			ga('send', 'pageview');
+			ga('require', 'ec');
+			
+			function ec_google_removeFromCart( model_number, title, quantity, price ){
+			  ga('ec:addProduct', {
+				'id': model_number,
+				'name': title,
+				'price': price,
+				'quantity': quantity
+			  });
+			  ga('ec:setAction', 'remove');
+			  ga('send', 'event', 'UX', 'click', 'remove from cart');     // Send data using an event.
+			}";
+			
+			// Setup Cart
+			for( $i=0; $i < count( $this->cart->cart ); $i++ ){
+				echo "
+				ga( 'ec:addProduct', {
+				  'id': '" . $this->cart->cart[$i]->model_number . "',
+				  'name': '" . $this->cart->cart[$i]->title . "',
+				  'price': '" . $this->cart->cart[$i]->unit_price . "',
+				  'quantity': '" . $this->cart->cart[$i]->quantity . "'
+				});";
+			}
+			
+			// View of Cart
+			if( !isset( $_GET['ec_page'] )  ){
+				echo "
+				ga('ec:setAction','checkout', {
+					'step': 1,
+					'option': 'Cart View'
+				});
+				ga('send', 'pageview');";
+			
+			// View of Checkout Info
+			}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_info" ){
+				echo "
+				ga('ec:setAction','checkout', {
+					'step': 2,
+					'option': 'Checkout Info'
+				});
+				ga('send', 'pageview');";
+			
+			// View of Payment Method
+			}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_payment" ){
+				echo "
+				ga('ec:setAction','checkout', {
+					'step': 3,
+					'option': 'Checkout Payment'
+				});
+				ga('send', 'pageview');";
+			
+			}
+			
+			echo "</script>";
+		}
+		
 		echo "<div class=\"ec_cart_page\">";
 		if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
 			$order_id = $_GET['order_id'];
@@ -2171,8 +2236,20 @@ class ec_cartpage{
 						}
 						
 						if( $is_match ){
-							$coupon = $_POST['ec_cart_coupon_code'];
+							$coupon = $coupon_row->promocode_id;
 						}
+					}
+					
+					if( $is_match ){
+						
+						if( $coupon_row->is_dollar_based ){
+							$products[0]['price'] = floatval( $products[0]['price'] ) - floatval( $coupon_row->promo_dollar );
+							
+						}else if( $coupon_row->is_percentage_based ){
+							$products[0]['price'] = floatval( $products[0]['price'] ) - ( floatval( $products[0]['price'] ) * ( floatval( $coupon_row->promo_percentage ) / 100 ) );
+							
+						}
+				
 					}
 				
 					$first_name = stripslashes( $_POST['ec_cart_billing_first_name'] );
@@ -2191,6 +2268,34 @@ class ec_cartpage{
 					$country = stripslashes( $_POST['ec_cart_billing_country'] );
 					$phone = stripslashes( $_POST['ec_cart_billing_phone'] );
 					
+					if( isset( $_POST['ec_cart_shipping_first_name'] ) ){
+						$shipping_first_name = stripslashes( $_POST['ec_cart_shipping_first_name'] );
+						$shipping_last_name = stripslashes( $_POST['ec_cart_shipping_last_name'] );
+						$shipping_address = stripslashes( $_POST['ec_cart_shipping_address'] );
+						if( isset( $_POST['ec_cart_shipping_address2'] ) )	$shipping_address2 = stripslashes( $_POST['ec_cart_shipping_address'] );
+						else												$shipping_address2 = "";
+							
+						$shipping_city = stripslashes( $_POST['ec_cart_shipping_city'] );
+						if( isset( $_POST['ec_cart_shipping_state_' . $shipping_country] ) ){
+							$shipping_state = stripslashes( $_POST['ec_cart_shipping_state_' . $shipping_country] );
+						}else{
+							$shipping_state = stripslashes( $_POST['ec_cart_shipping_state'] );
+						}
+						$shipping_zip = stripslashes( $_POST['ec_cart_shipping_zip'] );
+						$shipping_country = stripslashes( $_POST['ec_cart_shipping_country'] );
+						$shipping_phone = stripslashes( $_POST['ec_cart_shipping_phone'] );
+					}else{
+						$shipping_first_name = "";
+						$shipping_last_name = "";
+						$shipping_address = "";
+						$shipping_address2 = "";
+						$shipping_city = "";
+						$shipping_state = "";
+						$shipping_zip = "";
+						$shipping_country = "";
+						$shipping_phone = "";
+					}
+					
 					$payment_method = $this->get_payment_type( $this->sanatize_card_number( $_POST['ec_card_number'] ) );
 					$card_holder_name = stripslashes( $_POST['ec_cart_billing_first_name'] . " " . $_POST['ec_cart_billing_last_name'] );
 					$card_number = $_POST['ec_card_number'];
@@ -2204,11 +2309,13 @@ class ec_cartpage{
 						$password = md5( $_POST['ec_contact_password'] );
 						
 						$billing_id = $this->mysqli->insert_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone );
+						$shipping_id = $this->mysqli->insert_address( $shipping_first_name, $shipping_last_name, $shipping_address, $shipping_address2, $shipping_city, $shipping_state, $shipping_zip, $shipping_country, $shipping_phone );
 						
 						$user_level = "shopper";
 						
 						$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, $user_level, false );
 						$this->mysqli->update_address_user_id( $billing_id, $user_id );
+						$this->mysqli->update_address_user_id( $shipping_id, $user_id );
 						
 						$_SESSION['ec_email'] = $email;
 						$_SESSION['ec_username'] = $_POST['ec_cart_billing_first_name'] . " " . $_POST['ec_cart_billing_last_name'];
@@ -2220,6 +2327,7 @@ class ec_cartpage{
 					// Setup for processing
 					$user = new ec_user( "" );
 					$user->setup_billing_info_data( $first_name, $last_name, $address, "", $city, $state, $country, $zip, $phone );
+					$user->setup_shipping_info_data( $shipping_first_name, $shipping_last_name, $shipping_address, "", $shipping_city, $shipping_state, $shipping_country, $shipping_zip, $shipping_phone );
 					$card = new ec_credit_card( $payment_method, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
 					$product = new ec_product( $products[0] );
 					$stripe = new ec_stripe( );
@@ -2267,7 +2375,7 @@ class ec_cartpage{
 									
 									$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user, $card );
 									$subscription_row = $this->mysqli->get_subscription_row( $subscription_id );
-									$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id );
+									$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_row->promocode_id );
 									$this->mysqli->update_user_default_card( $user, $card );
 									
 									$subscription = new ec_subscription( $subscription_row );

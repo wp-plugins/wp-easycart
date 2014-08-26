@@ -102,6 +102,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
     <span class="ec_setting_row_input"><select name="ec_option_gift_card_shipping_allowed" style="width:100px;"><option value="0"<?php if( get_option('ec_option_gift_card_shipping_allowed') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_gift_card_shipping_allowed') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Shipping for Subscriptions</em>This option allows you to collect a user's shipping information if required for subscription items. If you sell digital goods, you should leave this off, but if you are shipping something with the recurring billing, turn it on.</span></a></span>
+    <span class="ec_setting_row_label">Collect Shipping for Subscriptions:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_collect_shipping_for_subscriptions" style="width:100px;"><option value="0"<?php if( get_option('ec_option_collect_shipping_for_subscriptions') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_collect_shipping_for_subscriptions') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title">Amazon S3 Setup</div>

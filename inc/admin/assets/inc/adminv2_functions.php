@@ -1224,6 +1224,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_display_as_catalog', $_POST['ec_option_display_as_catalog'] );
 	update_option( 'ec_option_exchange_rates', $_POST['ec_option_exchange_rates'] );
 	update_option( 'ec_option_gift_card_shipping_allowed', $_POST['ec_option_gift_card_shipping_allowed'] );
+	update_option( 'ec_option_collect_shipping_for_subscriptions', $_POST['ec_option_collect_shipping_for_subscriptions'] );
 	update_option( 'ec_option_amazon_key', $_POST['ec_option_amazon_key'] );
 	update_option( 'ec_option_amazon_secret', $_POST['ec_option_amazon_secret'] );
 	update_option( 'ec_option_amazon_bucket', $_POST['ec_option_amazon_bucket'] );
@@ -1392,7 +1393,8 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_paypal_currency_code', $_POST['ec_option_paypal_currency_code'] );
 	update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
 	update_option( 'ec_option_paypal_use_sandbox', $_POST['ec_option_paypal_use_sandbox'] );
-	update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );	
+	update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );
+	update_option( 'ec_option_paypal_collect_shipping', $_POST['ec_option_paypal_collect_shipping'] );		
 	//paypal payflow pro
 	update_option( 'ec_option_paypal_pro_test_mode', $_POST['ec_option_paypal_pro_test_mode'] );
 	update_option( 'ec_option_paypal_pro_vendor', $_POST['ec_option_paypal_pro_vendor'] );

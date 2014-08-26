@@ -144,6 +144,7 @@ ul.ec_cart_error >li > strong{ color:#900; }
 .ec_cart_billing_row .ec_cart_billing_input, .ec_cart_shipping_row .ec_cart_shipping_input, .ec_cart_contact_information_input{ float:left; text-align:left; }
 .ec_cart_billing_row .ec_cart_billing_input_text, .ec_cart_shipping_row .ec_cart_shipping_input_text, .ec_cart_shipping_row_error .ec_cart_shipping_input, .ec_cart_billing_row_error .ec_cart_billing_input_text, .ec_cart_shipping_row_error .ec_cart_shipping_input_text, .ec_cart_contact_information_input_text{ width:225px !important; min-width:200px !important; padding:6px 4px !important; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; margin:0px !important; }
 .ec_cart_billing_row select, .ec_cart_shipping_row select, .ec_cart_billing_row_error .ec_cart_billing_input select, .ec_cart_shipping_row_error .ec_cart_shipping_input select{ width:225px !important; min-width:200px !important; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; }
+.ec_cart_shipping_row_error .ec_cart_shipping_input{ float:left; padding:0px !important; }
 .ec_cart_shipping_selector_row{ width:300px; margin-top:5px; text-align:left; font-size:12px; font-family:[content_font]; }
 .ec_cart_shipping_selector_row input[type="radio"]{ -webkit-appearance:radio !important; }
 .ec_cart_shipping_selector_row_hidden{ display:none; }
@@ -201,9 +202,9 @@ ul.ec_cart_error >li > strong{ color:#900; }
 .ec_cart_payment_information_input input, .ec_cart_payment_information_input #ec_cart_payment_type{ width:160px; min-width:100px !important; }
 .ec_cart_payment_information_credit_card_active{ display:block; float:left; }
 .ec_cart_payment_information_credit_card_inactive{ display:none; float:left; }
-.ec_cart_payment_information_input_text{ width:160px; }
+.ec_cart_payment_information_input_text{ width:160px; padding:4px 6px; }
 .ec_cart_payment_information_input_text_small{ width:60px; }
-.ec_cart_payment_information_input_select{ width:100px; min-width:100px !important; }
+.ec_cart_payment_information_input_select{ width:100px; min-width:100px !important; padding:4px 6px; }
 .ec_cart_payment_information_row_error .ec_cart_payment_information_label{ color:#900; }
 .ec_cart_checkout_review_info{ float:left; width:100%; font-family:[content_font]; font-size:12px; line-height:22px; }
 

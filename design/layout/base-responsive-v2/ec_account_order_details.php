@@ -69,7 +69,7 @@
           <?php $this->order->display_order_billing_phone( ); ?>
         </div>
         <div class="ec_account_order_details_row">&nbsp;&nbsp;&nbsp;</div>
-        <?php if( get_option( 'ec_option_use_shipping' ) && !$this->order->subscription_id ){?>
+        <?php if( get_option( 'ec_option_use_shipping' ) && ( !$this->order->subscription_id || get_option( 'ec_option_collect_shipping_for_subscriptions' ) ) ){?>
         <div class="ec_account_order_details_row"><b><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_shipping_label' )?></b></div>
         <div class="ec_account_order_details_row">
           <?php $this->order->display_order_shipping_first_name( ); ?>

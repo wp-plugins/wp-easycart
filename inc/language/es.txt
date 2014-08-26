@@ -86,6 +86,10 @@
 					"title":"Add to Cart Button",
 					"value":"Añadir al Carro"
 				},
+				"quick_view_select_options":{
+					"title":"Select Options Button",
+					"value":"seleccionar opciones"
+				},
 				"quick_view_view_full_details":{
 					"title":"Link Text View Full Product Details",
 					"value":"Más Detalles del Producto"
@@ -174,6 +178,10 @@
 				"product_details_add_to_cart":{
 					"title":"Add to Cart button text",
 					"value":"Añadir al Carro"
+				},
+				"product_details_select_options":{
+					"title":"Select Options Button",
+					"value":"seleccionar opciones"
 				},
 				"product_details_out_of_stock":{
 					"title":"Out of Stock Text",

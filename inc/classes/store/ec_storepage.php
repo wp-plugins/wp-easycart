@@ -164,6 +164,39 @@ class ec_storepage{
 		if(substr_count($storepage, '?'))							$permalinkdivider = "&";
 		else														$permalinkdivider = "?";
 		
+		echo "
+		<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		
+		ga('create', '" . get_option( 'ec_option_googleanalyticsid' ) . "', 'auto');
+		ga('send', 'pageview');
+		ga('require', 'ec');
+		
+		ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
+		  'id': '" . $this->product->model_number . "',     								// Product ID (string).
+		  'name': '" . $this->product->title . "', 											// Product name (string).
+		  'price': '" . number_format( $this->product->price, 2, '.', '' ) . "',			// Product Price (currency).
+		});
+		ga('send', 'pageview'); 
+		
+		function  ec_google_addToCart( ){
+		  ga('create', '" . get_option( 'ec_option_googleanalyticsid' ) . "', 'auto');
+		  ga('require', 'ec');
+		  
+		  ga('ec:addProduct', {
+			'id': '" . $this->product->model_number . "',
+			'name': '" . $this->product->title . "',
+			'price': '" . number_format( $this->product->price, 2, '.', '' ) . "',
+			'quantity': document.getElementById( 'product_quantity_" . $this->product->model_number . "' )
+		  });
+		  ga('ec:setAction', 'add');
+		  ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
+		}
+		</script>";
+		
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_details_page.php' ) )	
 			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_details_page.php' );
 		else

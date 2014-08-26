@@ -1330,6 +1330,7 @@ class ec_db{
 	public function delete_cartitem( $tempcart_id, $session_id ){
 		$sql = "DELETE FROM ec_tempcart WHERE ec_tempcart.tempcart_id = '%s' AND ec_tempcart.session_id = '%s'";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $tempcart_id, $session_id ) );
+		$this->mysqli->query( $this->mysqli->prepare( "DELETE FROM ec_tempcart_optionitem WHERE ec_tempcart_optionitem.tempcart_id = %d", $tempcart_id ) );
 		
 		$sql = "SELECT 
 
@@ -1378,6 +1379,7 @@ class ec_db{
 	
 	public function redeem_coupon_code( $couponcode ){
 		$sql = "SELECT 
+				ec_promocode.promocode_id,
 				ec_promocode.is_dollar_based, 
 				ec_promocode.is_percentage_based, 
 				ec_promocode.is_shipping_based, 
@@ -1842,6 +1844,11 @@ class ec_db{
 	}
 	
 	public function clear_tempcart( $session_id ){
+		$tempcart_ids = $this->mysqli->get_results( $this->mysqli->prepare( "SELECT ec_tempcart.tempcart_id FROM ec_tempcart WHERE ec_tempcart.session_id = %s" ) );
+		foreach( $tempcart_ids as $tempcart_id ){
+			$this->mysqli->query( $this->mysqli->prepare( "DELETE FROM ec_tempcart_optionitem WHERE ec_tempcart_optionitem.tempcart_id = %d", $tempcart_id ) );
+		}
+		
 		$sql = "DELETE FROM ec_tempcart WHERE session_id = '%s'";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $session_id ) );
 	}
@@ -2694,9 +2701,9 @@ class ec_db{
 		return $this->mysqli->insert_id;
 	}
 	
-	public function insert_subscription_order( $product, $user, $card, $subscription_id ){
-		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, payment_method, creditcard_digits, subscription_id) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d)";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price, $product->price, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $card->payment_method, $card->get_last_four( ), $subscription_id ) );
+	public function insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_code ){
+		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, creditcard_digits, subscription_id) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d)";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price, $product->price, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, $card->payment_method, $card->get_last_four( ), $subscription_id ) );
 		
 		$order_id = $this->mysqli->insert_id;
 		$image1 = $product->images->get_single_image( );

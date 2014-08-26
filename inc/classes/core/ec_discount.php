@@ -6,6 +6,7 @@ class ec_discount{
 	public $discount_total;										// Float 7,2
 	public $coupon_discount;									// Float 7,2
 	public $giftcard_discount;									// Float 7,2
+	public $shipping_discount;									// Float 15,3
 	public $coupon_code;										// VARCHAR 255
 	public $giftcard_code;										// VARCHAR 255
 	

@@ -4,20 +4,39 @@
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  
-	ga('create', '<?php echo $google_urchin_code; ?>', '<?php echo $google_wp_url; ?>');
+	
+	ga('create', '<?php echo get_option( 'ec_option_googleanalyticsid' ); ?>', 'auto');
+	ga('require', 'ec');
+	
+	ga('set', '&cu', '<?php echo get_option( 'ec_option_base_currency' ); ?>');
+	
+	ga('ec:setAction', 'checkout', {
+		'step': 4,
+		'option': 'Checkout Success'
+	});
+	
 	ga('send', 'pageview');
 	
-	ga('require', 'ecommerce', 'ecommerce.js');
+	<?php for( $i=0; $i<count( $this->cart->cart ); $i++ ){ ?>
+	ga('ec:addProduct', {
+	  'id': '<?php echo $this->cart->cart[$i]->model_number; ?>',
+	  'name': '<?php echo $this->cart->cart[$i]->title; ?>',
+	  'price': '<?php echo $this->cart->cart[$i]->unit_price; ?>',
+	  'quantity': <?php echo $this->cart->cart[$i]->quantity; ?>
+	});
+	<?php }?>
 	
-	<?php
-		//transaction information
-		echo $google_transaction;
-		//transaction items
-		echo $google_items;
-	?>
+	// Transaction level information is provided via an actionFieldObject.
+	ga('ec:setAction', 'purchase', {
+	  'id': '<?php  echo $order_id; ?>',
+	  'affiliation': 'Online Store',
+	  'revenue': '<?php echo number_format( $order->grand_total, 2, '.', '' ); ?>',
+	  'tax': '<?php echo number_format( $order->tax_total, 2, '.', '' ); ?>',
+	  'shipping': '<?php echo number_format( $order->shipping_total, 2, '.', '' ); ?>',
+	  <?php if( $order->promo_code != "" ){ ?>'coupon': '<?php echo $order->promo_code; ?>'<?php }?>
+	});
 	
-	ga('ecommerce:send');
+	ga('send', 'pageview');     // Send transaction data with initial pageview.	
 	
 </script>
 

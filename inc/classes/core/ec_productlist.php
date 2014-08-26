@@ -90,7 +90,7 @@ class ec_productlist{
 	private function get_current_page_url( ){
 		$uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
 		$pageURL = 'http';
-		if( $_SERVER["HTTPS"] == "on" ){
+		if( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ){
 			$pageURL .= "s";
 		}
 		$pageURL .= "://";
@@ -104,8 +104,8 @@ class ec_productlist{
 		
 		$current_page = $this->get_current_page_url( );
 		
-		if(substr_count($current_page, '?'))						$permalink_divider .= "&";
-		else														$permalink_divider .= "?";
+		if(substr_count($current_page, '?'))						$permalink_divider = "&";
+		else														$permalink_divider = "?";
 		
 		echo "<select name=\"sortfield\" id=\"sortfield\" onchange=\"change_product_sort('" . $this->filter->get_menu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_menu_name( ) ) . "', '" . $this->filter->get_submenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_submenu_name( ) ) . "', '" . $this->filter->get_subsubmenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_subsubmenu_name( ) ) . "', '" . $this->filter->manufacturer->manufacturer_id . "', '" . $this->filter->pricepoint_id . "', '" . $this->paging->current_page . "', '" . $this->filter->perpage->selected . "', '" . $current_page . "', '" . $permalink_divider . "');\" class=\"ec_sort_menu\">\n\n";
 

@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
-Tested up to: 3.9.1
-Stable tag: 2.1.30
+Tested up to: 3.9.2
+Stable tag: 2.1.31
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,16 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 2.1.31 =
+* Feature - PayPal Standard now allows you to force the user to enter their shipping info at PayPal, great for verifying the user's address/account.
+* Feature - Stripe Subscriptions now allow you to collect shipping addresses.
+* Feature - Google Analytics, now using the latest ecommerce data to show the full checkout experience through Google's ecommerce tab.
+* Bug Fix - Stripe Coupons were behaving incorrectly.
+* Bug Fix - Only Applying discounts to the products that apply if you attach to a single product type, manufacturer, or category; instead of applying the discount to the whole cart.
+* Bug Fix - WPML, now finding the translated page link for store, account, and cart when this applies.
+* Bug Fix - Tempcart issue for lots of advanced options, we were not clearing these out, causing conflicts in some instances.
+* Bug Fix - Better handling of filters with the URL throughout the store.
+* Improvement - Better checking and processing of advanced content editor.
 = 2.1.30 =
 * Bug Fix - PHP 5.2 was not compatible with the standard Amazon S3 namespace set up. This issue is now blocked for 5.2 and below users so that the plugin can be installed. The S3 API is simply not compatible with 5.2 or below.
 = 2.1.29 =

@@ -202,6 +202,8 @@ class ec_cartitem{
 		$options_price_onetime = 0;
 		$options_weight = 0;
 		$options_weight_onetime = 0;
+		$grid_weight_change = 0;
+		$grid_price_change = 0;
 		
 		$this->advanced_options = $this->mysqli->get_advanced_cart_options( $this->cartitem_id );
 		
@@ -560,7 +562,7 @@ class ec_cartitem{
 		else
 			echo "<form action=\"" . $this->cart_page . "\" method=\"post\">";
 			
-		echo "<input type=\"submit\" id=\"remove_" . $this->cartitem_id . "\" name=\"remove_" . $this->cartitem_id . "\" value=\"" . $remove_text . "\" onclick=\"ec_cart_item_delete( '" . $this->cartitem_id . "' ); return false;\"/>";
+		echo "<input type=\"submit\" id=\"remove_" . $this->cartitem_id . "\" name=\"remove_" . $this->cartitem_id . "\" value=\"" . $remove_text . "\" onclick=\"ec_google_removeFromCart( '" . $this->model_number . "', '" . $this->title . "', document.getElementById( 'ec_cartitem_quantity_" . $this->cartitem_id . "' ), '" . number_format( $this->unit_price, 2, '.', '' ) . "' ); ec_cart_item_delete( '" . $this->cartitem_id . "' ); return false;\"/>";
 		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" id=\"ec_cart_form_action\" value=\"ec_delete_action\" />";
 		echo "<input type=\"hidden\" name=\"ec_delete_cartitem_id\" id=\"ec_delete_cartitem_id_" . $this->cartitem_id . "\" value=\"" . $this->cartitem_id . "\" />";
 		echo "</form>";
