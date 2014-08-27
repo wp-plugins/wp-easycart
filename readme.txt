@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9.2
-Stable tag: 2.1.31
+Stable tag: 2.1.32
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 2.1.32 =
+* Fix - A session fix was attempted, but it caused more harm than good for some users. This has been adjusted back. Sorry for any inconvenience it may have caused.
 = 2.1.31 =
 * Feature - PayPal Standard now allows you to force the user to enter their shipping info at PayPal, great for verifying the user's address/account.
 * Feature - Stripe Subscriptions now allow you to collect shipping addresses.
