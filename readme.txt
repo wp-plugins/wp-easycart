@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.0.1
 Tested up to: 3.9.2
-Stable tag: 2.1.33
+Stable tag: 2.1.34
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -117,6 +117,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 2.1.34 =
+* Fix - A warning was appearing for a DB call during temp cart deletion, new from the previous version. Warnings appear to be eliminated from checkout now.
 = 2.1.33 =
 * Fix - A warning was appearing for a DB call during temp cart deletion upon checkout.
 = 2.1.32 =

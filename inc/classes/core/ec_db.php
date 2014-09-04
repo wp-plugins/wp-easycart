@@ -1846,7 +1846,7 @@ class ec_db{
 	public function clear_tempcart( $session_id ){
 		$tempcart_ids = $this->mysqli->get_results( $this->mysqli->prepare( "SELECT ec_tempcart.tempcart_id FROM ec_tempcart WHERE ec_tempcart.session_id = %s", $session_id ) );
 		foreach( $tempcart_ids as $tempcart_id ){
-			$this->mysqli->query( $this->mysqli->prepare( "DELETE FROM ec_tempcart_optionitem WHERE ec_tempcart_optionitem.tempcart_id = %d", $tempcart_id ) );
+			$this->mysqli->query( $this->mysqli->prepare( "DELETE FROM ec_tempcart_optionitem WHERE ec_tempcart_optionitem.tempcart_id = %d", $tempcart_id->tempcart_id ) );
 		}
 		
 		$sql = "DELETE FROM ec_tempcart WHERE session_id = '%s'";
