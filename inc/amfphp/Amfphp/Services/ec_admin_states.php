@@ -20,28 +20,12 @@
 class ec_admin_states
 	{		
 	
+		private $db;
+	
 		function ec_admin_states() {
-			/*load our connection settings
-			if( file_exists( '../../../../wp-easycart-data/connection/ec_conn.php' ) ) {
-				require_once('../../../../wp-easycart-data/connection/ec_conn.php');
-			} else {
-				require_once('../../../connection/ec_conn.php');
-			};*/
-		
-			//set our connection variables
-			$dbhost = DB_HOST;
-			$dbname = DB_NAME;
-			$dbuser = DB_USER;
-			$dbpass = DB_PASSWORD;
+			
 			global $wpdb;
-			define ('WP_PREFIX', $wpdb->prefix);
-
-			//make a connection to our database
-			$this->conn = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db ($dbname);	
-			mysql_query("SET CHARACTER SET utf8", $this->conn); 
-			mysql_query("SET NAMES 'utf8'", $this->conn); 
-
+			$this->db = $wpdb;
 		}	
 		
 		
@@ -73,16 +57,15 @@ class ec_admin_states
 			  //Create SQL Query
 			  $sql = $this->escape("SELECT ec_state.* FROM ec_state ORDER BY ec_state.sort_order ASC");
 			  // Run query on database
-			  $result = mysql_query($sql);
+			  $results = $this->db->get_results( $sql);
 			  //if results, convert to an array for use in flash
-			  if(mysql_num_rows($result) > 0) {
-				  while ($row=mysql_fetch_object($result)) {
+			  if( count( $results ) > 0 ){
+				   foreach( $results as $row ){
 					  $returnArray[] = $row;
 				  }
-				  return($returnArray); //return array results if there are some
-			  } else {
-				  $returnArray[] = "noresults";
-				  return $returnArray; //return noresults if there are no results
+				  return $returnArray;
+			  }else{
+				  return array( "noresults" );
 			  }
 		}
 	
@@ -92,52 +75,45 @@ class ec_admin_states
 		//get state list is handled above
 		function updatestate($id, $countryid, $iso2, $name, $sortorder) {
 			//Create SQL Query
-			  $sql = $this->escape("UPDATE ec_state SET  ec_state.name_sta='%s', ec_state.code_sta='%s', ec_state.idcnt_sta='%s', ec_state.sort_order='%s' WHERE ec_state.id_sta = '%s'", $name, $iso2, $countryid, $sortorder,  $id);
+			  $sql = "UPDATE ec_state SET  ec_state.name_sta='%s', ec_state.code_sta='%s', ec_state.idcnt_sta='%s', ec_state.sort_order='%s' WHERE ec_state.id_sta = '%s'";
 			//Run query on database;
-			mysql_query($sql);
+			$results = $this->db->get_results( $this->db->prepare( $sql, $name, $iso2, $countryid, $sortorder,  $id) );
 			//if no errors, return their current Client ID
 			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
-			}
+			if( count( $results ) > 0 ){
+				   foreach( $results as $row ){
+					  $returnArray[] = $row;
+				  }
+				  return $returnArray;
+			  }else{
+				  return array( "noresults" );
+			  }
 		}	
 		function deletestate($id) {
 			//Create SQL Query
-			$sql = sprintf("DELETE FROM ec_state WHERE ec_state.id_sta = $id");
+			$sql = "DELETE FROM ec_state WHERE ec_state.id_sta = %s";
 			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
+			$success = $this->db->query( $this->db->prepare( $sql, $id ) );
+		
+			if( $success === FALSE ){
+				return array( "error" );
+			}else{
+				return array( "success" );
 			}
 		}	
+		
 		function addstate($countryid, $iso2, $name, $sortorder) {
 			//Create SQL Query
-			  $sql = sprintf("Insert into ec_state(ec_state.id_sta, ec_state.name_sta, ec_state.code_sta, ec_state.idcnt_sta, ec_state.sort_order)
-				values(null, '%s', '%s', '%s', '%s')",
-				mysql_real_escape_string($name),
-				mysql_real_escape_string($iso2),
-				mysql_real_escape_string($countryid),
-				mysql_real_escape_string($sortorder));
-			//Run query on database;
-			mysql_query($sql);
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			if(!mysql_error()) {
-				$returnArray[] ="success";
-				return($returnArray); //return array results if there are some
-			} else {
-				$returnArray[] = "error";
-				return $returnArray; //return noresults if there are no results
+			  $sql = "Insert into ec_state(ec_state.id_sta, ec_state.name_sta, ec_state.code_sta, ec_state.idcnt_sta, ec_state.sort_order)
+				values(null, '%s', '%s', '%s', '%s')";
+			
+			
+			$success = $this->db->query( $this->db->prepare( $sql, $name, $iso2, $countryid, $sortorder ) );
+		
+			if( $success === FALSE ){
+				return array( "error" );
+			}else{
+				return array( "success" );
 			}
 		}
 		
