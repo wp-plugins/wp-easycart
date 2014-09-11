@@ -22,7 +22,7 @@ class ec_admin_settings
 			global $wpdb;
 			$this->db = $wpdb;
 			
-			define ('WP_PREFIX', $wpdb->prefix);
+			if(!defined('WP_PREFIX')) define('WP_PREFIX', $wpdb->prefix);
 
 		}	
 		

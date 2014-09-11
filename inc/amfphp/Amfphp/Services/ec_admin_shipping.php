@@ -25,7 +25,7 @@ class ec_admin_shipping
 			global $wpdb;
 			$this->db = $wpdb;
 
-			define ('WP_PREFIX', $wpdb->prefix);
+			if(!defined('WP_PREFIX')) define('WP_PREFIX', $wpdb->prefix);
 
 		}	
 			
