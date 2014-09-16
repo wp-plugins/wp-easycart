@@ -31,20 +31,17 @@ mysql_select_db ($dbname);
 
 //get our url variables for the report
 $requestID = "-1";
+
 if (isset($_GET['reqID'])) { 
 	$requestID = $_GET['reqID'];
 }
 if (isset($_GET['beginningdate'])) {
  	$startdate = $_GET['beginningdate'];
 	$startdate = new DateTime($startdate);
-} else {
-	$startdate = '0';
 }
 if (isset($_GET['enddate'])) {
  	$enddate = $_GET['enddate'];
 	$enddate = new DateTime($enddate);
-} else {
-	$enddate = '0';
 }
 if (isset($_GET['format'])) {
  	$format = $_GET['format'];
