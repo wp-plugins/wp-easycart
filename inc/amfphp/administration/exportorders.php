@@ -158,29 +158,66 @@ if ($users || is_user_logged_in()) {
 				$data = "";
 				
 				if($alldata == 'true') {
-					$sqlquery = sprintf("SELECT  ec_orderdetail.*, ec_order.* FROM  ec_order  LEFT OUTER JOIN ec_orderdetail ON (ec_order.order_id = ec_orderdetail.order_id)  order by ec_order.order_id asc");
+					$sqlquery = sprintf("SELECT  
+					ec_order.order_id, 
+					ec_order.order_date, 
+					ec_order.billing_first_name, 
+					ec_order.billing_last_name, 
+					ec_orderdetail.model_number, 
+					ec_orderdetail.quantity, 
+					ec_orderdetail.unit_price, 
+					ec_orderdetail.total_price, 
+					ec_orderdetail.optionitem_name_1, 
+					ec_orderdetail.optionitem_name_2, 
+					ec_orderdetail.optionitem_name_3, 
+					ec_orderdetail.optionitem_name_4,
+					ec_orderdetail.optionitem_name_5, 
+					ec_orderdetail.use_advanced_optionset,
+					ec_orderdetail.orderdetail_id
+					FROM  ec_order  LEFT OUTER JOIN ec_orderdetail ON (ec_order.order_id = ec_orderdetail.order_id)  
+					order by ec_order.order_id asc");
 				} else {
-					$sqlquery = sprintf("SELECT  ec_orderdetail.*, ec_order.* FROM  ec_order  LEFT OUTER JOIN ec_orderdetail ON (ec_order.order_id = ec_orderdetail.order_id) WHERE ec_order.order_date >= '".date_format($startdate, 'Y-m-d')."' AND ec_order.order_date <= '".date_format($enddate, 'Y-m-d')."' order by ec_order.order_id asc");
+					$sqlquery = sprintf("SELECT  
+					ec_order.order_id, 
+					ec_order.order_date, 
+					ec_order.billing_first_name, 
+					ec_order.billing_last_name, 
+					ec_orderdetail.model_number, 
+					ec_orderdetail.quantity, 
+					ec_orderdetail.unit_price, 
+					ec_orderdetail.total_price, 
+					ec_orderdetail.optionitem_name_1, 
+					ec_orderdetail.optionitem_name_2, 
+					ec_orderdetail.optionitem_name_3, 
+					ec_orderdetail.optionitem_name_4,
+					ec_orderdetail.optionitem_name_5, 
+					ec_orderdetail.use_advanced_optionset,
+					ec_orderdetail.orderdetail_id
+					FROM  ec_order  LEFT OUTER JOIN ec_orderdetail ON (ec_order.order_id = ec_orderdetail.order_id)
+					WHERE ec_order.order_date >= '".date_format($startdate, 'Y-m-d')."' 
+					AND ec_order.order_date <= '".date_format($enddate, 'Y-m-d')."' 
+					order by ec_order.order_id asc");
 				}
 				$result = mysql_query($sqlquery) or die(mysql_error());
 				$count = mysql_num_fields($result);
 
 				while($row = mysql_fetch_row($result)){
 					$neworder = true;
-					$currentorderid = $row[1];
+					$currentorderid = $row[0];
+					//echo $currentorderid;
 					
 					$optionlist = '';
 					foreach($row as $line)
 					{
 						//get basic options, or advanced options
-						if ($row[10] || $row[11] || $row[12] || $row[13] || $row[14]) {
-							$optionlist = $row[10];
+						if ($row[13] == '0') {
+							$optionlist = $row[8];
+							if($row[9]) $optionlist .= ', '. $row[9];
+							if($row[10]) $optionlist .= ', '. $row[10];
 							if($row[11]) $optionlist .= ', '. $row[11];
 							if($row[12]) $optionlist .= ', '. $row[12];
-							if($row[13]) $optionlist .= ', '. $row[13];
-							if($row[14]) $optionlist .= ', '. $row[14];
 						} else {
-							$optionquery = sprintf("SELECT ec_order_option.option_value FROM  ec_order_option where ec_order_option.orderdetail_id = '".$row[1]."'");
+							$optionquery = sprintf("SELECT ec_order_option.option_value FROM  ec_order_option where ec_order_option.orderdetail_id = '".$row[14]."'");
 							$optionresults = mysql_query($optionquery) or die(mysql_error());
 							$optionlist = '';
 							while($optionrow = mysql_fetch_row($optionresults)){
@@ -190,14 +227,14 @@ if ($users || is_user_logged_in()) {
 
 					}
 					
-					$orderdate = new DateTime($row[47]);
+					$orderdate = new DateTime($row[1]);
 					//now fill the row cells
-					$this->Cell($w[0],6,$row[1],'LR',0,'C',$fill);
+					$this->Cell($w[0],6,$row[0],'LR',0,'C',$fill);
 					$this->Cell($w[1],6,date_format($orderdate, 'F j, Y'),'LR',0,'C',$fill);
 					$this->Cell($w[2],6,$row[4],'LR',0,'C',$fill);
 					$this->Cell($w[3],6,$optionlist,'LR',0,'C',$fill);
-					$this->Cell($w[4],6,$row[65] . ', ' . $row[64],'LR',0,'C',$fill);
-					$this->Cell($w[5],6,number_format($row[8], 2),'LR',0,'C',$fill);
+					$this->Cell($w[4],6,$row[3] . ', ' . $row[2],'LR',0,'C',$fill);
+					$this->Cell($w[5],6,number_format($row[5], 2),'LR',0,'C',$fill);
 					$this->Cell($w[6],6,number_format($row[6], 2),'LR',0,'C',$fill);
 					$this->Cell($w[7],6,number_format($row[7], 2),'LR',0,'C',$fill);
 					$this->Ln();
