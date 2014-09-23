@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 2.1.35
+Stable tag: 2.1.36
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 2.1.36 =
+* HOT FIX - for DB issue, please contact us if you hit 2.1.35 update.
 = 2.1.35 =
 * NEW Feature - Seasonal Mode: Set a custom note to tell customers that a specific product is unavailable, e.g. Coming Soon! or Seasonally Unavailable.
 * NEW Feature - Inquiry Mode: Set a product to require a customer to inquire about a product. You can provide a link to a custom form or use the new design files with a built in form.
