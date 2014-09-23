@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.1.34
+ * Version: 2.1.35
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.1.34
+ * @version 2.1.35
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_1_34' );
-define( 'EC_CURRENT_DB', '1_21' );
+define( 'EC_CURRENT_VERSION', '2_1_35' );
+define( 'EC_CURRENT_DB', '1_22' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -515,6 +515,12 @@ function load_ec_pre(){
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "realex_response" ){
 		$ec_cartpage = new ec_cartpage();
 		$ec_cartpage->process_form_action( "realex_response" );
+	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "process_affirm" ){
+		$ec_cartpage = new ec_cartpage( true );
+		$ec_cartpage->process_form_action( "submit_order" );
+	}else if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "deconetwork_add_to_cart" ){
+		$ec_cartpage = new ec_cartpage( true );
+		$ec_cartpage->process_form_action( "deconetwork_add_to_cart" );
 	}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "checkout_success" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "paymentexpress" ){
 		$ec_cartpage = new ec_cartpage();
 		$ec_cartpage->process_form_action( "paymentexpress_thirdparty_response" );
@@ -812,6 +818,28 @@ function ec_facebook_metadata() {
 			echo "<meta property=\"og:image\" content=\"" .  plugin_dir_url(__DIR__) . EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" . "\" />\n"; 
 		
 		echo "<meta property=\"og:url\" content=\"" . ec_curPageURL() . "\" /> \n";
+	
+	}
+	
+	if( get_option( 'ec_option_use_affirm' ) && get_option( 'ec_option_affirm_public_key' ) != "" ){
+		
+		if( get_option( 'ec_option_affirm_sandbox_account' ) ){
+			echo '<script>
+			  var _affirm_config = {
+				public_api_key:  "' . get_option( 'ec_option_affirm_public_key' ) . '",
+				script:          "https://cdn1-sandbox.affirm.com/js/v2/affirm.js"
+			  };
+			  (function(l,g,m,e,a,f,b){var d,c=l[m]||{},h=document.createElement(f),n=document.getElementsByTagName(f)[0],k=function(a,b,c){return function(){a[b]._.push([c,arguments])}};c[e]=k(c,e,"set");d=c[e];c[a]={};c[a]._=[];d._=[];c[a][b]=k(c,a,b);a=0;for(b="set add save post open empty reset on off trigger ready setProduct".split(" ");a<b.length;a++)d[b[a]]=k(c,e,b[a]);a=0;for(b=["get","token","url","items"];a<b.length;a++)d[b[a]]=function(){};h.async=!0;h.src=g[f];n.parentNode.insertBefore(h,n);delete g[f];d(g);l[m]=c})(window,_affirm_config,"affirm","checkout","ui","script","ready");
+			</script>';
+		}else{
+			echo '<script>
+			  var _affirm_config = {
+				public_api_key:  "' . get_option( 'ec_option_affirm_public_key' ) . '",
+				script:          "https://cdn1.affirm.com/js/v2/affirm.js"
+			  };
+			  (function(l,g,m,e,a,f,b){var d,c=l[m]||{},h=document.createElement(f),n=document.getElementsByTagName(f)[0],k=function(a,b,c){return function(){a[b]._.push([c,arguments])}};c[e]=k(c,e,"set");d=c[e];c[a]={};c[a]._=[];d._=[];c[a][b]=k(c,a,b);a=0;for(b="set add save post open empty reset on off trigger ready setProduct".split(" ");a<b.length;a++)d[b[a]]=k(c,e,b[a]);a=0;for(b=["get","token","url","items"];a<b.length;a++)d[b[a]]=function(){};h.async=!0;h.src=g[f];n.parentNode.insertBefore(h,n);delete g[f];d(g);l[m]=c})(window,_affirm_config,"affirm","checkout","ui","script","ready");
+			</script>';
+		}
 	}
 }
 	

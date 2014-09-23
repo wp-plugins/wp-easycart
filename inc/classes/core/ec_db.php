@@ -49,6 +49,16 @@ class ec_db{
 				ec_orderdetail.download_timelimit_seconds,
 				ec_download.is_amazon_download,
 				ec_download.amazon_key,
+				
+				ec_orderdetail.is_deconetwork,
+				ec_orderdetail.deconetwork_id,
+				ec_orderdetail.deconetwork_name,
+				ec_orderdetail.deconetwork_product_code,
+				ec_orderdetail.deconetwork_options,
+				ec_orderdetail.deconetwork_color_code,
+				ec_orderdetail.deconetwork_product_id,
+				ec_orderdetail.deconetwork_image_link,
+				
 				";
 		
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
@@ -130,6 +140,15 @@ class ec_db{
 				ec_orderdetail.download_timelimit_seconds,
 				ec_download.is_amazon_download,
 				ec_download.amazon_key,
+				
+				ec_orderdetail.is_deconetwork,
+				ec_orderdetail.deconetwork_id,
+				ec_orderdetail.deconetwork_name,
+				ec_orderdetail.deconetwork_product_code,
+				ec_orderdetail.deconetwork_options,
+				ec_orderdetail.deconetwork_color_code,
+				ec_orderdetail.deconetwork_product_id,
+				ec_orderdetail.deconetwork_image_link,
 				
 				";
 		
@@ -281,6 +300,7 @@ class ec_db{
 				product.is_download,
 				product.is_donation,
 				product.is_subscription_item,
+				product.is_deconetwork,
 				
 				product.download_file_name,
 				
@@ -308,6 +328,18 @@ class ec_db{
 				product.featured_product_id_2,
 				product.featured_product_id_3,
 				product.featured_product_id_4,
+				
+				product.catalog_mode,
+				product.catalog_mode_phrase,
+				
+				product.inquiry_mode,
+				product.inquiry_url,
+				
+				product.deconetwork_mode,
+				product.deconetwork_product_id,
+				product.deconetwork_size_id,
+				product.deconetwork_color_id,
+				product.deconetwork_design_id,
 				
 				GROUP_CONCAT(review.rating) as review_data,
 				AVG(review.rating) as review_average,
@@ -478,6 +510,7 @@ class ec_db{
 						"is_download" => $row->is_download,
 						"is_donation" => $row->is_donation,
 						"is_subscription_item" => $row->is_subscription_item,
+						"is_deconetwork" => $row->is_deconetwork,
 						
 						"download_file_name" => $row->download_file_name,
 						
@@ -507,6 +540,17 @@ class ec_db{
 						"featured_product_id_2" => $row->featured_product_id_2, 
 						"featured_product_id_3" => $row->featured_product_id_3, 
 						"featured_product_id_4" => $row->featured_product_id_4,
+						
+						"catalog_mode" => $row->catalog_mode,
+						"catalog_mode_phrase" => $row->catalog_mode_phrase,
+						"inquiry_mode" => $row->inquiry_mode,
+						"inquiry_url" => $row->inquiry_url,
+				
+						"deconetwork_mode" => $row->deconetwork_mode,
+						"deconetwork_product_id" => $row->deconetwork_product_id,
+						"deconetwork_size_id" => $row->deconetwork_size_id,
+						"deconetwork_color_id" => $row->deconetwork_color_id,
+						"deconetwork_design_id" => $row->deconetwork_design_id,
 						
 						"review_data" => $review_data_array,
 						"review_average" => $row->review_average,
@@ -876,6 +920,20 @@ class ec_db{
 				tempcart.gift_card_message, 
 				tempcart.gift_card_to_name, 
 				tempcart.gift_card_from_name,
+				
+				tempcart.is_deconetwork,
+				tempcart.deconetwork_id,
+				tempcart.deconetwork_name,
+				tempcart.deconetwork_product_code,
+				tempcart.deconetwork_options,
+				tempcart.deconetwork_edit_link,
+				tempcart.deconetwork_color_code,
+				tempcart.deconetwork_product_id,
+				tempcart.deconetwork_image_link,
+				tempcart.deconetwork_discount,
+				tempcart.deconetwork_tax,
+				tempcart.deconetwork_total,
+				tempcart.deconetwork_version,
 				
 				tempcart.donation_price,
 				";
@@ -1476,7 +1534,7 @@ class ec_db{
 		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT shipping_label FROM ec_shippingrate WHERE shippingrate_id = '%s'", $ship_id ) );	
 	}
 	
-	public function insert_order( $cart, $user, $shipping, $tax, $discount, $order_totals, $payment, $payment_type, $orderstatus_id, $order_notes ){
+	public function insert_order( $cart, $user, $shipping, $tax, $discount, $order_totals, $payment, $payment_type, $orderstatus_id, $order_notes, $order_gateway ){
 		
 		// Get Payment Method to Save
 		if( $payment_type == "manual_bill" )
@@ -1561,7 +1619,8 @@ class ec_db{
 										
 										'payment_method'				=> $payment_type,
 										'order_customer_notes'			=> $order_notes,
-										'creditcard_digits'				=> $credit_card_last_four
+										'creditcard_digits'				=> $credit_card_last_four,
+										'order_gateway'					=> $order_gateway
 								), 
 								array( 	'%d', '%s', '%d', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
@@ -1570,7 +1629,7 @@ class ec_db{
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
-										'%s', '%s', '%s'
+										'%s', '%s', '%s', '%s'
 								)
 							);	
 									
@@ -1718,7 +1777,16 @@ class ec_db{
 								'download_timelimit_seconds'	=> $cart_item->download_timelimit_seconds,
 								
 								'is_amazon_download'			=> $cart_item->is_amazon_download,
-								'amazon_key'					=> $cart_item->amazon_key );
+								'amazon_key'					=> $cart_item->amazon_key,
+								
+								'is_deconetwork'				=> $cart_item->is_deconetwork,
+								'deconetwork_id'				=> $cart_item->deconetwork_id,
+								'deconetwork_name'				=> $cart_item->deconetwork_name,
+								'deconetwork_product_code'		=> $cart_item->deconetwork_product_code,
+								'deconetwork_options'			=> $cart_item->deconetwork_options,
+								'deconetwork_color_code'		=> $cart_item->deconetwork_color_code,
+								'deconetwork_product_id'		=> $cart_item->deconetwork_product_id,
+								'deconetwork_image_link'		=> $cart_item->deconetwork_image_link );
 								
 										
 		$percent_array = array( '%d', '%d', '%s', '%s', '%s',
@@ -1729,7 +1797,8 @@ class ec_db{
 								'%d', '%s', '%s',
 								'%s', '%s', '%d', '%d', 
 								'%d', '%s', '%s', '%d', '%d', 
-								'%d', '%s' );
+								'%d', '%s',
+								'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
 								
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
 			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
@@ -3007,6 +3076,118 @@ class ec_db{
 		$sql = "UPDATE ec_order SET user_id = %d WHERE order_id = %d";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $user_id, $order_id ) );
 	
+	}
+	
+	public function get_product( $model_number, $product_id = 0 ){
+		
+		$sql = "SELECT
+				product.product_id,
+				product.model_number,
+				product.post_id,
+				product.activate_in_store,
+				product.title,
+				product.description,
+				product.seo_description,
+				product.seo_keywords,
+				product.price,
+				product.list_price,
+				product.vat_rate,
+				product.stock_quantity,
+				product.min_purchase_quantity,
+				product.weight,
+				product.width,
+				product.height,
+				product.length,
+				product.use_optionitem_quantity_tracking,
+				product.use_specifications,
+				product.specifications,
+				product.use_customer_reviews,
+				product.show_on_startup,
+				product.show_stock_quantity,
+				product.is_special,
+				product.is_taxable,
+				product.is_giftcard,
+				product.is_download,
+				product.is_donation,
+				product.is_subscription_item,
+				product.is_deconetwork,
+				
+				product.download_file_name,
+				
+				product.subscription_bill_length,
+				product.subscription_bill_period,
+				product.trial_period_days,
+				product.stripe_plan_added,
+				
+				product.use_advanced_optionset,
+				product.use_optionitem_images,
+				
+				product.image1,
+				product.image2,
+				product.image3,
+				product.image4,
+				product.image5,
+				
+				product.featured_product_id_1,
+				product.featured_product_id_2,
+				product.featured_product_id_3,
+				product.featured_product_id_4,
+				
+				product.catalog_mode,
+				product.catalog_mode_phrase,
+				
+				product.inquiry_mode,
+				product.inquiry_url,
+				
+				product.deconetwork_mode,
+				product.deconetwork_product_id,
+				product.deconetwork_size_id,
+				product.deconetwork_color_id,
+				product.deconetwork_design_id,
+				
+				product.views
+				
+				FROM ec_product as product 
+				
+				WHERE product.model_number = %s OR product.product_id = %d
+				
+				GROUP BY 
+				product.product_id,
+				product.option_id_1, 
+				product.option_id_2, 
+				product.option_id_3, 
+				product.option_id_4, 
+				product.option_id_5 ";
+				
+		
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $model_number, $product_id ) );
+		
+	}
+	
+	public function deconetwork_add_to_cart( ){
+		
+		// First check if this is already in the cart
+		$sql = "SELECT tempcart_id FROM ec_tempcart WHERE ec_tempcart.deconetwork_id = %s AND ec_tempcart.session_id = %s";
+		$cartrow = $this->mysqli->get_row( $this->mysqli->prepare( $sql, $_GET['id'], session_id( ) ) );
+		
+		if( $cartrow->tempcart_id ){
+			
+			$sql = "UPDATE ec_tempcart SET ec_tempcart.quantity = %d, ec_tempcart.deconetwork_name = %s, ec_tempcart.deconetwork_product_code = %s, ec_tempcart.deconetwork_options = %s, ec_tempcart.deconetwork_edit_link = %s, ec_tempcart.deconetwork_color_code = %s, ec_tempcart.deconetwork_product_id = %s, ec_tempcart.deconetwork_image_link = %s, ec_tempcart.deconetwork_discount = %s, ec_tempcart.deconetwork_tax = %s, ec_tempcart.deconetwork_total = %s, ec_tempcart.deconetwork_version = ec_tempcart.deconetwork_version+1 WHERE ec_tempcart.tempcart_id = %d AND ec_tempcart.session_id = %s";
+			$this->mysqli->query( $this->mysqli->prepare( $sql, $_GET['qty'], $_GET['name'], $_GET['product_code'], $_GET['options'], $_GET['edit_link'], $_GET['color'], $_GET['product_id'], $_GET['tn'], $_GET['discount'], $_GET['tax'], $_GET['line_total'], $cartrow->tempcart_id, session_id( ) ) );
+			
+		}else{
+			
+			$sql = "INSERT INTO ec_tempcart( session_id, product_id, quantity, is_deconetwork, deconetwork_id, deconetwork_name, deconetwork_product_code, deconetwork_options, deconetwork_edit_link, deconetwork_color_code, deconetwork_product_id, deconetwork_image_link, deconetwork_discount, deconetwork_tax, deconetwork_total ) VALUES( %s, %d, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+			$this->mysqli->query( $this->mysqli->prepare( $sql, session_id( ), $_GET['ec_product_id'], $_GET['qty'], 1, $_GET['id'], $_GET['name'], $_GET['product_code'], $_GET['options'], $_GET['edit_link'], $_GET['color'], $_GET['product_id'], $_GET['tn'], $_GET['discount'], $_GET['tax'], $_GET['line_total'] ) );
+			
+		}
+		
+	}
+	
+	public function update_affirm_id( $order_id, $charge_id ){
+		
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_order SET affirm_charge_id = %s WHERE ec_order.order_id = %d", $charge_id, $order_id ) );
+		
 	}
 	
 }

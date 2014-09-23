@@ -22,6 +22,12 @@ if( ini_get( 'register_globals' ) ){
             unset( $GLOBALS[$key] );
     }
 }
+
+// Custom Cart ID, Unique Per Order
+if( !isset( $_SESSION['ec_cart_id'] ) ){
+	$keyvals = array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '0', '6', '7', '8', '9' );
+	$_SESSION['ec_cart_id'] = $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)];
+}
 	
 // Language Translation Check
 if( isset( $_POST['ec_language_conversion'] ) ){
@@ -34,8 +40,12 @@ if( isset( $_POST['ec_currency_conversion'] ) ){
 }
 
 // LIVE GATEWAY CLASSES
-if( get_option( 'ec_option_payment_process_method' ) != '0' ){
+if( get_option( 'ec_option_payment_process_method' ) != '0' || get_option( 'ec_option_use_affirm' ) ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_gateway.php' );
+}
+
+if( get_option( 'ec_option_use_affirm' ) ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_affirm.php' );
 }
 
 if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
@@ -70,6 +80,8 @@ if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_securepay.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_stripe.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'virtualmerchant' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_virtualmerchant.php' );
 }
 
 // THIRD PARTY GATEWAYS

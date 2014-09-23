@@ -618,12 +618,12 @@ function ec_fraktjakt_shipping_setup( ){
 		// Run test of the settings
 		$fraktjakt_class = new ec_fraktjakt( $settings );
 		$test_user = new ec_user( "" );
-		$test_user->setup_shipping_info_data( "", "", "152-153 Fleet St", "London", "", "GB", "EC4A2DQ", "" );
+		$test_user->setup_shipping_info_data( "", "", "152-153 Fleet St", "", "London", "", "GB", "EC4A2DQ", "" );
 		
 		$fraktjakt_response = $fraktjakt_class->get_shipping_options_test( $test_user );
 		$xml = new SimpleXMLElement( $fraktjakt_response );
 		
-		if( $xml->code == "0" )
+		if( isset( $xml->shipping_products ) && isset( $xml->shipping_products->shipping_product ) && count( $xml->shipping_products->shipping_product ) > 0 )
 			$fraktjakt_setup = true;
 		else
 			$fraktjakt_error_reason = "1";
@@ -718,10 +718,11 @@ function ec_global_vat_setup( ){
 
 function ec_no_payment_selected( ){
 	$manual_payment = get_option( 'ec_option_use_direct_deposit' );
+	$affirm = get_option( 'ec_option_use_affirm' );
 	$third_party = get_option( 'ec_option_payment_third_party' );
 	$live_payment = get_option( 'ec_option_payment_process_method' );
 	
-	if( $manual_payment || $third_party || $live_payment )
+	if( $manual_payment || $affirm || $third_party || $live_payment )
 		return false;
 	else
 		return true;
@@ -730,6 +731,14 @@ function ec_no_payment_selected( ){
 function ec_manual_payment_selected( ){
 	$manual_payment = get_option( 'ec_option_use_direct_deposit' );
 	if( $manual_payment )
+		return true;
+	else
+		return false;
+}
+
+function ec_affirm_payment_selected( ){
+	$affirm = get_option( 'ec_option_use_affirm' );
+	if( $affirm )
 		return true;
 	else
 		return false;
@@ -884,6 +893,11 @@ function ec_live_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $live_payment == "virtualmerchant" ){
+		if( get_option( 'ec_option_virtualmerchant_ssl_merchant_id' ) != "" && get_option( 'ec_option_virtualmerchant_ssl_user_id' ) != "" && get_option( 'ec_option_virtualmerchant_ssl_pin' ) != "" )
+			return true;
+		else
+			return false;
 	}
 }
 
@@ -921,6 +935,8 @@ function ec_get_live_payment_method( ){
 		return "SecurePay";
 	else if( $live_payment == "stripe" )
 		return "Stripe";
+	else if( $live_payment == "virtualmerchant" )
+		return "Virtual Merchant";
 }
 
 function ec_update_pages( $store_id, $account_id, $cart_id ){
@@ -1228,6 +1244,8 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_amazon_key', $_POST['ec_option_amazon_key'] );
 	update_option( 'ec_option_amazon_secret', $_POST['ec_option_amazon_secret'] );
 	update_option( 'ec_option_amazon_bucket', $_POST['ec_option_amazon_bucket'] );
+	update_option( 'ec_option_deconetwork_url', $_POST['ec_option_deconetwork_url'] );
+	update_option( 'ec_option_deconetwork_password', $_POST['ec_option_deconetwork_password'] );
 	
 	//update sizes
 	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 
@@ -1316,6 +1334,14 @@ function ec_update_payment_info( ){
 	//manual payment message
 	update_option( 'ec_option_use_direct_deposit', $_POST['ec_option_use_direct_deposit'] );
 	update_option( 'ec_option_direct_deposit_message', $_POST['ec_option_direct_deposit_message'] );
+	
+	//Affirm payment options
+	update_option( 'ec_option_use_affirm', $_POST['ec_option_use_affirm'] );
+	update_option( 'ec_option_affirm_public_key', $_POST['ec_option_affirm_public_key'] );
+	update_option( 'ec_option_affirm_private_key', $_POST['ec_option_affirm_private_key'] );
+	update_option( 'ec_option_affirm_financial_product', $_POST['ec_option_affirm_financial_product'] );
+	update_option( 'ec_option_affirm_sandbox_account', $_POST['ec_option_affirm_sandbox_account'] );
+	
 	//payment choices
 	update_option( 'ec_option_use_visa', $_POST['ec_option_use_visa'] );
 	update_option( 'ec_option_use_delta', $_POST['ec_option_use_delta'] );
@@ -1440,6 +1466,12 @@ function ec_update_payment_info( ){
 	//Stripe
 	update_option( 'ec_option_stripe_api_key', $_POST['ec_option_stripe_api_key'] );
 	update_option( 'ec_option_stripe_currency', $_POST['ec_option_stripe_currency'] );
+	//Virtual Merchant
+	update_option( 'ec_option_virtualmerchant_ssl_merchant_id', $_POST['ec_option_virtualmerchant_ssl_merchant_id'] );
+	update_option( 'ec_option_virtualmerchant_ssl_user_id', $_POST['ec_option_virtualmerchant_ssl_user_id'] );
+	update_option( 'ec_option_virtualmerchant_ssl_pin', $_POST['ec_option_virtualmerchant_ssl_pin'] );
+	update_option( 'ec_option_virtualmerchant_currency', $_POST['ec_option_virtualmerchant_currency'] );
+	update_option( 'ec_option_virtualmerchant_demo_account', $_POST['ec_option_virtualmerchant_demo_account'] );
 	//proxy settings
 	update_option( 'ec_option_use_proxy', $_POST['ec_option_use_proxy'] );
 	update_option( 'ec_option_proxy_address', $_POST['ec_option_proxy_address'] );

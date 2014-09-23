@@ -70,7 +70,8 @@ class ec_payment{
 	
 	public function process_payment( $cart, $user, $shipping, $tax, $discount, $order_totals, $order_id ){
 		
-			 if($this->proccess_method == "authorize"		)			$gateway = new ec_authorize();
+		if( 	$this->payment_type    == "affirm" 			)			$gateway = new ec_affirm( );
+		else if($this->proccess_method == "authorize"		)			$gateway = new ec_authorize();
 		else if($this->proccess_method == "braintree"		)			$gateway = new ec_braintree();
 		else if($this->proccess_method == "chronopay"		)			$gateway = new ec_chronopay();
 		else if($this->proccess_method == "eway"			)			$gateway = new ec_eway();
@@ -88,6 +89,7 @@ class ec_payment{
 		else if($this->proccess_method == "sagepayus"		)			$gateway = new ec_sagepayus();
 		else if($this->proccess_method == "securepay"		)			$gateway = new ec_securepay();
 		else if($this->proccess_method == "stripe"			)			$gateway = new ec_stripe();
+		else if($this->proccess_method == "virtualmerchant"	)			$gateway = new ec_virtualmerchant();
 		else{
 			error_log( "Setup error, no payment gateway selected." );
 			return "Setup error, no payment gateway selected."; 

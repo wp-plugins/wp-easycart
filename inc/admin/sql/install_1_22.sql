@@ -395,7 +395,8 @@ CREATE TABLE IF NOT EXISTS `ec_order` (
   `stripe_charge_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Stripe Charge ID if Stripe used.',
   `nets_transaction_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Nets Transaction ID if Nets used.',
   `subscription_id` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 'Subscription ID from the ec_subscription table if order was a subscription order.',
-
+  `order_gateway` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'The gateway used during checkout ONLY IF a refund functionality is available.',
+  `affirm_charge_id` VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'The Affirm Charge ID added during checkout',
   PRIMARY KEY (`order_id`),
   UNIQUE KEY `order_id` (`order_id`)
 )ENGINE=MyISAM
@@ -459,6 +460,14 @@ CREATE TABLE IF NOT EXISTS `ec_orderdetail` (
   `download_timelimit_seconds` INTEGER(11) DEFAULT 0,
   `is_amazon_download` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Turns the download location to Amazon S3 servers.',
   `amazon_key` VARCHAR(1024) NOT NULL DEFAULT '' COMMENT 'The file name used on the Amazon S3 Server.',
+  `is_deconetwork` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This tells the system that it is a DecoNetwork product and changes the display type accordingly.',
+  `deconetwork_id` varchar(64) NOT NULL DEFAULT '' COMMENT 'The unique id for this item provided by the DecoNetwork',
+  `deconetwork_name` varchar(512) NOT NULL DEFAULT '' COMMENT 'The name provided by the DecoNetwork.',
+  `deconetwork_product_code` varchar(64) NOT NULL DEFAULT '' COMMENT 'The product code provided by the DecoNetwork.',
+  `deconetwork_options` varchar(512) NOT NULL DEFAULT '' COMMENT 'The options selected by the customer on the DecoNetwork site.',
+  `deconetwork_color_code` varchar(64) NOT NULL DEFAULT '' COMMENT 'The color code of the selected shirt provided by the DecoNetwork.',
+  `deconetwork_product_id` varchar(64) NOT NULL DEFAULT '' COMMENT 'The product id on the DecoNetwork.',
+  `deconetwork_image_link` varchar(512) NOT NULL DEFAULT '' COMMENT 'The link to the image on the DecoNetwork.',
   PRIMARY KEY (`orderdetail_id`)
 )ENGINE=MyISAM
 AUTO_INCREMENT=1349 AVG_ROW_LENGTH=130 CHARACTER SET 'utf8' COLLATE
@@ -583,7 +592,7 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
   `is_special` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, this product will be displayed in the specials widget.',
   `is_taxable` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'Turn tax on/off for this product.',
   `is_subscription_item` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Makes this product a subscription product which is purchased individually.',
-  `is_preorder` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Makes this product a preorder product, allowing for an authorization of a card without capturing at this time',
+  `is_preorder` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Makes this product a preorder product, allowing for an authorization of a card without capturing at this time.',
   `added_to_db_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Gives the product a date that it was added to the DB.',
   `show_on_startup` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Show this product on the main store page.',
   `use_optionitem_images` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, images 1-5 of the product will be ignored and the relating optionitem images will be displayed.',
@@ -604,6 +613,16 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
   `membership_page` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Optional link to a membership content page to be displayed after subscription purchased.',
   `is_amazon_download` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Turns the download location to Amazon S3 servers.',
   `amazon_key` VARCHAR(1024) NOT NULL DEFAULT '' COMMENT 'The file name used on the Amazon S3 Server.',
+  `catalog_mode` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Turns catalog mode on for individual product',
+  `catalog_mode_phrase` VARCHAR(1024) DEFAULT NULL COMMENT 'Sets a phrase to appear instead of add to cart button',
+  `inquiry_mode` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'turns inquiry mode on and replaces add to cart with link button',
+  `inquiry_url` VARCHAR(1024) DEFAULT NULL COMMENT 'inquiry url where button will take customer instead of add to cart',
+  `is_deconetwork` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Makes this a DecoNetwork product, allowing for custom designed goods.',
+  `deconetwork_mode` VARCHAR(64) NOT NULL DEFAULT 'designer' COMMENT 'If using deconetwork, enter designer, blank, designer_predec, predec, design, or view_design as a value.',
+  `deconetwork_product_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'If using deconetwork, this is the product id to send the customer to.',
+  `deconetwork_size_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'If using deconetwork, this is the size id to force the product into by default, optional.',
+  `deconetwork_color_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'If using deconetwork, this is the color id to force the product into by default, optional.',
+  `deconetwork_design_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'If using deconetwork, this is the design id to force the product into by default, optional.',
   PRIMARY KEY (`product_id`),
   UNIQUE KEY `product_id` (`product_id`),
   UNIQUE KEY `model_number` (`model_number`),
@@ -1010,41 +1029,34 @@ AUTO_INCREMENT=65 AVG_ROW_LENGTH=44 CHARACTER SET 'utf8' COLLATE
 COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_tempcart` (
-  `tempcart_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT
-   'Temporary Cart Row ID',
-  `session_id` VARCHAR(100) COLLATE utf8_general_ci DEFAULT NULL COMMENT
-   'User Session ID From PHP',
-  `product_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'Relates ec_tempcart row to ec_product row',
-  `quantity` INTEGER(11) DEFAULT 0 COMMENT 
-   'Amount in the cart',
-  `grid_quantity` INTEGER(11) DEFAULT 0 COMMENT 
-   'Amount in the cart for grid option set products only',
-  `gift_card_message` BLOB COMMENT
-   'Message entered by user for the customer receiving this gift card.',
-  `gift_card_from_name` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL
-   COMMENT 'Name of the user sending the gift card, entered by the user.',
-  `gift_card_to_name` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL COMMENT
-   'Name of the customer receiving the gift card, entered by the user.',
-  `optionitem_id_1` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'Relates the selected option item ID to the information in the ec_optionitem table.'
-   ,
-  `optionitem_id_2` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'Relates the selected option item ID to the information in the ec_optionitem table.'
-   ,
-  `optionitem_id_3` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'Relates the selected option item ID to the information in the ec_optionitem table.'
-   ,
-  `optionitem_id_4` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'Relates the selected option item ID to the information in the ec_optionitem table.'
-   ,
-  `optionitem_id_5` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'Relates the selected option item ID to the information in the ec_optionitem table.'
-   ,
-  `donation_price` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT
-   'Optional field for a donation product.',
-  `last_changed_date` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT
-   CURRENT_TIMESTAMP COMMENT 'Date the last time this record was accessed.',
+  `tempcart_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT 'Temporary Cart Row ID',
+  `session_id` VARCHAR(100) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'User Session ID From PHP',
+  `product_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Relates ec_tempcart row to ec_product row',
+  `quantity` INTEGER(11) DEFAULT 0 COMMENT 'Amount in the cart',
+  `grid_quantity` INTEGER(11) DEFAULT 0 COMMENT 'Amount in the cart for grid option set products only',
+  `gift_card_message` BLOB COMMENT 'Message entered by user for the customer receiving this gift card.',
+  `gift_card_from_name` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Name of the user sending the gift card, entered by the user.',
+  `gift_card_to_name` VARCHAR(255) COLLATE utf8_general_ci DEFAULT NULL COMMENT 'Name of the customer receiving the gift card, entered by the user.',
+  `optionitem_id_1` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Relates the selected option item ID to the information in the ec_optionitem table.',
+  `optionitem_id_2` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Relates the selected option item ID to the information in the ec_optionitem table.',
+  `optionitem_id_3` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Relates the selected option item ID to the information in the ec_optionitem table.',
+  `optionitem_id_4` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Relates the selected option item ID to the information in the ec_optionitem table.',
+  `optionitem_id_5` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Relates the selected option item ID to the information in the ec_optionitem table.',
+  `donation_price` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Optional field for a donation product.',
+  `last_changed_date` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Date the last time this record was accessed.',
+  `is_deconetwork` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Sets this item as a DecoNetwork item and changes the display to work with this product type.',
+  `deconetwork_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'The unique id sent back from the DecoNetwork when adding to cart.',
+  `deconetwork_name` VARCHAR(512) NOT NULL DEFAULT '' COMMENT 'The name of the product from the DecoNetwork.',
+  `deconetwork_product_code` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'The product code from the DecoNetwork',
+  `deconetwork_options` VARCHAR(512) NOT NULL DEFAULT '' COMMENT 'The options selected by the customer on the DecoNetwork',
+  `deconetwork_edit_link` VARCHAR(512) NOT NULL DEFAULT '' COMMENT 'The edit link provided by the DecoNetwork',
+  `deconetwork_color_code` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'The color code of the shirt by the DecoNetwork',
+  `deconetwork_product_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT 'The product id of this product on the DecoNetwork',
+  `deconetwork_image_link` VARCHAR(512) NOT NULL DEFAULT '' COMMENT 'The image link provided by the DecoNetwork',
+  `deconetwork_discount` FLOAT(15,3) NOT NULL DEFAULT '0.000' COMMENT 'Any discount provided by the DecoNetwork',
+  `deconetwork_tax` FLOAT(15,3) NOT NULL DEFAULT '0.000' COMMENT 'The tax amount by the DecoNetwork',
+  `deconetwork_total` FLOAT(15,3) NOT NULL DEFAULT '0.000' COMMENT 'The total line item cost by the DecoNetwork',
+  `deconetwork_version` INTEGER(11) NOT NULL DEFAULT 1 COMMENT 'A value updated each time the customer returns from the Deconetwork for this product, which is used to update the image to the user.',
   PRIMARY KEY (`tempcart_id`)
 )ENGINE=MyISAM
 AUTO_INCREMENT=1074 AVG_ROW_LENGTH=68 CHARACTER SET 'utf8' COLLATE

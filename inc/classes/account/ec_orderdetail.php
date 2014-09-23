@@ -42,6 +42,15 @@ class ec_orderdetail{
 	public $is_amazon_download;							// BOOL
 	public $amazon_key;									// VARCHAR 255
 	
+	public $is_deconetwork;								// BOOL
+	public $deconetwork_id;								// VARCHAR 64
+	public $deconetwork_name;							// VARCHAR 512
+	public $deconetwork_product_code;					// VARCHAR 64
+	public $deconetwork_options;						// VARCHAR 512
+	public $deconetwork_color_code;						// VARCHAR 64
+	public $deconetwork_product_id;						// VARCHAR 64
+	public $deconetwork_image_link;						// VARCHAR 512
+	
 	public $custom_vars = array();						// Array
 	
 	private $download;									// ec_download object
@@ -93,6 +102,15 @@ class ec_orderdetail{
 		$this->download_timelimit_seconds = $orderdetail_row->download_timelimit_seconds;
 		$this->is_amazon_download = $orderdetail_row->is_amazon_download;
 		$this->amazon_key = $orderdetail_row->amazon_key;
+	
+		$this->is_deconetwork = $orderdetail_row->is_deconetwork;
+		$this->deconetwork_id = $orderdetail_row->deconetwork_id;
+		$this->deconetwork_name = $orderdetail_row->deconetwork_name;
+		$this->deconetwork_product_code = $orderdetail_row->deconetwork_product_code;
+		$this->deconetwork_options = $orderdetail_row->deconetwork_options;
+		$this->deconetwork_color_code = $orderdetail_row->deconetwork_color_code;
+		$this->deconetwork_product_id = $orderdetail_row->deconetwork_product_id;
+		$this->deconetwork_image_link = $orderdetail_row->deconetwork_image_link;
 		
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
 			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
@@ -145,14 +163,19 @@ class ec_orderdetail{
 	}
 	
 	public function display_image( $size ){
-		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) )	
+		if( $this->is_deconetwork ){
+			echo "<img src=\"https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_image_link . "\" alt\"" . $this->model_number . "\" />";
+		}else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) )	
 			echo "<img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";	
 		else
 			echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
 	}
 	
 	public function display_title( ){
-		echo $this->title;
+		if( $this->is_deconetwork )
+			echo $this->deconetwork_name;
+		else
+			echo $this->title;
 	}
 	
 	public function has_option1( ){

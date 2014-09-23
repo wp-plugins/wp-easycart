@@ -44,6 +44,18 @@ class ec_product{
 	public $is_download;						// Bool
 	public $is_donation;						// Bool
 	public $is_subscription_item;				// Bool
+	public $is_catalog_mode;					// Bool
+	public $is_inquiry_mode;					// Bool
+	public $is_deconetwork;						// Bool
+	
+	public $catalog_mode_phrase;				// VARCHAR 1024
+	public $inquiry_url;						// VARCHAR 1024
+	
+	public $deconetwork_mode;					// VARCHAR 64
+	public $deconetwork_product_id;				// VARCHAR 64
+	public $deconetwork_size_id;				// VARCHAR 64
+	public $deconetwork_color_id;				// VARCHAR 64
+	public $deconetwork_design_id;				// VARCHAR 64
 	
 	public $subscription_bill_length;			// INT
 	public $subscription_bill_period;			// VARCHAR(20)
@@ -142,11 +154,6 @@ class ec_product{
 		
 		$this->options = new ec_prodoptions($this->product_id, $product_data['option1'], $product_data['option2'], $product_data['option3'], $product_data['option4'], $product_data['option5'], $product_data['use_optionitem_quantity_tracking']);
 		
-		if( $this->is_featured_product )
-			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], "", $this->post_id );
-		else
-			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], $this->get_additional_link_options(), $this->post_id );
-		
 		if(!$this->is_featured_product && $this->is_product_details)
 		$this->featured_products = new ec_featuredproducts($product_data['featured_product_id_1'], $product_data['featured_product_id_2'], $product_data['featured_product_id_3'], $product_data['featured_product_id_4']);
 		
@@ -156,6 +163,18 @@ class ec_product{
 		$this->is_download = $product_data['is_download'];
 		$this->is_donation = $product_data['is_donation'];
 		$this->is_subscription_item = $product_data['is_subscription_item'];
+		$this->is_catalog_mode = $product_data['catalog_mode'];
+		$this->is_inquiry_mode = $product_data['inquiry_mode'];
+		$this->is_deconetwork = $product_data['is_deconetwork'];
+		
+		$this->catalog_mode_phrase = $product_data['catalog_mode_phrase'];
+		$this->inquiry_url = $product_data['inquiry_url'];
+		
+		$this->deconetwork_mode = $product_data['deconetwork_mode'];
+		$this->deconetwork_product_id = $product_data['deconetwork_product_id'];
+		$this->deconetwork_size_id = $product_data['deconetwork_size_id'];
+		$this->deconetwork_color_id = $product_data['deconetwork_color_id'];
+		$this->deconetwork_design_id = $product_data['deconetwork_design_id'];
 		
 		$this->subscription_bill_length = $product_data['subscription_bill_length'];
 		$this->subscription_bill_period = $product_data['subscription_bill_period'];
@@ -182,6 +201,11 @@ class ec_product{
 		$this->customfields = $product_data['customfield_data'];
 		
 		$this->update_stock_quantity( session_id() );
+		
+		if( $this->is_featured_product )
+			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], "", $this->post_id, $product_data['is_deconetwork'], $this->get_deconetwork_link( ) );
+		else
+			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], $this->get_additional_link_options(), $this->post_id, $product_data['is_deconetwork'], $this->get_deconetwork_link( ) );
 		
 		if ($product_data['use_optionitem_images']) {
 			$social_image1 = $this->images->get_single_image( );
@@ -247,9 +271,30 @@ class ec_product{
 		
 	}
 	
+	public function get_deconetwork_link( ){
+		
+		 $link = "https://" . get_option( 'ec_option_deconetwork_url' ) . "/external/load_resource?mode=" . $this->deconetwork_mode . "&product=" . $this->deconetwork_product_id . "&";
+		if( $this->deconetwork_size_id != "" ){
+			$link .= "size=" . $this->deconetwork_size_id . "&";
+		}
+		if( $this->deconetwork_color_id != "" ){
+			$link .= "color=" . $this->deconetwork_color_id . "&";
+		}
+		if( $this->deconetwork_design_id != "" ){
+			$link .= "design=" . $this->deconetwork_design_id . "&";
+		}
+		$link .= "callback_param_ec_action=deconetwork_add_to_cart&oid=" . $_SESSION['ec_cart_id'] . "&callback_param_ec_product_id=" . $this->product_id;
+		return $link;
+		
+	}
+	
 	public function display_product_quick_view( $link_text ){
 		
-		echo "<div class=\"ec_product_quick_view\" id=\"ec_product_quick_view_" . $this->model_number . "\"><a href=\"#\" onclick=\"ec_product_show_quick_view('" . $this->model_number . "'); return false;\">" . $link_text . "</a></div>";
+		if( $this->is_deconetwork ){
+			echo "<div class=\"ec_product_quick_view\" id=\"ec_product_quick_view_" . $this->model_number . "\"><a href=\"" . $this->get_deconetwork_link( ) . "\">" . $GLOBALS['language']->get_text( 'product_page', 'product_design_now' ) . "</a></div>";
+		}else{
+			echo "<div class=\"ec_product_quick_view\" id=\"ec_product_quick_view_" . $this->model_number . "\"><a href=\"#\" onclick=\"ec_product_show_quick_view('" . $this->model_number . "'); return false;\">" . $link_text . "</a></div>";
+		}
 			
 	}
 	
@@ -367,7 +412,9 @@ class ec_product{
 				$add_options = $this->permalink_divider . $add_options;
 			}
 		}
-		if( $this->is_featured_product ) 
+		if( $this->is_deconetwork )
+			echo "<a href=\"" . $this->get_deconetwork_link( ) . "\" class=\"ec_product_title_link\">" . $this->title . "</a>";
+		else if( $this->is_featured_product ) 
 			echo "<a href=\"" . $permalink . "\" class=\"ec_product_title_link\">" . $this->title . "</a>";
 		else
 			echo "<a href=\"" . $permalink . $add_options . "\" class=\"ec_product_title_link\">" . $this->title . "</a>";
@@ -389,7 +436,11 @@ class ec_product{
 				$add_options = $this->permalink_divider . $add_options;
 			}
 		}
-		echo "<a href=\"" . $permalink . $add_options . "\" class=\"ec_product_title_link\">" . $link_text . "</a>";
+		
+		if( $this->is_deconetwork )
+			echo "<a href=\"" . $this->get_deconetwork_link( ) . "\" class=\"ec_product_title_link\">" . $link_text . "</a>";
+		else
+			echo "<a href=\"" . $permalink . $add_options . "\" class=\"ec_product_title_link\">" . $link_text . "</a>";
 	}
 	
 	public function has_promotion_text( ){
@@ -569,7 +620,7 @@ class ec_product{
 	/* Display the minimum purchase amount if needed */
 	public function display_minimum_purchase_amount( ){
 		if( $this->min_purchase_quantity > 0 ){
-			echo "<div class=\"ec_min_quantity_amount_text\">" . sprintf( "Minimum purchase amount of %d is required ", $this->min_purchase_quantity ) . "</div>";
+			echo "<div class=\"ec_min_quantity_amount_text\">" . sprintf( $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text1' ) . " %d " . $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text2' ), $this->min_purchase_quantity ) . "</div>";
 		}
 	}
 	
@@ -586,6 +637,24 @@ class ec_product{
 			// Subscription Button
 			if( ( get_option( 'ec_option_payment_process_method' ) == 'stripe' || get_option( 'ec_option_payment_third_party' ) == 'paypal' ) && $this->is_subscription_item ){
 				echo "<input type=\"submit\" value=\"" . $GLOBALS['language']->get_text( 'product_details', 'product_details_sign_up_now' ) . "\" name=\"ec_product_details_add_to_cart_button\" id=\"ec_product_details_add_to_cart_button\" class=\"ec_product_details_add_to_cart_button\">";
+				
+			// Catalog Mode Button
+			}else if( $this->is_catalog_mode ){
+				
+				echo '<div class="ec_product_details_catalog_mode_phrase">' . $this->catalog_mode_phrase . '</div>';
+			
+			// Inquiry Mode
+			}else if( $this->is_inquiry_mode ){
+				
+				if( $this->inquiry_url != "" ){
+					
+					if( substr( $this->inquiry_url, 0, 4 ) != 'http' )					$this->inquiry_url = "http://" . $this->inquiry_url;
+					if( substr_count( $this->inquiry_url, '?' ) )						$divider = "&";
+					else																$divider = "?";
+					
+					echo '<a href="' . $this->inquiry_url . $divider . 'model_number=' . $this->model_number . '">' . $GLOBALS['language']->get_text( 'product_details', 'product_details_inquire' ) . '</a>';
+				
+				}
 				
 			// Add to Cart Button
 			}else{

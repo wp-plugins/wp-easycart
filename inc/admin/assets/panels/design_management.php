@@ -148,7 +148,7 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_design_options" )
 
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Cache Update Period</em>This option forces the css and js files to refresh the cached file after the expiry period set here.</span></a></span>
-    <span class="ec_setting_row_label">cache:</span>
+    <span class="ec_setting_row_label">Cache Update Period:</span>
     <span class="ec_setting_row_input">
     <select name="ec_option_cache_update_period">
               <option value="0"<?php if(get_option('ec_option_cache_update_period') == '0') echo ' selected'; ?>>Never Update Automatically</option>

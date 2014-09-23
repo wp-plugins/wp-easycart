@@ -173,8 +173,8 @@ function ec_custom_downloads( ){
 		if( file_exists( $zipname ) ){
 			header( "Cache-Control: public, must-revalidate" );
 			header( "Pragma: no-cache" );
-			header( 'Content-Type: application/zip' );
-			header( "Content-Length: " . ( string )( filesize( $zip ) ) );
+			header( 'Content-Type: application/octet-stream' );
+			header( "Content-Length: " . ( string )( filesize( $zipname ) ) );
 			header( 'Content-Disposition: attachment; filename="' . $zip_shortname . '"' );
 			header( "Content-Transfer-Encoding: binary\n" );
 			

@@ -131,6 +131,20 @@
     </div>
     <?php $this->product->display_product_details_form_end(); ?>
   
+	<?php if( $this->product->is_inquiry_mode && $this->product->inquiry_url == "" ){ ?>
+	<form action="<?php echo $this->cart_page; ?>" class="ec_product_inquiry_form" method="POST">
+        <h3 class="ec_product_quick_view_inquiry_h3"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_title' ); ?></h3>
+        <div class="ec_inquiry_error" id="inquiry_error"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_error' ); ?></div>
+        <div class="ec_product_quick_view_inquiry_row ec_first"><span><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_name' ); ?></span><input type="text" name="inquiry_name" id="inquiry_name" /></div>
+        <div class="ec_product_quick_view_inquiry_row"><span><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_email' ); ?></span><input type="email" name="inquiry_email" id="inquiry_email" /></span></div>
+        <div class="ec_product_quick_view_inquiry_row"><span><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_message' ); ?></span><textarea name="inquiry_message" id="inquiry_message"></textarea></span></div>
+        <div class="ec_product_quick_view_inquiry_row"><span></span><input type="checkbox" name="inquiry_send_copy" id="inquiry_send_copy" value="1" /> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_send_copy' ); ?></div>
+        <div class="ec_product_quick_view_inquiry_row"><input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquire' ); ?>" class="ec_product_details_add_to_cart_button" onclick="return ec_check_inquiry_form( );" /></div>
+        <input type="hidden" name="inquiry_model_number" value="<?php echo $this->model_number; ?>" />
+        <input type="hidden" name="ec_cart_form_action" value="send_inquiry" />
+	</form>			
+	<?php } ?>
+  
 	<div class="ec_product_details_bottom" id="ec_product_details_tabs">
     
 		<?php if($this->product->product_has_description()){?>

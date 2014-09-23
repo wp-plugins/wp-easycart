@@ -12,6 +12,8 @@ class ec_storepage{
 	public $number_in_product_list;							// INT
 	public $count_of_product_list;							// INT
 	public $next_model_number;								// VARCHAR 255
+	private $account_page;
+	private $cart_page;
 	private $store_page;
 	private $permalink_divider;
 	
@@ -43,16 +45,30 @@ class ec_storepage{
 																			$this->setup_details( );
 		}
 		
+		$accountpageid = get_option( 'ec_option_accountpage' );
+		$cartpageid = get_option( 'ec_option_cartpage' );
 		$storepageid = get_option( 'ec_option_storepage' );
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$accountpageid = icl_object_id( $accountpageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$cartpageid = icl_object_id( $cartpageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
 		
 		if( function_exists( 'icl_object_id' ) ){
 			$storepageid = icl_object_id( $storepageid, 'page', true, ICL_LANGUAGE_CODE );
 		}
 		
+		$this->account_page = get_permalink( $accountpageid );
+		$this->cart_page = get_permalink( $cartpageid );
 		$this->store_page = get_permalink( $storepageid );
 		
 		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
 			$https_class = new WordPressHTTPS( );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
 			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
 		}
 		
@@ -115,9 +131,13 @@ class ec_storepage{
 			}
 		}
 		
-		$success_notes = array(	"addtocart" => $GLOBALS['language']->get_text( "ec_success", "store_added_to_cart" ) );
+		$success_notes = array(	"addtocart" => $GLOBALS['language']->get_text( "ec_success", "store_added_to_cart" ),
+								"inquiry_sent" => $GLOBALS['language']->get_text( "ec_success", "inquiry_sent" ) 
+							   );
 		
-		if( isset( $_GET['ec_store_success'] ) ){
+		if( isset( $_GET['ec_store_success'] ) && $_GET['ec_store_success'] != "addtocart" ){
+			echo "<div class=\"ec_cart_success\"><div>" . $success_notes[ $_GET['ec_store_success'] ] . "</div></div>";
+		}else if( isset( $_GET['ec_store_success'] ) ){
 			echo "<div class=\"ec_cart_success\"><div>" . str_replace( "[prod_title]", $GLOBALS['language']->convert_text( $title ), $success_notes[ $_GET['ec_store_success'] ] ) . " ";
 			$cartpage = new ec_cartpage( );
 			$cartpage->display_checkout_button( $GLOBALS['language']->get_text( 'cart', 'cart_checkout' ) );

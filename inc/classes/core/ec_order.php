@@ -35,14 +35,23 @@ class ec_order{
 	}
 	
 	public function submit_order( $payment_type ){
-		if( $payment_type == "credit_card" )
+		
+		// Get payment gateway used (if live) and if we support refunds with this method.
+		$order_gateway = "";
+		if( $payment_type == "affirm" )
+			$order_gateway = "affirm";
+		else if( $payment_type == "credit_card" && get_option( 'ec_option_payment_process_method' ) == "stripe" )
+			$order_gateway = "stripe";
+		// End order gateway section
+		
+		if( $payment_type == "credit_card" || $payment_type == "affirm" )
 			$payment_type = $this->payment->credit_card->payment_method;
 		
 		$this->order_customer_notes = "";
 		if( isset( $_POST['ec_order_notes'] ) )
 			$this->order_customer_notes = $_POST['ec_order_notes'];
 		
-		$this->order_id = $this->mysqli->insert_order( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->payment, $payment_type, "5", $this->order_customer_notes );
+		$this->order_id = $this->mysqli->insert_order( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->payment, $payment_type, "5", $this->order_customer_notes, $order_gateway );
 		
 		if($this->order_id != 0){
 			
@@ -80,6 +89,13 @@ class ec_order{
 					$this->mysqli->update_order_fraktjakt_info( $this->order_id, $ship_order_info );
 				}
 				
+				// Deconetwork if used
+				if( ( $payment_type != "third_party" && !$this->payment->is_3d_auth ) || $payment_type == "affirm" )
+					$this->process_deconetwork_complete( "true" );
+				else
+					$this->process_deconetwork_complete( "false" );
+				
+				// Run Necessary Processes Based on Payment Type
 				if( !$this->payment->is_3d_auth ){
 					if ($payment_type != 'third_party') {
 						// Quickbooks Hook
@@ -239,6 +255,65 @@ class ec_order{
 		unset( $_SESSION['ec_couponcode'] );
 		unset( $_SESSION['ec_giftcard'] );
 		unset( $_SESSION['ec_order_notes'] );
+		unset( $_SESSION['ec_cart_id'] );
+	
+	}
+	
+	private function process_deconetwork_complete( $is_paid ){
+		
+		if( get_option( 'ec_option_deconetwork_url' ) != "" ){
+		
+			// Get DecoNetwork IDs if available
+			$deconetwork_ids = array( );
+			for( $i=0; $i<count( $this->cart->cart ); $i++ ){
+				if( $this->cart->cart[$i]->is_deconetwork ){
+					$deconetwork_ids[] = $this->cart->cart[$i]->deconetwork_id;
+				}
+			}
+			
+			// If IDS, Process the DecoNetwork Order as Paid
+			if( count( $deconetwork_ids ) > 0 ){
+				
+				$data = array( 	"ids" 						=> implode( ",", $deconetwork_ids ),
+								"auth" 						=> get_option( 'ec_option_deconetwork_password' ),
+								"mark_as_paid"				=> $is_paid,
+								"invoice_id"				=> $this->order_id,
+								"oid"						=> $_SESSION['ec_cart_id'],
+								"billing_country_code"		=> $this->user->billing->country,
+								"billing_email"				=> $this->user->email,
+								"billing_firstname"			=> $this->user->billing->first_name,
+								"billing_lastname"			=> $this->user->billing->last_name,
+								"billing_zip"				=> $this->user->billing->zip,
+								"billing_ph_number"			=> $this->user->billing->phone,
+								"billing_street"			=> $this->user->billing->address_line_1 . " " . $this->user->billing->address_line_2,
+								"billing_city"				=> $this->user->billing->city,
+								"billing_state"				=> $this->user->billing->state,
+								"separate_shipping_details"	=> "true",
+								"shipping_country_code"		=> $this->user->shipping->country,
+								"shipping_firstname"		=> $this->user->shipping->first_name,
+								"shipping_lastname"			=> $this->user->shipping->last_name,
+								"shipping_zip"				=> $this->user->shipping->zip,
+								"shipping_ph_number"		=> $this->user->shipping->phone,
+								"shipping_street"			=> $this->user->shipping->address_line_1 . " " . $this->user->shipping->address_line_2,
+								"shipping_city"				=> $this->user->shipping->city,
+								"shipping_state"			=> $this->user->shipping->state );
+				
+				$url = "https://" . get_option( 'ec_option_deconetwork_url' ) . "/external/commit_order?" . http_build_query( $data );
+				
+				// Setup and run CURL
+				$ch = curl_init( );
+				curl_setopt($ch, CURLOPT_URL, $url );
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET" ); 
+				curl_setopt($ch, CURLOPT_TIMEOUT, (int)30);
+				$response = curl_exec($ch);
+				curl_close ($ch);
+				
+				error_log( "Order " . $this->order_id . " DecoNetwork Response: " . $response );
+				
+			}
+			
+		}
 	
 	}
 	

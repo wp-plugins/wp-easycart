@@ -22,11 +22,15 @@ class ec_cartpage{
 	private $permalink_divider;					// CHAR
 	
 	private $analytics;							// ec_googleanalytics class
+	private $is_affirm;
 	
 	////////////////////////////////////////////////////////
 	// CONSTUCTOR FUNCTION
 	////////////////////////////////////////////////////////
-	function __construct( ){
+	function __construct( $is_affirm = false ){
+		
+		$this->is_affirm = $is_affirm;
+		
 		$this->mysqli = new ec_db();
 		
 		$this->cart = new ec_cart( session_id() );
@@ -91,6 +95,8 @@ class ec_cartpage{
 		// Payment
 		if( isset( $_POST['ec_cart_payment_selection'] ) )
 			$this->payment = new ec_payment( $credit_card, $_POST['ec_cart_payment_selection'] );
+		else if( $is_affirm )
+			$this->payment = new ec_payment( $credit_card, "affirm" );
 		else
 			$this->payment = new ec_payment( $credit_card, "" );
 		
@@ -1233,6 +1239,8 @@ class ec_cartpage{
 			echo "<script>jQuery(\"input[name=ec_cart_payment_selection][value='" . get_option( 'ec_option_default_payment_type' ) . "']\").attr('checked', 'checked');";
 			if( get_option( 'ec_option_default_payment_type' ) == "manual_bill" ){
 				echo "jQuery('#ec_cart_pay_by_manual_payment').show();";
+			}else if( get_option( 'ec_option_default_payment_type' ) == "affirm" ){
+				echo "jQuery('#ec_cart_pay_by_affirm').show();";
 			}else if( get_option( 'ec_option_default_payment_type' ) == "third_party" ){
 				echo "jQuery('#ec_cart_pay_by_third_party').show();";
 			}else if( get_option( 'ec_option_default_payment_type' ) == "credit_card" ){
@@ -1608,6 +1616,8 @@ class ec_cartpage{
 		else if( $action == "paymentexpress_thirdparty_response" )	$this->process_paymentexpress_thirdparty_response( );
 		else if( $action == "purchase_subscription" )				$this->process_purchase_subscription( );
 		else if( $action == "insert_subscription" )					$this->process_insert_subscription( );
+		else if( $action == "send_inquiry" )						$this->process_send_inquiry( );
+		else if( $action == "deconetwork_add_to_cart" )				$this->process_deconetwork_add_to_cart( );
 	}
 	
 	// Process the add to cart form submission
@@ -1809,6 +1819,8 @@ class ec_cartpage{
 	private function process_submit_order(){
 		if( isset( $_POST['ec_cart_payment_selection'] ) )
 			$payment_type = $_POST['ec_cart_payment_selection'];
+		else if( $this->is_affirm )
+			$payment_type = "affirm";
 		else
 			$payment_type = $GLOBALS['language']->get_text( "ec_success", "cart_account_free_order" );
 			
@@ -1825,6 +1837,12 @@ class ec_cartpage{
 				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );
 			else
 				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&cart_error=manualbill_failed" );
+			
+		}else if( $payment_type == "affirm" ){
+			if( $submit_return_val == "1" )
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );
+			else
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=payment_failed" );
 			
 		}else if( $payment_type == "third_party" ){ // Show the third party landing page
 			if( $submit_return_val == "1" )
@@ -2108,7 +2126,7 @@ class ec_cartpage{
 		if( !get_option( 'ec_option_use_shipping' ) || $this->cart->weight == 0 )
 			$next_page = "checkout_payment";
 			
-		if( get_option( 'ec_option_skip_shipping_page' ) )
+		if( get_option( 'ec_option_skip_shipping_page' ) || $this->user->freeshipping || $this->discount->shipping_discount == $this->discount->shipping_subtotal )
 			$next_page = "checkout_payment";
 		
 		if( $_SESSION['ec_email'] == "guest" ){
@@ -2422,6 +2440,63 @@ class ec_cartpage{
 			
 		}// Close user exists error for guest checkout
 		
+	}
+	
+	private function process_send_inquiry( ){
+		
+		$inquiry_email = $_POST['inquiry_email'];
+		$inquiry_name = $_POST['inquiry_name'];
+		$inquiry_message = $_POST['inquiry_message'];
+		$model_number = $_POST['inquiry_model_number'];
+		if( isset( $_POST['inquiry_send_copy'] ) )
+			$send_copy = true;
+		else
+			$send_copy = false;
+		
+		$product = $this->mysqli->get_product( $model_number );
+		
+		if( $product && $inquiry_email != "" && $inquiry_name != "" && $inquiry_message != "" ){
+			
+			// Create mail script
+			$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
+			
+			$headers   = array();
+			$headers[] = "MIME-Version: 1.0";
+			$headers[] = "Content-Type: text/html; charset=utf-8";
+			$headers[] = "From: " . get_option( 'ec_option_password_from_email' );
+			$headers[] = "Reply-To: " . get_option( 'ec_option_password_from_email' );
+			$headers[] = "X-Mailer: PHP/".phpversion();
+			
+			ob_start();
+			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_inquiry_email.php' ) )	
+				include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_inquiry_email.php';	
+			else
+				include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_inquiry_email.php';
+			$message = ob_get_clean();
+			
+			if( get_option( 'ec_option_use_wp_mail' ) ){
+				if( $send_copy )
+					wp_mail( $inquiry_email, "New Product Inquiry", $message, implode("\r\n", $headers) );
+				
+				wp_mail( get_option( 'ec_option_bcc_email_addresses' ), "New Product Inquiry", $message, implode("\r\n", $headers) );
+			}else{
+				if( $send_copy )
+					mail( $inquiry_email, "New Product Inquiry", $message, implode("\r\n", $headers) );
+				
+				mail( get_option( 'ec_option_bcc_email_addresses' ), "New Product Inquiry", $message, implode("\r\n", $headers) );
+			}
+			
+			header( "location: " . $this->store_page . $this->permalink_divider . "ec_store_success=inquiry_sent" );
+			
+		}
+		
+	}
+	
+	private function process_deconetwork_add_to_cart( ){
+		
+		$this->mysqli->deconetwork_add_to_cart( );
+		header( "location: " . $this->cart_page );
+	
 	}
 	/* END PROCESS FORM SUBMISSION FUNCTIONS */
 	

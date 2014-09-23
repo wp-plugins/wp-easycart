@@ -41,6 +41,10 @@
 					"title":"Produkt Schnellansicht Label",
 					"value":"+Schnellansicht"
 				},
+				"product_design_now":{
+					"title":"Product Design Now Label",
+					"value":"jetzt entwerfen"
+				},
 				"product_no_results":{
 					"title":"Produkt Seite keine Resultate",
 					"value":"Keine Resultate gefunden"
@@ -190,6 +194,46 @@
 				"product_details_sign_up_now":{
 					"title":"jetzt registrieren Text",
 					"value":"JETZT REGISTRIEREN"
+				},
+				"product_details_inquiry_title":{
+					"title":"Inquiry Title",
+					"value":"Produktanfrage"
+				},
+				"product_details_inquiry_error":{
+					"title":"Inquiry Error Text",
+					"value":"Bitte füllen Sie alle Felder aus"
+				},
+				"product_details_inquiry_name":{
+					"title":"Inquiry Name",
+					"value":"*Name:"
+				},
+				"product_details_inquiry_email":{
+					"title":"Inquiry Email",
+					"value":"*Email:"
+				},
+				"product_details_inquiry_message":{
+					"title":"Inquire Button Text",
+					"value":"*Anfrage:"
+				},
+				"product_details_inquire":{
+					"title":"Inquire Button Text",
+					"value":"Anfrage stellen"
+				},
+				"product_details_inquiry_send_copy":{
+					"title":"Inquiry - Send Copy",
+					"value":"Senden Sie mir eine Kopie"
+				},
+				"product_details_inquiry_thank_you":{
+					"title":"Inquiry Thank You Note",
+					"value":"Vielen Dank für die Einreichung eines Produktanfrage und wir werden Ihnen so schnell wie möglich wieder zurück."
+				},
+				"product_details_minimum_quantity_text1":{
+					"title":"Min Purchase Amount Text Part 1",
+					"value":"Mindestkaufbetrag von"
+				},
+				"product_details_minimum_quantity_text2":{
+					"title":"Min Purchase Amount Text Part 2",
+					"value":"erforderlich"
 				}
 			}
 		},
@@ -898,6 +942,10 @@
 				"cart_payment_information_manual_payment":{
 					"title":"Warenkorb, Zahlungsinformationen, Manuelle Zahlung Label",
 					"value":"Zahlen mit Direct Deposit"
+				},
+				"cart_payment_information_affirm":{
+					"title":"Cart, Payment Information, Affirm Payment Label",
+					"value":"Jetzt bezahlen mit Easy monatlichen Zahlungen"
 				},
 				"cart_payment_information_third_party":{
 					"title":"Warenkorb, Zahlungsinformationen, Zahlung durch einen Dritten Label",
@@ -1959,6 +2007,10 @@
 				"subscription_canceled":{
 					"title":"Benutzerkonto, Subscription Canceled",
 					"value":"Ihr Abonnement wurde storniert."
+				},
+				"inquiry_sent":{
+					"title":"Store, Inquiry Sent",
+					"value":"Ihre Produktanfrage wurde erfolgreich versendet."
 				}
 			}
 		},

@@ -23,6 +23,11 @@
 		}
 	}else{
 	?>
+    <?php if( $order_item->is_deconetwork && $order_item->deconetwork_options != "" ){ ?>
+    <div class="ec_account_order_details_item_display_option">
+    	<?php echo str_replace( "<br/><br/>", "<br/>", $order_item->deconetwork_options ); ?>
+    </div>
+    <?php }?>
     <?php if( $order_item->has_option1( ) ){ ?>
     <div class="ec_account_order_details_item_display_option">
       <?php $order_item->display_option1_label( ); ?>: <?php $order_item->display_option1( ); ?><?php if( $order_item->has_option1_price( ) ){ ?> (<?php $order_item->display_option1_price( ); ?>)<?php }?>

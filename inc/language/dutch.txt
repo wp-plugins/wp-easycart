@@ -41,6 +41,10 @@
 					"title":"Label snelle weergave",
 					"value":"+Quick View"
 				},
+				"product_design_now":{
+					"title":"Product Design Now Label",
+					"value":"ontwerpen nu"
+				},
 				"product_no_results":{
 					"title":"Productpagina zonder resultaat",
 					"value":"Geen resultaten gevonden"
@@ -190,6 +194,46 @@
 				"product_details_sign_up_now":{
 					"title":"Meld je nu aan tekst",
 					"value":"MELD JE NU AAN"
+				},
+				"product_details_inquiry_title":{
+					"title":"Inquiry Title",
+					"value":"Product Onderzoek"
+				},
+				"product_details_inquiry_error":{
+					"title":"Inquiry Error Text",
+					"value":"Vul alle verplichte velden"
+				},
+				"product_details_inquiry_name":{
+					"title":"Inquiry Name",
+					"value":"*Naam:"
+				},
+				"product_details_inquiry_email":{
+					"title":"Inquiry Email",
+					"value":"*Email:"
+				},
+				"product_details_inquiry_message":{
+					"title":"Inquire Button Text",
+					"value":"*Onderzoek:"
+				},
+				"product_details_inquire":{
+					"title":"Inquire Button Text",
+					"value":"MAAK CONTACT"
+				},
+				"product_details_inquiry_send_copy":{
+					"title":"Inquiry - Send Copy",
+					"value":"Stuur mij een kopie"
+				},
+				"product_details_inquiry_thank_you":{
+					"title":"Inquiry Thank You Note",
+					"value":"Hartelijk dank voor het indienen van een product aanvraag en wij zullen zo spoedig mogelijk contact met u op."
+				},
+				"product_details_minimum_quantity_text1":{
+					"title":"Min Purchase Amount Text Part 1",
+					"value":"Minimum aankoopbedrag van"
+				},
+				"product_details_minimum_quantity_text2":{
+					"title":"Min Purchase Amount Text Part 2",
+					"value":"is vereist"
 				}
 			}
 		},
@@ -898,6 +942,10 @@
 				"cart_payment_information_manual_payment":{
 					"title":"Winkelmand, Betaalinformatie, Handmatige betaling Label",
 					"value":"Betaling overboeken via bank"
+				},
+				"cart_payment_information_affirm":{
+					"title":"Cart, Payment Information, Affirm Payment Label",
+					"value":"Betaal nu met Easy maandelijkse betalingen"
 				},
 				"cart_payment_information_third_party":{
 					"title":"Winkelmand, Betaalinformatie, Third Party Betaling Label",
@@ -1959,6 +2007,10 @@
 				"subscription_canceled":{
 					"title":"Account, Inschrijving geannuleerd",
 					"value":"Uw abonnement is geannuleerd."
+				},
+				"inquiry_sent":{
+					"title":"Store, Inquiry Sent",
+					"value":"Uw product onderzoek is succesvol verstuurd."
 				}
 			}
 		},

@@ -148,6 +148,7 @@ require_once __DIR__ . '/Aws/Common/Iterator/AwsResourceIteratorFactory.php';
 require_once __DIR__ . '/Aws/Common/Signature/SignatureListener.php';
 require_once __DIR__ . '/Aws/Common/Signature/SignatureInterface.php';
 require_once __DIR__ . '/Aws/S3/Command/S3Command.php';
+require_once __DIR__ . '/Aws/S3/Exception/S3Exception.php';
 require_once __DIR__ . '/Aws/S3/Exception/Parser/S3ExceptionParser.php';
 require_once __DIR__ . '/Aws/S3/AcpListener.php';
 require_once __DIR__ . '/Aws/S3/BucketStyleListener.php';

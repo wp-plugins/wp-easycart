@@ -38,6 +38,7 @@ class ec_admin_orders{
 	   else if( $methodName == 'deleteorder' ) 						return array( 'admin' );
 	   else if( $methodName == 'updateshippingstatus' ) 			return array( 'admin' );
 	   else if( $methodName == 'updatefraktjaktshipping' ) 			return array( 'admin' );
+	   else if( $methodName == 'refundorder' ) 						return array( 'admin' );
 	   else  														return null;
 	   
 	}//_getMethodRoles
@@ -77,6 +78,65 @@ class ec_admin_orders{
 		  $sql = "SELECT ec_order_option.* FROM ec_order_option WHERE ec_order_option.orderdetail_id = %s";
 		  $results = $this->db->get_results( $this->db->prepare( $sql, $orderdetails_id ) );
 		  
+		  // If product is deconetwork, lets add the data into the system
+		$order_detail_row = $this->db->get_row( $this->db->prepare( "SELECT 
+															ec_orderdetail.is_deconetwork,
+															ec_orderdetail.deconetwork_id,
+															ec_orderdetail.deconetwork_name,
+															ec_orderdetail.deconetwork_product_code,
+															ec_orderdetail.deconetwork_options,
+															ec_orderdetail.deconetwork_color_code,
+															ec_orderdetail.product_id,
+															ec_orderdetail.deconetwork_image_link
+														FROM ec_orderdetail 
+														WHERE ec_orderdetail.orderdetail_id = %d", $orderdetails_id ) );
+		if( $order_detail_row->is_deconetwork ){
+			$deconetwork1 = new stdClass( );
+			$deconetwork1->orderdetail_id = $orderdetails_id;
+			$deconetwork1->option_name = "DecoNetwork ID: ";
+			$deconetwork1->optionitem_name = "";
+			$deconetwork1->option_type = "text";
+			$deconetwork1->option_value = $order_detail_row->deconetwork_id;
+			$deconetwork1->option_price_change = "";
+			$results[] = $deconetwork1;
+			$deconetwork2 = new stdClass( );
+			$deconetwork2->option_name = "DecoNetwork Name: ";
+			$deconetwork2->optionitem_name = "";
+			$deconetwork2->option_type = "text";
+			$deconetwork2->option_value =  $order_detail_row->deconetwork_name;
+			$deconetwork2->option_price_change = "";
+			$results[] = $deconetwork2;
+			$deconetwork3 = new stdClass( );
+			$deconetwork3->option_name = "DecoNetwork Product Code: ";
+			$deconetwork3->optionitem_name = "";
+			$deconetwork3->option_type = "text";
+			$deconetwork3->option_value = $order_detail_row->deconetwork_product_code;
+			$deconetwork3->option_price_change = "";
+			$results[] = $deconetwork3;
+			$deconetwork4 = new stdClass( );
+			$deconetwork4->option_name = "DecoNetwork Options: ";
+			$deconetwork4->optionitem_name = "";
+			$deconetwork4->option_type = "text";
+			$deconetwork4->option_value = $order_detail_row->deconetwork_options;
+			$deconetwork4->option_price_change = "";
+			$results[] = $deconetwork4;
+			$deconetwork5 = new stdClass( );
+			$deconetwork5->option_name = "DecoNetwork Color Code: ";
+			$deconetwork5->optionitem_name = "";
+			$deconetwork5->option_type = "text";
+			$deconetwork5->option_value = $order_detail_row->deconetwork_color_code;
+			$deconetwork5->option_price_change = "";
+			$results[] = $deconetwork5;
+			$deconetwork6 = new stdClass( );
+			$deconetwork6->option_name = "DecoNetwork Image Link: ";
+			$deconetwork6->optionitem_name = "";
+			$deconetwork6->option_type = "text";
+			$deconetwork6->option_value = $order_detail_row->deconetwork_image_link;
+			$deconetwork6->option_price_change = "";
+			$results[] = $deconetwork6;
+		}
+		// END deconetwork check
+		  
 		  if( count( $results ) > 0 ){
 			  return( $results );
 		  }else{
@@ -87,7 +147,14 @@ class ec_admin_orders{
 	
 	function getorders($startrecord, $limit, $orderby, $ordertype, $filter) {
 		  
-		  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_order.billing_first_name, ec_order.billing_last_name, ec_order.order_viewed, ec_order.grand_total, UNIX_TIMESTAMP(ec_order.order_date) AS order_date, ec_order.user_email, ec_order.user_id,  ec_order.order_id, ec_order.orderstatus_id, ec_orderstatus.order_status FROM ec_order LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id WHERE ec_order.user_id != -1 " . $filter . " ORDER BY " . $orderby . " " . $ordertype . " LIMIT " . $startrecord . ", " . $limit;
+		  $sql = "SELECT SQL_CALC_FOUND_ROWS 
+		  			ec_order.billing_first_name, 
+					ec_order.billing_last_name, 
+					ec_order.order_viewed, 
+					ec_order.grand_total, 
+					UNIX_TIMESTAMP(ec_order.order_date) AS order_date, 
+					ec_order.user_email, ec_order.user_id,  
+					ec_order.order_id, ec_order.orderstatus_id, ec_orderstatus.order_status FROM ec_order LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id WHERE ec_order.user_id != -1 " . $filter . " ORDER BY " . $orderby . " " . $ordertype . " LIMIT " . $startrecord . ", " . $limit;
 		  $results = $this->db->get_results( $sql );
 
 		  $totalquery = $this->db->get_var( "SELECT FOUND_ROWS( )" );
@@ -103,7 +170,18 @@ class ec_admin_orders{
 	
 	function getorderdetails( $orderid ){
 		  
-		  $sql = "SELECT ec_orderdetail.*, ec_order.*, ec_orderstatus.order_status, ec_orderdetail.giftcard_id as product_giftcard_id, UNIX_TIMESTAMP(ec_order.order_date) AS order_date,  ec_download.date_created, ec_download.download_count FROM (((ec_order LEFT JOIN ec_orderdetail ON ec_orderdetail.order_id = ec_order.order_id) LEFT JOIN ec_download ON ec_orderdetail.download_key = ec_download.download_id) LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id) WHERE ec_order.order_id = %d ORDER BY ec_orderdetail.product_id";
+		  $sql = "SELECT 
+		  			ec_orderdetail.*, 
+					ec_order.*, 
+					( ec_orderdetail.use_advanced_optionset OR ec_orderdetail.is_deconetwork ) AS use_advanced_optionset,
+					ec_orderstatus.order_status, 
+					ec_orderstatus.is_approved,
+					ec_orderdetail.giftcard_id as product_giftcard_id, 
+					UNIX_TIMESTAMP(ec_order.order_date) AS order_date, 
+					ec_download.date_created, 
+					ec_download.download_count 
+					FROM 
+					(((ec_order LEFT JOIN ec_orderdetail ON ec_orderdetail.order_id = ec_order.order_id) LEFT JOIN ec_download ON ec_orderdetail.download_key = ec_download.download_id) LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id) WHERE ec_order.order_id = %d ORDER BY ec_orderdetail.product_id";
 		  
 		  $results = $this->db->get_results( $this->db->prepare( $sql, $orderid ) );
 		  
@@ -254,6 +332,46 @@ class ec_admin_orders{
 		}
 		
 	}//updateshippingstatus
+	
+	function refundorder( $order_id, $is_full_refund, $refund_amount, $order_gateway ){
+		
+		// Get order charge info
+		$order = $this->db->get_row( $this->db->prepare( "SELECT affirm_charge_id, stripe_charge_id, order_notes, refund_total, grand_total FROM ec_order WHERE order_id = %d", $order_id ) );
+		
+		// First refund order
+		$result = false;
+		
+		if( $order_gateway == "affirm" ){
+			$gateway = new ec_affirm( );
+			$result = $gateway->refund_order( $order_id, $order->affirm_charge_id, $refund_amount );
+			
+		}else if( $order_gateway == "stripe" ){
+			$gateway = new ec_stripe( );
+			$result = $gateway->refund_charge( $order->stripe_charge_id, $refund_amount );
+		}
+		
+		if( $result ){	// If goes through successfully, update order and return true
+			
+			$date = date('l jS \of F Y h:i:s A');
+			if( strlen( $order->order_notes ) > 0 )
+				$new_order_notes = $order->order_notes . PHP_EOL .  PHP_EOL . "Refund of " . $refund_amount . " made on " . $date;
+			else
+				$new_order_notes = "Refund of " . $refund_amount . " made on " . $date;
+			
+			if( $is_full_refund || ( $refund_amount + $order->refund_total ) >= $order->grand_total )
+				$orderstatus_id = 16;
+			else
+				$orderstatus_id = 17;
+			
+			$this->db->query( $this->db->prepare( "UPDATE ec_order SET ec_order.refund_total = ( ec_order.refund_total + %s ), ec_order.order_notes = %s, ec_order.orderstatus_id = %d WHERE ec_order.order_id = %d", $refund_amount, $new_order_notes, $orderstatus_id, $order_id ) );
+			
+			return array( "order_notes" => $new_order_notes, "orderstatus_id" => $orderstatus_id );
+			
+		}else{
+			return false;
+		}
+		
+	}//refund order
 	
 }//ec_admin_orders
 ?>

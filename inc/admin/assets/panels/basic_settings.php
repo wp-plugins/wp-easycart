@@ -297,6 +297,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_label">Default Selected Payment Type:</span>
     <span class="ec_setting_row_input"><select name="ec_option_default_payment_type" id="ec_option_default_payment_type">
                 <option value="manual_bill" <?php if (get_option('ec_option_default_payment_type') == 'manual_bill') echo ' selected'; ?>>Manual Billing</option>
+                <option value="affirm" <?php if (get_option('ec_option_default_payment_type') == 'affirm') echo ' selected'; ?>>Affirm</option>
                 <option value="third_party" <?php if (get_option('ec_option_default_payment_type') == 'third_party') echo ' selected'; ?>>Third Party</option>
                 <option value="credit_card" <?php if (get_option('ec_option_default_payment_type') == 'credit_card') echo ' selected'; ?>>Credit Card</option>
               </select></span>

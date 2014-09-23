@@ -88,11 +88,14 @@
   <tr>
     <td width='269' class='style22'>
 		<table>
-            <tr><td>
-            <?php echo $order_details[$i]->title; ?>
+            <tr><td><span class="ec_option_label">
+            <?php if( $order_details[$i]->is_deconetwork ){ echo $order_details[$i]->deconetwork_name; }else{ echo $order_details[$i]->title; } ?>
+            </span>
             </td></tr>
             <?php 
-			if( $order_details[$i]->use_advanced_optionset ){
+			if( $order_details[$i]->is_deconetwork ){ 
+				echo "<tr><td><span class=\"ec_option_label\">" . str_replace( "<br/><br/>", "<br/>", $order_details[$i]->deconetwork_options ) . "</span></td></tr>";
+			}else if( $order_details[$i]->use_advanced_optionset ){
 				$advanced_options = $mysqli->get_order_options( $order_details[$i]->orderdetail_id );
 				foreach( $advanced_options as $advanced_option ){
 					if( $advanced_option->option_type == "file" ){

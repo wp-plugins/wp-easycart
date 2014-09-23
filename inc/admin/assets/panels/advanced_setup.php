@@ -134,6 +134,35 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
+<div class="ec_admin_page_title">DecoNetwork Setup</div>
+<div class="ec_adin_page_intro">If you plan to offer custom designed goods on your own DecoNetwork site with the WP EasyCart as the checkout integration, you can enter your setup information below.</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>DecoNetwork URL</em>This is the base URL for your DecoNetwork website, e.g. mystore.secure-store.com.</span></a></span>
+    <span class="ec_setting_row_label">DecoNetwork URL:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_deconetwork_url" style="width:350px;" value="<?php echo get_option('ec_option_deconetwork_url'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>DecoNetwork Order Passwrod</em>This is a custom password used to commit orders to your DecoNetwork account. The values must match here and in your DecoNetwork API settings, which are explained below.</span></a></span>
+    <span class="ec_setting_row_label">DecoNetwork Order Password:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_deconetwork_password" style="width:350px;" value="<?php echo get_option('ec_option_deconetwork_password'); ?>" /></span>
+</div>
+
+<div>Note: You must complete the following steps in your DecoNetwork settings panel to offer these product types:
+<ul>
+	<li>External Cart Integration must be enabled by going to your DecoNetwork Manage Store -> Website Settings -> API Settings.</li>
+    <li>Add the Add to Cart Callback URL: <?php echo get_permalink( get_option( 'ec_option_cartpage' ) ); ?></li>
+    <li>Add the Cancel Callback URL: <?php echo get_permalink( get_option( 'ec_option_storepage' ) ); ?></li>
+    <li>Create a Custom Order Commit URL. This is a custom value DIFFERENT from your account password AND should be entered in the field provided above!</li>
+    <li>Additional note, the hard part of setting this up tends to be finding the product id (not product code!) and is available if you go to the product on your DecoNetowrk site, look at the URL, and where it says n=xxxxxxx, the xxxxxxx is the id you need to enter in the EasyCart system when setting up a product.</li>
+    <li>It is recommended that you turn off email coorespondence from your DecoNetwork site. This can be done by going to Manage Store -> Website Settings -> Correspondence Settings and check the box to force coorespondance from the WP EasyCart instead of your DecoNetwork site.</li>
+</ul>
+</div>
+
+
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
+
 <div class="ec_admin_page_title_secondary">Custom CSS</div>
 <div class="ec_adin_page_intro">Any CSS you add here will over-ride the css in your EasyCart theme files. If you have an error in CSS here, it may effect your entire site, so please be cautious and pay attention to syntax errors.</div>
 <div class="ec_adin_page_intro"><textarea style="width:100%; height:250px;" name="ec_option_custom_css"><?php echo get_option( 'ec_option_custom_css' ); ?></textarea></div>

@@ -536,7 +536,7 @@ class ec_stripe extends ec_gateway{
 	
 	private function get_refund_charge_data( $charge_id, $amount ){
 		
-		return array( "id" => $charge_id, "amount" => number_format( $amount * 100, 0, "", "" ) );
+		return array( "amount" => number_format( $amount * 100, 0, "", "" ) );
 		
 	}
 	

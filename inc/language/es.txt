@@ -41,6 +41,10 @@
 					"title":"Product Quick View Label",
 					"value":"+Vista Rápida"
 				},
+				"product_design_now":{
+					"title":"Product Design Now Label",
+					"value":"diseñar ahora"
+				},
 				"product_no_results":{
 					"title":"Product Page No Results",
 					"value":"No Se Ha Encontrado"
@@ -190,6 +194,46 @@
 				"product_details_sign_up_now":{
 					"title":"Sign Up Now Text",
 					"value":"REGISTRARSE"
+				},
+				"product_details_inquiry_title":{
+					"title":"Inquiry Title",
+					"value":"Consulta de Producto"
+				},
+				"product_details_inquiry_error":{
+					"title":"Inquiry Error Text",
+					"value":"Por favor, llene todos los campos requeridos"
+				},
+				"product_details_inquiry_name":{
+					"title":"Inquiry Name",
+					"value":"*Nombre:"
+				},
+				"product_details_inquiry_email":{
+					"title":"Inquiry Email",
+					"value":"*Email:"
+				},
+				"product_details_inquiry_message":{
+					"title":"Inquire Button Text",
+					"value":"*Su Mensaje:"
+				},
+				"product_details_inquire":{
+					"title":"Inquire Button Text",
+					"value":"Haz una Solicitud"
+				},
+				"product_details_inquiry_send_copy":{
+					"title":"Inquiry - Send Copy",
+					"value":"Deseo recibir una copia"
+				},
+				"product_details_inquiry_thank_you":{
+					"title":"Inquiry Thank You Note",
+					"value":"Gracias por enviar una consulta de producto y nos pondremos en contacto con usted tan pronto como sea posible."
+				},
+				"product_details_minimum_quantity_text1":{
+					"title":"Min Purchase Amount Text Part 1",
+					"value":"Cantidad mínima de compra de"
+				},
+				"product_details_minimum_quantity_text2":{
+					"title":"Min Purchase Amount Text Part 2",
+					"value":"se requiere"
 				}
 			}
 		},
@@ -898,6 +942,10 @@
 				"cart_payment_information_manual_payment":{
 					"title":"Cart, Payment Information, Manual Payment Label",
 					"value":"Pago por Depósito Directo"
+				},
+				"cart_payment_information_affirm":{
+					"title":"Cart, Payment Information, Affirm Payment Label",
+					"value":"Pague ahora con pagos mensuales fáciles"
 				},
 				"cart_payment_information_third_party":{
 					"title":"Cart, Payment Information, Third Party Payment Label",
@@ -1959,6 +2007,10 @@
 				"subscription_canceled":{
 					"title":"Account, Subscription Canceled",
 					"value":"Su suscripción ha sido cancelada."
+				},
+				"inquiry_sent":{
+					"title":"Store, Inquiry Sent",
+					"value":"Su consulta producto ha sido enviado con éxito."
 				}
 			}
 		},

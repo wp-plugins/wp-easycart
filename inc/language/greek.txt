@@ -41,6 +41,10 @@
 					"title":"Product Quick View Label",
 					"value":"\u03a0\u03b1\u03c4\u03ae\u03c3\u03c4\u03b5 \u03c3\u03c4\u03b7\u03bd \u03b5\u03b9\u03ba\u03cc\u03bd\u03b1"
 				},
+				"product_design_now":{
+					"title":"Product Design Now Label",
+					"value":"σχεδιάζουμε τώρα"
+				},
 				"product_no_results":{
 					"title":"Product Page No Results",
 					"value":"\u0394\u03b5\u03bd \u03b2\u03c1\u03ad\u03b8\u03b7\u03ba\u03b5 \u03ba\u03ac\u03c0\u03bf\u03b9\u03bf \u03b1\u03c0\u03bf\u03c4\u03ad\u03bb\u03b5\u03c3\u03bc\u03b1"
@@ -190,6 +194,46 @@
 				"product_details_sign_up_now":{
 					"title":"Sign Up Now Text",
 					"value":"Εγγραφείτε τώρα"
+				},
+				"product_details_inquiry_title":{
+					"title":"Inquiry Title",
+					"value":"Το μήνυμά σας προϊόντων"
+				},
+				"product_details_inquiry_error":{
+					"title":"Inquiry Error Text",
+					"value":"Παρακαλώ συμπληρώστε όλα τα απαιτούμενα πεδία"
+				},
+				"product_details_inquiry_name":{
+					"title":"Inquiry Name",
+					"value":"*όνομα:"
+				},
+				"product_details_inquiry_email":{
+					"title":"Inquiry Email",
+					"value":"*Email:"
+				},
+				"product_details_inquiry_message":{
+					"title":"Inquire Button Text",
+					"value":"*Το μήνυμά σας:"
+				},
+				"product_details_inquire":{
+					"title":"Inquire Button Text",
+					"value":"ΚΑΝΤΕ ΕΡΕΥΝΑ"
+				},
+				"product_details_inquiry_send_copy":{
+					"title":"Inquiry - Send Copy",
+					"value":"Στείλε μου ένα αντίγραφο"
+				},
+				"product_details_inquiry_thank_you":{
+					"title":"Inquiry Thank You Note",
+					"value":"Σας ευχαριστούμε για την υποβολή έρευνα προϊόν και εμείς θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατόν."
+				},
+				"product_details_minimum_quantity_text1":{
+					"title":"Min Purchase Amount Text Part 1",
+					"value":"Ελάχιστη ποσότητα αγοράς"
+				},
+				"product_details_minimum_quantity_text2":{
+					"title":"Min Purchase Amount Text Part 2",
+					"value":"Απαιτείται"
 				}
 			}
 		},
@@ -898,6 +942,10 @@
 				"cart_payment_information_manual_payment":{
 					"title":"Cart, Payment Information, Manual Payment Label",
 					"value":"Πληρωμή με κατάθεση"
+				},
+				"cart_payment_information_affirm":{
+					"title":"Cart, Payment Information, Affirm Payment Label",
+					"value":"Πληρώστε τώρα με την Easy Μηνιαία Πληρωμές"
 				},
 				"cart_payment_information_third_party":{
 					"title":"Cart, Payment Information, Third Party Payment Label",
@@ -1959,6 +2007,10 @@
 				"subscription_canceled":{
 					"title":"Account, Subscription Canceled",
 					"value":"Η συνδρομή σας έχει ακυρωθεί."
+				},
+				"inquiry_sent":{
+					"title":"Store, Inquiry Sent",
+					"value":"Έρευνα προϊόν σας έχει σταλεί με επιτυχία."
 				}
 			}
 		},

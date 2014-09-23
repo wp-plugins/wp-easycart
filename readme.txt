@@ -1,9 +1,9 @@
 === WordPress Shopping Cart===
 Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
-Requires at least: 3.0.1
-Tested up to: 3.9.2
-Stable tag: 2.1.34
+Requires at least: 3.8
+Tested up to: 4.0
+Stable tag: 2.1.35
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -25,6 +25,7 @@ WP EasyCart provides administrative software, so there is no need to use WordPre
 * [WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") 
 * [Online Demos and Themes]( http://www.wpeasycart.com/wordpress_shopping_cart_demos/ "WP EasyCart Themes") 
 * [Online Documentation]( http://www.wpeasycart.com/docs "WP EasyCart Documentation") 
+* [What's Included]( http://www.wpeasycart.com/whats-included/ "What's Included in the Free Version") 
 
 
 = PREDESIGNED THEMES AVAILABLE =
@@ -117,6 +118,18 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 2.1.35 =
+* NEW Feature - Seasonal Mode: Set a custom note to tell customers that a specific product is unavailable, e.g. Coming Soon! or Seasonally Unavailable.
+* NEW Feature - Inquiry Mode: Set a product to require a customer to inquire about a product. You can provide a link to a custom form or use the new design files with a built in form.
+* NEW Feature - Admin order exporter, you can now download a PDF for a specific date range with basic financial information.
+* NEW Feature - Enable/Disable taxes and shipping on a per customer level.
+* NEW Feature - New Payment Gateway -- Virtual Merchant was added as a live payment gateway!
+* NEW Feature - Affirm Payment Integration -- We now offer to Free, Lite, and Full users the payment gateway Affirm. This will be the next big thing in accepting payments, please go to www.Affirm.com to read more!
+* NEW Feature - DecoNetwork Integration -- Offer custom designed T-Shirts through your own DecoNetwork site. The EasyCart and DecoNetwork work together to provide your customers a seamless buying experience.
+* Fix - Image upload script now blocks warnings and notices to help many customer websites function correctly.
+* Fix - Users that have free shipping will skip over the shipping page (promotions or user level free shipping).
+* Fix - Admin loader, now only loading the core WordPress files, speeding up the load time and preventing conflict with other WordPress plugins.
+* Fix - Update to design files to fix the issue of thumbnails that vary based on option 1 were not changing/showing.
 = 2.1.34 =
 * Fix - A warning was appearing for a DB call during temp cart deletion, new from the previous version. Warnings appear to be eliminated from checkout now.
 = 2.1.33 =

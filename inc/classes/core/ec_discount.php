@@ -9,9 +9,9 @@ class ec_discount{
 	public $shipping_discount;									// Float 15,3
 	public $coupon_code;										// VARCHAR 255
 	public $giftcard_code;										// VARCHAR 255
+	public $shipping_subtotal;									// Float 15,3
 	
 	private $cart;												// array of ec_cartitem structures
-	private $shipping_subtotal;									// Float 15,3
 	private $cart_subtotal;										// Float 15,3
 	private $cart_grandtotal;									// FLOAT 15,3
 	private $cart_apply_quantity;								// INT

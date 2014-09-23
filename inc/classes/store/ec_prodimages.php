@@ -7,6 +7,8 @@ class ec_prodimages{
 	public $model_number;								// VARCHAR 255
 	public $additional_link_options;					// TEXT
 	public $post_id;									// INT
+	public $is_deconetwork;								// BOOL
+	public $deconetwork_link;							// VARCHAR
 	
 	public $image1;										// VARCHAR 255
 	public $image2;										// VARCHAR 255
@@ -19,13 +21,15 @@ class ec_prodimages{
 	private $store_page;
 	private $permalink_divider;
 	
-	function __construct( $product_id, $options, $model_number, $use_optionitem_images, $image1, $image2, $image3, $image4, $image5, $image_data, $additional_link_options, $post_id ){
+	function __construct( $product_id, $options, $model_number, $use_optionitem_images, $image1, $image2, $image3, $image4, $image5, $image_data, $additional_link_options, $post_id, $is_deconetwork = false, $deconetwork_link = "" ){
 		
 		$this->use_optionitem_images = $use_optionitem_images;
 		$this->options = $options;
 		$this->model_number = $model_number;
 		$this->post_id = $post_id;
 		$this->additional_link_options = $additional_link_options;
+		$this->is_deconetwork = $is_deconetwork;
+		$this->deconetwork_link = $deconetwork_link;
 		
 		$this->image1 = $image1;
 		$this->image2 = $image2;
@@ -166,10 +170,14 @@ class ec_prodimages{
 	
 	private function get_image_html( $level, $img, $active, $i, $size, $islink, $js, $allow_popup, $id_prefix){
 		
-		$permalink = $this->ec_get_permalink( $this->post_id );
-		$add_options_divider = "?";
-		if( substr_count( $permalink, '?' ) ){
-			$add_options_divider = "&";
+		if( $this->is_deconetwork ){
+			$permalink = $this->deconetwork_link;
+		}else{
+			$permalink = $this->ec_get_permalink( $this->post_id );
+			$add_options_divider = "?";
+			if( substr_count( $permalink, '?' ) ){
+				$add_options_divider = "&";
+			}
 		}
 		
 		if( $img ){

@@ -884,26 +884,26 @@ function ec_update_product_details_images( image_index, image_number ){
 	jQuery( '#ec_image_quick_view_' + model_number + "_" + 1 + "_" + image_index ).show( );
 	
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 1 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 1 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_' + model_number + "_" + 1 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 2 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 2 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_' + model_number + "_" + 2 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 3 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 3 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_' + model_number + "_" + 3 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 4 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 4 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_' + model_number + "_" + 4 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	if( document.getElementById( 'ec_thumb_' + model_number + '_' + 5 + '_' + image_index ) )
-		jQuery('#ec_thumb_' + model_number + "_" + 5 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_' + model_number + "_" + 5 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 1 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 1 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 1 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 2 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 2 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 2 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 3 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 3 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 3 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 4 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 4 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 4 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	if( document.getElementById( 'ec_thumb_quick_view_' + model_number + '_' + 5 + '_' + image_index ) )
-		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 5 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' );
+		jQuery('#ec_thumb_quick_view_' + model_number + "_" + 5 + "_" + image_index ).removeClass( 'ec_product_image_inactive' ).addClass( 'ec_product_image' ).show( );
 	
 }
 
@@ -1455,7 +1455,14 @@ function ec_cart_validate_checkout_submit_order( ){
 	var errors = 0;
 	
 	var payment_type = jQuery('input[name=ec_cart_payment_selection]:checked').val();
-	if( !document.getElementById( 'ec_cart_pay_by_manual_payment' ) && !document.getElementById( 'ec_cart_pay_by_third_party' ) && !document.getElementById( 'ec_cart_pay_by_credit_card_holder' ) ){
+	if( payment_type == "affirm" ){
+		if( event.target.id == "ec_submit_payment_button" ){
+			ec_checkout_with_affirm( ); return false;
+		}else{
+			return true;
+		}
+		
+	}else if( !document.getElementById( 'ec_cart_pay_by_manual_payment' ) && !document.getElementById( 'ec_cart_pay_by_third_party' ) && !document.getElementById( 'ec_cart_pay_by_credit_card_holder' ) ){
 		if( document.getElementById( 'ec_cart_final_review_holder' ) && jQuery( '#ec_cart_final_review_holder' ).is( ':visible' ) ){
 			jQuery( '#ec_submit_order_form' ).submit( );
 		}
@@ -2041,11 +2048,14 @@ function ec_cart_gift_card_redeem_complete( data ){
 function ec_cart_update_payment_type( payment_type ){
 	
 	jQuery('#ec_cart_pay_by_manual_payment').hide();
+	jQuery('#ec_cart_pay_by_affirm').hide();
 	jQuery('#ec_cart_pay_by_third_party').hide();
 	jQuery('#ec_cart_pay_by_credit_card_holder').hide();
 	
 	if( payment_type == "manual_bill" )
 		jQuery('#ec_cart_pay_by_manual_payment').show();
+	else if( payment_type == "affirm" )
+		jQuery('#ec_cart_pay_by_affirm').show();
 	else if( payment_type == "third_party" )
 		jQuery('#ec_cart_pay_by_third_party').show();
 	else if( payment_type == "credit_card" )
@@ -3212,4 +3222,20 @@ function ec_check_update_subscription_info( ){
 	}else{
 		return true;
 	}
+}
+
+function ec_check_inquiry_form( ){
+	
+	var inquiry_name = jQuery( '#inquiry_name' ).val( );
+	var inquiry_email = jQuery( '#inquiry_email' ).val( );
+	var inquiry_message = jQuery( '#inquiry_message' ).val( );
+	
+	if( inquiry_name != "" && inquiry_email != "" && inquiry_message != "" ){
+		jQuery( '#inquiry_error' ).hide( );
+		return true;
+	}else{
+		jQuery( '#inquiry_error' ).show( );
+		return false;
+	}
+	
 }

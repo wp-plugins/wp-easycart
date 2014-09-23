@@ -91,7 +91,7 @@
         	<td width='269' class='style22'>
 				<table>
                 	<tr><td>
-                    <?php echo $this->cart->cart[$i]->title; ?>
+                    <?php if( $this->cart->cart[$i]->is_deconetwork ){ echo $this->cart->cart[$i]->deconetwork_name; }else{ echo $this->cart->cart[$i]->title; } ?>
                     </td></tr>
                     <?php if( $this->cart->cart[$i]->gift_card_message ){ ?>
                     <tr><td>
@@ -128,7 +128,9 @@
 					?>
                     </td></tr>
                     <?php }
-					if( $this->cart->cart[$i]->use_advanced_optionset ){
+					if( $this->cart->cart[$i]->is_deconetwork ){
+						echo "<tr><td>" . str_replace( "<br/><br/>", "<br/>", $this->cart->cart[$i]->deconetwork_options ) . "</td></tr>";
+					}else if( $this->cart->cart[$i]->use_advanced_optionset ){
 						$advanced_options = $this->mysqli->get_order_options( $this->cart->cart[$i]->orderdetail_id );
 						foreach( $advanced_options as $advanced_option ){
 							if( $advanced_option->option_type == "file" ){

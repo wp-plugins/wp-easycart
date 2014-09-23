@@ -96,12 +96,12 @@ if( $this->should_display_login( ) ){
 		<?php $this->display_page_three_form_start(); ?>
         <?php $this->display_payment_information(); ?>
         <?php $this->display_customer_order_notes(); ?>
-        <div class="ec_cart_checkout_review_info"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_review_checkout_text' ); ?></div>
         
 		<?php if( get_option( 'ec_option_skip_reivew_screen' ) ){ ?>
         <div class="ec_cart_submit_order_message"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_checkout_text' )?></div>
 		<?php $this->display_submit_order_button( $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_submit_order_button' ) ); ?>
         <?php }else{ ?>
+        <div class="ec_cart_checkout_review_info"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_review_checkout_text' ); ?></div>
 		<?php $this->display_order_review_button( $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_review_order_button' ) ); ?>
         <?php $this->display_order_finalize_panel( ); ?>
         <?php } ?>

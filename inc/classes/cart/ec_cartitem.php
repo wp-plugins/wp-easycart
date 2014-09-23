@@ -26,6 +26,7 @@ class ec_cartitem{
 	public $total_price;											// FLOAT 15,3
 	public $prev_price;												// FLOAT 15,3
 	public $handling_price;											// FLOAT 15,3
+	public $discount_price;											// FLOAT 15,3
 	public $pricetiers = array();									// Array of rows of ec_pricetier
 	
 	public $vat_enabled;											// FLAOT 15,3
@@ -73,6 +74,20 @@ class ec_cartitem{
 	public $gift_card_to_name;										// VARCHAR 255
 	
 	public $donation_price;											// FLOAT 9,2
+	
+	public $is_deconetwork;											// BOOL
+	public $deconetwork_id;											// VARCHAR 64
+	public $deconetwork_name;										// VARCHAR 512
+	public $deconetwork_product_code;								// VARCHAR 64
+	public $deconetwork_options;									// VARCHAR 512
+	public $deconetwork_edit_link;									// VARCHAR 512
+	public $deconetwork_color_code;									// VARCHAR 64
+	public $deconetwork_product_id;									// VARCHAR 64
+	public $deconetwork_image_link;									// VARCHAR 512
+	public $deconetwork_discount;									// FLOAT 15,3
+	public $deconetwork_tax;										// FLOAT 15,3
+	public $deconetwork_total;										// FLOAT 15,3
+	public $deconetwork_version;									// INT
 	
 	public $download_id = 0;										// INT
 	public $download_file_name;										// VARCHAR 255
@@ -190,6 +205,20 @@ class ec_cartitem{
 		
 		$this->donation_price = $cartitem_data->donation_price;
 		
+		$this->is_deconetwork = $cartitem_data->is_deconetwork;
+		$this->deconetwork_id = $cartitem_data->deconetwork_id;
+		$this->deconetwork_name = $cartitem_data->deconetwork_name;
+		$this->deconetwork_product_code = $cartitem_data->deconetwork_product_code;
+		$this->deconetwork_options = $cartitem_data->deconetwork_options;
+		$this->deconetwork_edit_link = $cartitem_data->deconetwork_edit_link;
+		$this->deconetwork_color_code = $cartitem_data->deconetwork_color_code;
+		$this->deconetwork_product_id = $cartitem_data->deconetwork_product_id;
+		$this->deconetwork_image_link = $cartitem_data->deconetwork_image_link;
+		$this->deconetwork_discount = $cartitem_data->deconetwork_discount;
+		$this->deconetwork_tax = $cartitem_data->deconetwork_tax;
+		$this->deconetwork_total = $cartitem_data->deconetwork_total;
+		$this->deconetwork_version = $cartitem_data->deconetwork_version;
+		
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
 			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
 				$arr = $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'][$i][0]( array( ), array( ) );
@@ -284,6 +313,12 @@ class ec_cartitem{
 			$this->vat_enabled = true;
 		else
 			$this->vat_enabled = false;
+		
+		if( $this->is_deconetwork ){
+			$this->unit_price = $this->deconetwork_total / $this->quantity;
+			$this->total_price = $this->deconetwork_total;
+			$this->discount_price = $this->deconetwork_discount;
+		}
 			
 		$store_page_id = get_option('ec_option_storepage');
 		$cart_page_id = get_option('ec_option_cartpage');
@@ -323,8 +358,7 @@ class ec_cartitem{
 	}
 	
 	public function get_discount_unit_price(){
-		if( $this->discount_price )
-		return $this->discount_price;	
+		return $this->discount_price;
 	}
 	
 	public function get_item_total(){
@@ -345,68 +379,125 @@ class ec_cartitem{
 	
 	public function display_image( $size ){
 		
-		echo "<a href=\"" . $this->ec_get_permalink( $this->post_id );
+		if( $this->is_deconetwork ){
 		
-		if( substr_count( $this->ec_get_permalink( $this->post_id ), '?' ) ){
-			$second_permalink_divider = "&";
+			echo "<a href=\"https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_edit_link . "\"><img src=\"https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_image_link . "?version=" . $this->deconetwork_version . "\" alt=\"" . $this->model_number . "\" /></a>";
+		
 		}else{
-			$second_permalink_divider = "?";
+			
+			echo "<a href=\"" . $this->ec_get_permalink( $this->post_id );
+		
+			if( substr_count( $this->ec_get_permalink( $this->post_id ), '?' ) ){
+				$second_permalink_divider = "&";
+			}else{
+				$second_permalink_divider = "?";
+			}
+			
+			if( $this->image1_optionitem ){
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) )
+					echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
+				else
+					echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
+			}else{
+				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) )
+					echo "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
+				else if( file_exists( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) )
+					echo "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
+				else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) )
+					echo "\"><img src=\"" . plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
+				else
+					echo "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
+			}
+			echo "</a>";
+			
 		}
 		
-		if( $this->image1_optionitem ){
-			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) )
-				echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
-			else
-				echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id . "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1_optionitem ) . "\" alt=\"" . $this->model_number . "\" />";
+	}
+	
+	public function get_image_url( ){
+		
+		if( $this->is_deconetwork ){
+			return get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_image_link;
+		}else if( $this->image1_optionitem && file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) ){
+			return plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem );
 		}else{
-			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) )
-				echo "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
-			else if( file_exists( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) )
-				echo "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
-			else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) )
-				echo "\"><img src=\"" . plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
-			else
-				echo "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
+			return plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 );
 		}
-		echo "</a>";
+		
+	}
+	
+	public function get_product_url( ){
+		
+		if( $this->is_deconetwork )
+			return "https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_edit_link;
+		else
+			return $this->ec_get_permalink( $this->post_id );
 		
 	}
 	
 	public function display_title( ){
-		echo $this->title;
+		
+		if( $this->is_deconetwork )
+			echo $this->deconetwork_name;
+		else
+			echo $this->title;
+		
 	}
 	
 	public function display_title_link( ){
-		echo "<a href=\"" . $this->ec_get_permalink( $this->post_id );
 		
-		if( substr_count( $this->ec_get_permalink( $this->post_id ), '?' ) ){
-			$second_permalink_divider = "&";
+		if( $this->is_deconetwork ){
+			
+			echo "<a href=\"https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_edit_link . "\">" . $this->deconetwork_name . "</a>";
+			
 		}else{
-			$second_permalink_divider = "?";
+			
+			echo "<a href=\"" . $this->ec_get_permalink( $this->post_id );
+		
+			if( substr_count( $this->ec_get_permalink( $this->post_id ), '?' ) ){
+				$second_permalink_divider = "&";
+			}else{
+				$second_permalink_divider = "?";
+			}
+			
+			if( $this->image1_optionitem )
+				echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id;
+			
+			echo "\">" . $this->title . "</a>";
+			
 		}
 		
-		if( $this->image1_optionitem )
-			echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id;
-		
-		echo "\">" . $this->title . "</a>";
 	}
 	
 	public function has_option1( ){
-		if( $this->optionitem1_name )
+		
+		if( ( $this->is_deconetwork && $this->deconetwork_options ) || $this->optionitem1_name )
 			return true;
 		else
 			return false;
+		
 	}
 	
 	public function display_option1( ){
-		if( $this->optionitem1_price == "0.00" &&  $this->optionitem1_name)
-			echo $this->optionitem1_label . ": " . $this->optionitem1_name;
-		else if( $this->optionitem1_name ){
-			if( $this->optionitem1_price > 0.00 )
-				echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( +" . $GLOBALS['currency']->get_currency_display( $this->optionitem1_price ) . " )";
-			else
-				echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem1_price ) . " )";
+		
+		if( $this->is_deconetwork ){
+			
+			echo str_replace( "<br/><br/>", "<br/>", $this->deconetwork_options );
+			echo "<br/><a href=\"https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_edit_link . "\">Edit Design</a>";
+			
+		}else{
+			
+			if( $this->optionitem1_price == "0.00" &&  $this->optionitem1_name)
+				echo $this->optionitem1_label . ": " . $this->optionitem1_name;
+			else if( $this->optionitem1_name ){
+				if( $this->optionitem1_price > 0.00 )
+					echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( +" . $GLOBALS['currency']->get_currency_display( $this->optionitem1_price ) . " )";
+				else
+					echo $this->optionitem1_label . ": " . $this->optionitem1_name . " ( " . $GLOBALS['currency']->get_currency_display( $this->optionitem1_price ) . " )";
+			}
+			
 		}
+		
 	}
 	
 	public function has_option2( ){
@@ -532,31 +623,60 @@ class ec_cartitem{
 	}
 	
 	public function display_update_form_start( ){
-		if( isset( $_GET['ec_page'] ) )
-			echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] . "\" method=\"post\">";
-		else
-			echo "<form action=\"" . $this->cart_page . "\" method=\"post\">";
+		
+		if( !$this->is_deconetwork ){
+			
+			if( isset( $_GET['ec_page'] ) )
+				echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] . "\" method=\"post\">";
+			else
+				echo "<form action=\"" . $this->cart_page . "\" method=\"post\">";
+		
+		}
+	
 	}
 	
 	public function display_update_form_end( ){
-		echo "<input type=\"hidden\" name=\"ec_update_cartitem_id\" id=\"ec_update_cartitem_id_" . $this->cartitem_id . "\" value=\"" . $this->cartitem_id . "\" />";
-		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" id=\"ec_cart_form_action\" value=\"ec_update_action\" />";
-		echo "</form>";	
+		
+		if( !$this->is_deconetwork ){
+			
+			echo "<input type=\"hidden\" name=\"ec_update_cartitem_id\" id=\"ec_update_cartitem_id_" . $this->cartitem_id . "\" value=\"" . $this->cartitem_id . "\" />";
+			echo "<input type=\"hidden\" name=\"ec_cart_form_action\" id=\"ec_cart_form_action\" value=\"ec_update_action\" />";
+			echo "</form>";	
+		
+		}
+		
 	}
 	
 	public function display_quantity_box( ){
-		if( $this->grid_quantity > 0 ){
-			echo "<input type=\"hidden\" id=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" name=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" value=\"" . $this->quantity . "\" min=\"1\" />" . $this->grid_quantity;
+		
+		if( $this->is_deconetwork ){
+			
+			echo $this->quantity;
+			
 		}else{
-			echo "<input type=\"number\" id=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" name=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" value=\"" . $this->quantity . "\" min=\"1\" />";
+			
+			if( $this->grid_quantity > 0 ){
+				echo "<input type=\"hidden\" id=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" name=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" value=\"" . $this->quantity . "\" min=\"1\" />" . $this->grid_quantity;
+			}else{
+				echo "<input type=\"number\" id=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" name=\"ec_cartitem_quantity_" . $this->cartitem_id . "\" value=\"" . $this->quantity . "\" min=\"1\" />";
+			}
+			
 		}
+		
 	}
 	
 	public function display_update_button( $update_text ){
-		echo "<input type=\"submit\" id=\"update_" . $this->cartitem_id . "\" name=\"update_" . $this->cartitem_id . "\" value=\"" . $update_text . "\" onclick=\"ec_cart_item_update( '" . $this->cartitem_id . "' ); return false;\" />";
+		
+		if( !$this->is_deconetwork ){
+			
+			echo "<input type=\"submit\" id=\"update_" . $this->cartitem_id . "\" name=\"update_" . $this->cartitem_id . "\" value=\"" . $update_text . "\" onclick=\"ec_cart_item_update( '" . $this->cartitem_id . "' ); return false;\" />";
+			
+		}
+		
 	}
 	
 	public function display_delete_button( $remove_text ){
+		
 		if( isset( $_GET['ec_page'] ) )
 			echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] . "\" method=\"post\">";
 		else
@@ -566,18 +686,38 @@ class ec_cartitem{
 		echo "<input type=\"hidden\" name=\"ec_cart_form_action\" id=\"ec_cart_form_action\" value=\"ec_delete_action\" />";
 		echo "<input type=\"hidden\" name=\"ec_delete_cartitem_id\" id=\"ec_delete_cartitem_id_" . $this->cartitem_id . "\" value=\"" . $this->cartitem_id . "\" />";
 		echo "</form>";
+	
 	}
 	
 	public function display_unit_price( ){
-		echo "<span id=\"ec_cartitem_unit_price_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->unit_price ) . "</span>";
 		
-		if( $this->prev_price )
-			echo "<span id=\"ec_cartitem_prev_price_" . $this->cartitem_id . "\" class=\"ec_product_old_price\">" . $GLOBALS['currency']->get_currency_display( $this->prev_price ) . "</span>";
+		if( $this->is_deconetwork ){
+			
+			echo "<span id=\"ec_cartitem_unit_price_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->deconetwork_total / $this->quantity ) . "</span>";
+			
+		}else{
+			
+			echo "<span id=\"ec_cartitem_unit_price_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->unit_price ) . "</span>";
+		
+			if( $this->prev_price )
+				echo "<span id=\"ec_cartitem_prev_price_" . $this->cartitem_id . "\" class=\"ec_product_old_price\">" . $GLOBALS['currency']->get_currency_display( $this->prev_price ) . "</span>";
+				
+		}
 		
 	}
 	
 	public function display_item_total( ){
-		echo "<span id=\"ec_cartitem_total_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->total_price ) . "</span>";
+		
+		if( $this->is_deconetwork ){
+			
+			echo "<span id=\"ec_cartitem_unit_price_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->deconetwork_total ) . "</span>";
+			
+		}else{
+		
+			echo "<span id=\"ec_cartitem_total_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->total_price ) . "</span>";
+		
+		}
+		
 	}
 	
 	public function display_vat_rate( ){

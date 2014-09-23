@@ -14,9 +14,10 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 
 <div class="ec_admin_page_title">Payment Setup</div>
 <div class="ec_adin_page_intro"><ul>
-                  <li><strong>Manual or Direct Deposit(Free, Lite, and Standard Versions)</strong> - Customer orders are placed, but receipt of payment is manual and must be verified by you the business owner.</li>
-                  <li><strong>Third Party Payment Gateway(Lite and Standard Versions)</strong> - Customers orders are placed and the customer is redirected to the payment page. Customers will leave your website and pay, business owners should verify payment before shipping.</li>
-                  <li><strong>Live Payment Gateway(Standard Version Only)</strong> - Customer orders are verified immediately using a gateway. Customers will never leave your website and pay directly via your EasyCart payment page.</li>
+                  <li><strong>Manual or Direct Deposit (Free, Lite, and Standard Versions)</strong> - Customer orders are placed, but receipt of payment is manual and must be verified by you the business owner.</li>
+                  <li><strong>Affirm (Free, Lite, and Standard Versions)</strong> - Affirm provides flexible financing for your customers at the time of checkout, enabling increased sales and conversion. Your customers will be instantly approved for a loan with Affirm during checkout and will use it as their form of payment. They can pay off their balance in easy monthly payments with a low interest rate. Affirm assumes all credit risk and will settle full payment with you right away. You will need an Affirm account to use this on your site. For more information and to sign up for an Affirm account, please visit <a href="https://www.affirm.com/merchants/ " target="_blank">https://www.Affirm.com/merchants/</a></li>
+                  <li><strong>Third Party Payment Gateway (Lite and Standard Versions)</strong> - Customers orders are placed and the customer is redirected to the payment page. Customers will leave your website and pay, business owners should verify payment before shipping.</li>
+                  <li><strong>Live Payment Gateway (Standard Version Only)</strong> - Customer orders are verified immediately using a gateway. Customers will never leave your website and pay directly via your EasyCart payment page.</li>
                 </ul></div>
 
 <form action="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=payment-settings&ec_action=save_options" method="POST">
@@ -31,6 +32,15 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
                         <option value="0" <?php if (get_option('ec_option_use_direct_deposit') == 0) echo ' selected'; ?>>No</option>
                       </select></span></div>
         <div class="ec_payment_row"><span class="ec_payment_row_label">Manual or Direct Deposit Message:</span><span class="ec_payment_row_input"><textarea name="ec_option_direct_deposit_message" id="ec_option_direct_deposit_message"><?php echo get_option('ec_option_direct_deposit_message'); ?></textarea></span></div>
+    </div>
+</div>
+
+<div class="ec_payment_section_title">
+	<div class="ec_payment_section_title_padding"><a href="#" onclick="ec_show_payment_section( 'ec_affirm' ); return false;" id="ec_affirm_expand" class="ec_payment_expand_button"></a><a href="#" onclick="ec_hide_payment_section( 'ec_affirm' ); return false;" id="ec_affirm_contract" class="ec_payment_contract_button"></a><img src="<?php echo plugins_url('../images/affirm-logo_78x54.png', __FILE__); ?>" alt="Affirm" style="float:left; margin-top:-21px; margin-right:10px;" /> Offer Affirm</div></div>
+
+<div class="ec_payment_section" id="ec_affirm">
+    <div class="ec_payment_section_padding">
+    	<?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/affirm.php" ); ?>
     </div>
 </div>
 
@@ -98,6 +108,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "sagepayus" ){ echo '_inactive'; } ?>" id="sagepayus_title">Sagepay US</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "securepay" ){ echo '_inactive'; } ?>" id="securepay_title">SecurePay</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "stripe" ){ echo '_inactive'; } ?>" id="stripe_title">Stripe</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "virtualmerchant" ){ echo '_inactive'; } ?>" id="virtualmerchant_title">Virtual Merchant</div>
         <div class="ec_payment_type_selector">Select a Payment Type: 
         	<select id="paymentmethod" name="ec_option_payment_process_method" onchange="toggle_live_gateways();" value="<?php echo get_option('ec_option_payment_process_method'); ?>" style="width:250px;">
                 <option value="0" <?php if( get_option('ec_option_payment_process_method') == "0" ){ echo " selected"; } ?>>No Live Payment Processor</option>
@@ -117,6 +128,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
                 <option value="sagepayus" <?php if( get_option('ec_option_payment_process_method') == "sagepayus" ){ echo " selected"; } ?>>Sagepay US</option>
                 <option value="securepay" <?php if( get_option('ec_option_payment_process_method') == "securepay" ){ echo " selected"; } ?>>SecurePay</option>
                 <option value="stripe" <?php if( get_option('ec_option_payment_process_method') == "stripe" ){ echo " selected"; } ?>>Stripe</option>
+                <option value="virtualmerchant" <?php if( get_option('ec_option_payment_process_method') == "virtualmerchant" ){ echo " selected"; } ?>>Virtual Merchant</option>
             </select>
         </div>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/authorize.php" ); ?>
@@ -135,6 +147,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/sagepayus.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/securepay.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/stripe.php" ); ?>
+        <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/virtualmerchant.php" ); ?>
         <?php } ?>
     </div>
 </div>

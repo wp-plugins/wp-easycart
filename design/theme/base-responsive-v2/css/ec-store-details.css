@@ -237,6 +237,14 @@
 .ec_special_image{ float:left; width:100%; }
 .ec_special_image img{ }
 
+.ec_product_inquiry_form{ float:left; width:100%; margin:20px -20px; border-top:1px solid #CCC; border-bottom:1px solid #CCC; padding:25px; }
+.ec_product_quick_view_inquiry_h3{ color:#222222; font-family:Open Sans, 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:22px; line-height:1.1em; margin-bottom:8px; font-weight:normal; }
+.ec_product_quick_view_inquiry_row.ec_first{ margin-top:18px; }
+.ec_product_quick_view_inquiry_row > span{ float:left; width:100px; line-height:30px; min-height:30px; }
+.ec_inquiry_error{ width:100%; float:left; text-align:center; background-color:[error_color]; color:[error_text]; font-size:14px; font-weight:bold; font-family:[content_font]; border:thin solid [error_color2]; margin-bottom:20px; display:none; }
+.ec_product_details_add_to_cart > a{ width:200px; min-width:200px; height:43px; line-height:36px; background-color:[main_color] !important; color:#ffffff !important; text-align:center; font:bold 12px/1.2 [content_font]!important; border:1px solid #CCC !important; border-radius:0px !important; text-decoration:none !important; padding:10px 25px; }
+.ec_product_details_add_to_cart > a:hover{ cursor:pointer; color:[main_color] !important; background-color:#f7f7f7 !important; }
+
 /* Responsive CSS */
 @media only screen and ( min-width:[size_level5_low]px ){
 
