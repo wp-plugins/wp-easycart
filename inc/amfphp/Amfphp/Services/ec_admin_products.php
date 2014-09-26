@@ -343,7 +343,7 @@ class ec_admin_products{
 			
 			$sql = substr( $sql, 0, strlen( $query ) - 2 ); # lop off the extra trailing comma
 			$sql .= " WHERE product_id = " . $newid;
-			$this->db->query( $this->db->prepare( $sql) );
+			$this->db->query($sql);
 			// END DUPLICATION INSERT
 			
 			// Duplicate Option Image Rows
