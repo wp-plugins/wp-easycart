@@ -232,7 +232,7 @@ if ($users || is_user_logged_in()) {
 					$this->Cell($w[0],6,$row[0],'LR',0,'C',$fill);
 					$this->Cell($w[1],6,date_format($orderdate, 'F j, Y'),'LR',0,'C',$fill);
 					$this->Cell($w[2],6,$row[4],'LR',0,'C',$fill);
-					$this->Cell($w[3],6,$optionlist,'LR',0,'C',$fill);
+					$this->Cell($w[3],6,substr($optionlist, 0, 25),'LR',0,'C',$fill);
 					$this->Cell($w[4],6,$row[3] . ', ' . $row[2],'LR',0,'C',$fill);
 					$this->Cell($w[5],6,number_format($row[5], 2),'LR',0,'C',$fill);
 					$this->Cell($w[6],6,number_format($row[6], 2),'LR',0,'C',$fill);
