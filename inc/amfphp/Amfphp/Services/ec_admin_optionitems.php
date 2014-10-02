@@ -84,9 +84,9 @@ class ec_admin_optionitems{
 		
 		$optionitem = (array)$optionitem;
 		
-		$sql = "UPDATE ec_optionitem SET ec_optionitem.option_id = %d, ec_optionitem.optionitem_name = %s, ec_optionitem.optionitem_price = %s, ec_optionitem.optionitem_price_onetime = %s, ec_optionitem.optionitem_price_override = %s, ec_optionitem.optionitem_weight = %s, ec_optionitem.optionitem_weight_onetime = %s, ec_optionitem.optionitem_weight_override = %s, ec_optionitem.optionitem_order = %s, ec_optionitem.optionitem_icon = %s, ec_optionitem.optionitem_initial_value = %s WHERE ec_optionitem.optionitem_id = %d";
+		$sql = "UPDATE ec_optionitem SET ec_optionitem.option_id = %d, ec_optionitem.optionitem_name = %s, ec_optionitem.optionitem_price = %s, ec_optionitem.optionitem_price_onetime = %s, ec_optionitem.optionitem_price_override = %s, ec_optionitem.optionitem_weight = %s, ec_optionitem.optionitem_weight_onetime = %s, ec_optionitem.optionitem_weight_override = %s, ec_optionitem.optionitem_order = %s, ec_optionitem.optionitem_icon = %s, ec_optionitem.optionitem_initial_value = %s, ec_optionitem.optionitem_model_number = %s WHERE ec_optionitem.optionitem_id = %d";
 		
-		$this->db->query( $this->db->prepare( $sql, $optionitem['optionparentID'], $optionitem['optionitemname'], $optionitem['optionitemprice'], $optionitem['optionitempriceonetime'], $optionitem['optionitempriceoverride'], $optionitem['optionitemweight'], $optionitem['optionitemweightonetime'], $optionitem['optionitemweightoverride'], $optionitem['optionorder'], $optionitem['optionitemicon'], $optionitem['optioniteminitialvalue'], $optionitemid ) );
+		$this->db->query( $this->db->prepare( $sql, $optionitem['optionparentID'], $optionitem['optionitemname'], $optionitem['optionitemprice'], $optionitem['optionitempriceonetime'], $optionitem['optionitempriceoverride'], $optionitem['optionitemweight'], $optionitem['optionitemweightonetime'], $optionitem['optionitemweightoverride'], $optionitem['optionorder'], $optionitem['optionitemicon'], $optionitem['optioniteminitialvalue'], $optionitem['optionitemmodelnumber'], $optionitemid ) );
 		
 		if( !mysql_error( ) ){
 			return array( "success" );
@@ -100,9 +100,8 @@ class ec_admin_optionitems{
 		
 		$optionitem = (array)$optionitem;
 		
-		$sql = "INSERT INTO ec_optionitem( ec_optionitem.option_id, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_order, ec_optionitem.optionitem_icon,
-ec_optionitem.optionitem_initial_value ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
-		$this->db->query( $this->db->prepare( $sql, $optionitem['optionparentID'], $optionitem['optionitemname'], $optionitem['optionitemprice'], $optionitem['optionitempriceonetime'], $optionitem['optionitempriceoverride'], $optionitem['optionitemweight'], $optionitem['optionitemweightonetime'], $optionitem['optionitemweightoverride'], $optionitem['optionorder'], $optionitem['optionitemicon'], $optionitem['optioniteminitialvalue'] ) );
+		$sql = "INSERT INTO ec_optionitem( ec_optionitem.option_id, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_order, ec_optionitem.optionitem_icon, ec_optionitem.optionitem_initial_value, ec_optionitem.optionitem_model_number ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+		$this->db->query( $this->db->prepare( $sql, $optionitem['optionparentID'], $optionitem['optionitemname'], $optionitem['optionitemprice'], $optionitem['optionitempriceonetime'], $optionitem['optionitempriceoverride'], $optionitem['optionitemweight'], $optionitem['optionitemweightonetime'], $optionitem['optionitemweightoverride'], $optionitem['optionorder'], $optionitem['optionitemicon'], $optionitem['optioniteminitialvalue'], $optionitem['optionitemmodelnumber'] ) );
 		
 		if( !mysql_error( ) ){
 			return array( "success" );
