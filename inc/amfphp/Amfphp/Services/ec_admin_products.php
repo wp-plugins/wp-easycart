@@ -648,9 +648,7 @@ class ec_admin_products{
 	
 	function deleteoptionitemimage( $productid, $optionitemid, $imagelocation, $imagename ){
 		
-		$sql = "UPDATE ec_optionitemimage SET image" . $imagelocation . " = '' WHERE ec_optionitemimage.product_id = %d AND ec_optionitemimage.optionitemimage_id = %d";
-		if( file_exists( "../../../products/pics" . $imagelocation . "/" . $imagename ) )
-			unlink( "../../../products/pics" . $imagelocation . "/" . $imagename );
+		$sql = "UPDATE ec_optionitemimage SET image" . $imagelocation . " = '' WHERE ec_optionitemimage.product_id = %s AND ec_optionitemimage.optionitem_id = %s";
 		
 		$success = $this->db->query( $this->db->prepare( $sql, $productid, $optionitemid ) );
 		
