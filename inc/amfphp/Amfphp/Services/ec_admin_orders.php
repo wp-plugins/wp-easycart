@@ -39,6 +39,7 @@ class ec_admin_orders{
 	   else if( $methodName == 'updateshippingstatus' ) 			return array( 'admin' );
 	   else if( $methodName == 'updatefraktjaktshipping' ) 			return array( 'admin' );
 	   else if( $methodName == 'refundorder' ) 						return array( 'admin' );
+	   else if( $methodName == 'resendgiftcardemail' ) 				return array( 'admin' );
 	   else  														return null;
 	   
 	}//_getMethodRoles
@@ -56,9 +57,9 @@ class ec_admin_orders{
 		$new_order_notes = $old_order_notes .  PHP_EOL .  PHP_EOL . "***** Address Information Updated:  " . date("M d, Y") . " *****". PHP_EOL;
 			  
 		//first, edit the data
-		$editedsql = "UPDATE ec_order SET ec_order.billing_first_name = %s, ec_order.billing_last_name = %s, ec_order.billing_address_line_1 = %s, ec_order.billing_address_line_2 = %s, ec_order.billing_city = %s, ec_order.billing_state = %s, ec_order.billing_country = %s,  ec_order.billing_zip = %s, ec_order.billing_phone = %s, ec_order.shipping_first_name = %s, ec_order.shipping_last_name = %s, ec_order.shipping_address_line_1 = %s, ec_order.shipping_address_line_2 = %s, ec_order.shipping_city = %s, ec_order.shipping_state = %s, ec_order.shipping_country = %s,  ec_order.shipping_zip = %s, ec_order.shipping_phone = %s, ec_order.user_email = %s, ec_order.order_notes = %s  WHERE ec_order.order_id = %d";
+		$editedsql = "UPDATE ec_order SET ec_order.billing_first_name = %s, ec_order.billing_last_name = %s, ec_order.billing_company_name = %s, ec_order.billing_address_line_1 = %s, ec_order.billing_address_line_2 = %s, ec_order.billing_city = %s, ec_order.billing_state = %s, ec_order.billing_country = %s,  ec_order.billing_zip = %s, ec_order.billing_phone = %s, ec_order.shipping_first_name = %s, ec_order.shipping_last_name = %s, ec_order.shipping_company_name = %s, ec_order.shipping_address_line_1 = %s, ec_order.shipping_address_line_2 = %s, ec_order.shipping_city = %s, ec_order.shipping_state = %s, ec_order.shipping_country = %s,  ec_order.shipping_zip = %s, ec_order.shipping_phone = %s, ec_order.user_email = %s, ec_order.order_notes = %s  WHERE ec_order.order_id = %d";
 		
-		$this->db->query( $this->db->prepare( $editedsql, $addressinfo['billing_first_name'], $addressinfo['billing_last_name'], $addressinfo['billing_address_line_1'], $addressinfo['billing_address_line_2'], $addressinfo['billing_city'], $addressinfo['billing_state'], $addressinfo['billing_country'], $addressinfo['billing_zip'], $addressinfo['billing_phone'], $addressinfo['shipping_first_name'], $addressinfo['shipping_last_name'], $addressinfo['shipping_address_line_1'], $addressinfo['shipping_address_line_2'], $addressinfo['shipping_city'], $addressinfo['shipping_state'], $addressinfo['shipping_country'], $addressinfo['shipping_zip'], $addressinfo['shipping_phone'], $addressinfo['user_email'], $new_order_notes, $orderid ) );
+		$this->db->query( $this->db->prepare( $editedsql, $addressinfo['billing_first_name'], $addressinfo['billing_last_name'], $addressinfo['billing_company_name'], $addressinfo['billing_address_line_1'], $addressinfo['billing_address_line_2'], $addressinfo['billing_city'], $addressinfo['billing_state'], $addressinfo['billing_country'], $addressinfo['billing_zip'], $addressinfo['billing_phone'], $addressinfo['shipping_first_name'], $addressinfo['shipping_last_name'], $addressinfo['shipping_company_name'], $addressinfo['shipping_address_line_1'], $addressinfo['shipping_address_line_2'], $addressinfo['shipping_city'], $addressinfo['shipping_state'], $addressinfo['shipping_country'], $addressinfo['shipping_zip'], $addressinfo['shipping_phone'], $addressinfo['user_email'], $new_order_notes, $orderid ) );
 		
 
 		//then, just get the new order information and return
@@ -372,6 +373,12 @@ class ec_admin_orders{
 		}
 		
 	}//refund order
+	
+	function resendgiftcardemail( $order_id, $orderdetails_id ){
+		//return 'success' or 'error'
+		return 'success';
+		
+	}
 	
 }//ec_admin_orders
 ?>

@@ -231,14 +231,22 @@ if (@$row_orderdetails['billing_address_line_1'] == "" && @$row_orderdetails['bi
           <td width="400"><span class="sizesmallfont"><span class="fontstyle">&nbsp;<?php echo utf8_decode($row_orderdetails['shipping_first_name']); ?> <?php echo utf8_decode($row_orderdetails['shipping_last_name']); ?></span></span></td>
           <td width="400"><div align="left"><span class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['billing_first_name']); ?> <?php echo utf8_decode($row_orderdetails['billing_last_name']); ?></span></span></div></td>
         </tr>
+        <?php if($row_orderdetails['billing_company_name']) { ?>
+        <tr>
+          <td width="400"><span class="sizesmallfont"><span class="fontstyle">&nbsp;<?php echo utf8_decode($row_orderdetails['shipping_company_name']); ?></span></span></td>
+          <td width="400"><div align="left"><span class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['billing_company_name']); ?></span></span></div></td>
+        </tr>
+        <?php } ?>
         <tr>
           <td width="400"><span class="sizesmallfont"><span class="fontstyle">&nbsp;<?php echo utf8_decode($row_orderdetails['shipping_address_line_1']); ?></span></span></td>
           <td width="400"><div align="left"><span class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['billing_address_line_1']); ?></span></span></div></td>
         </tr>
+        <?php if($row_orderdetails['billing_address_line_2']) { ?>
         <tr>
           <td width="400"><span class="sizesmallfont"><span class="fontstyle">&nbsp;<?php echo utf8_decode($row_orderdetails['shipping_address_line_2']); ?></span></span></td>
           <td width="400"><div align="left"><span class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['billing_address_line_2']); ?></span></span></div></td>
         </tr>
+        <?php } ?>
         <tr>
           <td width="400"><span class="sizesmallfont"><span class="fontstyle">&nbsp;<?php echo utf8_decode($row_orderdetails['shipping_city']); ?>, <?php echo utf8_decode($row_orderdetails['shipping_state']); ?> <?php echo utf8_decode($row_orderdetails['shipping_zip']); ?></span></span></td>
           <td width="400"><div align="left"><span class="sizesmallfont"><span class="fontstyle"><?php echo utf8_decode($row_orderdetails['billing_city']); ?>, <?php echo utf8_decode($row_orderdetails['billing_state']); ?> <?php echo utf8_decode($row_orderdetails['billing_zip']); ?></span></span></div></td>
