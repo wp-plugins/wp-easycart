@@ -111,6 +111,12 @@ class ec_admin_options{
 		$sql = "UPDATE ec_option SET ec_option.option_name = %s, ec_option.option_label = %s, ec_option.option_type = %s, ec_option.option_required = %s, ec_option.option_error_text = %s WHERE ec_option.option_id = %d";
 		$this->db->query( $this->db->prepare( $sql, $option['optionname'], $option['optionlabel'], $option['optiontype'], $option['optionrequired'], $option['optionerror'], $optionid ) );
 		
+		//if we are switching from a swatch based option to other option, remove images
+		if($option['optiontype'] != 'basic-swatch' && $option['optiontype'] != 'swatch') {
+			$sql = "UPDATE ec_optionitem SET  ec_optionitem.optionitem_icon = '' WHERE ec_optionitem.option_id = %d";
+			$this->db->query( $this->db->prepare( $sql,  $optionid ) );
+		}
+		
 		if( !mysql_error( ) ){
 			return array( "success" );
 		}else{
