@@ -390,13 +390,21 @@ class ec_admin_shipping
 		
 		function getzonedetails($zone_id) {
 			  //Create SQL Query
-			  $sql = "SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
-									FROM
-									  ec_zone_to_location
-									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
-									WHERE
-									  ec_zone_to_location.zone_id = '%s' AND ec_country.id_cnt = ec_state.idcnt_sta ORDER BY ec_country.name_cnt ASC";
+			  $sql = "SELECT 
+						 a.*,
+							b.*,
+							c.*
+							
+						FROM 
+						 ec_zone_to_location as a
+							LEFT JOIN ec_country as b ON ( a.`iso2_cnt` = b.`iso2_cnt` )
+							LEFT JOIN ec_state as c ON ( a.`code_sta` = c.`code_sta` AND b.`id_cnt` = c.`idcnt_sta` )
+							
+						WHERE 
+						 a.zone_id = '%s'
+						
+						ORDER BY 
+						 b.name_cnt";
 			  // Run query on database
 			  $results = $this->db->get_results( $this->db->prepare( $sql, $zone_id ));
 			  
@@ -418,13 +426,21 @@ class ec_admin_shipping
 			  //if results, convert to an array for use in flash
 			  if(!mysql_error()) {
 				  //Create SQL Query
-				  $sql = "SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
-									FROM
-									  ec_zone_to_location
-									  LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-									  LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
-									WHERE
-									  ec_zone_to_location.zone_id = '%s' AND ec_country.id_cnt = ec_state.idcnt_sta ORDER BY ec_country.name_cnt ASC";
+				  $sql = "SELECT 
+						 a.*,
+							b.*,
+							c.*
+							
+						FROM 
+						 ec_zone_to_location as a
+							LEFT JOIN ec_country as b ON ( a.`iso2_cnt` = b.`iso2_cnt` )
+							LEFT JOIN ec_state as c ON ( a.`code_sta` = c.`code_sta` AND b.`id_cnt` = c.`idcnt_sta` )
+							
+						WHERE 
+						 a.zone_id = '%s'
+						
+						ORDER BY 
+						 b.name_cnt";
 				  // Run query on database
 				  $results = $this->db->get_results( $this->db->prepare( $sql, $zone_id ));
 				  //if results, convert to an array for use in flash
@@ -447,13 +463,21 @@ class ec_admin_shipping
 			//if results, convert to an array for use in flash
 			if(!mysql_error()) {
 				//Create SQL Query
-				$sql = "SELECT ec_zone_to_location.*, ec_country.*, ec_state.*
-									  FROM
-										ec_zone_to_location
-										LEFT JOIN ec_country ON (ec_zone_to_location.iso2_cnt = ec_country.iso2_cnt)
-										LEFT JOIN ec_state ON (ec_zone_to_location.code_sta = ec_state.code_sta)
-									  WHERE
-										ec_zone_to_location.zone_id = '%s' AND ec_country.id_cnt = ec_state.idcnt_sta  ORDER BY ec_country.name_cnt ASC";
+				$sql = "SELECT 
+						 a.*,
+							b.*,
+							c.*
+							
+						FROM 
+						 ec_zone_to_location as a
+							LEFT JOIN ec_country as b ON ( a.`iso2_cnt` = b.`iso2_cnt` )
+							LEFT JOIN ec_state as c ON ( a.`code_sta` = c.`code_sta` AND b.`id_cnt` = c.`idcnt_sta` )
+							
+						WHERE 
+						 a.zone_id = '%s'
+						
+						ORDER BY 
+						 b.name_cnt";
 				// Run query on database
 				$results = $this->db->get_results( $this->db->prepare(  $sql, $zone_id));
 				//if results, convert to an array for use in flash
