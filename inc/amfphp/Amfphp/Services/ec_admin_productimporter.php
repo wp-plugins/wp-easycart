@@ -76,10 +76,7 @@ class ec_admin_productimporter{
 			}
 			
 			//9 list_price
-			if( !is_numeric( $excel->sheets[0]['cells'][$x][9] ) ){
-				return "Error at record " . $x . ", if you include a list price, it must be in numeric format.  Do not enter currency signs or thousands seperators." ;
-			}
-			
+
 			//10 vat_rate
 			
 			//11 handling_price
