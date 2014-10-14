@@ -61,10 +61,11 @@ class ec_admin_users{
 				
 				//query for the billing address
 				if( $billing_address_id != 0 ){
-					$billingquery = "SELECT ec_address.first_name AS billing_first_name, ec_address.last_name AS billing_last_name, ec_address.address_line_1 AS billing_address_line_1, ec_address.address_line_2 AS billing_address_line_2, ec_address.city AS billing_city, ec_address.state AS billing_state, ec_address.zip AS billing_zip, ec_address.country AS billing_country, ec_address.phone AS billing_phone FROM ec_address WHERE ec_address.address_id = %s";
+					$billingquery = "SELECT ec_address.first_name AS billing_first_name, ec_address.last_name AS billing_last_name, ec_address.company_name AS billing_company_name, ec_address.address_line_1 AS billing_address_line_1, ec_address.address_line_2 AS billing_address_line_2, ec_address.city AS billing_city, ec_address.state AS billing_state, ec_address.zip AS billing_zip, ec_address.country AS billing_country, ec_address.phone AS billing_phone FROM ec_address WHERE ec_address.address_id = %s";
 					$billing_row = $this->db->get_row( $this->db->prepare( $billingquery, $billing_address_id ) );
 				  	$row->billing_first_name = $billing_row->billing_first_name;
 					$row->billing_last_name = $billing_row->billing_last_name;
+					$row->billing_company_name = $billing_row->billing_company_name;
 					$row->billing_address_line_1 = $billing_row->billing_address_line_1;
 					$row->billing_address_line_2 = $billing_row->billing_address_line_2;
 					$row->billing_city = $billing_row->billing_city;
@@ -76,10 +77,11 @@ class ec_admin_users{
 				
 				//query for the shipping address
 				if( $shipping_address_id != 0 ){
-					$shippingquery = "SELECT ec_address.first_name AS shipping_first_name, ec_address.last_name AS shipping_last_name, ec_address.address_line_1 AS shipping_address_line_1, ec_address.address_line_2 AS shipping_address_line_2, ec_address.city AS shipping_city, ec_address.state AS shipping_state, ec_address.zip AS shipping_zip, ec_address.country AS shipping_country, ec_address.phone AS shipping_phone FROM ec_address WHERE ec_address.address_id = %s";
+					$shippingquery = "SELECT ec_address.first_name AS shipping_first_name, ec_address.last_name AS shipping_last_name, ec_address.company_name AS shipping_company_name, ec_address.address_line_1 AS shipping_address_line_1, ec_address.address_line_2 AS shipping_address_line_2, ec_address.city AS shipping_city, ec_address.state AS shipping_state, ec_address.zip AS shipping_zip, ec_address.country AS shipping_country, ec_address.phone AS shipping_phone FROM ec_address WHERE ec_address.address_id = %s";
 					$shipping_row = $this->db->get_row( $this->db->prepare( $shippingquery, $shipping_address_id ) );
 				  	$row->shipping_first_name = $shipping_row->shipping_first_name;
 					$row->shipping_last_name = $shipping_row->shipping_last_name;
+					$row->shipping_company_name = $shipping_row->shipping_company_name;
 					$row->shipping_address_line_1 = $shipping_row->shipping_address_line_1;
 					$row->shipping_address_line_2 = $shipping_row->shipping_address_line_2;
 					$row->shipping_city = $shipping_row->shipping_city;
@@ -141,11 +143,11 @@ class ec_admin_users{
 		
 		}else{
 			// Update Addresses
-			$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
+			$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.company_name = %s,  ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
 			
-			$success1 = $this->db->query( $this->db->prepare( $sql, $client->billname, $client->billlastname, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone, $client->billing_id ) );
+			$success1 = $this->db->query( $this->db->prepare( $sql, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone, $client->billing_id ) );
 			
-			$success2 = $this->db->query( $this->db->prepare( $sql, $client->shipname, $client->shiplastname, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone, $client->shipping_id ) );
+			$success2 = $this->db->query( $this->db->prepare( $sql, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone, $client->shipping_id ) );
 			
 			// Update User
 			$sql = "UPDATE ec_user SET ec_user.email = %s, ec_user.password = %s, ec_user.first_name = %s, ec_user.last_name = %s, ec_user.default_billing_address_id = %d, ec_user.default_shipping_address_id = %d, ec_user.user_level = %s, ec_user.is_subscriber = %d, ec_user.exclude_tax = %s, ec_user.exclude_shipping = %s WHERE ec_user.user_id = %d";
@@ -177,12 +179,12 @@ class ec_admin_users{
 		$user_id = $this->db->insert_id;
 		
 		// Insert Billing Address
-		$sql = "INSERT INTO ec_address( user_id, first_name, last_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s,  %s, %s, %s, %s, %s, %s )";
-		$success2 = $this->db->query( $this->db->prepare( $sql, $user_id, $client->billname, $client->billlastname, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone ) );
+		$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s,  %s, %s, %s, %s, %s, %s, %s, %s )";
+		$success2 = $this->db->query( $this->db->prepare( $sql, $user_id, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone ) );
 		$billing_id = $this->db->insert_id;
 		
 		// Insert Shipping Address
-		$success3 = $this->db->query( $this->db->prepare( $sql, $user_id, $client->shipname, $client->shiplastname, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone ) );
+		$success3 = $this->db->query( $this->db->prepare( $sql, $user_id, $client->shipname, $client->shiplastname,  $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone ) );
 		$shipping_id = $this->db->insert_id;
 		
 		// Update User for Addresses
