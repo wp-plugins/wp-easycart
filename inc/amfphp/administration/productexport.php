@@ -172,6 +172,31 @@ if ($users || is_user_logged_in()) {
 	mysql_query("ALTER TABLE ec_product MODIFY COLUMN subscription_plan_id INTEGER(11) NOT NULL DEFAULT '0' AFTER stripe_plan_added");
 	mysql_query("ALTER TABLE ec_product MODIFY COLUMN allow_multiple_subscription_purchases TINYINT(1) NOT NULL DEFAULT '1' AFTER subscription_plan_id");
 	mysql_query("ALTER TABLE ec_product MODIFY COLUMN membership_page VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER allow_multiple_subscription_purchases");
+	
+	//new
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN min_purchase_quantity INTEGER(11) NOT NULL DEFAULT '0' AFTER membership_page");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN is_amazon_download TINYINT(1) NOT NULL DEFAULT '0'  AFTER min_purchase_quantity");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN amazon_key VARCHAR(1024) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER is_amazon_download");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN catalog_mode TINYINT(1) NOT NULL DEFAULT '0' AFTER amazon_key");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN catalog_mode_phrase VARCHAR(1024) COLLATE utf8_general_ci  DEFAULT NULL  AFTER catalog_mode");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN inquiry_mode TINYINT(1) NOT NULL DEFAULT '0' AFTER catalog_mode_phrase");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN inquiry_url VARCHAR(1024) COLLATE utf8_general_ci DEFAULT NULL AFTER inquiry_mode");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN is_deconetwork TINYINT(1) NOT NULL DEFAULT '0'  AFTER inquiry_url");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN deconetwork_mode VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT 'designer' AFTER is_deconetwork");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN deconetwork_product_id VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER deconetwork_mode");
+	
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN deconetwork_size_id VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER deconetwork_product_id");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN deconetwork_color_id VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER deconetwork_size_id");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN deconetwork_design_id VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER deconetwork_color_id");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN short_description VARCHAR(2048) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER deconetwork_design_id");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN display_type INTEGER(11) NOT NULL DEFAULT '1' AFTER short_description");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN image_hover_type INTEGER(11) NOT NULL DEFAULT '3'  AFTER display_type");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN INTEGER(11) NOT NULL DEFAULT '0' AFTER image_hover_type");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN tag_bg_color VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER tag_type");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN tag_text_color VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER tag_bg_color");
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN tag_text VARCHAR(256) COLLATE utf8_general_ci NOT NULL DEFAULT '' AFTER tag_text_color");
+	
+	mysql_query("ALTER TABLE ec_product MODIFY COLUMN image_effect_type VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'none' AFTER tag_text");
 
 	//create 2 variables for use later on
 
