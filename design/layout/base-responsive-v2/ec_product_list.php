@@ -91,3 +91,15 @@
 	ec_swatch_click('<?php echo $product->model_number; ?>', 1, 0);
 </script>
 <?php }?>
+
+<script>
+	jQuery( '.ec_product_details_option_combo option' ).each( function( ){
+		var quantity = jQuery( this ).attr( 'data-quantitystring' );
+		if( quantity ){
+			quantity = Number( quantity );
+			if( quantity <= 0 ){
+				jQuery( this ).hide( );
+			}
+		}
+	} );
+</script>
