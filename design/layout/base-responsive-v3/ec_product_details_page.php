@@ -1769,7 +1769,7 @@ function ec_details_add_to_cart( ){
 	// Select Box Check
 	var advanced_select_rows = jQuery( '.ec_details_option_row.ec_option_type_combo' );
 	advanced_select_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) == '0' ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
 				errors++;
@@ -1782,7 +1782,7 @@ function ec_details_add_to_cart( ){
 	// Check Box Check
 	var advanced_checkbox_rows = jQuery( '.ec_details_option_row.ec_option_type_checkbox' );
 	advanced_checkbox_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			var selected_checkboxes = jQuery( "input.ec_option_" + jQuery( this ).attr( 'data-option-id' ) + ":checked" );
 			if( selected_checkboxes.length ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
@@ -1796,7 +1796,7 @@ function ec_details_add_to_cart( ){
 	// Date Box Check
 	var advanced_date_rows = jQuery( '.ec_details_option_row.ec_option_type_date' );
 	advanced_date_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) == "" ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
 				errors++;
@@ -1809,7 +1809,7 @@ function ec_details_add_to_cart( ){
 	// File Upload Check
 	var advanced_file_rows = jQuery( '.ec_details_option_row.ec_option_type_file' );
 	advanced_file_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			
 			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
@@ -1823,7 +1823,7 @@ function ec_details_add_to_cart( ){
 	// Swatch Check
 	var advanced_swatch_rows = jQuery( '.ec_details_option_row.ec_option_type_swatch' );
 	advanced_swatch_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			var advanced_selected_swatches = jQuery( ".ec_details_swatch.ec_option_" + jQuery( this ).attr( 'data-option-id' ) + ".ec_selected" );
 			if( advanced_selected_swatches.length ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
@@ -1837,7 +1837,7 @@ function ec_details_add_to_cart( ){
 	// Radio Button Check
 	var advanced_radio_rows = jQuery( '.ec_details_option_row.ec_option_type_radio' );
 	advanced_radio_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			var selected_radios = jQuery( "input[name='ec_option_" + jQuery( this ).attr( 'data-option-id' ) + "']:checked" );
 			if( selected_radios.length ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
@@ -1851,7 +1851,7 @@ function ec_details_add_to_cart( ){
 	// Text Box Check
 	var advanced_text_rows = jQuery( '.ec_details_option_row.ec_option_type_text' );
 	advanced_text_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			
 			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) != "" ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
@@ -1865,7 +1865,7 @@ function ec_details_add_to_cart( ){
 	// Text Area Check
 	var advanced_textarea_rows = jQuery( '.ec_details_option_row.ec_option_type_textarea' );
 	advanced_textarea_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			
 			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) != "" ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
@@ -1879,7 +1879,7 @@ function ec_details_add_to_cart( ){
 	// Quantity Grid Check
 	var advanced_grid_rows = jQuery( '.ec_details_option_row.ec_option_type_grid' );
 	advanced_grid_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) ){ // Option is Required
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			var grid_items = jQuery( ".ec_details_grid_row > input" );
 			var total_grid_quantity = 0;
 			grid_items.each( 
