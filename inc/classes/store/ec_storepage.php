@@ -2,6 +2,8 @@
 
 class ec_storepage{
 	
+	private $mysqli;										// ec_db structure
+	
 	private $is_details;									// BOOL
 	private $product_list;									// ec_productlist structure
 	private $product;										// ec_product structure
@@ -12,10 +14,10 @@ class ec_storepage{
 	public $number_in_product_list;							// INT
 	public $count_of_product_list;							// INT
 	public $next_model_number;								// VARCHAR 255
-	private $account_page;
-	private $cart_page;
-	private $store_page;
-	private $permalink_divider;
+	public $cart_page;
+	public $account_page;
+	public $store_page;
+	public $permalink_divider;
 	
 	// Short Code Info
 	public $menu_id;
@@ -24,10 +26,19 @@ class ec_storepage{
 	public $manufacturer_id;
 	public $group_id;
 	
+	
+	// Page Options
+	public $page_options;									// Array
+	
 	////////////////////////////////////////////////////////
 	// CONSTUCTOR FUNCTION
 	////////////////////////////////////////////////////////
 	function __construct( $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP", $modelnumber = "NOMODELNUMBER" ){
+		
+		$this->mysqli = new ec_db( );
+		
+		global $post; 
+		$this->page_options = $this->mysqli->get_page_options( $post->ID );
 		
 		$this->update_statistics( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, $modelnumber );
 		
@@ -87,7 +98,7 @@ class ec_storepage{
 	////////////////////////////////////////////////////////
 	private function setup_products( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid ){
 		
-		$this->product_list = new ec_productlist( false, $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid );
+		$this->product_list = new ec_productlist( false, $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, "", $this->page_options );
 	
 	}
 	
@@ -221,7 +232,9 @@ class ec_storepage{
 			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_details_page.php' );
 		else
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_details_page.php' );
-		echo "<script>ec_initialize_options();</script>";
+		
+		if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) )
+			echo "<script>ec_initialize_options();</script>";
 	}
 	
 	////////////////////////////////////////////////////////
@@ -361,6 +374,12 @@ class ec_storepage{
 					echo "<img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/banners/" . $menu_row->banner_image ) . "\" alt=\"" . $menu_row->name . "\" />";	
 			}
 		}
+	}
+	
+	public function get_products_no_limit( ){
+		
+		return $this->product_list->get_products_no_limit( );
+	
 	}
 	
 	////////////////////////////////////////////////////////

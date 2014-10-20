@@ -168,6 +168,9 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 <div class="ec_adin_page_intro"><textarea style="width:100%; height:250px;" name="ec_option_custom_css"><?php echo get_option( 'ec_option_custom_css' ); ?></textarea></div>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
+<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
+/* V2 ONLY */
+?>
 <div class="ec_admin_page_title_secondary">Responsive Size Points</div>
 <div class="ec_adin_page_intro">This section is meant for you to match up the resize points of your WordPress theme to that of your EasyCart theme.</div>
 
@@ -372,4 +375,5 @@ foreach( $font_split as $font_item ){
 <?php }?>
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
+<?php }?>
 </form>

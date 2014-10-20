@@ -14,8 +14,12 @@ class ec_order_totals{
 	function __construct( $cart, $user, $shipping, $tax, $discount ){
 		$this->sub_total = number_format( $cart->subtotal, 2, '.', '' );
 		$this->handling_total = number_format( $cart->get_handling_total( ), 2, '.', '' );
-		$shipping_price = doubleval( $shipping->get_shipping_price( ) ) + $this->handling_total;
-		$this->shipping_total = number_format( $shipping_price, 2, '.', '' );
+		if( $shipping->subtotal <= 0 ){
+			$this->shipping_total = number_format( 0, 2, '.', '' );
+		}else{
+			$shipping_price = doubleval( $shipping->get_shipping_price( ) ) + $this->handling_total;
+			$this->shipping_total = number_format( $shipping_price, 2, '.', '' );
+		}
 		$this->tax_total = number_format( $tax->tax_total, 2, '.', '' );
 		$this->duty_total = number_format( $tax->duty_total, 2, '.', '' );
 		$this->vat_total = number_format( $tax->vat_total, 2, '.', '' );

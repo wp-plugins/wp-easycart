@@ -1214,8 +1214,10 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_skip_cart_login', $_POST['ec_option_skip_cart_login'] );
 	update_option( 'ec_option_use_contact_name', $_POST['ec_option_use_contact_name'] );
 	update_option( 'ec_option_collect_user_phone', $_POST['ec_option_collect_user_phone'] );
+	update_option( 'ec_option_enable_company_name', $_POST['ec_option_enable_company_name'] );
 	update_option( 'ec_option_skip_shipping_page', $_POST['ec_option_skip_shipping_page'] );
 	update_option( 'ec_option_skip_reivew_screen', $_POST['ec_option_skip_reivew_screen'] );
+	update_option( 'ec_option_require_terms_agreement', $_POST['ec_option_require_terms_agreement'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
@@ -1303,31 +1305,81 @@ function ec_update_advanced_setup( ){
 }
 
 function ec_update_colors( ){
-	//update options
-	$css_options = get_option( 'ec_option_css_replacements' ); 
-	$css_split = explode( ",", $css_options );
 	
-	$css_options = "";
-	
-	for( $i=0; $i<count($css_split); $i++ ){
-		$temp_split = explode( "=", $css_split[$i] );
-		$key = $temp_split[0];
-		$val = $_POST[$key];
-		if( $i>0 )
-			$css_options .= ",";
-		$css_options .= $key . "=" . $val;
+	// V2
+	if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
+		
+		//update options
+		$css_options = get_option( 'ec_option_css_replacements' ); 
+		$css_split = explode( ",", $css_options );
+		
+		$css_options = "";
+		
+		for( $i=0; $i<count($css_split); $i++ ){
+			$temp_split = explode( "=", $css_split[$i] );
+			$key = $temp_split[0];
+			$val = $_POST[$key];
+			if( $i>0 )
+				$css_options .= ",";
+			$css_options .= $key . "=" . $val;
+		}
+		update_option( 'ec_option_css_replacements', $css_options );
+		
+		// CSS may have been updated, regenerate this file...
+		ec_regenerate_css( );
+		ec_regenerate_js( );
+		update_option( 'ec_option_cached_date', time( ) );
+		
+	//V3
+	}else{
+		// Colors
+		update_option( 'ec_option_details_main_color', $_POST['ec_option_details_main_color'] );
+		update_option( 'ec_option_details_second_color', $_POST['ec_option_details_second_color'] );
+		update_option( 'ec_option_use_dark_bg', $_POST['ec_option_use_dark_bg'] );
+		
+		// Product Options
+		update_option( 'ec_option_default_product_type', $_POST['ec_option_default_product_type'] );
+		update_option( 'ec_option_default_product_image_hover_type', $_POST['ec_option_default_product_image_hover_type'] );
+		update_option( 'ec_option_default_product_image_effect_type', $_POST['ec_option_default_product_image_effect_type'] );
+		update_option( 'ec_option_default_quick_view', $_POST['ec_option_default_quick_view'] );
+		
+		// Product Columns and Image Height
+		update_option( 'ec_option_default_desktop_columns', $_POST['ec_option_default_desktop_columns'] );
+		update_option( 'ec_option_default_desktop_image_height', $_POST['ec_option_default_desktop_image_height'] );
+		
+		update_option( 'ec_option_default_laptop_columns', $_POST['ec_option_default_laptop_columns'] );
+		update_option( 'ec_option_default_laptop_image_height', $_POST['ec_option_default_laptop_image_height'] );
+		
+		update_option( 'ec_option_default_tablet_wide_columns', $_POST['ec_option_default_tablet_wide_columns'] );
+		update_option( 'ec_option_default_tablet_wide_image_height', $_POST['ec_option_default_tablet_wide_image_height'] );
+		
+		update_option( 'ec_option_default_tablet_columns', $_POST['ec_option_default_tablet_columns'] );
+		update_option( 'ec_option_default_tablet_image_height', $_POST['ec_option_default_tablet_image_height'] );
+		
+		update_option( 'ec_option_default_smartphone_columns', $_POST['ec_option_default_smartphone_columns'] );
+		update_option( 'ec_option_default_smartphone_image_height', $_POST['ec_option_default_smartphone_image_height'] );
+		
+		// Product Details Columns
+		update_option( 'ec_option_details_columns_desktop', $_POST['ec_option_details_columns_desktop'] );
+		update_option( 'ec_option_details_columns_laptop', $_POST['ec_option_details_columns_laptop'] );
+		update_option( 'ec_option_details_columns_tablet_wide', $_POST['ec_option_details_columns_tablet_wide'] );
+		update_option( 'ec_option_details_columns_tablet', $_POST['ec_option_details_columns_tablet'] );
+		update_option( 'ec_option_details_columns_smartphone', $_POST['ec_option_details_columns_smartphone'] );
+		
+		// Cart Columns
+		update_option( 'ec_option_cart_columns_desktop', $_POST['ec_option_cart_columns_desktop'] );
+		update_option( 'ec_option_cart_columns_laptop', $_POST['ec_option_cart_columns_laptop'] );
+		update_option( 'ec_option_cart_columns_tablet_wide', $_POST['ec_option_cart_columns_tablet_wide'] );
+		update_option( 'ec_option_cart_columns_tablet', $_POST['ec_option_cart_columns_tablet'] );
+		update_option( 'ec_option_cart_columns_smartphone', $_POST['ec_option_cart_columns_smartphone'] );
+		
 	}
-	update_option( 'ec_option_css_replacements', $css_options );
 	
 	// Logo
 	$ec_option_email_logo = strip_tags( stripslashes( $_POST["ec_option_email_logo"] ) );
-    if( $ec_option_email_logo != "" )
+	if( $ec_option_email_logo != "" )
 		update_option( 'ec_option_email_logo', $ec_option_email_logo );
-	
-	// CSS may have been updated, regenerate this file...
-	ec_regenerate_css( );
-	ec_regenerate_js( );
-	update_option( 'ec_option_cached_date', time( ) );
+
 }
 
 function ec_update_payment_info( ){
@@ -1688,11 +1740,11 @@ function ec_design_management_update( ){
 
 function ec_send_test_email( ){
 	$order_id = $_POST['ec_order_id'];
-	$mysqli = new ec_db( );
+	$mysqli = new ec_db_admin( );
 	$mysqli->update_order_status( $order_id, "10" );
 				
 	// send email
-	$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+	$order_row = $mysqli->get_order_row_admin( $order_id );
 	if( $order_row ){
 		$order_display = new ec_orderdisplay( $order_row, true );
 		$order_display->send_email_receipt( );

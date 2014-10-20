@@ -183,6 +183,8 @@ class ec_db{
 				
 				WHERE 
 				ec_order.order_id = ec_orderdetail.order_id AND 
+				ec_order.guest_key = %s AND
+				ec_order.guest_key != '' AND
 				ec_orderdetail.order_id = %d
 				
 				GROUP BY
@@ -227,9 +229,17 @@ class ec_db{
 				optionitem.optionitem_id, 
 				optionitem.optionitem_name, 
 				optionitem.optionitem_price, 
-				optionitem.optionitem_icon
+				optionitem.optionitem_price_onetime,
+				optionitem.optionitem_price_override,
+				optionitem.optionitem_weight, 
+				optionitem.optionitem_weight_onetime,
+				optionitem.optionitem_weight_override,
+				optionitem.optionitem_icon,
+				ec_option.option_label,
+				ec_option.option_name
 				
 				FROM ec_optionitem as optionitem
+				LEFT JOIN ec_option ON ( ec_option.option_id = optionitem.option_id )
 				
 				ORDER BY
 				optionitem.option_id, 
@@ -277,11 +287,13 @@ class ec_db{
 				manufacturer.name as manufacturer_name,
 				product.title,
 				product.description,
+				product.short_description,
 				product.seo_description,
 				product.seo_keywords,
 				product.price,
 				product.list_price,
 				product.vat_rate,
+				product.handling_price,
 				product.stock_quantity,
 				product.min_purchase_quantity,
 				product.weight,
@@ -340,6 +352,14 @@ class ec_db{
 				product.deconetwork_size_id,
 				product.deconetwork_color_id,
 				product.deconetwork_design_id,
+				
+				product.display_type,
+				product.image_hover_type,
+				product.image_effect_type,
+				product.tag_type,
+				product.tag_bg_color,
+				product.tag_text_color,
+				product.tag_text,
 				
 				GROUP_CONCAT(review.rating) as review_data,
 				AVG(review.rating) as review_average,
@@ -487,11 +507,13 @@ class ec_db{
 						"manufacturer_name" => $row->manufacturer_name, 
 						"title" => $row->title, 
 						"description" => $row->description, 
+						"short_description" => $row->short_description, 
 						"seo_description" => $row->seo_description, 
 						"seo_keywords" => $row->seo_keywords, 
 						"price" => $row->price, 
 						"list_price" => $row->list_price, 
 						"vat_rate" => $row->vat_rate,
+						"handling_price" => $row->handling_price,
 						"stock_quantity" => $row->stock_quantity,
 						"min_purchase_quantity" => $row->min_purchase_quantity,
 						"weight" => $row->weight,  
@@ -555,7 +577,15 @@ class ec_db{
 						"review_data" => $review_data_array,
 						"review_average" => $row->review_average,
 						"views" => $row->views,
-						"pricetier_data" => $pricetier_data_array2
+						"pricetier_data" => $pricetier_data_array2,
+						
+						"display_type" => $row->display_type,
+						"image_hover_type" => $row->image_hover_type,
+						"image_effect_type" => $row->image_effect_type,
+						"tag_type" => $row->tag_type,
+						"tag_bg_color" => $row->tag_bg_color,
+						"tag_text_color" => $row->tag_text_color,
+						"tag_text" => $row->tag_text
 			);
 			
 			array_push($product_list, $temp_product);
@@ -911,14 +941,15 @@ class ec_db{
 				tempcart.grid_quantity,
 				optionitemimage.image1 as optionitemimage_image1,
 				
-				CONCAT_WS('***', optionitem1.optionitem_name, optionitem1.optionitem_price, option1.option_name, optionitem1.optionitem_id) as optionitem1_data,
-				CONCAT_WS('***', optionitem2.optionitem_name, optionitem2.optionitem_price, option2.option_name, optionitem2.optionitem_id) as optionitem2_data,
-				CONCAT_WS('***', optionitem3.optionitem_name, optionitem3.optionitem_price, option3.option_name, optionitem3.optionitem_id) as optionitem3_data,
-				CONCAT_WS('***', optionitem4.optionitem_name, optionitem4.optionitem_price, option4.option_name, optionitem4.optionitem_id) as optionitem4_data,
-				CONCAT_WS('***', optionitem5.optionitem_name, optionitem5.optionitem_price, option5.option_name, optionitem5.optionitem_id) as optionitem5_data, 
+				CONCAT_WS('***', optionitem1.optionitem_name, optionitem1.optionitem_price, option1.option_name, optionitem1.optionitem_id, optionitem1.optionitem_model_number) as optionitem1_data,
+				CONCAT_WS('***', optionitem2.optionitem_name, optionitem2.optionitem_price, option2.option_name, optionitem2.optionitem_id, optionitem2.optionitem_model_number) as optionitem2_data,
+				CONCAT_WS('***', optionitem3.optionitem_name, optionitem3.optionitem_price, option3.option_name, optionitem3.optionitem_id, optionitem3.optionitem_model_number) as optionitem3_data,
+				CONCAT_WS('***', optionitem4.optionitem_name, optionitem4.optionitem_price, option4.option_name, optionitem4.optionitem_id, optionitem4.optionitem_model_number) as optionitem4_data,
+				CONCAT_WS('***', optionitem5.optionitem_name, optionitem5.optionitem_price, option5.option_name, optionitem5.optionitem_id, optionitem5.optionitem_model_number) as optionitem5_data,
 				 
 				tempcart.gift_card_message, 
 				tempcart.gift_card_to_name, 
+				tempcart.gift_card_email, 
 				tempcart.gift_card_from_name,
 				
 				tempcart.is_deconetwork,
@@ -1176,7 +1207,7 @@ class ec_db{
 			return false;
 	}
 	
-	public function add_to_cart( $product_id, $session_id, $quantity, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5, $gift_card_message="", $gift_card_to_name="", $gift_card_from_name="", $donation_price=0.00, $use_advanced_optionset=false, $return_tempcart=1 ){
+	public function add_to_cart( $product_id, $session_id, $quantity, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5, $gift_card_message="", $gift_card_to_name="", $gift_card_from_name="", $donation_price=0.00, $use_advanced_optionset=false, $return_tempcart=1, $gift_card_email="" ){
 		
 		// Get the limit on this product
 		$product_sql = "SELECT stock_quantity, use_optionitem_quantity_tracking FROM ec_product WHERE product_id = %d";
@@ -1292,10 +1323,11 @@ class ec_db{
 												'optionitem_id_5' 				=> $optionitem_id_5, 
 												'gift_card_message' 			=> $gift_card_message, 
 												'gift_card_from_name' 			=> $gift_card_from_name, 
-												'gift_card_to_name' 			=> $gift_card_to_name, 
+												'gift_card_to_name' 			=> $gift_card_to_name,
+												'gift_card_email' 				=> $gift_card_email,
 												'donation_price'				=> $donation_price
 										), 
-										array( '%d', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s' )
+										array( '%d', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s' )
 									);							
 		}else if($insert != 0){
 			$this->mysqli->update(	'ec_tempcart', 
@@ -1377,11 +1409,8 @@ class ec_db{
 		if( $quantity < 0 )
 			$quantity = 0;
 		
-		$this->mysqli->update( 	'ec_tempcart',
-								array( 	'quantity' => $quantity ),
-								array( 	'tempcart_id' => $tempcart_id, 'session_id' => $session_id ),
-								array(	'%d', '%s', '%s' )
-							  );
+		$sql = "UPDATE ec_tempcart SET quantity = %d WHERE tempcart_id = %d AND session_id = %s";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $quantity, $tempcart_id, $session_id ) );
 							
 	}
 	
@@ -1549,7 +1578,9 @@ class ec_db{
 		
 		// Get Shipping Method to Save
 		$shipping_method = "";
-		if( $shipping->shipping_method == "fraktjakt" ){
+		if( !get_option( 'ec_option_use_shipping' ) || $cart->shipping_subtotal <= 0 ){
+        	$shipping_method = "";
+        }else if( $shipping->shipping_method == "fraktjakt" ){
 			$shipping_method = $shipping->get_selected_shipping_method( );
 			
 		}else if( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] != "standard" )
@@ -1574,6 +1605,10 @@ class ec_db{
 		if( isset( $_SESSION['ec_ship_express'] ) )
 			$expedited_shipping = $_SESSION['ec_ship_express'];
 		
+		$guest_key = "";
+		if( isset( $_SESSION['ec_guest_key'] ) )
+			$guest_key = $_SESSION['ec_guest_key'];
+		
 		$this->mysqli->insert(  'ec_order', 
 								array( 	'user_id' 						=> $user->user_id, 
 										'last_updated' 					=> date( 'Y-m-d H:i:s' ),
@@ -1597,6 +1632,7 @@ class ec_db{
 										'user_level'					=> $user->user_level,
 										'billing_first_name'			=> $user->billing->first_name,
 										'billing_last_name'				=> $user->billing->last_name,
+										'billing_company_name'			=> $user->billing->company_name,
 										'billing_address_line_1'		=> $user->billing->address_line_1,
 										
 										'billing_address_line_2'		=> $user->billing->address_line_2,
@@ -1608,6 +1644,7 @@ class ec_db{
 										'billing_phone'					=> $user->billing->phone,
 										'shipping_first_name'			=> $user->shipping->first_name,
 										'shipping_last_name'			=> $user->shipping->last_name,
+										'shipping_company_name'			=> $user->shipping->company_name,
 										'shipping_address_line_1'		=> $user->shipping->address_line_1,
 										'shipping_address_line_2'		=> $user->shipping->address_line_2,
 										
@@ -1620,16 +1657,19 @@ class ec_db{
 										'payment_method'				=> $payment_type,
 										'order_customer_notes'			=> $order_notes,
 										'creditcard_digits'				=> $credit_card_last_four,
-										'order_gateway'					=> $order_gateway
+										'order_gateway'					=> $order_gateway,
+										
+										'guest_key'						=> $guest_key
 								), 
 								array( 	'%d', '%s', '%d', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
+										'%s', '%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
+										'%s', '%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
-										'%s', '%s', '%s', '%s', '%s', 
-										'%s', '%s', '%s', '%s', '%s', 
-										'%s', '%s', '%s', '%s'
+										'%s', '%s', '%s', '%s', 
+										'%s'
 								)
 							);	
 									
@@ -1667,7 +1707,7 @@ class ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( "DELETE FROM ec_order WHERE order_id = %d", $order_id ) );
 	}
 	
-	public function insert_address( $first_name, $last_name, $address_line_1, $address_line_2, $city, $state, $zip, $country, $phone ){
+	public function insert_address( $first_name, $last_name, $address_line_1, $address_line_2, $city, $state, $zip, $country, $phone, $company_name = "" ){
 		$this->mysqli->insert(	'ec_address',
 								array(	"first_name"		=> $first_name,
 										"last_name"			=> $last_name,
@@ -1677,9 +1717,10 @@ class ec_db{
 										"state"				=> $state,
 										"zip"				=> $zip,
 										"country"			=> $country,
-										"phone"				=> $phone
+										"phone"				=> $phone,
+										"company_name"		=> $company_name
 									  ),
-								array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+								array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 							  );
 		
 		return $this->mysqli->insert_id;	
@@ -1736,7 +1777,7 @@ class ec_db{
 		$insert_array = array(	'order_id'						=> $order_id,
 								'product_id'					=> $cart_item->product_id,
 								'title'							=> $cart_item->title,
-								'model_number'					=> $cart_item->model_number,
+								'model_number'					=> $cart_item->orderdetails_model_number,
 								'unit_price'					=> $cart_item->unit_price,
 								
 								'total_price'					=> $cart_item->total_price,
@@ -1767,6 +1808,7 @@ class ec_db{
 								
 								'gift_card_from_name'			=> $cart_item->gift_card_from_name,
 								'gift_card_to_name'				=> $cart_item->gift_card_to_name,
+								'gift_card_email'				=> $cart_item->gift_card_email,
 								'is_download'					=> $cart_item->is_download,
 								'is_giftcard'					=> $cart_item->is_giftcard,
 								
@@ -1795,7 +1837,7 @@ class ec_db{
 								'%s', '%s', '%s', '%s', '%s', 
 								'%s', '%s', '%s', '%s', '%s',
 								'%d', '%s', '%s',
-								'%s', '%s', '%d', '%d', 
+								'%s', '%s', '%s', '%d', '%d', 
 								'%d', '%s', '%s', '%d', '%d', 
 								'%d', '%s',
 								'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
@@ -1918,7 +1960,7 @@ class ec_db{
 			$this->mysqli->query( $this->mysqli->prepare( "DELETE FROM ec_tempcart_optionitem WHERE ec_tempcart_optionitem.tempcart_id = %d", $tempcart_id->tempcart_id ) );
 		}
 		
-		$sql = "DELETE FROM ec_tempcart WHERE session_id = '%s'";
+		$sql = "DELETE FROM ec_tempcart WHERE session_id = %s";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $session_id ) );
 	}
 	
@@ -1953,22 +1995,26 @@ class ec_db{
 				
 				ec_order.billing_first_name, 
 				ec_order.billing_last_name, 
+				ec_order.billing_company_name, 
 				ec_order.billing_address_line_1, 
 				ec_order.billing_address_line_2, 
 				ec_order.billing_city, 
 				ec_order.billing_state, 
 				ec_order.billing_zip, 
-				ec_order.billing_country, 
+				ec_order.billing_country,
+				billing_country.name_cnt as billing_country_name, 
 				ec_order.billing_phone, 
 				
 				ec_order.shipping_first_name, 
 				ec_order.shipping_last_name, 
+				ec_order.shipping_company_name, 
 				ec_order.shipping_address_line_1, 
 				ec_order.shipping_address_line_2, 
 				ec_order.shipping_city, 
 				ec_order.shipping_state, 
 				ec_order.shipping_zip, 
-				ec_order.shipping_country, 
+				ec_order.shipping_country,
+				shipping_country.name_cnt as shipping_country_name,
 				ec_order.shipping_phone, 
 				
 				ec_order.payment_method, 
@@ -1985,8 +2031,9 @@ class ec_db{
 				
 				FROM 
 				ec_order
-				LEFT JOIN ec_orderstatus ON
-				ec_order.orderstatus_id = ec_orderstatus.status_id, 
+				LEFT JOIN ec_country as billing_country ON ( ec_order.billing_country = billing_country.iso2_cnt )
+				LEFT JOIN ec_country as shipping_country ON ( ec_order.shipping_country = shipping_country.iso2_cnt )
+				LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id, 
 				ec_user
 				
 				WHERE 
@@ -2001,9 +2048,8 @@ class ec_db{
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $user_id, $email, $password ) );
 	}
 	
-	public function get_order_row( $order_id, $email, $password ){
-		if( $password == "guest" ){
-			$sql = "SELECT 
+	public function get_guest_order_row( $order_id, $guest_key ){
+		$sql = "SELECT 
 				ec_order.order_id, 
 				ec_order.txn_id,
 				ec_order.edit_sequence,
@@ -2038,6 +2084,7 @@ class ec_db{
 				
 				ec_order.billing_first_name, 
 				ec_order.billing_last_name, 
+				ec_order.billing_company_name, 
 				ec_order.billing_address_line_1, 
 				ec_order.billing_address_line_2, 
 				ec_order.billing_city, 
@@ -2049,6 +2096,7 @@ class ec_db{
 				
 				ec_order.shipping_first_name, 
 				ec_order.shipping_last_name, 
+				ec_order.shipping_company_name, 
 				ec_order.shipping_address_line_1, 
 				ec_order.shipping_address_line_2, 
 				ec_order.shipping_city, 
@@ -2093,120 +2141,125 @@ class ec_db{
 				LEFT JOIN ec_customfielddata
 				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id
 				
-				WHERE ec_order.order_id = %d
+				WHERE 
+				
+				ec_order.order_id = %d AND
+				ec_order.guest_key = %s AND 
+				ec_order.guest_key != ''
 				
 				GROUP BY
 				ec_order.order_id";
 				
-				return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $order_id ) );
-				
-		}else{
+				return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $order_id, $guest_key ) );
+	}
+	
+	public function get_order_row( $order_id, $email, $password ){
+		
+		$sql = "SELECT 
+			ec_order.order_id, 
+			ec_order.txn_id,
+			ec_order.edit_sequence,
+			ec_order.order_date,  
+			ec_order.orderstatus_id,
+			ec_orderstatus.order_status, 
+			ec_order.order_weight, 
+			ec_orderstatus.is_approved,
 			
-			$sql = "SELECT 
-				ec_order.order_id, 
-				ec_order.txn_id,
-				ec_order.edit_sequence,
-				ec_order.order_date,  
-				ec_order.orderstatus_id,
-				ec_orderstatus.order_status, 
-				ec_order.order_weight, 
-				ec_orderstatus.is_approved,
-				
-				ec_order.user_id,
-				ec_user.list_id,
-				
-				ec_order.sub_total,
-				ec_order.shipping_total,
-				ec_order.tax_total,
-				ec_order.vat_total,
-				ec_order.duty_total,
-				ec_order.discount_total,
-				ec_order.grand_total, 
-				ec_order.refund_total,
-				
-				ec_order.promo_code, 
-				ec_order.giftcard_id, 
-				
-				ec_order.use_expedited_shipping, 
-				ec_order.shipping_method, 
-				ec_order.shipping_carrier, 
-				ec_order.tracking_number, 
-				
-				ec_order.user_email, 
-				ec_order.user_level, 
-				
-				ec_order.billing_first_name, 
-				ec_order.billing_last_name, 
-				ec_order.billing_address_line_1, 
-				ec_order.billing_address_line_2, 
-				ec_order.billing_city, 
-				ec_order.billing_state, 
-				ec_order.billing_zip, 
-				ec_order.billing_country, 
-				bill_country.name_cnt as billing_country_name, 
-				ec_order.billing_phone, 
-				
-				ec_order.shipping_first_name, 
-				ec_order.shipping_last_name, 
-				ec_order.shipping_address_line_1, 
-				ec_order.shipping_address_line_2, 
-				ec_order.shipping_city, 
-				ec_order.shipping_state, 
-				ec_order.shipping_zip, 
-				ec_order.shipping_country,
-				ship_country.name_cnt as shipping_country_name, 
-				ec_order.shipping_phone, 
-				
-				ec_order.payment_method, 
-				
-				ec_order.paypal_email_id, 
-				ec_order.paypal_payer_id,
-				
-				ec_order.order_customer_notes,
-				ec_order.creditcard_digits,
-				
-				ec_order.fraktjakt_order_id,
-				ec_order.fraktjakt_shipment_id,
-				ec_order.subscription_id,
-				
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data 
-				
-				FROM 
-				ec_order
-				
-				LEFT JOIN ec_country as bill_country ON
-				bill_country.iso2_cnt = ec_order.billing_country
-				
-				LEFT JOIN ec_country as ship_country ON
-				ship_country.iso2_cnt = ec_order.shipping_country
-				
-				LEFT JOIN ec_orderstatus ON
-				ec_order.orderstatus_id = ec_orderstatus.status_id
-				
-				LEFT JOIN ec_customfield
-				ON ec_customfield.table_name = 'ec_order'
-				
-				LEFT JOIN ec_customfielddata
-				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id, 
-				
-				ec_user
-				
-				WHERE ec_user.email = '%s' AND ec_user.password = '%s' AND ec_user.user_id = ec_order.user_id AND ec_order.order_id = %d
-				
-				GROUP BY ec_order.order_id";
-				
-				return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $email, $password, $order_id ) );
-				
-		}
+			ec_order.user_id,
+			ec_user.list_id,
+			
+			ec_order.sub_total,
+			ec_order.shipping_total,
+			ec_order.tax_total,
+			ec_order.vat_total,
+			ec_order.duty_total,
+			ec_order.discount_total,
+			ec_order.grand_total, 
+			ec_order.refund_total,
+			
+			ec_order.promo_code, 
+			ec_order.giftcard_id, 
+			
+			ec_order.use_expedited_shipping, 
+			ec_order.shipping_method, 
+			ec_order.shipping_carrier, 
+			ec_order.tracking_number, 
+			
+			ec_order.user_email, 
+			ec_order.user_level, 
+			
+			ec_order.billing_first_name, 
+			ec_order.billing_last_name, 
+			ec_order.billing_company_name, 
+			ec_order.billing_address_line_1, 
+			ec_order.billing_address_line_2, 
+			ec_order.billing_city, 
+			ec_order.billing_state, 
+			ec_order.billing_zip, 
+			ec_order.billing_country, 
+			bill_country.name_cnt as billing_country_name, 
+			ec_order.billing_phone, 
+			
+			ec_order.shipping_first_name, 
+			ec_order.shipping_last_name, 
+			ec_order.shipping_company_name, 
+			ec_order.shipping_address_line_1, 
+			ec_order.shipping_address_line_2, 
+			ec_order.shipping_city, 
+			ec_order.shipping_state, 
+			ec_order.shipping_zip, 
+			ec_order.shipping_country,
+			ship_country.name_cnt as shipping_country_name, 
+			ec_order.shipping_phone, 
+			
+			ec_order.payment_method, 
+			
+			ec_order.paypal_email_id, 
+			ec_order.paypal_payer_id,
+			
+			ec_order.order_customer_notes,
+			ec_order.creditcard_digits,
+			
+			ec_order.fraktjakt_order_id,
+			ec_order.fraktjakt_shipment_id,
+			ec_order.subscription_id,
+			
+			GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data 
+			
+			FROM 
+			ec_order
+			
+			LEFT JOIN ec_country as bill_country ON
+			bill_country.iso2_cnt = ec_order.billing_country
+			
+			LEFT JOIN ec_country as ship_country ON
+			ship_country.iso2_cnt = ec_order.shipping_country
+			
+			LEFT JOIN ec_orderstatus ON
+			ec_order.orderstatus_id = ec_orderstatus.status_id
+			
+			LEFT JOIN ec_customfield
+			ON ec_customfield.table_name = 'ec_order'
+			
+			LEFT JOIN ec_customfielddata
+			ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id, 
+			
+			ec_user
+			
+			WHERE ec_user.email = '%s' AND ec_user.password = '%s' AND ec_user.user_id = ec_order.user_id AND ec_order.order_id = %d
+			
+			GROUP BY ec_order.order_id";
+			
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $email, $password, $order_id ) );
 	
 	}
 	
+	public function get_guest_order_details( $order_id, $guest_key ){
+		return $this->mysqli->get_results( $this->mysqli->prepare( $this->orderdetail_guest_sql, $guest_key, $order_id ) );
+	}
+	
 	public function get_order_details( $order_id, $email, $password ){
-		if( $password == "guest" ){
-			return $this->mysqli->get_results( $this->mysqli->prepare( $this->orderdetail_guest_sql, $order_id ) );	
-		}else{
-			return $this->mysqli->get_results( $this->mysqli->prepare( $this->orderdetail_sql, $email, $password, $order_id ) );
-		}
+		return $this->mysqli->get_results( $this->mysqli->prepare( $this->orderdetail_sql, $email, $password, $order_id ) );
 	}
 	
 	public function get_orderdetail_row( $order_id, $orderdetail_id, $email, $password ){
@@ -2391,6 +2444,7 @@ class ec_db{
 				billing.zip as billing_zip, 
 				billing.country as billing_country, 
 				billing.phone as billing_phone, 
+				billing.company_name as billing_company_name, 
 				
 				shipping.first_name as shipping_first_name, 
 				shipping.last_name as shipping_last_name, 
@@ -2401,6 +2455,7 @@ class ec_db{
 				shipping.zip as shipping_zip, 
 				shipping.country as shipping_country, 
 				shipping.phone as shipping_phone,
+				shipping.company_name as shipping_company_name,
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				
@@ -2466,7 +2521,7 @@ class ec_db{
 										array(	'%s', '%s', '%s' ) );
 	}
 	
-	public function update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone ){
+	public function update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name ){
 		return $this->mysqli->update(	'ec_address', 
 										array(	'first_name'						=> $first_name,
 												'last_name'							=> $last_name,
@@ -2476,14 +2531,15 @@ class ec_db{
 												'state'								=> $state,
 												'zip'								=> $zip,
 												'country'							=> $country,
-												'phone'								=> $phone 
+												'phone'								=> $phone ,
+												'company_name'						=> $company_name 
 											 ),
 										array( 	'address_id' 						=> $address_id ), 
-										array( 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' )
+										array( 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' )
 								  );
 	}
 	
-	public function insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $email, $password, $address_type ){
+	public function insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $email, $password, $address_type, $company_name ){
 		$user_id = $this->mysqli->get_var(	$this->mysqli->prepare( "SELECT user_id FROM ec_user WHERE email = '%s' AND password = '%s'", $email, $password ) );
 		
 		$this->mysqli->insert(	'ec_address',
@@ -2496,9 +2552,10 @@ class ec_db{
 														'state'								=> $state,
 														'zip'								=> $zip,
 														'country'							=> $country,
-														'phone'								=> $phone
+														'phone'								=> $phone,
+														'company_name'						=> $company_name
 												),
-												array( 	'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+												array( 	'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 											);
 											
 		$address_id = $this->mysqli->insert_id;
@@ -2596,7 +2653,7 @@ class ec_db{
 	}
 	
 	public function get_manufacturer_row( $manufacturer_id ){
-		$sql = "SELECT ec_manufacturer.name FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = %d";
+		$sql = "SELECT ec_manufacturer.manufacturer_id, ec_manufacturer.name, ec_manufacturer.clicks, ec_manufacturer.post_id FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = %d";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $manufacturer_id ) );	
 	}
 	
@@ -2672,17 +2729,41 @@ class ec_db{
 	}
 	
 	public function get_advanced_optionitems( $option_id ){
-		$sql = "SELECT optionitem_id, option_id, optionitem_name, optionitem_price, optionitem_price_onetime, optionitem_price_override, optionitem_weight, optionitem_weight_onetime, optionitem_weight_override, optionitem_order, optionitem_icon, optionitem_initial_value FROM ec_optionitem WHERE option_id = %d ORDER BY optionitem_order";
+		$sql = "SELECT 
+					ec_optionitem.optionitem_id, 
+					ec_optionitem.option_id, 
+					ec_optionitem.optionitem_name, 
+					ec_optionitem.optionitem_price, 
+					ec_optionitem.optionitem_price_onetime, 
+					ec_optionitem.optionitem_price_override, 
+					ec_optionitem.optionitem_weight, 
+					ec_optionitem.optionitem_weight_onetime, 
+					ec_optionitem.optionitem_weight_override, 
+					ec_optionitem.optionitem_order, 
+					ec_optionitem.optionitem_icon, 
+					ec_optionitem.optionitem_initial_value, 
+					ec_optionitem.optionitem_model_number,
+					
+					ec_option.option_name,
+					ec_option.option_type
+					
+					FROM ec_optionitem 
+					LEFT JOIN ec_option ON ( ec_option.option_id = ec_optionitem.option_id )
+					
+					WHERE ec_optionitem.option_id = %d 
+					
+					ORDER BY ec_optionitem.optionitem_order";
+					
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $option_id ) );
 	}
 	
-	public function add_option_to_cart( $tempcart_id, $option_val ){
-		$sql = "INSERT INTO ec_tempcart_optionitem(tempcart_id, option_id, optionitem_id, optionitem_value) VALUES(%d, %d, %d, %s)";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $tempcart_id, $option_val["option_id"], $option_val["optionitem_id"], $option_val["optionitem_value"] ) ); 
+	public function add_option_to_cart( $tempcart_id, $session_id, $option_val ){
+		$sql = "INSERT INTO ec_tempcart_optionitem(tempcart_id, session_id, option_id, optionitem_id, optionitem_value, optionitem_model_number) VALUES(%d, %s, %d, %d, %s, %s)";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $tempcart_id, $session_id, $option_val["option_id"], $option_val["optionitem_id"], $option_val["optionitem_value"], $option_val["optionitem_model_number"] ) ); 
 	}
 	
 	public function get_advanced_cart_options( $tempcart_id ){
-		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id WHERE ec_tempcart_optionitem.tempcart_id = %d";
+		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_tempcart_optionitem.optionitem_model_number, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id WHERE ec_tempcart_optionitem.tempcart_id = %d";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $tempcart_id ) );
 	}
 	
@@ -2770,15 +2851,24 @@ class ec_db{
 		return $this->mysqli->insert_id;
 	}
 	
-	public function insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_code ){
-		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, creditcard_digits, subscription_id) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d)";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price, $product->price, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, $card->payment_method, $card->get_last_four( ), $subscription_id ) );
+	public function insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_code, $order_notes, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label ){
+		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, creditcard_digits, subscription_id, order_customer_notes, billing_company_name, shipping_company_name, billing_address_line_2, shipping_address_line_2) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s)";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price, $product->price, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, $card->payment_method, $card->get_last_four( ), $subscription_id, $order_notes, $user->billing->company_name, $user->shipping->company_name, $user->billing->address_line_2, $user->shipping->address_line_2 ) );
 		
 		$order_id = $this->mysqli->insert_id;
 		$image1 = $product->images->get_single_image( );
 		
-		$sql = "INSERT INTO ec_orderdetail( order_id, product_id, title, model_number, order_date, unit_price, total_price, quantity, image1 ) VALUES( %d, %d, %s, %s, NOW( ), %s, %s, 1, %s )";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $order_id, $product->product_id, $product->title, $product->model_number, $product->price, $product->price, $image1 ) );
+		$sql = "INSERT INTO ec_orderdetail( order_id, product_id, title, model_number, order_date, unit_price, total_price, quantity, image1, optionitem_name_1, optionitem_name_2, optionitem_name_3, optionitem_name_4, optionitem_name_5, optionitem_label_1, optionitem_label_2, optionitem_label_3, optionitem_label_4, optionitem_label_5, use_advanced_optionset ) VALUES( %d, %d, %s, %s, NOW( ), %s, %s, 1, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $order_id, $product->product_id, $product->title, $product->model_number, $product->price, $product->price, $image1, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label, $product->use_advanced_optionset ) );
+		
+		$orderdetail_id = $this->mysqli->insert_id;
+		
+		$i=0;
+		while( isset( $_SESSION['ec_subscription_advanced_option' . $i] ) ){
+			$sql = "INSERT INTO ec_order_option( orderdetail_id, option_name, optionitem_name, option_type, option_value ) VALUES( %d, %s, %s, %s, %s )";
+			$this->mysqli->query( $this->mysqli->prepare( $sql, $orderdetail_id, $_SESSION['ec_subscription_advanced_option' . $i]['option_name'], $_SESSION['ec_subscription_advanced_option' . $i]['optionitem_name'], $_SESSION['ec_subscription_advanced_option' . $i]['option_type'], $_SESSION['ec_subscription_advanced_option' . $i]['optionitem_value'] ) );
+			$i++;
+		}
 		
 		return $order_id;
 	}
@@ -2970,7 +3060,7 @@ class ec_db{
 		
 		$sql = "SELECT ec_user.user_id, ec_user.first_name, ec_user.last_name, ec_user.user_level, ec_user.default_billing_address_id, ec_user.default_shipping_address_id, ec_user.is_subscriber, ec_user.realauth_registered, ec_user.stripe_customer_id, ec_user.default_card_type, ec_user.default_card_last4,
 				
-				billing.first_name as billing_first_name, billing.last_name as billing_last_name, billing.address_line_1 as billing_address_line_1, billing.address_line_2 as billing_address_line_2, billing.city as billing_city, billing.state as billing_state, billing.zip as billing_zip, billing.country as billing_country, billing.phone as billing_phone
+				billing.first_name as billing_first_name, billing.last_name as billing_last_name, billing.address_line_1 as billing_address_line_1, billing.address_line_2 as billing_address_line_2, billing.city as billing_city, billing.state as billing_state, billing.zip as billing_zip, billing.country as billing_country, billing.phone as billing_phone, billing.company_name as billing_company_name
 				
 				FROM 
 				ec_user 
@@ -3078,6 +3168,126 @@ class ec_db{
 	
 	}
 	
+	public function get_page_options( $post_id ){
+		
+		$sql = "SELECT option_type, option_value FROM ec_pageoption WHERE post_id = %d";
+		$pageoption_arr = $this->mysqli->get_results( $this->mysqli->prepare( $sql, $post_id ) );
+		$pageoption_obj = new stdClass( );
+		foreach( $pageoption_arr as $option ){
+			
+			$pageoption_obj->{$option->option_type} = $option->option_value;
+			
+		}
+		
+		return $pageoption_obj;
+		
+	}
+	
+	public function update_page_option( $post_id, $key, $value ){
+		
+		$results = $this->mysqli->get_results( $this->mysqli->prepare( "SELECT option_value FROM ec_pageoption WHERE post_id = %d AND option_type = %s", $post_id, $key ) );
+		if( count( $results ) > 0 ){
+			$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_pageoption SET option_value = %s WHERE post_id = %d AND option_type = %s", $value, $post_id, $key ) );
+		}else{
+			$this->mysqli->query( $this->mysqli->prepare( "INSERT INTO ec_pageoption( post_id, option_type, option_value ) VALUES( %d, %s, %s )", $post_id, $key, $value ) );
+		}
+		
+	}
+	
+	public function update_product_options( $model_number, $product_options ){
+		
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_product SET ec_product.image_hover_type = %s, ec_product.image_effect_type = %s, ec_product.tag_type = %s, ec_product.tag_bg_color = %s, ec_product.tag_text_color = %s, ec_product.tag_text = %s WHERE ec_product.model_number = %s", $product_options->image_hover_type, $product_options->image_effect_type, $product_options->tag_type, $product_options->tag_bg_color, $product_options->tag_text_color, $product_options->tag_text, $model_number ) ) ;
+		
+	}
+	
+	public function get_menu_values( $product_id ){
+		
+		return $this->mysqli->get_results( $this->mysqli->prepare( "SELECT 
+		
+		ec_menulevel1_1.name as menulevel1_1_name, 
+		ec_menulevel2_1.name as menulevel2_1_name, 
+		ec_menulevel3_1.name as menulevel3_1_name,
+		ec_menulevel1_1.post_id as menulevel1_1_post_id, 
+		ec_menulevel2_1.post_id as menulevel2_1_post_id, 
+		ec_menulevel3_1.post_id as menulevel3_1_post_id,
+		ec_menulevel1_1.menulevel1_id as menulevel1_1_menu_id, 
+		ec_menulevel2_1.menulevel2_id as menulevel2_1_menu_id, 
+		ec_menulevel3_1.menulevel3_id as menulevel3_1_menu_id, 
+		
+		ec_menulevel1_2.name as menulevel1_2_name, 
+		ec_menulevel2_2.name as menulevel2_2_name, 
+		ec_menulevel3_2.name as menulevel3_2_name,
+		ec_menulevel1_2.post_id as menulevel1_2_post_id, 
+		ec_menulevel2_2.post_id as menulevel2_2_post_id, 
+		ec_menulevel3_2.post_id as menulevel3_2_post_id,
+		ec_menulevel1_2.menulevel1_id as menulevel1_2_menu_id, 
+		ec_menulevel2_2.menulevel2_id as menulevel2_2_menu_id, 
+		ec_menulevel3_2.menulevel3_id as menulevel3_2_menu_id,  
+		
+		ec_menulevel1_3.name as menulevel1_3_name, 
+		ec_menulevel2_3.name as menulevel2_3_name, 
+		ec_menulevel3_3.name as menulevel3_3_name,
+		ec_menulevel1_3.post_id as menulevel1_3_post_id, 
+		ec_menulevel2_3.post_id as menulevel2_3_post_id, 
+		ec_menulevel3_3.post_id as menulevel3_3_post_id,
+		ec_menulevel1_3.menulevel1_id as menulevel1_3_menu_id, 
+		ec_menulevel2_3.menulevel2_id as menulevel2_3_menu_id, 
+		ec_menulevel3_3.menulevel3_id as menulevel3_3_menu_id
+		 
+		FROM ec_product
+		
+		LEFT JOIN ec_menulevel1 as ec_menulevel1_1 ON ( ec_product.menulevel1_id_1 = ec_menulevel1_1.menulevel1_id )
+		LEFT JOIN ec_menulevel1 as ec_menulevel1_2 ON ( ec_product.menulevel2_id_1 = ec_menulevel1_2.menulevel1_id )
+		LEFT JOIN ec_menulevel1 as ec_menulevel1_3 ON ( ec_product.menulevel3_id_1 = ec_menulevel1_3.menulevel1_id )
+		
+		LEFT JOIN ec_menulevel2 as ec_menulevel2_1 ON ( ec_product.menulevel1_id_2 = ec_menulevel2_1.menulevel2_id )
+		LEFT JOIN ec_menulevel2 as ec_menulevel2_2 ON ( ec_product.menulevel2_id_2 = ec_menulevel2_2.menulevel2_id )
+		LEFT JOIN ec_menulevel2 as ec_menulevel2_3 ON ( ec_product.menulevel3_id_2 = ec_menulevel2_3.menulevel2_id )
+		
+		LEFT JOIN ec_menulevel3 as ec_menulevel3_1 ON ( ec_product.menulevel1_id_3 = ec_menulevel3_1.menulevel3_id )
+		LEFT JOIN ec_menulevel3 as ec_menulevel3_2 ON ( ec_product.menulevel2_id_3 = ec_menulevel3_2.menulevel3_id )
+		LEFT JOIN ec_menulevel3 as ec_menulevel3_3 ON ( ec_product.menulevel3_id_3 = ec_menulevel3_3.menulevel3_id )
+		
+		WHERE ec_product.product_id = %d", $product_id ) );
+		
+	}
+	
+	public function get_category_values( $product_id ){
+		
+		return $this->mysqli->get_results( $this->mysqli->prepare( "SELECT DISTINCT ec_category.category_id, ec_category.category_name, ec_category.post_id FROM ec_categoryitem LEFT JOIN ec_category ON ( ec_category.category_id = ec_categoryitem.category_id ) WHERE ec_categoryitem.product_id = %d", $product_id ) );
+		
+	}
+	
+	public function get_option_quantity_values( $product_id ){
+		
+		return $this->mysqli->get_results( $this->mysqli->prepare( "SELECT ec_optionitemquantity.optionitem_id_1 as optionitem_id, SUM( ec_optionitemquantity.quantity ) as quantity FROM ec_optionitemquantity LEFT JOIN ec_optionitem ON ( ec_optionitemquantity.optionitem_id_1 = ec_optionitem.optionitem_id ) WHERE ec_optionitemquantity.product_id = %d GROUP BY ec_optionitemquantity.optionitem_id_1 ORDER By ec_optionitem.optionitem_order", $product_id ) );
+		
+	}
+	
+	public function get_option2_quantity_values( $product_id, $optionitem_id_1 ){
+	
+		return $this->mysqli->get_results( $this->mysqli->prepare( "SELECT ec_optionitemquantity.optionitem_id_2 as optionitem_id, SUM( ec_optionitemquantity.quantity ) as quantity FROM ec_optionitemquantity LEFT JOIN ec_optionitem ON ( ec_optionitemquantity.optionitem_id_2 = ec_optionitem.optionitem_id ) WHERE ec_optionitemquantity.product_id = %d AND ec_optionitemquantity.optionitem_id_1 = %d GROUP BY ec_optionitemquantity.optionitem_id_1, ec_optionitemquantity.optionitem_id_2 ORDER By ec_optionitem.optionitem_order", $product_id, $optionitem_id_1 ) );
+		
+	}
+	
+	public function get_option3_quantity_values( $product_id, $optionitem_id_1, $optionitem_id_2 ){
+	
+		return $this->mysqli->get_results( $this->mysqli->prepare( "SELECT ec_optionitemquantity.optionitem_id_3 as optionitem_id, SUM( ec_optionitemquantity.quantity ) as quantity FROM ec_optionitemquantity LEFT JOIN ec_optionitem ON ( ec_optionitemquantity.optionitem_id_3 = ec_optionitem.optionitem_id ) WHERE ec_optionitemquantity.product_id = %d AND ec_optionitemquantity.optionitem_id_1 = %d AND ec_optionitemquantity.optionitem_id_2 = %d GROUP BY ec_optionitemquantity.optionitem_id_1, ec_optionitemquantity.optionitem_id_2, ec_optionitemquantity.optionitem_id_3 ORDER By ec_optionitem.optionitem_order", $product_id, $optionitem_id_1, $optionitem_id_2 ) );
+		
+	}
+	
+	public function get_option4_quantity_values( $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3 ){
+	
+		return $this->mysqli->get_results( $this->mysqli->prepare( "SELECT ec_optionitemquantity.optionitem_id_4 as optionitem_id, SUM( ec_optionitemquantity.quantity ) as quantity FROM ec_optionitemquantity LEFT JOIN ec_optionitem ON ( ec_optionitemquantity.optionitem_id_4 = ec_optionitem.optionitem_id ) WHERE ec_optionitemquantity.product_id = %d AND ec_optionitemquantity.optionitem_id_1 = %d AND ec_optionitemquantity.optionitem_id_2 = %d AND ec_optionitemquantity.optionitem_id_3 = %d GROUP BY ec_optionitemquantity.optionitem_id_1, ec_optionitemquantity.optionitem_id_2, ec_optionitemquantity.optionitem_id_3, ec_optionitemquantity.optionitem_id_4 ORDER By ec_optionitem.optionitem_order", $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3 ) );
+		
+	}
+	
+	public function get_option5_quantity_values( $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4 ){
+	
+		return $this->mysqli->get_results( $this->mysqli->prepare( "SELECT ec_optionitemquantity.optionitem_id_5 as optionitem_id, SUM( ec_optionitemquantity.quantity ) as quantity FROM ec_optionitemquantity LEFT JOIN ec_optionitem ON ( ec_optionitemquantity.optionitem_id_5 = ec_optionitem.optionitem_id ) WHERE ec_optionitemquantity.product_id = %d AND ec_optionitemquantity.optionitem_id_1 = %d AND ec_optionitemquantity.optionitem_id_2 = %d AND ec_optionitemquantity.optionitem_id_3 = %d AND ec_optionitemquantity.optionitem_id_4 = %d GROUP BY ec_optionitemquantity.optionitem_id_1, ec_optionitemquantity.optionitem_id_2, ec_optionitemquantity.optionitem_id_3, ec_optionitemquantity.optionitem_id_4, ec_optionitemquantity.optionitem_id_5 ORDER By ec_optionitem.optionitem_order", $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4 ) );
+		
+	}
+	
 	public function get_product( $model_number, $product_id = 0 ){
 		
 		$sql = "SELECT
@@ -3087,11 +3297,13 @@ class ec_db{
 				product.activate_in_store,
 				product.title,
 				product.description,
+				product.short_description,
 				product.seo_description,
 				product.seo_keywords,
 				product.price,
 				product.list_price,
 				product.vat_rate,
+				product.handling_price,
 				product.stock_quantity,
 				product.min_purchase_quantity,
 				product.weight,
@@ -3144,22 +3356,21 @@ class ec_db{
 				product.deconetwork_size_id,
 				product.deconetwork_color_id,
 				product.deconetwork_design_id,
+
+				product.display_type,
+				product.image_hover_type,
+				product.image_effect_type,
+				product.tag_type,
+				product.tag_bg_color,
+				product.tag_text_color,
+				product.tag_text,
 				
 				product.views
 				
 				FROM ec_product as product 
 				
-				WHERE product.model_number = %s OR product.product_id = %d
+				WHERE product.model_number = %s OR product.product_id = %d";
 				
-				GROUP BY 
-				product.product_id,
-				product.option_id_1, 
-				product.option_id_2, 
-				product.option_id_3, 
-				product.option_id_4, 
-				product.option_id_5 ";
-				
-		
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $model_number, $product_id ) );
 		
 	}
@@ -3168,17 +3379,17 @@ class ec_db{
 		
 		// First check if this is already in the cart
 		$sql = "SELECT tempcart_id FROM ec_tempcart WHERE ec_tempcart.deconetwork_id = %s AND ec_tempcart.session_id = %s";
-		$cartrow = $this->mysqli->get_row( $this->mysqli->prepare( $sql, $_GET['id'], session_id( ) ) );
+		$cartrow = $this->mysqli->get_row( $this->mysqli->prepare( $sql, $_GET['id'], $_SESSION['ec_cart_id'] ) );
 		
 		if( $cartrow->tempcart_id ){
 			
 			$sql = "UPDATE ec_tempcart SET ec_tempcart.quantity = %d, ec_tempcart.deconetwork_name = %s, ec_tempcart.deconetwork_product_code = %s, ec_tempcart.deconetwork_options = %s, ec_tempcart.deconetwork_edit_link = %s, ec_tempcart.deconetwork_color_code = %s, ec_tempcart.deconetwork_product_id = %s, ec_tempcart.deconetwork_image_link = %s, ec_tempcart.deconetwork_discount = %s, ec_tempcart.deconetwork_tax = %s, ec_tempcart.deconetwork_total = %s, ec_tempcart.deconetwork_version = ec_tempcart.deconetwork_version+1 WHERE ec_tempcart.tempcart_id = %d AND ec_tempcart.session_id = %s";
-			$this->mysqli->query( $this->mysqli->prepare( $sql, $_GET['qty'], $_GET['name'], $_GET['product_code'], $_GET['options'], $_GET['edit_link'], $_GET['color'], $_GET['product_id'], $_GET['tn'], $_GET['discount'], $_GET['tax'], $_GET['line_total'], $cartrow->tempcart_id, session_id( ) ) );
+			$this->mysqli->query( $this->mysqli->prepare( $sql, $_GET['qty'], $_GET['name'], $_GET['product_code'], $_GET['options'], $_GET['edit_link'], $_GET['color'], $_GET['product_id'], $_GET['tn'], $_GET['discount'], $_GET['tax'], $_GET['line_total'], $cartrow->tempcart_id, $_SESSION['ec_cart_id'] ) );
 			
 		}else{
 			
 			$sql = "INSERT INTO ec_tempcart( session_id, product_id, quantity, is_deconetwork, deconetwork_id, deconetwork_name, deconetwork_product_code, deconetwork_options, deconetwork_edit_link, deconetwork_color_code, deconetwork_product_id, deconetwork_image_link, deconetwork_discount, deconetwork_tax, deconetwork_total ) VALUES( %s, %d, %d, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
-			$this->mysqli->query( $this->mysqli->prepare( $sql, session_id( ), $_GET['ec_product_id'], $_GET['qty'], 1, $_GET['id'], $_GET['name'], $_GET['product_code'], $_GET['options'], $_GET['edit_link'], $_GET['color'], $_GET['product_id'], $_GET['tn'], $_GET['discount'], $_GET['tax'], $_GET['line_total'] ) );
+			$this->mysqli->query( $this->mysqli->prepare( $sql, $_SESSION['ec_cart_id'], $_GET['ec_product_id'], $_GET['qty'], 1, $_GET['id'], $_GET['name'], $_GET['product_code'], $_GET['options'], $_GET['edit_link'], $_GET['color'], $_GET['product_id'], $_GET['tn'], $_GET['discount'], $_GET['tax'], $_GET['line_total'] ) );
 			
 		}
 		

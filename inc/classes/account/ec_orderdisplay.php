@@ -33,6 +33,7 @@ class ec_orderdisplay{
 	
 	public $billing_first_name;  				// VARCHAR 255
 	public $billing_last_name;  				// VARCHAR 255
+	public $billing_company_name;  				// VARCHAR 255
 	public $billing_address_line_1; 			// VARCHAR 255 
 	public $billing_address_line_2;  			// VARCHAR 255
 	public $billing_city;  						// VARCHAR 255
@@ -44,6 +45,7 @@ class ec_orderdisplay{
 	
 	public $shipping_first_name;  				// VARCHAR 255
 	public $shipping_last_name;  				// VARCHAR 255
+	public $shipping_company_name;  			// VARCHAR 255
 	public $shipping_address_line_1;  			// VARCHAR 255
 	public $shipping_address_line_2;  			// VARCHAR 255
 	public $shipping_city;  					// VARCHAR 255
@@ -109,6 +111,7 @@ class ec_orderdisplay{
 		
 		$this->billing_first_name = $order_row->billing_first_name; 
 		$this->billing_last_name = $order_row->billing_last_name; 
+		$this->billing_company_name = $order_row->billing_company_name; 
 		$this->billing_address_line_1 = $order_row->billing_address_line_1; 
 		$this->billing_address_line_2 = $order_row->billing_address_line_2; 
 		$this->billing_city = $order_row->billing_city; 
@@ -120,6 +123,7 @@ class ec_orderdisplay{
 		
 		$this->shipping_first_name = $order_row->shipping_first_name; 
 		$this->shipping_last_name = $order_row->shipping_last_name; 
+		$this->shipping_company_name = $order_row->shipping_company_name;
 		$this->shipping_address_line_1 = $order_row->shipping_address_line_1; 
 		$this->shipping_address_line_2 = $order_row->shipping_address_line_2; 
 		$this->shipping_city = $order_row->shipping_city; 
@@ -137,8 +141,8 @@ class ec_orderdisplay{
 		$this->subscription_id = $order_row->subscription_id;
 		
 		$this->user = new ec_user( $this->user_email );
-		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1, $this->billing_address_line_2, $this->billing_city, $this->billing_state, $this->billing_country, $this->billing_zip, $this->billing_phone );
-		$this->user->setup_shipping_info_data( $this->shipping_first_name, $this->shipping_last_name, $this->shipping_address_line_1, $this->shipping_address_line_2, $this->shipping_city, $this->shipping_state, $this->shipping_country, $this->shipping_zip, $this->shipping_phone );
+		$this->user->setup_billing_info_data( $this->billing_first_name, $this->billing_last_name, $this->billing_address_line_1, $this->billing_address_line_2, $this->billing_city, $this->billing_state, $this->billing_country, $this->billing_zip, $this->billing_phone, $this->billing_company_name );
+		$this->user->setup_shipping_info_data( $this->shipping_first_name, $this->shipping_last_name, $this->shipping_address_line_1, $this->shipping_address_line_2, $this->shipping_city, $this->shipping_state, $this->shipping_country, $this->shipping_zip, $this->shipping_phone, $this->shipping_company_name );
 		
 		$this->payment_method = $order_row->payment_method; 
 		
@@ -153,10 +157,12 @@ class ec_orderdisplay{
 		
 		if( $is_order_details ){
 			$this->cart =(object) array('cart' => array( ) );
-			if( isset( $_SESSION['ec_email'] ) )
-				$result = $this->mysqli->get_order_details( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] )
+				$result = $this->mysqli->get_guest_order_details( $this->order_id, $_SESSION['ec_guest_key'] );
+			else if( isset( $_GET['ec_guest_key'] ) )
+				$result = $this->mysqli->get_guest_order_details( $this->order_id, $_GET['ec_guest_key'] );
 			else
-				$result = $this->mysqli->get_order_details( $this->order_id, "guest", "guest" );
+				$result = $this->mysqli->get_order_details( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
 				
 			foreach( $result as $item ){
 				array_push( $this->cart->cart, (object) array( "orderdetail_id"=>$item->orderdetail_id, "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity, "image1"=>$item->image1, "optionitem1_name"=>$item->optionitem_name_1, "optionitem2_name"=>$item->optionitem_name_2, "optionitem3_name"=>$item->optionitem_name_3, "optionitem4_name"=>$item->optionitem_name_4, "optionitem5_name"=>$item->optionitem_name_5, "optionitem1_label"=>$item->optionitem_label_1, "optionitem2_label"=>$item->optionitem_label_2, "optionitem3_label"=>$item->optionitem_label_3, "optionitem4_label"=>$item->optionitem_label_4, "optionitem5_label"=>$item->optionitem_label_5, "optionitem1_price"=>$item->optionitem_price_1, "optionitem2_price"=>$item->optionitem_price_2, "optionitem3_price"=>$item->optionitem_price_3, "optionitem4_price"=>$item->optionitem_price_4, "optionitem5_price"=>$item->optionitem_price_5, "use_advanced_optionset"=>$item->use_advanced_optionset, "is_download"=>$item->is_download, "model_number"=>$item->model_number, "giftcard_id"=>$item->giftcard_id, "gift_card_message"=>$item->gift_card_message, "gift_card_from_name"=>$item->gift_card_from_name, "gift_card_to_name"=>$item->gift_card_to_name, "is_giftcard"=>$item->is_giftcard ) );

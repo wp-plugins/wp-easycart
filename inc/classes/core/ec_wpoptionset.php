@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_22' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_23' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -39,6 +39,8 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_added_custom_post_type');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_hide_admin_notice');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-db-group');
+		array_push($this->wp_option_names, 'ec_option_hide_design_help_video');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		
 		//store basic setup settings
@@ -58,7 +60,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');																					
 		array_push($this->wp_option_names, 'ec_option_currency_thousands_seperator');		array_push($this->wp_option_defaults, ',' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
-		array_push($this->wp_option_names, 'ec_option_default_store_filter');				array_push($this->wp_option_defaults, '1' );
+		array_push($this->wp_option_names, 'ec_option_default_store_filter');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_default_payment_type');				array_push($this->wp_option_defaults, 'manual_bill' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
@@ -154,9 +156,13 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_collect_user_phone');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_enable_company_name');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_skip_shipping_page');					array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_skip_reivew_screen');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_require_terms_agreement');			array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_show_menu_cart_icon');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
@@ -434,9 +440,9 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-language-group');
 				
 		// Base Design Options	
-		array_push($this->wp_option_names, 'ec_option_base_theme');							array_push($this->wp_option_defaults, 'base-responsive-v2' );
+		array_push($this->wp_option_names, 'ec_option_base_theme');							array_push($this->wp_option_defaults, 'base-responsive-v3' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
-		array_push($this->wp_option_names, 'ec_option_base_layout');						array_push($this->wp_option_defaults, 'base-responsive-v2' );
+		array_push($this->wp_option_names, 'ec_option_base_layout');						array_push($this->wp_option_defaults, 'base-responsive-v3' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
 		array_push($this->wp_option_names, 'ec_option_caching_on');							array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
@@ -446,42 +452,80 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
 		array_push($this->wp_option_names, 'ec_option_custom_css');							array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-custom-css-design-group');
-																							
-		// Theme Options
+					
+		// V2 Theme Options
 		array_push($this->wp_option_names, 'ec_option_css_replacements');					array_push($this->wp_option_defaults, "main_color=#242424,second_color=#6b6b6b,third_color=#adadad,title_color=#0f0f0f,text_color=#141414,link_color=#242424,link_hover_color=#121212,sale_color=#900,backdrop_color=#333,content_bg=#FFF,error_text=#900,error_color=#F1D9D9,error_color2=#FF0606,success_text=#333,success_color=#E6FFE6,success_color2=#6FFF47"  );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		array_push($this->wp_option_names, 'ec_option_font_replacements');					array_push($this->wp_option_defaults, "title_font=Arial, Helvetica, sans-serif:::subtitle_font=Arial, Helvetica, sans-serif:::content_font=Arial, Helvetica, sans-serif" );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		array_push($this->wp_option_names, 'ec_option_responsive_sizes');					array_push($this->wp_option_defaults, "size_level1_high=479:::size_level2_low=480:::size_level2_high=767:::size_level3_low=768:::size_level3_high=960:::size_level4_low=961:::size_level4_high=1300:::size_level5_low=1301" );
+																							
+		// Theme Options
+		array_push($this->wp_option_names, 'ec_option_details_main_color');					array_push($this->wp_option_defaults, '#222222' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
-		array_push($this->wp_option_names, 'ec_option_email_logo');							array_push($this->wp_option_defaults, '' );
+		array_push($this->wp_option_names, 'ec_option_details_second_color');				array_push($this->wp_option_defaults, '#666666' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_use_dark_bg');						array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		
+		array_push($this->wp_option_names, 'ec_option_default_product_type');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_default_product_image_hover_type');	array_push($this->wp_option_defaults, '3' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_default_product_image_effect_type');	array_push($this->wp_option_defaults, 'none' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_default_quick_view');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		
+		array_push($this->wp_option_names, 'ec_option_default_desktop_columns');			array_push($this->wp_option_defaults, '3' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_default_desktop_image_height');		array_push($this->wp_option_defaults, '210px' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		
+		array_push($this->wp_option_names, 'ec_option_default_laptop_columns');				array_push($this->wp_option_defaults, '3' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_default_laptop_image_height');		array_push($this->wp_option_defaults, '180px' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		
+		array_push($this->wp_option_names, 'ec_option_default_tablet_wide_columns');		array_push($this->wp_option_defaults, '2' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_default_tablet_wide_image_height');	array_push($this->wp_option_defaults, '210px' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		
+		array_push($this->wp_option_names, 'ec_option_default_tablet_columns');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_default_tablet_image_height');		array_push($this->wp_option_defaults, '225px' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		
+		array_push($this->wp_option_names, 'ec_option_default_smartphone_columns');			array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_default_smartphone_image_height');	array_push($this->wp_option_defaults, '160px' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		
+		array_push($this->wp_option_names, 'ec_option_details_columns_desktop');			array_push($this->wp_option_defaults, '2' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_details_columns_laptop');				array_push($this->wp_option_defaults, '2' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_details_columns_tablet_wide');		array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_details_columns_tablet');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_details_columns_smartphone');			array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 																							
-		// Store Images Options
-		array_push($this->wp_option_names, 'ec_option_xsmall_width');						array_push($this->wp_option_defaults, '50' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_xsmall_height');						array_push($this->wp_option_defaults, '50' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_small_width');						array_push($this->wp_option_defaults, '100' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_small_height');						array_push($this->wp_option_defaults, '100' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_medium_width');						array_push($this->wp_option_defaults, '175' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_medium_height');						array_push($this->wp_option_defaults, '175' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_large_width');						array_push($this->wp_option_defaults, '400' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_large_height');						array_push($this->wp_option_defaults, '400' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_swatch_small_width');					array_push($this->wp_option_defaults, '15' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_swatch_small_height');				array_push($this->wp_option_defaults, '15' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_swatch_large_width');					array_push($this->wp_option_defaults, '25' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
-		array_push($this->wp_option_names, 'ec_option_swatch_large_height');				array_push($this->wp_option_defaults, '25' );
-																							array_push($this->wp_option_groups, 'ec-store-images-group');
+		array_push($this->wp_option_names, 'ec_option_cart_columns_desktop');				array_push($this->wp_option_defaults, '2' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_cart_columns_laptop');				array_push($this->wp_option_defaults, '2' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_cart_columns_tablet_wide');			array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_cart_columns_tablet');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		array_push($this->wp_option_names, 'ec_option_cart_columns_smartphone');			array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
+		
+		array_push($this->wp_option_names, 'ec_option_email_logo');							array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
 		// Social Icons Options
 		array_push($this->wp_option_names, 'ec_option_use_facebook_icon');					array_push($this->wp_option_defaults, '1' );

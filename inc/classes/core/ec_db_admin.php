@@ -120,6 +120,108 @@ class ec_db_admin extends ec_db{
 		$sql = "SELECT ec_order.grand_total, ec_order.billing_first_name, ec_order.billing_last_name FROM ec_order ORDER BY ec_order.order_date DESC LIMIT 10";
 		return $this->mysqli->get_results( $sql );
 	}
+	
+	public function get_order_row_admin( $order_id ){
+		
+		$sql = "SELECT 
+			ec_order.order_id, 
+			ec_order.txn_id,
+			ec_order.edit_sequence,
+			ec_order.order_date,  
+			ec_order.orderstatus_id,
+			ec_orderstatus.order_status, 
+			ec_order.order_weight, 
+			ec_orderstatus.is_approved,
+			
+			ec_order.user_id,
+			ec_user.list_id,
+			
+			ec_order.sub_total,
+			ec_order.shipping_total,
+			ec_order.tax_total,
+			ec_order.vat_total,
+			ec_order.duty_total,
+			ec_order.discount_total,
+			ec_order.grand_total, 
+			ec_order.refund_total,
+			
+			ec_order.promo_code, 
+			ec_order.giftcard_id, 
+			
+			ec_order.use_expedited_shipping, 
+			ec_order.shipping_method, 
+			ec_order.shipping_carrier, 
+			ec_order.tracking_number, 
+			
+			ec_order.user_email, 
+			ec_order.user_level, 
+			
+			ec_order.billing_first_name, 
+			ec_order.billing_last_name, 
+			ec_order.billing_company_name, 
+			ec_order.billing_address_line_1, 
+			ec_order.billing_address_line_2, 
+			ec_order.billing_city, 
+			ec_order.billing_state, 
+			ec_order.billing_zip, 
+			ec_order.billing_country, 
+			bill_country.name_cnt as billing_country_name, 
+			ec_order.billing_phone, 
+			
+			ec_order.shipping_first_name, 
+			ec_order.shipping_last_name, 
+			ec_order.shipping_company_name, 
+			ec_order.shipping_address_line_1, 
+			ec_order.shipping_address_line_2, 
+			ec_order.shipping_city, 
+			ec_order.shipping_state, 
+			ec_order.shipping_zip, 
+			ec_order.shipping_country,
+			ship_country.name_cnt as shipping_country_name, 
+			ec_order.shipping_phone, 
+			
+			ec_order.payment_method, 
+			
+			ec_order.paypal_email_id, 
+			ec_order.paypal_payer_id,
+			
+			ec_order.order_customer_notes,
+			ec_order.creditcard_digits,
+			
+			ec_order.fraktjakt_order_id,
+			ec_order.fraktjakt_shipment_id,
+			ec_order.subscription_id,
+			
+			GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data 
+			
+			FROM 
+			ec_order
+			
+			LEFT JOIN ec_country as bill_country ON
+			bill_country.iso2_cnt = ec_order.billing_country
+			
+			LEFT JOIN ec_country as ship_country ON
+			ship_country.iso2_cnt = ec_order.shipping_country
+			
+			LEFT JOIN ec_orderstatus ON
+			ec_order.orderstatus_id = ec_orderstatus.status_id
+			
+			LEFT JOIN ec_customfield
+			ON ec_customfield.table_name = 'ec_order'
+			
+			LEFT JOIN ec_customfielddata
+			ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id, 
+			
+			ec_user
+			
+			WHERE ec_order.order_id = %d
+			
+			GROUP BY ec_order.order_id";
+			
+		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $order_id ) );
+	
+	}
+	
 }
 
 ?>

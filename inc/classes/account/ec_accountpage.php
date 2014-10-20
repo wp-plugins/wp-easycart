@@ -36,7 +36,17 @@ class ec_accountpage{
 		$this->subscriptions = new ec_subscription_list( $this->user );
 		
 		if( isset( $_GET['order_id'] ) ){
-			$order_row = $this->mysqli->get_order_row( $_GET['order_id'], $this->user_email, $this->user_password );
+			if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] )
+				$order_row = $this->mysqli->get_guest_order_row( $_GET['order_id'], $_SESSION['ec_guest_key'] );
+			
+			else if( isset( $_GET['ec_guest_key'] ) && $_GET['ec_guest_key'] ){
+				$_SESSION['ec_is_guest'] = true;
+				$_SESSION['ec_guest_key'] = $_GET['ec_guest_key'];
+				$order_row = $this->mysqli->get_guest_order_row( $_GET['order_id'], $_GET['ec_guest_key'] );
+			
+			}else
+				$order_row = $this->mysqli->get_order_row( $_GET['order_id'], $this->user_email, $this->user_password );
+			
 			$this->order = new ec_orderdisplay( $order_row, true );
 		}
 		
@@ -107,6 +117,20 @@ class ec_accountpage{
 				else if( $page_name == $_GET['ec_page'] )												return true;
 				else if( $_GET['ec_page'] == 'login' && $page_name == 'dashboard')						return true;
 				else																					return false;
+			}else if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] ){ // checked out guests can see order details
+				if( $page_name == 'forgot_password' && $_GET['ec_page'] == 'forgot_password' )			return true;
+				else if( $page_name == 'register' && $_GET['ec_page'] == 'register' )					return true;
+				else if( $page_name == 'login' && $_GET['ec_page'] != 'register' && $_GET['ec_page'] != 'forgot_password' && $_GET['ec_page'] != 'order_details' )	
+																										return true;
+				else if( $page_name == 'order_details' && $_GET['ec_page'] == 'order_details' )			return true;
+				else																					return false; 
+			}else if( isset( $_GET['ec_guest_key'] ) && $_GET['ec_guest_key'] ){ // guests can see their order with a key
+				if( $page_name == 'forgot_password' && $_GET['ec_page'] == 'forgot_password' )			return true;
+				else if( $page_name == 'register' && $_GET['ec_page'] == 'register' )					return true;
+				else if( $page_name == 'login' && $_GET['ec_page'] != 'register' && $_GET['ec_page'] != 'forgot_password' && $_GET['ec_page'] != 'order_details' )	
+																										return true;
+				else if( $page_name == 'order_details' && $_GET['ec_page'] == 'order_details' )			return true;
+				else																					return false; 
 			}else{ //If not logged in we can only show login or register
 				if( $page_name == 'forgot_password' && $_GET['ec_page'] == 'forgot_password' )			return true;
 				else if( $page_name == 'register' && $_GET['ec_page'] == 'register' )					return true;
@@ -1037,6 +1061,11 @@ class ec_accountpage{
 		
 		$first_name = $_POST['ec_account_billing_information_first_name'];
 		$last_name = $_POST['ec_account_billing_information_last_name'];
+		if( isset( $_POST['ec_account_billing_information_company_name'] ) ){
+			$company_name = $_POST['ec_account_billing_information_company_name'];
+		}else{
+			$company_name = "";
+		}
 		$address = $_POST['ec_account_billing_information_address'];
 		if( isset( $_POST['ec_account_billing_information_address2'] ) ){
 			$address2 = $_POST['ec_account_billing_information_address2'];
@@ -1056,6 +1085,7 @@ class ec_accountpage{
 		
 		if( $first_name == $this->user->billing->first_name && 
 			$last_name == $this->user->billing->last_name && 
+			$company_name == $this->user->billing->company_name && 
 			$address == $this->user->billing->address_line_1 && 
 			$address2 == $this->user->billing->address_line_2 && 
 			$city == $this->user->billing->city && 
@@ -1070,9 +1100,9 @@ class ec_accountpage{
 		
 			$address_id = $this->user->billing_id;
 			if( $address_id )
-				$success = $this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone );
+				$success = $this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name );
 			else{
-				$success = $this->mysqli->insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $this->user_email, $this->user_password, "billing" );
+				$success = $this->mysqli->insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $this->user_email, $this->user_password, "billing", $company_name );
 			}
 			
 			if( $success >= 0 )
@@ -1089,6 +1119,11 @@ class ec_accountpage{
 		
 		$first_name = $_POST['ec_account_shipping_information_first_name'];
 		$last_name = $_POST['ec_account_shipping_information_last_name'];
+		if( isset( $_POST['ec_account_shipping_information_company_name'] ) ){
+			$company_name = $_POST['ec_account_shipping_information_company_name'];
+		}else{
+			$company_name = "";
+		}
 		$address = $_POST['ec_account_shipping_information_address'];
 		if( isset( $_POST['ec_account_shipping_information_address2'] ) ){
 			$address2 = $_POST['ec_account_shipping_information_address2'];
@@ -1108,6 +1143,7 @@ class ec_accountpage{
 		
 		if( $first_name == $this->user->shipping->first_name && 
 			$last_name == $this->user->shipping->last_name && 
+			$company_name == $this->user->shipping->company_name && 
 			$address == $this->user->shipping->address_line_1 && 
 			$address2 == $this->user->shipping->address_line_2 && 
 			$city == $this->user->shipping->city && 
@@ -1122,9 +1158,9 @@ class ec_accountpage{
 		
 			$address_id = $this->user->shipping_id;
 			if( $address_id )
-				$success = $this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone );
+				$success = $this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name );
 			else{
-				$success = $this->mysqli->insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $this->user_email, $this->user_password, "shipping" );
+				$success = $this->mysqli->insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $this->user_email, $this->user_password, "shipping", $company_name );
 			}
 			
 			if( $success >= 0 )
@@ -1145,6 +1181,7 @@ class ec_accountpage{
 		
 		unset( $_SESSION['ec_billing_first_name'] );
 		unset( $_SESSION['ec_billing_last_name'] );
+		unset( $_SESSION['ec_billing_company_name'] );
 		unset( $_SESSION['ec_billing_address'] );
 		unset( $_SESSION['ec_billing_address2'] );
 		unset( $_SESSION['ec_billing_city'] );
@@ -1155,6 +1192,7 @@ class ec_accountpage{
 		
 		unset( $_SESSION['ec_shipping_first_name'] );
 		unset( $_SESSION['ec_shipping_last_name'] );
+		unset( $_SESSION['ec_shipping_company_name'] );
 		unset( $_SESSION['ec_shipping_address'] );
 		unset( $_SESSION['ec_shipping_address2'] );
 		unset( $_SESSION['ec_shipping_city'] );

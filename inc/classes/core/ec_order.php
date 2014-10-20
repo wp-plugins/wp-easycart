@@ -18,6 +18,11 @@ class ec_order{
 	
 	public $order_id;													// INT
 	
+	private $store_page;												// VARCHAR
+	private $cart_page;													// VARCHAR
+	private $account_page;												// VARCHAR
+	private $permalink_divider;											// CHAR
+	
 	const SUCCESS 		= 0;											// INT			
 	const ORDERERROR 	= 1;											// INT
 	const GATEWAYERROR 	= 2;											// INT
@@ -32,6 +37,30 @@ class ec_order{
 		$this->discount = $discount;
 		$this->order_totals = $order_totals;
 		$this->payment = $payment;
+		
+		$store_page_id = get_option('ec_option_storepage');
+		$cart_page_id = get_option('ec_option_cartpage');
+		$account_page_id = get_option('ec_option_accountpage');
+		
+		if( function_exists( 'icl_object_id' ) ){
+			$store_page_id = icl_object_id( $store_page_id, 'page', true, ICL_LANGUAGE_CODE );
+			$cart_page_id = icl_object_id( $cart_page_id, 'page', true, ICL_LANGUAGE_CODE );
+			$account_page_id = icl_object_id( $account_page_id, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		
+		$this->store_page = get_permalink( $store_page_id );
+		$this->cart_page = get_permalink( $cart_page_id );
+		$this->account_page = get_permalink( $account_page_id );
+		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+			$this->cart_page = $https_class->makeUrlHttps( $this->cart_page );
+			$this->account_page = $https_class->makeUrlHttps( $this->account_page );
+		}
+		
+		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
+		else														$this->permalink_divider = "?";
 	}
 	
 	public function submit_order( $payment_type ){
@@ -50,6 +79,8 @@ class ec_order{
 		$this->order_customer_notes = "";
 		if( isset( $_POST['ec_order_notes'] ) )
 			$this->order_customer_notes = $_POST['ec_order_notes'];
+		else if( isset( $_SESSION['ec_order_notes'] ) )
+			$this->order_customer_notes = $_SESSION['ec_order_notes'];
 		
 		$this->order_id = $this->mysqli->insert_order( $this->cart, $this->user, $this->shipping, $this->tax, $this->discount, $this->order_totals, $this->payment, $payment_type, "5", $this->order_customer_notes, $order_gateway );
 		
@@ -110,8 +141,8 @@ class ec_order{
 					if( $payment_type == 'third_party' && get_option( 'ec_option_payment_third_party' ) == "paymentexpress_thirdparty" ){
 						// Try not clearing session for this provider.
 					}else{
-						$this->clear_session();
-						$this->mysqli->clear_tempcart( session_id() );
+						$this->mysqli->clear_tempcart( $_SESSION['ec_cart_id'] );
+						$this->clear_session( );
 					}
 					
 					if( $this->discount->giftcard_code )
@@ -148,6 +179,8 @@ class ec_order{
 				if( $cart_item->is_giftcard) 			$giftcard_id = $this->mysqli->insert_new_giftcard( $cart_item->unit_price, $cart_item->gift_card_message );
 														$cart_item->giftcard_id = $giftcard_id;
 																
+				if( $cart_item->is_giftcard )			$this->send_gift_card_email( $cart_item, $giftcard_id );
+																
 														$download_id = 0;
 				if( $cart_item->is_download )			$download_id = $this->mysqli->insert_new_download( 	$this->order_id, $cart_item->download_file_name, $cart_item->product_id, $cart_item->is_amazon_download, $cart_item->amazon_key );
 														$cart_item->download_id = $download_id;
@@ -175,9 +208,9 @@ class ec_order{
 	}
 	
 	private function update_user_addresses( ){
-		$this->mysqli->update_user_address( $this->user->billing_id, $this->user->billing->first_name, $this->user->billing->last_name, $this->user->billing->address_line_1, $this->user->billing->address_line_2, $this->user->billing->city, $this->user->billing->state, $this->user->billing->zip, $this->user->billing->country, $this->user->billing->phone );
+		$this->mysqli->update_user_address( $this->user->billing_id, $this->user->billing->first_name, $this->user->billing->last_name, $this->user->billing->address_line_1, $this->user->billing->address_line_2, $this->user->billing->city, $this->user->billing->state, $this->user->billing->zip, $this->user->billing->country, $this->user->billing->phone, $this->user->billing->company_name );
 		
-		$this->mysqli->update_user_address( $this->user->shipping_id, $this->user->shipping->first_name, $this->user->shipping->last_name, $this->user->shipping->address_line_1, $this->user->shipping->address_line_2, $this->user->shipping->city, $this->user->shipping->state, $this->user->shipping->zip, $this->user->shipping->country, $this->user->shipping->phone );
+		$this->mysqli->update_user_address( $this->user->shipping_id, $this->user->shipping->first_name, $this->user->shipping->last_name, $this->user->shipping->address_line_1, $this->user->shipping->address_line_2, $this->user->shipping->city, $this->user->shipping->state, $this->user->shipping->zip, $this->user->shipping->country, $this->user->shipping->phone, $this->user->shipping->company_name );
 	}
 	
 	private function send_email_receipt(){
@@ -220,6 +253,35 @@ class ec_order{
 		
 	}
 	
+	public function send_gift_card_email( $cart_item, $giftcard_id ){
+		
+		$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
+	 	
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = "Content-Type: text/html; charset=utf-8";
+		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "X-Mailer: PHP/".phpversion();
+		
+		ob_start();
+        if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_giftcard.php' ) )	
+			include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_giftcard.php';
+		else
+			include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_giftcard.php';
+			
+        $message = ob_get_clean();
+		
+		if( get_option( 'ec_option_use_wp_mail' ) ){
+			wp_mail( $cart_item->gift_card_email, $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+			wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+		}else{
+			mail( $cart_item->gift_card_email, $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+			mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+		}
+		
+	}
+	
 	public function clear_session(){
 		
 		unset( $_SESSION['ec_billing_first_name'] );
@@ -232,6 +294,7 @@ class ec_order{
 		unset( $_SESSION['ec_billing_country'] );
 		unset( $_SESSION['ec_billing_phone'] );
 		
+		unset( $_SESSION['ec_shipping_selector'] );
 		unset( $_SESSION['ec_shipping_first_name'] );
 		unset( $_SESSION['ec_shipping_last_name'] );
 		unset( $_SESSION['ec_shipping_address'] );
@@ -244,9 +307,10 @@ class ec_order{
 		
 		unset( $_SESSION['ec_use_shipping'] );
 		unset( $_SESSION['ec_shipping_method'] );
-		unset( $_SESSION['ec_expedited_shipping'] ); 
+		unset( $_SESSION['ec_expedited_shipping'] );
 		
-		if( isset( $_SESSION['ec_create_account'] ) ){
+		if( !isset( $_SESSION['ec_user_id'] ) ){
+			unset( $_SESSION['ec_email'] );
 			unset( $_SESSION['ec_first_name'] );
 			unset( $_SESSION['ec_last_name'] );
 		}
@@ -256,6 +320,10 @@ class ec_order{
 		unset( $_SESSION['ec_giftcard'] );
 		unset( $_SESSION['ec_order_notes'] );
 		unset( $_SESSION['ec_cart_id'] );
+		unset( $_COOKIE['ec_cart_id'] );
+		$vals = array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' );
+		$_SESSION['ec_cart_id'] = $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)];
+		setcookie( 'ec_cart_id', $_SESSION['ec_cart_id'], time( ) + ( 3600 * 24 * 30 ) );
 	
 	}
 	
@@ -315,6 +383,10 @@ class ec_order{
 			
 		}
 	
+	}
+	
+	public function get_shipping_method_name( ){
+		return $this->mysqli->get_shipping_method_name( $_SESSION['ec_shipping_method'] );
 	}
 	
 }

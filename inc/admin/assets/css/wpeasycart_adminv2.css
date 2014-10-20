@@ -773,7 +773,7 @@
 }
 
 .ec_colorizer_row{
-	width:100%; float:left;
+	width:100%; float:left; height:40px;
 }
 
 .ec_colorizer_row_inactive{
@@ -793,7 +793,7 @@
 }
 
 .ec_colorizer_row_input{
-	float:left; width:125px;
+	float:left; width:140px; line-height:30px;
 }
 
 .ec_color_block_input{
@@ -922,7 +922,7 @@
 }
 
 .ec_payment_section{
-	float:left; width:100%; display:none;border: 1px solid #999; margin-bottom: 2px; background-color: #D9F1C8;
+	float:left; width:100%; border:1px solid #999; margin-bottom:2px; background-color:#D9F1C8;
 }
 
 .ec_payment_section_padding{

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 2.1.36
+Stable tag: 3.0.0
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,19 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.0 =
+* GREAT NEW VERSION!
+* WP EasyCart V3 Includes as all new design package that gives you more flexibility than ever when setting up your online store!
+* Live Editor - New live editor for products, product details, and cart!
+* Live Product Sorting - You can now sort your products and set them as the default! All done with a live drag and drop editor!
+* Live Preview - New live preview feature to see your store in multiple views (Desktop, iPad, iPhone)!
+* Product Designs - Six different product design types to fit your personal needs!
+* Store Custom Colorization - Quickly Colorize your store with two simple color choices!
+* New Quick View - All new quick view; clean, modern, and flexible!
+* New Product Details - Choose from one or two columns to fit your WordPress theme!
+* New Cart/Checkout - Simplified and streamlined checkout process with one or two column choices!
+* Responsive - Choose your columns, images sizes, etc... For each responsive size! Quickly make your store responsive with any WordPress Theme!
+* PLUS MANY, MANY MORE FEATURES!
 = 2.1.36 =
 * HOT FIX - for DB issue, please contact us if you hit 2.1.35 update.
 = 2.1.35 =

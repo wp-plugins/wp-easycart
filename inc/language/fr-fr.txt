@@ -51,7 +51,7 @@
 				},
 				"product_items_per_page":{
 					"title":"Product Page Items per Page",
-					"value":"Items Per Page:"
+					"value":"Articles par page:"
 				},
 				"product_paging_page":{
 					"title":"Product Page Page in Page a of b",
@@ -59,7 +59,31 @@
 				},
 				"product_paging_of":{
 					"title":"Product Page of in Page a of b",
-					"value":"of"
+					"value":"de"
+				},
+				"product_showing":{
+					"title":"Product Page Num Results Showing",
+					"value":"Afficher"
+				},
+				"product_all":{
+					"title":"Product Page Num Results all",
+					"value":"tous"
+				},
+				"product_results":{
+					"title":"Product Page Num Results",
+					"value":"les résultats"
+				},
+				"product_view_cart":{
+					"title":"Product Page View Cart",
+					"value":"mon panier"
+				},
+				"product_product_added_note":{
+					"title":"Product Page Added to Cart Note",
+					"value":"Produit a été ajouté à votre panier."
+				},
+				"product_product_view_per_page":{
+					"title":"Product Page View in Per Page",
+					"value":"Voir"
 				}
 			}
 		},
@@ -234,6 +258,94 @@
 				"product_details_minimum_quantity_text2":{
 					"title":"Min Purchase Amount Text Part 2",
 					"value":"est requis"
+				},
+				"product_details_handling_fee_notice1":{
+					"title":"One Time Handling Fee Part 1",
+					"value":"*Des frais de manutention ponctuelle de"
+				},
+				"product_details_handling_fee_notice2":{
+					"title":"One Time Handling Fee Part 2",
+					"value":"sera ajouté à votre total d'expédition à la caisse."
+				},
+				"product_details_home_link":{
+					"title":"Home Breadcrumbs Link",
+					"value":"l'accueil"
+				},
+				"product_details_store_link":{
+					"title":"Store Breadcrumbs Link",
+					"value":"Boutique"
+				},
+				"product_details_reviews_text":{
+					"title":"Store Reviews Count",
+					"value":"Avis"
+				},
+				"product_details_gift_card_recipient_name":{
+					"title":"Store Gift Card To Name",
+					"value":"Nom du destinataire"
+				},
+				"product_details_gift_card_recipient_email":{
+					"title":"Store Gift Card To Email",
+					"value":"Courriel du destinataire"
+				},
+				"product_details_gift_card_sender_name":{
+					"title":"Store Gift Card Sender's Name",
+					"value":"Nom de l'expéditeur"
+				},
+				"product_details_gift_card_message":{
+					"title":"Store Gift Card Message",
+					"value":"Inclure un message"
+				},
+				"product_details_donation_amount":{
+					"title":"Store Donation Amount",
+					"value":"Montant du don"
+				},
+				"product_details_loading_options":{
+					"title":"Store Loading Options",
+					"value":"Chargement Options disponibles"
+				},
+				"product_details_missing_option":{
+					"title":"Store Missing Option",
+					"value":"Option manquante:"
+				},
+				"product_details_maximum_quantity":{
+					"title":"Store Maximum Quantity Exceeded",
+					"value":"Quantité maximale dépassée"
+				},
+				"product_details_one_time_addition1":{
+					"title":"Store One Time Addition 1",
+					"value":"Un prix unique de"
+				},
+				"product_details_one_time_addition2":{
+					"title":"Store One Time Addition 2",
+					"value":"sera ajouté à votre commande."
+				},
+				"product_details_left_in_stock":{
+					"title":"Store Left in Stock",
+					"value":"Gauche en stock"
+				},
+				"product_details_categories":{
+					"title":"Store Categories",
+					"value":"catégories:"
+				},
+				"product_details_manufacturer":{
+					"title":"Store Manufacturer",
+					"value":"fabricant:"
+				},
+				"product_details_related_products":{
+					"title":"Store Related Products",
+					"value":"Produits connexes"
+				},
+				"product_details_tier_buy":{
+					"title":"Tiered Pricing buy x at y",
+					"value":"acheter"
+				},
+				"product_details_tier_buy_at":{
+					"title":"Tiered Pricing buy x at y",
+					"value":"à"
+				},
+				"product_details_gift_card_error":{
+					"title":"Gift Card Option Error Text",
+					"value":"Options Carte cadeau manquant"
 				}
 			}
 		},
@@ -270,11 +382,43 @@
 				},
 				"product_details_write_a_review":{
 					"title":"Product Details Write a Review Button",
-					"value":"Write a Review"
+					"value":"Écrire un avis"
+				},
+				"product_details_add_a_review_for":{
+					"title":"Store Add a Review",
+					"value":"Ajouter un commentaire sur"
+				},
+				"product_details_your_review_title":{
+					"title":"Store Review title",
+					"value":"Votre Titre du commentaire"
+				},
+				"product_details_your_review_rating":{
+					"title":"Store Review Rating",
+					"value":"votre note"
+				},
+				"product_details_your_review_message":{
+					"title":"Store Review Message",
+					"value":"votre commentaire"
+				},
+				"product_details_review_submitted_button":{
+					"title":"Store Review Submit",
+					"value":"SOUMETTRE"
 				},
 				"product_details_review_submitted":{
 					"title":"Product Details Review Submitted Button",
-					"value":"Review Submitted"
+					"value":"REVUE SOUMIS"
+				},
+				"product_details_submitting_review":{
+					"title":"Store Submitting Review",
+					"value":"Envoi de votre commentaire, S'il vous plaît attendre"
+				},
+				"product_details_review_submitted":{
+					"title":"Store Review Submitted",
+					"value":"Votre commentaire a été soumis avec succès"
+				},
+				"review_error":{
+					"title":"Store Review Error Missing Data",
+					"value":"Vous devez inclure un titre, note, et le message dans votre avis."
 				}
 			}
 		},		
@@ -284,6 +428,18 @@
 				"cart_title":{
 					"title":"Checkout Cart Title",
 					"value":"Mon Panier d achat"
+				},
+				"cart_checkout_details_title":{
+					"title":"Checkout Details Title",
+					"value":"détails caisse"
+				},
+				"cart_submit_payment_title":{
+					"title":"Submit Payment Title",
+					"value":"soumettre le paiement"
+				},
+				"your_cart_title":{
+					"title":"Your Cart Title",
+					"value":"votre panier"
 				},
 				"cart_empty_cart":{
 					"title":"Checkout, Empty Cart Message",
@@ -348,6 +504,30 @@
 				"cart_menu_icon_label_plural":{
 					"title":"Cart in Menu, Items",
 					"value":"Articles"
+				},
+				"deconetwork_edit":{
+					"title":"Deconetwork, Edit Design",
+					"value":"Modifier la conception"
+				},
+				"cart_order_adjustment":{
+					"title":"Cart Item, Adjustment per Order",
+					"value":"par ordre"
+				},
+				"cart_return_to_store":{
+					"title":"Empty Cart, Return to store",
+					"value":"RETOUR AU MAGASIN"
+				},
+				"cartitem_max_error":{
+					"title":"Max Quantity Exceeded Error",
+					"value":"Quantité maximale dépassée"
+				},
+				"cartitem_min_error":{
+					"title":"Min Quantity Required Error",
+					"value":"La quantité minimum requis"
+				},
+				"cart_please_wait":{
+					"title":"Cart Please Wait",
+					"value":"S'il vous plaît, attendez"
 				}
 			}
 		},	
@@ -489,6 +669,38 @@
 				"cart_notice_payment_card_code":{
 					"title":"Cart, Notice, Security Code Required",
 					"value":"code de sécurité"
+				},
+				"cart_notice_please_enter_your":{
+					"title":"Cart, Notice, Please Enter Your",
+					"value":"S'il vous plaît entrer votre"
+				},
+				"cart_notice_please_select_your":{
+					"title":"Cart, Notice, Please Select Your",
+					"value":"S'il vous plaît sélectionnez votre"
+				},
+				"cart_notice_please_enter_valid":{
+					"title":"Cart, Notice, Please Enter Valid",
+					"value":"S'il vous plaît entrer un valide"
+				},
+				"cart_notice_emails_do_not_match":{
+					"title":"Cart, Notice, Email Do Not Match",
+					"value":"Vos adresses de courriel ne correspondent pas"
+				},
+				"cart_notice_passwords_do_not_match":{
+					"title":"Cart, Notice, Passwords Do Not Match",
+					"value":"Vos mots de passe ne correspondent pas"
+				},
+				"cart_notice_checkout_details_errors":{
+					"title":"Cart, Notice, Checkout Details Errors",
+					"value":"S'il vous plaît corriger les erreurs dans les détails de votre caisse"
+				},
+				"cart_notice_payment_accept_terms":{
+					"title":"Cart, Notice, Please Accept Terms",
+					"value":"S'il vous plaît accepter les termes et conditions"
+				},
+				"cart_notice_payment_correct_errors":{
+					"title":"Cart, Notice, Payment Correct Errors",
+					"value":"S'il vous plaît corriger les erreurs avec vos informations de carte de crédit à présenter cet ordre"
 				}
 			}
 		},
@@ -517,8 +729,12 @@
 			"label":"Cart - Enter Coupons and Gift Cards",
 			"options":{
 				"cart_coupon_title":{
-					"title":"Cart, Coupons Title",
-					"value":"Coupons et Cheques-cadeaux"
+					"title":"Cart, Coupon Title",
+					"value":"Coupon"
+				},
+				"cart_gift_card_title":{
+					"title":"Cart, Gift Card Title",
+					"value":"Carte-cadeau"
 				},
 				"cart_coupon_sub_title":{
 					"title":"Cart, Coupons Sub-Title",
@@ -539,6 +755,14 @@
 				"cart_invalid_giftcard":{
 					"title":"Cart, Invalid Gift Card",
 					"value":"Not a valid gift card number"
+				},
+				"cart_enter_coupon":{
+					"title":"Cart, Enter Coupon Hint",
+					"value":"Entrez Code Promo"
+				},
+				"cart_enter_gift_code":{
+					"title":"Cart, Enter Gift Card Hint",
+					"value":"Entrez carte-cadeau"
 				}
 			}
 		},		
@@ -580,6 +804,10 @@
 				"cart_estimate_shipping_error":{
 					"title":"Cart, Mismatch Postal Code Error",
 					"value":"Votre code postal ne correspond pas \u00e0 notre magasins pays. Les frais d exp\u00e9dition seront d\u00e9termin\u00e9s apr\u00e8s avoir entr\u00e9 vos informations d exp\u00e9dition"
+				},
+				"cart_estimate_shipping_hint":{
+					"title":"Cart, Estimate Shipping Hint",
+					"value":"Entrez le code postal"
 				}
 			}
 		},	
@@ -781,6 +1009,10 @@
 				"cart_billing_information_ship_to_different":{
 					"title":"Cart, Billing, Use Shipping Radio",
 					"value":"Envoyer a une differente Adresse"
+				},
+				"cart_billing_information_company_name":{
+					"title":"Cart, Billing, Company Name Label",
+					"value":"Nom de l'entreprise"
 				}
 			}
 		},	
@@ -846,6 +1078,10 @@
 				"cart_shipping_information_phone":{
 					"title":"Cart, Shipping, Phone Label",
 					"value":"Telephone"
+				},
+				"cart_shipping_information_company_name":{
+					"title":"Cart, Shipping, Company Name Label",
+					"value":"Nom de l'entreprise"
 				}
 			}
 		},	
@@ -891,6 +1127,14 @@
 				"cart_contact_information_continue_button":{
 					"title":"Cart, Contact Information, Continue Button",
 					"value":"CONTINUER"
+				},
+				"cart_contact_information_continue_payment":{
+					"title":"Cart, Contact Information, Continue to Payment",
+					"value":"Continuer à paiement"
+				},
+				"cart_contact_information_continue_shipping":{
+					"title":"Cart, Contact Information, Continue to Shipping",
+					"value":"CONTINUER DE LIVRAISON"
 				}			
 			}
 		},	
@@ -904,6 +1148,10 @@
 				"cart_shipping_method_continue_button":{
 					"title":"Cart, Shipping Method Continue Button",
 					"value":"CONTINUER"
+				},
+				"cart_shipping_method_please_select_one":{
+					"title":"Cart, Shipping please select one",
+					"value":"S'il vous plaît sélectionner un mode de livraison"
 				}
 			}
 		},		
@@ -1010,6 +1258,34 @@
 				"cart_payment_information_order_notes_message":{
 					"title":"Cart, Payment Information, Customer Notes Message",
 					"value":"Si vous avez des demandes particulieres pour votre commande, inscrivez les ici."
+				},
+				"cart_payment_information_review_title":{
+					"title":"Cart, Review Cart Title",
+					"value":"SUIVI DE VOTRE PANIER"
+				},
+				"cart_payment_information_edit_cart_link":{
+					"title":"Cart, edit cart items link",
+					"value":"modifier panier articles"
+				},
+				"cart_payment_information_edit_billing_link":{
+					"title":"Cart, edit billing link",
+					"value":"modifier l'adresse de facturation"
+				},
+				"cart_payment_information_edit_shipping_link":{
+					"title":"Cart, edit shipping link",
+					"value":"modifier l'adresse de livraison"
+				},
+				"cart_payment_information_edit_shipping_method_link":{
+					"title":"Cart, edit shipping link",
+					"value":"modifier la méthode d'expédition"
+				},
+				"cart_payment_review_totals_title":{
+					"title":"Cart, Review Total Title",
+					"value":"TOTAUX REVUE PANIER"
+				},
+				"cart_payment_review_agree":{
+					"title":"Cart, Review Agree Text",
+					"value":"J'accepte les termes et conditions de ce site."
 				}
 			}
 		},
@@ -1047,6 +1323,14 @@
 				"cart_payment_complete_line_5":{
 					"title":"Cart, Payment Complete, Line 5",
 					"value":"Cliquez ici pour voir votre contenu d'adhésion"
+				},
+				"cart_payment_complete_click_here":{
+					"title":"Cart, Payment Complete, Click Here",
+					"value":"Cliquez ici"
+				},
+				"cart_payment_complete_to_view_order":{
+					"title":"Cart, Payment Complete, To View Order",
+					"value":"pour voir votre commande"
 				},
 				"cart_payment_complete_billing_label":{
 					"title":"Cart, Payment Complete, Billing Label",
@@ -1143,6 +1427,34 @@
 				"cart_success_create_account":{
 					"title":"Cart, Payment Complete, Create Account",
 					"value":"créer un compte"
+				},
+				"cart_giftcard_receipt_title":{
+					"title":"Cart, Gift Card Email Subject",
+					"value":"Carte cadeau Livraison"
+				},
+				"cart_giftcard_receipt_header":{
+					"title":"Cart, Gift Card Header",
+					"value":"Votre carte-cadeau"
+				},
+				"cart_giftcard_receipt_to":{
+					"title":"Cart, Gift Card To",
+					"value":"à"
+				},
+				"cart_giftcard_receipt_from":{
+					"title":"Cart, Gift Card From",
+					"value":"à partir de"
+				},
+				"cart_giftcard_receipt_id":{
+					"title":"Cart, Gift Card ID Label",
+					"value":"Votre carte-cadeau ID"
+				},
+				"cart_giftcard_receipt_amount":{
+					"title":"Cart, Gift Card Amount",
+					"value":"Carte Cadeau total"
+				},
+				"cart_giftcard_receipt_message":{
+					"title":"Cart, Gift Card Message",
+					"value":"Vous pouvez échanger votre carte-cadeau lors de votre commande à"
 				}
 			}
 		},
@@ -1954,6 +2266,14 @@
 				"minquantity":{
 					"title":"Store, Minimum Quantity Error",
 					"value":"Ce produit nécessite une quantité minimum d'achat."
+				},
+				"missing_gift_card_options":{
+					"title":"Store, Missing Gift Card Options",
+					"value":"Options de carte cadeau manquant"
+				},
+				"missing_inquiry_options":{
+					"title":"Store, Missing Inquiry Options",
+					"value":"Manque d'options d'enquête"
 				}
 			}
 		},
@@ -2011,6 +2331,14 @@
 				"inquiry_sent":{
 					"title":"Store, Inquiry Sent",
 					"value":"Votre demande de produits a été envoyé avec succès."
+				},
+				"add_to_cart_success":{
+					"title":"Store, Added to Cart",
+					"value":"Ajouté avec succès à votre panier"
+				},
+				"adding_to_cart":{
+					"title":"Store, Adding to Cart",
+					"value":"Ajout au panier..."
 				}
 			}
 		},

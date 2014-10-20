@@ -39,7 +39,7 @@
 			"options":{
 				"product_quick_view":{
 					"title":"Product Quick View Label",
-					"value":"+Quick View"
+					"value":"Quickview"
 				},
 				"product_design_now":{
 					"title":"Product Design Now Label",
@@ -60,6 +60,30 @@
 				"product_paging_of":{
 					"title":"Product Page of in Page a of b",
 					"value":"of"
+				},
+				"product_showing":{
+					"title":"Product Page Num Results Showing",
+					"value":"Showing"
+				},
+				"product_all":{
+					"title":"Product Page Num Results all",
+					"value":"all"
+				},
+				"product_results":{
+					"title":"Product Page Num Results",
+					"value":"Results"
+				},
+				"product_view_cart":{
+					"title":"Product Page View Cart",
+					"value":"View Cart"
+				},
+				"product_product_added_note":{
+					"title":"Product Page Added to Cart Note",
+					"value":"Product successfully added to your cart."
+				},
+				"product_product_view_per_page":{
+					"title":"Product Page View in Per Page",
+					"value":"View"
 				}
 			}
 		},
@@ -177,7 +201,7 @@
 				},
 				"product_details_review_no_reviews":{
 					"title":"Product Details, Customer Reviews, No Reviews",
-					"value":"Be the first to write a review."
+					"value":"There are no reviews yet, submit yours in the box provided."
 				},
 				"product_details_add_to_cart":{
 					"title":"Add to Cart button text",
@@ -197,7 +221,7 @@
 				},
 				"product_details_inquiry_title":{
 					"title":"Inquiry Title",
-					"value":"Product Inquiry"
+					"value":"Submit Product Inquiry"
 				},
 				"product_details_inquiry_error":{
 					"title":"Inquiry Error Text",
@@ -205,23 +229,23 @@
 				},
 				"product_details_inquiry_name":{
 					"title":"Inquiry Name",
-					"value":"*Name:"
+					"value":"*Your Name:"
 				},
 				"product_details_inquiry_email":{
 					"title":"Inquiry Email",
-					"value":"*Email:"
+					"value":"*Your Email:"
 				},
 				"product_details_inquiry_message":{
 					"title":"Inquire Button Text",
-					"value":"*Inquiry:"
+					"value":"*Your Message:"
 				},
 				"product_details_inquire":{
 					"title":"Inquire Button Text",
-					"value":"MAKE INQUIRY"
+					"value":"SUBMIT INQUIRY"
 				},
 				"product_details_inquiry_send_copy":{
 					"title":"Inquiry - Send Copy",
-					"value":"Send me a copy"
+					"value":"Please send me a copy"
 				},
 				"product_details_inquiry_thank_you":{
 					"title":"Inquiry Thank You Note",
@@ -233,7 +257,95 @@
 				},
 				"product_details_minimum_quantity_text2":{
 					"title":"Min Purchase Amount Text Part 2",
-					"value":"is Required"
+					"value":"items is Required"
+				},
+				"product_details_handling_fee_notice1":{
+					"title":"One Time Handling Fee Part 1",
+					"value":"*A one-time handling fee of"
+				},
+				"product_details_handling_fee_notice2":{
+					"title":"One Time Handling Fee Part 2",
+					"value":"will be added to your shipping total at checkout."
+				},
+				"product_details_home_link":{
+					"title":"Home Breadcrumbs Link",
+					"value":"Home"
+				},
+				"product_details_store_link":{
+					"title":"Store Breadcrumbs Link",
+					"value":"Shop"
+				},
+				"product_details_reviews_text":{
+					"title":"Store Reviews Count",
+					"value":"Reviews"
+				},
+				"product_details_gift_card_recipient_name":{
+					"title":"Store Gift Card To Name",
+					"value":"Recipient's Name"
+				},
+				"product_details_gift_card_recipient_email":{
+					"title":"Store Gift Card To Email",
+					"value":"Recipient's Email"
+				},
+				"product_details_gift_card_sender_name":{
+					"title":"Store Gift Card Sender's Name",
+					"value":"Sender's Name"
+				},
+				"product_details_gift_card_message":{
+					"title":"Store Gift Card Message",
+					"value":"Include a Message"
+				},
+				"product_details_donation_amount":{
+					"title":"Store Donation Amount",
+					"value":"Donation Amount"
+				},
+				"product_details_loading_options":{
+					"title":"Store Loading Options",
+					"value":"Loading Available Options"
+				},
+				"product_details_missing_option":{
+					"title":"Store Missing Option",
+					"value":"Missing Option:"
+				},
+				"product_details_maximum_quantity":{
+					"title":"Store Maximum Quantity Exceeded",
+					"value":"Maximum quantity exceeded"
+				},
+				"product_details_one_time_addition1":{
+					"title":"Store One Time Addition 1",
+					"value":"A one-time price of"
+				},
+				"product_details_one_time_addition2":{
+					"title":"Store One Time Addition 2",
+					"value":"will be added to your order."
+				},
+				"product_details_left_in_stock":{
+					"title":"Store Left in Stock",
+					"value":"Left in Stock"
+				},
+				"product_details_categories":{
+					"title":"Store Categories",
+					"value":"Categories:"
+				},
+				"product_details_manufacturer":{
+					"title":"Store Manufacturer",
+					"value":"Manufacturer:"
+				},
+				"product_details_related_products":{
+					"title":"Store Related Products",
+					"value":"Related Products"
+				},
+				"product_details_tier_buy":{
+					"title":"Tiered Pricing buy x at y",
+					"value":"Buy"
+				},
+				"product_details_tier_buy_at":{
+					"title":"Tiered Pricing buy x at y",
+					"value":"at"
+				},
+				"product_details_gift_card_error":{
+					"title":"Gift Card Option Error Text",
+					"value":"Missing Gift Card Options"
 				}
 			}
 		},
@@ -272,9 +384,41 @@
 					"title":"Product Details Write a Review Button",
 					"value":"Write a Review"
 				},
-				"product_details_review_submitted":{
+				"product_details_add_a_review_for":{
+					"title":"Store Add a Review",
+					"value":"Add a review for"
+				},
+				"product_details_your_review_title":{
+					"title":"Store Review title",
+					"value":"Your Review Title"
+				},
+				"product_details_your_review_rating":{
+					"title":"Store Review Rating",
+					"value":"Your Rating"
+				},
+				"product_details_your_review_message":{
+					"title":"Store Review Message",
+					"value":"Your Review"
+				},
+				"product_details_your_review_submit":{
+					"title":"Store Review Submit",
+					"value":"SUBMIT"
+				},
+				"product_details_review_submitted_button":{
 					"title":"Product Details Review Submitted Button",
-					"value":"Review Submitted"
+					"value":"REVIEW SUBMITTED"
+				},
+				"product_details_submitting_review":{
+					"title":"Store Submitting Review",
+					"value":"Submitting Your Review, Please Wait"
+				},
+				"product_details_review_submitted":{
+					"title":"Store Review Submitted",
+					"value":"Your Review Has Been Submitted Successfully"
+				},
+				"review_error":{
+					"title":"Store Review Error Missing Data",
+					"value":"You must include a title, rating, and message in your review."
 				}
 			}
 		},
@@ -283,7 +427,19 @@
 			"options":{
 				"cart_title":{
 					"title":"Checkout Cart Title",
-					"value":"My Shopping Cart"
+					"value":"SHOPPING CART"
+				},
+				"cart_checkout_details_title":{
+					"title":"Checkout Details Title",
+					"value":"CHECKOUT DETAILS"
+				},
+				"cart_submit_payment_title":{
+					"title":"Submit Payment Title",
+					"value":"SUBMIT PAYMENT"
+				},
+				"your_cart_title":{
+					"title":"Your Cart Title",
+					"value":"YOUR CART"
 				},
 				"cart_empty_cart":{
 					"title":"Checkout, Empty Cart Message",
@@ -307,7 +463,7 @@
 				},
 				"cart_header_column3":{
 					"title":"Cart Header, Column 3",
-					"value":"Unit Price"
+					"value":"Price"
 				},
 				"cart_header_column4":{
 					"title":"Cart Header, Column 4",
@@ -335,11 +491,11 @@
 				},
 				"cart_item_adjustment":{
 					"title":"Cart Item, Adjustment per Item",
-					"value":" each"
+					"value":"per item"
 				},
 				"cart_item_new_price_option":{
 					"title":"Cart Item, Price Override Text",
-					"value":"New Unit Price: "
+					"value":"Item Price of"
 				},
 				"cart_menu_icon_label":{
 					"title":"Cart in Menu, Item",
@@ -348,6 +504,30 @@
 				"cart_menu_icon_label_plural":{
 					"title":"Cart in Menu, Items",
 					"value":"Items"
+				},
+				"deconetwork_edit":{
+					"title":"Deconetwork, Edit Design",
+					"value":"Edit Design"
+				},
+				"cart_order_adjustment":{
+					"title":"Cart Item, Adjustment per Order",
+					"value":"per order"
+				},
+				"cart_return_to_store":{
+					"title":"Empty Cart, Return to store",
+					"value":"RETURN TO STORE"
+				},
+				"cartitem_max_error":{
+					"title":"Max Quantity Exceeded Error",
+					"value":"Maximum Quantity Exceeded"
+				},
+				"cartitem_min_error":{
+					"title":"Min Quantity Required Error",
+					"value":"Minimum Quantity Required"
+				},
+				"cart_please_wait":{
+					"title":"Cart Please Wait",
+					"value":"Please Wait"
 				}
 			}
 		},
@@ -460,7 +640,7 @@
 				},
 				"cart_notice_length_error":{
 					"title":"Cart, Notice, Password Format",
-					"value":"length must be greater than six characters"
+					"value":"Please enter a password of at least 6 characters"
 				},
 				"cart_notice_payment_card_type":{
 					"title":"Cart, Notice, Card Type",
@@ -489,6 +669,38 @@
 				"cart_notice_payment_card_code":{
 					"title":"Cart, Notice, Security Code Required",
 					"value":"Security Code"
+				},
+				"cart_notice_please_enter_your":{
+					"title":"Cart, Notice, Please Enter Your",
+					"value":"Please enter your"
+				},
+				"cart_notice_please_select_your":{
+					"title":"Cart, Notice, Please Select Your",
+					"value":"Please select your"
+				},
+				"cart_notice_please_enter_valid":{
+					"title":"Cart, Notice, Please Enter Valid",
+					"value":"Please enter a valid"
+				},
+				"cart_notice_emails_do_not_match":{
+					"title":"Cart, Notice, Email Do Not Match",
+					"value":"Your email addresses do not match"
+				},
+				"cart_notice_passwords_do_not_match":{
+					"title":"Cart, Notice, Passwords Do Not Match",
+					"value":"Your passwords do not match"
+				},
+				"cart_notice_checkout_details_errors":{
+					"title":"Cart, Notice, Checkout Details Errors",
+					"value":"Please correct the errors in your checkout details"
+				},
+				"cart_notice_payment_accept_terms":{
+					"title":"Cart, Notice, Please Accept Terms",
+					"value":"Please agree to the terms and conditions"
+				},
+				"cart_notice_payment_correct_errors":{
+					"title":"Cart, Notice, Payment Correct Errors",
+					"value":"Please correct the errors to your checkout information above"
 				}
 			}
 		},
@@ -517,8 +729,12 @@
 			"label":"Cart - Enter Coupons and Gift Cards",
 			"options":{
 				"cart_coupon_title":{
-					"title":"Cart, Coupons Title",
-					"value":"Coupons and Gift Cards"
+					"title":"Cart, Coupon Title",
+					"value":"Coupon"
+				},
+				"cart_gift_card_title":{
+					"title":"Cart, Gift Card Title",
+					"value":"Gift Card"
 				},
 				"cart_coupon_sub_title":{
 					"title":"Cart, Coupons Sub-Title",
@@ -539,6 +755,14 @@
 				"cart_invalid_giftcard":{
 					"title":"Cart, Invalid Gift Card",
 					"value":"Not a valid gift card number"
+				},
+				"cart_enter_coupon":{
+					"title":"Cart, Enter Coupon Hint",
+					"value":"Enter Coupon Code"
+				},
+				"cart_enter_gift_code":{
+					"title":"Cart, Enter Gift Card Hint",
+					"value":"Enter Gift Card"
 				}
 			}
 		},
@@ -580,6 +804,10 @@
 				"cart_estimate_shipping_error":{
 					"title":"Cart, Mismatch Postal Code Error",
 					"value":"Your postal code does not match our store's country. Shipping rates will be determined after you have entered your shipping information"
+				},
+				"cart_estimate_shipping_hint":{
+					"title":"Cart, Estimate Shipping Hint",
+					"value":"Enter Zip Code"
 				}
 			}
 		},
@@ -780,7 +1008,11 @@
 				},
 				"cart_billing_information_ship_to_different":{
 					"title":"Cart, Billing, Use Shipping Radio",
-					"value":"Ship to different address"
+					"value":"SHIP TO DIFFERENT ADDRESS"
+				},
+				"cart_billing_information_company_name":{
+					"title":"Cart, Billing, Company Name Label",
+					"value":"Company Name"
 				}
 			}
 		},
@@ -846,6 +1078,10 @@
 				"cart_shipping_information_phone":{
 					"title":"Cart, Shipping, Phone Label",
 					"value":"Phone"
+				},
+				"cart_shipping_information_company_name":{
+					"title":"Cart, Shipping, Company Name Label",
+					"value":"Company Name"
 				}
 			}
 		},
@@ -891,6 +1127,14 @@
 				"cart_contact_information_continue_button":{
 					"title":"Cart, Contact Information, Continue Button",
 					"value":"CONTINUE"
+				},
+				"cart_contact_information_continue_payment":{
+					"title":"Cart, Contact Information, Continue to Payment",
+					"value":"CONTINUE TO PAYMENT"
+				},
+				"cart_contact_information_continue_shipping":{
+					"title":"Cart, Contact Information, Continue to Shipping",
+					"value":"CONTINUE TO SHIPPING"
 				}
 			}
 		},
@@ -904,6 +1148,10 @@
 				"cart_shipping_method_continue_button":{
 					"title":"Cart, Shipping Method Continue Button",
 					"value":"CONTINUE"
+				},
+				"cart_shipping_method_please_select_one":{
+					"title":"Cart, Shipping please select one",
+					"value":"Please select a shipping method"
 				}
 			}
 		},
@@ -1005,11 +1253,39 @@
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Cart, Payment Information, Customer Notes Title",
-					"value":"Special Notes"
+					"value":"ORDER NOTES"
 				},
 				"cart_payment_information_order_notes_message":{
 					"title":"Cart, Payment Information, Customer Notes Message",
 					"value":"If you have any special requests for your order please enter them here."
+				},
+				"cart_payment_information_review_title":{
+					"title":"Cart, Review Cart Title",
+					"value":"REVIEW YOUR CART"
+				},
+				"cart_payment_information_edit_cart_link":{
+					"title":"Cart, edit cart items link",
+					"value":"edit cart items"
+				},
+				"cart_payment_information_edit_billing_link":{
+					"title":"Cart, edit billing link",
+					"value":"edit billing address"
+				},
+				"cart_payment_information_edit_shipping_link":{
+					"title":"Cart, edit shipping link",
+					"value":"edit shipping address"
+				},
+				"cart_payment_information_edit_shipping_method_link":{
+					"title":"Cart, edit shipping link",
+					"value":"edit shipping method"
+				},
+				"cart_payment_review_totals_title":{
+					"title":"Cart, Review Total Title",
+					"value":"REVIEW CART TOTALS"
+				},
+				"cart_payment_review_agree":{
+					"title":"Cart, Review Agree Text",
+					"value":"I agree to the terms and conditions of this site."
 				}
 			}
 		},
@@ -1048,6 +1324,14 @@
 					"title":"Cart, Payment Complete, Line 5",
 					"value":"Click Here to View Your Membership Content"
 				},
+				"cart_payment_complete_click_here":{
+					"title":"Cart, Payment Complete, Click Here",
+					"value":"Click Here"
+				},
+				"cart_payment_complete_to_view_order":{
+					"title":"Cart, Payment Complete, To View Order",
+					"value":"to View Your Order"
+				},
 				"cart_payment_complete_billing_label":{
 					"title":"Cart, Payment Complete, Billing Label",
 					"value":"Billing Address"
@@ -1066,7 +1350,7 @@
 				},
 				"cart_payment_complete_details_header_3":{
 					"title":"Cart, Payment Complete, Header 3",
-					"value":"Unit Price"
+					"value":"Price"
 				},
 				"cart_payment_complete_details_header_4":{
 					"title":"Cart, Payment Complete, Header 4",
@@ -1143,6 +1427,34 @@
 				"cart_success_create_account":{
 					"title":"Cart, Payment Complete, Create Account",
 					"value":"Create Account"
+				},
+				"cart_giftcard_receipt_title":{
+					"title":"Cart, Gift Card Email Subject",
+					"value":"Gift Card Delivery"
+				},
+				"cart_giftcard_receipt_header":{
+					"title":"Cart, Gift Card Header",
+					"value":"Your Gift Card"
+				},
+				"cart_giftcard_receipt_to":{
+					"title":"Cart, Gift Card To",
+					"value":"To"
+				},
+				"cart_giftcard_receipt_from":{
+					"title":"Cart, Gift Card From",
+					"value":"From"
+				},
+				"cart_giftcard_receipt_id":{
+					"title":"Cart, Gift Card ID Label",
+					"value":"Your Gift Card ID"
+				},
+				"cart_giftcard_receipt_amount":{
+					"title":"Cart, Gift Card Amount",
+					"value":"Gift Card Total"
+				},
+				"cart_giftcard_receipt_message":{
+					"title":"Cart, Gift Card Message",
+					"value":"You can redeem your gift card during checkout at"
 				}
 			}
 		},
@@ -1711,7 +2023,7 @@
 				},
 				"account_orders_details_header_3":{
 					"title":"Account, Orders Details, Header 3",
-					"value":"Unit Price"
+					"value":"Price"
 				},
 				"account_orders_details_header_4":{
 					"title":"Account, Orders Details, Header 4",
@@ -1954,6 +2266,14 @@
 				"minquantity":{
 					"title":"Store, Minimum Quantity Error",
 					"value":"This product requires a minimum purchase quantity."
+				},
+				"missing_gift_card_options":{
+					"title":"Store, Missing Gift Card Options",
+					"value":"Missing Gift Card Options"
+				},
+				"missing_inquiry_options":{
+					"title":"Store, Missing Inquiry Options",
+					"value":"Missing Inquiry Options"
 				}
 			}
 		},
@@ -2011,6 +2331,14 @@
 				"inquiry_sent":{
 					"title":"Store, Inquiry Sent",
 					"value":"Your product inquiry has been sent successfully."
+				},
+				"add_to_cart_success":{
+					"title":"Store, Added to Cart",
+					"value":"Successfully Added to your Shopping Cart"
+				},
+				"adding_to_cart":{
+					"title":"Store, Adding to Cart",
+					"value":"Adding to Cart..."
 				}
 			}
 		},

@@ -5,7 +5,15 @@
 	
 	$mysqli = new ec_db( );
 	
-	$order = $mysqli->get_order_row( $order_id, $email, $password );
+	if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] )
+		$order = $mysqli->get_guest_order_row( $order_id, $_SESSION['ec_guest_key'] );
+	
+	else if( isset( $_GET['ec_guest_key'] ) && $_GET['ec_guest_key'] )
+		$order = $mysqli->get_guest_order_row( $order_id, $_GET['ec_guest_key'] );
+	
+	else
+		$order = $mysqli->get_order_row( $order_id, $email, $password );
+	
 	$bill_country = $mysqli->get_country_name( $order->billing_country );
 	if( $bill_country )
 		$order->billing_country = $bill_country;
@@ -15,7 +23,15 @@
 	
 	if( $order ){
 		
-		$order_details = $mysqli->get_order_details( $order_id, $email, $password );
+		if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] )
+			$order_details = $mysqli->get_guest_order_details( $order_id, $_SESSION['ec_guest_key'] );
+	
+		else if( isset( $_GET['ec_guest_key'] ) && $_GET['ec_guest_key'] )
+			$order_details = $mysqli->get_guest_order_details( $order_id, $_GET['ec_guest_key'] );
+		
+		else
+			$order_details = $mysqli->get_order_details( $order_id, $email, $password );
+		
 		$country_list = $mysqli->get_countries( );
 		
 		$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );

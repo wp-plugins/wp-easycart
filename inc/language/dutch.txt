@@ -60,6 +60,30 @@
 				"product_paging_of":{
 					"title":"Productpagina van in Pagina a of b",
 					"value":"van"
+				},
+				"product_showing":{
+					"title":"Product Page Num Results Showing",
+					"value":"met"
+				},
+				"product_all":{
+					"title":"Product Page Num Results all",
+					"value":"alle"
+				},
+				"product_results":{
+					"title":"Product Page Num Results",
+					"value":"resultaten"
+				},
+				"product_view_cart":{
+					"title":"Product Page View Cart",
+					"value":"Bekijk winkelwagen"
+				},
+				"product_product_added_note":{
+					"title":"Product Page Added to Cart Note",
+					"value":"Het product is toegevoegd aan uw winkelwagen."
+				},
+				"product_product_view_per_page":{
+					"title":"Product Page View in Per Page",
+					"value":"Bekijk"
 				}
 			}
 		},
@@ -234,6 +258,94 @@
 				"product_details_minimum_quantity_text2":{
 					"title":"Min Purchase Amount Text Part 2",
 					"value":"is vereist"
+				},
+				"product_details_handling_fee_notice1":{
+					"title":"One Time Handling Fee Part 1",
+					"value":"*Een eenmalige administratiekosten van"
+				},
+				"product_details_handling_fee_notice2":{
+					"title":"One Time Handling Fee Part 2",
+					"value":"zal uw verzendkosten totaal worden toegevoegd bij de kassa."
+				},
+				"product_details_home_link":{
+					"title":"Home Breadcrumbs Link",
+					"value":"Thuis"
+				},
+				"product_details_store_link":{
+					"title":"Store Breadcrumbs Link",
+					"value":"Shop"
+				},
+				"product_details_reviews_text":{
+					"title":"Store Reviews Count",
+					"value":"Beoordelingen"
+				},
+				"product_details_gift_card_recipient_name":{
+					"title":"Store Gift Card To Name",
+					"value":"Naam ontvanger"
+				},
+				"product_details_gift_card_recipient_email":{
+					"title":"Store Gift Card To Email",
+					"value":"Ontvanger E-mail"
+				},
+				"product_details_gift_card_sender_name":{
+					"title":"Store Gift Card Sender's Name",
+					"value":"Naam afzender"
+				},
+				"product_details_gift_card_message":{
+					"title":"Store Gift Card Message",
+					"value":"Onder andere een bericht"
+				},
+				"product_details_donation_amount":{
+					"title":"Store Donation Amount",
+					"value":"donatie Bedrag"
+				},
+				"product_details_loading_options":{
+					"title":"Store Loading Options",
+					"value":"Laden Beschikbare opties"
+				},
+				"product_details_missing_option":{
+					"title":"Store Missing Option",
+					"value":"missing Option:"
+				},
+				"product_details_maximum_quantity":{
+					"title":"Store Maximum Quantity Exceeded",
+					"value":"Maximale hoeveelheid overschreden"
+				},
+				"product_details_one_time_addition1":{
+					"title":"Store One Time Addition 1",
+					"value":"Een eenmalige prijs van"
+				},
+				"product_details_one_time_addition2":{
+					"title":"Store One Time Addition 2",
+					"value":"zal worden toegevoegd aan uw bestelling."
+				},
+				"product_details_left_in_stock":{
+					"title":"Store Left in Stock",
+					"value":"Op voorraad"
+				},
+				"product_details_categories":{
+					"title":"Store Categories",
+					"value":"Categorieën:"
+				},
+				"product_details_manufacturer":{
+					"title":"Store Manufacturer",
+					"value":"fabrikant:"
+				},
+				"product_details_related_products":{
+					"title":"Store Related Products",
+					"value":"verwante producten"
+				},
+				"product_details_tier_buy":{
+					"title":"Tiered Pricing buy x at y",
+					"value":"kopen"
+				},
+				"product_details_tier_buy_at":{
+					"title":"Tiered Pricing buy x at y",
+					"value":"op"
+				},
+				"product_details_gift_card_error":{
+					"title":"Gift Card Option Error Text",
+					"value":"Missing Giftcard Opties"
 				}
 			}
 		},
@@ -272,9 +384,41 @@
 					"title":"Buttontekst schrijf een review",
 					"value":"Schrijf een Review"
 				},
+				"product_details_add_a_review_for":{
+					"title":"Store Add a Review",
+					"value":"Voeg een beoordeling voor"
+				},
+				"product_details_your_review_title":{
+					"title":"Store Review title",
+					"value":"Uw Review Titel"
+				},
+				"product_details_your_review_rating":{
+					"title":"Store Review Rating",
+					"value":"uw waardering"
+				},
+				"product_details_your_review_message":{
+					"title":"Store Review Message",
+					"value":"uw recensie"
+				},
+				"product_details_your_review_submit":{
+					"title":"Store Review Submit",
+					"value":"SUBMIT"
+				},
+				"product_details_review_submitted_button":{
+					"title":"Product Details Review Submitted Button",
+					"value":"Recensie verstuurd"
+				},
+				"product_details_submitting_review":{
+					"title":"Store Submitting Review",
+					"value":"Het indienen van uw review, Please Wait"
+				},
 				"product_details_review_submitted":{
-					"title":"Buttontekst review verzonden",
-					"value":"Review is verzonden"
+					"title":"Store Review Submitted",
+					"value":"Je review is succesvol ingediend"
+				},
+				"review_error":{
+					"title":"Store Review Error Missing Data",
+					"value":"Je moet een titel, waardering en bericht in uw beoordeling opnemen."
 				}
 			}
 		},
@@ -284,6 +428,18 @@
 				"cart_title":{
 					"title":"Titel winkelmand",
 					"value":"Mijn winkelmand"
+				},
+				"cart_checkout_details_title":{
+					"title":"Checkout Details Title",
+					"value":"Afrekenen details"
+				},
+				"cart_submit_payment_title":{
+					"title":"Submit Payment Title",
+					"value":"submit betaling"
+				},
+				"your_cart_title":{
+					"title":"Your Cart Title",
+					"value":"uw winkelwagen"
 				},
 				"cart_empty_cart":{
 					"title":"Bericht lege winkelmand",
@@ -348,6 +504,30 @@
 				"cart_menu_icon_label_plural":{
 					"title":"Cart in Menu, Items",
 					"value":"Items"
+				},
+				"deconetwork_edit":{
+					"title":"Deconetwork, Edit Design",
+					"value":"Ontwerp bewerken"
+				},
+				"cart_order_adjustment":{
+					"title":"Cart Item, Adjustment per Order",
+					"value":"per bestelling"
+				},
+				"cart_return_to_store":{
+					"title":"Empty Cart, Return to store",
+					"value":"terug te slaan"
+				},
+				"cartitem_max_error":{
+					"title":"Max Quantity Exceeded Error",
+					"value":"Maximale hoeveelheid overschreden"
+				},
+				"cartitem_min_error":{
+					"title":"Min Quantity Required Error",
+					"value":"Minimaal Vereiste Hoeveelheid"
+				},
+				"cart_please_wait":{
+					"title":"Cart Please Wait",
+					"value":"Please Wait"
 				}
 			}
 		},
@@ -489,6 +669,38 @@
 				"cart_notice_payment_card_code":{
 					"title":"Cart, Notice, Security Code Required",
 					"value":"Beveiligingscode"
+				},
+				"cart_notice_please_enter_your":{
+					"title":"Cart, Notice, Please Enter Your",
+					"value":"Vul uw"
+				},
+				"cart_notice_please_select_your":{
+					"title":"Cart, Notice, Please Select Your",
+					"value":"Selecteer uw"
+				},
+				"cart_notice_please_enter_valid":{
+					"title":"Cart, Notice, Please Enter Valid",
+					"value":"Vul een geldig"
+				},
+				"cart_notice_emails_do_not_match":{
+					"title":"Cart, Notice, Email Do Not Match",
+					"value":"Uw e-mailadressen komen niet overeen"
+				},
+				"cart_notice_passwords_do_not_match":{
+					"title":"Cart, Notice, Passwords Do Not Match",
+					"value":"Uw wachtwoorden komen niet overeen"
+				},
+				"cart_notice_checkout_details_errors":{
+					"title":"Cart, Notice, Checkout Details Errors",
+					"value":"Corrigeer de fouten in uw kassa gegevens"
+				},
+				"cart_notice_payment_accept_terms":{
+					"title":"Cart, Notice, Please Accept Terms",
+					"value":"Ga akkoord met de algemene voorwaarden"
+				},
+				"cart_notice_payment_correct_errors":{
+					"title":"Cart, Notice, Payment Correct Errors",
+					"value":"Corrigeer de fouten met uw credit card informatie op deze bestelling te plaatsen"
 				}
 			}
 		},
@@ -517,8 +729,12 @@
 			"label":"Winkel - Coupons en Cadeaubonnen",
 			"options":{
 				"cart_coupon_title":{
-					"title":"Winkelmand, CC-titel",
-					"value":"Coupons en Cadeaubonnen"
+					"title":"Cart, Coupon Title",
+					"value":"Coupon"
+				},
+				"cart_gift_card_title":{
+					"title":"Cart, Gift Card Title",
+					"value":"Gift Card"
 				},
 				"cart_coupon_sub_title":{
 					"title":"Winkelmand, Coupon subtitel",
@@ -539,6 +755,14 @@
 				"cart_invalid_giftcard":{
 					"title":"Winkelmand, Ongeldige cadeaubon",
 					"value":"De opgegeven code is niet (meer) geldig."
+				},
+				"cart_enter_coupon":{
+					"title":"Cart, Enter Coupon Hint",
+					"value":"Voer couponcode"
+				},
+				"cart_enter_gift_code":{
+					"title":"Cart, Enter Gift Card Hint",
+					"value":"Voer Gift Card"
 				}
 			}
 		},
@@ -580,6 +804,10 @@
 				"cart_estimate_shipping_error":{
 					"title":"Winkelmand, Foutieve postcode",
 					"value":"Uw postcode komt niet overeen. De verzendkosten worden bepaald nadat u uw verzendinformatie heeft ingevuld."
+				},
+				"cart_estimate_shipping_hint":{
+					"title":"Cart, Estimate Shipping Hint",
+					"value":"Postcode invoeren"
 				}
 			}
 		},
@@ -781,6 +1009,10 @@
 				"cart_billing_information_ship_to_different":{
 					"title":"Winkelmand, Account, Gebruik ander adres",
 					"value":"Verzenden naar een ander adres"
+				},
+				"cart_billing_information_company_name":{
+					"title":"Cart, Billing, Company Name Label",
+					"value":"Bedrijfsnaam"
 				}
 			}
 		},
@@ -846,6 +1078,10 @@
 				"cart_shipping_information_phone":{
 					"title":"Winkelmand, Verzenden, Telefoon Label",
 					"value":"Telefoon"
+				},
+				"cart_shipping_information_company_name":{
+					"title":"Cart, Shipping, Company Name Label",
+					"value":"Bedrijfsnaam"
 				}
 			}
 		},
@@ -891,6 +1127,14 @@
 				"cart_contact_information_continue_button":{
 					"title":"Winkelmand, Contactinformatie, Doorgaan Button",
 					"value":"DOORGAAN"
+				},
+				"cart_contact_information_continue_payment":{
+					"title":"Cart, Contact Information, Continue to Payment",
+					"value":"Blijven Payment"
+				},
+				"cart_contact_information_continue_shipping":{
+					"title":"Cart, Contact Information, Continue to Shipping",
+					"value":"BLIJVEN VERZENDKOSTEN"
 				}
 			}
 		},
@@ -904,6 +1148,10 @@
 				"cart_shipping_method_continue_button":{
 					"title":"Winkelmand, Verzendmethode Doorgaan Button",
 					"value":"DOORGAAN"
+				},
+				"cart_shipping_method_please_select_one":{
+					"title":"Cart, Shipping please select one",
+					"value":"Selecteer een verzendmethode"
 				}
 			}
 		},
@@ -1010,6 +1258,34 @@
 				"cart_payment_information_order_notes_message":{
 					"title":"Winkelmand, Betaalinformatie, Customer Notes Message",
 					"value":"Wanneer u speciale verzoeken heeft, plaats deze dan hier."
+				},
+				"cart_payment_information_review_title":{
+					"title":"Cart, Review Cart Title",
+					"value":"Herzie uw CART"
+				},
+				"cart_payment_information_edit_cart_link":{
+					"title":"Cart, edit cart items link",
+					"value":"bewerk winkelwagen items"
+				},
+				"cart_payment_information_edit_billing_link":{
+					"title":"Cart, edit billing link",
+					"value":"bewerken factuuradres"
+				},
+				"cart_payment_information_edit_shipping_link":{
+					"title":"Cart, edit shipping link",
+					"value":"bewerken verzendadres"
+				},
+				"cart_payment_information_edit_shipping_method_link":{
+					"title":"Cart, edit shipping link",
+					"value":"bewerk verzendmethode"
+				},
+				"cart_payment_review_totals_title":{
+					"title":"Cart, Review Total Title",
+					"value":"REVIEW CART TOTALEN"
+				},
+				"cart_payment_review_agree":{
+					"title":"Cart, Review Agree Text",
+					"value":"Ik ga akkoord met de voorwaarden van deze site."
 				}
 			}
 		},
@@ -1047,6 +1323,14 @@
 				"cart_payment_complete_line_5":{
 					"title":"Winkelmand, Betaling Compleet, Regel 5",
 					"value":"Klik hier om te bekijken uw lidmaatschap inhoud"
+				},
+				"cart_payment_complete_click_here":{
+					"title":"Cart, Payment Complete, Click Here",
+					"value":"Klik Hier"
+				},
+				"cart_payment_complete_to_view_order":{
+					"title":"Cart, Payment Complete, To View Order",
+					"value":"aan Uw order"
 				},
 				"cart_payment_complete_billing_label":{
 					"title":"Winkelmand, Betaling Compleet, Factuur Label",
@@ -1143,6 +1427,34 @@
 				"cart_success_create_account":{
 					"title":"Cart, Payment Complete, Create Account",
 					"value":"Account aanmaken"
+				},
+				"cart_giftcard_receipt_title":{
+					"title":"Cart, Gift Card Email Subject",
+					"value":"Gift Card Levering"
+				},
+				"cart_giftcard_receipt_header":{
+					"title":"Cart, Gift Card Header",
+					"value":"Uw Gift Card"
+				},
+				"cart_giftcard_receipt_to":{
+					"title":"Cart, Gift Card To",
+					"value":"aan"
+				},
+				"cart_giftcard_receipt_from":{
+					"title":"Cart, Gift Card From",
+					"value":"van"
+				},
+				"cart_giftcard_receipt_id":{
+					"title":"Cart, Gift Card ID Label",
+					"value":"Uw Gift Card ID"
+				},
+				"cart_giftcard_receipt_amount":{
+					"title":"Cart, Gift Card Amount",
+					"value":"Gift Card Totaal"
+				},
+				"cart_giftcard_receipt_message":{
+					"title":"Cart, Gift Card Message",
+					"value":"U kunt uw gift card bij de kassa af te lossen op"
 				}
 			}
 		},
@@ -1954,6 +2266,14 @@
 				"minquantity":{
 					"title":"Store, Minimum Quantity Error",
 					"value":"Dit product vereist een minimale afname hoeveelheid."
+				},
+				"missing_gift_card_options":{
+					"title":"Store, Missing Gift Card Options",
+					"value":"Missing Gift Card Opties"
+				},
+				"missing_inquiry_options":{
+					"title":"Store, Missing Inquiry Options",
+					"value":"Missing Inquiry Opties"
 				}
 			}
 		},
@@ -2011,6 +2331,14 @@
 				"inquiry_sent":{
 					"title":"Store, Inquiry Sent",
 					"value":"Uw product onderzoek is succesvol verstuurd."
+				},
+				"add_to_cart_success":{
+					"title":"Store, Added to Cart",
+					"value":"Succesvol toegevoegd aan uw winkelwagen"
+				},
+				"adding_to_cart":{
+					"title":"Store, Adding to Cart",
+					"value":"Toevoegen aan winkelwagen ..."
 				}
 			}
 		},

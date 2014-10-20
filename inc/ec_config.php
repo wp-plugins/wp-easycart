@@ -23,10 +23,14 @@ if( ini_get( 'register_globals' ) ){
     }
 }
 
-// Custom Cart ID, Unique Per Order
-if( !isset( $_SESSION['ec_cart_id'] ) ){
-	$keyvals = array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '0', '6', '7', '8', '9' );
-	$_SESSION['ec_cart_id'] = $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)] . $keyvals[rand(0,35)];
+// Setup our cart id for this customer
+if( !isset( $_SESSION['ec_cart_id'] ) && !isset( $_COOKIE['ec_cart_id'] ) ){
+	$vals = array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' );
+	$_SESSION['ec_cart_id'] = $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)];
+	setcookie( 'ec_cart_id', $_SESSION['ec_cart_id'], time( ) + ( 3600 * 24 * 30 ) );
+}else if( !isset( $_SESSION['ec_cart_id'] ) && isset( $_COOKIE['ec_cart_id'] ) ){
+	$_SESSION['ec_cart_id'] = $_COOKIE['ec_cart_id'];
+	setcookie( 'ec_cart_id', $_SESSION['ec_cart_id'], time( ) + ( 3600 * 24 * 30 ) );
 }
 	
 // Language Translation Check

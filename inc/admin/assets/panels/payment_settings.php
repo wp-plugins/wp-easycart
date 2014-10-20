@@ -85,8 +85,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 <div class="ec_payment_section" id="ec_live_payment">
     <div class="ec_payment_section_padding">
 		<?php if( $license->is_registered( ) && $license->is_lite_version( ) ){ ?>
-        Your store is registered, but you have the Lite version. To use live payment gateways, you need the standard version. Click the link below to upgrade to upgrade and unlock this feature.
-        <a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_standard_version_link"></a>
+        Your store is registered, but you have the Lite version. To use live payment gateways, you need the standard version. Click the link below to upgrade to upgrade and unlock this feature. <a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_standard_version_link">Click Here</a>
         <?php }else if( !$license->is_registered( ) ){ ?>
         Your store is currently not registered. Please purchase the Standard version and register your store before setting up your live payment gateway.
         <a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank" class="ec_standard_version_link"></a>
@@ -158,7 +157,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
     <div class="ec_payment_section_padding">
 		<?php if( $license->is_registered( ) && $license->is_lite_version( ) ){ ?>
         	Your store is registered, but you have the Lite version. To use live payment gateways, you need the standard version. Click the link below to upgrade to upgrade and unlock this feature.
-        	<a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_standard_version_link"></a>
+        	<a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_standard_version_link">Click Here</a>
         <?php }else if( !$license->is_registered( ) ){ ?>
        		Your store is currently not registered. Please purchase the standard version and register your store before setting up your live payment gateway.
         	<a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank" class="ec_standard_version_link"></a>
@@ -230,4 +229,6 @@ function toggle_live_gateways( ){
 		jQuery( '#' + type ).slideDown( "slow" );
 	}
 }
+
+jQuery( '.ec_payment_section' ).hide( );
 </script>

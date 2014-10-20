@@ -24,6 +24,9 @@ class ec_usps{
 			
 		if( !$destination_country )
 			$destination_country = "US";
+			
+		if( !$destination_zip || $destination_zip == "" )
+			$destination_zip = $this->usps_ship_from_zip;
 		
 		if( $destination_country != "US" ){
 			
@@ -116,6 +119,9 @@ class ec_usps{
 			
 		if( !$destination_country )
 			$destination_country = "US";
+			
+		if( !$destination_zip || $destination_zip == "" )
+			$destination_zip = $this->usps_ship_from_zip;
 		
 		$ship_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height );
 		

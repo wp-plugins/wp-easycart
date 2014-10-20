@@ -8,6 +8,7 @@ class ec_cartitem{
 	public $cartitem_id;											// INT
 	public $product_id;												// INT
 	public $model_number;											// VARCHAR 255
+	public $orderdetails_model_number;								// VARCHAR 255
 	public $post_id;												// INT
 	public $manufacturer_id;										// INT
 	public $use_advanced_optionset;									// BOOL
@@ -72,7 +73,8 @@ class ec_cartitem{
 	public $gift_card_message;										// TEXT
 	public $gift_card_from_name;									// VARCHAR 255
 	public $gift_card_to_name;										// VARCHAR 255
-	
+	public $gift_card_email;										// VARCHAR 255
+		
 	public $donation_price;											// FLOAT 9,2
 	
 	public $is_deconetwork;											// BOOL
@@ -106,6 +108,7 @@ class ec_cartitem{
 		$this->cartitem_id = $cartitem_data->cartitem_id;
 		$this->product_id = $cartitem_data->product_id;
 		$this->model_number = $cartitem_data->model_number;
+		$this->orderdetails_model_number = $cartitem_data->model_number;
 		$this->post_id = $cartitem_data->post_id;
 		$this->manufacturer_id = $cartitem_data->manufacturer_id;
 		
@@ -137,6 +140,8 @@ class ec_cartitem{
 			$this->optionitem1_price = $option[1];
 			$this->optionitem1_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem1_id = $option[3];
+			if( $option[4] != "" )
+				$this->orderdetails_model_number = $this->orderdetails_model_number . '-' . $option[4];
 		}else{
 			$this->optionitem1_name = ""; $this->optionitem1_price = 0.00;
 		}
@@ -147,6 +152,8 @@ class ec_cartitem{
 			$this->optionitem2_price = $option[1];
 			$this->optionitem2_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem2_id = $option[3];
+			if( $option[4] != "" )
+				$this->orderdetails_model_number = $this->orderdetails_model_number . '-' . $option[4];
 		}else{
 			$this->optionitem2_name = ""; $this->optionitem2_price = 0.00;
 		}
@@ -157,6 +164,8 @@ class ec_cartitem{
 			$this->optionitem3_price = $option[1];
 			$this->optionitem3_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem3_id = $option[3];
+			if( $option[4] != "" )
+				$this->orderdetails_model_number = $this->orderdetails_model_number . '-' . $option[4];
 		}else{
 			$this->optionitem3_name = ""; $this->optionitem3_price = 0.00;
 		}
@@ -167,6 +176,8 @@ class ec_cartitem{
 			$this->optionitem4_price = $option[1];
 			$this->optionitem4_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem4_id = $option[3];
+			if( $option[4] != "" )
+				$this->orderdetails_model_number = $this->orderdetails_model_number . '-' . $option[4];
 		}else{
 			$this->optionitem4_name = ""; $this->optionitem4_price = 0.00;
 		}
@@ -177,6 +188,8 @@ class ec_cartitem{
 			$this->optionitem5_price = $option[1];
 			$this->optionitem5_label = $GLOBALS['language']->convert_text( $option[2] );
 			$this->optionitem5_id = $option[3];
+			if( $option[4] != "" )
+				$this->orderdetails_model_number = $this->orderdetails_model_number . '-' . $option[4];
 		}else{
 			$this->optionitem5_name = ""; $this->optionitem5_price = 0.00;
 		}
@@ -195,6 +208,7 @@ class ec_cartitem{
 		$this->gift_card_message = $cartitem_data->gift_card_message;
 		$this->gift_card_from_name = $cartitem_data->gift_card_from_name;
 		$this->gift_card_to_name = $cartitem_data->gift_card_to_name;
+		$this->gift_card_email = $cartitem_data->gift_card_email;
 		
 		$this->download_file_name = $cartitem_data->download_file_name;
 		$this->amazon_key = $cartitem_data->amazon_key;
@@ -238,6 +252,10 @@ class ec_cartitem{
 		
 		if( $this->use_advanced_optionset ){
 			foreach( $this->advanced_options as $advanced_option ){
+				
+				if( $advanced_option->optionitem_model_number != "" )
+					$this->orderdetails_model_number = $this->orderdetails_model_number . '-' . $advanced_option->optionitem_model_number;
+				
 				if( $advanced_option->option_type == "grid" ){
 					
 					if( $advanced_option->optionitem_price != 0 ){
@@ -292,7 +310,7 @@ class ec_cartitem{
 		}
 		
 		if( $this->is_donation ){
-			$this->unit_price = $cartitem_data->donation_price;
+			$this->unit_price = $cartitem_data->donation_price + $options_price;
 		}else if( isset( $roleprice ) ){
 			$this->unit_price = $roleprice + $options_price;
 		}else if( count( $this->pricetiers ) > 0 ){
@@ -464,6 +482,31 @@ class ec_cartitem{
 				echo $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id;
 			
 			echo "\">" . $this->title . "</a>";
+			
+		}
+		
+	}
+	
+	public function get_title_link( ){
+		
+		if( $this->is_deconetwork ){
+			
+			return "https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_edit_link;
+			
+		}else{
+			
+			$ret_string = $this->ec_get_permalink( $this->post_id );
+		
+			if( substr_count( $ret_string, '?' ) ){
+				$second_permalink_divider = "&";
+			}else{
+				$second_permalink_divider = "?";
+			}
+			
+			if( $this->image1_optionitem )
+				$ret_string .= $second_permalink_divider . "optionitem_id=" . $this->optionitem1_id;
+			
+			return $ret_string;
 			
 		}
 		
@@ -706,6 +749,15 @@ class ec_cartitem{
 		
 	}
 	
+	public function get_unit_price( ){
+		
+		if( $this->is_deconetwork )
+			return $GLOBALS['currency']->get_currency_display( $this->deconetwork_total / $this->quantity );
+		else
+			return $GLOBALS['currency']->get_currency_display( $this->unit_price );
+		
+	}
+	
 	public function display_item_total( ){
 		
 		if( $this->is_deconetwork ){
@@ -717,6 +769,15 @@ class ec_cartitem{
 			echo "<span id=\"ec_cartitem_total_" . $this->cartitem_id . "\">" . $GLOBALS['currency']->get_currency_display( $this->total_price ) . "</span>";
 		
 		}
+		
+	}
+	
+	public function get_total( ){
+		
+		if( $this->is_deconetwork )
+			return $GLOBALS['currency']->get_currency_display( $this->deconetwork_total );
+		else
+			return $GLOBALS['currency']->get_currency_display( $this->total_price );
 		
 	}
 	

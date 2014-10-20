@@ -9,10 +9,12 @@ class ec_product{
 	public $activate_in_store;					// BOOL
 	public $title;								// VARCHAR 255
 	public $description;						// Text
+	public $short_description;					// VARCHAR 2048
 	public $specifications;						// Text
 	public $price;								// Float 7,2
 	public $list_price;							// Float 7,2
 	public $vat_rate;							// FLOAT 11,2
+	public $handling_price;						// FLOAT 11,2
 	public $stock_quantity;						// INT
 	public $min_purchase_quantity;				// INT
 	public $weight;								// Float 9,2
@@ -32,6 +34,7 @@ class ec_product{
 	
 	public $download_file_name;					// VARCHAR 255
 	
+	public $has_options;						// BOOL
 	public $options;							// ec_prodoptions structure
 	
 	public $images;								// ec_prodimages structure
@@ -93,7 +96,26 @@ class ec_product{
 	
 	private $customfields = array();			// array of ec_customfield objects
 	
-	function __construct($product_data, $is_featured_product=0, $is_product_details=0, $is_widget=0 ){
+	public $menuitems;							// Menu Options
+	public $categoryitems;						// Category Options
+	public $option1quantity;					// Array of Option Quantity Values
+	public $advanced_optionsets;				// Array of advanced option sets
+	
+	// DISPLAY VARS
+	public $display_type;						// INT
+	public $image_hover_type;					// INT
+	public $image_effect_type;					// VARCHAR(20)
+	public $tag_type;							// INT
+	public $tag_bg_color;						// VARCHAR(20)
+	public $tag_text_color;						// VARCHAR(20)
+	public $tag_text;							// VARCHAR(20)
+	
+	public $i;									// INT
+	public $page_options;						// Array
+	
+	function __construct($product_data, $is_featured_product=0, $is_product_details=0, $is_widget=0, $i=0, $page_options = NULL ){
+		$this->i = $i;
+		$this->page_options = $page_options;
 		$this->mysqli = new ec_db();
 		$this->is_featured_product = $is_featured_product;
 		$this->is_product_details = $is_product_details;
@@ -129,10 +151,12 @@ class ec_product{
 		$this->activate_in_store = $product_data['activate_in_store'];
 		$this->title = $GLOBALS['language']->convert_text( $product_data['title'] );
 		$this->description = $GLOBALS['language']->convert_text( $product_data['description'] );
+		$this->short_description = $GLOBALS['language']->convert_text( $product_data['short_description'] );
 		$this->specifications = $GLOBALS['language']->convert_text( $product_data['specifications'] );
 		$this->price = $product_data['price']; 
 		$this->list_price = $product_data['list_price'];
 		$this->vat_rate = $product_data['vat_rate'];
+		$this->handling_price = $product_data['handling_price'];
 		$this->stock_quantity = $product_data['stock_quantity'];
 		$this->min_purchase_quantity = $product_data['min_purchase_quantity'];
 		$this->weight = $product_data['weight'];
@@ -152,7 +176,16 @@ class ec_product{
 		
 		$this->download_file_name = $product_data['download_file_name'];
 		
+		$this->has_options = false;
+		if( $product_data['option1'] ){
+			$this->has_options = true;
+		}
 		$this->options = new ec_prodoptions($this->product_id, $product_data['option1'], $product_data['option2'], $product_data['option3'], $product_data['option4'], $product_data['option5'], $product_data['use_optionitem_quantity_tracking']);
+			
+		if( $this->is_featured_product )
+			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], "", $this->post_id );
+		else
+			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], $this->get_additional_link_options(), $this->post_id );
 		
 		if(!$this->is_featured_product && $this->is_product_details)
 		$this->featured_products = new ec_featuredproducts($product_data['featured_product_id_1'], $product_data['featured_product_id_2'], $product_data['featured_product_id_3'], $product_data['featured_product_id_4']);
@@ -202,11 +235,6 @@ class ec_product{
 		
 		$this->update_stock_quantity( session_id() );
 		
-		if( $this->is_featured_product )
-			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], "", $this->post_id, $product_data['is_deconetwork'], $this->get_deconetwork_link( ) );
-		else
-			$this->images = new ec_prodimages($this->product_id, $this->options, $this->model_number, $product_data['use_optionitem_images'], $product_data['image1'], $product_data['image2'], $product_data['image3'], $product_data['image4'], $product_data['image5'], $product_data['optionitemimage_data'], $this->get_additional_link_options(), $this->post_id, $product_data['is_deconetwork'], $this->get_deconetwork_link( ) );
-		
 		if ($product_data['use_optionitem_images']) {
 			$social_image1 = $this->images->get_single_image( );
 		} else {
@@ -234,6 +262,25 @@ class ec_product{
 		}else{
 			$this->promotion_text = 0;	
 		}
+		
+		if( $this->is_product_details ){
+			// Get menu and category connections
+			$this->menuitems = $this->mysqli->get_menu_values( $this->product_id );
+			$this->categoryitems = $this->mysqli->get_category_values( $this->product_id );
+			if( $this->use_optionitem_quantity_tracking ){
+				$this->option1quantity = $this->mysqli->get_option_quantity_values( $this->product_id );
+			}
+			$this->advanced_optionsets = $this->mysqli->get_advanced_optionsets( $this->product_id );
+		}
+		
+		// DISPLAY VARS
+		$this->display_type = $product_data['display_type'];
+		$this->image_hover_type = $product_data['image_hover_type'];
+		$this->image_effect_type = $product_data['image_effect_type'];
+		$this->tag_type = $product_data['tag_type'];
+		$this->tag_bg_color = $product_data['tag_bg_color'];
+		$this->tag_text_color = $product_data['tag_text_color'];
+		$this->tag_text = $product_data['tag_text'];
 		
 	}
 	
@@ -268,23 +315,6 @@ class ec_product{
 		
 		$quantity = $this->mysqli->get_tempcart_product_quantity( $session_id, $this->product_id );
 		$this->stock_quantity = $this->stock_quantity - $quantity;
-		
-	}
-	
-	public function get_deconetwork_link( ){
-		
-		 $link = "https://" . get_option( 'ec_option_deconetwork_url' ) . "/external/load_resource?mode=" . $this->deconetwork_mode . "&product=" . $this->deconetwork_product_id . "&";
-		if( $this->deconetwork_size_id != "" ){
-			$link .= "size=" . $this->deconetwork_size_id . "&";
-		}
-		if( $this->deconetwork_color_id != "" ){
-			$link .= "color=" . $this->deconetwork_color_id . "&";
-		}
-		if( $this->deconetwork_design_id != "" ){
-			$link .= "design=" . $this->deconetwork_design_id . "&";
-		}
-		$link .= "callback_param_ec_action=deconetwork_add_to_cart&oid=" . $_SESSION['ec_cart_id'] . "&callback_param_ec_product_id=" . $this->product_id;
-		return $link;
 		
 	}
 	
@@ -457,6 +487,19 @@ class ec_product{
 	/* Display the product title text */
 	public function display_product_title( ){
 		echo $this->title;
+	}
+	
+	public function get_rating( ){
+		$total = 0;
+		for( $i=0; $i<count( $this->reviews ); $i++ ){
+			$total = $total + $this->reviews[$i]->rating;	
+		}
+		if( $i > 0 )
+			$average = ceil( $total/$i );
+		else
+			$average = 0;
+		
+		return $average;
 	}
 	
 	/* Display the star icons for the product */
@@ -1439,6 +1482,75 @@ class ec_product{
 			return get_permalink( $postid );
 		}else{
 			return $this->store_page . $this->permalink_divider . "model_number=" . $this->model_number;
+		}
+		
+	}
+	
+	public function in_stock( ){
+		
+		if( $this->stock_quantity > 0 ){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
+	public function has_options( ){
+		
+		if( $this->has_options || $this->use_advanced_optionset )
+			return true;
+		else
+			return false;
+		
+	}
+	
+	public function get_add_to_cart_link( ){
+		return $this->cart_page . $this->permalink_divider . "ec_action=addtocart&model_number=" . $this->model_number;
+	}
+	
+	public function get_subscription_link( ){
+		return $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $this->model_number;
+	}
+	
+	public function get_advanced_optionitems( $option_id ){
+		return $this->mysqli->get_advanced_optionitems( $option_id );
+	}
+	
+	public function get_deconetwork_link( ){
+		
+		 $link = "https://" . get_option( 'ec_option_deconetwork_url' ) . "/external/load_resource?mode=" . $this->deconetwork_mode . "&product=" . $this->deconetwork_product_id . "&";
+		if( $this->deconetwork_size_id != "" ){
+			$link .= "size=" . $this->deconetwork_size_id . "&";
+		}
+		if( $this->deconetwork_color_id != "" ){
+			$link .= "color=" . $this->deconetwork_color_id . "&";
+		}
+		if( $this->deconetwork_design_id != "" ){
+			$link .= "design=" . $this->deconetwork_design_id . "&";
+		}
+		$link .= "callback_param_ec_action=deconetwork_add_to_cart&oid=" . $_SESSION['ec_cart_id'] . "&callback_param_ec_product_id=" . $this->product_id;
+		return $link;
+		
+	}
+	
+	public function get_manufacturer_link( ){
+		
+		$manufacturer_row = $this->mysqli->get_manufacturer_row( $this->manufacturer_id );
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $manufacturer_row->post_id ){
+			return get_permalink( $manufacturer_row->post_id );
+		}else{
+			return $this->store_page . $this->permalink_divider . "manufacturer_id=" . $this->manufacturer_id;
+		}
+		
+	}
+	
+	public function get_category_link( $post_id, $category_id ){
+		
+		if( !get_option( 'ec_option_use_old_linking_style' ) && $post_id ){
+			return get_permalink( $post_id );
+		}else{
+			return $this->store_page . $this->permalink_divider . "category_id=" . $category_id;
 		}
 		
 	}

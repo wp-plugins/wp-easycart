@@ -7,7 +7,10 @@ class ec_paging{
 	
 	private $total_products;							// INT
 	private $num_per_page;								// INT
-	private $start_item;								// INT
+	private $start_item;								// INT						// INT
+	
+	private $store_page;
+	private $permalink_divider;
 	
 	const MAX_PAGES_SHOWN = 5;							// INT
 	
@@ -17,6 +20,17 @@ class ec_paging{
 		$this->current_page = $this->get_current_page( );
 		$this->total_pages = 0;
 		$this->start_item = ( ( $this->current_page - 1 ) * $this->num_per_page );
+		
+		$storepageid = get_option( 'ec_option_storepage' );
+		$this->store_page = get_permalink( $storepageid );
+		
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$this->store_page = $https_class->makeUrlHttps( $this->store_page );
+		}
+		
+		if( substr_count( $this->store_page, '?' ) )						$this->permalink_divider = "&";
+		else																$this->permalink_divider = "?";
 	}
 	
 	public function update_product_count( $total_products ){
@@ -86,6 +100,61 @@ class ec_paging{
 			return sprintf( " LIMIT %d, %d", $this->start_item, $this->num_per_page );
 		else
 			return "";
+	}
+	
+	public function get_prev_page_link( ){
+		$return_link = $this->store_page . $this->permalink_divider;
+		$vars_added = 0;
+		foreach( $_GET as $key => $getvar ){
+			if( $key != 'pagenum' ){
+				if( $vars_added > 0 )
+					$return_link .= "&amp;";
+				$return_link .= $key . "=" . $getvar;
+				$vars_added++;
+			}
+		}
+		if( $vars_added > 0 )
+			$return_link .= "&amp;";
+			
+		$return_link .= "pagenum=" . ( $this->current_page - 1 );
+		return $return_link;
+			
+	}
+	
+	public function get_page_link( $i ){
+		$return_link = $this->store_page . $this->permalink_divider;
+		$vars_added = 0;
+		foreach( $_GET as $key => $getvar ){
+			if( $key != 'pagenum' ){
+				if( $vars_added > 0 )
+					$return_link .= "&amp;";
+				$return_link .= $key . "=" . $getvar;
+				$vars_added++;
+			}
+		}
+		if( $vars_added > 0 )
+			$return_link .= "&amp;";
+			
+		$return_link .= "pagenum=" . $i;
+		return $return_link;
+	}
+	
+	public function get_next_page_link( ){
+		$return_link = $this->store_page . $this->permalink_divider;
+		$vars_added = 0;
+		foreach( $_GET as $key => $getvar ){
+			if( $key != 'pagenum' ){
+				if( $vars_added > 0 )
+					$return_link .= "&amp;";
+				$return_link .= $key . "=" . $getvar;
+				$vars_added++;
+			}
+		}
+		if( $vars_added > 0 )
+			$return_link .= "&amp;";
+			
+		$return_link .= "pagenum=" . ( $this->current_page + 1 );
+		return $return_link;
 	}
 	
 }

@@ -101,7 +101,7 @@ class ec_cartwidget extends WP_Widget{
 		// WIDGET CODE GOES HERE
 		$mysqli = new ec_db();
 		$filter = new ec_filter(0);
-		$cart = new ec_cart( session_id( ) );
+		$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 		$subtotal = $cart->subtotal;
 		
 		$cartpageid = get_option('ec_option_cartpage');
@@ -118,7 +118,7 @@ class ec_cartwidget extends WP_Widget{
 		if( substr_count( $cart_page, '?' ) )						$permalink_divider = "&";
 		else														$permalink_divider = "?";
 		
-		$cart = new ec_cart( session_id() );
+		$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 		$page_id = get_the_ID();
 		
 		if( $page_id != $cartpageid ){

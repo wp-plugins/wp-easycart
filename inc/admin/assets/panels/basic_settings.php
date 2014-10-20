@@ -142,6 +142,9 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 
 <div class="ec_status_header"><div class="ec_status_header_text">Store Page Display Options</div></div>
 
+<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
+/* V2 ONLY */
+?>
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Product Layout Format</em>This will display the products in either a grid or list view. Some product types are best displayed in a grid view, others in a list view, choose what makes the most sense for you.</span></a></span>
     <span class="ec_setting_row_label">Product Layout Format:</span>
@@ -150,11 +153,13 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
                 <option value="list_only" <?php if (get_option('ec_option_product_layout_type') == 'list_only') echo ' selected'; ?>>List Layout</option>
               </select></span>
 </div>
+<?php }?>
 
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Default Product Sort</em>This will set the default sort technique for the products page. For example, changing to Title A-Z will have the products sorted this way by default.</span></a></span>
     <span class="ec_setting_row_label">Default Product Sort:</span>
     <span class="ec_setting_row_input"><select name="ec_option_default_store_filter" id="ec_option_default_store_filter">
+                <option value="0" <?php if (get_option('ec_option_default_store_filter') == '0') echo ' selected'; ?>>Default Sorting</option>
                 <option value="1" <?php if (get_option('ec_option_default_store_filter') == '1') echo ' selected'; ?>>Price Low-High</option>
                 <option value="2" <?php if (get_option('ec_option_default_store_filter') == '2') echo ' selected'; ?>>Price High-Low</option>
                 <option value="3" <?php if (get_option('ec_option_default_store_filter') == '3') echo ' selected'; ?>>Title A-Z</option>
@@ -288,6 +293,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
                   <option value="0" <?php if (get_option('ec_option_use_pinterest_icon') == 0) echo ' selected'; ?>>No</option>
               	</select></span>
 </div>
+<a id="cart-settings"></a>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Cart Page Display Options</div></div>
@@ -319,6 +325,13 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect User Phone Number</em>If enabled, the system will collect the phone number from the user.</span></a></span>
     <span class="ec_setting_row_label">Collect User Phone Number:</span>
     <span class="ec_setting_row_input"><select name="ec_option_collect_user_phone" style="width:100px;"><option value="0"<?php if( get_option('ec_option_collect_user_phone') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_collect_user_phone') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Enable Company Name in Address</em>If enabled, the system will offer a place for an optional company name for a user's address.</span></a></span>
+    <span class="ec_setting_row_label">Enable Company Name in Address:</span>
+    <span class="ec_setting_row_input">
+    <select name="ec_option_enable_company_name" style="width:100px;"><option value="0"<?php if( get_option('ec_option_enable_company_name') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_enable_company_name') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_setting_row">
@@ -357,11 +370,15 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_input"><select name="ec_option_addtocart_return_to_product" style="width:100px;"><option value="0"<?php if( get_option('ec_option_addtocart_return_to_product') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_addtocart_return_to_product') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
+/* V2 ONLY */
+?>
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Skip Login Screen in Cart</em>If enabled, the system will skip the screen to log into your account first. This option will speed up checkout for new users and, if you have the latest design files, will still display the log in screen at the top.</span></a></span>
     <span class="ec_setting_row_label">Skip Login Screen in Cart:</span>
     <span class="ec_setting_row_input"><select name="ec_option_skip_cart_login" style="width:100px;"><option value="0"<?php if( get_option('ec_option_skip_cart_login') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_skip_cart_login') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
+<?php }?>
 
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Skip Shipping Cart Panel</em>If enabled, the system will skip the panel in the cart where the user is asked to select their shipping method. This data is instead collected on the final checkout page if needed.</span></a></span>
@@ -369,10 +386,20 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_input"><select name="ec_option_skip_shipping_page" style="width:100px;"><option value="0"<?php if( get_option('ec_option_skip_shipping_page') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_skip_shipping_page') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
+/* V2 ONLY */
+?>
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Skip Review Order Screen</em>If enabled, the system will submit the order directly after they enter their payment information. The review screen is useful for orders that require shipping and often have multiple items.</span></a></span>
     <span class="ec_setting_row_label">Skip Review Order Screen:</span>
     <span class="ec_setting_row_input"><select name="ec_option_skip_reivew_screen" style="width:100px;"><option value="0"<?php if( get_option('ec_option_skip_reivew_screen') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_skip_reivew_screen') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+<?php }?>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Require Terms Agreement</em>If enabled, the system requires the users to agree to the terms and conditions of the website.</span></a></span>
+    <span class="ec_setting_row_label">Require Terms Agreement:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_require_terms_agreement" style="width:100px;"><option value="0"<?php if( get_option('ec_option_require_terms_agreement') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_require_terms_agreement') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_setting_row">

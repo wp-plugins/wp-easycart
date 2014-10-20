@@ -69,6 +69,10 @@ class ec_social_media{
 		}
 	}
 	
+	public function get_facebook_link( ){
+		return "http://www.facebook.com/sharer/sharer.php?u=" . $this->get_product_url( );
+	}
+
 	public function display_twitter_icon( ){
 		if( $this->use_twitter ){
     		echo "<a href=\"";
@@ -84,6 +88,10 @@ class ec_social_media{
 			echo "\" alt=\"Twitter\" title=\"Twitter\" />";
 			echo "</a>";
 		}
+	}
+	
+	public function get_twitter_link( ){
+		return "http://twitter.com/intent/tweet?original_referer=" . $this->get_product_url( ) . "&source=tweetbutton&text=" . $this->get_product_clean_title( ) . "&url=" . $this->get_product_url( );
 	}
 	
 	public function display_delicious_icon( ){
@@ -103,6 +111,10 @@ class ec_social_media{
 		}
 	}
 	
+	public function get_delicious_link( ){
+		return "https://delicious.com/login?lo_action=save&amp;next=http%3A%2F%2Fdelicious.com%2Fpost%3Furl%3D" . $this->get_product_url( ) . "%3Flog%3Dout%26url%3D" . $this->get_product_url( ) . "&url=" . $this->get_product_url( );
+	}
+	
 	public function display_myspace_icon( ){
 		if( $this->use_myspace ){
     		echo "<a href=\"";
@@ -113,6 +125,10 @@ class ec_social_media{
 			echo "\" alt=\"MySpace\" title=\"MySpace\" />";
 			echo "</a>";
 		}
+	}
+	
+	public function get_myspace_link( ){
+		return "http://www.myspace.com/index.cfm?fuseaction=postto&t=" . $this->get_product_subject( ) . "&u=" . urlencode( $this->get_product_url( ) );
 	}
 	
 	public function display_linkedin_icon( ){
@@ -126,6 +142,10 @@ class ec_social_media{
 			echo "\" alt=\"Linked In\" title=\"Linked In\" />";
 			echo "</a>";
 		}
+	}
+	
+	public function get_linkedin_link( ){
+		return "http://www.linkedin.com/shareArticle?mini=true&amp;url=" . $this->get_product_url( );
 	}
 	
 	public function display_email_icon( ){
@@ -143,6 +163,10 @@ class ec_social_media{
 		}
 	}
 	
+	public function get_email_link( ){
+		return "mailto:email@email.com?subject=" . $this->get_product_subject( ) . "&body=" . "Link for Product: " . $this->get_product_url( );
+	}
+	
 	public function display_digg_icon( ){
 		if( $this->use_digg ){
     		echo "<a href=\"";
@@ -154,6 +178,10 @@ class ec_social_media{
 			echo "\" alt=\"Digg\" title=\"Digg\" />";
 			echo "</a>";
 		}
+	}
+	
+	public function get_digg_link( ){
+		return "http://digg.com/submit?phase=2&amp;url=" . $this->get_product_url( );
 	}
 	
 	public function display_googleplus_icon( ){
@@ -169,6 +197,10 @@ class ec_social_media{
 		}
 	}
 	
+	public function get_googleplus_link( ){
+		return "https://plus.google.com/share?url=" . $this->get_product_url( );
+	}
+	
 	public function display_pinterest_icon( ){
 		if( $this->use_pinterest ){
     		echo "<a href=\"";
@@ -181,6 +213,10 @@ class ec_social_media{
 			echo "\" alt=\"Pinterest\" title=\"Pinterest\" />";
 			echo "</a>"; 
 		}
+	}
+	
+	public function get_pinterest_link( ){
+		return "http://pinterest.com/pin/create/button/?media=" . urlencode( $this->get_image_url( ) ) . "&description=" . urlencode( $this->title ) . "&url=" . urlencode($this->get_product_url( ) );
 	}
 	
 	private function get_image_url( ) {

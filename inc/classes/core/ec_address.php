@@ -12,8 +12,9 @@ class ec_address{
 	public $country;							// VARCHAR 255
 	public $country_name;						// VARCHAR 255
 	public $phone;								// VARCHAR 255
+	public $company_name;						// VARCHAR 255
 	
-	function __construct( $fn, $ln, $ad1, $ad2, $cty, $st, $zp, $cnt, $ph ){
+	function __construct( $fn, $ln, $ad1, $ad2, $cty, $st, $zp, $cnt, $ph, $cn ){
 	
 		$this->first_name = $fn;
 		$this->last_name = $ln;
@@ -24,6 +25,7 @@ class ec_address{
 		$this->zip = $zp;
 		$this->country = $cnt;
 		$this->phone = $ph;
+		$this->company_name = $cn;
 		
 		$mysqli = new ec_db( );
 		$this->country_name = $mysqli->get_country_name( $cnt );
@@ -55,6 +57,8 @@ class ec_address{
 			return $this->country;
 		}else if( $name == "phone" ){
 			return $this->phone;
+		}else if( $name == "company_name" ){
+			return $this->company_name;
 		}
 	}
 	
@@ -92,6 +96,10 @@ class ec_address{
 	
 	public function display_phone( ){
 		echo $this->phone;
+	}
+	
+	public function display_company_name( ){
+		echo $this->company_name;
 	}
 	
 }

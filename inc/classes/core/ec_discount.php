@@ -36,7 +36,11 @@ class ec_discount{
 	private function set_discounts( ){
 		$this->coupon_discount = $this->get_coupon_discount( );
 		$this->giftcard_discount = $this->get_giftcard_discount( );
-		$this->discount_total = $this->coupon_discount + $this->giftcard_discount + $this->cart->cart_promo_discount;	
+		if( is_array( $this->cart ) ){
+			$this->discount_total = $this->coupon_discount + $this->giftcard_discount;
+		}else{
+			$this->discount_total = $this->coupon_discount + $this->giftcard_discount + $this->cart->cart_promo_discount;
+		}
 	}
 	
 	private function get_coupon_discount( ){

@@ -335,17 +335,20 @@ class ec_filter{
 	
 	public function get_where_query(){
 		
+		global $wpdb;
+		
 		if( $this->has_filters( ) || $this->product_only ){
 			
 			$ret_string = "WHERE product.activate_in_store = 1";
 			
 			if( $this->get_menu_level() == 1 && $this->get_menu_id( ) != 0 )						
-				$ret_string .= sprintf(" AND ( product.menulevel1_id_1 = %s OR product.menulevel2_id_1 = %s OR product.menulevel3_id_1 = %s )", mysql_real_escape_string( $this->get_menu_id( ) ), mysql_real_escape_string( $this->get_menu_id( ) ), mysql_real_escape_string( $this->get_menu_id( ) ) );
+				$ret_string .= $wpdb->prepare( " AND ( product.menulevel1_id_1 = %s OR product.menulevel2_id_1 = %s OR product.menulevel3_id_1 = %s )", $this->get_menu_id( ), $this->get_menu_id( ), $this->get_menu_id( ) );
 			
-			if( $this->get_menu_level() == 2 && $this->get_submenu_id( ) != 0 ) 						$ret_string .= sprintf(" AND ( product.menulevel1_id_2 = %s OR product.menulevel2_id_2 = %s OR product.menulevel3_id_2 = %s )", mysql_real_escape_string( $this->get_submenu_id( ) ), mysql_real_escape_string( $this->get_submenu_id( ) ), mysql_real_escape_string( $this->get_submenu_id( ) ) );
+			if( $this->get_menu_level() == 2 && $this->get_submenu_id( ) != 0 ) 						
+				$ret_string .= $wpdb->prepare( " AND ( product.menulevel1_id_2 = %s OR product.menulevel2_id_2 = %s OR product.menulevel3_id_2 = %s )", $this->get_submenu_id( ), $this->get_submenu_id( ), $this->get_submenu_id( ) );
 			
 			if( $this->get_menu_level() == 3 && $this->get_subsubmenu_id( ) != 0 )						
-				$ret_string .= sprintf(" AND ( product.menulevel1_id_3 = %s OR product.menulevel2_id_3 = %s OR product.menulevel3_id_3 = %s )", mysql_real_escape_string( $this->get_subsubmenu_id( ) ), mysql_real_escape_string( $this->get_subsubmenu_id( ) ), mysql_real_escape_string( $this->get_subsubmenu_id( ) ) );
+				$ret_string .= $wpdb->prepare( " AND ( product.menulevel1_id_3 = %s OR product.menulevel2_id_3 = %s OR product.menulevel3_id_3 = %s )", $this->get_subsubmenu_id( ), $this->get_subsubmenu_id( ), $this->get_subsubmenu_id( ) );
 			
 			if( $this->search != "" )								$ret_string .= " AND ( product.title LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' OR manufacturer.name LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' OR product.description LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' ) ";
 			
@@ -364,7 +367,7 @@ class ec_filter{
 		}else														return " WHERE product.show_on_startup = 1 AND product.activate_in_store = 1";
 	}
 	
-	public function get_order_by_query(){
+	public function get_order_by_query( $page_options = NULL ){
 		
 		if($this->current_filter == 1)								return " ORDER BY product.price ASC";
 		else if($this->current_filter == 2)							return " ORDER BY product.price DESC";
@@ -373,8 +376,17 @@ class ec_filter{
 		else if($this->current_filter == 5)							return " ORDER BY product.added_to_db_date DESC";
 		else if($this->current_filter == 6)							return " ORDER BY review_average DESC";
 		else if($this->current_filter == 7)							return " ORDER BY product.views DESC";
-		else														return " ORDER BY product.price ASC";
-	
+		else if( isset( $page_options ) && isset( $page_options->product_order ) ){
+			
+			$order = json_decode( stripslashes( $page_options->product_order ) );
+			$ret_string = " ORDER BY FIELD( model_number";
+			foreach( $order as $model_number ){
+				$ret_string .= ", '" . $model_number . "'";
+			}
+			$ret_string .= " )";
+			return $ret_string;
+		
+		}else														return " ORDER BY product.price ASC";
 	}
 	
 	private function has_filters( ){

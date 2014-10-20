@@ -32,6 +32,9 @@ class ec_ups{
 		if( !$destination_country )
 			$destination_country = $this->ups_country_code;
 		
+		if( !$destination_zip )
+			$destination_zip = $this->ups_ship_from_zip;
+		
 		$shipper_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
 		$request = new WP_Http;
 		$response = $request->request( $this->shipper_url, array( 'method' => 'POST', 'body' => $shipper_data ) );
@@ -50,6 +53,9 @@ class ec_ups{
 		
 		if( !$destination_country )
 			$destination_country = $this->ups_country_code;
+		
+		if( !$destination_zip )
+			$destination_zip = $this->ups_ship_from_zip;
 		
 		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height );
 		$request = new WP_Http;
@@ -229,6 +235,10 @@ class ec_ups{
 	}
 	
 	public function validate_address( $destination_city, $destination_state, $destination_zip, $destination_country ){
+		
+		// This service is only available in the US
+		if( $destination_country != "US" )
+			return true;
 		
 		$shipper_data = "<?xml version=\"1.0\"?>
 			<AccessRequest xml:lang=\"en-US\">

@@ -32,7 +32,10 @@ class ec_dhl{
 				return "0.00";
 				
 			if( !$destination_country )
-				$destination_country = "US";
+				$destination_country = $this->dhl_ship_from_country;
+				
+			if( !$destination_zip || $destination_zip == "" )
+				$destination_zip = $this->dhl_ship_from_zip;
 			
 			$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
 			
@@ -62,7 +65,10 @@ class ec_dhl{
 				return "0.00";
 				
 			if( !$destination_country )
-				$destination_country = "US";
+				$destination_country = $this->dhl_ship_from_country;
+				
+			if( !$destination_zip || $destination_zip == "" )
+				$destination_zip = $this->dhl_ship_from_zip;
 			
 			$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
 			

@@ -8,9 +8,12 @@ class ec_productlist{
 	public $filter;									// ec_filter structure
 	public $paging;									// ec_paging structure
 	public $num_products;							// INT
+	public $page_options;							// Array of ec_pageoption
 	
-	function __construct( $is_product_details = false, $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP", $modelnumber = "NOMODELNUMBER" ){
+	function __construct( $is_product_details = false, $menuid = "NOMENU", $submenuid = "NOSUBMENU", $subsubmenuid = "NOSUBSUBMENU", $manufacturerid = "NOMANUFACTURER", $groupid = "NOGROUP", $modelnumber = "NOMODELNUMBER", $page_options = NULL ){
 		$this->mysqli = new ec_db();
+		
+		$this->page_options = $page_options;
 		
 		$this->filter = new ec_filter( );
 		$this->set_shortcode_vals( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, $modelnumber );
@@ -32,9 +35,9 @@ class ec_productlist{
 	private function get_products( ){
 		//First get number of products without the limit query
 		if( !$this->is_product_details )
-			$result = $this->mysqli->get_product_list( $this->filter->get_where_query(), $this->filter->get_order_by_query(), $this->paging->get_limit_query(), session_id() );
+			$result = $this->mysqli->get_product_list( $this->filter->get_where_query(), $this->filter->get_order_by_query( $this->page_options ), $this->paging->get_limit_query(), $_SESSION['ec_cart_id'] );
 		else
-			$result = $this->mysqli->get_product_list( $this->filter->get_where_query(), $this->filter->get_order_by_query(), "", session_id() );
+			$result = $this->mysqli->get_product_list( $this->filter->get_where_query(), $this->filter->get_order_by_query( $this->page_options ), "", $_SESSION['ec_cart_id'] );
 			
 		if( count( $result ) > 0 )
 			$this->num_products = $result[0]["product_count"];
@@ -43,17 +46,21 @@ class ec_productlist{
 		
 		for($i=0; $i<count($result); $i++){
 			
-			$product = new ec_product( $result[$i], 0, $this->get_is_details( ) );
+			$product = new ec_product( $result[$i], 0, $this->get_is_details( ), 0, $i, $this->page_options );
 			array_push($this->products, $product);
 				
 		}
 	}
 	
+	public function get_products_no_limit( ){
+		return $this->mysqli->get_product_list( $this->filter->get_where_query(), $this->filter->get_order_by_query( $this->page_options ), "", session_id() );
+	}
+	
 	public function display_product_list( ){
 		
-		for($i=0; $i<count($this->products); $i++){
+		for($prod_index=0; $prod_index<count($this->products); $prod_index++){
 			
-			$product = $this->products[$i];
+			$product = $this->products[$prod_index];
 			$list_view = false;
 			if( get_option( "ec_option_product_layout_type" ) == "list_only" )
 				$list_view = true;
@@ -104,11 +111,13 @@ class ec_productlist{
 		
 		$current_page = $this->get_current_page_url( );
 		
-		if(substr_count($current_page, '?'))						$permalink_divider = "&";
-		else														$permalink_divider = "?";
+		if(substr_count($current_page, '?'))				$permalink_divider = "&";
+		else												$permalink_divider = "?";
 		
 		echo "<select name=\"sortfield\" id=\"sortfield\" onchange=\"change_product_sort('" . $this->filter->get_menu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_menu_name( ) ) . "', '" . $this->filter->get_submenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_submenu_name( ) ) . "', '" . $this->filter->get_subsubmenu_id( ) . "', '" . str_replace( "'", "&rsquo;", $this->filter->get_subsubmenu_name( ) ) . "', '" . $this->filter->manufacturer->manufacturer_id . "', '" . $this->filter->pricepoint_id . "', '" . $this->paging->current_page . "', '" . $this->filter->perpage->selected . "', '" . $current_page . "', '" . $permalink_divider . "');\" class=\"ec_sort_menu\">\n\n";
 
+		echo "<option value=\"0\""; if( $this->filter->is_sort_selected(0) ){ echo " selected=\"selected\""; } echo ">Default Sorting</option>\n\n";
+		
 		if( get_option( 'ec_option_product_filter_1' ) ){
 			echo "<option value=\"1\""; if( $this->filter->is_sort_selected(1) ){ echo " selected=\"selected\""; } echo ">" . $GLOBALS['language']->get_text( 'sort_bar', 'sort_by_price_low' ) . "</option>\n\n";
 		}

@@ -375,8 +375,42 @@ class ec_admin_orders{
 	}//refund order
 	
 	function resendgiftcardemail( $order_id, $orderdetails_id ){
+		
+		$sql = "SELECT giftcard_id, gift_card_message, gift_card_from_name, gift_card_to_name, gift_card_email, title, unit_price, is_deconetwork, deconetwork_image_link, image1 FROM ec_orderdetail WHERE orderdetail_id = %d";
+		$orderdetail_row = $this->db->get_row( $this->db->prepare( $sql, $orderdetails_id ) );
+		$this->send_gift_card_email( $orderdetail_row, $orderdetail_row->giftcard_id );
+		
 		//return 'success' or 'error'
 		return 'success';
+		
+	}
+	
+	function send_gift_card_email( $cart_item, $giftcard_id ){
+		
+		$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
+	 	
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = "Content-Type: text/html; charset=utf-8";
+		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "X-Mailer: PHP/".phpversion();
+		
+		ob_start();
+        if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_giftcard.php' ) )	
+			include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_giftcard.php';
+		else
+			include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_giftcard.php';
+			
+        $message = ob_get_clean();
+		
+		if( get_option( 'ec_option_use_wp_mail' ) ){
+			wp_mail( $cart_item->gift_card_email, $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+			wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+		}else{
+			mail( $cart_item->gift_card_email, $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+			mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+		}
 		
 	}
 	

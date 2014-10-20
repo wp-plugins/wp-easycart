@@ -32,6 +32,9 @@ class ec_auspost{
 			$shipper_url = $this->domestic_shipper_url;
 		else
 			$shipper_url = $this->international_shipper_url;
+			
+		if( !$destination_zip || $destination_zip == "" )
+			$destination_zip = $this->auspost_ship_from_zip;
 		
 		$shipper_url .= "?";
 		if( $destination_country == "AU" )
@@ -64,6 +67,9 @@ class ec_auspost{
 			$shipper_url = $this->domestic_getall_shipper_url;
 		else
 			$shipper_url = $this->international_getall_shipper_url;
+			
+		if( !$destination_zip || $destination_zip == "" )
+			$destination_zip = $this->auspost_ship_from_zip;
 		
 		$shipper_url .= "?";
 		if( $destination_country == "AU" )

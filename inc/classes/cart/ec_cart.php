@@ -16,6 +16,7 @@ class ec_cart{
 	public $weight;											// INT
 	public $total_items;									// INT
 	
+	public $cart_promo_discount;							// FLOAT
 	public $cart_total_promotion;							// TEXT
 	
 	//Get sessionid and create the cart

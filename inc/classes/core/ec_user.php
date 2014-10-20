@@ -81,32 +81,32 @@ class ec_user{
 		}
 		
 		if( isset( $_SESSION['ec_billing_first_name'] ) && $_SESSION['ec_billing_first_name'] != "" ){
-			$this->billing = new ec_address( $_SESSION['ec_billing_first_name'], $_SESSION['ec_billing_last_name'], $_SESSION['ec_billing_address'], $_SESSION['ec_billing_address2'], $_SESSION['ec_billing_city'], $_SESSION['ec_billing_state'], $_SESSION['ec_billing_zip'], $_SESSION['ec_billing_country'], $_SESSION['ec_billing_phone'] );
+			$this->billing = new ec_address( $_SESSION['ec_billing_first_name'], $_SESSION['ec_billing_last_name'], $_SESSION['ec_billing_address'], $_SESSION['ec_billing_address2'], $_SESSION['ec_billing_city'], $_SESSION['ec_billing_state'], $_SESSION['ec_billing_zip'], $_SESSION['ec_billing_country'], $_SESSION['ec_billing_phone'], $_SESSION['ec_billing_company_name'] );
 		}else if( $user && $user->billing_first_name ){
-			$this->billing = new ec_address( $user->billing_first_name, $user->billing_last_name, $user->billing_address_line_1, $user->billing_address_line_2, $user->billing_city, $user->billing_state, $user->billing_zip, $user->billing_country, $user->billing_phone );
+			$this->billing = new ec_address( $user->billing_first_name, $user->billing_last_name, $user->billing_address_line_1, $user->billing_address_line_2, $user->billing_city, $user->billing_state, $user->billing_zip, $user->billing_country, $user->billing_phone, $user->billing_company_name );
 		}else{
-			$this->billing = new ec_address( "", "", "", "", "", "", "", "", "" );
+			$this->billing = new ec_address( "", "", "", "", "", "", "", "", "", "" );
 		}
 		
 		// User has gone through the checkout info page
 		if( isset( $_SESSION['ec_shipping_first_name'] ) && $_SESSION['ec_shipping_first_name'] != "" ){
-			$this->shipping = new ec_address( $_SESSION['ec_shipping_first_name'], $_SESSION['ec_shipping_last_name'], $_SESSION['ec_shipping_address'], $_SESSION['ec_shipping_address2'], $_SESSION['ec_shipping_city'], $_SESSION['ec_shipping_state'], $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], $_SESSION['ec_shipping_phone'] );
+			$this->shipping = new ec_address( $_SESSION['ec_shipping_first_name'], $_SESSION['ec_shipping_last_name'], $_SESSION['ec_shipping_address'], $_SESSION['ec_shipping_address2'], $_SESSION['ec_shipping_city'], $_SESSION['ec_shipping_state'], $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], $_SESSION['ec_shipping_phone'], $_SESSION['ec_shipping_company_name'] );
 		
 		// Live shipping estimate for zip and country
 		}else if( isset( $_SESSION['ec_shipping_zip'] ) && isset( $_SESSION['ec_shipping_country'] ) && $_SESSION['ec_shipping_country'] != 0 ){
-			$this->shipping = new ec_address( "", "", "", "", "", "", $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], "" );
+			$this->shipping = new ec_address( "", "", "", "", "", "", $_SESSION['ec_shipping_zip'], $_SESSION['ec_shipping_country'], "", "" );
 		
 		// Live shipping estimate for zip only
 		}else if( isset( $_SESSION['ec_shipping_zip'] ) ){
-			$this->shipping = new ec_address( "", "", "", "", "", "", $_SESSION['ec_shipping_zip'], "", "" );
+			$this->shipping = new ec_address( "", "", "", "", "", "", $_SESSION['ec_shipping_zip'], "", "", "" );
 		
 		// No Session data, but a user found	
 		}else if( $user && $user->shipping_first_name ){
-			$this->shipping = new ec_address( $user->shipping_first_name, $user->shipping_last_name, $user->shipping_address_line_1, $user->shipping_address_line_2, $user->shipping_city, $user->shipping_state, $user->shipping_zip, $user->shipping_country, $user->shipping_phone );
+			$this->shipping = new ec_address( $user->shipping_first_name, $user->shipping_last_name, $user->shipping_address_line_1, $user->shipping_address_line_2, $user->shipping_city, $user->shipping_state, $user->shipping_zip, $user->shipping_country, $user->shipping_phone, $user->shipping_company_name );
 		
 		// Fall back option
 		}else{
-			$this->shipping = new ec_address( "", "", "", "", "", "", "", "", "" );
+			$this->shipping = new ec_address( "", "", "", "", "", "", "", "", "", "" );
 		}
 		
 		if( isset( $user ) )
@@ -136,15 +136,15 @@ class ec_user{
 	
 	}
 	
-	public function setup_billing_info_data( $bname, $blastname, $baddress, $baddress2, $bcity, $bstate, $bcountry, $bzip, $bphone ){
+	public function setup_billing_info_data( $bname, $blastname, $baddress, $baddress2, $bcity, $bstate, $bcountry, $bzip, $bphone, $bcompany ){
 		
-		$this->billing = new ec_address( $bname, $blastname, $baddress, $baddress2, $bcity, $bstate, $bzip, $bcountry, $bphone );
+		$this->billing = new ec_address( $bname, $blastname, $baddress, $baddress2, $bcity, $bstate, $bzip, $bcountry, $bphone, $bcompany );
 		
 	}
 	
-	public function setup_shipping_info_data( $sname, $slastname, $saddress, $saddress2, $scity, $sstate, $scountry, $szip, $sphone ){
+	public function setup_shipping_info_data( $sname, $slastname, $saddress, $saddress2, $scity, $sstate, $scountry, $szip, $sphone, $scompany ){
 		
-		$this->shipping = new ec_address( $sname, $slastname, $saddress, $saddress2, $scity, $sstate, $szip, $scountry, $sphone );
+		$this->shipping = new ec_address( $sname, $slastname, $saddress, $saddress2, $scity, $sstate, $szip, $scountry, $sphone, $scompany );
 		
 	}
 	
@@ -167,11 +167,11 @@ class ec_user{
 	}
 	
 	public function insert_billing_info( ){
-		$this->mysqli->insert_address( $this->billing->first_name, $this->billing->last_name, $this->billing->address_line_1, $this->billing->city, $this->billing->state, $this->billing->zip, $this->billing->country, $this->billing->phone );
+		$this->mysqli->insert_address( $this->billing->first_name, $this->billing->last_name, $this->billing->address_line_1, $this->billing->city, $this->billing->state, $this->billing->zip, $this->billing->country, $this->billing->phone, $this->billing->company_name );
 	}
 	
 	public function insert_shipping_info( ){
-		$this->mysqli->insert_address( $this->shipping->first_name, $this->shipping->last_name, $this->shipping->address_line_1, $this->shipping->city, $this->shipping->state, $this->shipping->zip, $this->shipping->country, $this->shipping->phone );
+		$this->mysqli->insert_address( $this->shipping->first_name, $this->shipping->last_name, $this->shipping->address_line_1, $this->shipping->city, $this->shipping->state, $this->shipping->zip, $this->shipping->country, $this->shipping->phone, $this->shipping->company_name );
 	}
 	
 	public function display_email( ){

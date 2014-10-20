@@ -20,7 +20,7 @@ class ec_shipping{
 	
 	private $handling;											// FLOAT 11,2
 	
-	private $subtotal;											// float 7,2
+	public $subtotal;											// float 7,2
 	private $weight;											// float 7,2
 	private $quantity;											// float 7,2
 	private $express_price;										// float 7,2
@@ -479,7 +479,11 @@ class ec_shipping{
 	
 	public function get_single_shipping_price_content( $standard_text, $express_text, $standard_price ){
 		
-		$discount = new ec_discount( array(), 0.00, $standard_price, $_SESSION['ec_couponcode'], "", 0 );
+		$coupon_code = "";
+		if( isset( $_SESSION['ec_couponcode'] ) )
+			$coupon_code = $_SESSION['ec_couponcode'];
+			
+		$discount = new ec_discount( array(), 0.00, $standard_price, $coupon_code, "", 0 );
 		$shipping_discount = $discount->shipping_discount;
 		
 		$ret_string = "";
@@ -557,23 +561,38 @@ class ec_shipping{
 				$rate = $rate + $this->express_price;
 			
 		}else if( $this->shipping_method == "live" ){
-			if( !isset( $_SESSION['ec_shipping_method'] ) ){
-				if( isset( $this->live_based ) && count( $this->live_based ) > 0 && count( $this->live_based[0] ) > 3 ){
-					if( $this->live_based[0][4] != NULL )
-						$rate = $this->live_based[0][4];
+			if( !isset( $_SESSION['ec_shipping_method'] ) )
+				$_SESSION['ec_shipping_method'] = 0;
+				
+			$lowest = 100000.00;
+			$lowest_ship_method = "ERROR";
+			
+			for( $i=0; $i<count( $this->live_based ); $i++ ){
+				
+				if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] ){
+					if( $this->live_based[$i][4] != NULL )
+						$rate = $this->live_based[$i][4];
 					else
-						$rate = $this->shipper->get_rate( $this->live_based[0][3], $this->live_based[0][0], $this->destination_zip, $this->destination_country, $this->weight );
-				}
-			}else{
-				for( $i=0; $i<count( $this->live_based ); $i++ ){
-					if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] ){
-						if( $this->live_based[$i][4] != NULL )
-							$rate = $this->live_based[$i][4];
-						else
-							$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+					
+				}else{
+				
+					// Find lowest
+					$subrate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+					if( $subrate != "ERROR" && floatval( $subrate ) < $lowest ){
+						$lowest = floatval( $subrate );
+						$lowest_ship_method = $this->live_based[$i][2];
 					}
-				}	
+					
+				}
+				
 			}
+			
+			if( $rate == "ERROR" && $lowest_ship_method != "ERROR" ){
+				$rate = $lowest;
+				$_SESSION['ec_shipping_method'] = $lowest_ship_method;
+			}
+			
 		}else if( $this->shipping_method == "fraktjakt" ){
 			$i = 0;
 			$selected_method = 0;

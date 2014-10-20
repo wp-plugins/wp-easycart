@@ -4,11 +4,11 @@ class ec_currency{
 	
 	public $symbol;
 	
-	private $symbol_location;
-	private $negative_location;
-	private $decimal_symbol;
-	private $decimal_length;
-	private $grouping_symbol;
+	public $symbol_location;
+	public $negative_location;
+	public $decimal_symbol;
+	public $decimal_length;
+	public $grouping_symbol;
 	
 	private $conversion_rate;
 	

@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 2.1.36
+ * Version: 3.0.0
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 2.1.36
+ * @version 3.0.0
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '2_1_36' );
-define( 'EC_CURRENT_DB', '1_22' );
+define( 'EC_CURRENT_VERSION', '3_0_0' );
+define( 'EC_CURRENT_DB', '1_23' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -73,6 +73,7 @@ function ec_activate(){
 	
 	//SETUP BASIC LANGUAGE SETTINGS
 	$language = new ec_language( );
+	$language->update_language_data( ); //Do this to update the database if a new language is added
 	
 	//WE BLOCK THIS FROM THE ec_config.php TO PREVENT OUTPUT ON ACTIVATION, INCLUDE HERE...
 	update_option( 'ec_option_is_installed', '1' );
@@ -651,6 +652,44 @@ function ec_cache_management( ){
 	}
 }
 
+function ec_css_loader_v3( ){
+	
+	$pageURL = 'http';
+	if( isset( $_SERVER["HTTPS"] ) )
+		$pageURL .= "s";
+		
+	if( current_user_can( 'manage_options' ) ){
+		wp_register_style( 'wpeasycart_admin_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.css' ) );
+		wp_enqueue_style( 'wpeasycart_admin_css' );
+	}
+	
+	wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.css' ) );
+	wp_enqueue_style( 'wpeasycart_css' );
+	
+	wp_register_style( "wpeasycart_gfont", $pageURL . "://fonts.googleapis.com/css?family=Lato|Monda|Open+Sans|Droid+Serif" );
+	wp_enqueue_style( 'wpeasycart_gfont' );
+	
+	if( get_option( 'ec_option_use_rtl' ) ){
+		wp_register_style( 'wpeasycart_rtl_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' ) );
+		wp_enqueue_style( 'wpeasycart_rtl_css' );
+	}
+
+}
+
+function ec_js_loader_v3( ){
+		
+	if( current_user_can( 'manage_options' ) ){
+		wp_enqueue_script( 'jquery-ui-draggable' );
+		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ) );
+		wp_enqueue_script( 'wpeasycart_admin_js' );
+	}
+	
+	wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.js' ) );
+	wp_enqueue_script( 'wpeasycart_js' );
+
+}
+
 function ec_regenerate_css( ){
 	ob_start( "ec_save_css_file" );
 	include( ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_css_generator.php' );
@@ -675,70 +714,84 @@ function ec_save_js_file( $buffer ){
 
 function ec_load_css( ){
 	
-	ec_cache_management( );
-	
-	if( file_exists( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-css.css" ) && filesize( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-css.css" ) ){
-		// Load the cached file because it exists
-		wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store-css.css' ) );
-		wp_enqueue_style( 'wpeasycart_css' );
+	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
+		ec_css_loader_v3( );
 	
 	}else{
-		// File did not exist, revert back to the development mode loader
-		wp_register_style( 'wpeasycart_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_css_loader.php' ) );
-		wp_enqueue_style( 'wpeasycart_css' );
-	}
+		ec_cache_management( );
 	
-	$gfont_list = "";
-	$font_list = explode( ":::", get_option( 'ec_option_font_replacements' ) );
-	$fonts_added = 0;
-	
-	for( $i=0; $i<count( $font_list ); $i++ ){
-		$temp = explode( "=", $font_list[$i] );
-		if(  	$temp[1] != "Verdana, Geneva, sans-serif" && 
-				$temp[1] != "Georgia, Times New Roman, Times, serif" && 
-				$temp[1] != "Courier New, Courier, monospace" && 
-				$temp[1] != "Arial, Helvetica, sans-serif" && 
-				$temp[1] != "Tahoma, Geneva, sans-serif" && 
-				$temp[1] != "Trebuchet MS, Arial, Helvetica, sans-serif" && 
-				$temp[1] != "Arial Black, Gadget, sans-serif" && 
-				$temp[1] != "Times New Roman, Times, serif" && 
-				$temp[1] != "Palatino Linotype, Book Antiqua, Palatino, serif" && 
-				$temp[1] != "Lucida Sans Unicode, Lucida Grande, sans-serif" && 
-				$temp[1] != "MS Serif, New York, serif" && 
-				$temp[1] != "Lucida Console, Monaco, monospace" && 
-				$temp[1] != "Comic Sans MS, cursive" &&
-				$temp[1] != ""
-		){
-			if( $fonts_added > 0 )
-				$gfont_list .= "|";
-			
-			$gfont_list .= $temp[1];
-			$fonts_added++;
-			
-		}
-	}
-	
-	if( $fonts_added > 0 ){
-		$pageURL = 'http';
-		if( isset( $_SERVER["HTTPS"] ) )
-			$pageURL .= "s";
+		if( file_exists( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-css.css" ) && filesize( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-css.css" ) ){
+			// Load the cached file because it exists
+			wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store-css.css' ) );
+			wp_enqueue_style( 'wpeasycart_css' );
 		
-		wp_register_style( "wpeasycart_gfont", $pageURL . "://fonts.googleapis.com/css?family=" . $gfont_list );
-		wp_enqueue_style( 'wpeasycart_gfont' );
+		}else{
+			// File did not exist, revert back to the development mode loader
+			wp_register_style( 'wpeasycart_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_css_loader.php' ) );
+			wp_enqueue_style( 'wpeasycart_css' );
+		}
+		
+		$gfont_list = "";
+		$font_list = explode( ":::", get_option( 'ec_option_font_replacements' ) );
+		$fonts_added = 0;
+		
+		for( $i=0; $i<count( $font_list ); $i++ ){
+			$temp = explode( "=", $font_list[$i] );
+			if(  	$temp[1] != "Verdana, Geneva, sans-serif" && 
+					$temp[1] != "Georgia, Times New Roman, Times, serif" && 
+					$temp[1] != "Courier New, Courier, monospace" && 
+					$temp[1] != "Arial, Helvetica, sans-serif" && 
+					$temp[1] != "Tahoma, Geneva, sans-serif" && 
+					$temp[1] != "Trebuchet MS, Arial, Helvetica, sans-serif" && 
+					$temp[1] != "Arial Black, Gadget, sans-serif" && 
+					$temp[1] != "Times New Roman, Times, serif" && 
+					$temp[1] != "Palatino Linotype, Book Antiqua, Palatino, serif" && 
+					$temp[1] != "Lucida Sans Unicode, Lucida Grande, sans-serif" && 
+					$temp[1] != "MS Serif, New York, serif" && 
+					$temp[1] != "Lucida Console, Monaco, monospace" && 
+					$temp[1] != "Comic Sans MS, cursive" &&
+					$temp[1] != ""
+			){
+				if( $fonts_added > 0 )
+					$gfont_list .= "|";
+				
+				$gfont_list .= $temp[1];
+				$fonts_added++;
+				
+			}
+		}
+		
+		if( $fonts_added > 0 ){
+			$pageURL = 'http';
+			if( isset( $_SERVER["HTTPS"] ) )
+				$pageURL .= "s";
+			
+			wp_register_style( "wpeasycart_gfont", $pageURL . "://fonts.googleapis.com/css?family=" . $gfont_list );
+			wp_enqueue_style( 'wpeasycart_gfont' );
+		}
+		
 	}
+	
 }	
 
 function ec_load_js( ){
 	
-	if( file_exists( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-js.js" ) && filesize( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-js.js" ) ){
-		// Load the cached file because it exists
-		wp_register_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store-js.js' ), array( 'jquery' ) );
-		wp_enqueue_script( 'wpeasycart_js' );
+	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
+		ec_js_loader_v3( );
 	
 	}else{
-		// File did not exist, revert back to the development mode loader
-		wp_register_script( 'wpeasycart_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_js_loader.php' ), array( 'jquery' ) );
-		wp_enqueue_script( 'wpeasycart_js' );
+		
+		if( file_exists( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-js.js" ) && filesize( ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec-store-js.js" ) ){
+			// Load the cached file because it exists
+			wp_register_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store-js.js' ), array( 'jquery' ) );
+			wp_enqueue_script( 'wpeasycart_js' );
+		
+		}else{
+			// File did not exist, revert back to the development mode loader
+			wp_register_script( 'wpeasycart_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/scripts/ec_js_loader.php' ), array( 'jquery' ) );
+			wp_enqueue_script( 'wpeasycart_js' );
+		}
+		
 	}
 	
 	$ajax_subfolder = "";
@@ -762,10 +815,12 @@ function ec_load_js( ){
 		wp_localize_script( 'wpeasycart_js', 'ajax_object', array( 'ajax_url' => $https_link ) );
 	else
 		wp_localize_script( 'wpeasycart_js', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
-}	
+	
+}
 	
 function ec_facebook_metadata() {
 	global $wp_query;
+	global $wpdb;
 	$post_obj = $wp_query->get_queried_object();
 	if( isset( $post_obj ) && isset( $post_obj->ID ) ){
 		$post_id = $post_obj->ID;
@@ -783,23 +838,18 @@ function ec_facebook_metadata() {
 			$prod_use_optionitem_images = $product->use_optionitem_images;
 			$prod_image = $product->image1;
 		}else{
-			$query_productRS = sprintf("SELECT ec_product.* FROM ec_product WHERE ec_product.model_number = '%s'", mysql_real_escape_string($_GET['model_number']));
-			$productRS = mysql_query($query_productRS);
-			$product = mysql_fetch_assoc($productRS);
-			
-			$product_id = $product['product_id'];
-			$prod_title = $product['title'];
-			$prod_model_number = $product['model_number'];
-			$prod_description = $product['seo_description'];
-			$prod_use_optionitem_images = $product['use_optionitem_images'];
-			$prod_image = $product['image1'];
+			$product = $wpdb->get_row( $wpdb->prepare( "SELECT ec_product.* FROM ec_product WHERE ec_product.model_number = %s", $_GET['model_number'] ) );		
+			$product_id = $product->product_id;
+			$prod_title = $product->title;
+			$prod_model_number = $product->model_number;
+			$prod_description = $product->seo_description;
+			$prod_use_optionitem_images = $product->use_optionitem_images;
+			$prod_image = $product->image1;
 		}
 		
 		if( $prod_use_optionitem_images ){
-			$optimg_sql = sprintf("SELECT ec_optionitemimage.image1 FROM ec_optionitemimage WHERE ec_optionitemimage.product_id = '%s' ", $product_id );
-			$optimgs = mysql_query($optimg_sql);
-			$optimg = mysql_fetch_assoc($optimgs);
-			$prod_image = $optimg['image1'];
+			$optimgs = $wpdb->get_row( $wpdb->prepare( "SELECT ec_optionitemimage.image1 FROM ec_optionitemimage WHERE ec_optionitemimage.product_id = %s", $product_id ) );
+			$prod_image = $optimgs->image1;
 		}	
 		
 		remove_action('wp_head', 'rel_canonical');
@@ -818,7 +868,6 @@ function ec_facebook_metadata() {
 			echo "<meta property=\"og:image\" content=\"" .  plugin_dir_url(__DIR__) . EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" . "\" />\n"; 
 		
 		echo "<meta property=\"og:url\" content=\"" . ec_curPageURL() . "\" /> \n";
-	
 	}
 	
 	if( get_option( 'ec_option_use_affirm' ) && get_option( 'ec_option_affirm_public_key' ) != "" ){
@@ -840,6 +889,19 @@ function ec_facebook_metadata() {
 			  (function(l,g,m,e,a,f,b){var d,c=l[m]||{},h=document.createElement(f),n=document.getElementsByTagName(f)[0],k=function(a,b,c){return function(){a[b]._.push([c,arguments])}};c[e]=k(c,e,"set");d=c[e];c[a]={};c[a]._=[];d._=[];c[a][b]=k(c,a,b);a=0;for(b="set add save post open empty reset on off trigger ready setProduct".split(" ");a<b.length;a++)d[b[a]]=k(c,e,b[a]);a=0;for(b=["get","token","url","items"];a<b.length;a++)d[b[a]]=function(){};h.async=!0;h.src=g[f];n.parentNode.insertBefore(h,n);delete g[f];d(g);l[m]=c})(window,_affirm_config,"affirm","checkout","ui","script","ready");
 			</script>';
 		}
+	}
+}
+
+function ec_theme_head_data( ){
+	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
+		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" );
+
+	}
+}
+
+function ec_theme_footer_data( ){
+	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/footer_content.php" ) ){
+		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/footer_content.php" );
 	}
 }
 	
@@ -867,8 +929,12 @@ function ec_short_string($text, $length){
 
 //[ecstore]
 function load_ec_store( $atts ){
-	define( "DONOTCACHEPAGE", true );
-	define('DONOTCDN', true);
+	
+	if( !defined( 'DONOTCACHEPAGE' ) )
+		define( "DONOTCACHEPAGE", true );
+	
+	if( !defined( 'DONOTCDN' ) )
+		define('DONOTCDN', true);
 	
 	extract( shortcode_atts( array(
 		'menuid' => 'NOMENU',
@@ -891,8 +957,12 @@ function load_ec_store( $atts ){
 
 //[eccart]
 function load_ec_cart( $atts ){
-	define( "DONOTCACHEPAGE", true );
-	define('DONOTCDN', true);
+	
+	if( !defined( 'DONOTCACHEPAGE' ) )
+		define( "DONOTCACHEPAGE", true );
+	
+	if( !defined( 'DONOTCDN' ) )
+		define('DONOTCDN', true);
 	
 	extract( shortcode_atts( array(
 		'language' => 'NONE'
@@ -908,8 +978,12 @@ function load_ec_cart( $atts ){
 
 //[ecaccount]
 function load_ec_account( $atts ){
-	define( "DONOTCACHEPAGE", true );
-	define('DONOTCDN', true);
+	
+	if( !defined( 'DONOTCACHEPAGE' ) )
+		define( "DONOTCACHEPAGE", true );
+	
+	if( !defined( 'DONOTCDN' ) )
+		define('DONOTCDN', true);
 	
 	extract( shortcode_atts( array(
 		'language' => 'NONE'
@@ -1123,7 +1197,6 @@ function load_ec_cartdisplay( $atts ){
 		echo "<div class=\"ec_cart_item_holder\">";
 		$cartpage->display_cart_items();
 		echo "</div>";
-		echo "<input type=\"hidden\" name=\"ec_cart_session_id\" id=\"ec_cart_session_id\" value=\"" . session_id() . "\" />";
 	}
     return ob_get_clean( );
 }
@@ -1209,20 +1282,6 @@ function load_ec_membership_alt( $atts, $content = NULL ){
 	
 }
 
-function ec_wp_myplugin_property_title($data){ 
-	global $post;
-	if( isset($_GET['model_number']) && $post->ID == $storepageid ){
-		$query_productRS = sprintf("SELECT products.Title FROM products WHERE model_number = '%s'", mysql_real_escape_string($_GET['model_number']));
-		$productRS = mysql_query($query_productRS);
-		$row_productRS = mysql_fetch_assoc($productRS);
-		
-		$seotitle = $row_productRS['Title'];
-		return $seotitle . " ";
-	}else{
-		return $data;
-	}	
-}
-
 function wpeasycart_register_widgets( ) {
 	register_widget( 'ec_categorywidget' );
 	register_widget( 'ec_cartwidget' );
@@ -1257,6 +1316,8 @@ add_shortcode( 'ec_membership_alt', 'load_ec_membership_alt' );
 add_filter( 'widget_text', 'do_shortcode');
 
 add_action('wp_head', 'ec_facebook_metadata');
+add_action('wp_head', 'ec_theme_head_data');
+add_action('wp_footer', 'ec_theme_footer_data');
 
 add_action( 'wp_enqueue_scripts', 'ec_load_dashicons' );
 function ec_load_dashicons() {
@@ -1427,13 +1488,83 @@ add_filter( 'upgrader_pre_install', 'wpeasycart_backup', 10, 2 );
 /////////////////////////////////////////////////////////////////////
 //AJAX SETUP FUNCTIONS
 /////////////////////////////////////////////////////////////////////
+add_action( 'wp_ajax_ec_ajax_get_optionitem_quantities', 'ec_ajax_get_optionitem_quantities' );
+add_action( 'wp_ajax_nopriv_ec_ajax_get_optionitem_quantities', 'ec_ajax_get_optionitem_quantities' );
+function ec_ajax_get_optionitem_quantities( ){
+	
+	$db = new ec_db( );
+	
+	$product_id = $_POST['product_id'];
+	$optionitem_id_1 = $_POST['optionitem_id_1'];
+	
+	if( isset( $_POST['optionitem_id_2'] ) )
+		$optionitem_id_2 = $_POST['optionitem_id_2'];
+	else{
+		$quantity_values = $db->get_option2_quantity_values( $product_id, $optionitem_id_1 );
+		echo json_encode( $quantity_values );
+		
+		die( );
+	}
+	
+	if( isset( $_POST['optionitem_id_3'] ) )
+		$optionitem_id_3 = $_POST['optionitem_id_3'];
+	else{
+		$quantity_values = $db->get_option3_quantity_values( $product_id, $optionitem_id_1, $optionitem_id_2 );
+		echo json_encode( $quantity_values );
+		
+		die( );
+	}
+	
+	if( isset( $_POST['optionitem_id_4'] ) )
+		$optionitem_id_4 = $_POST['optionitem_id_4'];
+	else{
+		$quantity_values = $db->get_option4_quantity_values( $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3 );
+		echo json_encode( $quantity_values );
+		
+		die( );
+	}
+	
+	
+	$quantity_values = $db->get_option5_quantity_values( $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4 );
+	echo json_encode( $quantity_values );
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_add_to_cart', 'ec_ajax_add_to_cart' );
+add_action( 'wp_ajax_nopriv_ec_ajax_add_to_cart', 'ec_ajax_add_to_cart' );
+function ec_ajax_add_to_cart( ){
+	
+	$product_id = $_POST['product_id'];
+	$model_number = $_POST['model_number'];
+	$quantity = $_POST['quantity'];
+	$db = new ec_db( );
+	
+	$tempcart = $db->add_to_cart( $product_id, $_SESSION['ec_cart_id'], $quantity, 0, 0, 0, 0, 0, "", "", "", 0.00, false, 1 );
+	$cart_arr = array( );
+	$total_items = 0;
+	$total_cost = 0;
+	
+	foreach( $tempcart as $item ){
+		$cart_arr[] = array( 'title' => $item->title, 'price' => $GLOBALS['currency']->get_currency_display( $item->unit_price ), 'quantity' => $item->quantity );
+		$total_items = $total_items + $item->quantity;
+		$total_cost = $total_cost + ( $item->quantity * $item->unit_price );
+	}
+	$cart_arr[0]['total_items'] = $total_items;
+	$cart_arr[0]['total_price'] = $GLOBALS['currency']->get_currency_display( $total_cost );
+	echo json_encode( $cart_arr );
+	
+	die( );
+}
+
 add_action( 'wp_ajax_ec_ajax_cartitem_update', 'ec_ajax_cartitem_update' );
 add_action( 'wp_ajax_nopriv_ec_ajax_cartitem_update', 'ec_ajax_cartitem_update' );
 function ec_ajax_cartitem_update( ){
 	
 	// UPDATE CART ITEM
 	$tempcart_id = $_POST['cartitem_id'];
-	$session_id = $_POST['session_id'];
+	$session_id = $_SESSION['ec_cart_id'];
 	$quantity = $_POST['quantity'];
 	
 	if( is_numeric( $quantity ) ){
@@ -1443,7 +1574,7 @@ function ec_ajax_cartitem_update( ){
 	// UPDATE CART ITEM
 	
 	// GET NEW CART ITEM INFO
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	
 	$unit_price = 0;
 	$total_price = 0;
@@ -1491,13 +1622,13 @@ function ec_ajax_cartitem_delete( ){
 	
 	//Get the variables from the AJAX call
 	$tempcart_id = $_POST['cartitem_id'];
-	$session_id = $_POST['session_id'];
+	$session_id = $_SESSION['ec_cart_id'];
 	
 	// DELTE CART ITEM
 	$db = new ec_db();
 	$ret_data = $db->delete_cartitem( $tempcart_id, $session_id );
 	// DELETE CART ITEM
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$order_totals = ec_get_order_totals( );
 	
 	echo $cart->total_items . "***" . 
@@ -1540,7 +1671,7 @@ function ec_ajax_redeem_coupon_code( ){
 	$db = new ec_db();
 	$coupon = $db->redeem_coupon_code( $coupon_code );
 	// UPDATE COUPON CODE
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$order_totals = ec_get_order_totals( );
 	
 	echo $cart->total_items . "***" . 
@@ -1553,9 +1684,9 @@ function ec_ajax_redeem_coupon_code( ){
 			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	
 	if( $coupon )
-		echo "***" . $coupon->message;
+		echo "***" . $coupon->message . "***" . "valid";
 	else
-		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_coupon' );
+		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_coupon' ) . "***" . "invalid";
 	
 	die(); // this is required to return a proper result
 	
@@ -1575,7 +1706,7 @@ function ec_ajax_redeem_gift_card( ){
 	$db = new ec_db();
 	$giftcard = $db->redeem_gift_card( $gift_card );
 	// UPDATE GIFT CARD
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$order_totals = ec_get_order_totals( );
 	
 	echo $cart->total_items . "***" . 
@@ -1588,9 +1719,11 @@ function ec_ajax_redeem_gift_card( ){
 			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	
 	if( $giftcard )
-		echo "***" . $giftcard->message;
-	else
-		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_giftcard' );
+		echo "***" . $giftcard->message . "***" . "valid";
+	else{
+		unset( $_SESSION['ec_giftcard'] );
+		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_giftcard' ) . "***" . "invalid";
+	}
 	
 	die(); // this is required to return a proper result
 	
@@ -1615,10 +1748,10 @@ function ec_ajax_estimate_shipping( ){
 	
 	$user = new ec_user( $user_email );
 	
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$order_totals = ec_get_order_totals( );
 	$setting = new ec_setting( );
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$shipping = new ec_shipping( $cart->subtotal, $cart->weight, $cart->shippable_total_items, 'RADIO', $user->freeshipping );
 	
 	$shipping_options = $shipping->get_shipping_options( $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_standard' ),$GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_express' ), "RADIO" );
@@ -1650,10 +1783,10 @@ function ec_ajax_update_shipping_method( ){
 	
 	$user = new ec_user( $user_email );
 	
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$order_totals = ec_get_order_totals( );
 	$setting = new ec_setting( );
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$shipping = new ec_shipping( $cart->subtotal, $cart->weight, $cart->shippable_total_items, 'RADIO', $user->freeshipping );
 	
 	$shipping_options = $shipping->get_shipping_options( "", "" );
@@ -1675,15 +1808,166 @@ function ec_ajax_insert_customer_review( ){
 	
 	//Get the variables from the AJAX call
 	$product_id = $_POST['product_id'];
-	$rating = $_POST['rating'];
-	$title = $_POST['title'];
-	$description = $_POST['description'];
+	$rating = $_POST['review_score'];
+	$title = $_POST['review_title'];
+	$description = $_POST['review_message'];
 	
 	//Create a new db and submit review
 	$db = new ec_db();
 	echo $db->submit_customer_review( $product_id, $rating, $title, $description );
 	
 	die(); // this is required to return a proper result
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_save_page_options', 'ec_ajax_save_page_options' );
+function ec_ajax_save_page_options( ){
+	
+	$db = new ec_db( );
+	$post_id = $_POST['post_id'];
+	foreach( $_POST as $key => $var ){
+		
+		if( $key == 'ec_option_details_main_color' ){
+			update_option( 'ec_option_details_main_color', $_POST['ec_option_details_main_color'] );
+		}else if( $key == 'ec_option_details_second_color' ){
+			update_option( 'ec_option_details_second_color', $_POST['ec_option_details_second_color'] );
+		}else if( $key != 'post_id' ){
+			$db->update_page_option( $post_id, $key, $var );
+		}
+		
+	}
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_save_page_default_options', 'ec_ajax_save_page_default_options' );
+function ec_ajax_save_page_default_options( ){
+	
+	$db = new ec_db( );
+	$post_id = $_POST['post_id'];
+	foreach( $_POST as $key => $var ){
+		
+		if( $key != 'post_id' ){
+			update_option( $key, $var );
+		}
+		
+	}
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_save_hide_video_option', 'ec_ajax_save_hide_video_option' );
+function ec_ajax_save_hide_video_option( ){
+	
+	update_option( 'ec_option_hide_design_help_video', '1' );
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_save_product_options', 'ec_ajax_save_product_options' );
+function ec_ajax_save_product_options( ){
+	
+	$model_number = $_POST['model_number'];
+	
+	$product_options = new stdClass( );
+	$product_options->image_hover_type = $_POST['image_hover_type'];
+	$product_options->image_effect_type = $_POST['image_effect_type'];
+	$product_options->tag_type = $_POST['tag_type'];
+	$product_options->tag_text = $_POST['tag_text'];
+	$product_options->tag_bg_color = $_POST['tag_bg_color'];
+	$product_options->tag_text_color = $_POST['tag_text_color'];
+	
+	$db = new ec_db( );
+	$db->update_product_options( $model_number, $product_options );
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_mass_save_product_options', 'ec_ajax_mass_save_product_options' );
+function ec_ajax_mass_save_product_options( ){
+	
+	$product_list = $_POST['products'];
+	
+	$product_options = new stdClass( );
+	$product_options->image_hover_type = $_POST['image_hover_type'];
+	$product_options->image_effect_type = $_POST['image_effect_type'];
+	
+	$db = new ec_db( );
+	foreach( $product_list as $model_number ){
+		$db->update_product_options( $model_number, $product_options );
+	}
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_save_product_order', 'ec_ajax_save_product_order' );
+function ec_ajax_save_product_order( ){
+	
+	$post_id = $_POST['post_id'];
+	$product_order = $_POST['product_order'];
+	
+	$db = new ec_db( );
+	$db->update_page_option( $post_id, 'product_order', $product_order );
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_ec_update_product_description', 'ec_ajax_ec_update_product_description' );
+function ec_ajax_ec_update_product_description( ){
+	
+	$description = $_POST['description'];
+	$product_id = $_POST['product_id'];
+	global $wpdb;
+	$wpdb->query( $wpdb->prepare( "UPDATE ec_product SET ec_product.description = %s WHERE ec_product.product_id = %d", $description, $product_id ) );
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_ec_update_product_specifications', 'ec_ajax_ec_update_product_specifications' );
+function ec_ajax_ec_update_product_specifications( ){
+	
+	$specifications = $_POST['specifications'];
+	$product_id = $_POST['product_id'];
+	global $wpdb;
+	$wpdb->query( $wpdb->prepare( "UPDATE ec_product SET ec_product.specifications = %s WHERE ec_product.product_id = %d", $specifications, $product_id ) );
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_save_product_details_options', 'ec_ajax_save_product_details_options' );
+function ec_ajax_save_product_details_options( ){
+	
+	update_option( 'ec_option_details_main_color', $_POST['ec_option_details_main_color'] );
+	update_option( 'ec_option_details_columns_desktop', $_POST['ec_option_details_columns_desktop'] );
+	update_option( 'ec_option_details_columns_laptop', $_POST['ec_option_details_columns_laptop'] );
+	update_option( 'ec_option_details_columns_tablet_wide', $_POST['ec_option_details_columns_tablet_wide'] );
+	update_option( 'ec_option_details_columns_tablet', $_POST['ec_option_details_columns_tablet'] );
+	update_option( 'ec_option_details_columns_smartphone', $_POST['ec_option_details_columns_smartphone'] );
+	update_option( 'ec_option_use_dark_bg', $_POST['ec_option_use_dark_bg'] );
+	
+	die( );
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_save_cart_options', 'ec_ajax_save_cart_options' );
+function ec_ajax_save_cart_options( ){
+	
+	update_option( 'ec_option_cart_columns_desktop', $_POST['ec_option_cart_columns_desktop'] );
+	update_option( 'ec_option_cart_columns_laptop', $_POST['ec_option_cart_columns_laptop'] );
+	update_option( 'ec_option_cart_columns_tablet_wide', $_POST['ec_option_cart_columns_tablet_wide'] );
+	update_option( 'ec_option_cart_columns_tablet', $_POST['ec_option_cart_columns_tablet'] );
+	update_option( 'ec_option_cart_columns_smartphone', $_POST['ec_option_cart_columns_smartphone'] );
+	update_option( 'ec_option_use_dark_bg', $_POST['ec_option_use_dark_bg'] );
+	
+	die( );
 	
 }
 
@@ -1701,7 +1985,7 @@ function ec_get_order_totals( ){
 	if( isset( $_SESSION['ec_giftcard'] ) )
 		$gift_card = $_SESSION['ec_giftcard'];
 	
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$user = new ec_user( $user_email );
 	$shipping = new ec_shipping( $cart->shipping_subtotal, $cart->weight, $cart->shippable_total_items, 'RADIO', $user->freeshipping );
 	$sales_tax_discount = new ec_discount( $cart, $cart->subtotal, 0.00, $coupon_code, "", 0 );
@@ -1720,7 +2004,7 @@ add_action( 'wp_ajax_nopriv_ec_ajax_get_cart', 'ec_ajax_get_cart' );
 function ec_ajax_get_cart( ){
 	
 	//Get the variables from the AJAX call
-	$cart = new ec_cart( session_id() );
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$retarray = array( );
 	
 	foreach( $cart->cart as $cartitem ){
@@ -1885,7 +2169,7 @@ function ec_create_post_type_menu() {
 		
 		global $wp_rewrite;
 		$wp_rewrite->add_permastruct( 'ec_store', $store_slug . '/%ec_store%/', true, 1 );
-    	add_rewrite_rule( $store_slug . '\/([^\/]*)\/([^\/]*)\/?$', 'index.php?ec_store=$matches[1]', 'top');
+    	add_rewrite_rule( '^' . $store_slug . '/([^/]*)/?$', 'index.php?ec_store=$matches[1]', 'top');
 		
 		// Only Flush Once!
 		if( get_option( 'ec_option_added_custom_post_type' ) < 2 ){	
@@ -1980,7 +2264,7 @@ function ec_custom_cart_in_menu ( $items, $args ) {
 	$ids = explode( '***', get_option( 'ec_option_cart_menu_id' ) );
 	if( get_option( 'ec_option_show_menu_cart_icon' ) && ( in_array( substr( $args->menu_id, 0, -5 ), $ids ) || in_array( $args->theme_location, $ids ) ) ){
 	
-		$cart = new ec_cart( session_id( ) );
+		$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 		
 		$cartpageid = get_option('ec_option_cartpage');
 		

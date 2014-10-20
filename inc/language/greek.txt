@@ -60,6 +60,30 @@
 				"product_paging_of":{
 					"title":"Product Page of in Page a of b",
 					"value":"\u03ae"
+				},
+				"product_showing":{
+					"title":"Product Page Num Results Showing",
+					"value":"Εμφάνιση"
+				},
+				"product_all":{
+					"title":"Product Page Num Results all",
+					"value":"όλων"
+				},
+				"product_results":{
+					"title":"Product Page Num Results",
+					"value":"Αποτελέσματα"
+				},
+				"product_view_cart":{
+					"title":"Product Page View Cart",
+					"value":"Το καλάθι μου"
+				},
+				"product_product_added_note":{
+					"title":"Product Page Added to Cart Note",
+					"value":"Προϊόν προστέθηκε επιτυχώς στο καλάθι σας."
+				},
+				"product_product_view_per_page":{
+					"title":"Product Page View in Per Page",
+					"value":"Προβολή"
 				}
 			}
 		},
@@ -234,6 +258,94 @@
 				"product_details_minimum_quantity_text2":{
 					"title":"Min Purchase Amount Text Part 2",
 					"value":"Απαιτείται"
+				},
+				"product_details_handling_fee_notice1":{
+					"title":"One Time Handling Fee Part 1",
+					"value":"*Ένα one-time αμοιβή χειρισμού των"
+				},
+				"product_details_handling_fee_notice2":{
+					"title":"One Time Handling Fee Part 2",
+					"value":"δολαρίων θα προστεθεί στο συνολικό αποστολής σας στο ταμείο."
+				},
+				"product_details_home_link":{
+					"title":"Home Breadcrumbs Link",
+					"value":"Αρχική"
+				},
+				"product_details_store_link":{
+					"title":"Store Breadcrumbs Link",
+					"value":"Κατάστημα"
+				},
+				"product_details_reviews_text":{
+					"title":"Store Reviews Count",
+					"value":"Κριτικές"
+				},
+				"product_details_gift_card_recipient_name":{
+					"title":"Store Gift Card To Name",
+					"value":"Όνομα Παραλήπτη"
+				},
+				"product_details_gift_card_recipient_email":{
+					"title":"Store Gift Card To Email",
+					"value":"Email Παραλήπτη"
+				},
+				"product_details_gift_card_sender_name":{
+					"title":"Store Gift Card Sender's Name",
+					"value":"Όνομα αποστολέα"
+				},
+				"product_details_gift_card_message":{
+					"title":"Store Gift Card Message",
+					"value":"Συμπεριλάβετε ένα μήνυμα"
+				},
+				"product_details_donation_amount":{
+					"title":"Store Donation Amount",
+					"value":"Ποσό δωρεάς"
+				},
+				"product_details_loading_options":{
+					"title":"Store Loading Options",
+					"value":"Φόρτωση Διαθέσιμες Επιλογές"
+				},
+				"product_details_missing_option":{
+					"title":"Store Missing Option",
+					"value":"λείπει η επιλογή:"
+				},
+				"product_details_maximum_quantity":{
+					"title":"Store Maximum Quantity Exceeded",
+					"value":"Μέγιστη ποσότητα υπέρβαση"
+				},
+				"product_details_one_time_addition1":{
+					"title":"Store One Time Addition 1",
+					"value":"Η τιμή ενός χρόνου των"
+				},
+				"product_details_one_time_addition2":{
+					"title":"Store One Time Addition 2",
+					"value":"δολαρίων θα προστεθεί στην παραγγελία σας."
+				},
+				"product_details_left_in_stock":{
+					"title":"Store Left in Stock",
+					"value":"Αριστερά στο Χρηματιστήριο"
+				},
+				"product_details_categories":{
+					"title":"Store Categories",
+					"value":"Κατηγορίες:"
+				},
+				"product_details_manufacturer":{
+					"title":"Store Manufacturer",
+					"value":"Κατασκευαστής:"
+				},
+				"product_details_related_products":{
+					"title":"Store Related Products",
+					"value":"Σχετικά προϊόντα"
+				},
+				"product_details_tier_buy":{
+					"title":"Tiered Pricing buy x at y",
+					"value":"Αγοράστε"
+				},
+				"product_details_tier_buy_at":{
+					"title":"Tiered Pricing buy x at y",
+					"value":"στους"
+				},
+				"product_details_gift_card_error":{
+					"title":"Gift Card Option Error Text",
+					"value":"Λείπει Επιλογές Giftcard"
 				}
 			}
 		},
@@ -272,9 +384,41 @@
 					"title":"Product Details Write a Review Button",
 					"value":"\u0393\u03c1\u03ac\u03c8\u03c4\u03b5 \u03bc\u03b9\u03b1 \u03b1\u03be\u03b9\u03bf\u03bb\u03cc\u03b3\u03b7\u03c3\u03b7"
 				},
+				"product_details_add_a_review_for":{
+					"title":"Store Add a Review",
+					"value":"Προσθέστε μια κριτική για"
+				},
+				"product_details_your_review_title":{
+					"title":"Store Review title",
+					"value":"Σας κριτική"
+				},
+				"product_details_your_review_rating":{
+					"title":"Store Review Rating",
+					"value":"Η βαθμολογία σας"
+				},
+				"product_details_your_review_message":{
+					"title":"Store Review Message",
+					"value":"Τα σχόλιά σας"
+				},
+				"product_details_review_submitted_button":{
+					"title":"Store Review Submit",
+					"value":"ΑΠΟΣΤΟΛΗ"
+				},
 				"product_details_review_submitted":{
 					"title":"Product Details Review Submitted Button",
-					"value":"\u0397 \u03b1\u03be\u03b9\u03bf\u03bb\u03cc\u03b3\u03b7\u03c3\u03b7 \u03c5\u03c0\u03bf\u03b3\u03c1\u03ac\u03c6\u03c4\u03b7\u03ba\u03b5"
+					"value":"ΑΝΑΣΚΟΠΗΣΗ ΥΠΕΒΑΛΕ"
+				},
+				"product_details_submitting_review":{
+					"title":"Store Submitting Review",
+					"value":"Υποβολή Αξιολόγησης σας, Παρακαλώ περιμένετε"
+				},
+				"product_details_review_submitted":{
+					"title":"Store Review Submitted",
+					"value":"Το σχόλιο σας έχει υποβληθεί με επιτυχία"
+				},
+				"review_error":{
+					"title":"Store Review Error Missing Data",
+					"value":"Θα πρέπει να περιλαμβάνει έναν τίτλο, βαθμολογία, και το μήνυμα στην αξιολόγησή σας."
 				}
 			}
 		},
@@ -284,6 +428,18 @@
 				"cart_title":{
 					"title":"Checkout Cart Title",
 					"value":"\u039a\u03ac\u03c1\u03c4\u03b1 \u03b1\u03b3\u03bf\u03c1\u03ce\u03bd"
+				},
+				"cart_checkout_details_title":{
+					"title":"Checkout Details Title",
+					"value":"ταμείο λεπτομέρειες"
+				},
+				"cart_submit_payment_title":{
+					"title":"Submit Payment Title",
+					"value":"υποβάλετε την πληρωμή"
+				},
+				"your_cart_title":{
+					"title":"Your Cart Title",
+					"value":"καλάθι σας"
 				},
 				"cart_empty_cart":{
 					"title":"Checkout, Empty Cart Message",
@@ -348,6 +504,30 @@
 				"cart_menu_icon_label_plural":{
 					"title":"Cart in Menu, Items",
 					"value":"Είδη"
+				},
+				"deconetwork_edit":{
+					"title":"Deconetwork, Edit Design",
+					"value":"Επεξεργασία Σχεδιασμός"
+				},
+				"cart_order_adjustment":{
+					"title":"Cart Item, Adjustment per Order",
+					"value":"ανά παραγγελία"
+				},
+				"cart_return_to_store":{
+					"title":"Empty Cart, Return to store",
+					"value":"επιστρέψει για να αποθηκεύσετε"
+				},
+				"cartitem_max_error":{
+					"title":"Max Quantity Exceeded Error",
+					"value":"Μέγιστη Ποσότητα Υπέρβαση"
+				},
+				"cartitem_min_error":{
+					"title":"Min Quantity Required Error",
+					"value":"Ελάχιστη Απαιτούμενη ποσότητα"
+				},
+				"cart_please_wait":{
+					"title":"Cart Please Wait",
+					"value":"Παρακαλώ περιμένετε"
 				}
 			}
 		},
@@ -489,6 +669,38 @@
 				"cart_notice_payment_card_code":{
 					"title":"Cart, Notice, Security Code Required",
 					"value":"Κωδικός Ασφαλείας"
+				},
+				"cart_notice_please_enter_your":{
+					"title":"Cart, Notice, Please Enter Your",
+					"value":"Παρακαλώ εισάγετε το"
+				},
+				"cart_notice_please_select_your":{
+					"title":"Cart, Notice, Please Select Your",
+					"value":"Παρακαλώ επιλέξτε το"
+				},
+				"cart_notice_please_enter_valid":{
+					"title":"Cart, Notice, Please Enter Valid",
+					"value":"Παρακαλώ εισάγετε ένα έγκυρο"
+				},
+				"cart_notice_emails_do_not_match":{
+					"title":"Cart, Notice, Email Do Not Match",
+					"value":"Διευθύνσεις ηλεκτρονικού ταχυδρομείου σας δεν ταιριάζουν"
+				},
+				"cart_notice_passwords_do_not_match":{
+					"title":"Cart, Notice, Passwords Do Not Match",
+					"value":"Οι κωδικοί πρόσβασης δεν ταιριάζουν"
+				},
+				"cart_notice_checkout_details_errors":{
+					"title":"Cart, Notice, Checkout Details Errors",
+					"value":"Παρακαλώ διορθώστε τα λάθη σε λεπτομέρειες ταμείο σας"
+				},
+				"cart_notice_payment_accept_terms":{
+					"title":"Cart, Notice, Please Accept Terms",
+					"value":"Παρακαλούμε να συμφωνείτε με τους όρους και τις προϋποθέσεις"
+				},
+				"cart_notice_payment_correct_errors":{
+					"title":"Cart, Notice, Payment Correct Errors",
+					"value":"Διορθώστε τα λάθη με τις πληροφορίες της πιστωτικής σας κάρτας για να υποβάλει αυτή τη σειρά"
 				}
 			}
 		},
@@ -517,8 +729,12 @@
 			"label":"Cart - Enter Coupons and Gift Cards",
 			"options":{
 				"cart_coupon_title":{
-					"title":"Cart, Coupons Title",
-					"value":"\u039a\u03bf\u03c5\u03c0\u03cc\u03bd\u03b9\u03b1 \u03ba\u03b1\u03b9 \u03b4\u03ce\u03c1\u03b1 \u03ba\u03ac\u03c1\u03c4\u03b1\u03c2"
+					"title":"Cart, Coupon Title",
+					"value":"κουπόνι"
+				},
+				"cart_gift_card_title":{
+					"title":"Cart, Gift Card Title",
+					"value":"Δωροκάρτα"
 				},
 				"cart_coupon_sub_title":{
 					"title":"Cart, Coupons Sub-Title",
@@ -539,6 +755,14 @@
 				"cart_invalid_giftcard":{
 					"title":"Cart, Invalid Gift Card",
 					"value":"\u0394\u03b5\u03bd \u03b5\u03af\u03bd\u03b1\u03b9 \u03ad\u03b3\u03ba\u03c5\u03c1\u03bf\u03c2 \u03bf \u03b1\u03c1\u03b9\u03b8\u03bc\u03cc\u03c2 \u03ba\u03ac\u03c1\u03c4\u03b1\u03c2 \u03b4\u03ce\u03c1\u03bf\u03c5"
+				},
+				"cart_enter_coupon":{
+					"title":"Cart, Enter Coupon Hint",
+					"value":"Εισάγετε το κωδικό κουπονιού"
+				},
+				"cart_enter_gift_code":{
+					"title":"Cart, Enter Gift Card Hint",
+					"value":"Εισάγετε Gift Card"
 				}
 			}
 		},
@@ -580,6 +804,10 @@
 				"cart_estimate_shipping_error":{
 					"title":"Cart, Mismatch Postal Code Error",
 					"value":"\u039f \u03c4\u03b1\u03c7\u03c5\u03b4\u03c1\u03bf\u03bc\u03b9\u03ba\u03cc\u03c2 \u03ba\u03ce\u03b4\u03b9\u03ba\u03b1\u03c2 \u03b4\u03b5\u03bd \u03c4\u03b1\u03b9\u03c1\u03b9\u03ac\u03b6\u03b5\u03b9 \u03bc\u03b5 \u03c4\u03b7 \u03c7\u03ce\u03c1\u03b1 .\u03a4\u03bf \u03c0\u03bf\u03c3\u03cc \u03b1\u03c0\u03bf\u03c3\u03c4\u03bf\u03bb\u03ae\u03c2 \u03b8\u03b1 \u03ba\u03b1\u03b8\u03bf\u03c1\u03b9\u03c3\u03c4\u03b5\u03af \u03b1\u03c6\u03bf\u03cd \u03b5\u03b9\u03c3\u03ac\u03b3\u03b5\u03c4\u03b5 \u03c4\u03b1 \u03c3\u03c4\u03bf\u03b9\u03c7\u03b5\u03af\u03b1 \u03b1\u03c0\u03bf\u03c3\u03c4\u03bf\u03bb\u03ae\u03c2."
+				},
+				"cart_estimate_shipping_hint":{
+					"title":"Cart, Estimate Shipping Hint",
+					"value":"Εισάγετε ΤΚ"
 				}
 			}
 		},
@@ -781,6 +1009,10 @@
 				"cart_billing_information_ship_to_different":{
 					"title":"Cart, Billing, Use Shipping Radio",
 					"value":"\u0391\u03c0\u03bf\u03c3\u03c4\u03bf\u03bb\u03ae \u03c3\u03b5 \u03b4\u03b9\u03b1\u03c6\u03bf\u03c1\u03b5\u03c4\u03b9\u03ba\u03ae \u03b4\u03b9\u03b5\u03cd\u03b8\u03c5\u03bd\u03c3\u03b7"
+				},
+				"cart_billing_information_company_name":{
+					"title":"Cart, Billing, Company Name Label",
+					"value":"Όνομα Εταιρείας"
 				}
 			}
 		},
@@ -846,6 +1078,10 @@
 				"cart_shipping_information_phone":{
 					"title":"Cart, Shipping, Phone Label",
 					"value":"\u03a4\u03b7\u03bb\u03ad\u03c6\u03c9\u03bd\u03bf"
+				},
+				"cart_shipping_information_company_name":{
+					"title":"Cart, Shipping, Company Name Label",
+					"value":"Όνομα Εταιρείας"
 				}
 			}
 		},
@@ -891,6 +1127,14 @@
 				"cart_contact_information_continue_button":{
 					"title":"Cart, Contact Information, Continue Button",
 					"value":"Συνέχεια"
+				},
+				"cart_contact_information_continue_payment":{
+					"title":"Cart, Contact Information, Continue to Payment",
+					"value":"Συνεχίστε να Πληρωμής"
+				},
+				"cart_contact_information_continue_shipping":{
+					"title":"Cart, Contact Information, Continue to Shipping",
+					"value":"ΣΥΝΕΧΕΙΑ ΣΤΗΝ ΝΑΥΤΙΛΙΑ"
 				}
 			}
 		},
@@ -904,6 +1148,10 @@
 				"cart_shipping_method_continue_button":{
 					"title":"Cart, Shipping Method Continue Button",
 					"value":"Συνέχεια"
+				},
+				"cart_shipping_method_please_select_one":{
+					"title":"Cart, Shipping please select one",
+					"value":"Παρακαλώ επιλέξτε μια μέθοδο αποστολής"
 				}
 			}
 		},
@@ -1010,6 +1258,34 @@
 				"cart_payment_information_order_notes_message":{
 					"title":"Cart, Payment Information, Customer Notes Message",
 					"value":"Εάν θέλετε να αφήσετε ένα μήνυμα σχετικά με την παραγγελία σας, βάλτε το εδώ"
+				},
+				"cart_payment_information_review_title":{
+					"title":"Cart, Review Cart Title",
+					"value":"ΑΝΑΣΚΟΠΗΣΗ ΚΑΛΑΘΙ ΣΑΣ"
+				},
+				"cart_payment_information_edit_cart_link":{
+					"title":"Cart, edit cart items link",
+					"value":"edit καλάθι αντικείμενα"
+				},
+				"cart_payment_information_edit_billing_link":{
+					"title":"Cart, edit billing link",
+					"value":"edit διεύθυνση χρέωσης"
+				},
+				"cart_payment_information_edit_shipping_link":{
+					"title":"Cart, edit shipping link",
+					"value":"edit διεύθυνση αποστολής"
+				},
+				"cart_payment_information_edit_shipping_method_link":{
+					"title":"Cart, edit shipping link",
+					"value":"Μέθοδος ναυτιλίας edit"
+				},
+				"cart_payment_review_totals_title":{
+					"title":"Cart, Review Total Title",
+					"value":"ΣΥΝΟΛΑ ΚΑΛΑΘΙ ΑΝΑΣΚΟΠΗΣΗ"
+				},
+				"cart_payment_review_agree":{
+					"title":"Cart, Review Agree Text",
+					"value":"Συμφωνώ με τους όρους και τις προϋποθέσεις αυτής της ιστοσελίδας."
 				}
 			}
 		},
@@ -1047,6 +1323,14 @@
 				"cart_payment_complete_line_5":{
 					"title":"Cart, Payment Complete, Line 5",
 					"value":"Κάντε κλικ εδώ για να δείτε το περιεχόμενο μέλους σας"
+				},
+				"cart_payment_complete_click_here":{
+					"title":"Cart, Payment Complete, Click Here",
+					"value":"Κάντε κλικ εδώ"
+				},
+				"cart_payment_complete_to_view_order":{
+					"title":"Cart, Payment Complete, To View Order",
+					"value":"για να δείτε την παραγγελία σας"
 				},
 				"cart_payment_complete_billing_label":{
 					"title":"Cart, Payment Complete, Billing Label",
@@ -1143,6 +1427,34 @@
 				"cart_success_create_account":{
 					"title":"Cart, Payment Complete, Create Account",
 					"value":"Δημιουργία λογαριασμού"
+				},
+				"cart_giftcard_receipt_title":{
+					"title":"Cart, Gift Card Email Subject",
+					"value":"Κάρτα δώρων Παράδοση"
+				},
+				"cart_giftcard_receipt_header":{
+					"title":"Cart, Gift Card Header",
+					"value":"Δωροκάρτα σας"
+				},
+				"cart_giftcard_receipt_to":{
+					"title":"Cart, Gift Card To",
+					"value":"Για να"
+				},
+				"cart_giftcard_receipt_from":{
+					"title":"Cart, Gift Card From",
+					"value":"από"
+				},
+				"cart_giftcard_receipt_id":{
+					"title":"Cart, Gift Card ID Label",
+					"value":"Gift Card σας ID"
+				},
+				"cart_giftcard_receipt_amount":{
+					"title":"Cart, Gift Card Amount",
+					"value":"Κάρτα δώρων Σύνολο"
+				},
+				"cart_giftcard_receipt_message":{
+					"title":"Cart, Gift Card Message",
+					"value":"Μπορείτε να εξαργυρώσετε δώρο κάρτα σας κατά την ολοκλήρωση της παραγγελίας στο"
 				}
 			}
 		},
@@ -1954,6 +2266,14 @@
 				"minquantity":{
 					"title":"Store, Minimum Quantity Error",
 					"value":"Αυτό το προϊόν απαιτεί μια ελάχιστη ποσότητα αγοράς."
+				},
+				"missing_gift_card_options":{
+					"title":"Store, Missing Gift Card Options",
+					"value":"Λείπει Επιλογές Δωροκάρτα"
+				},
+				"missing_inquiry_options":{
+					"title":"Store, Missing Inquiry Options",
+					"value":"Λείπει Επιλογές μήνυμά σας"
 				}
 			}
 		},
@@ -2011,6 +2331,14 @@
 				"inquiry_sent":{
 					"title":"Store, Inquiry Sent",
 					"value":"Έρευνα προϊόν σας έχει σταλεί με επιτυχία."
+				},
+				"add_to_cart_success":{
+					"title":"Store, Added to Cart",
+					"value":"Επιτυχής Προστέθηκε στο καλάθι αγορών σας"
+				},
+				"adding_to_cart":{
+					"title":"Store, Adding to Cart",
+					"value":"Προσθήκη στο καλάθι..."
 				}
 			}
 		},

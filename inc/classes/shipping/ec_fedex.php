@@ -31,6 +31,9 @@ class ec_fedex{
 			
 		if( !$destination_country )
 			$destination_country = $this->fedex_country_code;
+			
+		if( !$destination_zip || $destination_zip == "" )
+			$destination_zip = $this->fedex_ship_from_zip;
 		
 		$service_type = strtoupper( $ship_code );
 		
@@ -59,9 +62,9 @@ class ec_fedex{
 		if( in_array( $service_type, $service_types ) ){
 			
 			if( $this->fedex_test_account ){
-				$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13_test_account.wsdl";
+				$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v16_test_account.wsdl";
 			}else{
-				$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13.wsdl";
+				$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v16.wsdl";
 			}
 	
 			ini_set("soap.wsdl_cache_enabled", "0");
@@ -78,10 +81,10 @@ class ec_fedex{
 				'AccountNumber' => $this->fedex_account_number, 
 				'MeterNumber' => $this->fedex_meter_number
 			);
-			$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Rate Request v13 using PHP ***' );
+			$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Rate Request v16 using PHP ***' );
 			$request['Version'] = array(
 				'ServiceId' => 'crs', 
-				'Major' => '13', 
+				'Major' => '16', 
 				'Intermediate' => '0', 
 				'Minor' => '0'
 			);
@@ -94,7 +97,7 @@ class ec_fedex{
 			$shipper = array( 'Address' => array( 'PostalCode' => $this->fedex_ship_from_zip, 'CountryCode' => $this->fedex_country_code ) );
 			$request['RequestedShipment']['Shipper'] = $shipper;
 			
-			$recipient = array( 'Address' => array( 'PostalCode' => $destination_zip, 'CountryCode' => $destination_country, 'Residential' => 1 ) );
+			$recipient = array( 'Address' => array( 'PostalCode' => $destination_zip, 'CountryCode' => $destination_country, 'Residential' => false ) );
 			$request['RequestedShipment']['Recipient'] = $recipient;
 			
 			$request['RequestedShipment']['RateRequestTypes'] = 'ACCOUNT'; 
@@ -117,30 +120,27 @@ class ec_fedex{
 					$rated_list_package = 0.000;
 					$rate_other = 0.000;
 					
-					for( $j=0; $j<count( $response->RateReplyDetails[0]->RatedShipmentDetails ); $j++ ){
-						if( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "PAYOR_ACCOUNT_PACKAGE" ){
-							$payor_account_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}else if( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "RATED_ACCOUNT_PACKAGE" ){
-							$rated_account_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}else if( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "PAYOR_LIST_PACKAGE" ){
-							$payor_list_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}else if( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "RATED_LIST_PACKAGE" ){
-							$rated_list_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}else{
-							$rate_other = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}
-						
+					if( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->RateType == "PAYOR_ACCOUNT_PACKAGE" ){
+						$payor_account_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+					}else if( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->RateType == "RATED_ACCOUNT_PACKAGE" ){
+						$rated_account_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+					}else if( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->RateType == "PAYOR_LIST_PACKAGE" ){
+						$payor_list_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+					}else if( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->RateType == "RATED_LIST_PACKAGE" ){
+						$rated_list_package = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+					}else{
+						$rate_other = number_format( $response->RateReplyDetails[0]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
 					}
-					
-					if( $payor_list_package > 0 ){
-						$amount = $payor_list_package;
-					}else if( $payor_account_package > 0 ){
+						
+					if( $payor_account_package > 0 ){
 						$amount = $payor_account_package;
-					}else if( $rated_list_package > 0 ){
-						$amount = $rated_list_package;
 					}else if( $rated_account_package > 0 ){
 						$amount = $rated_account_package;
-					}else{
+					}else if( $payor_list_package > 0 ){
+						$amount = $payor_list_package;
+					}else if( $rated_list_package > 0 ){
+						$amount = $rated_list_package;
+					}else {
 						$amount = $rate_other;
 					}
 					
@@ -165,11 +165,14 @@ class ec_fedex{
 			
 		if( !$destination_country )
 			$destination_country = $this->fedex_country_code;
+			
+		if( !$destination_zip || $destination_zip == "" )
+			$destination_zip = $this->fedex_ship_from_zip;
 		
 		if( $this->fedex_test_account ){
-			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13_test_account.wsdl";
+			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v16_test_account.wsdl";
 		}else{
-			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13.wsdl";
+			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v16.wsdl";
 		}
 
 		ini_set("soap.wsdl_cache_enabled", "0");
@@ -186,10 +189,10 @@ class ec_fedex{
 			'AccountNumber' => $this->fedex_account_number, 
 			'MeterNumber' => $this->fedex_meter_number
 		);
-		$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Rate Request v13 using PHP ***' );
+		$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Rate Request v16 using PHP ***' );
 		$request['Version'] = array(
 			'ServiceId' => 'crs', 
-			'Major' => '13', 
+			'Major' => '16', 
 			'Intermediate' => '0', 
 			'Minor' => '0'
 		);
@@ -201,7 +204,7 @@ class ec_fedex{
 		$shipper = array( 'Address' => array( 'PostalCode' => $this->fedex_ship_from_zip, 'CountryCode' => $this->fedex_country_code ) );
 		$request['RequestedShipment']['Shipper'] = $shipper;
 		
-		$recipient = array( 'Address' => array( 'PostalCode' => $destination_zip, 'CountryCode' => $destination_country, 'Residential' => 1 ) );
+		$recipient = array( 'Address' => array( 'PostalCode' => $destination_zip, 'CountryCode' => $destination_country, 'Residential' => false ) );
 		$request['RequestedShipment']['Recipient'] = $recipient;
 		
 		$request['RequestedShipment']['RateRequestTypes'] = 'ACCOUNT'; 
@@ -227,30 +230,27 @@ class ec_fedex{
 					$rated_list_package = 0.000;
 					$rate_other = 0.000;
 					
-					for( $j=0; $j<count( $response->RateReplyDetails[$i]->RatedShipmentDetails ); $j++ ){
-						if( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "PAYOR_ACCOUNT_PACKAGE" ){
-							$payor_account_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "RATED_ACCOUNT_PACKAGE" ){
-							$rated_account_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "PAYOR_LIST_PACKAGE" ){
-							$payor_list_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->RateType == "RATED_LIST_PACKAGE" ){
-							$rated_list_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}else{
-							$rate_other = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails[$j]->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
-						}
-						
+					if( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->RateType == "PAYOR_ACCOUNT_PACKAGE" ){
+						$payor_account_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+					}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->RateType == "RATED_ACCOUNT_PACKAGE" ){
+						$rated_account_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+					}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->RateType == "PAYOR_LIST_PACKAGE" ){
+						$payor_list_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+					}else if( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->RateType == "RATED_LIST_PACKAGE" ){
+						$rated_list_package = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
+					}else{
+						$rate_other = number_format( $response->RateReplyDetails[$i]->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount * $this->fedex_conversion_rate, 2, ".", "," );
 					}
 					
-					if( $payor_list_package > 0 ){
-						$rate = $payor_list_package;
-					}else if( $payor_account_package > 0 ){
+					if( $payor_account_package > 0 ){
 						$rate = $payor_account_package;
-					}else if( $rated_list_package > 0 ){
-						$rate = $rated_list_package;
 					}else if( $rated_account_package > 0 ){
 						$rate = $rated_account_package;
-					}else{
+					}else if( $payor_list_package > 0 ){
+						$rate = $payor_list_package;
+					}else if( $rated_list_package > 0 ){
+						$rate = $rated_list_package;
+					}else {
 						$rate = $rate_other;
 					}
 					
@@ -276,9 +276,9 @@ class ec_fedex{
 			$destination_country = $this->fedex_country_code;
 		
 		if( $this->fedex_test_account ){
-			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13_test_account.wsdl";
+			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v16_test_account.wsdl";
 		}else{
-			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v13.wsdl";
+			$path_to_wsdl = dirname(__FILE__) . "/fedex_rate_service_v16.wsdl";
 		}
 
 		ini_set("soap.wsdl_cache_enabled", "0");
@@ -295,10 +295,10 @@ class ec_fedex{
 			'AccountNumber' => $this->fedex_account_number, 
 			'MeterNumber' => $this->fedex_meter_number
 		);
-		$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Rate Request v13 using PHP ***' );
+		$request['TransactionDetail'] = array( 'CustomerTransactionId' => ' *** Rate Request v16 using PHP ***' );
 		$request['Version'] = array(
 			'ServiceId' => 'crs', 
-			'Major' => '13', 
+			'Major' => '16', 
 			'Intermediate' => '0', 
 			'Minor' => '0'
 		);
