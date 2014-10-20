@@ -58,6 +58,13 @@ function ec_validation( function_name, input, country_code ){
 			else
 				return false;
 				
+		}else if( country_code == "AU" || country_code == "BR" || country_code == "CA" || country_code == "CN" || country_code == "GB" || country_code == "IN" || country == "JP" ){
+			
+			if( input.length > 0 && input != 0 )
+				return true;
+			else
+				return false;
+				
 		}else{
 			return true;
 				
