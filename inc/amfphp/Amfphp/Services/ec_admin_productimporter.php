@@ -76,7 +76,10 @@ class ec_admin_productimporter{
 			}
 			
 			//9 list_price
-
+			if( !is_numeric( $excel->sheets[0]['cells'][$x][9] ) ){
+				return "Error at record " . $x . ", if you include a list price, it must be in numeric format.  Do not enter currency signs or thousands seperators." ;
+			}
+			
 			//10 vat_rate
 			
 			//11 handling_price
@@ -381,12 +384,12 @@ class ec_admin_productimporter{
 							ec_product.deconetwork_color_id = %s,
 							ec_product.deconetwork_design_id = %s,
 							ec_product.short_description = %s,
-							ec_product.tag_type = %s,
-							ec_product.tag_bg_color = %s,
-							ec_product.tag_text = %s,
-							ec_product.tag_text_color = %s,
 							ec_product.display_type = %s,
 							ec_product.image_hover_type = %s,
+							ec_product.tag_type = %s,
+							ec_product.tag_bg_color = %s,
+							ec_product.tag_text_color = %s,
+							ec_product.tag_text = %s,
 							ec_product.image_effect_type = %s
 							
 							WHERE product_id = %d";
@@ -546,12 +549,12 @@ class ec_admin_productimporter{
 					ec_product.deconetwork_color_id,
 					ec_product.deconetwork_design_id,
 					ec_product.short_description = %s,
-					ec_product.tag_type = %s,
-					ec_product.tag_bg_color = %s,
-					ec_product.tag_text = %s,
-					ec_product.tag_text_color = %s,
 					ec_product.display_type = %s,
 					ec_product.image_hover_type = %s,
+					ec_product.tag_type = %s,
+					ec_product.tag_bg_color = %s,
+					ec_product.tag_text_color = %s,	
+					ec_product.tag_text = %s,
 					ec_product.image_effect_type = %s
 
 				) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
