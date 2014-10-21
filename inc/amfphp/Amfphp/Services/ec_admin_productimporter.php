@@ -45,7 +45,9 @@ class ec_admin_productimporter{
 		for( $x=2; $x <= $excel->sheets[0]['numRows']; $x++ ){
 	
 			//1 product_id
-			
+			if( $excel->sheets[0]['cells'][$x][1] == '' || !is_numeric( $excel->sheets[0]['cells'][$x][1] ) ){
+				return "Error at record " . $x . ", product ID must be numeric and less than 11 characters in length.  It must be unique for each product.";
+			}
 			//2 model_number
 			if( $excel->sheets[0]['cells'][$x][2] == '' ){
 				return "Error at record " . $x . ", all products require a unique model number.";
@@ -548,14 +550,14 @@ class ec_admin_productimporter{
 					ec_product.deconetwork_size_id,
 					ec_product.deconetwork_color_id,
 					ec_product.deconetwork_design_id,
-					ec_product.short_description = %s,
-					ec_product.display_type = %s,
-					ec_product.image_hover_type = %s,
-					ec_product.tag_type = %s,
-					ec_product.tag_bg_color = %s,
-					ec_product.tag_text_color = %s,	
-					ec_product.tag_text = %s,
-					ec_product.image_effect_type = %s
+					ec_product.short_description,
+					ec_product.display_type,
+					ec_product.image_hover_type,
+					ec_product.tag_type,
+					ec_product.tag_bg_color,
+					ec_product.tag_text_color,	
+					ec_product.tag_text,
+					ec_product.image_effect_type
 
 				) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
 								
@@ -594,7 +596,7 @@ class ec_admin_productimporter{
 		if( $x > $excel->sheets[0]['numRows'] ){
 			return array( "success" );
 		}else{
-			return 'Error at record '.$x.', Please Check Excel File for Missing Data';
+			return 'Error at record '.$x.', Please Check Excel File for Missing Data or Duplicate Products';
 		}
 		
 	} // Close Import Function
