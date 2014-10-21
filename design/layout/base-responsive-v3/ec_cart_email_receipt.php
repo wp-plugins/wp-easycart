@@ -236,7 +236,7 @@
                             else
                                 $img_url = plugins_url( "wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1 );
                             ?>
-                            <div style="ec_lineitem_image"><img src="<?php echo $img_url; ?>" style="width:70px; height:auto;" alt="<?php echo $this->cart->cart[$i]->title; ?>" /></div>
+                            <div style="ec_lineitem_image"><img src="<?php echo $img_url; ?>" width="70" alt="<?php echo $this->cart->cart[$i]->title; ?>" /></div>
 						</td>
                         
                     	<td>
