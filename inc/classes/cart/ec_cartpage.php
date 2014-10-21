@@ -1904,7 +1904,7 @@ class ec_cartpage{
 				}
 				
 				for( $i=0; $i<count( $option_vals ); $i++ ){
-					$this->mysqli->add_option_to_cart( $tempcart_id, $option_vals[$i] );
+					$this->mysqli->add_option_to_cart( $tempcart_id, $_SESSION['ec_cart_id'], $option_vals[$i] );
 				}
 				
 				if( $grid_quantity > 0 ){
