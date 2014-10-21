@@ -188,6 +188,7 @@ class ec_prodimages{
 			$test_src = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img;
 			$test_src2 = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics" . $level . "/" . $img;
 			$test_src3 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg";
+			$test_src4 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
 			
 			if( file_exists( $test_src2 ) )
 				$image_src = plugins_url( "wp-easycart-data/products/pics" . $level . "/" . $img );
@@ -195,6 +196,8 @@ class ec_prodimages{
 				$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics" . $level . "/" . $img );
 			else if( file_exists( $test_src3 ) )
 				$image_src = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
+			else if( file_exists( $test_src4 ) )
+				$image_src = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
 			else
 				$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
 			

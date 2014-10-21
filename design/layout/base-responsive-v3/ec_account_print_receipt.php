@@ -283,8 +283,10 @@
 		<?php
         if( $order_details[$i]->is_deconetwork )
 			$img_url = "https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_image_link;
-		else
+		else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $order_details[$i]->image1 ) && !is_dir( WP_PLUGIN_DIR . "wp-easycart-data/products/pics1/" . $order_details[$i]->image1 ) )
 			$img_url = plugins_url( "wp-easycart-data/products/pics1/" . $order_details[$i]->image1 );
+		else
+			$img_url = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
         ?>
 		<div style="float:left; width:70px; margin-right:5px;"><img src="<?php echo $img_url; ?>" style="width:70px; height:auto;" alt="<?php echo $order_details[$i]->title; ?>" /></div>
         

@@ -27,28 +27,38 @@ else
 // DISPLAY WIDTH SETUP
 if( isset( $page_options->columns_smartphone ) )  
 	$display_width_smartphone = ( 100/$page_options->columns_smartphone ) . "%";
-else
+else if( get_option( 'ec_option_default_smartphone_columns' ) != 0 )
 	$display_width_smartphone = ( 100/get_option( 'ec_option_default_smartphone_columns' ) ) . "%";
+else
+	$display_width_smartphone = ( 100/1 ) . "%";
 	
 if( isset( $page_options->columns_tablet ) )  
 	$display_width_tablet = ( 100/$page_options->columns_tablet ) . "%";
-else
+else if( get_option( 'ec_option_default_tablet_columns' ) != 0 )
 	$display_width_tablet = ( 100/get_option( 'ec_option_default_tablet_columns' ) ) . "%";
+else
+	$display_width_tablet = ( 100/1 ) . "%";
 	
 if( isset( $page_options->columns_tablet_wide ) )  
 	$display_width_tablet_wide = ( 100/$page_options->columns_tablet_wide ) . "%";
-else
+else if( get_option( 'ec_option_default_tablet_wide_columns' ) != 0 )
 	$display_width_tablet_wide = ( 100/get_option( 'ec_option_default_tablet_wide_columns' ) ) . "%";
-	
+else
+	$display_width_tablet_wide = ( 100/2 ) . "%";
+
 if( isset( $page_options->columns_laptop ) )  
 	$display_width_laptop = ( 100/$page_options->columns_laptop ) . "%";
-else
+else if( get_option( 'ec_option_default_laptop_columns' ) != 0 )
 	$display_width_laptop = ( 100/get_option( 'ec_option_default_laptop_columns' ) ) . "%";
-	
+else
+	$display_width_laptop = ( 100/3 ) . "%";
+		
 if( isset( $page_options->columns_desktop ) )  
 	$display_width_desktop = ( 100/$page_options->columns_desktop ) . "%";
-else
+else if( get_option( 'ec_option_default_desktop_columns' ) != 0 )
 	$display_width_desktop = ( 100/get_option( 'ec_option_default_desktop_columns' ) ) . "%";
+else
+	$display_width_desktop = ( 100/3 ) . "%";
 	
 // COLUMNS SETUP
 if( isset( $page_options->columns_smartphone ) )  
@@ -287,6 +297,8 @@ a.ec_cart_empty_button:hover{ background-color:<?php echo $color2; ?> }
 <?php if( $bg_theme_dark ){ ?>
 .ec_cart_header, .ec_cart_price_row, .ec_cart_price_row_label, .ec_cart_price_row_total, .ec_cart_input_row label, .ec_cart_input_row{ color:#FFF; }
 <?php }?>
+ul.ec_menu_vertical li a:hover{ background-color:<?php echo $color1; ?>; }
+ul.ec_menu_vertical ul li a:hover, ul.ec_menu_vertical ul ul li a:hover, .ec_categorywidget a:hover, .ec_manufacturerwidget a:hover, .ec_pricepointwidget a:hover, .ec_groupwidget a:hover, .ec_product_widget_title a:hover{ color:<?php echo $color1; ?> !important; }
 
 @media only screen and ( min-width:1140px ){
 	.ec_product_li{ width:<?php echo $display_width_desktop; ?>; }

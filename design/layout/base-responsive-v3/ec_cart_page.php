@@ -59,7 +59,7 @@ if( $is_preview_holder && $is_admin ){ ?>
     	    	<div class="ec_admin_video">
                 	<h3>WP EasyCart Design Help</h3>
                     <h5>Do you need help in designing your perfect store? Watch our short video and start on your way to success.</h5>
-                    <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( );">hide it forever</a></div>
+                    <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( ); return false;">hide it forever</a></div>
     	        	
                     <video width="853" height="480" controls>
 						<source src="http://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">

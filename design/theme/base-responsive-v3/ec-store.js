@@ -480,7 +480,7 @@ function ec_validate_cart_details( ){
 	if( jQuery( '#ec_contact_email' ).length )
 		email_complete = ec_validate_email_block( );
 	
-	if( jQuery( '#ec_create_account_selector' ).is( ':checked' ) )
+	if( jQuery( '#ec_create_account_selector:checkbox' ).is( ':checked' ) || jQuery( '#ec_create_account_selector:hidden' ).val( ) == "create_account" )
 		create_account_complete = ec_validate_create_account( );
 		
 	if( login_complete && billing_complete && shipping_complete && email_complete && create_account_complete ){
@@ -894,4 +894,99 @@ function ec_hide_cart_error( error_field ){
 
 function ec_cart_shipping_method_change( ){
 	
+}
+
+jQuery(document).ready(function() {
+    jQuery(".ec_menu_vertical").accordion({
+        accordion:true,
+        speed: 500,
+        closedSign: '[+]',
+        openedSign: '[-]'
+    });
+});
+(function(jQuery){
+    jQuery.fn.extend({
+    accordion: function(options) {
+        
+		var defaults = {
+			accordion: 'true',
+			speed: 300,
+			closedSign: '[+]',
+			openedSign: '[-]'
+		};
+		var opts = jQuery.extend(defaults, options);
+ 		var jQuerythis = jQuery(this);
+ 		jQuerythis.find("li").each(function() {
+ 			if(jQuery(this).find("ul").size() != 0){
+ 				jQuery(this).find("a:first").append("<span>"+ opts.closedSign +"</span>");
+ 				if(jQuery(this).find("a:first").attr('href') == "#"){
+ 		  			jQuery(this).find("a:first").click(function(){return false;});
+ 		  		}
+ 			}
+ 		});
+ 		jQuerythis.find("li.active").each(function() {
+ 			jQuery(this).parents("ul").slideDown(opts.speed);
+ 			jQuery(this).parents("ul").parent("li").find("span:first").html(opts.openedSign);
+ 		});
+  		jQuerythis.find("li a").click(function() {
+  			if(jQuery(this).parent().find("ul").size() != 0){
+  				if(opts.accordion){
+  					if(!jQuery(this).parent().find("ul").is(':visible')){
+  						parents = jQuery(this).parent().parents("ul");
+  						visible = jQuerythis.find("ul:visible");
+  						visible.each(function(visibleIndex){
+  							var close = true;
+  							parents.each(function(parentIndex){
+  								if(parents[parentIndex] == visible[visibleIndex]){
+  									close = false;
+  									return false;
+  								}
+  							});
+  							if(close){
+  								if(jQuery(this).parent().find("ul") != visible[visibleIndex]){
+  									jQuery(visible[visibleIndex]).slideUp(opts.speed, function(){
+  										jQuery(this).parent("li").find("span:first").html(opts.closedSign);
+  									});
+  									
+  								}
+  							}
+  						});
+  					}
+  				}
+  				if(jQuery(this).parent().find("ul:first").is(":visible")){
+  					jQuery(this).parent().find("ul:first").slideUp(opts.speed, function(){
+  						jQuery(this).parent("li").find("span:first").delay(opts.speed).html(opts.closedSign);
+  					});
+  					
+  					
+  				}else{
+  					jQuery(this).parent().find("ul:first").slideDown(opts.speed, function(){
+  						jQuery(this).parent("li").find("span:first").delay(opts.speed).html(opts.openedSign);
+  					});
+  				}
+  			}
+  		});
+    }
+});
+})(jQuery);
+
+function ec_cart_widget_click( ){
+	if( !jQuery('.ec_cart_widget_minicart_wrap').is(':visible') ) 
+		jQuery('.ec_cart_widget_minicart_wrap').fadeIn( 200 );
+	else
+		jQuery('.ec_cart_widget_minicart_wrap').fadeOut( 100 );
+}
+
+function ec_cart_widget_mouseover( ){
+	if( !jQuery('.ec_cart_widget_minicart_wrap').is(':visible') ){
+		jQuery('.ec_cart_widget_minicart_wrap').fadeIn( 200 );
+		jQuery('.ec_cart_widget_minicart_bg').css( "display", "block" );
+	}
+}
+
+function ec_cart_widget_mouseout( ){
+	if( jQuery('.ec_cart_widget_minicart_wrap').is(':visible') ) {
+		jQuery('.ec_cart_widget_minicart_wrap').fadeOut( 100 );
+		jQuery('.ec_cart_widget_minicart_bg').css( "display", "none" );
+	}
 }

@@ -169,7 +169,7 @@ if( $is_preview_holder && $is_admin ){ ?>
     	    	<div class="ec_admin_video">
                 	<h3>WP EasyCart Design Help</h3>
                     <h5>Do you need help in designing your perfect store? Watch our short video and start on your way to success.</h5>
-                    <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( );">hide it forever</a></div>
+                    <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( ); return false;">hide it forever</a></div>
     	        	
                     <video width="853" height="480" controls>
 						<source src="http://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
@@ -519,7 +519,28 @@ if( $safari && $is_admin && !$ipad ){ ?>
         	<?php if( $this->product_list->paging->current_page > 1 ){ ?>
     		<a href="<?php echo $this->product_list->paging->get_prev_page_link( ); ?>" class="ec_num_page"><div class="dashicons dashicons-arrow-left-alt2"></div></a>
             <?php }?>
-        	<?php for( $i=1; $i<=$this->product_list->paging->total_pages; $i++ ){ ?>
+        	<?php 
+			$current_page = $this->product_list->paging->current_page;
+			
+			if( $this->product_list->paging->total_pages >= 5 ){
+				$start_page = $current_page - 2;
+				$end_page = $current_page + 2;
+			
+				if( $start_page == 0 ){
+					$start_page++; $end_page++;
+				}else if( $start_page == -1 ){
+					$start_page = $start_page + 2; $end_page = $end_page + 2;
+				}else if( $end_page == $this->product_list->paging->total_pages + 1 ){
+					$start_page--; $end_page--;
+				}else if( $end_page == $this->product_list->paging->total_pages + 2 ){
+					$start_page = $start_page - 2; $end_page = $end_page - 2;
+				}
+			}else{
+				$start_page = 1;
+				$end_page = $this->product_list->paging->total_pages;
+			}
+			
+			for( $i=$start_page; $i<=$end_page; $i++ ){ ?>
         		<?php if( $this->product_list->paging->current_page == $i ){ ?>
                 <div class="ec_num_page_selected"><?php echo $i; ?></div>
                 <?php }else{ ?>

@@ -419,10 +419,16 @@ class ec_cartitem{
 			}else{
 				if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) )
 					echo "\"><img src=\"" . plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
-				else if( file_exists( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) )
+				
+				else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) )
 					echo "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/products/pics1/" . $this->image1 ) . "\" alt=\"" . $this->model_number . "\" />";
+				
+				else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" ) )
+					echo "\"><img src=\"" . plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
+				
 				else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) )
 					echo "\"><img src=\"" . plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
+				
 				else
 					echo "\"><img src=\"" . plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
 			}
@@ -436,10 +442,15 @@ class ec_cartitem{
 		
 		if( $this->is_deconetwork ){
 			return get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_image_link;
-		}else if( $this->image1_optionitem && file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) ){
+		
+		}else if( $this->image1_optionitem && file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) && !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) ){
 			return plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem );
-		}else{
+		
+		}else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) && !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1 ) ){
 			return plugins_url( "wp-easycart-data/products/pics1/" . $this->image1 );
+		
+		}else{
+			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
 		}
 		
 	}

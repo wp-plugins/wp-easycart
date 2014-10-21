@@ -241,7 +241,10 @@
     </div>
     <?php }?>
     
-	<?php if( !isset( $_SESSION['ec_email'] ) || ( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] ) ){ ?>
+	<?php if( !isset( $_SESSION['ec_email'] ) || 
+			  ( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] ) || 
+			  ( !$this->user->user_id )
+			){ ?>
     
     <div class="ec_cart_header">
         <?php if( get_option( 'ec_option_allow_guest' ) ){ ?><input type="checkbox" name="ec_create_account_selector" id="ec_create_account_selector" value="create_account" onchange="ec_toggle_create_account( );" /> <?php }else{ ?><input type="hidden" name="ec_create_account_selector" id="ec_create_account_selector" value="create_account" /><?php }?><?php echo $GLOBALS['language']->get_text( 'cart_contact_information', 'cart_contact_information_create_account' ); ?>

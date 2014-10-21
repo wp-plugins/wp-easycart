@@ -231,12 +231,17 @@
 							<?php
                             if( $this->cart->cart[$i]->is_deconetwork )
                                 $img_url = "https://" . get_option( 'ec_option_deconetwork_url' ) . $this->cart->cart[$i]->deconetwork_image_link;
-                            else if( $this->cart->cart[$i]->image1_optionitem != "" )
+                            
+							else if( $this->cart->cart[$i]->image1_optionitem != "" && file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1_optionitem ) && !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1_optionitem ) )
                                 $img_url = plugins_url( "wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1_optionitem );
-                            else
+                            
+							else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1 ) && !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1 ) )
                                 $img_url = plugins_url( "wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1 );
+								
+							else
+								$img_url = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
                             ?>
-                            <div style="ec_lineitem_image"><img src="<?php echo $img_url; ?>" style="width:70px; height:auto;" alt="<?php echo $this->cart->cart[$i]->title; ?>" /></div>
+                            <div style="ec_lineitem_image"><img src="<?php echo str_replace( "https://", "http://", $img_url ); ?>" width="70" alt="<?php echo $this->cart->cart[$i]->title; ?>" /></div>
 						</td>
                         
                     	<td>
@@ -245,7 +250,7 @@
 
 								<tr>
                     
-                    				<td>
+                    				<td class='style20'>
 
                     					<?php echo $this->cart->cart[$i]->title; ?>
 
@@ -267,7 +272,7 @@
 
                     			<tr>
                                 
-                                	<td>
+                                	<td class='style22'>
 
                       					<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_message' ) . $this->cart->cart[$i]->gift_card_message; ?>
 
@@ -281,7 +286,7 @@
 
                     			<tr>
                                 	
-                                    <td>
+                                    <td class='style22'>
 
 										<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_from' ) . $this->cart->cart[$i]->gift_card_from_name; ?>
 
@@ -295,7 +300,7 @@
 
                     			<tr>
                                 	
-                                    <td>
+                                    <td class='style22'>
 
                       					<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_to' ) . $this->cart->cart[$i]->gift_card_to_name; ?>
 
@@ -309,7 +314,7 @@
 
                     			<tr>
                                 
-                                	<td>
+                                	<td class='style22'>
 
                     				<?php 
 										$account_page_id = get_option('ec_option_accountpage');

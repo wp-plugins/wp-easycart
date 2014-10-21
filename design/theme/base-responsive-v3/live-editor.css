@@ -14,6 +14,8 @@
 
 .ec_admin_preview_button_container input:focus{ outline:none; }
 
+.ec_admin_video_hide_div a{ color:#333 !important; }
+
 .ec_admin_preview_ipad_landscape{ position:absolute; top:0px; left:5px; }
 .ec_admin_preview_ipad_landscape > input{ text-indent: -9999px; width:85px !important; height:67px !important; text-align:center !important; cursor:pointer; border:none !important; font-size:28px !important;  font-family:'Lato', Arial, sans-serif !important; color:#CCC !important; padding:0 !important; border-radius:0 !important; box-shadow:none !important; border-left:none !important; border-right:none !important; border-top:none !important; border-bottom:none !important; content:''; }
 .ec_admin_preview_ipad_landscape > input:hover{ color:#333 !important; text-shadow:none !important; }
@@ -118,7 +120,7 @@
 .ec_admin_video_container:before{ content:''; display:inline-block; height:100%; vertical-align:middle; box-sizing:border-box; line-height:.8em; }
 .ec_admin_video_padding{ background-color:#FFF; max-width:800px; width:90%; height:auto; margin:0 auto; position:relative; display:block; }
 .ec_admin_video_holder{ display:table; position:relative; width:100%; border:4px solid #FFF; }
-.ec_admin_video{ width:100%; height:100%; overflow:hidden; float:left; text-align:left; position:relative; }
+.ec_admin_video{ width:100%; height:100%; overflow:hidden; float:left; text-align:left; position:relative; background:#FFF; }
 .ec_admin_video > h3{ padding:15px 0px 8px; text-align:center; font-family:'Monda',Arial,sans-serif; font-size:18px; color:#6FA730; margin:0; line-height:1.1em; }
 .ec_admin_video > h5{ padding:0px 0px 15px; text-align:center; font-family:'Monda',Arial,sans-serif; font-size:13px; color:#666; line-height:1.1em; }
 .ec_admin_video_hide_div{ padding:0px 0px 15px; text-align:center; font-family:'Monda',Arial,sans-serif; font-size:12px; color:#666; line-height:1.1em; }

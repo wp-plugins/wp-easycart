@@ -842,11 +842,14 @@ class ec_product{
 				
 			$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/swatches/" . $optionitem->optionitem_icon;
 			$test_src2 = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionitem->optionitem_icon;
+			$test_src3 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/themes/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
 			
 			if( file_exists( $test_src ) && !is_dir( $test_src ) )
 				$thumb_src = plugins_url( "wp-easycart-data/products/swatches/" . $optionitem->optionitem_icon );
 			else if( file_exists( $test_src2 ) && !is_dir( $test_src2 ) )
 				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionitem->optionitem_icon );
+			else if( file_exists( $test_src3 ) && !is_dir( $test_src3 ) )
+				$thumb_src = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );				
 			else
 				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
 			
@@ -949,11 +952,14 @@ class ec_product{
 				
 				$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/swatches/" . $optionset->optionset[$i]->optionitem_icon;
 				$test_src2 = ABSPATH . "wp-content/plugins/" . EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionset->optionset[$i]->optionitem_icon;
+				$test_src3 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
 				
 				if( file_exists( $test_src ) && !is_dir( $test_src ) )
 					$thumb_src = plugins_url( "wp-easycart-data/products/swatches/" . $optionset->optionset[$i]->optionitem_icon );
 				else if( file_exists( $test_src2 ) && !is_dir( $test_src2 ) )
 					$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/products/swatches/" . $optionset->optionset[$i]->optionitem_icon );
+				else if( file_exists( $test_src3 ) && !is_dir( $test_src3 ) )
+					$thumb_src = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
 				else
 					$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
 				
@@ -1551,6 +1557,66 @@ class ec_product{
 			return get_permalink( $post_id );
 		}else{
 			return $this->store_page . $this->permalink_divider . "category_id=" . $category_id;
+		}
+		
+	}
+	
+	public function get_first_image_url( ){
+		
+		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics1/" . $this->images->get_single_image( );
+		
+		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
+			return plugins_url( "/wp-easycart-data/products/pics1/" . $this->images->get_single_image( ) );
+		}else{
+			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}
+		
+	}
+	
+	public function get_second_image_url( ){
+		
+		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics2/" . $this->images->image2;
+		
+		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
+			return plugins_url( "/wp-easycart-data/products/pics2/" . $this->images->image2 );
+		}else{
+			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}
+		
+	}
+	
+	public function get_third_image_url( ){
+		
+		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics3/" . $this->images->image3;
+		
+		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
+			return plugins_url( "/wp-easycart-data/products/pics3/" . $this->images->image3 );
+		}else{
+			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}
+		
+	}
+	
+	public function get_fourth_image_url( ){
+		
+		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics4/" . $this->images->image4;
+		
+		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
+			return plugins_url( "/wp-easycart-data/products/pics4/" . $this->images->image4 );
+		}else{
+			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}
+		
+	}
+	
+	public function get_fifth_image_url( ){
+		
+		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics5/" . $this->images->image5;
+		
+		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
+			return plugins_url( "/wp-easycart-data/products/pics5/" . $this->images->image5 );
+		}else{
+			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
 		}
 		
 	}
