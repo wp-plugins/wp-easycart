@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.3 =
+* Fix - On upload, advanced options were not working, upgrade to this version to fix the issue.
+* Fix - Language files automatically update on upgrade now.
 = 3.0.2 =
 * PLEASE DOWNLOAD THE NEW DESIGN FILES ON UPDATE IF YOU ARE USING V3.
 * Fix - Cart Popup Widget

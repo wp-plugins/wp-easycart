@@ -26,91 +26,111 @@ else
 
 // DISPLAY WIDTH SETUP
 if( isset( $page_options->columns_smartphone ) )  
-	$display_width_smartphone = ( 100/$page_options->columns_smartphone ) . "%";
-else if( get_option( 'ec_option_default_smartphone_columns' ) != 0 )
-	$display_width_smartphone = ( 100/get_option( 'ec_option_default_smartphone_columns' ) ) . "%";
+	$display_width_smartphone = (100/$page_options->columns_smartphone) . "%";
+else if( get_option( 'ec_option_default_smartphone_columns' ) )
+	$display_width_smartphone = (100/get_option( 'ec_option_default_smartphone_columns' ) ) . "%";
 else
-	$display_width_smartphone = ( 100/1 ) . "%";
+	$display_width_smartphone = (100/1) . "%";
 	
 if( isset( $page_options->columns_tablet ) )  
-	$display_width_tablet = ( 100/$page_options->columns_tablet ) . "%";
-else if( get_option( 'ec_option_default_tablet_columns' ) != 0 )
-	$display_width_tablet = ( 100/get_option( 'ec_option_default_tablet_columns' ) ) . "%";
+	$display_width_tablet = (100/$page_options->columns_tablet) . "%";
+else if( get_option( 'ec_option_default_tablet_columns' ) )
+	$display_width_tablet = (100/get_option( 'ec_option_default_tablet_columns' ) ) . "%";
 else
-	$display_width_tablet = ( 100/1 ) . "%";
+	$display_width_tablet = (100/2) . "%";
 	
 if( isset( $page_options->columns_tablet_wide ) )  
-	$display_width_tablet_wide = ( 100/$page_options->columns_tablet_wide ) . "%";
-else if( get_option( 'ec_option_default_tablet_wide_columns' ) != 0 )
-	$display_width_tablet_wide = ( 100/get_option( 'ec_option_default_tablet_wide_columns' ) ) . "%";
+	$display_width_tablet_wide = (100/$page_options->columns_tablet_wide) . "%";
+else if( get_option( 'ec_option_default_tablet_wide_columns' ) )
+	$display_width_tablet_wide = (100/get_option( 'ec_option_default_tablet_wide_columns' ) ) . "%";
 else
-	$display_width_tablet_wide = ( 100/2 ) . "%";
-
+	$display_width_tablet_wide = (100/2) . "%";
+	
 if( isset( $page_options->columns_laptop ) )  
-	$display_width_laptop = ( 100/$page_options->columns_laptop ) . "%";
-else if( get_option( 'ec_option_default_laptop_columns' ) != 0 )
-	$display_width_laptop = ( 100/get_option( 'ec_option_default_laptop_columns' ) ) . "%";
+	$display_width_laptop = (100/$page_options->columns_laptop) . "%";
+else if( get_option( 'ec_option_default_laptop_columns' ) )
+	$display_width_laptop = (100/get_option( 'ec_option_default_laptop_columns' ) ) . "%";
 else
-	$display_width_laptop = ( 100/3 ) . "%";
-		
+	$display_width_laptop = (100/3) . "%";
+	
 if( isset( $page_options->columns_desktop ) )  
-	$display_width_desktop = ( 100/$page_options->columns_desktop ) . "%";
-else if( get_option( 'ec_option_default_desktop_columns' ) != 0 )
-	$display_width_desktop = ( 100/get_option( 'ec_option_default_desktop_columns' ) ) . "%";
+	$display_width_desktop = (100/$page_options->columns_desktop ) . "%";
+else if( get_option( 'ec_option_default_desktop_columns' ) )
+	$display_width_desktop = (100/get_option( 'ec_option_default_desktop_columns' ) ) . "%";
 else
-	$display_width_desktop = ( 100/3 ) . "%";
+	$display_width_desktop = (100/3) . "%";
 	
 // COLUMNS SETUP
 if( isset( $page_options->columns_smartphone ) )  
 	$columns_smartphone = $page_options->columns_smartphone;
-else
+else if( get_option( 'ec_option_default_smartphone_columns' ) )
 	$columns_smartphone = get_option( 'ec_option_default_smartphone_columns' );
+else
+	$columns_smartphone = 1;
 	
 if( isset( $page_options->columns_tablet ) )  
 	$columns_tablet = $page_options->columns_tablet;
-else
+else if( get_option( 'ec_option_default_tablet_columns' ) )
 	$columns_tablet = get_option( 'ec_option_default_tablet_columns' );
+else
+	$columns_tablet = 2;
 	
 if( isset( $page_options->columns_tablet_wide ) )  
 	$columns_tablet_wide = $page_options->columns_tablet_wide;
-else
+else if( get_option( 'ec_option_default_tablet_wide_columns' ) )
 	$columns_tablet_wide = get_option( 'ec_option_default_tablet_wide_columns' );
+else
+	$columns_tablet_wide = 2;
 	
 if( isset( $page_options->columns_laptop ) )  
 	$columns_laptop = $page_options->columns_laptop;
-else
+else if( get_option( 'ec_option_default_laptop_columns' ) )
 	$columns_laptop = get_option( 'ec_option_default_laptop_columns' );
+else
+	$columns_laptop = 3;
 	
 if( isset( $page_options->columns_desktop ) )  
 	$columns_desktop = $page_options->columns_desktop;
-else
+else if( get_option( 'ec_option_default_desktop_columns' ) )
 	$columns_desktop = get_option( 'ec_option_default_desktop_columns' );
+else
+	$columns_desktop = 3;
 
 // Image Height Setup
 if( isset( $page_options->image_height_smartphone ) )
 	$image_height_smartphone = $page_options->image_height_smartphone;
-else
+else if( get_option( 'ec_option_default_smartphone_image_height' ) )
 	$image_height_smartphone = get_option( 'ec_option_default_smartphone_image_height' );
+else
+	$image_height_smartphone = '225px';
 	
 if( isset( $page_options->image_height_tablet ) )
 	$image_height_tablet = $page_options->image_height_tablet;
-else
+else if( get_option( 'ec_option_default_tablet_image_height' ) )
 	$image_height_tablet = get_option( 'ec_option_default_tablet_image_height' );
+else
+	$image_height_tablet = '250px';
 	
 if( isset( $page_options->image_height_tablet_wide ) )
 	$image_height_tablet_wide = $page_options->image_height_tablet_wide;
-else
+else if( get_option( 'ec_option_default_tablet_wide_image_height' ) )
 	$image_height_tablet_wide = get_option( 'ec_option_default_tablet_wide_image_height' );
+else
+	$image_height_tablet_wide = '275px';
 	
 if( isset( $page_options->image_height_laptop ) )
 	$image_height_laptop = $page_options->image_height_laptop;
-else
+else if( get_option( 'ec_option_default_laptop_image_height' ) )
 	$image_height_laptop = get_option( 'ec_option_default_laptop_image_height' );
+else
+	$image_height_laptop = '205px';
 	
 if( isset( $page_options->image_height_desktop ) )
 	$image_height_desktop = $page_options->image_height_desktop;
-else
+else if( get_option( 'ec_option_default_desktop_image_height' ) )
 	$image_height_desktop = get_option( 'ec_option_default_desktop_image_height' );
+else
+	$image_height_desktop = '205px';
 
 // COLOR SETUP
 if( get_option( 'ec_option_details_main_color' ) != '' )

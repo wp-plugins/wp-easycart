@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.2
+ * Version: 3.0.3
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.2
+ * @version 3.0.3
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_2' );
+define( 'EC_CURRENT_VERSION', '3_0_3' );
 define( 'EC_CURRENT_DB', '1_23' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -2158,6 +2158,24 @@ function ec_theme_options_page_callback( ){
 /////////////////////////////////////////////////////////////////////
 add_action( 'init', 'ec_create_post_type_menu' );
 function ec_create_post_type_menu() {
+	
+	// Fix, V3 upgrades missed the ec_tempcart_optionitem.session_id upgrade!
+	if( !get_option( 'ec_option_v3_fix' ) ){
+		global $wpdb;
+		$wpdb->query( "INSERT INTO ec_tempcart_optionitem( tempcart_id, option_id, optionitem_id, optionitem_value ) VALUES( '999999999', '3', '3', 'test' )" );
+		$tempcart_optionitem_row = $wpdb->get_row( "SELECT * FROM ec_tempcart_optionitem WHERE tempcart_id = '999999999'" );
+		if( !isset( $tempcart_optionitem_row->session_id ) ){
+			$wpdb->query( "ALTER TABLE ec_tempcart_optionitem ADD `session_id` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'The ec_cart_id that determines the user who entered this value.'" );
+		}
+		update_option( 'ec_option_v3_fix', 1 );
+	}
+	
+	// Update language when plugin updates
+	if( !get_option( 'ec_option_language_version' ) || get_option( 'ec_option_language_version' ) != EC_CURRENT_VERSION ){	
+		$language = new ec_language( );
+		$language->update_language_data( ); //Do this to update the database if a new language is added
+		update_option( 'ec_option_language_version', EC_CURRENT_VERSION );
+	}
 	
 	$store_id = get_option( 'ec_option_storepage' );
 	if( $store_id ){
