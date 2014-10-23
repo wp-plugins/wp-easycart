@@ -148,6 +148,13 @@ function ec_activate(){
 		$wpdb->query( "DELETE FROM ec_state WHERE ec_state.name_sta = 'FIXFORFRESHINSTALLS'" );
 	}
 	
+	// Fix, V3 upgrades missed the ec_tempcart_optionitem.session_id upgrade!
+	$wpdb->query( "INSERT INTO ec_tempcart_optionitem( tempcart_id, option_id, optionitem_id, optionitem_value ) VALUES( '999999999', '3', '3', 'test' )" );
+	$tempcart_optionitem_row = $wpdb->get_row( "SELECT * FROM ec_tempcart_optionitem WHERE tempcart_id = '999999999'" );
+	if( !isset( $tempcart_optionitem_row->session_id ) ){
+		$wpdb->query( "ALTER TABLE ec_tempcart_optionitem ADD `session_id` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'The ec_cart_id that determines the user who entered this value.'" );
+	}
+	
 }
 
 function ec_uninstall(){
