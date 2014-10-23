@@ -79,7 +79,7 @@ class ec_orderdisplay{
 	
 	private $membership_page;					// VARCHAR 512
 	
-	function __construct( $order_row, $is_order_details = false ){
+	function __construct( $order_row, $is_order_details = false, $is_admin = false ){
 		$this->mysqli = new ec_db( );
 		
 		$this->order_id = $order_row->order_id; 
@@ -157,7 +157,10 @@ class ec_orderdisplay{
 		
 		if( $is_order_details ){
 			$this->cart =(object) array('cart' => array( ) );
-			if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] )
+			if( $is_admin ){
+				$db_admin = new ec_db_admin( );
+				$result = $db_admin->get_order_details_admin( $this->order_id );
+			}else if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] )
 				$result = $this->mysqli->get_guest_order_details( $this->order_id, $_SESSION['ec_guest_key'] );
 			else if( isset( $_GET['ec_guest_key'] ) )
 				$result = $this->mysqli->get_guest_order_details( $this->order_id, $_GET['ec_guest_key'] );

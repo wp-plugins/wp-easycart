@@ -116,8 +116,9 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			}else{
 				$order_id = $mysqli->insert_stripe_order( $subscription, $webhook_data );
 				$mysqli->update_stripe_subscription( $subscription_id, $webhook_data );
-				$order_row = $mysql->get_order_row( $order_id, "guest", "guest" );
-				$order = new ec_orderdisplay( $order_row );
+				$db_admin = new ec_db_admin( );
+				$order_row = $db_admin->get_order_row_admin( $order_id );
+				$order = new ec_orderdisplay( $order_row, true, true );
 				$order->send_email_receipt( );
 			}
 			
@@ -133,8 +134,9 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			$order_id = $mysqli->insert_stripe_failed_order( $subscription, $webhook_data );
 			$mysqli->update_stripe_subscription_failed( $subscription_id, $webhook_data );
 			
-			$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
-			$order = new ec_orderdisplay( $order_row );
+			$db_admin = new ec_db_admin( );
+			$order_row = $db_admin->get_order_row_admin( $order_id );
+			$order = new ec_orderdisplay( $order_row, true, true );
 			
 			$order->send_failed_payment( );
 		

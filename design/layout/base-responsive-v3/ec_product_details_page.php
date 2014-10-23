@@ -310,13 +310,23 @@ function ec_admin_save_product_details_options( ){
         
         
         <div class="ec_details_right">
-        	<form action="<?php echo $this->cart_page; ?>" method="POST" enctype="multipart/form-data" class="ec_add_to_cart_form">
+        	<?php if( $this->product->inquiry_url == "" ){ // Regular Add to Cart Form ?>
+        	
+            <form action="<?php echo $this->cart_page; ?>" method="POST" enctype="multipart/form-data" class="ec_add_to_cart_form">
             <?php if( $this->product->is_subscription_item ){ ?>
             <input type="hidden" name="ec_cart_form_action" value="subscribe_v3" />
             <?php }else{ ?>
             <input type="hidden" name="ec_cart_form_action" value="add_to_cart_v3" />
             <?php }?>
             <input type="hidden" name="product_id" value="<?php echo $this->product->product_id; ?>"  />
+            
+			<?php }else{ // Custom Inquiry Form ?>
+            
+            <form action="<?php echo $this->product->inquiry_url; ?>" method="GET" enctype="multipart/form-data" class="ec_add_to_cart_form">
+            <input type="hidden" name="model_number" value="<?php echo $this->product->model_number; ?>"  />
+            
+			<?php }?>
+            
         	<?php /* START TOP PRODUCT DATA */ ?>
         	<h4 class="ec_details_breadcrumbs ec_small" id="ec_breadcrumbs_type2">
             <a href="<?php echo home_url( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_home_link' ); ?></a> / 
@@ -396,7 +406,7 @@ function ec_admin_save_product_details_options( ){
             <?php /* END DONATION OPTIONS */ ?>
             
             <?php /* INQUIRY OPTIONS */ ?>
-            <?php if( $this->product->is_inquiry_mode ){ ?>
+            <?php if( $this->product->is_inquiry_mode && $this->product->inquiry_url == "" ){ ?>
             <div class="ec_details_options">
             	<h3><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_title' ); ?></h3>
                 <div class="ec_details_option_row_error ec_inquiry_error" id="ec_details_inquiry_error"><?php echo $GLOBALS['language']->get_text( 'ec_errors', 'missing_inquiry_options' ); ?></div>

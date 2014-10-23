@@ -404,6 +404,15 @@ class ec_db{
 				
 				LEFT JOIN ec_categoryitem
 				ON ec_categoryitem.product_id = product.product_id 
+				
+				LEFT JOIN ec_menulevel1
+				ON ( ec_menulevel1.menulevel1_id = product.menulevel1_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel2_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel3_id_1 )
+				
+				LEFT JOIN ec_menulevel2
+				ON ( ec_menulevel2.menulevel2_id = product.menulevel1_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel2_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel3_id_2 )
+				
+				LEFT JOIN ec_menulevel3
+				ON ( ec_menulevel3.menulevel3_id = product.menulevel1_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel2_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel3_id_3 )
 				";
 				
 				$group_query = " GROUP BY 
@@ -598,7 +607,7 @@ class ec_db{
 	}
 	
 	public function clean_search( $string ){
-		return mysql_real_escape_string( $string );		
+		return $this->mysqli->prepare( '%s', $string );		
 	}
 	
 	public function get_tempcart_product_quantity( $session_id, $product_id ){
@@ -3399,6 +3408,25 @@ class ec_db{
 		
 		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_order SET affirm_charge_id = %s WHERE ec_order.order_id = %d", $charge_id, $order_id ) );
 		
+	}
+	
+	public function get_live_search_options( $search_val ){
+		$sql = "SELECT ec_product.title FROM ec_product WHERE ec_product.title LIKE %s OR ec_product.model_number";
+		$products = $this->mysqli->get_results( $this->mysqli->prepare( $sql, '%' . $search_val . '%', '%' . $search_val . '%' ) );
+		
+		$sql = "SELECT ec_category.category_name as title FROM ec_category WHERE ec_category.category_name LIKE %s";
+		$categories = $this->mysqli->get_results( $this->mysqli->prepare( $sql, '%' . $search_val . '%' ) );
+		
+		$sql = "SELECT ec_menulevel1.name as title FROM ec_menulevel1 WHERE ec_menulevel1.name LIKE %s";
+		$menu1 = $this->mysqli->get_results( $this->mysqli->prepare( $sql, '%' . $search_val . '%' ) );
+		
+		$sql = "SELECT ec_menulevel2.name as title FROM ec_menulevel2 WHERE ec_menulevel2.name LIKE %s";
+		$menu2 = $this->mysqli->get_results( $this->mysqli->prepare( $sql, '%' . $search_val . '%' ) );
+		
+		$sql = "SELECT ec_menulevel3.name as title FROM ec_menulevel3 WHERE ec_menulevel3.name LIKE %s";
+		$menu3 = $this->mysqli->get_results( $this->mysqli->prepare( $sql, '%' . $search_val . '%' ) );
+		
+		return array_merge( $products, $categories, $menu1, $menu2, $menu3 );
 	}
 	
 }

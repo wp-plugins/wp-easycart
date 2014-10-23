@@ -488,16 +488,8 @@ if( $safari && $is_admin && !$ipad ){ ?>
         <?php if( count( $perpage->values ) > 1 ){ ?>
         <span class="ec_product_page_perpage">
         	<span><?php echo $GLOBALS['language']->get_text( "product_page", "product_product_view_per_page" ); ?> </span> 
-            <?php for( $pp_index = 0; $pp_index < count( $perpage->values ); $pp_index++ ){ 
-				$link_string = get_permalink( ); 
-				
-				if( strstr( $link_string, "?" ) ){
-					$link_string .= "&amp;perpage=" . $perpage->values[$pp_index];
-				}else{
-					$link_string .= "?perpage=" . $perpage->values[$pp_index];
-				}
-			?>
-                <a href="<?php echo $link_string; ?>"<?php if( $perpage->selected == $perpage->values[$pp_index] ){ ?> class="ec_selected"<?php }?>><?php echo $perpage->values[$pp_index]; ?></a>
+            <?php for( $pp_index = 0; $pp_index < count( $perpage->values ); $pp_index++ ){ ?>
+                <a href="<?php echo $perpage->get_per_page_url( $perpage->values[$pp_index] ); ?>"<?php if( $perpage->selected == $perpage->values[$pp_index] ){ ?> class="ec_selected"<?php }?>><?php echo $perpage->values[$pp_index]; ?></a>
             <?php } ?>
         </span>
         <?php }?>

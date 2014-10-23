@@ -1746,7 +1746,7 @@ function ec_send_test_email( ){
 	// send email
 	$order_row = $mysqli->get_order_row_admin( $order_id );
 	if( $order_row ){
-		$order_display = new ec_orderdisplay( $order_row, true );
+		$order_display = new ec_orderdisplay( $order_row, true, true );
 		$order_display->send_email_receipt( );
 		return true;
 	}else{
@@ -1757,5 +1757,20 @@ function ec_send_test_email( ){
 function ec_update_cache_rules( ){
 	update_option( 'ec_option_caching_on', $_POST['ec_option_caching_on'] );
 	update_option( 'ec_option_cache_update_period', $_POST['ec_option_cache_update_period'] );
+}
+
+function rmdir_recursive( $path ){ 
+	if( is_dir( $path ) ){
+		if( $handle = opendir( $path ) ){
+			while( false !== ( $file = readdir( $handle ) ) ){
+				if( $file != '.' && $file != '..' )
+					unlink( $path."/".$file );
+			}
+			closedir( $handle );
+			rmdir( $path );
+			return 1;
+		}
+	}
+	return; 
 }
 ?>

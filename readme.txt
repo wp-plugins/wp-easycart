@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,20 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.2 =
+* PLEASE DOWNLOAD THE NEW DESIGN FILES ON UPDATE IF YOU ARE USING V3.
+* Fix - Cart Popup Widget
+* Fix - Add to Cart, now updates widget and menu
+* Fix - Email Newsletter button added to submit, formatting improved.
+* Fix - All widgets formatting improved.
+* Fix - Shortcode for selected items corrected for new version.
+* Fix - Product type 5 and 6 now show the previous price and crossed out.
+* Fix - Return to page after add to cart, message fixed to include product name.
+* Fix - Paging and per page linking corrected.
+* Fix - Paging, only showing five pages at a time now.
+* Fix - Custom inquiry link now working.
+* Fix - Third Party and send emails from admin fixed for order confirmations.
+* New Feature - Auto completion added for the search widget within the store.
 = 3.0.1 =
 * +Fix for jQuery loading in Firefox.
 * +Fix for guest checkout

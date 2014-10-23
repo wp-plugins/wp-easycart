@@ -465,8 +465,10 @@ function ec_print_editor_shortcode_menu( ){
 		echo "<li data-ecshortcode=\"ec_account\"><div>ACCOUNT</div></li>";
 		echo "<li data-ecshortcode=\"ec_singleitem\"><div>SINGLE ITEM</div></li>";
 		echo "<li data-ecshortcode=\"ec_selecteditems\"><div>SELECT ITEMS</div></li>";
+		if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
 		echo "<li data-ecshortcode=\"ec_addtocart\"><div>ADD TO CART BUTTON</div></li>";
 		echo "<li data-ecshortcode=\"ec_cartdisplay\"><div>CART DISPLAY</div></li>";
+		}
 		echo "<li data-ecshortcode=\"ec_membership\"><div>MEMBERSHIP CONTENT</div></li>";
 	echo "</ul>";
 }

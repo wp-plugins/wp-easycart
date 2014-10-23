@@ -222,6 +222,89 @@ class ec_db_admin extends ec_db{
 	
 	}
 	
+	public function get_order_details_admin( $order_id ){
+		
+		$orderdetail_sql = "SELECT 
+				ec_orderdetail.orderdetail_id, 
+				ec_orderdetail.order_id, 
+				ec_orderdetail.product_id, 
+				ec_product.list_id, 
+				ec_orderdetail.title, 
+				ec_orderdetail.model_number, 
+				ec_orderdetail.order_date, 
+				ec_orderdetail.unit_price, 
+				ec_orderdetail.total_price, 
+				ec_orderdetail.quantity, 
+				ec_orderdetail.image1, 
+				ec_orderdetail.optionitem_name_1, 
+				ec_orderdetail.optionitem_name_2, 
+				ec_orderdetail.optionitem_name_3, 
+				ec_orderdetail.optionitem_name_4, 
+				ec_orderdetail.optionitem_name_5,
+				ec_orderdetail.optionitem_label_1, 
+				ec_orderdetail.optionitem_label_2, 
+				ec_orderdetail.optionitem_label_3, 
+				ec_orderdetail.optionitem_label_4, 
+				ec_orderdetail.optionitem_label_5,
+				ec_orderdetail.optionitem_price_1, 
+				ec_orderdetail.optionitem_price_2, 
+				ec_orderdetail.optionitem_price_3, 
+				ec_orderdetail.optionitem_price_4, 
+				ec_orderdetail.optionitem_price_5,
+				ec_orderdetail.use_advanced_optionset,
+				ec_orderdetail.giftcard_id, 
+				ec_orderdetail.gift_card_message, 
+				ec_orderdetail.gift_card_from_name, 
+				ec_orderdetail.gift_card_to_name,
+				ec_orderdetail.is_download, 
+				ec_orderdetail.is_giftcard, 
+				ec_orderdetail.is_taxable, 
+				ec_download.download_file_name, 
+				ec_orderdetail.download_key,
+				ec_orderdetail.maximum_downloads_allowed,
+				ec_orderdetail.download_timelimit_seconds,
+				ec_download.is_amazon_download,
+				ec_download.amazon_key,
+				
+				ec_orderdetail.is_deconetwork,
+				ec_orderdetail.deconetwork_id,
+				ec_orderdetail.deconetwork_name,
+				ec_orderdetail.deconetwork_product_code,
+				ec_orderdetail.deconetwork_options,
+				ec_orderdetail.deconetwork_color_code,
+				ec_orderdetail.deconetwork_product_id,
+				ec_orderdetail.deconetwork_image_link,
+				
+				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
+				
+				FROM ec_orderdetail
+				
+				LEFT JOIN ec_product
+				ON ec_product.product_id = ec_orderdetail.product_id
+				
+				LEFT JOIN ec_download
+				ON ec_download.download_id = ec_orderdetail.download_key
+				
+				LEFT JOIN ec_customfield
+				ON ec_customfield.table_name = 'ec_orderdetail'
+				
+				LEFT JOIN ec_customfielddata
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id, 
+				
+				ec_order, ec_user
+				
+				WHERE 
+				ec_order.order_id = ec_orderdetail.order_id AND 
+				ec_user.user_id = ec_order.user_id AND 
+				ec_orderdetail.order_id = %d
+				
+				GROUP BY
+				ec_orderdetail.orderdetail_id";
+		
+		return $this->mysqli->get_results( $this->mysqli->prepare( $orderdetail_sql, $order_id ) );
+	
+	}
+	
 }
 
 ?>

@@ -122,39 +122,39 @@ class ec_paging{
 	}
 	
 	public function get_page_link( $i ){
-		$return_link = $this->store_page . $this->permalink_divider;
-		$vars_added = 0;
-		foreach( $_GET as $key => $getvar ){
-			if( $key != 'pagenum' ){
-				if( $vars_added > 0 )
-					$return_link .= "&amp;";
-				$return_link .= $key . "=" . $getvar;
-				$vars_added++;
-			}
-		}
-		if( $vars_added > 0 )
-			$return_link .= "&amp;";
-			
-		$return_link .= "pagenum=" . $i;
+		$return_link = $this->get_current_url( ) . "pagenum=" . ( $i );
 		return $return_link;
 	}
 	
 	public function get_next_page_link( ){
-		$return_link = $this->store_page . $this->permalink_divider;
-		$vars_added = 0;
-		foreach( $_GET as $key => $getvar ){
-			if( $key != 'pagenum' ){
-				if( $vars_added > 0 )
-					$return_link .= "&amp;";
-				$return_link .= $key . "=" . $getvar;
-				$vars_added++;
-			}
-		}
-		if( $vars_added > 0 )
-			$return_link .= "&amp;";
-			
-		$return_link .= "pagenum=" . ( $this->current_page + 1 );
+		$return_link = $this->get_current_url( ) . "pagenum=" . ( $this->current_page + 1 );
 		return $return_link;
+	}
+	
+	private function get_current_url( ){
+		$page_url = 'http';
+		if( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ){
+			$pageURL .= "s";
+		}
+		
+		$page_url .= "://";
+		
+		if( $_SERVER["SERVER_PORT"] != "80") {
+			$page_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+		
+		}else{
+			$page_url .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		
+		}
+		
+		$page_url = preg_replace( '/([&]*[?]*pagenum\=[\d])/', '', $page_url );
+		
+		if( substr_count( $page_url, '?' ) )						
+			$page_url .= "&";
+		else																
+			$page_url = "?";
+		
+		return $page_url;
 	}
 	
 }

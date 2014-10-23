@@ -350,7 +350,11 @@ class ec_filter{
 			if( $this->get_menu_level() == 3 && $this->get_subsubmenu_id( ) != 0 )						
 				$ret_string .= $wpdb->prepare( " AND ( product.menulevel1_id_3 = %s OR product.menulevel2_id_3 = %s OR product.menulevel3_id_3 = %s )", $this->get_subsubmenu_id( ), $this->get_subsubmenu_id( ), $this->get_subsubmenu_id( ) );
 			
-			if( $this->search != "" )								$ret_string .= " AND ( product.title LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' OR manufacturer.name LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' OR product.description LIKE '%" . $this->mysqli->clean_search( $this->search ) . "%' ) ";
+			if( $this->search != "" ){
+				$search_clean = $this->mysqli->clean_search( '%' . $this->search . '%' );
+				$ret_string .= " AND ( product.title LIKE " . $search_clean . " OR manufacturer.name LIKE " . $search_clean . " OR product.description LIKE " . $search_clean . " OR ec_menulevel1.name LIKE " . $search_clean . "  OR ec_menulevel2.name LIKE " . $search_clean . "  OR ec_menulevel3.name LIKE " . $search_clean . " ) ";
+				
+			}
 			
 			if( $this->show_on_startup )							$ret_string .= " AND product.show_on_startup = 1 ";
 			

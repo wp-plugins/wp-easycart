@@ -44,11 +44,41 @@ class ec_perpage{
 	}
 	
 	private function get_per_page_link($i, $link_string){
-		return "<a href=\"" . $link_string . "&amp;perpage=" . $this->values[$i] . "\" class=\"ec_per_page_link\">" . $this->values[$i] . "</a>"; 
+		return "<a href=\"" . $this->get_current_url( ) . "perpage=" . $this->values[$i] . "\" class=\"ec_per_page_link\">" . $this->values[$i] . "</a>"; 
 	}
 	
 	private function get_per_page_link_selected($i){
 		return "<span class=\"ec_per_page_selected\">" . $this->values[$i] . "</span>";
+	}
+	
+	public function get_per_page_url( $i ){
+		return $this->get_current_url( ) . "perpage=" . $i; 
+	}
+	
+	private function get_current_url( ){
+		$page_url = 'http';
+		if( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ){
+			$pageURL .= "s";
+		}
+		
+		$page_url .= "://";
+		
+		if( $_SERVER["SERVER_PORT"] != "80") {
+			$page_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+		
+		}else{
+			$page_url .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		
+		}
+		
+		$page_url = preg_replace( '/([&]*[?]*perpage\=[\d])/', '', $page_url );
+		
+		if( substr_count( $page_url, '?' ) )						
+			$page_url .= "&";
+		else																
+			$page_url = "?";
+		
+		return $page_url;
 	}
 }
 

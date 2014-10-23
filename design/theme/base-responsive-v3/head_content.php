@@ -245,8 +245,8 @@ jQuery( document ).ready( function( ){
 .ec_product_star_off{ border-bottom-color:<?php if( $bg_theme_dark ){ ?>#666666<?php }else{?>#CCCCCC<?php }?> !important; color:<?php if( $bg_theme_dark ){ ?>#666666<?php }else{?>#CCCCCC<?php }?>; }
 .ec_product_star_off:before{ border-bottom-color:<?php if( $bg_theme_dark ){ ?>#666666<?php }else{?>#CCCCCC<?php }?>; }
 .ec_product_star_off:after{ color:<?php if( $bg_theme_dark ){ ?>#666666<?php }else{?>#CCCCCC<?php }?>; border-bottom-color:<?php if( $bg_theme_dark ){ ?>#666666<?php }else{?>#CCCCCC<?php }?>; }
-.ec_product_added_to_cart a{ color:<?php echo $color1; ?> !important; }
-.ec_product_added_to_cart a:hover{ color:<?php echo $color2; ?>; }
+.ec_product_added_to_cart a, .ec_cart_checkout_link{ color:<?php echo $color1; ?> !important; }
+.ec_product_added_to_cart a:hover, .ec_cart_checkout_link:hover{ color:<?php echo $color2; ?> !important; }
 .ec_product_details_page a{ color:<?php echo $color1; ?>; }
 .ec_product_details_page a:hover{ color:<?php echo $color2; ?>; }
 .ec_details_title{ color:<?php if( $bg_theme_dark ){ ?>#FFFFFF<?php }else{?>#222222<?php }?> !important; }
@@ -299,6 +299,14 @@ a.ec_cart_empty_button:hover{ background-color:<?php echo $color2; ?> }
 <?php }?>
 ul.ec_menu_vertical li a:hover{ background-color:<?php echo $color1; ?>; }
 ul.ec_menu_vertical ul li a:hover, ul.ec_menu_vertical ul ul li a:hover, .ec_categorywidget a:hover, .ec_manufacturerwidget a:hover, .ec_pricepointwidget a:hover, .ec_groupwidget a:hover, .ec_product_widget_title a:hover{ color:<?php echo $color1; ?> !important; }
+
+.ec_search_widget input[type="submit"], .ec_newsletter_widget input[type="submit"]{ background-color:<?php echo $color1; ?>; border-bottom:4px solid <?php echo $color2; ?>; }
+.ec_search_widget input[type="submit"]:hover, .ec_newsletter_widget input[type="submit"]:hover{ background-color:<?php echo $color2; ?>; border-bottom:4px solid <?php echo $color1; ?>; }
+
+.ec_cart_widget_minicart_wrap{ background:<?php echo $color1; ?>; }
+
+.ec_categorywidget a, .ec_manufacturer_widget a, .ec_pricepoint_widget a, .ec_group_widget a{ color:<?php echo $color1; ?>; }
+.ec_categorywidget a:hover, .ec_manufacturer_widget a:hover, .ec_pricepoint_widget a:hover, .ec_group_widget a:hover{ color:<?php echo $color2; ?> !important; }
 
 @media only screen and ( min-width:1140px ){
 	.ec_product_li{ width:<?php echo $display_width_desktop; ?>; }

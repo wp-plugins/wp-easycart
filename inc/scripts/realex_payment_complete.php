@@ -44,8 +44,9 @@ if( isset( $_POST['ORDER_ID'] ) ){
 			$mysqli->update_order_status( $order_id, "10" );
 			
 			// send email
-			$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
-			$order_display = new ec_orderdisplay( $order_row, true );
+			$db_admin = new ec_db_admin( );
+			$order_row = $db_admin->get_order_row_admin( $order_id );
+			$order_display = new ec_orderdisplay( $order_row, true, true );
 			$order_display->send_email_receipt( );
 		
 			// Quickbooks Hook

@@ -2162,7 +2162,7 @@ class ec_cartpage{
 					$divider = "&";
 				
 				
-				header( "location: " . $return_url . $divider . "ec_store_success=addtocart&model=" . $_POST['model_number'] );
+				header( "location: " . $return_url . $divider . "ec_store_success=addtocart&model=" . $product->model_number );
 			
 			}else{
 				header( "location: " . $this->cart_page );
