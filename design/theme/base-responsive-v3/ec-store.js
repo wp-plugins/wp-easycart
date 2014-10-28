@@ -635,7 +635,7 @@ function ec_validate_address_block( prefix ){
 		ec_hide_cart_error( 'ec_cart_' + prefix + '_address' );
 	}
 	
-	if( jQuery( '#ec_cart_' + prefix + '_state_' + country ) ){
+	if( jQuery( '#ec_cart_' + prefix + '_state_' + country ).length ){
 		if( !ec_validate_select( state ) ){
 			errors = true;
 			ec_show_cart_error( 'ec_cart_' + prefix + '_state' );
@@ -643,12 +643,7 @@ function ec_validate_address_block( prefix ){
 			ec_hide_cart_error( 'ec_cart_' + prefix + '_state' );
 		}
 	}else{
-		if( ec_is_state_required( country ) && !ec_validate_text( state ) ){
-			errors = true;
-			ec_show_cart_error( 'ec_cart_' + prefix + '_state' );
-		}else{
-			ec_hide_cart_error( 'ec_cart_' + prefix + '_state' );
-		}
+		ec_hide_cart_error( 'ec_cart_' + prefix + '_state' );
 	}
 	
 	if( !ec_validate_text( zip ) ){

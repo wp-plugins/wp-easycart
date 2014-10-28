@@ -84,6 +84,22 @@
 				"product_product_view_per_page":{
 					"title":"Product Page View in Per Page",
 					"value":"Blick"
+				},
+				"product_page_restricted_line_1":{
+					"title":"Restricted Product Line 1",
+					"value":"OPEN ACCESS ist nicht für die STORE ERLAUBT"
+				},
+				"product_page_restricted_line_2":{
+					"title":"Restricted Product Line 2 Prior to Link",
+					"value":"Bitte loggen Sie sich oder ein Konto erstellen, indem Sie"
+				},
+				"product_page_restricted_link_text":{
+					"title":"Restricted Product Link Text",
+					"value":"Klicken Sie hier"
+				},
+				"product_page_restricted_line_3":{
+					"title":"Restricted Product Line 2 Post Link",
+					"value":". Ihr Konto kann überprüft werden muss, bevor Sie in der Lage sein, um den Laden zu gelangen."
 				}
 			}
 		},

@@ -352,7 +352,7 @@ class ec_filter{
 			
 			if( $this->search != "" ){
 				$search_clean = $this->mysqli->clean_search( '%' . $this->search . '%' );
-				$ret_string .= " AND ( product.title LIKE " . $search_clean . " OR manufacturer.name LIKE " . $search_clean . " OR product.description LIKE " . $search_clean . " OR ec_menulevel1.name LIKE " . $search_clean . "  OR ec_menulevel2.name LIKE " . $search_clean . "  OR ec_menulevel3.name LIKE " . $search_clean . " ) ";
+				$ret_string .= " AND ( product.title LIKE " . $search_clean . " OR product.model_number LIKE " . $search_clean . " OR manufacturer.name LIKE " . $search_clean . " OR product.description LIKE " . $search_clean . " OR ec_menulevel1.name LIKE " . $search_clean . "  OR ec_menulevel2.name LIKE " . $search_clean . "  OR ec_menulevel3.name LIKE " . $search_clean . " ) ";
 				
 			}
 			

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,11 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.4 =
+* NEW FEATURE - Secure store option now available. Lock down your store front to a specific user level or multiple user levels. This allows you to create a whole sale site or simply require users to register before shopping.
+* Fix - Improved UPS and USPS International shipping rates.
+* Fix - FedEx rates error fixed.
+* Fix - Small adjustments to the design of the store for an improved user experience.
 = 3.0.3 =
 * Fix - On upload, advanced options were not working, upgrade to this version to fix the issue.
 * Fix - Language files automatically update on upgrade now.

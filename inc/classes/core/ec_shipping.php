@@ -22,6 +22,9 @@ class ec_shipping{
 	
 	public $subtotal;											// float 7,2
 	private $weight;											// float 7,2
+	private $width;												// Float 7,2
+	private $height;											// Float 7,2
+	private $length;											// Float 7,2
 	private $quantity;											// float 7,2
 	private $express_price;										// float 7,2
 	private $ship_express;										// BOOL
@@ -34,7 +37,7 @@ class ec_shipping{
 	
 	private $freeshipping;										// Boolean
 	
-	function __construct( $subtotal, $weight, $quantity = 1, $display_type = 'RADIO', $freeshipping = false ){
+	function __construct( $subtotal, $weight, $quantity = 1, $display_type = 'RADIO', $freeshipping = false, $length = 1, $width = 1, $height = 1 ){
 		$this->mysqli = new ec_db();
 		$this->ec_setting = new ec_setting();
 		$this->shipping_method = $this->ec_setting->get_shipping_method( );
@@ -146,6 +149,9 @@ class ec_shipping{
 			
 			$this->subtotal = $subtotal;
 			$this->weight = $weight;
+			$this->width = $width;
+			$this->height = $height;
+			$this->length = $length;
 			$this->quantity = $quantity;
 			$this->express_price = $this->ec_setting->get_setting( "shipping_expedite_rate" );
 			if( isset( $_SESSION['ec_ship_express'] ) ){
@@ -289,7 +295,7 @@ class ec_shipping{
 				if( $this->live_based[$i][4] != NULL )
 					$rate = $this->live_based[$i][4];
 				else
-					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
 				
 				//$rate = $GLOBALS['currency']->get_currency_display( $rate );
 				
@@ -453,7 +459,7 @@ class ec_shipping{
 						$rate = $this->live_based[$i][4] + $this->handling;
 						return "<div id=\"" . $this->live_based[$i][0] . "\"> " . $this->live_based[$i][1] . " " . $GLOBALS['currency']->get_currency_display( $rate ) . "</div>";
 					}else
-						$rate = (float) $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+						$rate = (float) $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
 					
 					return $this->get_live_based_div( $i, $rate + $this->handling );
 				}
@@ -573,12 +579,12 @@ class ec_shipping{
 					if( $this->live_based[$i][4] != NULL )
 						$rate = $this->live_based[$i][4];
 					else
-						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
 					
 				}else{
 				
 					// Find lowest
-					$subrate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight );
+					$subrate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
 					if( $subrate != "ERROR" && floatval( $subrate ) < $lowest ){
 						$lowest = floatval( $subrate );
 						$lowest_ship_method = $this->live_based[$i][2];
@@ -622,7 +628,7 @@ class ec_shipping{
 		
 		if( $rate == "ERROR" ){
 			error_log( "error getting shipping rate.");
-			return "0.00";
+			return doubleval( "0.00" ) + doubleval( $this->handling );
 		}else{
 			// Add the Handling Rate
 			$rate = doubleval( $rate ) + doubleval( $this->handling );

@@ -47,11 +47,11 @@
 				$this->dhl = new ec_dhl( $this->ec_setting );
 		}
 		
-		public function get_rate( $ship_company, $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10 ){
+		public function get_rate( $ship_company, $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10, $declared_value = 0 ){
 			if( $ship_company == "ups" ){
 				if( count( $this->ups_data ) <= 0 ){
 					// get the rates
-					$this->ups_data = $this->ups->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height );
+					$this->ups_data = $this->ups->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value );
 				}
 				
 				// Loop through and return the correct rate.
@@ -86,7 +86,10 @@
 				
 				// Loop through and return the correct rate.
 				for( $i=0; $i<count( $this->fedex_data ); $i++ ){
-					if( isset( $this->fedex_data[$i]['rate_code'] ) && $this->fedex_data[$i]['rate_code'] == $ship_code ){
+					if( isset( $this->fedex_data[$i]['rate_code'] ) && $ship_code == "GROUND_HOME_DELIVERY" && ( $this->fedex_data[$i]['rate_code'] == "FEDEX_GROUND" || $this->fedex_data[$i]['rate_code'] == "GROUND_HOME_DELIVERY" ) ){
+						return $this->fedex_data[$i]['rate'];
+						
+					}else if( isset( $this->fedex_data[$i]['rate_code'] ) && $this->fedex_data[$i]['rate_code'] == $ship_code ){
 						return $this->fedex_data[$i]['rate'];
 					}
 				}

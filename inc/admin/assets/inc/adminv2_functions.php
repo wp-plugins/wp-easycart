@@ -1243,6 +1243,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_exchange_rates', $_POST['ec_option_exchange_rates'] );
 	update_option( 'ec_option_gift_card_shipping_allowed', $_POST['ec_option_gift_card_shipping_allowed'] );
 	update_option( 'ec_option_collect_shipping_for_subscriptions', $_POST['ec_option_collect_shipping_for_subscriptions'] );
+	update_option( 'ec_option_restrict_store', implode( '***', $_POST['ec_option_restrict_store'] ) );
 	update_option( 'ec_option_amazon_key', $_POST['ec_option_amazon_key'] );
 	update_option( 'ec_option_amazon_secret', $_POST['ec_option_amazon_secret'] );
 	update_option( 'ec_option_amazon_bucket', $_POST['ec_option_amazon_bucket'] );

@@ -14,7 +14,7 @@
 
 .ec_admin_preview_button_container input:focus{ outline:none; }
 
-.ec_admin_video_hide_div a{ color:#333 !important; }
+.ec_admin_video_hide_div a{ color:#FFF !important; padding:5px 8px; background-color:#333; border-radius:8px; }
 
 .ec_admin_preview_ipad_landscape{ position:absolute; top:0px; left:5px; }
 .ec_admin_preview_ipad_landscape > input{ text-indent: -9999px; width:85px !important; height:67px !important; text-align:center !important; cursor:pointer; border:none !important; font-size:28px !important;  font-family:'Lato', Arial, sans-serif !important; color:#CCC !important; padding:0 !important; border-radius:0 !important; box-shadow:none !important; border-left:none !important; border-right:none !important; border-top:none !important; border-bottom:none !important; content:''; }

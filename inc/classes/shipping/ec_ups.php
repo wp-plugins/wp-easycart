@@ -47,7 +47,7 @@ class ec_ups{
 		
 	}
 	
-	public function get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+	public function get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value = 0 ){
 		if( $weight == 0 )
 		return "0.00";
 		
@@ -57,7 +57,7 @@ class ec_ups{
 		if( !$destination_zip )
 			$destination_zip = $this->ups_ship_from_zip;
 		
-		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height );
+		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value );
 		$request = new WP_Http;
 		$response = $request->request( $this->shipper_url, array( 'method' => 'POST', 'body' => $shipper_data ) );
 		if( is_wp_error( $response ) ){
@@ -148,7 +148,7 @@ class ec_ups{
 		return $shipper_data;
 	}
 	
-	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight = 1, $length = 1, $width = 1, $height = 1, $declared_value = 0 ){
 		$shipper_data = "<?xml version=\"1.0\"?>
 			<AccessRequest xml:lang=\"en-US\">
 				<AccessLicenseNumber>$this->ups_access_license_number</AccessLicenseNumber>
@@ -199,6 +199,18 @@ class ec_ups{
 						</UnitOfMeasurement>
 						<Weight>$weight</Weight>
 					</PackageWeight>
+					<Dimensions>
+						<UnitOfMeasurement>
+							<Code>IN</Code>
+						</UnitOfMeasurement>
+						<Length>$length</Length>
+						<Width>$width</Width>
+						<Height>$height</Height>
+					</Dimensions>
+					<PackageServiceOptions>
+						<CurrencyCode>" . get_option( 'ec_option_base_currency' ) . "</CurrencyCode>
+						<MonetaryValue>$declared_value</MonetaryValue>
+					</PackageServiceOptions>
 				</Package>
 			</Shipment>
 			</RatingServiceSelectionRequest>";

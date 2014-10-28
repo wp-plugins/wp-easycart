@@ -84,6 +84,22 @@
 				"product_product_view_per_page":{
 					"title":"Product Page View in Per Page",
 					"value":"View"
+				},
+				"product_page_restricted_line_1":{
+					"title":"Restricted Product Line 1",
+					"value":"OPEN ACCESS IS NOT ALLOWED FOR THE STORE"
+				},
+				"product_page_restricted_line_2":{
+					"title":"Restricted Product Line 2 Prior to Link",
+					"value":"Please log in or create an account by"
+				},
+				"product_page_restricted_link_text":{
+					"title":"Restricted Product Link Text",
+					"value":"clicking here"
+				},
+				"product_page_restricted_line_3":{
+					"title":"Restricted Product Line 2 Post Link",
+					"value":". Your account may need to be verified before you will be able to access the store."
 				}
 			}
 		},

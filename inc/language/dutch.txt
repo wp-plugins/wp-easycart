@@ -84,6 +84,22 @@
 				"product_product_view_per_page":{
 					"title":"Product Page View in Per Page",
 					"value":"Bekijk"
+				},
+				"product_page_restricted_line_1":{
+					"title":"Restricted Product Line 1",
+					"value":"OPEN TOEGANG IS NIET TOEGESTAAN VOOR DE WINKEL"
+				},
+				"product_page_restricted_line_2":{
+					"title":"Restricted Product Line 2 Prior to Link",
+					"value":"Log in of maak een account aan door"
+				},
+				"product_page_restricted_link_text":{
+					"title":"Restricted Product Link Text",
+					"value":"hier te klikken"
+				},
+				"product_page_restricted_line_3":{
+					"title":"Restricted Product Line 2 Post Link",
+					"value":". Uw account moet mogelijk worden gecontroleerd voordat u in staat om toegang te krijgen tot de winkel zal zijn."
 				}
 			}
 		},

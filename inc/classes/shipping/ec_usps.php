@@ -383,6 +383,12 @@ class ec_usps{
 				if( (float) $service->Postage < $min_rate )
 					$min_rate = $service->Postage;
 				
+				if( (string)$service->attributes()->ID == "1" ){
+					$rates[] = array( 'rate_code' => "EXPRESS", 'rate' => $service->Postage );
+				}else if( (string)$service->attributes()->ID == "2" ){
+					$rates[] = array( 'rate_code' => "PRIORITY", 'rate' => $service->Postage );
+				}
+				
 			}
 			
 			if( $min_rate == 99999.99 )

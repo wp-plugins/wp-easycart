@@ -108,6 +108,24 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
     <span class="ec_setting_row_input"><select name="ec_option_collect_shipping_for_subscriptions" style="width:100px;"><option value="0"<?php if( get_option('ec_option_collect_shipping_for_subscriptions') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_collect_shipping_for_subscriptions') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<div class="ec_setting_row" style="height:auto">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Restrict Store to User Level</em>This option allows you to restrict your store and purchases to a specific user level or levels. You must have user roles setup to use this option.</span></a></span>
+    <span class="ec_setting_row_label">Restrict Store to User Level:</span>
+    <span class="ec_setting_row_input">
+    	<?php
+		global $wpdb;
+		$user_roles = $wpdb->get_results( "SELECT * FROM ec_role WHERE admin_access = 0" );
+		$restricted_roles = explode( "***", get_option('ec_option_restrict_store' ) );
+		?>
+    	<select multiple name="ec_option_restrict_store[]" style="width:350px;">
+        	<option value="0"<?php if( get_option('ec_option_restrict_store') == "0" ){ echo " selected=\"selected\""; }?>>No Restrictions</option>
+            <?php foreach( $user_roles as $user_role ){ ?>
+            <option value="<?php echo $user_role->role_label; ?>"<?php if( in_array( $user_role->role_label, $restricted_roles ) ){ echo " selected=\"selected\""; }?>><?php echo $user_role->role_label; ?></option>
+            <?php }?>
+        </select>
+    </span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title">Amazon S3 Setup</div>

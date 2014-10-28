@@ -163,10 +163,23 @@ class ec_storepage{
 	}
 	
 	public function display_store_page( ){
-		if( isset( $_GET['ec_store_success'] ) )			$this->display_store_success( );
-		if( isset( $_GET['ec_store_error'] ) )				$this->display_store_error( );
-		if(	!$this->is_details )							$this->display_products_page( );
-		else												$this->display_product_details_page( );
+		
+		if( get_option( 'ec_option_restrict_store' ) ){
+			$user = new ec_user( "" );
+			$restricted = explode( "***", get_option( 'ec_option_restrict_store' ) );
+		}
+		//current_user_can('manage_options') || 
+		if( !get_option( 'ec_option_restrict_store' ) || $user->user_level == "admin" || in_array( $user->user_level, $restricted ) ){
+			if( isset( $_GET['ec_store_success'] ) )			$this->display_store_success( );
+			if( isset( $_GET['ec_store_error'] ) )				$this->display_store_error( );
+			if(	!$this->is_details )							$this->display_products_page( );
+			else												$this->display_product_details_page( );
+		}else{
+			
+			$this->show_restricted_store( );
+			
+		}
+		
 	}
 	
 	private function display_products_page( ){
@@ -380,6 +393,17 @@ class ec_storepage{
 		
 		return $this->product_list->get_products_no_limit( );
 	
+	}
+	
+	private function show_restricted_store( ){
+		
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_restricted.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_restricted.php' );
+		else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_restricted.php' ) )
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product_restricted.php' );
+		else
+			echo "<div>NOT ALLOWED TO ACCESS</div>";
+		
 	}
 	
 	////////////////////////////////////////////////////////

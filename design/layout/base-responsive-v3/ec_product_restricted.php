@@ -1,0 +1,2 @@
+<div class="ec_restricted"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_restricted_line_1' ); ?></div>
+<div class="ec_restricted"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_restricted_line_2' ); ?> <a href="<?php echo $this->account_page; ?>"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_restricted_link_text' ); ?></a><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_restricted_line_3' ); ?></div>

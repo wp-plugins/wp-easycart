@@ -84,6 +84,22 @@
 				"product_product_view_per_page":{
 					"title":"Product Page View in Per Page",
 					"value":"Ver"
+				},
+				"product_page_restricted_line_1":{
+					"title":"Restricted Product Line 1",
+					"value":"OPEN TOEGANG IS NIET TOEGESTAAN VOOR DE WINKEL"
+				},
+				"product_page_restricted_line_2":{
+					"title":"Restricted Product Line 2 Prior to Link",
+					"value":"Por favor, iniciar sesión o crear una cuenta por"
+				},
+				"product_page_restricted_link_text":{
+					"title":"Restricted Product Link Text",
+					"value":"hacer clic aquí"
+				},
+				"product_page_restricted_line_3":{
+					"title":"Restricted Product Line 2 Post Link",
+					"value":". Puede ser necesario que su cuenta sea verificada antes de que usted será capaz de acceder a la tienda."
 				}
 			}
 		},

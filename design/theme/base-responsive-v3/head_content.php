@@ -278,6 +278,8 @@ jQuery( document ).ready( function( ){
 .ec_details_model_number{ color:<?php if( $bg_theme_dark ){ ?>#CCCCCC<?php }else{?>#666666<?php }?> !important; }
 .ec_details_description{ color:<?php if( $bg_theme_dark ){ ?>#FFFFFF<?php }else{?>#222222<?php }?> !important; }
 .ec_details_stock_total{ color:<?php if( $bg_theme_dark ){ ?>#CCCCCC<?php }else{?>#666666<?php }?> !important; }
+.ec_details_add_to_cart_area > .ec_details_quantity > .ec_minus, .ec_details_add_to_cart_area > .ec_details_quantity > .ec_plus, .ec_details_add_to_cart_area > .ec_details_add_to_cart > input, .ec_details_add_to_cart_area > .ec_details_add_to_cart > a, .ec_details_customer_reviews_row > input[type="button"]{ background-color:<?php echo $color1; ?> !important; }
+.ec_details_add_to_cart_area > .ec_details_quantity > .ec_minus:hover, .ec_details_add_to_cart_area > .ec_details_quantity > .ec_plus:hover, .ec_details_add_to_cart_area > .ec_details_add_to_cart > input:hover, .ec_details_add_to_cart_area > .ec_details_add_to_cart > a:hover, .ec_details_customer_reviews_row > input[type="button"]:hover{ background-color:<?php echo $color2; ?> !important; }
 .ec_details_categories{ color:<?php if( $bg_theme_dark ){ ?>#CCCCCC<?php }else{?>#666666<?php }?> !important; }
 .ec_details_manufacturer{ color:<?php if( $bg_theme_dark ){ ?>#CCCCCC<?php }else{?>#666666<?php }?> !important; }
 .ec_details_tabs{ color:<?php if( $bg_theme_dark ){ ?>#FFFFFF<?php }else{?>#222222<?php }?>; }
@@ -288,7 +290,7 @@ jQuery( document ).ready( function( ){
 .ec_details_customer_review_data{ color:<?php if( $bg_theme_dark ){ ?>#FFFFFF<?php }else{?>#222222<?php }?>; }
 .ec_details_customer_reviews_form > .ec_details_customer_reviews_form_holder > h3{ color:<?php echo $color1; ?> !important; }
 .ec_details_customer_reviews_row{ color:<?php if( $bg_theme_dark ){ ?>#FFFFFF<?php }else{?>#222222<?php }?>; }
-.ec_details_customer_reviews_row > input[type="button"]{ background-color:<?php if( $bg_theme_dark ){ ?>#AAAAAA<?php }else{?>#999999<?php }?>; color:<?php if( $bg_theme_dark ){ ?>#000000<?php }else{?>#FFFFFF<?php }?>; }
+.ec_details_customer_reviews_row > input[type="button"]{ background-color:<?php if( $bg_theme_dark ){ ?>#AAAAAA<?php }else{?>#333<?php }?>; color:<?php if( $bg_theme_dark ){ ?>#000000<?php }else{?>#FFFFFF<?php }?>; }
 .ec_details_customer_reviews_row > input[type="button"]:hover{ background-color:<?php if( $bg_theme_dark ){ ?>#CCCCCC<?php }else{?>#333333<?php }?>; }
 .ec_details_related_products_area > h3{ color:<?php echo $color1; ?> !important; }
 .ec_product_details_star_on{ border-bottom-color:<?php if( $bg_theme_dark ){ ?>#FFFFFF<?php }else{ echo $color1; }?> !important; color:<?php if( $bg_theme_dark ){ ?>#FFFFFF<?php }else{ echo $color1; }?>; border-bottom-color:<?php if( $bg_theme_dark ){ ?>#FFFFFF<?php }else{ echo $color1; }?>; }
@@ -303,13 +305,15 @@ jQuery( document ).ready( function( ){
 .ec_details_swatches > li.ec_selected > img{ border:2px solid <?php echo $color1; ?>; }
 .ec_special_heading{ color:<?php echo $color1; ?>; }
 .ec_special_icon, .ec_special_icon_list{ background-color:<?php echo $color1; ?>; }
-.ec_cart_page a{ color:<?php echo $color1; ?>; }
-.ec_cart_page a:hover{ color:<?php echo $color2; ?>; }
+.ec_cart_page a, .ec_restricted a{ color:<?php echo $color1; ?>; }
+.ec_cart_page a:hover, .ec_restricted a:hover{ color:<?php echo $color2; ?>; }
 a.ec_cart_empty_button{ background-color:<?php echo $color1; ?> }
 a.ec_cart_empty_button:hover{ background-color:<?php echo $color2; ?> }
 .ec_cart_breadcrumb{ color:<?php echo $color1; ?>; }
 .ec_cart > thead > tr{ border-bottom-color:<?php echo $color1; ?>; }
 .ec_cartitem_title{ color:<?php echo $color1; ?> !important; }
+.ec_cartitem_quantity_table > tbody > tr > td > .ec_minus, .ec_cartitem_quantity_table > tbody > tr > td > .ec_plus, .ec_cartitem_quantity_table > tbody > tr > td > .ec_cartitem_update_button{ background-color:<?php echo $color1; ?> !important; }
+.ec_cartitem_quantity_table > tbody > tr > td > .ec_minus:hover, .ec_cartitem_quantity_table > tbody > tr > td > .ec_plus:hover, .ec_cartitem_quantity_table > tbody > tr > td > .ec_cartitem_update_button:hover{ background-color:<?php echo $color2; ?> !important; }
 .ec_cart_button_row > .ec_cart_button{ background-color:<?php echo $color1; ?> !important; }
 .ec_cart_button_row > .ec_cart_button:hover{ background-color:<?php echo $color2; ?> !important; }
 .ec_cart_input_row > a, .ec_cart_input_row > b, .ec_cart_input_row > strong{ color:<?php echo $color1; ?>; }

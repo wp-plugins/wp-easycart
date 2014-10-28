@@ -14,6 +14,9 @@ class ec_cart{
 	public $vat_subtotal;									// FLOAT 15,3
 	
 	public $weight;											// INT
+	public $length;											// FLOAT 15,3
+	public $width;											// FLOAT 15,3
+	public $height;											// FLOAT 15,3
 	public $total_items;									// INT
 	
 	public $cart_promo_discount;							// FLOAT
@@ -85,6 +88,8 @@ class ec_cart{
 			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation && $this->cart[$i]->weight > 0 )
 				$this->shippable_total_items = $this->shippable_total_items + $this->cart[$i]->quantity;
 		}
+		
+		$this->calculate_parcel( );
 	}
 	
 	// Process Adding Item to cart
@@ -184,6 +189,44 @@ class ec_cart{
 	
 	public function get_grand_total( ){
 		return number_format( $this->grand_total, 2 );
+	}
+	
+	private function calculate_parcel( ){ // Thank you Fraktjakt for this function.
+ 
+		// Create an empty package
+		$package_dimensions = array( 0, 0, 0 );
+		
+		// Step through each product
+		foreach( $this->cart as $cart_item ){
+		
+			// Create an array of product dimensions
+			$product_dimensions = array( $cart_item->width, $cart_item->height, $cart_item->length );
+			
+			// Twist and turn the item, longest side first ([0]=length, [1]=width, [2]=height)
+			rsort( $product_dimensions, SORT_NUMERIC); // Sort $product_dimensions by highest to lowest
+			
+			// Package height + item height
+			$package_dimensions[2] += $product_dimensions[2];
+			
+			// If this is the widest item so far, set item width as package width
+			if($product_dimensions[1] > $package_dimensions[1]) 
+				
+				$package_dimensions[1] = $product_dimensions[1];
+			
+			// If this is the longest item so far, set item length as package length
+			if($product_dimensions[0] > $package_dimensions[0]) 
+				$package_dimensions[0] = $product_dimensions[0];
+			
+			// Twist and turn the package, longest side first ([0]=length, [1]=width, [2]=height)
+			rsort( $package_dimensions, SORT_NUMERIC );
+			
+		}
+		
+		$this->width = round( $package_dimensions[0], 0 );
+		$this->height = round( $package_dimensions[1], 0 );
+		$this->length = round( $package_dimensions[2], 0 );
+		
+		return $parcel;
 	}
 
 }

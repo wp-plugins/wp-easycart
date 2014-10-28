@@ -84,6 +84,22 @@
 				"product_product_view_per_page":{
 					"title":"Product Page View in Per Page",
 					"value":"Προβολή"
+				},
+				"product_page_restricted_line_1":{
+					"title":"Restricted Product Line 1",
+					"value":"ΑΝΟΙΧΤΗ ΠΡΟΣΒΑΣΗ ΔΕΝ ΕΠΙΤΡΕΠΕΤΑΙ ΓΙΑ ΤΟ ΚΑΤΑΣΤΗΜΑ"
+				},
+				"product_page_restricted_line_2":{
+					"title":"Restricted Product Line 2 Prior to Link",
+					"value":"Παρακαλούμε συνδεθείτε ή να δημιουργήσετε ένα λογαριασμό"
+				},
+				"product_page_restricted_link_text":{
+					"title":"Restricted Product Link Text",
+					"value":"κλικ εδώ"
+				},
+				"product_page_restricted_line_3":{
+					"title":"Restricted Product Line 2 Post Link",
+					"value":". Ο λογαριασμός σας μπορεί να χρειαστεί να ελεγχθεί πριν θα είναι σε θέση να έχουν πρόσβαση στο κατάστημα."
 				}
 			}
 		},

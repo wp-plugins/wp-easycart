@@ -179,7 +179,7 @@ class ec_admin_users{
 		$user_id = $this->db->insert_id;
 		
 		// Insert Billing Address
-		$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s,  %s, %s, %s, %s, %s, %s, %s, %s )";
+		$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
 		$success2 = $this->db->query( $this->db->prepare( $sql, $user_id, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone ) );
 		$billing_id = $this->db->insert_id;
 		
