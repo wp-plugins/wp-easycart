@@ -150,8 +150,8 @@ class ec_admin_users{
 			$success2 = $this->db->query( $this->db->prepare( $sql, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone, $client->shipping_id ) );
 			
 			// Update User
-			$sql = "UPDATE ec_user SET ec_user.email = %s, ec_user.password = %s, ec_user.first_name = %s, ec_user.last_name = %s, ec_user.default_billing_address_id = %d, ec_user.default_shipping_address_id = %d, ec_user.user_level = %s, ec_user.is_subscriber = %d, ec_user.exclude_tax = %s, ec_user.exclude_shipping = %s WHERE ec_user.user_id = %d";
-			$success3 = $this->db->query( $this->db->prepare( $sql, $client->email, $client->password, $client->firstname, $client->lastname, $client->billing_id, $client->shipping_id, $client->userlevel, $client->subscriber, $client->exclude_tax, $client->exclude_shipping, $clientid ) );
+			$sql = "UPDATE ec_user SET ec_user.email = %s, ec_user.password = %s, ec_user.first_name = %s, ec_user.last_name = %s, ec_user.default_billing_address_id = %d, ec_user.default_shipping_address_id = %d, ec_user.user_level = %s, ec_user.is_subscriber = %d, ec_user.exclude_tax = %s, ec_user.exclude_shipping = %s, ec_user.user_notes = %s WHERE ec_user.user_id = %d";
+			$success3 = $this->db->query( $this->db->prepare( $sql, $client->email, $client->password, $client->firstname, $client->lastname, $client->billing_id, $client->shipping_id, $client->userlevel, $client->subscriber, $client->exclude_tax, $client->exclude_shipping, $client->usernotes, $clientid ) );
 			
 			//Enqueue Quickbooks Update Customer
 			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
@@ -174,8 +174,8 @@ class ec_admin_users{
 	function addclient( $client ){
 		
 		// Insert User
-		$sql = "INSERT INTO ec_user( email, password, first_name, last_name, default_billing_address_id, default_shipping_address_id, user_level, is_subscriber, exclude_tax, exclude_shipping ) VALUES( %s, %s, %s, %s, 0, 0, %s, %s, %s, %s )";
-		$success1 = $this->db->query( $this->db->prepare( $sql, $client->email, $client->password, $client->firstname, $client->lastname, $client->userlevel, $client->subscriber, $client->exclude_tax, $client->exclude_shipping ) );
+		$sql = "INSERT INTO ec_user( email, password, first_name, last_name, default_billing_address_id, default_shipping_address_id, user_level, is_subscriber, exclude_tax, exclude_shipping, user_notes ) VALUES( %s, %s, %s, %s, 0, 0, %s, %s, %s, %s, %s )";
+		$success1 = $this->db->query( $this->db->prepare( $sql, $client->email, $client->password, $client->firstname, $client->lastname, $client->userlevel, $client->subscriber, $client->exclude_tax, $client->exclude_shipping, $client->usernotes ) );
 		$user_id = $this->db->insert_id;
 		
 		// Insert Billing Address
