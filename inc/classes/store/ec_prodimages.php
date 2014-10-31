@@ -199,7 +199,7 @@ class ec_prodimages{
 			else if( file_exists( $test_src4 ) )
 				$image_src = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
 			else
-				$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
+				$image_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
 			
 			/////////////////////////////////////////////////////////////
 			// END SOURCE IMAGE CODE

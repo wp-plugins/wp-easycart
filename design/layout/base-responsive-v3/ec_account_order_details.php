@@ -1,3 +1,13 @@
+<?php
+if( get_option( 'ec_option_base_theme' ) ){
+	$folder = "wp-easycart-data";
+	$theme = get_option( 'ec_option_base_theme' );
+}else{
+	$folder = "wp-easycart";
+	$theme = get_option( 'ec_option_latest_theme' );
+}
+?>
+
 <div id="ec_account_order_details">
 
   <div class="ec_account_order_details_main_holder">
@@ -320,7 +330,7 @@
 
         <div class="right">
 
-          <a href="<?php echo $this->account_page . $this->permalink_divider; ?>ec_page=print_receipt&order_id=<?php echo $this->order->order_id; ?>" target="_blank"><img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/print_icon.png" ); ?>" alt="print order" /></a>
+          <a href="<?php echo $this->account_page . $this->permalink_divider; ?>ec_page=print_receipt&order_id=<?php echo $this->order->order_id; ?>" target="_blank"><img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/print_icon.png" ); ?>" alt="print order" /></a>
 
         </div>
 

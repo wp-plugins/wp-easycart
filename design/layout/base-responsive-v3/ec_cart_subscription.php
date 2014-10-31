@@ -1,4 +1,14 @@
 <?php
+if( get_option( 'ec_option_base_theme' ) ){
+	$folder = "wp-easycart-data";
+	$theme = get_option( 'ec_option_base_theme' );
+}else{
+	$folder = "wp-easycart";
+	$theme = get_option( 'ec_option_latest_theme' );
+}
+?>
+
+<?php
 // Check for Safari/Admin //
 $ua = $_SERVER["HTTP_USER_AGENT"];
 $safariorchrome = strpos($ua, 'Safari') ? true : false;
@@ -536,38 +546,38 @@ function ec_admin_save_cart_options( ){
         <?php if( $this->use_payment_gateway( ) ){?>
         <div class="ec_cart_input_row">
 			<?php if( get_option('ec_option_use_visa') || get_option('ec_option_use_delta') || get_option('ec_option_use_uke') ){ ?>
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/visa.png" ); ?>" alt="Visa" class="ec_card_active" id="ec_card_visa" />
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/visa_inactive.png" ); ?>" alt="Visa" class="ec_card_inactive" id="ec_card_visa_inactive" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/visa.png" ); ?>" alt="Visa" class="ec_card_active" id="ec_card_visa" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/visa_inactive.png" ); ?>" alt="Visa" class="ec_card_inactive" id="ec_card_visa_inactive" />
             <?php }?>
         
             <?php if( get_option('ec_option_use_discover') ){ ?>
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/discover.png" ); ?>" alt="Discover" class="ec_card_active" id="ec_card_discover" />
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/discover_inactive.png" ); ?>" alt="Discover" class="ec_card_inactive" id="ec_card_discover_inactive" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/discover.png" ); ?>" alt="Discover" class="ec_card_active" id="ec_card_discover" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/discover_inactive.png" ); ?>" alt="Discover" class="ec_card_inactive" id="ec_card_discover_inactive" />
             <?php }?>
             
             <?php if( get_option('ec_option_use_mastercard') || get_option('ec_option_use_mcdebit') ){ ?>
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/mastercard.png"); ?>" alt="Mastercard" class="ec_card_active" id="ec_card_mastercard" />
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/mastercard_inactive.png"); ?>" alt="Mastercard" class="ec_card_inactive" id="ec_card_mastercard_inactive" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/mastercard.png"); ?>" alt="Mastercard" class="ec_card_active" id="ec_card_mastercard" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/mastercard_inactive.png"); ?>" alt="Mastercard" class="ec_card_inactive" id="ec_card_mastercard_inactive" />
             <?php }?>
             
             <?php if( get_option('ec_option_use_amex') ){ ?>
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/american_express.png"); ?>" alt="AMEX" class="ec_card_active" id="ec_card_amex" />
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/american_express_inactive.png"); ?>" alt="AMEX" class="ec_card_inactive" id="ec_card_amex_inactive" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/american_express.png"); ?>" alt="AMEX" class="ec_card_active" id="ec_card_amex" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/american_express_inactive.png"); ?>" alt="AMEX" class="ec_card_inactive" id="ec_card_amex_inactive" />
             <?php }?>
             
             <?php if( get_option('ec_option_use_jcb') ){ ?>
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/jcb.png"); ?>" alt="JCB" class="ec_card_active" id="ec_card_jcb" />
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/jcb_inactive.png"); ?>" alt="JCB" class="ec_card_inactive" id="ec_card_jcb_inactive" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/jcb.png"); ?>" alt="JCB" class="ec_card_active" id="ec_card_jcb" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/jcb_inactive.png"); ?>" alt="JCB" class="ec_card_inactive" id="ec_card_jcb_inactive" />
             <?php }?>
             
             <?php if( get_option('ec_option_use_diners') ){ ?>
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/diners.png"); ?>" alt="Diners" class="ec_card_active" id="ec_card_diners" />
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/diners_inactive.png"); ?>" alt="Diners" class="ec_card_inactive" id="ec_card_diners_inactive" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/diners.png"); ?>" alt="Diners" class="ec_card_active" id="ec_card_diners" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/diners_inactive.png"); ?>" alt="Diners" class="ec_card_inactive" id="ec_card_diners_inactive" />
             <?php }?>
             
             <?php if( get_option('ec_option_use_maestro') || get_option('ec_option_use_laser')){ ?>
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/maestro.png"); ?>" alt="Maestro" class="ec_card_active" id="ec_card_maestro" />
-                <img src="<?php echo plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/maestro_inactive.png"); ?>" alt="Maestro" class="ec_card_inactive" id="ec_card_maestro_inactive" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/maestro.png"); ?>" alt="Maestro" class="ec_card_active" id="ec_card_maestro" />
+                <img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/maestro_inactive.png"); ?>" alt="Maestro" class="ec_card_inactive" id="ec_card_maestro_inactive" />
             <?php }?>
         </div>
         

@@ -1108,6 +1108,7 @@ CREATE TABLE IF NOT EXISTS `ec_user` (
   `default_card_last4` VARCHAR(8) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Used for subscription display of where billed to.',
   `exclude_tax` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Give customer tax free purchases.',
   `exclude_shipping` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Give free shipping to this customer.',
+  `user_notes` text COLLATE utf8_general_ci COMMENT 'This is available for an admin to keep notes on a user.',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id` (`user_id`),
   UNIQUE KEY `email_2` (`email`),

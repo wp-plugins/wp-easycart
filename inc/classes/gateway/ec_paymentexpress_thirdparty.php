@@ -92,13 +92,14 @@ class ec_paymentexpress_thirdparty extends ec_third_party{
 					$this->clear_session( );
 					
 					// Fix for PXPay in which the script is called twice very quickly.
-					$order_row = $mysqli->get_order_row( $order_id, "guest", "guest" );
+					$db_admin = new ec_db_admin( );
+					$order_row = $db_admin->get_order_row_admin( $order_id );
 					
 					if( $order_row->orderstatus_id != "10" ){
 						$mysqli->update_order_status( $order_id, "10" );
 				
 						// send email
-						$order_display = new ec_orderdisplay( $order_row, true );
+						$order_display = new ec_orderdisplay( $order_row, true, true );
 						$order_display->send_email_receipt( );
 					
 						// Quickbooks Hook

@@ -161,7 +161,7 @@ class ec_language{
 					foreach( $language_section->options as $language_item ){
 						$key3 = key( $language_section->options );
 						if( isset( $_POST['ec_' . $key1 . "_" . $key2 . "_" . $key3] ) ){
-							$language_item->value = htmlentities( stripslashes( $_POST['ec_' . $key1 . "_" . $key2 . "_" . $key3] ), ENT_QUOTES );
+							$language_item->value = htmlspecialchars( stripslashes( $_POST['ec_' . $key1 . "_" . $key2 . "_" . $key3] ), ENT_QUOTES, "UTF-8" );
 						}
 					}	
 				}

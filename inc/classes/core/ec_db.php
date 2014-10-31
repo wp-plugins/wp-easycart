@@ -1735,7 +1735,7 @@ class ec_db{
 		return $this->mysqli->insert_id;	
 	}
 	
-	public function insert_user( $email, $password, $first_name, $last_name, $billing_id, $shipping_id, $user_level, $is_subscriber ){
+	public function insert_user( $email, $password, $first_name, $last_name, $billing_id, $shipping_id, $user_level, $is_subscriber, $user_notes = "" ){
 		if( $is_subscriber )
 			$this->insert_subscriber( $email, $first_name, $last_name );
 		else
@@ -1749,9 +1749,10 @@ class ec_db{
 										"default_billing_address_id"	=> $billing_id,
 										"default_shipping_address_id"	=> $shipping_id,
 										"user_level"					=> $user_level,
-										"is_subscriber"					=> $is_subscriber
+										"is_subscriber"					=> $is_subscriber,
+										"user_notes"					=> $user_notes
 									  ),
-								array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%d' )
+								array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%d', '%s' )
 							  );
 		
 		return $this->mysqli->insert_id;
@@ -2564,7 +2565,7 @@ class ec_db{
 														'phone'								=> $phone,
 														'company_name'						=> $company_name
 												),
-												array( 	'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+												array( 	'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 											);
 											
 		$address_id = $this->mysqli->insert_id;

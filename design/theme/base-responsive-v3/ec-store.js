@@ -60,6 +60,34 @@ jQuery( document ).ready( function( ){
 			jQuery( '#ec_cart_shipping_state' ).show( );
 		}
 	} );
+	jQuery( '#ec_account_billing_information_country' ).change( function( ){
+		if( ec_is_state_required( jQuery( '#ec_account_billing_information_country' ).val( ) ) )
+			jQuery( '#ec_billing_state_required' ).show( );
+		else
+			jQuery( '#ec_billing_state_required' ).hide( );
+		
+		if( document.getElementById( 'ec_account_billing_information_state_' + jQuery( '#ec_account_billing_information_country' ).val( ) ) ){
+			jQuery( '.ec_billing_state_dropdown, #ec_account_billing_information_state' ).hide( );
+			jQuery( '#ec_account_billing_information_state_' + jQuery( '#ec_account_billing_information_country' ).val( ) ).show( );
+		}else{
+			jQuery( '.ec_billing_state_dropdown' ).hide( );
+			jQuery( '#ec_account_billing_information_state' ).show( );
+		}
+	} );
+	jQuery( '#ec_account_shipping_information_country' ).change( function( ){
+		if( ec_is_state_required( jQuery( '#ec_account_shipping_information_country' ).val( ) ) )
+			jQuery( '#ec_shipping_state_required' ).show( );
+		else
+			jQuery( '#ec_shipping_state_required' ).hide( );
+		
+		if( document.getElementById( 'ec_account_shipping_information_state_' + jQuery( '#ec_account_shipping_information_country' ).val( ) ) ){
+			jQuery( '.ec_shipping_state_dropdown, #ec_account_shipping_information_state' ).hide( );
+			jQuery( '#ec_account_shipping_information_state_' + jQuery( '#ec_account_shipping_information_country' ).val( ) ).show( );
+		}else{
+			jQuery( '.ec_shipping_state_dropdown' ).hide( );
+			jQuery( '#ec_account_shipping_information_state' ).show( );
+		}
+	} );
 	jQuery( '#ec_card_number' ).keydown( function( ){
 		ec_show_cc_type( ec_get_card_type( jQuery( '#ec_card_number' ).val( ) ) )
 	} );
@@ -483,7 +511,7 @@ function ec_show_cc_type( type ){
 function ec_validate_cart_details( ){
 	
 	login_complete = true;
-	billing_complete = ec_validate_address_block( 'billing' );
+	billing_complete = ec_validate_address_block( 'ec_cart_billing' );
 	shipping_complete = true;
 	email_complete = true;
 	create_account_complete = true;
@@ -492,19 +520,19 @@ function ec_validate_cart_details( ){
 		login_complete = ec_validate_cart_login( );
 	
 	if( jQuery( '#ec_shipping_selector' ).is( ':checked' ) )
-		shipping_complete = ec_validate_address_block( 'shipping' );
+		shipping_complete = ec_validate_address_block( 'ec_cart_shipping' );
 	
 	if( jQuery( '#ec_contact_email' ).length )
-		email_complete = ec_validate_email_block( );
+		email_complete = ec_validate_email_block( 'ec_contact' );
 	
 	if( jQuery( '#ec_create_account_selector:checkbox' ).is( ':checked' ) || jQuery( '#ec_create_account_selector:hidden' ).val( ) == "create_account" )
-		create_account_complete = ec_validate_create_account( );
+		create_account_complete = ec_validate_create_account( 'ec_contact' );
 		
 	if( login_complete && billing_complete && shipping_complete && email_complete && create_account_complete ){
-		ec_hide_cart_error( 'ec_checkout' );
+		ec_hide_error( 'ec_checkout' );
 		return true;
 	}else{
-		ec_show_cart_error( 'ec_checkout' );
+		ec_show_error( 'ec_checkout' );
 		return false;
 	}
 	
@@ -518,12 +546,12 @@ function ec_validate_submit_order( ){
 	if( payment_method_complete && terms_complete ){
 		jQuery( '#ec_cart_submit_order' ).hide( );
 		jQuery( '#ec_cart_submit_order_working' ).show( );
-		ec_hide_cart_error( 'ec_submit_order' );
+		ec_hide_error( 'ec_submit_order' );
 		return true;
 	}else{
 		jQuery( '#ec_cart_submit_order' ).show( );
 		jQuery( '#ec_cart_submit_order_working' ).hide( );
-		ec_show_cart_error( 'ec_submit_order' );
+		ec_show_error( 'ec_submit_order' );
 		return false;
 	}
 	
@@ -532,7 +560,7 @@ function ec_validate_submit_order( ){
 function ec_validate_submit_subscription( ){
 	
 	var login_complete = true;
-	var billing_complete = ec_validate_address_block( 'billing' );
+	var billing_complete = ec_validate_address_block( 'ec_cart_billing' );
 	var shipping_complete = true;
 	var email_complete = true;
 	var create_account_complete = true;
@@ -543,19 +571,19 @@ function ec_validate_submit_subscription( ){
 		login_complete = ec_validate_cart_login( );
 	
 	if( jQuery( '#ec_shipping_selector' ).is( ':checked' ) )
-		shipping_complete = ec_validate_address_block( 'shipping' );
+		shipping_complete = ec_validate_address_block( 'ec_cart_shipping' );
 		
 	if( jQuery( '#ec_contact_email' ).length )
-		email_complete = ec_validate_email_block( );
+		email_complete = ec_validate_email_block( 'ec_contact' );
 	
 	if( jQuery( '#ec_create_account_selector' ).is( ':checked' ) )
-		create_account_complete = ec_validate_create_account( );
+		create_account_complete = ec_validate_create_account( 'ec_contact' );
 		
 	if( login_complete && billing_complete && shipping_complete && email_complete && create_account_complete && payment_method_complete && terms_complete ){
-		ec_hide_cart_error( 'ec_checkout' );
+		ec_hide_error( 'ec_checkout' );
 		return true;
 	}else{
-		ec_show_cart_error( 'ec_checkout' );
+		ec_show_error( 'ec_checkout' );
 		return false;
 	}
 	
@@ -569,16 +597,16 @@ function ec_validate_cart_login( ){
 	
 	if( !ec_validate_email( email ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_login_email' );
+		ec_show_error( 'ec_cart_login_email' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_login_email' );
+		ec_hide_error( 'ec_cart_login_email' );
 	}
 	
 	if( !ec_validate_text( password ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_login_password' );
+		ec_show_error( 'ec_cart_login_password' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_login_password' );
+		ec_hide_error( 'ec_cart_login_password' );
 	}
 	
 	return ( !errors );
@@ -588,140 +616,144 @@ function ec_validate_cart_login( ){
 function ec_validate_address_block( prefix ){
 	
 	var errors = false;
-	var country = jQuery( '#ec_cart_' + prefix + '_country' ).val( );
-	var first_name = jQuery( '#ec_cart_' + prefix + '_first_name' ).val( );
-	var last_name = jQuery( '#ec_cart_' + prefix + '_last_name' ).val( );
-	var city = jQuery( '#ec_cart_' + prefix + '_city' ).val( );
-	var address = jQuery( '#ec_cart_' + prefix + '_address' ).val( );
-	if( jQuery( '#ec_cart_' + prefix + '_state_' + country ) )
-		var state = jQuery( '#ec_cart_' + prefix + '_state_' + country ).val( );
+	var country = jQuery( '#' + prefix + '_country' ).val( );
+	var first_name = jQuery( '#' + prefix + '_first_name' ).val( );
+	var last_name = jQuery( '#' + prefix + '_last_name' ).val( );
+	var city = jQuery( '#' + prefix + '_city' ).val( );
+	var address = jQuery( '#' + prefix + '_address' ).val( );
+	if( jQuery( '#' + prefix + '_state_' + country ) )
+		var state = jQuery( '#' + prefix + '_state_' + country ).val( );
 	else
-		var state = jQuery( '#ec_cart_' + prefix + '_state' ).val( );
-	var zip = jQuery( '#ec_cart_' + prefix + '_zip' ).val( );
-	var phone = jQuery( '#ec_cart_' + prefix + '_phone' ).val( );
+		var state = jQuery( '#' + prefix + '_state' ).val( );
+	var zip = jQuery( '#' + prefix + '_zip' ).val( );
+	var phone = jQuery( '#' + prefix + '_phone' ).val( );
 	
 	if( !ec_validate_select( country ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_' + prefix + '_country' );
+		ec_show_error( prefix + '_country' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_' + prefix + '_country' );
+		ec_hide_error( prefix + '_country' );
 	}
 	
 	if( !ec_validate_text( first_name ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_' + prefix + '_first_name' );
+		ec_show_error( prefix + '_first_name' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_' + prefix + '_first_name' );
+		ec_hide_error( prefix + '_first_name' );
 	}
 	
 	if( !ec_validate_text( last_name ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_' + prefix + '_last_name' );
+		ec_show_error( prefix + '_last_name' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_' + prefix + '_last_name' );
+		ec_hide_error( prefix + '_last_name' );
 	}
 	
 	if( !ec_validate_text( city ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_' + prefix + '_city' );
+		ec_show_error( prefix + '_city' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_' + prefix + '_city' );
+		ec_hide_error( prefix + '_city' );
 	}
 	
 	if( !ec_validate_text( address ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_' + prefix + '_address' );
+		ec_show_error( prefix + '_address' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_' + prefix + '_address' );
+		ec_hide_error( prefix + '_address' );
 	}
 	
-	if( jQuery( '#ec_cart_' + prefix + '_state_' + country ).length ){
+	if( jQuery( '#' + prefix + '_state_' + country ).length ){
 		if( !ec_validate_select( state ) ){
 			errors = true;
-			ec_show_cart_error( 'ec_cart_' + prefix + '_state' );
+			ec_show_error( prefix + '_state' );
 		}else{
-			ec_hide_cart_error( 'ec_cart_' + prefix + '_state' );
+			ec_hide_error( prefix + '_state' );
 		}
 	}else{
-		ec_hide_cart_error( 'ec_cart_' + prefix + '_state' );
+		ec_hide_error( prefix + '_state' );
 	}
 	
 	if( !ec_validate_text( zip ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_' + prefix + '_zip' );
+		ec_show_error( prefix + '_zip' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_' + prefix + '_zip' );
+		ec_hide_error( prefix + '_zip' );
 	}
 	
-	if( jQuery( '#ec_cart_' + prefix + '_phone' ).length && !ec_validate_text( phone ) ){
+	if( jQuery( '#' + prefix + '_phone' ).length && !ec_validate_text( phone ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_cart_' + prefix + '_phone' );
+		ec_show_error( prefix + '_phone' );
 	}else{
-		ec_hide_cart_error( 'ec_cart_' + prefix + '_phone' );
+		ec_hide_error( prefix + '_phone' );
 	}
 	
 	return ( !errors );
 	
 }
 
-function ec_validate_email_block( ){
+function ec_validate_email_block( prefix ){
 	
 	var errors = false;
-	var email = jQuery( '#ec_contact_email' ).val( );
-	var retype_email = jQuery( '#ec_contact_email_retype' ).val( );
+	var email = jQuery( '#' + prefix + '_email' ).val( );
+	var retype_email = "";
+	if( jQuery( '#' + prefix + '_email_retype' ).length )
+		retype_email = jQuery( '#' + prefix + '_email_retype' ).val( );
+	else
+		retype_email = jQuery( '#' + prefix + '_retype_email' ).val( );
 	
 	if( !ec_validate_email( email ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_contact_email' );
+		ec_show_error( prefix + '_email' );
 	}else{
-		ec_hide_cart_error( 'ec_contact_email' );
+		ec_hide_error( prefix + '_email' );
 	}
 	
 	if( !ec_validate_match( email, retype_email) ){
 		errors = true;
-		ec_show_cart_error( 'ec_contact_email_retype' );
+		ec_show_error( prefix + '_email_retype' );
 	}else{
-		ec_hide_cart_error( 'ec_contact_email_retype' );
+		ec_hide_error( prefix + '_email_retype' );
 	}
 	
 	return ( !errors );
 	
 }
 
-function ec_validate_create_account( ){
+function ec_validate_create_account( prefix ){
 	
 	var errors = false;
-	var first_name = jQuery( '#ec_contact_first_name' ).val( );
-	var last_name = jQuery( '#ec_contact_last_name' ).val( );
-	var password = jQuery( '#ec_contact_password' ).val( );
-	var retype_password = jQuery( '#ec_contact_password_retype' ).val( );
+	var first_name = jQuery( '#' + prefix + '_first_name' ).val( );
+	var last_name = jQuery( '#' + prefix + '_last_name' ).val( );
+	var password = jQuery( '#' + prefix + '_password' ).val( );
+	var retype_password = jQuery( '#' + prefix + '_password_retype' ).val( );
 	
-	if( jQuery( '#ec_contact_first_name' ).length && !ec_validate_text( first_name ) ){
+	if( jQuery( '#' + prefix + '_first_name' ).length && !ec_validate_text( first_name ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_contact_first_name' );
+		ec_show_error( prefix + '_first_name' );
 	}else{
-		ec_hide_cart_error( 'ec_contact_first_name' );
+		ec_hide_error( prefix + '_first_name' );
 	}
 	
-	if( jQuery( '#ec_contact_last_name' ).length && !ec_validate_text( last_name ) ){
+	if( jQuery( '#' + prefix + '_last_name' ).length && !ec_validate_text( last_name ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_contact_last_name' );
+		ec_show_error( prefix + '_last_name' );
 	}else{
-		ec_hide_cart_error( 'ec_contact_last_name' );
+		ec_hide_error( prefix + '_last_name' );
 	}
 	
 	if( !ec_validate_password( password ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_contact_password' );
+		ec_show_error( prefix + '_password' );
 	}else{
-		ec_hide_cart_error( 'ec_contact_password' );
+		ec_hide_error( prefix + '_password' );
 	}
 	
 	if( !ec_validate_match( password, retype_password ) ){
 		errors = true;
-		ec_show_cart_error( 'ec_contact_password_retype' );
+		ec_show_error( prefix + '_password_retype' );
 	}else{
-		ec_hide_cart_error( 'ec_contact_password_retype' );
+		ec_hide_error( prefix + '_password_retype' );
 	}
 	
 	return ( !errors );
@@ -742,30 +774,30 @@ function ec_validate_payment_method( ){
 	
 	if( payment_method == "affirm" ){
 		ec_checkout_with_affirm( );
-		ec_hide_cart_error( 'ec_submit_order' );
+		ec_hide_error( 'ec_submit_order' );
 		return false;
 		
 	}else if( payment_method == "credit_card" ){
 		
 		if( !ec_validate_credit_card( card_number ) ){
 			errors = true;
-			ec_show_cart_error( 'ec_card_number' );
+			ec_show_error( 'ec_card_number' );
 		}else{
-			ec_hide_cart_error( 'ec_card_number' );
+			ec_hide_error( 'ec_card_number' );
 		}
 		
 		if( !ec_validate_security_code( security_code ) ){
 			errors = true;
-			ec_show_cart_error( 'ec_security_code' );
+			ec_show_error( 'ec_security_code' );
 		}else{
-			ec_hide_cart_error( 'ec_security_code' );
+			ec_hide_error( 'ec_security_code' );
 		}
 		
 		if( !ec_validate_select( exp_month ) || !ec_validate_select( exp_year )  ){
 			errors = true;
-			ec_show_cart_error( 'ec_expiration_date' );
+			ec_show_error( 'ec_expiration_date' );
 		}else{
-			ec_hide_cart_error( 'ec_expiration_date' );
+			ec_hide_error( 'ec_expiration_date' );
 		}
 		
 	}
@@ -779,10 +811,10 @@ function ec_validate_terms( ){
 	var errors = false;
 	
 	if( jQuery( '#ec_terms_agree' ).is( ':checked' ) || jQuery( '#ec_terms_agree' ).val( ) == '2' ){
-		ec_hide_cart_error( 'ec_terms' );
+		ec_hide_error( 'ec_terms' );
 	}else{
 		errors = true;
-		ec_show_cart_error( 'ec_terms' );
+		ec_show_error( 'ec_terms' );
 	}
 	
 	return ( !errors );
@@ -896,11 +928,11 @@ function ec_validate_security_code( security_code ){
 
 }
 
-function ec_show_cart_error( error_field ){
+function ec_show_error( error_field ){
 	jQuery( '#' + error_field + '_error' ).show( );
 }
 
-function ec_hide_cart_error( error_field ){
+function ec_hide_error( error_field ){
 	jQuery( '#' + error_field + '_error' ).hide( );
 }
 
@@ -1020,4 +1052,81 @@ function ec_live_search_update( ){
 		}
 	} } );
 	
+}
+
+function ec_account_register_button_click2( ){
+	var top_half = ec_account_register_button_click( );
+	var bottom_half = ec_account_billing_information_update_click( );
+	var extra_notes_validated = ec_account_register_validate_notes( );
+	
+	if( top_half && bottom_half && extra_notes_validated ){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function ec_account_register_button_click( ){
+	var email_validated = ec_validate_email_block( 'ec_account_register' );
+	var contact_validated = ec_validate_create_account( 'ec_account_register' );
+	
+	if( email_validated && contact_validated )
+		return true;
+	else
+		return false;
+	
+}
+
+function ec_account_billing_information_update_click( ){
+	var address_validated = ec_validate_address_block( 'ec_account_billing_information' );
+	
+	if( address_validated )
+		return true;
+	else
+		return false;
+	
+}
+
+function ec_account_shipping_information_update_click( ){
+	var address_validated = ec_validate_address_block( 'ec_account_shipping_information' );
+	
+	if( address_validated )
+		return true;
+	else
+		return false;
+	
+}
+
+function ec_account_register_validate_notes( ){
+	if( !jQuery( '#ec_account_register_user_notes' ).length || ( jQuery( '#ec_account_register_user_notes' ).length && jQuery( '#ec_account_register_user_notes' ).val( ) != "" ) ){
+		ec_hide_error( 'ec_account_register_user_notes' );
+		return true;
+	}else{
+		ec_show_error( 'ec_account_register_user_notes' );
+		return false;
+	}
+}
+
+function ec_account_login_button_click( ){
+	
+	var errors = false;
+	var email = jQuery( '#ec_account_login_email' ).val( );
+	var password = jQuery( '#ec_account_login_password' ).val( );
+	
+	if( !ec_validate_email( email ) ){
+		errors = true;
+		ec_show_error( 'ec_account_login_email' );
+	}else{
+		ec_hide_error( 'ec_account_login_email' );
+	}
+	
+	if( !ec_validate_text( password ) ){
+		errors = true;
+		ec_show_error( 'ec_account_login_password' );
+	}else{
+		ec_hide_error( 'ec_account_login_password' );
+	}
+	
+	return ( !errors );
+
 }

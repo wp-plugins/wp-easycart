@@ -15,7 +15,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "colorize-easycart" && is
 <div class="ec_admin_page_title">Colorize EasyCart</div>
 <div class="ec_adin_page_intro">This page allows you to set a default color, default sizing, and default design options. If you have upgraded to a V3 design package, you will be able to set defaults, which will be applied to all pages that you have not specifically set values to. If you wish to edit on a page by page basis, simply visit the page and use the live editing tools.</div>
 
-<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
+<?php if( get_option( 'ec_option_base_theme' ) && !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
 /* V2 COLORIZER ONLY */
 ?>
 <link rel="stylesheet" id="wpeasycart_css-css" href="<?php echo plugins_url( 'wp-easycart/inc/scripts/ec_css_loader.php' ); ?>" type="text/css" media="all">

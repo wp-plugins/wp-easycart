@@ -83,7 +83,7 @@ class ec_donationwidget extends WP_Widget{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_donation_widget.php' ) )	
 				include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_donation_widget.php");
 			else if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_donation_widget.php' ) )	
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_donation_widget.php");
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_latest_layout' ) . "/ec_donation_widget.php");
 			else
 				echo "Could not find the donation widget layout file.";
 			echo "<div style=\"clear:both\"></div>";

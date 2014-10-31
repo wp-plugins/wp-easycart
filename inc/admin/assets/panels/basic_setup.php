@@ -77,6 +77,9 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_selected_pages" )
 
 <div class="ec_demo_buttons_row"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-setup&ec_action=install_demo_data" class="ec_install_demo_data_button" onclick="return ec_verify_install_demo_data( );"></a><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-setup&ec_action=uninstall_demo_data" class="ec_uninstall_demo_data_button" onclick="return ec_verify_uninstall_demo_data( );"></a></div>
 
+<hr class="ec_hr" />
+<?php include( "quick_start.php" ); ?>
+
 <script>
 function check_add_shortcode( page_type, pageid ){
 	if( jQuery('#ec_option_' + page_type + 'page' ).val( ) != pageid ){

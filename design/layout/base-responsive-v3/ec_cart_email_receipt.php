@@ -238,8 +238,11 @@
 							else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1 ) && !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1 ) )
                                 $img_url = plugins_url( "wp-easycart-data/products/pics1/" . $this->cart->cart[$i]->image1 );
 								
-							else
+							else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" ) )
 								$img_url = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+								
+							else
+								$img_url = plugins_url( "wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
                             ?>
                             <div style="ec_lineitem_image"><img src="<?php echo str_replace( "https://", "http://", $img_url ); ?>" width="70" alt="<?php echo $this->cart->cart[$i]->title; ?>" /></div>
 						</td>

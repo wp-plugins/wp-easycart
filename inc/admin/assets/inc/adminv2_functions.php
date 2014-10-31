@@ -1223,6 +1223,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
 	update_option( 'ec_option_require_email_validation', $_POST['ec_option_require_email_validation'] );
 	update_option( 'ec_option_show_account_subscriptions_link', $_POST['ec_option_show_account_subscriptions_link'] );
+	update_option( 'ec_option_enable_user_notes', $_POST['ec_option_enable_user_notes'] );
 	
 	// Google Analytics Setup
 	update_option( 'ec_option_googleanalyticsid', $_POST['ec_option_googleanalyticsid'] );
@@ -1773,5 +1774,113 @@ function rmdir_recursive( $path ){
 		}
 	}
 	return; 
+}
+
+function ec_is_admin_installed( ){
+	$plugins = get_plugins( );
+	$has_admin = false;
+	foreach( $plugins as $plugin ){
+		if( $plugin['Name'] == "WP EasyCart Administration" )
+			$has_admin = true;
+	}
+	return $has_admin;
+}
+
+function ec_has_manufacturer( ){
+	global $wpdb;
+	$results = $wpdb->get_results( "SELECT manufacturer_id FROM ec_manufacturer" );
+	if( empty( $results ) )
+		return false;
+	else
+		return true;
+}
+
+function ec_has_menu( ){
+	global $wpdb;
+	$results = $wpdb->get_results( "SELECT menulevel1_id FROM ec_menulevel1" );
+	if( empty( $results ) )
+		return false;
+	else
+		return true;
+}
+
+function ec_has_category( ){
+	global $wpdb;
+	$results = $wpdb->get_results( "SELECT category_id FROM ec_category" );
+	if( empty( $results ) )
+		return false;
+	else
+		return true;
+}
+
+function ec_has_product( ){
+	global $wpdb;
+	$results = $wpdb->get_results( "SELECT product_id FROM ec_product" );
+	if( empty( $results ) )
+		return false;
+	else
+		return true;
+}
+
+function ec_has_custom_store_design( ){
+	if( get_option( 'ec_option_hide_design_help_video' ) )
+		return true;
+	else
+		return false;
+}
+
+function ec_has_receipt_logo( ){
+	if( get_option( 'ec_option_email_logo' ) && get_option( 'ec_option_email_logo' ) != "" )
+		return true;
+	else
+		return false;
+}
+
+function ec_has_payment_methods( ){
+	if( get_option( 'ec_option_use_affirm' ) || get_option( 'ec_option_payment_third_party' ) || get_option( 'ec_option_payment_process_method' ) )
+		return true;
+	else
+		return false;
+}
+
+function ec_has_tax( ){
+	global $wpdb;
+	$results = $wpdb->get_results( "SELECT taxrate_id FROM ec_taxrate" );
+	if( empty( $results ) )
+		return false;
+	else
+		return true;
+}
+
+function ec_has_shipping( ){
+	global $wpdb;
+	$results = $wpdb->get_results( "SELECT shippingrate_id FROM ec_shippingrate" );
+	if( empty( $results ) )
+		return false;
+	else
+		return true;
+}
+
+function ec_has_order( ){
+	global $wpdb;
+	$results = $wpdb->get_results( "SELECT order_id FROM ec_order WHERE order_id != 1774" );
+	if( empty( $results ) )
+		return false;
+	else
+		return true;
+}
+
+function ec_easycart_add_pages( ){
+	if( !ec_is_store_page_setup( ) ){
+		ec_add_store_page( );
+	}
+	
+	if( !ec_is_cart_page_setup( ) ){
+		ec_add_cart_page( );
+	}
+	
+	if( !ec_is_account_page_setup( ) ){
+		ec_add_account_page( );
+	}
 }
 ?>

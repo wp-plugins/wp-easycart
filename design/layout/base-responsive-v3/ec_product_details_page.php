@@ -746,42 +746,51 @@ function ec_admin_save_product_details_options( ){
             <div class="ec_details_manufacturer"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_manufacturer' ); ?> <a href="<?php echo $this->product->get_manufacturer_link( ); ?>"><?php echo $this->product->manufacturer_name; ?></a></div>
             
             <?php /* START SOCIAL ICONS */ ?>
+            <?php
+			if( get_option( 'ec_option_base_theme' ) ){
+				$folder = "wp-easycart-data";
+				$theme = get_option( 'ec_option_base_theme' );
+			}else{
+				$folder = "wp-easycart";
+				$theme = get_option( 'ec_option_latest_theme' );
+			}
+			?>
             <div class="ec_details_social">
             	
                 <?php if( get_option( 'ec_option_use_facebook_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_facebook"><a href="<?php echo $this->product->social_icons->get_facebook_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/facebook-icon.png" ); ?>" alt="Facebook" /></a></div>
+                <div class="ec_details_social_icon ec_facebook"><a href="<?php echo $this->product->social_icons->get_facebook_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/facebook-icon.png" ); ?>" alt="Facebook" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_twitter_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_twitter"><a href="<?php echo $this->product->social_icons->get_twitter_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/twitter-icon.png" ); ?>" alt="Twitter" /></a></div>
+                <div class="ec_details_social_icon ec_twitter"><a href="<?php echo $this->product->social_icons->get_twitter_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/twitter-icon.png" ); ?>" alt="Twitter" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_email_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_email"><a href="<?php echo $this->product->social_icons->get_email_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/email-icon.png" ); ?>" alt="Email" /></a></div>
+                <div class="ec_details_social_icon ec_email"><a href="<?php echo $this->product->social_icons->get_email_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/email-icon.png" ); ?>" alt="Email" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_pinterest_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_pinterest"><a href="<?php echo $this->product->social_icons->get_pinterest_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/pinterest-icon.png" ); ?>" alt="Pinterest" /></a></div>
+                <div class="ec_details_social_icon ec_pinterest"><a href="<?php echo $this->product->social_icons->get_pinterest_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/pinterest-icon.png" ); ?>" alt="Pinterest" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_googleplus_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_googleplus"><a href="<?php echo $this->product->social_icons->get_googleplus_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/google-icon.png" ); ?>" alt="Google+" /></a></div>
+                <div class="ec_details_social_icon ec_googleplus"><a href="<?php echo $this->product->social_icons->get_googleplus_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/google-icon.png" ); ?>" alt="Google+" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_linkedin_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_linkedin"><a href="<?php echo $this->product->social_icons->get_linkedin_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/linkedin-icon.png" ); ?>" alt="LinkedIn" /></a></div>
+                <div class="ec_details_social_icon ec_linkedin"><a href="<?php echo $this->product->social_icons->get_linkedin_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/linkedin-icon.png" ); ?>" alt="LinkedIn" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_myspace_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_myspace"><a href="<?php echo $this->product->social_icons->get_myspace_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/myspace-icon.png" ); ?>" alt="MySpace" /></a></div>
+                <div class="ec_details_social_icon ec_myspace"><a href="<?php echo $this->product->social_icons->get_myspace_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/myspace-icon.png" ); ?>" alt="MySpace" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_digg_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_digg"><a href="<?php echo $this->product->social_icons->get_digg_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/digg-icon.png" ); ?>" alt="Digg" /></a></div>
+                <div class="ec_details_social_icon ec_digg"><a href="<?php echo $this->product->social_icons->get_digg_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/digg-icon.png" ); ?>" alt="Digg" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_delicious_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_delicious"><a href="<?php echo $this->product->social_icons->get_delicious_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/delicious-icon.png" ); ?>" alt="Delicious" /></a></div>
+                <div class="ec_details_social_icon ec_delicious"><a href="<?php echo $this->product->social_icons->get_delicious_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/delicious-icon.png" ); ?>" alt="Delicious" /></a></div>
                 <?php }?>
                 
             </div>
@@ -940,8 +949,8 @@ function ec_admin_save_product_details_options( ){
 			$product = $this->product->featured_products->product1;
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product.php' );
-			else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )	
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product.php' );
+			else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_product.php' ) )	
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_latest_layout') . '/ec_product.php' );
             ?>
 			
             <?php } ?>
@@ -952,8 +961,8 @@ function ec_admin_save_product_details_options( ){
 			$product = $this->product->featured_products->product2;
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product.php' );
-			else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )	
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product.php' );
+			else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_product.php' ) )	
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_latest_layout') . '/ec_product.php' );
             ?>
             
             <?php } ?>
@@ -964,8 +973,8 @@ function ec_admin_save_product_details_options( ){
 			$product = $this->product->featured_products->product3;
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product.php' );
-			else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )	
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product.php' );
+			else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_product.php' ) )	
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_latest_layout') . '/ec_product.php' );
             ?>
             
             <?php } ?>
@@ -976,8 +985,8 @@ function ec_admin_save_product_details_options( ){
 			$product = $this->product->featured_products->product4;
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option('ec_option_base_layout') . '/ec_product.php' );
-			else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )	
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_base_layout') . '/ec_product.php' );
+			else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_product.php' ) )	
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_latest_layout') . '/ec_product.php' );
             ?>
             
             <?php } ?>

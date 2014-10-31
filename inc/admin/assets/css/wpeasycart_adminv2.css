@@ -266,7 +266,7 @@
 }
 
 .ec_admin_content_inner{
-	float:left; width:882px; padding:15px;
+	float:left; width:985px; padding:15px;
 }
 
 /**************************************
@@ -1461,3 +1461,32 @@ body div .avia-button {
 li.avia-pricing-row.empty-table-cell, li.avia-heading-row.empty-table-cell{
 	background-color:#FFF !important;
 }
+
+/*********************
+Quick Start Guide
+**********************/
+.ec_hr{ float:left; width:100%; border-color:#7bb141; }
+.ec_quick_start_guide{ float:left; width:100%; margin:15px 0 0; }
+.ec_quick_start_guide .ec_admin_page_title{ margin:0 0 10px; }
+.ec_quick_setup_area{ float:left; width:100%; margin:0 -15px; }
+.ec_checklist_container{ float:left; width:33%; padding:15px; box-sizing:border-box; }
+
+.ec_checklist_header{ border:1px solid #CCC; padding:5px 8px; background-color:#7bb141; color:#FFF; font-weight:bold; text-align:center; text-transform:uppercase; }
+.ec_checklist_content{ float:left; width:100%; border:1px solid #7bb141; padding:8px; height:105px; }
+.ec_checklist_button{ float:left; width:100%; padding:8px 12px; background-color:#7bb141; border-radius:10px; color:#FFF; font-weight:bold; text-align:center; margin-top:25px; text-decoration:none; cursor:pointer; }
+.ec_checklist_button:hover{ color:#FFF; background-color:#ACCB89; }
+.ec_checklist_completed{ width:85px; height:85px; margin:0 auto; background-color:#7bb141; border-radius:100px; color:#FFF; font-family:"dashicons"; line-height:90px; text-align:center; font-size:99px; position:relative; }
+.ec_checklist_completed:before{ content:"\f147" !important; position:absolute; left:-8px; }
+.ec_setup_list{ float:left; width:100%; }
+
+.ec_checklist_container.ec_inactive .ec_checklist_header, .ec_checklist_container.ec_inactive .ec_checklist_button{ background-color:#BBB; cursor:default; }
+.ec_checklist_container.ec_inactive .ec_checklist_button:hover{ background-color:#BBB; }
+.ec_checklist_container.ec_inactive .ec_checklist_content{ border:1px solid #BBB; }
+
+.ec_checklist_container.ec_optional .ec_checklist_header, .ec_checklist_container.ec_optional .ec_checklist_button{ background-color:#D0B943; }
+.ec_checklist_container.ec_optional .ec_checklist_button:hover{ background-color:#DDCC75; }
+.ec_checklist_container.ec_optional .ec_checklist_content{ border:1px solid #D0B943; }
+
+.ec_checklist_container.ec_required .ec_checklist_header, .ec_checklist_container.ec_required .ec_checklist_button{ background-color:#D04E43; }
+.ec_checklist_container.ec_required .ec_checklist_button:hover{ background-color:#E7847C; }
+.ec_checklist_container.ec_required .ec_checklist_content{ border:1px solid #D04E43; }

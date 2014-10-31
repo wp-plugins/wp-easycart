@@ -71,18 +71,18 @@ jQuery( document ).bind( 'keydown', function( e ){
 <table align="left" width="95%" border="0" cellspacing="0" cellpadding="0">
     <tr id="ec_wordpress_content">
     <tr>
-      <td height="55" colspan="2"><div class="ec_admin_page_title">Administrative Console Software</div>
+      <td height="55" colspan="2"><div class="ec_admin_page_title">WordPress EasyCart Administrative Console</div>
         <br />
         
-        <p>The WordPress EasyCart administrative console software is available for Desktops and popular tablet and phone systems.  The administrative console software allows you to manage day to day operations of your store, including Orders, Products, Users, Marketing, and more!</p>
-        <p><em><strong>Note:</strong> The administrative console is not downloaded or associated with WordPress and/or it's site. This software is downloaded via 3rd party systems such as Apple iTunes, the Google Play store, and WP Easy Cart.</em></p>
-        <p>The WordPress EasyCart runs best on its administrative console software, but we do offer a <em><strong>free editor</strong></em> which can be accessed here: <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=simple-admin">Simple Store Manager</a></p></td>
+        <p>Available for: <strong>WordPress</strong>, <strong>Desktops (PC or MAC)</strong>, <strong>Tablets (iPad or Android)</strong>, and <strong>Android Phones</strong>.</p>
+        <p><em>The administrative console is not downloaded or associated with WordPress and/or it's site. This software is downloaded via 3rd party systems such as Apple iTunes, the Google Play store, and WP Easy Cart.</em></p>
+      </td>
     </tr>
     <tr>
       <td height="10" colspan="2"></td>
     </tr>
     <tr>
-      <td height="25" class="platformheading"><div class="ec_admin_page_title">WordPress Admin Plugin</div></td>
+      <td height="25" class="platformheading"><div class="ec_admin_page_title">EasyCart Admin for WordPress</div></td>
       <td height="25" class="platformheadingimage"><img src="<?php echo plugins_url('../images/wordpress_icon.jpg', __FILE__); ?>" width="38" height="40" /></td>
     </tr>
     <tr>
@@ -91,10 +91,10 @@ jQuery( document ).bind( 'keydown', function( e ){
     
       <td width="600" align="center"><img src="<?php echo plugins_url('../images/wordpress_easycart.jpg', __FILE__); ?>" alt="iPad Administration Console" width="600" height="360" /></td>
       <td  style="padding: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;
-        <p><strong>How to Install: </strong></p>
+        <h3><strong>How to Install: </strong></h3>
         <p><strong>1. </strong><a href="http://wpeasycart.com/air/wp-easycart-admin.zip">Click this link</a> to download the WP EasyCart Administration Plugin.<br />
           <strong>Note:</strong> MAC users may have an option set in Safari that automatically opens the zip. You should disable this option: Uncheck &quot;Open Safe files after downloading&quot; in Safari preferences.</p>
-        <p><strong>2. </strong>Click 'Plugins' -> 'Add New' -> 'Upload' -> 'Choose File' and select the plugin from your downloads. Once selected, click install now.</p>
+        <p><strong>2. </strong><a href="plugin-install.php?tab=upload">Upload Plugin Here</a> and click 'Choose File' then select the plugin from your downloads. Once selected, click install now.</p>
         <p><strong>3. </strong>Once Installed, this section will be replaced with an embedded version of the WP EasyCart Administration Software.</p>
         <p>&nbsp;</p>
         <p><strong>Need More Help?</strong></p>
@@ -222,6 +222,9 @@ jQuery( document ).bind( 'keydown', function( e ){
     </tr>
   </table>
 </div>
+
+<p>The WordPress EasyCart runs best on its administrative console software, but we do offer a <em><strong>free editor</strong></em> which can be accessed here: <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=simple-admin">Simple Store Manager</a></p>
+
 <script type="text/javascript">
 function ec_admin_open( panel ){
 	jQuery( '#' + panel + "_content" ).show('blind');

@@ -314,8 +314,8 @@ a.ec_cart_empty_button:hover{ background-color:<?php echo $color2; ?> }
 .ec_cartitem_title{ color:<?php echo $color1; ?> !important; }
 .ec_cartitem_quantity_table > tbody > tr > td > .ec_minus, .ec_cartitem_quantity_table > tbody > tr > td > .ec_plus, .ec_cartitem_quantity_table > tbody > tr > td > .ec_cartitem_update_button{ background-color:<?php echo $color1; ?> !important; }
 .ec_cartitem_quantity_table > tbody > tr > td > .ec_minus:hover, .ec_cartitem_quantity_table > tbody > tr > td > .ec_plus:hover, .ec_cartitem_quantity_table > tbody > tr > td > .ec_cartitem_update_button:hover{ background-color:<?php echo $color2; ?> !important; }
-.ec_cart_button_row > .ec_cart_button{ background-color:<?php echo $color1; ?> !important; }
-.ec_cart_button_row > .ec_cart_button:hover{ background-color:<?php echo $color2; ?> !important; }
+.ec_cart_button_row > .ec_cart_button, .ec_cart_button_row input[type="button"], .ec_cart_button_row a{ background-color:<?php echo $color1; ?> !important; }
+.ec_cart_button_row > .ec_cart_button:hover, .ec_cart_button_row input[type="button"]:hover, .ec_cart_button_row a:hover{ background-color:<?php echo $color2; ?> !important; }
 .ec_cart_input_row > a, .ec_cart_input_row > b, .ec_cart_input_row > strong{ color:<?php echo $color1; ?>; }
 .ec_cart_input_row > a:hover{ color:<?php echo $color2; ?>; }
 <?php if( $bg_theme_dark ){ ?>

@@ -1599,6 +1599,10 @@
 				"account_register_button":{
 					"title":"Account, Register Button",
 					"value":"SINSCRIRE"
+				},
+				"account_billing_information_user_notes":{
+					"title":"Account, Billing, User Notes",
+					"value":"Informations supplémentaires sur votre référencement"
 				}
 			}
 		},

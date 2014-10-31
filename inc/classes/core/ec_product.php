@@ -851,7 +851,7 @@ class ec_product{
 			else if( file_exists( $test_src3 ) && !is_dir( $test_src3 ) )
 				$thumb_src = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );				
 			else
-				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
+				$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
 			
 			echo "<img src=\"" . $thumb_src . "\" alt=\"" . $optionitem->optionitem_name . "\" class=\"";
 			
@@ -961,7 +961,7 @@ class ec_product{
 				else if( file_exists( $test_src3 ) && !is_dir( $test_src3 ) )
 					$thumb_src = plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
 				else
-					$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" );
+					$thumb_src = plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
 				
 				echo "<img src=\"" . $thumb_src . "\" alt=\"" . $optionset->optionset[$i]->optionitem_name . "\" class=\"";
 				
@@ -1160,7 +1160,7 @@ class ec_product{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_customer_review.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_customer_review.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_customer_review.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_customer_review.php' );
 		}
 	}
 	
@@ -1291,7 +1291,7 @@ class ec_product{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_gift_card_input.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_gift_card_input.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_gift_card_input.php' );	
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_gift_card_input.php' );	
 		}
 	}
 	
@@ -1334,7 +1334,7 @@ class ec_product{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_price_tier.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_price_tier.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_price_tier.php' );	
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_product_price_tier.php' );	
 		}
 	}
 	
@@ -1564,11 +1564,14 @@ class ec_product{
 	public function get_first_image_url( ){
 		
 		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics1/" . $this->images->get_single_image( );
+		$test_src2 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
 		
 		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
 			return plugins_url( "/wp-easycart-data/products/pics1/" . $this->images->get_single_image( ) );
-		}else{
+		}else if( file_exists( $test_src2 ) ){
 			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}else{
+			return plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
 		}
 		
 	}
@@ -1576,11 +1579,14 @@ class ec_product{
 	public function get_second_image_url( ){
 		
 		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics2/" . $this->images->image2;
+		$test_src2 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
 		
 		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
 			return plugins_url( "/wp-easycart-data/products/pics2/" . $this->images->image2 );
-		}else{
+		}else if( file_exists( $test_src2 ) ){
 			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}else{
+			return plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
 		}
 		
 	}
@@ -1588,11 +1594,14 @@ class ec_product{
 	public function get_third_image_url( ){
 		
 		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics3/" . $this->images->image3;
+		$test_src2 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
 		
 		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
 			return plugins_url( "/wp-easycart-data/products/pics3/" . $this->images->image3 );
-		}else{
+		}else if( file_exists( $test_src2 ) ){
 			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}else{
+			return plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
 		}
 		
 	}
@@ -1600,11 +1609,14 @@ class ec_product{
 	public function get_fourth_image_url( ){
 		
 		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics4/" . $this->images->image4;
+		$test_src2 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
 		
 		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
 			return plugins_url( "/wp-easycart-data/products/pics4/" . $this->images->image4 );
-		}else{
+		}else if( file_exists( $test_src2 ) ){
 			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}else{
+			return plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
 		}
 		
 	}
@@ -1612,11 +1624,14 @@ class ec_product{
 	public function get_fifth_image_url( ){
 		
 		$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics5/" . $this->images->image5;
+		$test_src2 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
 		
 		if( file_exists( $test_src ) && !is_dir( $test_src ) ){
 			return plugins_url( "/wp-easycart-data/products/pics5/" . $this->images->image5 );
-		}else{
+		}else if( file_exists( $test_src2 ) ){
 			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+		}else{
+			return plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
 		}
 		
 	}

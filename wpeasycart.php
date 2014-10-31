@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.4
+ * Version: 3.0.5
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.4
+ * @version 3.0.5
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_4' );
-define( 'EC_CURRENT_DB', '1_23' );
+define( 'EC_CURRENT_VERSION', '3_0_5' );
+define( 'EC_CURRENT_DB', '1_24' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -659,18 +659,30 @@ function ec_css_loader_v3( ){
 		$pageURL .= "s";
 		
 	if( current_user_can( 'manage_options' ) ){
-		wp_register_style( 'wpeasycart_admin_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.css' ) );
+		if( get_option('ec_option_base_theme') ){
+			wp_register_style( 'wpeasycart_admin_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.css' ) );
+		}else{
+			wp_register_style( 'wpeasycart_admin_css', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/live-editor.css' ) );
+		}
 		wp_enqueue_style( 'wpeasycart_admin_css' );
 	}
 	
-	wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.css' ), array( ), EC_CURRENT_VERSION );
+	if( get_option('ec_option_base_theme') ){
+		wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.css' ), array( ), EC_CURRENT_VERSION );
+	}else{
+		wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/ec-store.css' ), array( ), EC_CURRENT_VERSION );
+	}
 	wp_enqueue_style( 'wpeasycart_css' );
 	
 	wp_register_style( "wpeasycart_gfont", $pageURL . "://fonts.googleapis.com/css?family=Lato|Monda|Open+Sans|Droid+Serif" );
 	wp_enqueue_style( 'wpeasycart_gfont' );
 	
 	if( get_option( 'ec_option_use_rtl' ) ){
-		wp_register_style( 'wpeasycart_rtl_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' ) );
+		if( get_option('ec_option_base_theme') ){
+			wp_register_style( 'wpeasycart_rtl_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' ) );
+		}else{
+			wp_register_style( 'wpeasycart_rtl_css', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/rtl_support.css' ) );
+		}
 		wp_enqueue_style( 'wpeasycart_rtl_css' );
 	}
 
@@ -681,11 +693,19 @@ function ec_js_loader_v3( ){
 	if( current_user_can( 'manage_options' ) ){
 		wp_enqueue_script( 'jquery-ui-draggable' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
-		wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ), array( 'jquery' ), EC_CURRENT_VERSION );
+		if( get_option('ec_option_base_theme') ){
+			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ), array( 'jquery' ), EC_CURRENT_VERSION );
+		}else{
+			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/live-editor.js' ), array( 'jquery' ), EC_CURRENT_VERSION );
+		}
 		wp_enqueue_script( 'wpeasycart_admin_js' );
 	}
 	
-	wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.js' ), array( 'jquery' ) );
+	if( get_option('ec_option_base_theme') ){
+		wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.js' ), array( 'jquery' ) );
+	}else{
+		wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/ec-store.js' ), array( 'jquery' ) );
+	}
 	wp_enqueue_script( 'wpeasycart_js' );
 
 }
@@ -714,7 +734,7 @@ function ec_save_js_file( $buffer ){
 
 function ec_load_css( ){
 	
-	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
+	if( !get_option( 'ec_option_base_theme' ) || file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
 		ec_css_loader_v3( );
 	
 	}else{
@@ -776,7 +796,7 @@ function ec_load_css( ){
 
 function ec_load_js( ){
 	
-	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
+	if( !get_option( 'ec_option_base_theme' ) || file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
 		ec_js_loader_v3( );
 	
 	}else{
@@ -896,12 +916,17 @@ function ec_theme_head_data( ){
 	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
 		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" );
 
+	}else if( !get_option( 'ec_option_base_theme' ) ){
+		include( WP_PLUGIN_DIR . "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/head_content.php" );
+		
 	}
 }
 
 function ec_theme_footer_data( ){
 	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/footer_content.php" ) ){
 		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/footer_content.php" );
+	}else if( !get_option( 'ec_option_base_theme' ) ){
+		include( WP_PLUGIN_DIR . "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/footer_content.php" );
 	}
 }
 	
@@ -1047,13 +1072,13 @@ function load_ec_product( $atts ){
 				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' ) )
 					include( WP_PLUGIN_DIR . "/" . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' );
 				else
-					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product.php' );
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_product.php' );
 			
 			}else if( $style == '2' ){
 				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' ) )
 					include( WP_PLUGIN_DIR . "/" . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' );
 				else
-					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_widget.php' );
+					include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_product_widget.php' );
 				
 			}else{
 				echo "<a href=\"" . $product->get_product_link( ) . "\">";
@@ -2150,7 +2175,7 @@ function ec_theme_options_page_callback( ){
 	if( is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option('ec_option_base_theme') . "/" ) )
 		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
 	else
-		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option('ec_option_base_theme') . "/admin_panel.php");
+		include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option('ec_option_latest_theme') . "/admin_panel.php");
 }
 
 /////////////////////////////////////////////////////////////////////

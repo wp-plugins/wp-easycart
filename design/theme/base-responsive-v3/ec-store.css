@@ -723,6 +723,7 @@ td.ec_cartitem_total{ text-align:right; padding:0 12px 0 0 !important; font-size
 .ec_cart_input_row > .ec_cart_input_right_half{ float:left; width:50%; padding-left:15px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;; }
 .ec_cart_input_row label{ font-family: 'Lato', Arial, sans-serif; font-size:12px; font-weight:bold; color:#222222; float:left; width:100%; }
 .ec_cart_input_row input, .ec_cart_input_row select, .ec_cart_input_row textarea{ float:left; width:100% !important; margin-bottom:0 !important; }
+.ec_cart_input_row input[type="checkbox"]{ float:left; width:auto !important; margin-right:10px; }
 .ec_cart_error_row, .ec_cart_error_message{ display:none; float:left; width:100%; font-family: 'Lato', Arial, sans-serif; border:1px dashed #AE0000; border-color:#AE0000 !important; color:#AE0000; padding:8px 16px; font-size:12px; line-height:1.1em; margin:5px 0 0 0; background:#FFE7E7; font-weight:bold; }
 .ec_cart_success{ float:left; width:100%; font-family: 'Lato', Arial, sans-serif; border:1px dashed #678828; border-color:#678828 !important; color:#678828; padding:16px 20px; font-size:12px; line-height:1.1em; margin:5px 0 20px 0; background:#E7FFF4; font-weight:bold; }
 .ec_cart_success_message{ display:none; float:left; width:100%; font-family: 'Lato', Arial, sans-serif; border:1px dashed #678828; border-color:#678828 !important; color:#678828; padding:8px 16px; font-size:12px; line-height:1.1em; margin:5px 0 0 0; background:#E7FFF4; font-weight:bold; }
@@ -756,6 +757,10 @@ td.ec_cartitem_total{ text-align:right; padding:0 12px 0 0 !important; font-size
 .ec_account_success div{ padding:15px; }
 
 /* Account Login */
+.ec_account_left{ float:left; width:65%; border-right:1px solid #CCC; padding-right:25px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:block; }
+.ec_account_right{ float:right; width:35%; padding-left:25px; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; display:block; }
+.ec_account_subheader{ float:left; width:100%; float:left; color:#444; font-family:'Lato', Arial, sans-serif; font-size:13px; margin:10px 0 15px; }
+
 .ec_account_login_page_visible{ display:block; }
 .ec_account_login_page_hidden{ display:none; }
 .ec_account_login{ display:block; }
@@ -781,8 +786,8 @@ td.ec_cartitem_total{ text-align:right; padding:0 12px 0 0 !important; font-size
 .ec_account_login_complete_subtitle{ width:100%; float:left; color:#666; font-size:12px; font-family:'Lato', Arial, sans-serif; text-align:left; }
 .ec_account_login_complete_logout_link{ font-size:12px; font-family:'Lato', Arial, sans-serif; color:#222222; }
 .ec_account_login_complete_logout_link:hover{ text-decoration:none; color:#000000; }
-.ec_account_login_create_account_button{ display:block; float:left; text-indent:0; text-decoration:none!important; text-transform:uppercase; white-space:nowrap; text-align:center; -moz-user-select:none; -webkit-user-select:none; -o-user-select:none; user-select:none; font-family:'Lato', Arial, sans-serif!important; font-size:11px; font-weight:bold; outline:0; width:165px; height:28px; line-height:28px; background-color:#222222 !important; background:#222222 !important; border:1px solid #CCC !important; color:#ffffff !important; font-weight:bold; text-align:center; border:none; margin-top:10px; background-image:none; box-shadow:none; }
-.ec_account_login_create_account_button:hover{ cursor:pointer; color:#222222 !important; background-color:#f7f7f7 !important; }
+.ec_account_login_create_account_button{ display:block; float:left; text-indent:0; text-decoration:none!important; text-transform:uppercase; white-space:nowrap; text-align:center; -moz-user-select:none; -webkit-user-select:none; -o-user-select:none; user-select:none; font-family:'Lato', Arial, sans-serif!important; font-size:16px; font-weight:bold; outline:0; width:100%; height:28px; line-height:28px; background-color:#333 !important; background:#222222 !important; border:1px solid #CCC !important; color:#ffffff !important; font-weight:normal; text-align:center; border:none; margin-top:10px; background-image:none; box-shadow:none; cursor:pointer; }
+.ec_account_login_create_account_button:hover{ background-color:#666 !important; font-size:16px !important; }
 .ec_account_login_row_error{ width:100%; float:left; height:35px; }
 .ec_account_login_row_error .ec_account_login_label{ color:#900; }
 .ec_account_login_row_error .ec_account_login_input_field{ background-color:#F1D9D9; border:2px solid #FF0606; }
@@ -860,8 +865,8 @@ td.ec_cartitem_total{ text-align:right; padding:0 12px 0 0 !important; font-size
 .ec_account_billing_information_input, .ec_account_shipping_information_input{ width:400px; text-align:left; float:left; font-size:12px; font-family:'Lato', Arial, sans-serif; }
 .ec_account_billing_information_input input[type="text"], .ec_account_billing_information_input input[type="email"], .ec_account_billing_information_input input[type="password"], .ec_account_shipping_information_input input[type="text"], .ec_account_shipping_information_input input[type="email"], .ec_account_shipping_information_input input[type="password"]{ margin:0 0 20px 0; width:400px !important; padding:6px 4px !important; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; }
 .ec_account_billing_information_input select, .ec_account_shipping_information_input select{ margin:0 0 20px 0; width:400px !important; padding:6px 4px !important; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; }
-.ec_account_billing_information_button, .ec_account_shipping_information_button{ -webkit-appearance:none; -webkit-border-radius:0; display:block; float:left; text-indent:0; text-decoration:none!important; text-transform:uppercase; white-space:nowrap; text-align:center; -moz-user-select:none; -webkit-user-select:none; -o-user-select:none; user-select:none; font-family:'Lato', Arial, sans-serif!important; font-size:11px; font-weight:bold; outline:0; width:159px; height:28px; background-color:#222222 !important; background:#222222 !important; border:solid 1px #cccccc !important; color:#ffffff !important; font-weight:bold; text-align:center; border:none; margin-top:10px; margin-left:0px; background-image:none; box-shadow:none; padding:0 !important; }
-.ec_account_billing_information_button:hover, .ec_account_shipping_information_button:hover{ cursor:pointer; color:#222222 !important; background-color:#f7f7f7 !important; }
+.ec_account_billing_information_button, .ec_account_shipping_information_button{ -webkit-appearance:none; -webkit-border-radius:0; display:block; float:left; text-indent:0; text-decoration:none!important; text-transform:uppercase; white-space:nowrap; text-align:center; -moz-user-select:none; -webkit-user-select:none; -o-user-select:none; user-select:none; font-family:'Lato', Arial, sans-serif!important; font-size:16px; font-weight:bold; outline:0; width:100%; height:28px; background-color:#222222 !important; background:#222 !important; border:solid 1px #cccccc !important; color:#ffffff !important; font-weight:normal; text-align:center; border:none; margin-top:10px; margin-left:0px; background-image:none; box-shadow:none; padding:0 !important; }
+.ec_account_billing_information_button:hover, .ec_account_shipping_information_button:hover{ cursor:pointer; background-color:#666 !important; font-size:16px !important; }
 .ec_account_billing_information_row_error, .ec_account_shipping_information_row_error{ width:100%; float:left; height:35px; }
 .ec_account_billing_information_row_error .ec_account_billing_information_label, .ec_account_shipping_information_row_error .ec_account_shipping_information_label{ color:#900; }
 .ec_account_billing_information_row_error .ec_account_billing_information_input_field, .ec_account_shipping_information_row_error .ec_account_shipping_information_input_field{ background-color:#F1D9D9; border:2px solid #FF0606; }
@@ -1256,6 +1261,10 @@ ul.ec_menu_vertical span{ float:right; }
 	.ec_cart_breadcrumb.ec_inactive, .ec_cart_breadcrumb_divider{ display:none; }
 	.ec_cart_breadcrumb{ width:100%; text-align:center; font-size:22px; }
 	
+	.ec_account_left, .ec_account_right{ width:100%; }
+	.ec_account_left{ padding-right:0px; border-right:none; }
+	.ec_account_right{ padding-left:0; margin-top:25px; }
+	
 	.ec_account_login_title{ width:100%; } 
 	.ec_account_login_left{ width:100%; }
 	.ec_account_login_right{ width:100%; float:left; }
@@ -1338,6 +1347,10 @@ ul.ec_menu_vertical span{ float:right; }
 @media only screen and ( max-width:480px ){
 	.ec_cart_breadcrumb.ec_inactive, .ec_cart_breadcrumb_divider{ display:none; }
 	.ec_cart_breadcrumb{ width:100%; text-align:center; font-size:22px; }
+	
+	.ec_account_left, .ec_account_right{ width:100%; }
+	.ec_account_left{ padding-right:0px; border-right:none; }
+	.ec_account_right{ padding-left:0; margin-top:25px; }
 	
 	.ec_account_login_title{ width:100%; }
 	.ec_account_login_left{ width:100%; }

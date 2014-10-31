@@ -29,7 +29,7 @@ class ec_paypal extends ec_third_party{
 		}
 		echo "<input name=\"weight_cart\" id=\"weight_cart\" type=\"hidden\" value=\"" . $this->order->order_weight . "\" />";
 		echo "<input name=\"weight_unit\" id=\"weight_unit\" type=\"hidden\" value=\"" . $paypal_weight_unit . "\" />";
-		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->grand_total, 2) . "\" />";
+		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
 		if( get_option( 'ec_option_paypal_collect_shipping' ) ){
 			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"2\" />";
 		}else{
@@ -90,7 +90,7 @@ class ec_paypal extends ec_third_party{
 		}
 		echo "<input name=\"weight_cart\" id=\"weight_cart\" type=\"hidden\" value=\"" . $this->order->order_weight . "\" />";
 		echo "<input name=\"weight_unit\" id=\"weight_unit\" type=\"hidden\" value=\"" . $paypal_weight_unit . "\" />";
-		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->grand_total, 2) . "\" />";
+		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
 		if( get_option( 'ec_option_paypal_collect_shipping' ) ){
 			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"2\" />";
 		}else{

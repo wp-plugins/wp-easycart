@@ -1599,6 +1599,10 @@
 				"account_register_button":{
 					"title":"Account, Registreren Button",
 					"value":"REGISTREREN"
+				},
+				"account_billing_information_user_notes":{
+					"title":"Account, Billing, User Notes",
+					"value":"Aanvullende informatie over uw registratie"
 				}
 			}
 		},

@@ -81,7 +81,7 @@ class ec_accountpage{
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_page.php' ) )	
 			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_page.php' );
 		else	
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_page.php' );
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_page.php' );
 		echo "<input type=\"hidden\" name=\"ec_account_base_path\" id=\"ec_account_base_path\" value=\"" . plugins_url( ) . "\" />";
 		echo "<input type=\"hidden\" name=\"ec_account_session_id\" id=\"ec_account_session_id\" value=\"" . session_id() . "\" />";
 		echo "<input type=\"hidden\" name=\"ec_account_email\" id=\"ec_account_email\" value=\"" . $this->user_email . "\" />";
@@ -155,7 +155,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_login.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_login.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_login.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_login.php' );
 		}
 	}
 	
@@ -196,7 +196,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_forgot_password.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_forgot_password.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_forgot_password.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_forgot_password.php' );
 		}
 	}
 	
@@ -224,7 +224,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_register.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_register.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_register.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_register.php' );
 		}
 	}
 	
@@ -253,6 +253,10 @@ class ec_accountpage{
 		echo "<input type=\"email\" name=\"ec_account_register_email\" id=\"ec_account_register_email\" class=\"ec_account_register_input_field\">";
 	}
 	
+	public function display_account_register_retype_email_input( ){
+		echo "<input type=\"email\" name=\"ec_account_register_retype_email\" id=\"ec_account_register_retype_email\" class=\"ec_account_register_input_field\">";
+	}
+	
 	public function display_account_register_password_input( ){
 		echo "<input type=\"password\" name=\"ec_account_register_password\" id=\"ec_account_register_password\" class=\"ec_account_register_input_field\">";
 	}
@@ -279,7 +283,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_dashboard.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_dashboard.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_dashboard.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_dashboard.php' );
 		}
 	}
 	
@@ -326,7 +330,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_orders.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_orders.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_orders.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_orders.php' );
 		}
 	}
 	/* END ORDERS FUNCTIONS*/
@@ -337,7 +341,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_order_details.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_order_details.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_order_details.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_order_details.php' );
 		}
 	}
 	
@@ -369,7 +373,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_personal_information.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_personal_information.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_personal_information.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_personal_information.php' );
 		}
 	}
 	
@@ -421,7 +425,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_password.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_password.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_password.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_password.php' );
 		}
 	}
 	
@@ -461,7 +465,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_billing_information.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_billing_information.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_billing_information.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_billing_information.php' );
 		}
 	}
 	
@@ -480,6 +484,10 @@ class ec_accountpage{
 	
 	public function display_account_billing_information_last_name_input(){
 		echo "<input type=\"text\" name=\"ec_account_billing_information_last_name\" id=\"ec_account_billing_information_last_name\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->last_name . "\" />";
+	}
+	
+	public function display_account_billing_information_company_name_input(){
+		echo "<input type=\"text\" name=\"ec_account_billing_information_company_name\" id=\"ec_account_billing_information_company_name\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->company_name . "\" />";
 	}
 	
 	public function display_account_billing_information_address_input(){
@@ -629,7 +637,7 @@ class ec_accountpage{
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_shipping_information.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_shipping_information.php' );
 			else
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_shipping_information.php' );
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_shipping_information.php' );
 		}
 	}
 	
@@ -798,8 +806,8 @@ class ec_accountpage{
 		if( $this->is_page_visible( "subscriptions" ) ){
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscriptions.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscriptions.php' );
-			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscriptions.php' ) )
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscriptions.php' );
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_subscriptions.php' ) )
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_subscriptions.php' );
 		}
 	}
 	
@@ -817,8 +825,8 @@ class ec_accountpage{
 		if( $this->is_page_visible( "subscription_details" ) ){
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_details.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_details.php' );
-			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_details.php' ) )
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_details.php' );
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_subscription_details.php' ) )
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_subscription_details.php' );
 		}
 	}
 	
@@ -829,8 +837,8 @@ class ec_accountpage{
 		if( $this->is_page_visible( "payment_methods" ) ){
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_methods.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_methods.php' );
-			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_methods.php' ) )
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_methods.php' );
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_payment_methods.php' ) )
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_payment_methods.php' );
 		}
 	}
 	/* END PAYMENT METHODS FUNCTIONS*/
@@ -840,8 +848,8 @@ class ec_accountpage{
 		if( $this->is_page_visible( "payment_method_details" ) ){
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_method_details.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_method_details.php' );
-			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_method_details.php' ) )
-				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_payment_method_details.php' );
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_payment_method_details.php' ) )
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_payment_method_details.php' );
 		}
 	}
 	
@@ -901,88 +909,118 @@ class ec_accountpage{
 	}
 	
 	private function process_register( ){
-		$first_name = $_POST['ec_account_register_first_name'];
-		$last_name = $_POST['ec_account_register_last_name'];
-		$email = $_POST['ec_account_register_email'];
-		$password = md5( $_POST['ec_account_register_password'] );
-		$is_subscriber = $_POST['ec_account_register_is_subscriber'];
-		$billing_id = 0;
 		
-		// Insert billing address if enabled
-		if( get_option( 'ec_option_require_account_address' ) ){
-			$billing = array( "first_name" 	=> $_POST['ec_account_billing_information_first_name'],
-							  "last_name"	=> $_POST['ec_account_billing_information_last_name'],
-							  "address"		=> $_POST['ec_account_billing_information_address'],
-							  "city"		=> $_POST['ec_account_billing_information_city'],
-							  "zip_code"	=> $_POST['ec_account_billing_information_zip'],
-							  "country"		=> $_POST['ec_account_billing_information_country'],
-							);
-							
-			if( isset( $_POST['ec_account_billing_information_state_' . $billing['country']] ) ){
-				$billing['state'] = stripslashes( $_POST['ec_account_billing_information_state_' . $billing['country']] );
-			}else{
-				$billing['state'] = stripslashes( $_POST['ec_account_billing_information_state'] );
+		if( isset( $_POST['ec_account_register_email'] ) && isset( $_POST['ec_account_register_password'] ) && $_POST['ec_account_register_email'] != "" && $_POST['ec_account_register_password'] != "" ){
+		
+			$first_name = "";
+			if( isset( $_POST['ec_account_register_first_name'] ) )
+				$first_name = $_POST['ec_account_register_first_name'];
+			
+			$last_name = "";
+			if( isset( $_POST['ec_account_register_last_name'] ) )
+				$last_name = $_POST['ec_account_register_last_name'];
+				
+			$email = $_POST['ec_account_register_email'];
+			$password = md5( $_POST['ec_account_register_password'] );
+			
+			$is_subscriber = $_POST['ec_account_register_is_subscriber'];
+			$billing_id = 0;
+			
+			// Insert billing address if enabled
+			if( get_option( 'ec_option_require_account_address' ) ){
+				$billing = array( "first_name" 	=> $_POST['ec_account_billing_information_first_name'],
+								  "last_name"	=> $_POST['ec_account_billing_information_last_name'],
+								  "address"		=> $_POST['ec_account_billing_information_address'],
+								  "city"		=> $_POST['ec_account_billing_information_city'],
+								  "zip_code"	=> $_POST['ec_account_billing_information_zip'],
+								  "country"		=> $_POST['ec_account_billing_information_country'],
+								);
+								
+				if( isset( $_POST['ec_account_billing_information_state_' . $billing['country']] ) ){
+					$billing['state'] = stripslashes( $_POST['ec_account_billing_information_state_' . $billing['country']] );
+				}else{
+					$billing['state'] = stripslashes( $_POST['ec_account_billing_information_state'] );
+				}
+				
+				if( isset( $_POST['ec_account_billing_information_company_name'] ) ){
+					$billing['company_name'] = stripslashes( $_POST['ec_account_billing_information_company_name'] );
+				}else{
+					$billing['company_name'] = "";
+				}
+				
+				if( isset( $_POST['ec_account_billing_information_address2'] ) ){
+					$billing['address2'] = stripslashes( $_POST['ec_account_billing_information_address2'] );
+				}else{
+					$billing['address2'] = "";
+				}
+				
+				if( isset( $_POST['ec_account_billing_information_phone'] ) ){
+					$billing['phone'] = stripslashes( $_POST['ec_account_billing_information_phone'] );
+				}else{
+					$billing['phone'] = "";
+				}
+				
+				$billing_id = $this->mysqli->insert_address( $billing["first_name"], $billing["last_name"], $billing["address"], $billing["address2"], $billing["city"], $billing["state"], $billing["zip_code"], $billing["country"], $billing["phone"], $billing["company_name"] );
+			
 			}
 			
-			if( isset( $_POST['ec_account_billing_information_address2'] ) ){
-				$billing['address2'] = stripslashes( $_POST['ec_account_billing_information_address2'] );
+			if( isset( $_POST['ec_account_register_user_notes'] ) ){
+				$user_notes = stripslashes( $_POST['ec_account_register_user_notes'] );
 			}else{
-				$billing['address2'] = "";
+				$user_notes = "";
 			}
 			
-			if( isset( $_POST['ec_account_billing_information_phone'] ) ){
-				$billing['phone'] = stripslashes( $_POST['ec_account_billing_information_phone'] );
-			}else{
-				$billing['phone'] = "";
-			}
-			
-			$billing_id = $this->mysqli->insert_address( $billing["first_name"], $billing["last_name"], $billing["address"], $billing["address2"], $billing["city"], $billing["state"], $billing["zip_code"], $billing["country"], $billing["phone"] );
-		}
-		
-		// Insert the user
-		if( get_option( 'ec_option_require_email_validation' ) ){
-			// Send a validation email here.
-			$this->send_validation_email( $email );
-			$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, "pending", $is_subscriber );
-		}else{
-			$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, "shopper", $is_subscriber );
-		}
-		
-		// Update the address user_id
-		if( get_option( 'ec_option_require_account_address' ) ){
-			$this->mysqli->update_address_user_id( $billing_id, $user_id );
-		}
-		
-		// Quickbooks Hook
-		if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
-			$quickbooks = new ec_quickbooks( );
-			$quickbooks->add_user( $user_id );
-		}
-		
-		if( $user_id ){
-			
+			// Insert the user
 			if( get_option( 'ec_option_require_email_validation' ) ){
+				// Send a validation email here.
+				$this->send_validation_email( $email );
+				$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, "pending", $is_subscriber, $user_notes );
+			}else{
+				$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, 0, "shopper", $is_subscriber, $user_notes );
+			}
 			
-				header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=login&account_success=validation_required" );
+			// Update the address user_id
+			if( get_option( 'ec_option_require_account_address' ) ){
+				$this->mysqli->update_address_user_id( $billing_id, $user_id );
+			}
 			
+			// Quickbooks Hook
+			if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+				$quickbooks = new ec_quickbooks( );
+				$quickbooks->add_user( $user_id );
+			}
+			
+			if( $user_id ){
+				
+				if( get_option( 'ec_option_require_email_validation' ) ){
+				
+					header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=login&account_success=validation_required" );
+				
+				}else{
+					
+					$_SESSION['ec_user_id'] = $user_id;
+					$_SESSION['ec_email'] = $email;
+					$_SESSION['ec_username'] = $first_name . " " . $last_name;
+					$_SESSION['ec_first_name'] = $first_name;
+					$_SESSION['ec_last_name'] = $last_name;
+					$_SESSION['ec_password'] = $password;
+					
+					header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=dashboard" );
+					
+				}
+				
 			}else{
 				
-				$_SESSION['ec_user_id'] = $user_id;
-				$_SESSION['ec_email'] = $email;
-				$_SESSION['ec_username'] = $first_name . " " . $last_name;
-				$_SESSION['ec_first_name'] = $first_name;
-				$_SESSION['ec_last_name'] = $last_name;
-				$_SESSION['ec_password'] = $password;
-				
-				header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=dashboard" );
-				
+				header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=register&account_error=register_email_error" );
+					
 			}
 			
 		}else{
 			
-			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=register&account_error=register_email_error" );
-				
+			header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=register&account_error=register_invalid" );
+		
 		}
+		
 	}
 	
 	private function process_retrieve_password( ){
@@ -1370,7 +1408,7 @@ class ec_accountpage{
         if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_retrieve_password_email.php' ) )	
 			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_retrieve_password_email.php' );	
 		else
-			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_retrieve_password_email.php' );
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_retrieve_password_email.php' );
 		$message = ob_get_contents();
 		ob_end_clean();
 		

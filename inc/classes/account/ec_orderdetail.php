@@ -177,8 +177,10 @@ class ec_orderdetail{
 		else if( file_exists( WP_PLUGIN_DIR . "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) )
 			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
 		
-		else
+		else if( file_exists( WP_PLUGIN_DIR . "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg"  ) )
 			echo "<img src=\"" . plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
+		else
+			echo "<img src=\"" . plugins_url( "wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" ) . "\" alt=\"" . $this->model_number . "\" />";
 			
 	}
 	

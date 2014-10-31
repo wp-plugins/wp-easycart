@@ -1599,6 +1599,10 @@
 				"account_register_button":{
 					"title":"Benutzerkonto, registrieren Taste",
 					"value":"Registrieren"
+				},
+				"account_billing_information_user_notes":{
+					"title":"Account, Billing, User Notes",
+					"value":"Weitere Informationen über Ihre Registrierung"
 				}
 			}
 		},

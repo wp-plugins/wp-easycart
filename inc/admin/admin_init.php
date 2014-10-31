@@ -106,15 +106,15 @@ function ec_load_admin_scripts( ){
 function ec_register_settings() {
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ), array(), '2.1.3' );
+	wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ), array(), '3.0.5' );
 	wp_enqueue_style( 'wpeasycart_admin_css' );
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_adminv2_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/wpeasycart_adminv2.css' ), array(), '2.1.3' );
+	wp_register_style( 'wpeasycart_adminv2_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/wpeasycart_adminv2.css' ), array(), '3.0.5' );
 	wp_enqueue_style( 'wpeasycart_adminv2_css' );
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_editor_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/editor.css' ), array(), '2.1.3' );
+	wp_register_style( 'wpeasycart_editor_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/editor.css' ), array(), '3.0.5' );
 	wp_enqueue_style( 'wpeasycart_editor_css' );
 		
 	//register options

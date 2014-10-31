@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_23' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_24' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -179,6 +179,8 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_deconetwork_password');				array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_restrict_store');						array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_enable_user_notes');					array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
@@ -442,9 +444,13 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-language-group');
 				
 		// Base Design Options	
-		array_push($this->wp_option_names, 'ec_option_base_theme');							array_push($this->wp_option_defaults, 'base-responsive-v3' );
+		array_push($this->wp_option_names, 'ec_option_base_theme');							array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
-		array_push($this->wp_option_names, 'ec_option_base_layout');						array_push($this->wp_option_defaults, 'base-responsive-v3' );
+		array_push($this->wp_option_names, 'ec_option_base_layout');						array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-base-design-group');
+		array_push($this->wp_option_names, 'ec_option_latest_theme');						array_push($this->wp_option_defaults, 'base-responsive-v3' );
+																							array_push($this->wp_option_groups, 'ec-base-design-group');
+		array_push($this->wp_option_names, 'ec_option_latest_layout');						array_push($this->wp_option_defaults, 'base-responsive-v3' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');
 		array_push($this->wp_option_names, 'ec_option_caching_on');							array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-base-design-group');

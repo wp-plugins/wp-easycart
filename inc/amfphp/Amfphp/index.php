@@ -16,9 +16,8 @@ if( !defined( 'WP_USE_THEMES' ) )
 	define( 'WP_USE_THEMES', false );
 define( 'WP_DEBUG', false );
 
-ob_start( );
+ob_start( NULL, 4096 );
 require_once( '../../../../../../wp-load.php' );
-ob_end_clean();
 
 require_once dirname(__FILE__) . '/ClassLoader.php';
 

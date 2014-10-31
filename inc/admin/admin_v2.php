@@ -56,8 +56,12 @@ $ec_license = new ec_license( );
 				include( "assets/panels/design_management.php" );
 			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "simple-admin" ){
 				include( "assets/panels/simple_admin.php" );
-			}else if( !$ec_license->is_registered( ) ){
+			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "plugin-information" ){
 				include( "assets/elements/versions_chart.php" );
+			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "quick-start" ){
+				include( "assets/panels/quick_start.php" );
+			}else if( !$ec_license->is_registered( ) ){
+				include( "assets/panels/quick_start.php" );
 			}else{
 				include( "assets/panels/dashboard_statistics.php" );
 			}
