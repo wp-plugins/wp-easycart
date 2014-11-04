@@ -49,8 +49,8 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 <div class="ec_payment_section" id="ec_third_party">
     <div class="ec_payment_section_padding">
 		<?php if( !$license->is_registered( ) ){ ?>
-        Your store is currently not registered. Please purchase a Lite or Standard version and register your store before setting up your third party payment gateway.
-        <a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" target="_blank" class="ec_lite_version_link"></a><a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank" class="ec_standard_version_link"></a>
+        The WP EasyCart offers the following third party payment options:<ul><li>Dwolla</li><li>Nets Netaxept</li><li>PayPal Stardard</li><li>Skrill</li><li>Realex</li><li>Payment Express PxPay 2.0</li></ul>
+        <p>Your store is currently not registered. Please purchase a <a href="http://www.wpeasycart.com/products/wp-easycart-lite-version/" target="_blank">Lite Version</a> or <a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank">Standard Version</a> and register your store through the store admin before setting up your third party payment gateway.</p>
         <? }else{ ?><?php } ?><?php if( $license->is_registered( ) ){ ?>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_third_party' ) != "0" ){ echo '_inactive'; } ?>" id="none_title">No Third Party Selected</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_third_party' ) != "dwolla_thirdparty" ){ echo '_inactive'; } ?>" id="dwolla_thirdparty_title">Dwolla</div>
@@ -84,11 +84,34 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 
 <div class="ec_payment_section" id="ec_live_payment">
     <div class="ec_payment_section_padding">
+    	<?php if( !$license->is_registered( ) || ( $license->is_registered( ) && $license->is_lite_version( ) ) ){ ?>
+        <p>WP EasyCart offers the following live payment gateway options:
+        	<ul>
+            	<li>Authorize.Net</li>
+            	<li>Braintree S2S</li>
+            	<li>Chronopay</li>
+            	<li>Data Global Gateway e4</li>
+            	<li>Eway</li>
+            	<li>GoeMerchant</li>
+            	<li>Moneris Canada</li>
+            	<li>Payment Express PxPost</li>
+            	<li>PayPal PayFlow Pro</li>
+            	<li>PayPal Payments Pro</li>
+            	<li>PayPoint</li>
+            	<li>Realex</li>
+            	<li>Sagepay</li>
+            	<li>Sagepay US</li>
+            	<li>SecurePay</li>
+            	<li>Stripe</li>
+            	<li>Virtual Merchant</li>
+            </ul>
+        </p>
+        <?php }?>
 		<?php if( $license->is_registered( ) && $license->is_lite_version( ) ){ ?>
-        Your store is registered, but you have the Lite version. To use live payment gateways, you need the standard version. Click the link below to upgrade to upgrade and unlock this feature. <a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_standard_version_link">Click Here</a>
+        <p>Your store is registered, but you have the Lite version. To use live payment gateways, you need the standard version. <a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank">Click Here</a> to upgrade to upgrade and unlock this feature.</p>
         <?php }else if( !$license->is_registered( ) ){ ?>
-        Your store is currently not registered. Please purchase the Standard version and register your store before setting up your live payment gateway.
-        <a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank" class="ec_standard_version_link"></a>
+        <p>Your store is currently not registered. Please purchase the <a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank">Standard Version</a> and register your store through your store admin before setting up your live payment gateway.</p>
+        
         <? }else{ ?><?php } ?><?php if( $license->is_registered( ) && !$license->is_lite_version( ) ){ ?>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "0" ){ echo '_inactive'; } ?>" id="none_live_title">No Live Gateway Selected</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "authorize" ){ echo '_inactive'; } ?>" id="authorize_title">Authorize.Net</div>
@@ -100,7 +123,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "moneris_ca" ){ echo '_inactive'; } ?>" id="moneris_ca_title">Moneris Canada</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paymentexpress" ){ echo '_inactive'; } ?>" id="paymentexpress_title">Payment Express PxPost</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paypal_pro" ){ echo '_inactive'; } ?>" id="paypal_pro_title">PayPal PayFlow Pro</div>
-        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paypal_payments_pro" ){ echo '_inactive'; } ?>" id="paypal_payments_pro_title">payPal Payments Pro</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paypal_payments_pro" ){ echo '_inactive'; } ?>" id="paypal_payments_pro_title">PayPal Payments Pro</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paypoint" ){ echo '_inactive'; } ?>" id="paypoint_title">PayPoint</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "realex" ){ echo '_inactive'; } ?>" id="realex_title">Realex</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "sagepay" ){ echo '_inactive'; } ?>" id="sagepay_title">Sagepay</div>
@@ -156,11 +179,10 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
 <div class="ec_payment_section" id="ec_credit_cards">
     <div class="ec_payment_section_padding">
 		<?php if( $license->is_registered( ) && $license->is_lite_version( ) ){ ?>
-        	Your store is registered, but you have the Lite version. To use live payment gateways, you need the standard version. Click the link below to upgrade to upgrade and unlock this feature.
-        	<a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank" class="ec_lite_to_standard_version_link">Click Here</a>
+        	<p>Your store is registered, but you have the Lite Version. To use live payment gateways, you need the Standard Version. <a href="http://www.wpeasycart.com/products/?model_number=ec120" target="_blank">Click Here</a> to upgrade to upgrade and unlock this feature.</p>
         <?php }else if( !$license->is_registered( ) ){ ?>
-       		Your store is currently not registered. Please purchase the standard version and register your store before setting up your live payment gateway.
-        	<a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank" class="ec_standard_version_link"></a>
+       		<p>Your store is currently not registered. Please purchase the <a href="http://www.wpeasycart.com/products/wp-easycart-standard-version/" target="_blank">Standard Version</a> and register your store through your store admin before setting up your live payment gateway.</p>
+        	
         <?php }else{ ?>
     		<?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/credit_cards.php" ); ?>
         <?php } ?>

@@ -34,22 +34,6 @@ class ec_admin_reviews
 		   else if($methodName == 'updatereview') return array('admin');
 		   else  return null;
 		}
-			
-		
-		//HELPER - used to escape out SQL calls
-		function escape($sql) 
-		{ 
-			  $args = func_get_args(); 
-				foreach($args as $key => $val) 
-				{ 
-					$args[$key] = mysql_real_escape_string($val); 
-				} 
-				 
-				$args[0] = $sql; 
-				return call_user_func_array('sprintf', $args); 
-		} 
-		
-
 
 		//review functions
 		function getreviews($startrecord, $limit, $orderby, $ordertype, $filter) {
@@ -65,7 +49,6 @@ class ec_admin_reviews
 				  return array( "noresults" );
 			  }
 		}
-		
 		
 		function deletereview($reviewid) {
 			  //Create SQL Query	

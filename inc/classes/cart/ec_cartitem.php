@@ -16,6 +16,7 @@ class ec_cartitem{
 	public $quantity;												// INT
 	public $grid_quantity;											// INT
 	public $weight;													// INT
+	public $total_weight;											// FLOAT
 	public $width;
 	public $height;
 	public $length;
@@ -302,7 +303,7 @@ class ec_cartitem{
 		}
 		
 		// Update the weight from option item weight
-		$this->weight = $this->weight + $options_weight_onetime + $options_weight + $grid_weight_change;
+		$this->weight = $this->weight + $options_weight + $grid_weight_change;
 		
 		// Look for role based pricing
 		if( isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
@@ -325,6 +326,7 @@ class ec_cartitem{
 		}
 		
 		$this->total_price = ( $this->unit_price * $this->quantity ) + $options_price_onetime + $grid_price_change;
+		$this->total_weight = ( $this->weight * $this->quantity ) + $options_weight_onetime;
 		$this->handling_price = $cartitem_data->handling_price;
 		
 		if( $cartitem_data->vat_rate > 0 )
@@ -384,7 +386,7 @@ class ec_cartitem{
 	}
 	
 	public function get_weight(){
-		return ($this->weight * $this->quantity);
+		return $this->total_weight;
 	}
 	
 	public function get_shippable_total(){

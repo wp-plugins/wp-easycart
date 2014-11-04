@@ -36,7 +36,7 @@ class ec_donationwidget extends WP_Widget{
 		
 		// Now with post_id try and find a matching product
 		$db = new ec_db( );
-		$products = $db->get_product_list( sprintf( " WHERE product.post_id = %d", mysql_real_escape_string( $post_id ) ), "", "", "" );
+		$products = $db->get_product_list( sprintf( " WHERE product.post_id = %d", $post_id ), "", "", "" );
 		
 		if( count( $products ) > 0 && $products[0]["is_donation"]  ){
 			extract( $args );

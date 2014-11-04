@@ -17,37 +17,25 @@
 */
 
 //load our connection settings
-require_once('../../../../../../wp-config.php');
-//set our connection variables
-$dbhost = DB_HOST;
-$dbname = DB_NAME;
-$dbuser = DB_USER;
-$dbpass = DB_PASSWORD;	
-//make a connection to our database
-mysql_connect($dbhost, $dbuser, $dbpass);
-mysql_select_db ($dbname);
+ob_start( NULL, 4096 );
+require_once( '../../../../../../wp-load.php' );
+global $wpdb;
 
+if( ( isset( $_GET['email'] ) ) && ( $_GET['email'] != "" ) ){
 
-if ((isset($_GET['email'])) && ($_GET['email'] != "")) {
-
-  $deleteSQL = sprintf("DELETE FROM ec_subscriber WHERE ec_subscriber.email = '%s'", mysql_real_escape_string($_GET['email']));
-
-
-
-  $Result1 = mysql_query($deleteSQL) or die(mysql_error());
-
-  $deleteGoTo = "successfullydeleted.php";
-
-  if (isset($_SERVER['QUERY_STRING'])) {
-
-    $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
-
-    $deleteGoTo .= $_SERVER['QUERY_STRING'];
-
-  }
-
-  header(sprintf("Location: %s", $deleteGoTo));
+	$sql = "DELETE FROM ec_subscriber WHERE ec_subscriber.email = %s";
+	$wpdb->query( $sql, $_GET['email'] );
+	
+	$deleteGoTo = "successfullydeleted.php";
+	
+	if( isset( $_SERVER['QUERY_STRING'] ) ){
+	
+		$deleteGoTo .= ( strpos( $deleteGoTo, '?' ) ) ? "&" : "?";
+		$deleteGoTo .= $_SERVER['QUERY_STRING'];
+	
+	}
+	
+	header( "Location: " . $deleteGoTo );
 
 }
-
 ?>

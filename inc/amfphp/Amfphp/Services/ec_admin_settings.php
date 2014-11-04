@@ -37,21 +37,6 @@ class ec_admin_settings
 		   else if($methodName == 'insertregcode') return array('admin');
 		   else  return null;
 		}
-			
-		
-		//HELPER - used to escape out SQL calls
-		function escape($sql) 
-		{ 
-			  $args = func_get_args(); 
-				foreach($args as $key => $val) 
-				{ 
-					$args[$key] = mysql_real_escape_string($val); 
-				} 
-				 
-				$args[0] = $sql; 
-				return call_user_func_array('sprintf', $args); 
-		} 
-		
 		
 		function gettimezones() {
 			  //Create SQL Query

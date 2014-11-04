@@ -106,15 +106,15 @@ function ec_load_admin_scripts( ){
 function ec_register_settings() {
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ), array(), '3.0.5' );
+	wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ), array(), EC_CURRENT_VERSION );
 	wp_enqueue_style( 'wpeasycart_admin_css' );
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_adminv2_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/wpeasycart_adminv2.css' ), array(), '3.0.5' );
+	wp_register_style( 'wpeasycart_adminv2_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/wpeasycart_adminv2.css' ), array(), EC_CURRENT_VERSION );
 	wp_enqueue_style( 'wpeasycart_adminv2_css' );
 	
 	//register admin css
-	wp_register_style( 'wpeasycart_editor_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/editor.css' ), array(), '3.0.5' );
+	wp_register_style( 'wpeasycart_editor_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/editor.css' ), array(), EC_CURRENT_VERSION );
 	wp_enqueue_style( 'wpeasycart_editor_css' );
 		
 	//register options
@@ -196,11 +196,8 @@ function ec_custom_downloads( ){
 			exit( "Could not find the zip to be downloaded" );
 		}
 	}else if( is_admin( ) && isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && isset( $_GET['ec_action'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "dashboard" && $_GET['ec_panel'] == "backup-store" && $_GET['ec_action'] == "download_db" ){
-		$mysql_database = DB_NAME;
-		$db_selected = mysql_select_db($mysql_database);
 		
-		// Get the contents
-		$file_contents = ec_mysqldump( $mysql_database );
+		$file_contents = ec_databasedump( );
 		
 		$sql_shortname = "Storefront_Backup_" . date( 'Y_m_d' ) . ".sql";
 		$sqlname = WP_PLUGIN_DIR . "/wp-easycart-data/" . $sql_shortname;
@@ -281,91 +278,74 @@ function ec_adminv2_page_callback( ){
 	include( "admin_v2.php" );
 }
 
-function ec_mysqldump( $mysql_database ){	
+function ec_databasedump( ){
+	global $wpdb;
 	$return_string = "";
 	$return_string .= "/*MySQL Dump File*/\n";
-	$sql = "show tables;";
-	$result = mysql_query($sql);
-	if( $result ){
-		while( $row = mysql_fetch_row( $result ) ){
+	$sql = "show tables";
+	$results = $wpdb->get_results( $sql, ARRAY_N );
+	
+	if( !empty( $results ) ){
+		foreach( $results as $row ){
 			if( substr( $row[0], 0, 3 ) == "ec_" ){
-				//$return_string .= ec_mysqldump_table_structure( $row[0] );
-				$return_string .= ec_mysqldump_table_data( $row[0] );
+				$return_string .= ec_databasedump_table_data( $row[0] );
 			}
 		}
 	}else{
-		$return_string .= "/* no tables in $mysql_database */\n";
+		$return_string .= "/* no tables in $database */\n";
 	}
-	mysql_free_result( $result );
 	return $return_string;
 }
 
-function ec_mysqldump_table_structure( $table ){
+function ec_databasedump_table_structure( $table ){
+	global $wpdb;
 	$return_string = "";
 	$return_string .= "/* Table structure for table `$table` */\n";
 	$return_string .= "DROP TABLE IF EXISTS `$table`;\n\n";
 	$sql = "show create table `$table`; ";
-	$result = mysql_query( $sql );
-	if( $result ){
-		if( $row = mysql_fetch_assoc( $result ) ){
+	$results = $wpdb->get_results( $sql, ARRAY_A );
+	if( !empty( $results ) ){
+		foreach( $results as $result ){
 			$return_string .= $row['Create Table'].";\n\n";
 		}
 	}
-	mysql_free_result( $result );
 	return $return_string;
 }
 
-function ec_mysqldump_table_data( $table ){
+function ec_databasedump_table_data( $table ){
+	global $wpdb;
 	$return_string = "";
 	$sql = "select * from `$table`;";
-	$result = mysql_query( $sql );
-	if( $result ){
-		$num_rows = mysql_num_rows( $result );
-		$num_fields = mysql_num_fields( $result );
-		if( $num_rows > 0 ){
-			$return_string .= "/* dumping data for table `$table` */\n";
-			$field_type = array( );
-			$i = 0;
-			while( $i < $num_fields ){
-				$meta = mysql_fetch_field( $result, $i );
-				array_push( $field_type, $meta->type );
-				$i++;
-			}
-			$return_string .= "insert into `$table` values\n";
-			$index = 0;
-			while( $row = mysql_fetch_row( $result ) ){
-				$return_string .= "(";
-				for( $i = 0; $i < $num_fields; $i++ ){
-					if( is_null( $row[$i] ) )
-						$return_string .= "null";
-					else{
-						switch( $field_type[$i] ){
-							case 'int':
-								$return_string .= $row[$i];
-								break;
-							case 'string':
-							case 'blob' :
-							default:
-								$return_string .= "'".mysql_real_escape_string($row[$i])."'";
-						}
-					}
-
-					if( $i < $num_fields - 1 )
-						$return_string .= ",";
+	$results = $wpdb->get_results( $sql, ARRAY_N );
+	if( !empty( $results ) ){
+		$return_string .= "/* dumping data for table `$table` */\n";
+		
+		$return_string .= "insert into `$table` values\n";
+		$index = 0;
+		
+		foreach( $results as $row ){
+			$return_string .= "(";
+			for( $i = 0; $i < count( $row ); $i++ ){
+				if( is_null( $row[$i] ) )
+					$return_string .= "null";
+				else{
+					$return_string .= "'".$row[$i]."'";
 				}
-				$return_string .= ")";
-				
-				if( $index < $num_rows - 1 )
-					$return_string .= ",";
-				else
-					$return_string .= ";";
-				$return_string .= "\n";
 
-				$index++;
+				if( $i < count( $row ) - 1 )
+					$return_string .= ",";
 			}
+			$return_string .= ")";
+			
+			if( $index < count( $results ) - 1 )
+				$return_string .= ",";
+			else
+				$return_string .= ";";
+			$return_string .= "\n";
+
+			$index++;
 		}
 	}
-	mysql_free_result($result);
 	$return_string .= "\n";
 	return $return_string;
 }

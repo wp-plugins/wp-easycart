@@ -223,7 +223,7 @@ class ec_shipping{
 	private function get_weight_based_shipping_options( $standard_text, $express_text ){
 		if( count( $this->weight_based ) > 0 ){
 			for( $i=0; $i<count($this->weight_based); $i++){
-				if( $this->weight > $this->weight_based[$i][0] )
+				if( $this->weight >= $this->weight_based[$i][0] )
 					return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->weight_based[$i][1] );
 			}
 		}else{
@@ -522,7 +522,7 @@ class ec_shipping{
 			
 		}else if( $this->shipping_method == "weight" ){
 			for( $i=0; $i<count( $this->weight_based ); $i++ ){
-				if( $this->weight > $this->weight_based[$i][0] ){
+				if( $this->weight >= $this->weight_based[$i][0] ){
 					$rate = $this->weight_based[$i][1];
 					break;
 				}

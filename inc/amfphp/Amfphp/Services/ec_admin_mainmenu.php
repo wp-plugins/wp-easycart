@@ -109,9 +109,9 @@ class ec_admin_mainmenu{
 		
 		// Delete Level 1 DB Item
 		$sql = "DELETE FROM ec_menulevel1 WHERE ec_menulevel1.menulevel1_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $keyfield ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $keyfield ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -138,9 +138,9 @@ class ec_admin_mainmenu{
 		
 		//Update EC DB Fields
 		$sql = "UPDATE ec_menulevel1 SET ec_menulevel1.name = %s, ec_menulevel1.clicks = %s, ec_menulevel1.order = %s, ec_menulevel1.seo_keywords = %s, ec_menulevel1.seo_description = %s, ec_menulevel1.banner_image = %s WHERE ec_menulevel1.menulevel1_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $menulevel1['menuname'], $menulevel1['clicks'], $menulevel1['menu1order'], $menulevel1['seokeywords'], $menulevel1['seodescription'], $menulevel1['bannerimage'], $keyfield ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel1['menuname'], $menulevel1['clicks'], $menulevel1['menu1order'], $menulevel1['seokeywords'], $menulevel1['seodescription'], $menulevel1['bannerimage'], $keyfield ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -154,7 +154,7 @@ class ec_admin_mainmenu{
 		
 		// Insert EC DB Value
 		$sql = "INSERT INTO ec_menulevel1( ec_menulevel1.name, ec_menulevel1.clicks, ec_menulevel1.order, ec_menulevel1.seo_keywords, ec_menulevel1.seo_description, ec_menulevel1.banner_image ) VALUES( %s, %s, %s, %s, %s, %s )";
-		$this->db->query( $this->db->prepare( $sql, $menulevel1['menuname'], $menulevel1['clicks'], $menulevel1['menu1order'], $menulevel1['seokeywords'], $menulevel1['seodescription'], $menulevel1['bannerimage'] ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel1['menuname'], $menulevel1['clicks'], $menulevel1['menu1order'], $menulevel1['seokeywords'], $menulevel1['seodescription'], $menulevel1['bannerimage'] ) );
 		
 		// Insert WordPress Post
 		$menu_id = $this->db->insert_id;
@@ -169,7 +169,7 @@ class ec_admin_mainmenu{
 		$db = new ec_db( );
 		$db->update_menu_post_id( $menu_id, $post_id );
 		
-		if(!mysql_error()) {
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -226,9 +226,9 @@ class ec_admin_mainmenu{
 		
 		// Delete Level 2 EC DB Items
 		$sql = "DELETE FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $keyfield ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $keyfield ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -254,9 +254,9 @@ class ec_admin_mainmenu{
 		
 		// Update EC DB Item
 		$sql = "UPDATE ec_menulevel2 SET ec_menulevel2.menulevel1_id = %d, ec_menulevel2.name = %s, ec_menulevel2.clicks = %s, ec_menulevel2.order = %s, ec_menulevel2.seo_keywords = %s, ec_menulevel2.seo_description = %s, ec_menulevel2.banner_image = %s WHERE ec_menulevel2.menulevel2_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $menulevel2['menuparentid'], $menulevel2['menuname'], $menulevel2['clicks'], $menulevel2['menu2order'], $menulevel2['seokeywords'], $menulevel2['seodescription'], $menulevel2['bannerimage'], $keyfield ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel2['menuparentid'], $menulevel2['menuname'], $menulevel2['clicks'], $menulevel2['menu2order'], $menulevel2['seokeywords'], $menulevel2['seodescription'], $menulevel2['bannerimage'], $keyfield ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -269,7 +269,7 @@ class ec_admin_mainmenu{
 		$menulevel2 = (array)$menulevel2;
 		
 		$sql = "INSERT INTO ec_menulevel2( ec_menulevel2.menulevel1_id, ec_menulevel2.name, ec_menulevel2.clicks, ec_menulevel2.order, ec_menulevel2.seo_keywords, ec_menulevel2.seo_description, ec_menulevel2.banner_image ) VALUES( %d, %s, %s, %s, %s, %s, %s )";
-		$this->db->query( $this->db->prepare( $sql, $menulevel2['menuparentid'], $menulevel2['menuname'], $menulevel2['clicks'], $menulevel2['menu2order'], $menulevel2['seokeywords'], $menulevel2['seodescription'], $menulevel2['bannerimage'] ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel2['menuparentid'], $menulevel2['menuname'], $menulevel2['clicks'], $menulevel2['menu2order'], $menulevel2['seokeywords'], $menulevel2['seodescription'], $menulevel2['bannerimage'] ) );
 		
 		// Insert a WordPress Post.
 		$submenu_id = $this->db->insert_id;
@@ -284,7 +284,7 @@ class ec_admin_mainmenu{
 		$db = new ec_db( );
 		$db->update_submenu_post_id( $submenu_id, $post_id );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -329,9 +329,9 @@ class ec_admin_mainmenu{
 		
 		// Delete EC DB Item
 		$sql = "DELETE FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $keyfield ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $keyfield ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -357,9 +357,9 @@ class ec_admin_mainmenu{
 		
 		// Update EC DB Item
 		$sql = "UPDATE ec_menulevel3 SET ec_menulevel3.menulevel2_id = %d, ec_menulevel3.name = %s, ec_menulevel3.clicks = %s, ec_menulevel3.order = %s, ec_menulevel3.seo_keywords = %s, ec_menulevel3.seo_description = %s, ec_menulevel3.banner_image = %s WHERE ec_menulevel3.menulevel3_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $menulevel3['menuparentid'], $menulevel3['menuname'], $menulevel3['clicks'], $menulevel3['menu3order'], $menulevel3['seokeywords'], $menulevel3['seodescription'], $menulevel3['bannerimage'], $keyfield ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel3['menuparentid'], $menulevel3['menuname'], $menulevel3['clicks'], $menulevel3['menu3order'], $menulevel3['seokeywords'], $menulevel3['seodescription'], $menulevel3['bannerimage'], $keyfield ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -373,7 +373,7 @@ class ec_admin_mainmenu{
 		
 		// Insert EC DB Item
 		$sql = "INSERT INTO ec_menulevel3( ec_menulevel3.menulevel2_id, ec_menulevel3.name, ec_menulevel3.clicks, ec_menulevel3.order, ec_menulevel3.seo_keywords, ec_menulevel3.seo_description, ec_menulevel3.banner_image ) VALUES( %d, %s, %s, %s, %s, %s, %s )";
-		$this->db->query( $this->db->prepare( $sql, $menulevel3['menuparentid'], $menulevel3['menuname'], $menulevel3['clicks'], $menulevel3['menu3order'], $menulevel3['seokeywords'], $menulevel3['seodescription'], $menulevel3['bannerimage'] ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel3['menuparentid'], $menulevel3['menuname'], $menulevel3['clicks'], $menulevel3['menu3order'], $menulevel3['seokeywords'], $menulevel3['seodescription'], $menulevel3['bannerimage'] ) );
 		
 		// Insert WordPress Post
 		$subsubmenu_id = $this->db->insert_id;
@@ -388,7 +388,7 @@ class ec_admin_mainmenu{
 		$db = new ec_db( );
 		$db->update_subsubmenu_post_id( $subsubmenu_id, $post_id );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );

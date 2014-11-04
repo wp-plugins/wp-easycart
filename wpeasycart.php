@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.5
+ * Version: 3.0.6
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.5
+ * @version 3.0.6
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_5' );
+define( 'EC_CURRENT_VERSION', '3_0_6' );
 define( 'EC_CURRENT_DB', '1_24' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -659,7 +659,7 @@ function ec_css_loader_v3( ){
 		$pageURL .= "s";
 		
 	if( current_user_can( 'manage_options' ) ){
-		if( get_option('ec_option_base_theme') ){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.css' ) ){
 			wp_register_style( 'wpeasycart_admin_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.css' ) );
 		}else{
 			wp_register_style( 'wpeasycart_admin_css', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/live-editor.css' ) );
@@ -667,7 +667,7 @@ function ec_css_loader_v3( ){
 		wp_enqueue_style( 'wpeasycart_admin_css' );
 	}
 	
-	if( get_option('ec_option_base_theme') ){
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.css' ) ){
 		wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.css' ), array( ), EC_CURRENT_VERSION );
 	}else{
 		wp_register_style( 'wpeasycart_css', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/ec-store.css' ), array( ), EC_CURRENT_VERSION );
@@ -678,7 +678,7 @@ function ec_css_loader_v3( ){
 	wp_enqueue_style( 'wpeasycart_gfont' );
 	
 	if( get_option( 'ec_option_use_rtl' ) ){
-		if( get_option('ec_option_base_theme') ){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' ) ){
 			wp_register_style( 'wpeasycart_rtl_css', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/rtl_support.css' ) );
 		}else{
 			wp_register_style( 'wpeasycart_rtl_css', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/rtl_support.css' ) );
@@ -693,7 +693,7 @@ function ec_js_loader_v3( ){
 	if( current_user_can( 'manage_options' ) ){
 		wp_enqueue_script( 'jquery-ui-draggable' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
-		if( get_option('ec_option_base_theme') ){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ) ){
 			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ), array( 'jquery' ), EC_CURRENT_VERSION );
 		}else{
 			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/live-editor.js' ), array( 'jquery' ), EC_CURRENT_VERSION );
@@ -701,7 +701,7 @@ function ec_js_loader_v3( ){
 		wp_enqueue_script( 'wpeasycart_admin_js' );
 	}
 	
-	if( get_option('ec_option_base_theme') ){
+	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.js' ) ){
 		wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.js' ), array( 'jquery' ) );
 	}else{
 		wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/ec-store.js' ), array( 'jquery' ) );
@@ -734,7 +734,7 @@ function ec_save_js_file( $buffer ){
 
 function ec_load_css( ){
 	
-	if( !get_option( 'ec_option_base_theme' ) || file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
+	if( !get_option( 'ec_option_base_theme' ) || file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) || !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) ){
 		ec_css_loader_v3( );
 	
 	}else{
@@ -796,7 +796,7 @@ function ec_load_css( ){
 
 function ec_load_js( ){
 	
-	if( !get_option( 'ec_option_base_theme' ) || file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
+	if( !get_option( 'ec_option_base_theme' ) || file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) || !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/ec_image_not_found.jpg" ) ){
 		ec_js_loader_v3( );
 	
 	}else{
@@ -916,17 +916,9 @@ function ec_theme_head_data( ){
 	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
 		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" );
 
-	}else if( !get_option( 'ec_option_base_theme' ) ){
+	}else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/head_content.php" ) ){
 		include( WP_PLUGIN_DIR . "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/head_content.php" );
 		
-	}
-}
-
-function ec_theme_footer_data( ){
-	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/footer_content.php" ) ){
-		include( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/footer_content.php" );
-	}else if( !get_option( 'ec_option_base_theme' ) ){
-		include( WP_PLUGIN_DIR . "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/footer_content.php" );
 	}
 }
 	
@@ -1312,6 +1304,15 @@ function load_ec_membership_alt( $atts, $content = NULL ){
 	
 }
 
+function ec_plugins_loaded( ){
+	/* Admin Form Actions */
+	if( current_user_can('manage_options') && isset( $_GET['ec_action'] ) && isset( $_GET['ec_language'] ) && $_GET['ec_action'] == "export-language" ){
+		$language = new ec_language( );
+		$language->export_language( $_GET['ec_language'] );
+		die( );
+	}
+}
+
 function wpeasycart_register_widgets( ) {
 	register_widget( 'ec_categorywidget' );
 	register_widget( 'ec_cartwidget' );
@@ -1333,6 +1334,7 @@ add_action( 'wp_enqueue_scripts', 'ec_load_css' );
 add_action( 'wp_enqueue_scripts', 'ec_load_js' );
 add_action( 'widgets_init', 'wpeasycart_register_widgets' );
 add_action( 'send_headers', 'ec_custom_headers' );
+add_action( 'plugins_loaded', 'ec_plugins_loaded' );
 
 add_shortcode( 'ec_store', 'load_ec_store' );
 add_shortcode( 'ec_cart', 'load_ec_cart' );
@@ -1347,7 +1349,6 @@ add_filter( 'widget_text', 'do_shortcode');
 
 add_action('wp_head', 'ec_facebook_metadata');
 add_action('wp_head', 'ec_theme_head_data');
-add_action('wp_footer', 'ec_theme_footer_data');
 
 add_action( 'wp_enqueue_scripts', 'ec_load_dashicons' );
 function ec_load_dashicons() {
@@ -2200,6 +2201,13 @@ function ec_create_post_type_menu() {
 		$language = new ec_language( );
 		$language->update_language_data( ); //Do this to update the database if a new language is added
 		update_option( 'ec_option_language_version', EC_CURRENT_VERSION );
+	}
+	
+	// Update wp_options when plugin updates
+	if( !get_option( 'ec_option_wpoptions_version' ) || get_option( 'ec_option_wpoptions_version' ) != EC_CURRENT_VERSION ){	
+		$wpoptions = new ec_wpoptionset();
+		$wpoptions->add_options();
+		update_option( 'ec_option_wpoptions_version', EC_CURRENT_VERSION );
 	}
 	
 	$store_id = get_option( 'ec_option_storepage' );

@@ -177,6 +177,20 @@ class ec_language{
 		$this->save_language_data( );
 	}
 	
+	public function export_language( $language_key ){
+		
+		$download_content = json_encode( $this->language_data->{$language_key} );
+		
+		header( "Cache-Control: public, must-revalidate" );
+		header( "Pragma: no-cache" );
+		header( "Content-Type: text/plain" );
+		header( "Content-Length: " . strlen( $download_content ) );
+		header( 'Content-Disposition: attachment; filename="' . $language_key . '.txt"' );
+		header( "Content-Transfer-Encoding: binary\n" );
+		echo json_encode( $this->language_data->{$language_key} );
+	
+	}
+	
 	private function update_language_entry( $file_name ){
 		$new_language_object = $this->get_language_file_decoded( $file_name . ".txt" );	
 		$new_array = get_object_vars( $new_language_object->options );

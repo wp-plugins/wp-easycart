@@ -62,7 +62,7 @@ class ec_admin_optionitems{
 		
 		// Delete the Option Item  
 		$sql = "DELETE FROM ec_optionitem WHERE ec_optionitem.optionitem_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $optionitemid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $optionitemid ) );
 		
 		// Delete the Option Item Quantity Values
 		$sql = "DELETE FROM ec_optionitemquantity WHERE ec_optionitemquantity.optionitem_id = %d OR ec_optionitemquantity.optionitem_id_1 = %d OR ec_optionitemquantity.optionitem_id_2 = %d OR ec_optionitemquantity.optionitem_id_3 = %d OR ec_optionitemquantity.optionitem_id_4 = %d OR ec_optionitemquantity.optionitem_id_5 = %d";
@@ -72,7 +72,7 @@ class ec_admin_optionitems{
 		$sql = "DELETE FROM ec_optionitemimage WHERE ec_optionitemimage.optionitem_id = %d";
 		$this->db->query( $this->db->prepare( $sql, $optionitemid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -86,9 +86,9 @@ class ec_admin_optionitems{
 		
 		$sql = "UPDATE ec_optionitem SET ec_optionitem.option_id = %d, ec_optionitem.optionitem_name = %s, ec_optionitem.optionitem_price = %s, ec_optionitem.optionitem_price_onetime = %s, ec_optionitem.optionitem_price_override = %s, ec_optionitem.optionitem_weight = %s, ec_optionitem.optionitem_weight_onetime = %s, ec_optionitem.optionitem_weight_override = %s, ec_optionitem.optionitem_order = %s, ec_optionitem.optionitem_icon = %s, ec_optionitem.optionitem_initial_value = %s, ec_optionitem.optionitem_model_number = %s WHERE ec_optionitem.optionitem_id = %d";
 		
-		$this->db->query( $this->db->prepare( $sql, $optionitem['optionparentID'], $optionitem['optionitemname'], $optionitem['optionitemprice'], $optionitem['optionitempriceonetime'], $optionitem['optionitempriceoverride'], $optionitem['optionitemweight'], $optionitem['optionitemweightonetime'], $optionitem['optionitemweightoverride'], $optionitem['optionorder'], $optionitem['optionitemicon'], $optionitem['optioniteminitialvalue'], $optionitem['optionitemmodelnumber'], $optionitemid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $optionitem['optionparentID'], $optionitem['optionitemname'], $optionitem['optionitemprice'], $optionitem['optionitempriceonetime'], $optionitem['optionitempriceoverride'], $optionitem['optionitemweight'], $optionitem['optionitemweightonetime'], $optionitem['optionitemweightoverride'], $optionitem['optionorder'], $optionitem['optionitemicon'], $optionitem['optioniteminitialvalue'], $optionitem['optionitemmodelnumber'], $optionitemid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -101,9 +101,9 @@ class ec_admin_optionitems{
 		$optionitem = (array)$optionitem;
 		
 		$sql = "INSERT INTO ec_optionitem( ec_optionitem.option_id, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_order, ec_optionitem.optionitem_icon, ec_optionitem.optionitem_initial_value, ec_optionitem.optionitem_model_number ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
-		$this->db->query( $this->db->prepare( $sql, $optionitem['optionparentID'], $optionitem['optionitemname'], $optionitem['optionitemprice'], $optionitem['optionitempriceonetime'], $optionitem['optionitempriceoverride'], $optionitem['optionitemweight'], $optionitem['optionitemweightonetime'], $optionitem['optionitemweightoverride'], $optionitem['optionorder'], $optionitem['optionitemicon'], $optionitem['optioniteminitialvalue'], $optionitem['optionitemmodelnumber'] ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $optionitem['optionparentID'], $optionitem['optionitemname'], $optionitem['optionitemprice'], $optionitem['optionitempriceonetime'], $optionitem['optionitempriceoverride'], $optionitem['optionitemweight'], $optionitem['optionitemweightonetime'], $optionitem['optionitemweightoverride'], $optionitem['optionorder'], $optionitem['optionitemicon'], $optionitem['optioniteminitialvalue'], $optionitem['optionitemmodelnumber'] ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -241,11 +241,11 @@ class ec_admin_optionitems{
 			
 			}
 			
-			$this->db->query( $sql );
+			$rows_affected = $this->db->query( $sql );
 			
 		}
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		} else {
 			return array( "error" );
@@ -256,9 +256,9 @@ class ec_admin_optionitems{
 	function removealloptionitemquantities( $productid ){
 		
 		$sql = "DELETE FROM ec_optionitemquantity WHERE ec_optionitemquantity.product_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $productid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $productid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -269,9 +269,9 @@ class ec_admin_optionitems{
 	function updateoptionvalues( $productid, $option1, $option2, $option3, $option4, $option5 ){
 		
 		$sql = "UPDATE ec_product SET ec_product.option_id_1 = %d, ec_product.option_id_2 = %d, ec_product.option_id_3 = %d, ec_product.option_id_4 = %d, ec_product.option_id_5 = %d WHERE ec_product.product_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $option1, $option2, $option3, $option4, $option5, $productid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $option1, $option2, $option3, $option4, $option5, $productid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );

@@ -485,12 +485,12 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_default_quick_view');					array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
-		array_push($this->wp_option_names, 'ec_option_default_desktop_columns');			array_push($this->wp_option_defaults, '3' );
+		array_push($this->wp_option_names, 'ec_option_default_desktop_columns');			array_push($this->wp_option_defaults, '2' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		array_push($this->wp_option_names, 'ec_option_default_desktop_image_height');		array_push($this->wp_option_defaults, '210px' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
-		array_push($this->wp_option_names, 'ec_option_default_laptop_columns');				array_push($this->wp_option_defaults, '3' );
+		array_push($this->wp_option_names, 'ec_option_default_laptop_columns');				array_push($this->wp_option_defaults, '2' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		array_push($this->wp_option_names, 'ec_option_default_laptop_image_height');		array_push($this->wp_option_defaults, '180px' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
@@ -510,9 +510,9 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_default_smartphone_image_height');	array_push($this->wp_option_defaults, '160px' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
-		array_push($this->wp_option_names, 'ec_option_details_columns_desktop');			array_push($this->wp_option_defaults, '2' );
+		array_push($this->wp_option_names, 'ec_option_details_columns_desktop');			array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
-		array_push($this->wp_option_names, 'ec_option_details_columns_laptop');				array_push($this->wp_option_defaults, '2' );
+		array_push($this->wp_option_names, 'ec_option_details_columns_laptop');				array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		array_push($this->wp_option_names, 'ec_option_details_columns_tablet_wide');		array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
@@ -521,9 +521,9 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_details_columns_smartphone');			array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 																							
-		array_push($this->wp_option_names, 'ec_option_cart_columns_desktop');				array_push($this->wp_option_defaults, '2' );
+		array_push($this->wp_option_names, 'ec_option_cart_columns_desktop');				array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
-		array_push($this->wp_option_names, 'ec_option_cart_columns_laptop');				array_push($this->wp_option_defaults, '2' );
+		array_push($this->wp_option_names, 'ec_option_cart_columns_laptop');				array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		array_push($this->wp_option_names, 'ec_option_cart_columns_tablet_wide');			array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');

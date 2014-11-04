@@ -56,9 +56,9 @@ class ec_admin_coupons{
 	function deletecoupon( $promocodesid ){
 
 		$sql = "DELETE FROM ec_promocode WHERE ec_promocode.promocode_id  = %s";
-		$this->db->query( $this->db->prepare( $sql, $promocodesid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $promocodesid ) );
 
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
 				$stripe = new ec_stripe( );
 				$stripe->delete_coupon( $promocodesid );
@@ -92,7 +92,7 @@ class ec_admin_coupons{
 					
 				WHERE ec_promocode.promocode_id = %s";
 				
-		$this->db->query( $this->db->prepare( 	$sql, 
+		$rows_affected = $this->db->query( $this->db->prepare( 	$sql, 
 												$promocode['dollaramount'], 
 												$promocode['usedollar'], 
 												$promocode['percentageamount'], 
@@ -109,7 +109,7 @@ class ec_admin_coupons{
 												$promocode['attachall'],
 												$promocode_id ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
 				$stripe = new ec_stripe( );
 				$stripe->delete_coupon( $promocode_id );
@@ -126,12 +126,13 @@ class ec_admin_coupons{
 			
 			return array( "success" );
 		}else{
-			$sqlerror = mysql_error( );
-			$error = explode( " ", $sqlerror );
-			if( $error[0] == "Duplicate" ){
+			$sql = "SELECT * FROM ec_promocode WHERE promocode_id = %s";
+			$results = $this->db->get_results( $this->db->prepare( $sql, $promocode_id ) );
+			
+			if( empty( $results ) ){
+				return array( "Unknown error has occurred" );
+			}else{
 				return array( "duplicate" );
-			}else{  
-				return array( mysql_error( ) );
 			}
 		}
 	
@@ -142,9 +143,9 @@ class ec_admin_coupons{
 		$promocode = (array)$promocode;
 		
 		$sql = "INSERT INTO ec_promocode( ec_promocode.promocode_id, ec_promocode.promo_dollar, ec_promocode.is_dollar_based, ec_promocode.promo_percentage, ec_promocode.is_percentage_based, ec_promocode.promo_shipping, ec_promocode.is_shipping_based, ec_promocode.promo_free_item, ec_promocode.is_free_item_based, ec_promocode.message, ec_promocode.manufacturer_id, ec_promocode.product_id, ec_promocode.by_manufacturer_id, ec_promocode.by_product_id, ec_promocode.by_all_products ) VALUES( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
-		$this->db->query( $this->db->prepare( $sql, $promocode['promoid'], $promocode['dollaramount'], $promocode['usedollar'], $promocode['percentageamount'], $promocode['usepercentage'], $promocode['shippingamount'], $promocode['useshipping'], '0.00', $promocode['usefreeitem'], $promocode['promodescription'], $promocode['manufacturers'], $promocode['products'], $promocode['attachmanufacturer'], $promocode['attachproduct'], $promocode['attachall'] ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $promocode['promoid'], $promocode['dollaramount'], $promocode['usedollar'], $promocode['percentageamount'], $promocode['usepercentage'], $promocode['shippingamount'], $promocode['useshipping'], '0.00', $promocode['usefreeitem'], $promocode['promodescription'], $promocode['manufacturers'], $promocode['products'], $promocode['attachmanufacturer'], $promocode['attachproduct'], $promocode['attachall'] ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
 				$stripe = new ec_stripe( );
 				$coupon = array( "is_amount_off" => $promocode['usedollar'],
@@ -157,12 +158,13 @@ class ec_admin_coupons{
 			}
 			return array( "success" );
 		}else{
-			$sqlerror = mysql_error( );
-			$error = explode( " ", $sqlerror );
-			if( $error[0] == "Duplicate" ){
+			$sql = "SELECT * FROM ec_promocode WHERE promocode_id = %s";
+			$results = $this->db->get_results( $this->db->prepare( $sql, $promocode['promoid'] ) );
+			
+			if( empty( $results ) ){
+				return array( "Unknown error has occurred" );
+			}else{
 				return array( "duplicate" );
-			}else{  
-				return array( mysql_error( ) );
 			}
 		}
 	}//addcoupon

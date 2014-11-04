@@ -75,6 +75,8 @@
             
             <li class="">Pay Later Checkout/Billing</li>
             
+            <li class="">Affirm Pay Later</li>
+            
             <li class="">Third Party Gateways</li>
             
             <li class="">Live Payment Gateways (15+ processor choices)</li>
@@ -159,6 +161,8 @@
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-39  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-39  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
@@ -252,6 +256,8 @@
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/not_included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
@@ -316,6 +322,8 @@
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-26  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-27  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
+            
+            <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-28  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             
             <li class=""><span class="avia-image-container" itemscope="itemscope" itemtype="http://schema.org/ImageObject"><img class="avia_image  avia-builder-el-28  el_after_av_image   avia-align-center  " src="http://www.wpeasycart.com/wp-content/uploads/2013/10/included.jpg" alt="" title="included" itemprop="contentURL"></span></li>
             

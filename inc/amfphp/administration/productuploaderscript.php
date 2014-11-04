@@ -17,76 +17,46 @@
 */
 
 //load our connection settings
-require_once('../../../../../../wp-config.php');
-//set our connection variables
-$dbhost = DB_HOST;
-$dbname = DB_NAME;
-$dbuser = DB_USER;
-$dbpass = DB_PASSWORD;	
-//make a connection to our database
-mysql_connect($dbhost, $dbuser, $dbpass);
-mysql_select_db ($dbname);
+ob_start( NULL, 4096 );
+require_once( '../../../../../../wp-load.php' );
+global $wpdb;
 
+$requestID = "-1";
+if( isset( $_GET['reqID'] ) )
+	$requestID = $_GET['reqID'];
+	
+$user_sql = "SELECT  ec_user.*, ec_role.admin_access FROM ec_user LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE ec_user.password = %s AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)";
+$users = $wpdb->get_results( $wpdb->prepare( $user_sql, $requestID ) );
 
-//Flash Variables
+if( !empty( $users ) || is_user_logged_in( ) ){
 
-$date = $_POST['datemd5'];
-
-$requestID = $_POST['reqID'];
-
-$insertupdate = $_POST['insertupdate'];
-
-$productid = $_POST['productid'];
-
-//need to do a resize on the full size image here.. .
-
-$usersqlquery = sprintf("SELECT  ec_user.*, ec_role.admin_access FROM  ec_user  LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE  ec_user.password = '%s' AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)", mysql_real_escape_string($requestID));
-
-$userresult = mysql_query($usersqlquery) or die(mysql_error());
-
-$users = mysql_fetch_assoc($userresult);
-
-if ($users || is_user_logged_in()) {
-
-	//Flash File Data
+	$date = $_POST['datemd5'];
+	$insertupdate = $_POST['insertupdate'];
+	$productid = $_POST['productid'];
 
 	$filename = $_FILES['Filedata']['name'];	
-
 	$filetmpname = $_FILES['Filedata']['tmp_name'];	
-
 	$fileType = $_FILES["Filedata"]["type"];
-
 	$fileSizeMB = ($_FILES["Filedata"]["size"] / 1024 / 1000);
 
-	//$explodedfilename = explode(".", $filename);
-
-	//$nameoffile = $explodedfilename[0];
-
-	//$fileextension = $explodedfilename[1];
 	$explodedfilename = pathinfo($filename);
 	$nameoffile = $explodedfilename['filename'];
 	$fileextension = $explodedfilename['extension'];
 
-	move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension);
+	move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension );
 	copy( "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/downloads/".$nameoffile."_".$date.".".$fileextension );
 
-	//if we are updating, then update the db field, inserting happens later
+	if( $insertupdate == 'update' ){
 
-	if ($insertupdate == 'update') {
-
-		//Create SQL Query
 		$sqlfilename = $nameoffile . '_' . $date . '.' .$fileextension;
-
-		$sql = sprintf("Update ec_product SET ec_product.download_file_name = '%s' WHERE ec_product.product_id = '%s'", 
-		 mysql_real_escape_string($sqlfilename),
-		 mysql_real_escape_string($productid));
-
-		//Run query on database;
-
-		mysql_query($sql);
+		$sql = "UPDATE ec_product SET ec_product.download_file_name = %s WHERE ec_product.product_id = %s";
+		$wpdb->query( $wpdb->prepare( $sql, $sqlfilename, $productid ) );
 
 	}
 
-}
+}else{
 
+	echo "Not Authorized...";
+
+}
 ?>

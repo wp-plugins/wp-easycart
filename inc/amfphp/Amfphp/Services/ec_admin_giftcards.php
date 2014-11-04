@@ -52,9 +52,9 @@ class ec_admin_giftcards{
 	
 	function deletegiftcard( $cardid ){
 		$sql = "DELETE FROM ec_giftcard WHERE ec_giftcard.giftcard_id = %s";
-		$this->db->query( $this->db->prepare( $sql, $cardid) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $cardid) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -67,17 +67,18 @@ class ec_admin_giftcards{
 		$card = (array)$card;
 		
 		$sql = "UPDATE ec_giftcard SET ec_giftcard.amount = %s, ec_giftcard.message = %s WHERE ec_giftcard.giftcard_id = %s";
-		$this->db->query( $this->db->prepare( $sql, $card['giftcardamount'], $card['giftcardmessage'], $cardid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $card['giftcardamount'], $card['giftcardmessage'], $cardid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
-			$sqlerror = mysql_error( );
-			$error = explode( " ", $sqlerror );
-			if( $error[0] == "Duplicate" ){
-				return array( "duplicate" );
+			$sql = "SELECT * FROM ec_giftcard WHERE giftcard_id = %s";
+			$results = $this->db->get_results( $this->db->prepare( $sql, $cardid ) );
+			
+			if( empty( $results ) ){
+				return array( "Unknown error has occurred" );
 			}else{
-				return array( "error" );
+				return array( "duplicate" );
 			}
 		}
 	}//updategiftcard
@@ -87,17 +88,18 @@ class ec_admin_giftcards{
 		$card = (array)$card;
 		
 		$sql = "INSERT INTO ec_giftcard( ec_giftcard.giftcard_id, ec_giftcard.amount, ec_giftcard.message ) VALUES(%s, %s, %s)";
-		$this->db->query( $this->db->prepare( $sql, $card['giftcardid'], $card['giftcardamount'], $card['giftcardmessage'] ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $card['giftcardid'], $card['giftcardamount'], $card['giftcardmessage'] ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
-			$sqlerror = mysql_error( );
-			$error = explode( " ", $sqlerror );
-			if( $error[0] == "Duplicate" ){
+			$sql = "SELECT * FROM ec_giftcard WHERE giftcard_id = %s";
+			$results = $this->db->get_results( $this->db->prepare( $sql, $card['giftcardid'] ) );
+			
+			if( empty( $results ) ){
+				return array( "Unknown error has occurred" );
+			}else{
 				return array( "duplicate" );
-		 	}else{  
-				return array( "error" );
 			}
 		}
 	}//addgiftcard

@@ -821,7 +821,7 @@
 
 .ec_admin_dropdown_wide{
 	float: right;
-	width: 300px;
+	width: 330px;
 	border: 1px solid #666;
 	text-align: center;
 	height: 45px;
@@ -1490,3 +1490,6 @@ Quick Start Guide
 .ec_checklist_container.ec_required .ec_checklist_header, .ec_checklist_container.ec_required .ec_checklist_button{ background-color:#D04E43; }
 .ec_checklist_container.ec_required .ec_checklist_button:hover{ background-color:#E7847C; }
 .ec_checklist_container.ec_required .ec_checklist_content{ border:1px solid #D04E43; }
+
+.ec_export_button{ background-color:#7bb141; padding:8px 14px; border-radius:8px; margin:10px 0; float:left; color:#FFF; font-weight:bold; text-decoration:none; }
+.ec_export_button:hover{ background-color:#548026; color:#FFF !important; }

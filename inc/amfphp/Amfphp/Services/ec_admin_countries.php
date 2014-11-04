@@ -52,9 +52,9 @@ class ec_admin_countries{
 	function updatecountry( $id, $name, $iso2, $iso3, $vatrate, $sortorder ){
 		
 		$sql = "UPDATE ec_country SET ec_country.name_cnt = %s, ec_country.iso2_cnt = %s, ec_country.iso3_cnt = %s, ec_country.vat_rate_cnt = %s, ec_country.sort_order = %s WHERE ec_country.id_cnt = %s";
-		$this->db->query( $this->db->prepare( $sql, $name, $iso2, $iso3, $vatrate, $sortorder, $id ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $name, $iso2, $iso3, $vatrate, $sortorder, $id ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -64,9 +64,9 @@ class ec_admin_countries{
 	function deletecountry( $id ){
 		
 		$sql = "DELETE FROM ec_country WHERE ec_country.id_cnt = %d";
-		$this->db->query( $this->db->prepare( $sql, $id ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $id ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -77,9 +77,9 @@ class ec_admin_countries{
 	function addcountry( $name, $iso2, $iso3, $vatrate, $sortorder ){
 
 		$sql = "INSERT INTO ec_country( ec_country.name_cnt, ec_country.iso2_cnt, ec_country.iso3_cnt, ec_country.vat_rate_cnt, ec_country.sort_order ) VALUES( %s, %s, %s, %s, %s )";
-		$this->db->query( $this->db->prepare( $sql, $name, $iso2, $iso3, $vatrate, $sortorder ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $name, $iso2, $iso3, $vatrate, $sortorder ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );

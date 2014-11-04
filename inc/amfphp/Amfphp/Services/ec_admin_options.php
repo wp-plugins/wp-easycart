@@ -16,7 +16,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
 
-class ec_admin_options{		
+class ec_admin_options{
 	
 	private $db;
 
@@ -71,7 +71,7 @@ class ec_admin_options{
 		  
 		//Delete the Option
 		$sql = "DELETE FROM ec_option WHERE ec_option.option_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $optionid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $optionid ) );
 		
 		//Update Products Using This Option Set
 		$sql = "UPDATE ec_product SET ec_product.option_id_1 = 0 WHERE ec_product.option_id_1 = %d; UPDATE ec_product SET ec_product.option_id_2 = 0 WHERE ec_product.option_id_2 = %d; UPDATE ec_product SET ec_product.option_id_3 = 0 WHERE ec_product.option_id_3 = %d; UPDATE ec_product SET ec_product.option_id_4 = 0 WHERE ec_product.option_id_4 = %d; UPDATE ec_product SET ec_product.option_id_5 = 0 WHERE ec_product.option_id_5 = %d";
@@ -96,7 +96,7 @@ class ec_admin_options{
 			
 		}
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -108,7 +108,7 @@ class ec_admin_options{
 		
 		$option = (array)$option;
 		
-		$sql = "UPDATE ec_option SET ec_option.option_name = %s, ec_option.option_label = %s, ec_option.option_type = %s, ec_option.option_required = %s, ec_option.option_error_text = %s WHERE ec_option.option_id = %d";
+		$rows_affected = $sql = "UPDATE ec_option SET ec_option.option_name = %s, ec_option.option_label = %s, ec_option.option_type = %s, ec_option.option_required = %s, ec_option.option_error_text = %s WHERE ec_option.option_id = %d";
 		$this->db->query( $this->db->prepare( $sql, $option['optionname'], $option['optionlabel'], $option['optiontype'], $option['optionrequired'], $option['optionerror'], $optionid ) );
 		
 		//if we are switching from a swatch based option to other option, remove images
@@ -117,7 +117,7 @@ class ec_admin_options{
 			$this->db->query( $this->db->prepare( $sql,  $optionid ) );
 		}
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -130,7 +130,7 @@ class ec_admin_options{
 		$option = (array)$option;
 		
 		$sql = "INSERT INTO ec_option( ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required, ec_option.option_error_text ) VALUES( %s, %s, %s, %s, %s )";
-		$this->db->query( $this->db->prepare( $sql, $option['optionname'], $option['optionlabel'], $option['optiontype'], $option['optionrequired'], $option['optionerror'] ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $option['optionname'], $option['optionlabel'], $option['optiontype'], $option['optionrequired'], $option['optionerror'] ) );
 		
 		$option_id_parent = $this->db->insert_id;
 		
@@ -146,7 +146,7 @@ class ec_admin_options{
 			$this->db->query( $this->db->prepare( $sql, $option_id_parent, $op_name ) );
 		}
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );

@@ -75,9 +75,9 @@ class ec_admin_manufacturers{
 		
 		// Delete EC DB Items
 		$sql = "DELETE FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $manufacturerid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $manufacturerid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -103,9 +103,9 @@ class ec_admin_manufacturers{
 		
 		// Update EC DB Item
 		$sql = "UPDATE ec_manufacturer SET ec_manufacturer.name = %s, ec_manufacturer.clicks = %s WHERE ec_manufacturer.manufacturer_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $manufacturer['manufacturername'], $manufacturer['clicks'], $manufacturerid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $manufacturer['manufacturername'], $manufacturer['clicks'], $manufacturerid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -119,9 +119,9 @@ class ec_admin_manufacturers{
 		
 		// Insert EC DB Item
 		$sql = "INSERT INTO ec_manufacturer( ec_manufacturer.name, ec_manufacturer.clicks ) VALUES( '%s', '%s' )";
-		$this->db->query( $this->db->prepare( $sql, $manufacturer['manufacturername'], $manufacturer['clicks'] ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $manufacturer['manufacturername'], $manufacturer['clicks'] ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			$manufacturerid = $this->db->insert_id;
 		
 			// Insert a WordPress Custom post type post.

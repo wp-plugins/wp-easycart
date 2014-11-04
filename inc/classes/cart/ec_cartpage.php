@@ -2342,7 +2342,7 @@ class ec_cartpage{
 		
 		$user = $this->mysqli->get_user( $email, $password );
 		if( $user && $user->user_level == "pending" ){
-			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login&ec_cart_error=not_activated");
+			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=not_activated");
 		}else if( $email == "guest"){
 			$_SESSION['ec_email'] = "guest";
 			$_SESSION['ec_username'] = "guest";
@@ -2377,10 +2377,8 @@ class ec_cartpage{
 				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=login_failed");
 			}else if( isset( $_POST['ec_cart_subscription'] ) ){
 				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $_POST['ec_cart_subscription'] . "&ec_cart_error=login_failed" );
-			}else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=login_failed");
 			}else{
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login&ec_cart_error=login_failed");
+				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=login_failed");
 			}
 		}
 	}

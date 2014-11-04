@@ -803,99 +803,54 @@ AUTO_INCREMENT=3 CHARACTER SET 'utf8' COLLATE
  'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_setting` (
-  `setting_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT
-   'This is the primary key for ec_setting.',
-  `site_url` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
-   'This is the site url.',
-  `reg_code` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
-   'This is the registration code entered by the user.',
+  `setting_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT 'This is the primary key for ec_setting.',
+  `site_url` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is the site url.',
+  `reg_code` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is the registration code entered by the user.',
   `storeversion` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `storetype` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'wordpress',
   `storepage` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT 'store',
   `cartpage` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT 'cart',
   `accountpage` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT 'account',
-  `timezone` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT
-   'Europe/London',
-  `shipping_method` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT
-   'method' COMMENT 'price, weight, method, live',
-  `shipping_expedite_rate` FLOAT(11,2) NOT NULL DEFAULT 0.00 COMMENT
-   'This is a static value that can be used or not used by the customer for pricing and weight based methods.'
-   ,
-  `shipping_handling_rate` FLOAT(11,2) NOT NULL DEFAULT 0.00 COMMENT
-   'This is a global 1 time handling charge added to all shipping methods if present.'
-   ,
-  `ups_access_license_number` VARCHAR(255) COLLATE utf8_general_ci NOT NULL
-   DEFAULT '' COMMENT 'Your UPS access license number for UPS based shipping.',
-  `ups_user_id` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'Your UPS user ID for UPS based shipping.',
-  `ups_password` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'Your UPS password for UPS based shipping.',
-  `ups_ship_from_zip` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'Your zip code for UPS based shipping.',
-  `ups_shipper_number` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'Your UPS account shipper number for UPS based shipping.',
-  `ups_country_code` VARCHAR(9) COLLATE utf8_general_ci NOT NULL DEFAULT 'US'
-   COMMENT 'Your country code for UPS based shipping.',
-  `ups_weight_type` VARCHAR(19) COLLATE utf8_general_ci NOT NULL DEFAULT 'LBS'
-   COMMENT 'Your preferred weight label for UPS based shipping (lbs, kgs).',
-  `ups_conversion_rate` FLOAT(9,3) NOT NULL DEFAULT '1.000' 
-   COMMENT 'Converts the returned pricing.',
-  `usps_user_name` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'Your USPS user name for USPS shipping.',
-  `usps_ship_from_zip` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'Your zip code for USPS shipping.',
-  `fedex_key` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
-   'Your FedEx account key for FedEx shipping.',
-  `fedex_account_number` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT
-   '' COMMENT 'Your FedEx account number for FedEx shipping.',
-  `fedex_meter_number` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'Your FedEx account meter number for FedEx shipping.',
-  `fedex_password` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'Your FedEx account password for FedEx shipping.',
-  `fedex_ship_from_zip` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT
-   '' COMMENT 'Your FedEx ship from zip for FedEx shipping.',
-  `fedex_weight_units` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT
-   'LB' COMMENT 'The weight unit for FedEx shipping (LB or KG).',
-  `fedex_country_code` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT
-   'US' COMMENT 'The country code for FedEx shipping.',
-  `fedex_conversion_rate` FLOAT(9,3) NOT NULL DEFAULT 
-   '1.000' COMMENT 'Converts the returned pricing.',
-  `fedex_test_account` TINYINT(1) NOT NULL DEFAULT 
-   '0' COMMENT 'If true, FedEx account is a test account.',
-  `auspost_api_key` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Your Australian Post API Key',
-  `auspost_ship_from_zip` VARCHAR(55) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Your Australian Post Ship From Postal Code',
-  `dhl_site_id` VARCHAR(155) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Your DHL Site ID.',
-  `dhl_password` VARCHAR(155) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Your DHL Password.',
-  `dhl_ship_from_country` VARCHAR(25) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   'US' COMMENT 'Your DHL Ship From Country.',
-  `dhl_ship_from_zip` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Your DHL Ship From Zip.',
-  `dhl_weight_unit` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   'LB' COMMENT 'Your DHL Weight Unit.',
-  `dhl_test_mode` TINYINT(1) NOT NULL DEFAULT 
-   '0' COMMENT 'Use DHL Test Mode.',
-   `fraktjakt_customer_id` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Fraktjakt Customer ID.',
-   `fraktjakt_login_key` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Fraktjakt Login Key.',
-   `fraktjakt_conversion_rate` DOUBLE(15,3) NOT NULL DEFAULT 
-   '1.000' COMMENT 'The conversion rate between your base currency and SEK.',
-   `fraktjakt_test_mode` TINYINT(1) NOT NULL DEFAULT 
-   '0' COMMENT 'Use test mode for Fraktjakt.',
-   `fraktjakt_address` VARCHAR(120) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Fraktjakt used for shipping estimate.',
-   `fraktjakt_city` VARCHAR(55) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Fraktjakt used for shipping estimate.',
-   `fraktjakt_state` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Fraktjakt used for shipping estimate.',
-   `fraktjakt_zip` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Fraktjakt used for shipping estimate.',
-   `fraktjakt_country` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT 
-   '' COMMENT 'Fraktjakt used for shipping estimate.',
+  `timezone` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT 'Europe/London',
+  `shipping_method` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT 'method' COMMENT 'price, weight, method, live',
+  `shipping_expedite_rate` FLOAT(11,2) NOT NULL DEFAULT 0.00 COMMENT 'This is a static value that can be used or not used by the customer for pricing and weight based methods.',
+  `shipping_handling_rate` FLOAT(11,2) NOT NULL DEFAULT 0.00 COMMENT 'This is a global 1 time handling charge added to all shipping methods if present.',
+  `ups_access_license_number` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your UPS access license number for UPS based shipping.',
+  `ups_user_id` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your UPS user ID for UPS based shipping.',
+  `ups_password` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your UPS password for UPS based shipping.',
+  `ups_ship_from_zip` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your zip code for UPS based shipping.',
+  `ups_shipper_number` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your UPS account shipper number for UPS based shipping.',
+  `ups_country_code` VARCHAR(9) COLLATE utf8_general_ci NOT NULL DEFAULT 'US' COMMENT 'Your country code for UPS based shipping.',
+  `ups_weight_type` VARCHAR(19) COLLATE utf8_general_ci NOT NULL DEFAULT 'LBS' COMMENT 'Your preferred weight label for UPS based shipping (lbs, kgs).',
+  `ups_conversion_rate` FLOAT(9,3) NOT NULL DEFAULT '1.000'  COMMENT 'Converts the returned pricing.',
+  `usps_user_name` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your USPS user name for USPS shipping.',
+  `usps_ship_from_zip` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your zip code for USPS shipping.',
+  `fedex_key` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your FedEx account key for FedEx shipping.',
+  `fedex_account_number` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your FedEx account number for FedEx shipping.',
+  `fedex_meter_number` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your FedEx account meter number for FedEx shipping.',
+  `fedex_password` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your FedEx account password for FedEx shipping.',
+  `fedex_ship_from_zip` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your FedEx ship from zip for FedEx shipping.',
+  `fedex_weight_units` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'LB' COMMENT 'The weight unit for FedEx shipping (LB or KG).',
+  `fedex_country_code` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'US' COMMENT 'The country code for FedEx shipping.',
+  `fedex_conversion_rate` FLOAT(9,3) NOT NULL DEFAULT  '1.000' COMMENT 'Converts the returned pricing.',
+  `fedex_test_account` TINYINT(1) NOT NULL DEFAULT  '0' COMMENT 'If true, FedEx account is a test account.',
+  `auspost_api_key` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT  '' COMMENT 'Your Australian Post API Key',
+  `auspost_ship_from_zip` VARCHAR(55) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your Australian Post Ship From Postal Code',
+  `dhl_site_id` VARCHAR(155) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your DHL Site ID.',
+  `dhl_password` VARCHAR(155) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your DHL Password.',
+  `dhl_ship_from_country` VARCHAR(25) COLLATE utf8_general_ci NOT NULL DEFAULT 'US' COMMENT 'Your DHL Ship From Country.',
+  `dhl_ship_from_zip` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Your DHL Ship From Zip.',
+  `dhl_weight_unit` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'LB' COMMENT 'Your DHL Weight Unit.',
+  `dhl_test_mode` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Use DHL Test Mode.',
+  `fraktjakt_customer_id` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Fraktjakt Customer ID.',
+  `fraktjakt_login_key` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Fraktjakt Login Key.',
+  `fraktjakt_conversion_rate` DOUBLE(15,3) NOT NULL DEFAULT '1.000' COMMENT 'The conversion rate between your base currency and SEK.',
+  `fraktjakt_test_mode` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Use test mode for Fraktjakt.',
+  `fraktjakt_address` VARCHAR(120) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Fraktjakt used for shipping estimate.',
+  `fraktjakt_city` VARCHAR(55) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Fraktjakt used for shipping estimate.',
+  `fraktjakt_state` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Fraktjakt used for shipping estimate.',
+  `fraktjakt_zip` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Fraktjakt used for shipping estimate.',
+  `fraktjakt_country` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Fraktjakt used for shipping estimate.',
 
   PRIMARY KEY (`setting_id`)
 )ENGINE=MyISAM
@@ -1556,9 +1511,9 @@ INSERT INTO `ec_timezone` (`timezone_id`, `name`, `identifier`)
   (140,'(GMT+12:00) Wellington','Pacific/Auckland')
 ;
 INSERT INTO `ec_perpage` (`perpage_id`, `perpage`) VALUES
-  (1,16),
-  (2,48),
-  (3,3)
+  (1,50),
+  (2,25),
+  (3,10)
 ;
 INSERT INTO `ec_pricepoint` (`pricepoint_id`, `is_less_than`, `is_greater_than`
 , `low_point`, `high_point`, `order`) VALUES
@@ -1566,7 +1521,7 @@ INSERT INTO `ec_pricepoint` (`pricepoint_id`, `is_less_than`, `is_greater_than`
   (2,0,0,25,49.99,4),
   (3,0,0,50,99.99,5),
   (4,0,0,100,299.99,6),
-  (5,0,0,299.99,9999999,7),
+  (5,0,2,299.99,0,7),
   (6,0,0,10,14.99,1),
   (7,0,0,15,19.99,2),
   (8,0,0,20,24.99,3)
@@ -1935,7 +1890,7 @@ INSERT INTO `ec_zone_to_location` (`zone_to_location_id`, `zone_id`, `iso2_cnt`,
   (44, 2, 'SR', ''),
   (45, 2, 'UY', ''),
   (46, 2, 'VE', ''),
-  (47, 4, 'AU', ''),
+  (47, 6, 'AU', ''),
   (48, 7, 'AS', ''),
   (49, 7, 'AU', ''),
   (50, 7, 'CK', ''),

@@ -223,7 +223,7 @@ jQuery( document ).bind( 'keydown', function( e ){
   </table>
 </div>
 
-<p>The WordPress EasyCart runs best on its administrative console software, but we do offer a <em><strong>free editor</strong></em> which can be accessed here: <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=simple-admin">Simple Store Manager</a></p>
+<p style="float:left; width:100%">The WordPress EasyCart runs best on its administrative console software, but we do offer a <em><strong>free editor</strong></em> which can be accessed here: <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=simple-admin">Simple Store Manager</a></p>
 
 <script type="text/javascript">
 function ec_admin_open( panel ){

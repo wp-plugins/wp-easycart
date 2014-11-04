@@ -41,7 +41,7 @@ class ec_db_admin extends ec_db{
 	}
 	
 	public function update_setting( $option_name, $option_value ){
-		$sql = "UPDATE ec_setting SET " . mysql_real_escape_string( $option_name ) . "=%s WHERE setting_id = 1";
+		$sql = "UPDATE ec_setting SET " . $this->mysqli->prepare( $option_name ) . "=%s WHERE setting_id = 1";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $option_value ) );
 	}
 	

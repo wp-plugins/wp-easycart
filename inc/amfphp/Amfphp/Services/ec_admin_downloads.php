@@ -52,9 +52,9 @@ class ec_admin_downloads{
 	
 	function deletedownload( $downloadid ){
 		$sql = "DELETE FROM ec_download WHERE ec_download.download_id = %s";
-		$this->db->query( $this->db->prepare( $sql, $downloadid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $downloadid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -65,12 +65,12 @@ class ec_admin_downloads{
 	function updatedownload( $download){
 		
 		$sql = "UPDATE ec_download SET ec_download.download_count = %s, ec_download.download_file_name = %s, ec_download.is_amazon_download = %s,  ec_download.amazon_key = %s WHERE ec_download.download_id = %s";
-		$this->db->query( $this->db->prepare( $sql, $download->totaldownloads, $download->downloadproductid, $download->is_amazon_download, $download->amazon_key, $download->uniqueid) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $download->totaldownloads, $download->downloadproductid, $download->is_amazon_download, $download->amazon_key, $download->uniqueid) );
 		
 		$sql = "UPDATE ec_orderdetail SET ec_orderdetail.download_file_name = %s, ec_orderdetail.is_amazon_download = %s, ec_orderdetail.amazon_key = %s WHERE ec_orderdetail.download_key = %s";
 		$this->db->query( $this->db->prepare( $sql, $download->downloadproductid, $download->is_amazon_download, $download->amazon_key, $download->uniqueid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );

@@ -16,7 +16,6 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-language" && is
 	update_option( 'ec_option_language', $_POST['ec_option_language'] );
 }
 
-
 ?>
 <?php 
 
@@ -80,6 +79,8 @@ for( $i=0; $i<count( $language->languages ); $i++ ){
 <?php }?>
 <div class="ec_language_holder" id="<?php echo $file_name; ?>">
 	<div class="ec_language_header"><?php echo $language->language_data->{$file_name}->label; ?></div>
+    
+    <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-language&ec_action=export-language&ec_language=<?php echo $file_name; ?>" class="ec_export_button">Export <?php echo $language->language_data->{$file_name}->label; ?> File</a>
     
 	<?php
 	foreach( $language->language_data->{$file_name}->options as $language_section ){

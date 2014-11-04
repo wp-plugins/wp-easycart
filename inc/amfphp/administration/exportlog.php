@@ -17,79 +17,39 @@
 */
 
 //load our connection settings
-require_once('../../../../../../wp-config.php');
-//set our connection variables
-$dbhost = DB_HOST;
-$dbname = DB_NAME;
-$dbuser = DB_USER;
-$dbpass = DB_PASSWORD;	
-//make a connection to our database
-mysql_connect($dbhost, $dbuser, $dbpass);
-mysql_select_db ($dbname);
-
-
-
-
+ob_start( NULL, 4096 );
+require_once( '../../../../../../wp-load.php' );
+global $wpdb;
 
 $requestID = "-1";
+if( isset( $_GET['reqID'] ) )
+	$requestID = $_GET['reqID'];
 
-if (isset($_GET['reqID'])) {
+$user_sql = "SELECT  ec_user.*, ec_role.admin_access FROM ec_user LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE ec_user.password = %s AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)";
+$users = $wpdb->get_results( $wpdb->prepare( $user_sql, $requestID ) );
 
-  $requestID = $_GET['reqID'];
-
-}
-
-
-$usersqlquery = sprintf("SELECT  ec_user.*, ec_role.admin_access FROM  ec_user  LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE  ec_user.password = '%s' AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)", mysql_real_escape_string($requestID));
-
-$userresult = mysql_query($usersqlquery) or die(mysql_error());
-
-$users = mysql_fetch_assoc($userresult);
-
-
-
-if ($users || is_user_logged_in()) {
-
-	//create 2 variables for use later on
+if( !empty( $users ) || is_user_logged_in( ) ){
 
 	$header = "";
-
 	$data = "";
+	$sql = "SELECT * FROM ec_response ORDER BY ec_response.response_id ASC";
+	$results = $wpdb->get_results( $sql );
+	$keys = array_keys( $results[0] );
 	
-	$sqlquery = sprintf("select * from ec_response order by ec_response.response_id asc");
-
-	$result = mysql_query($sqlquery) or die(mysql_error());
-	
-	$count = mysql_num_fields($result);
-
-	//now loop through and get database field names
-
-	for ($i = 0; $i < $count; $i++){
-
-		$header .= mysql_field_name($result, $i)."\t";
-
+	foreach( $keys as $key ){
+		$header .= $key."\t";
 	}
 
-	while($row = mysql_fetch_row($result)){
+	foreach( $results as $result ){
 
 		$line = '';
+		foreach( $result as $value ){
 
-		foreach($row as $value){
-
-			if(!isset($value) || $value == ""){
-
+			if( !isset( $value ) || $value == "" ){
 				$value = "\t";
 
 			}else{
-
-				# important to escape any quotes to preserve them in the data.
-
-				$value = str_replace('"', '""', $value);
-
-				# needed to encapsulate data in quotes because some data might be multi line.
-
-				# the good news is that numbers remain numbers in Excel even though quoted.
-
+				$value = str_replace( '"', '""', $value);
 				$value = '"' . utf8_decode($value) . '"' . "\t";
 
 			}
@@ -98,39 +58,20 @@ if ($users || is_user_logged_in()) {
 
 		}
 
-		$data .= trim($line)."\n";
+		$data .= trim( $line )."\n";
 
 	}
-
-	# this line is needed because returns embedded in the data have "\r"
-
-	# and this looks like a "box character" in Excel
-
-	$data = str_replace("\r", "", $data);
-
 	
-	# Nice to let someone know that the search came up empty.
+	$data = str_replace( "\r", "", $data );
 
-	# Otherwise only the column name headers will be output to Excel.
-
-	if ($data == "") {
-
-	$data = "\nno matching records found\n";
-
+	if( $data == "" ){
+		$data = "\nno matching records found\n";
 	}
-
-	# This line will stream the file to the user rather than spray it across the screen
-
-	//header("Content-Type: application/vnd.ms-excel; name='excel'");
-
+	
 	header("Content-type: application/vnd.ms-excel");
-
 	header("Content-Transfer-Encoding: binary"); 
-
 	header("Content-Disposition: attachment; filename=gatewaylog.xls");
-
 	header("Pragma: no-cache");
-
 	header("Expires: 0");
 
 	echo $header."\n".$data; 

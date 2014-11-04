@@ -79,13 +79,13 @@ class ec_admin_categories{
 		
 		// Delete Category	
 		$sql = "DELETE FROM ec_category WHERE ec_category.category_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $categoryid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $categoryid ) );
 		
 		// Delete Category Items
 		$sql = "DELETE FROM ec_categoryitem WHERE ec_categoryitem.category_id = %d";
 		$this->db->query( $this->db->prepare( $sql, $categoryid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -96,7 +96,7 @@ class ec_admin_categories{
 	function updatecategory( $categoryid, $categoryname ){
 		
 		$sql = "UPDATE ec_category SET category_name = %s WHERE category_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $categoryname, $categoryid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $categoryname, $categoryid ) );
 		
 		// Update WordPress Post
 		$sql = "SELECT post_id FROM ec_category WHERE category_id = %d";
@@ -114,7 +114,7 @@ class ec_admin_categories{
 		// Update WordPress Post
 		wp_update_post( $post );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -125,9 +125,9 @@ class ec_admin_categories{
 	function addcategory( $categoryname ){
 		
 		$sql = "INSERT INTO ec_category( category_name ) VALUES( %s )";
-		$this->db->query( $this->db->prepare( $sql, $categoryname ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $categoryname ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			// Insert a WordPress Custom post type post.
 			$category_id = $this->db->insert_id;
 			$post = array(	'post_content'	=> "[ec_store groupid=\"" . $category_id . "\"]",
@@ -166,9 +166,9 @@ class ec_admin_categories{
 	function deletecategoryitem( $categoryitemid ){
 		  
 		$sql = "DELETE FROM ec_categoryitem WHERE ec_categoryitem.categoryitem_id = %d";
-		$this->db->query( $this->db->prepare( $sql, $categoryitemid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $categoryitemid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );
@@ -179,9 +179,9 @@ class ec_admin_categories{
 	function addcategoryitem( $productid, $categoryid ){
 		
 		$sql = "Insert into ec_categoryitem( product_id, category_id ) values( %d, %d )";
-		$this->db->query( $this->db->prepare( $sql, $productid, $categoryid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $productid, $categoryid ) );
 		
-		if( !mysql_error( ) ){
+		if( $rows_affected ){
 			return array( "success" );
 		}else{
 			return array( "error" );

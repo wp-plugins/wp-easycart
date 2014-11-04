@@ -17,40 +17,19 @@
 */
 
 //load our connection settings
-require_once('../../../../../../wp-config.php');
-//set our connection variables
-$dbhost = DB_HOST;
-$dbname = DB_NAME;
-$dbuser = DB_USER;
-$dbpass = DB_PASSWORD;	
-//make a connection to our database
-mysql_connect($dbhost, $dbuser, $dbpass);
-mysql_select_db ($dbname);
-
-
-
-
+ob_start( NULL, 4096 );
+require_once( '../../../../../../wp-load.php' );
+global $wpdb;
 
 $requestID = "-1";
+if( isset( $_GET['reqID'] ) )
+	$requestID = $_GET['reqID'];
 
-if (isset($_GET['reqID'])) {
+$user_sql = "SELECT  ec_user.*, ec_role.admin_access FROM ec_user LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE ec_user.password = %s AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)";
+$users = $wpdb->get_results( $wpdb->prepare( $user_sql, $requestID ) );
 
-  $requestID = $_GET['reqID'];
+if( !empty( $users ) || is_user_logged_in( ) ){
 
-}
-
-
-$usersqlquery = sprintf("SELECT  ec_user.*, ec_role.admin_access FROM  ec_user  LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE  ec_user.password = '%s' AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)", mysql_real_escape_string($requestID));
-
-$userresult = mysql_query($usersqlquery) or die(mysql_error());
-
-$users = mysql_fetch_assoc($userresult);
-
-
-
-if ($users || is_user_logged_in()) {
-
-	//Flash File Data
 	$filename = $_FILES['Filedata']['name'];	
 	$filetmpname = $_FILES['Filedata']['tmp_name'];	
 	$fileType = $_FILES["Filedata"]["type"];
@@ -58,12 +37,11 @@ if ($users || is_user_logged_in()) {
 	$explodedfilename = pathinfo($filename);
 	$nameoffile = $explodedfilename['filename'];
 	$fileextension = $explodedfilename['extension'];
-	move_uploaded_file($_FILES['Filedata']['tmp_name'], "productimportfile.".$fileextension);
+	move_uploaded_file( $_FILES['Filedata']['tmp_name'], "productimportfile.".$fileextension );
 
-} else {
+}else{
 
 	echo "Not Authorized...";
 
 }
-
 ?>

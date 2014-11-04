@@ -54,7 +54,7 @@ class ec_admin_newsletter{
 			$phpmailmessage .= "Content-Transfer-Encoding: 7bit\n\n";
 			//add the main message the user types in
 			$phpmailmessage .= $themessage;
-			$phpmailunsubscribelink = "http://" . $_SERVER['HTTP_HOST'] . "/wp-easycart/inc/amfphp/administration/unsubscribe.php?email=" . $subscriber->email;
+			$phpmailunsubscribelink = plugins_url( "/wp-easycart/inc/amfphp/administration/unsubscribe.php?email=" . $subscriber->email );
 			//now add the unsubscribe portion
 			$unsubscribemessage = "<br><br><br><br><center style='font-family: Arial, Helvetica, sans-serif; font-size: 9px;'>----------------------------------------------------------------------<br>Please click on the link below and you will be removed from this list.<br><a href='".$phpmailunsubscribelink."' style='color: #000; font-weight: bold; font-size: 10px;'>UNSUBSCRIBE</a><br>----------------------------------------------------------------------</center>";
 			

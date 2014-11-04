@@ -17,102 +17,51 @@
 */
 
 //load our connection settings
-require_once('../../../../../../wp-config.php');
-//set our connection variables
-$dbhost = DB_HOST;
-$dbname = DB_NAME;
-$dbuser = DB_USER;
-$dbpass = DB_PASSWORD;	
-//make a connection to our database
-mysql_connect($dbhost, $dbuser, $dbpass);
-mysql_select_db ($dbname);
+ob_start( NULL, 4096 );
+require_once( '../../../../../../wp-load.php' );
+global $wpdb;
 
+$requestID = "-1";
+if( isset( $_GET['reqID'] ) )
+	$requestID = $_GET['reqID'];
 
+$user_sql = "SELECT  ec_user.*, ec_role.admin_access FROM ec_user LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE ec_user.password = %s AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)";
+$users = $wpdb->get_results( $wpdb->prepare( $user_sql, $requestID ) );
 
-$settings_sql = "SELECT max_width, max_height FROM ec_setting";
+if( !empty( $users ) || is_user_logged_in( ) ){
 
-$settings_result = mysql_query($settings_sql);
-
-$settings_row = mysql_fetch_assoc($settings_result);
-
-//Flash Variables
-
-$date = $_POST['datemd5'];
-
-$requestID = $_POST['reqID'];
-
-$optionitemid = $_POST['optionitemid'];
-
-$maxwidth = $settings_row['max_width'];
-
-$maxheight = $settings_row['max_height'];
-
-$imagequality = $_POST['imagequality'];//set this between 0 and $imagequality  for .jpg quality resizing
-
-
-//Get User Information
-
-
-$usersqlquery = sprintf("SELECT  ec_user.*, ec_role.admin_access FROM  ec_user  LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE  ec_user.password = '%s' AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)", mysql_real_escape_string($requestID));
-
-$userresult = mysql_query($usersqlquery);
-
-$users = mysql_fetch_assoc($userresult);
-
-
-if ($users || is_user_logged_in()) {
-
-	//Flash File Data
+	$settings_sql = "SELECT max_width, max_height FROM ec_setting";
+	$settings_row = $wpdb->get_row( $settings_sql );
+	
+	$date = $_POST['datemd5'];
+	$optionitemid = $_POST['optionitemid'];
+	$maxwidth = $settings_row['max_width'];
+	$maxheight = $settings_row['max_height'];
+	$imagequality = $_POST['imagequality'];
 
 	$filename = $_FILES['Filedata']['name'];	
-
 	$filetmpname = $_FILES['Filedata']['tmp_name'];	
-
 	$fileType = $_FILES["Filedata"]["type"];
+	$fileSizeMB = ( $_FILES["Filedata"]["size"] / 1024 / 1000 );
 
-	$fileSizeMB = ($_FILES["Filedata"]["size"] / 1024 / 1000);
-
-	//$explodedfilename = explode(".", $filename);
-
-	//$nameoffile = $explodedfilename[0];
-
-	//$fileextension = $explodedfilename[1];
-	$explodedfilename = pathinfo($filename);
+	$explodedfilename = pathinfo( $filename );
 	$nameoffile = $explodedfilename['filename'];
 	$fileextension = $explodedfilename['extension'];
 
+	include( "resizer.php" );
+
+	move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension );
+	copy( "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension );
+
+	$resizeObj = new resizer( "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension );
+	$resizeObj->resize( $maxwidth, $maxheight, "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
 	
+	$resizeObj = new resizer( "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension );
+	$resizeObj->resize( $maxwidth, $maxheight, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
 
-	include("resizer.php");
-
-
-	// Place file on server, into the images folder
-
-	move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension);
-	copy( "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension);
-
-	//resize original max image
-
-	$resizeObj = new resizer("../../../products/swatches/".$nameoffile."_".$date.".".$fileextension);
-	$resizeObj->resize($maxwidth, $maxheight, "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
-	
-	$resizeObj = new resizer("../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension);
-	$resizeObj->resize($maxwidth, $maxheight, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
-
-	
-	//if we are updating, then update the db field, inserting happens later
-
-	//Create SQL Query 
-	
 	$sqlfilename = $nameoffile . '_' . $date . '.' .$fileextension;	
-	$sql = sprintf("Update ec_optionitem SET ec_optionitem.optionitem_icon = '%s' WHERE ec_optionitem.optionitem_id = '%s'", 
-		 mysql_real_escape_string($sqlfilename),
-		 mysql_real_escape_string($optionitemid));
-
-	//Run query on database;
-
-	mysql_query($sql);
+	$sql = "UPDATE ec_optionitem SET ec_optionitem.optionitem_icon = %s WHERE ec_optionitem.optionitem_id = %s";
+	$wpdb->query( $wpdb->prepare( $sql, $sqlfilename, $optionitemid ) );
 
 }
-
 ?>

@@ -1008,18 +1008,12 @@ function ec_install_demo_data( ){
 	$sqlArray = explode(';', $sqlFile);
 	
 	//Process the sql file by statements
-	foreach ($sqlArray as $stmt) {
-	if (strlen($stmt)>3){
-		$result = mysql_query($stmt);
-		
-		  if (mysql_error()){
-			 $sqlErrorCode = mysql_errno();
-			 $sqlErrorText = mysql_error();
-			 $sqlStmt      = $stmt;
-			 break;
-		  }
-	   }
-	} 
+	global $wpdb;
+	foreach( $sqlArray as $stmt ){
+		if( strlen($stmt) > 3 ){
+			$results = $wpdb->query( $stmt );
+		} 
+	}
 	
 	// Unzip Products
 	$zip = new ZipArchive();
@@ -1130,18 +1124,12 @@ function ec_uninstall_demo_data( ){
 	$sqlArray = explode(';', $sqlFile);
 	
 	//Process the sql file by statements
-	foreach ($sqlArray as $stmt) {
-	if (strlen($stmt)>3){
-		$result = mysql_query($stmt);
-		
-		  if (mysql_error()){
-			 $sqlErrorCode = mysql_errno();
-			 $sqlErrorText = mysql_error();
-			 $sqlStmt      = $stmt;
-			 break;
-		  }
-	   }
-	} 
+	global $wpdb;
+	foreach( $sqlArray as $stmt ){
+		if( strlen($stmt) > 3 ){
+			$results = $wpdb->query( $stmt );
+		} 
+	}
 	
 	// Unzip Products
 	$zip = new ZipArchive();
