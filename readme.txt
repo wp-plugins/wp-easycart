@@ -18,7 +18,7 @@ clothing and more!  And now with WordPress, the powerful features are still very
 
 WP EasyCart provides administrative software, so there is no need to use WordPress as a management system for your products. Desktop PC, Mac, iPad, and Android software is available to download and allows you to control the myriad of options the software has to offer.
 
-[youtube http://www.youtube.com/watch?v=M1uyPcAYGoU]
+[youtube http://www.youtube.com/watch?v=ldxkfqqHv5Q]
 
 = POPULAR LINKS =
 
@@ -76,7 +76,7 @@ As with all wordpress plugins, even WordPress themselves suggest to always backu
 **We have full documentation at [WP EasyCart](http://www.wpeasycart.com/ "WP EasyCart website") including an online users manual, video tutorials, and community forums.**
 
 = Watch our Installation Video =
-[youtube http://www.youtube.com/watch?v=M1uyPcAYGoU]
+[youtube http://www.youtube.com/watch?v=ldxkfqqHv5Q]
 
 More videos can be found at our website!
 
