@@ -203,7 +203,7 @@ jQuery( '#ec_product_quickview_container_<?php echo $product->model_number; ?>' 
         	<div class="ec_flip_container"<?php if( $product->image_hover_type != 1 ){ ?> style="display:none;"<?php }?>>
             	<div class="ec_flipper">
 					<div class="ec_image_front"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
-					<div class="ec_image_back"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
+					<div class="ec_image_back"><img src="<?php echo $product->get_second_image_url( ); ?>" /></div>
         		</div>
             </div>
             <?php }
@@ -212,7 +212,7 @@ jQuery( '#ec_product_quickview_container_<?php echo $product->model_number; ?>' 
         	<div class="ec_fade_container" style="height:<?php echo $image_height_desktop; ?>;<?php if( $product->image_hover_type != 2 ){ ?> display:none;<?php }?>">
             	<div class="ec_fadder">
 					<div class="ec_image_front_2"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
-					<div class="ec_image_back_2"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
+					<div class="ec_image_back_2"><img src="<?php echo $product->get_second_image_url( ); ?>" /></div>
         		</div>
             </div>
             <?php }
@@ -256,7 +256,7 @@ jQuery( '#ec_product_quickview_container_<?php echo $product->model_number; ?>' 
 			if( ( $admin_access || $product->image_hover_type == 9 ) && !$ipad && !$iphone ){ ?>
         	<div<?php if( $product->image_hover_type != 9 ){ ?> style="display:none;"<?php }?> class="ec_slide_container">
             	<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_front_3" />
-				<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_back_3" />
+				<img src="<?php echo $product->get_second_image_url( ); ?>" class="ec_image_back_3" />
             </div>
             <?php }
 			
