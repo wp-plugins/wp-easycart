@@ -1080,7 +1080,9 @@ function ec_live_search_update( ){
 
 function ec_account_register_button_click2( ){
 	var top_half = ec_account_register_button_click( );
-	var bottom_half = ec_account_billing_information_update_click( );
+	var bottom_half = true;
+	if( jQuery( '#ec_account_billing_information_country' ).length )
+		bottom_half = ec_account_billing_information_update_click( );
 	var extra_notes_validated = ec_account_register_validate_notes( );
 	
 	if( top_half && bottom_half && extra_notes_validated ){
