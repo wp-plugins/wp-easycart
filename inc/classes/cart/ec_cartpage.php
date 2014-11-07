@@ -368,8 +368,15 @@ class ec_cartpage{
 			
 		}else if( isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "third_party" ){
 			$order_id = $_GET['order_id'];
-			$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-			$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			
+			if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] ){
+				$order = $this->mysqli->get_guest_order_row( $order_id, $_SESSION['ec_guest_key'] );
+				$order_details = $this->mysqli->get_guest_order_details( $this->order_id, $_SESSION['ec_guest_key'] );
+			}else{
+				$order = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+				$order_details = $this->mysqli->get_order_details( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			}
+			
 			//google analytics
 			$this->analytics = new ec_googleanalytics($order_details, $order->shipping_total, $order->tax_total , $order->grand_total, $order_id);
 			$google_urchin_code = get_option('ec_option_googleanalyticsid');
@@ -1377,7 +1384,9 @@ class ec_cartpage{
 	/* START PAYMENT INFORMATION FUNCTIONS */
     public function display_payment( ){
 		if(	$this->cart->total_items > 0 ){
-			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_payment.php' ) )	
+			if( get_option( 'ec_option_payment_third_party' ) == "paypal_advanced" ){ 
+				$this->payment->show_paypal_iframe( $this->order_totals->grand_total );
+			}else if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_payment.php' ) )	
 				include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_payment.php' );
 			else
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_cart_payment.php' );
@@ -2427,10 +2436,8 @@ class ec_cartpage{
 		
 		if( isset( $_GET['subscription'] ) ){
 			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $_GET['subscription'] );
-		}else if( get_option( 'ec_option_skip_cart_login' ) || file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){
-			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
 		}else{
-			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login");
+			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
 		}
 	}
 	
@@ -3304,6 +3311,16 @@ class ec_cartpage{
 	
 	public function get_shipping_method_name( ){
 		return $this->mysqli->get_shipping_method_name( $_SESSION['ec_shipping_method'] );
+	}
+	
+	public function get_payment_image_source( $image ){
+		
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/" . $image ) ){
+			return plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/" . $image );
+		}else{
+			return plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/" . $image );
+		}
+		
 	}
 	
 }

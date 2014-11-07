@@ -211,4 +211,5 @@ function ec_admin_save_cart_options( ){
 </div>
 
 <?php }?>
+<div style="clear:both;"></div>
 <div id="ec_current_media_size"></div>

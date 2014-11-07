@@ -215,7 +215,7 @@ function ec_admin_save_page_options( post_id ){
 	
 	jQuery( "#ec_admin_page_updated_loader" ).show( );
 	jQuery( "#ec_admin_loader_bg" ).show( );
-	jQuery( '#ec_page_editor' ).animate( { left:'-290px' }, {queue:false, duration:220} ).removeClass( 'ec_display_editor_true' ).addClass( 'ec_display_editor_false' );	
+	//jQuery( '#ec_page_editor' ).animate( { left:'-290px' }, {queue:false, duration:220} ).removeClass( 'ec_display_editor_true' ).addClass( 'ec_display_editor_false' );	
 	
 	var data = {
 		action: 'ec_ajax_save_page_options',

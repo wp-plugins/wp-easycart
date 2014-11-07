@@ -2051,7 +2051,7 @@
 				},
 				"account_orders_details_header_5":{
 					"title":"Account, Orders Details, Header 5",
-					"value":"Total Price"
+					"value":"Total"
 				},
 				"account_orders_details_gift_message":{
 					"title":"Account, Orders Details, Gift Card Message",
@@ -2385,6 +2385,35 @@
 				"greater_than":{
 					"title":"Greater Than Text",
 					"value":"Greater Than"
+				}
+			}
+		},
+		"ec_newsletter_popup":{
+			"label":"Newsletter Popup",
+			"options":{
+				"signup_form_title":{
+					"title":"Signup Form Title",
+					"value":"Newsletter Signup"
+				},
+				"signup_form_subtitle":{
+					"title":"Signup Form Subtitle",
+					"value":"Sign up now and never miss a thing!"
+				},
+				"signup_form_email_placeholder":{
+					"title":"Signup Form Email Placeholder",
+					"value":"email address"
+				},
+				"signup_form_button_text":{
+					"title":"Signup Form Button",
+					"value":"SUBMIT"
+				},
+				"signup_form_success_title":{
+					"title":"Signup Success Title",
+					"value":"You're Signed Up!"
+				},
+				"signup_form_success_subtitle":{
+					"title":"Signup Success Subtitle",
+					"value":"Now that you are signed up, we will send you exclusive offers periodically."
 				}
 			}
 		},

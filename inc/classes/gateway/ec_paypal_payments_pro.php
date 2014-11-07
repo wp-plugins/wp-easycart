@@ -66,6 +66,7 @@ class ec_paypal_payments_pro extends ec_gateway{
 											"COUNTRYCODE" 		=> $this->user->billing->country,
 											
 							 );
+		/* NO Longer Allowed
 		//Add Cart Items
 		for( $i=0; $i<count($this->cart->cart); $i++ ){
 			$paypal_payments_pro_data["L_NAME".$i] = substr( $this->cart->cart[$i]->title, 0, 127 );
@@ -84,6 +85,7 @@ class ec_paypal_payments_pro extends ec_gateway{
 		$paypal_payments_pro_data["SHIPTOZIP"] = substr( $this->user->shipping->zip, 0, 20 );
 		$paypal_payments_pro_data["SHIPTOCOUNTRY"] = substr( $this->user->shipping->country, 0, 2 );
 		$paypal_payments_pro_data["SHIPTOPHONENUM"] = substr( $this->user->shipping->phone, 0, 20 );
+		*/
 		
 		//Create parmlist
 		$paypal_payments_pro_string = "";

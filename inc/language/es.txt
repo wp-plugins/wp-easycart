@@ -2388,6 +2388,35 @@
 				}
 			}
 		},
+		"ec_newsletter_popup":{
+			"label":"Newsletter Popup",
+			"options":{
+				"signup_form_title":{
+					"title":"Signup Form Title",
+					"value":"Boletín de Inscripción"
+				},
+				"signup_form_subtitle":{
+					"title":"Signup Form Subtitle",
+					"value":"Inscríbete ahora y no te pierdas nada!"
+				},
+				"signup_form_email_placeholder":{
+					"title":"Signup Form Email Placeholder",
+					"value":"dirección de correo electrónico"
+				},
+				"signup_form_button_text":{
+					"title":"Signup Form Button",
+					"value":"ENVIAR"
+				},
+				"signup_form_success_title":{
+					"title":"Signup Success Title",
+					"value":"Usted está firmado para arriba!"
+				},
+				"signup_form_success_subtitle":{
+					"title":"Signup Success Subtitle",
+					"value":"Ahora que ya está registrado, le enviaremos ofertas exclusivas periódicamente."
+				}
+			}
+		},
 		"language_code":{
 			"label":"Language Code",
 			"options":{

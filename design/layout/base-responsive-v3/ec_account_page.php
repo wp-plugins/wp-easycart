@@ -39,4 +39,5 @@
 
 <?php $this->display_account_subscription_details( ); ?>
 
+<div style="clear:both;"></div>
 <div id="ec_current_media_size"></div>

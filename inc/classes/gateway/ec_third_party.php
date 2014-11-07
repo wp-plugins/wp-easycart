@@ -23,7 +23,11 @@ class ec_third_party{
 	public function initialize( $order_id  ){
 		
 		$this->order_id = $order_id;
-		$order_row = $this->mysqli->get_order_row( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+		
+		if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] )
+			$order_row = $this->mysqli->get_guest_order_row( $order_id, $_SESSION['ec_guest_key'] );
+		else
+			$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
 
 		$store_page_id = get_option('ec_option_storepage');
 		$this->store_page = get_permalink( $store_page_id );
@@ -47,7 +51,10 @@ class ec_third_party{
 		if( $order_row ){
 			$this->order = new ec_orderdisplay( $order_row );
 		
-			$order_details = $this->mysqli->get_order_details( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+			if( isset( $_SESSION['ec_is_guest'] ) && $_SESSION['ec_is_guest'] )
+				$order_details = $this->mysqli->get_guest_order_details( $order_id, $_SESSION['ec_guest_key'] );
+			else
+				$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
 			
 			if( $order_details ){
 				foreach( $order_details as $order_detail )

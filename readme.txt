@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 3.0.6
+Stable tag: 3.0.7
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,23 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.7 =
+* Feature - You can now turn on an automatic newsletter sign up popup window, prompting users to sign up for a newsletter the second they get to your site. This is available in the basic settings of your store setup.
+* Improvement - UPS Now offers negotiated rates for those that it applies to. Simply add your state code and check the negotiated rates box to complete these option.
+* Improvement - Quantity tracking error messages improved for the quick view and product details.
+* Fix - Child theme corrections for social icons, credit card icons, third party logos, and print receipt icon. Only applies to those using a child theme design with no images folder.
+* Fix - Third party guest checkout was failing, this has been corrected.
+* Fix - UPS using KG requires CM dimensions, this has been added/corrected.
+* Fix - DecoNetwork cart item images now displayed correctly in V3.
+* Fix - V3 does not include a list layout through the basic settings, but instead is selected as product type 6 in the live design editor. Corrections have been made to help this make sense.
+* Fix - Issue with single quotes in the product title with the Google Analtyics code crashing the javascript functionality of the store has been resolved.
+* Fix - Data exporters recently changed to support PHP 5.5, but were giving an error, this has been corrected.
+* Fix - Basic quantity tracking has been corrected when adding items to the cart.
+* Fix - Mixing and matching combos and swatches with option item quantity tracking fixed.
+* Fix - Live preview icons now available for no child themes and background color fixed for 2014 WordPress theme.
+* Fix - Custom CSS now allows single and double quotes, which helps when targeting specific input types in css.
+* Fix - List type 6 with inquiry mode fixed.
+* Fix - Improved order details display to be more compatible with more themes.
 = 3.0.6 =
 * Feature - You can now export language files as a backup or to reuse later.
 * Improvement - The shipping email is now available for customizations in the design folder.

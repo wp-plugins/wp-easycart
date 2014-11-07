@@ -1,13 +1,3 @@
-<?php
-if( get_option( 'ec_option_base_theme' ) ){
-	$folder = "wp-easycart-data";
-	$theme = get_option( 'ec_option_base_theme' );
-}else{
-	$folder = "wp-easycart";
-	$theme = get_option( 'ec_option_latest_theme' );
-}
-?>
-
 <div id="ec_account_order_details">
 
   <div class="ec_account_order_details_main_holder">
@@ -330,29 +320,37 @@ if( get_option( 'ec_option_base_theme' ) ){
 
         <div class="right">
 
-          <a href="<?php echo $this->account_page . $this->permalink_divider; ?>ec_page=print_receipt&order_id=<?php echo $this->order->order_id; ?>" target="_blank"><img src="<?php echo plugins_url( $folder . "/design/theme/" . $theme . "/images/print_icon.png" ); ?>" alt="print order" /></a>
+          <a href="<?php echo $this->account_page . $this->permalink_divider; ?>ec_page=print_receipt&order_id=<?php echo $this->order->order_id; ?>" target="_blank"><img src="<?php echo $this->get_print_order_icon_url( ); ?>" /></a>
 
         </div>
 
       </div>
 
-      <div class="ec_account_order_details_holder">
+      <table class="ec_account_order_details_table">
 
-        <div class="ec_account_order_details_header_row">
-
-          <div class="ec_account_order_details_column1_header"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_1' )?></div>
-
-          <div class="ec_account_order_details_column2_header"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_2' )?></div>
-
-          <div class="ec_account_order_details_column3_header"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_3' )?></div>
-
-          <div class="ec_account_order_details_column4_header"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_4' )?></div>
-
-          <div class="ec_account_order_details_column5_header"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_5' )?></div>
-
-        </div>
-
+        <thead>
+            
+            <tr>
+        
+                <th class="ec_account_orderitem_head_name" colspan="2"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_1' )?></th>
+        
+                <th class="ec_account_orderitem_head_price"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_3' )?></th>
+        
+                <th class="ec_account_orderitem_head_quantity"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_4' )?></th>
+        
+                <th class="ec_account_orderitem_head_total"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_header_5' )?></th>
+        
+            </tr>
+            
+        </thead>
+        
+        <tbody>
+        
         <?php $this->display_order_detail_product_list( ); ?>
+        
+        </tbody>
+      
+    </table>
 
         <?php if( get_option( 'ec_option_user_order_notes' ) && strlen( trim( $this->order->order_customer_notes ) ) > 0 ){ ?>
 

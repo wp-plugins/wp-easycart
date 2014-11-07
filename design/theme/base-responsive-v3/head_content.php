@@ -332,6 +332,10 @@ ul.ec_menu_vertical ul li a:hover, ul.ec_menu_vertical ul ul li a:hover, .ec_cat
 .ec_categorywidget a, .ec_manufacturer_widget a, .ec_pricepoint_widget a, .ec_group_widget a{ color:<?php echo $color1; ?>; }
 .ec_categorywidget a:hover, .ec_manufacturer_widget a:hover, .ec_pricepoint_widget a:hover, .ec_group_widget a:hover{ color:<?php echo $color2; ?> !important; }
 
+.ec_newsletter_content h1, .ec_newsletter_close{ color:<?php echo $color1; ?>; }
+.ec_newsletter_content input[type='submit']{ background-color:<?php echo $color1; ?>;}
+.ec_newsletter_content input[type='submit']:hover{ background-color:<?php echo $color2; ?>; }
+
 @media only screen and ( min-width:1140px ){
 	.ec_product_li{ width:<?php echo $display_width_desktop; ?>; }
 	.ec_product_li:nth-child( <?php echo $columns_desktop; ?>n+1 ){ clear:both; }
@@ -499,10 +503,33 @@ ul.ec_menu_vertical ul li a:hover, ul.ec_menu_vertical ul ul li a:hover, .ec_cat
 }
 
 <?php if( current_user_can( 'manage_options' ) ){ ?>
+
+<?php if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ipad_landscape.png" ) ){ ?>
 .ec_admin_preview_ipad_landscape > input{ background:url( '<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ipad_landscape.png" ); ?>' ) no-repeat; }
+<?php }else{ ?>
+.ec_admin_preview_ipad_landscape > input{ background:url( '<?php echo plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ipad_landscape.png" ); ?>' ) no-repeat; }
+<?php }?>
+
+<?php if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ipad_portrait.png" ) ){ ?>
 .ec_admin_preview_ipad_portrait > input{ background:url( '<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ipad_portrait.png" ); ?>') no-repeat; }
+<?php }else{ ?>
+.ec_admin_preview_ipad_portrait > input{ background:url( '<?php echo plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ipad_portrait.png" ); ?>' ) no-repeat; }
+<?php }?>
+
+<?php if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/iphone_landscape.png" ) ){ ?>
 .ec_admin_preview_iphone_landscape > input{ background:url( '<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/iphone_landscape.png" ); ?>') no-repeat; }
+<?php }else{ ?>
+.ec_admin_preview_iphone_landscape > input{ background:url( '<?php echo plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/iphone_landscape.png" ); ?>' ) no-repeat; }
+<?php }?>
+
+<?php if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/iphone_portrait.png" ) ){ ?>
 .ec_admin_preview_iphone_portrait > input{ background:url( '<?php echo plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/iphone_portrait.png" ); ?>') no-repeat; }
+<?php }else{ ?>
+.ec_admin_preview_iphone_portrait > input{ background:url( '<?php echo plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/iphone_portrait.png" ); ?>' ) no-repeat; }
+<?php }?>
+
+.ec_admin_preview_ipad_landscape > input:hover, .ec_admin_preview_ipad_portrait > input:hover, .ec_admin_preview_iphone_landscape > input:hover, .ec_admin_preview_iphone_portrait > input:hover{ background-color:#FFF; }
+
 .ec_product_li:nth-child( <?php echo $columns_desktop; ?>n+1 ) .ec_product_editor{ left:227px; }
 .ec_product_admin_reorder_button{ background-color:<?php echo $color1; ?>; }
 .ec_product_admin_reorder_button:hover{ background-color:<?php echo $color2; ?> }
@@ -511,12 +538,7 @@ ul.ec_menu_vertical ul li a:hover, ul.ec_menu_vertical ul ul li a:hover, .ec_cat
 
 <?php 
 
-echo get_option( 'ec_option_custom_css' );
+echo stripslashes( get_option( 'ec_option_custom_css' ) );
 
-// Show store as a catalog
-if( get_option( 'ec_option_display_as_catalog' ) ){
-	
-}
 ?>
-
 </style>

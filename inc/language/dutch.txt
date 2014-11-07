@@ -2388,6 +2388,35 @@
 				}
 			}
 		},
+		"ec_newsletter_popup":{
+			"label":"Newsletter Popup",
+			"options":{
+				"signup_form_title":{
+					"title":"Signup Form Title",
+					"value":"Aanmelden voor nieuwsbrief"
+				},
+				"signup_form_subtitle":{
+					"title":"Signup Form Subtitle",
+					"value":"Meld je nu aan en nooit meer iets hoeft te missen!"
+				},
+				"signup_form_email_placeholder":{
+					"title":"Signup Form Email Placeholder",
+					"value":"e-mailadres"
+				},
+				"signup_form_button_text":{
+					"title":"Signup Form Button",
+					"value":"SUBMIT"
+				},
+				"signup_form_success_title":{
+					"title":"Signup Success Title",
+					"value":"Je Signed Up!"
+				},
+				"signup_form_success_subtitle":{
+					"title":"Signup Success Subtitle",
+					"value":"Nu u bent aangemeld, zullen wij u exclusieve aanbiedingen periodiek sturen."
+				}
+			}
+		},
 		"language_code":{
 			"label":"Language Code",
 			"options":{

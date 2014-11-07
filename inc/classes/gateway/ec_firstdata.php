@@ -120,7 +120,7 @@ class ec_firstdata extends ec_gateway{
 		
 		$response_text = print_r( $response_string, true );
 		
-		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Firstdata", $response_text );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Firstdata", print_r( $response, true ) );
 		
 		if( !$this->is_success )
 			$this->error_message = $response_string->bank_message;

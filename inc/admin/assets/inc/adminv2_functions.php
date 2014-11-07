@@ -769,6 +769,11 @@ function ec_third_party_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $third_party == "paypal_advanced" ){
+		if( get_option( 'ec_option_paypal_advanced_partner' ) != "" && get_option( 'ec_option_paypal_advanced_user' ) != "" && get_option( 'ec_option_paypal_advanced_vendor' ) != "" && get_option( 'ec_option_paypal_advanced_password' ) != "" )
+			return true;
+		else
+			return false;
 	}else if( $third_party == "skrill" ){
 		if( get_option( 'ec_option_skrill_merchant_id' ) != "" && get_option( 'ec_option_skrill_company_name' ) != "" && get_option( 'ec_option_skrill_email' ) != "" )
 			return true;
@@ -795,6 +800,8 @@ function ec_get_third_party_method( ){
 		return "Nets Netaxept";
 	else if( $third_party == "paypal" )
 		return "PayPal Standard";
+	else if( $third_party == "paypal_advanced" )
+		return "PayPal Advanced";
 	else if( $third_party == "skrill" )
 		return "Skrill";
 	else if( $third_party == "realex" )
@@ -1157,6 +1164,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_weight', $_POST['ec_option_weight'] );
 	update_option( 'ec_option_show_menu_cart_icon', $_POST['ec_option_show_menu_cart_icon'] );
 	update_option( 'ec_option_cart_menu_id', implode( '***', $_POST['ec_option_cart_menu_id'] ) );
+	update_option( 'ec_option_enable_newsletter_popup', $_POST['ec_option_enable_newsletter_popup'] );
 	
 	// Currency Display
 	update_option( 'ec_option_base_currency', $_POST['ec_option_base_currency'] );
@@ -1456,14 +1464,21 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_payment_express_thirdparty_username', $_POST['ec_option_payment_express_thirdparty_username'] );
 	update_option( 'ec_option_payment_express_thirdparty_key', $_POST['ec_option_payment_express_thirdparty_key'] );
 	update_option( 'ec_option_payment_express_thirdparty_currency', $_POST['ec_option_payment_express_thirdparty_currency'] );
-	//PayPal
+	//PayPal Standard
 	update_option( 'ec_option_paypal_email', $_POST['ec_option_paypal_email'] );
 	update_option( 'ec_option_paypal_currency_code', $_POST['ec_option_paypal_currency_code'] );
 	update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
 	update_option( 'ec_option_paypal_use_sandbox', $_POST['ec_option_paypal_use_sandbox'] );
 	update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );
 	update_option( 'ec_option_paypal_collect_shipping', $_POST['ec_option_paypal_collect_shipping'] );		
-	//paypal payflow pro
+	//PayPal Advanced
+	update_option( 'ec_option_paypal_advanced_test_mode', $_POST['ec_option_paypal_advanced_test_mode'] );
+	update_option( 'ec_option_paypal_advanced_currency', $_POST['ec_option_paypal_advanced_currency'] );
+	update_option( 'ec_option_paypal_advanced_vendor', $_POST['ec_option_paypal_advanced_vendor'] );
+	update_option( 'ec_option_paypal_advanced_partner', $_POST['ec_option_paypal_advanced_partner'] );
+	update_option( 'ec_option_paypal_advanced_user', $_POST['ec_option_paypal_advanced_user'] );
+	update_option( 'ec_option_paypal_advanced_password', $_POST['ec_option_paypal_advanced_password'] );
+	//PayPal PayFlow Pro
 	update_option( 'ec_option_paypal_pro_test_mode', $_POST['ec_option_paypal_pro_test_mode'] );
 	update_option( 'ec_option_paypal_pro_vendor', $_POST['ec_option_paypal_pro_vendor'] );
 	update_option( 'ec_option_paypal_pro_partner', $_POST['ec_option_paypal_pro_partner'] );

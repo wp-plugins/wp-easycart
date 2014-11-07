@@ -220,8 +220,8 @@ class ec_storepage{
 		ga('require', 'ec');
 		
 		ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
-		  'id': '" . $this->product->model_number . "',     								// Product ID (string).
-		  'name': '" . $this->product->title . "', 											// Product name (string).
+		  'id': '" . str_replace( "'", "\'", $this->product->model_number ) . "',     								// Product ID (string).
+		  'name': '" . str_replace( "'", "\'", $this->product->title ) . "', 											// Product name (string).
 		  'price': '" . number_format( $this->product->price, 2, '.', '' ) . "',			// Product Price (currency).
 		});
 		ga('send', 'pageview'); 
@@ -231,8 +231,8 @@ class ec_storepage{
 		  ga('require', 'ec');
 		  
 		  ga('ec:addProduct', {
-			'id': '" . $this->product->model_number . "',
-			'name': '" . $this->product->title . "',
+			'id': '" . str_replace( "'", "\'", $this->product->model_number ) . "',
+			'name': '" . str_replace( "'", "\'", $this->product->title ) . "',
 			'price': '" . number_format( $this->product->price, 2, '.', '' ) . "',
 			'quantity': document.getElementById( 'product_quantity_" . $this->product->model_number . "' )
 		  });
@@ -246,7 +246,7 @@ class ec_storepage{
 		else
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_latest_layout') . '/ec_product_details_page.php' );
 		
-		if( get_option( 'ec_option_base_theme' ) && !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) )
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) )
 			echo "<script>ec_initialize_options();</script>";
 	}
 	

@@ -10,7 +10,7 @@
 .ec_admin_preview_wrapper.iphone.landscape{ width:568px; height:380px; }
 .ec_admin_preview_wrapper.iphone.portrait{ width:380px; height:568px; }
 
-.ec_admin_preview_button_container{ width:343px; position:relative; margin:0px auto; }
+.ec_admin_preview_button_container{ width:343px; position:relative; margin:12px auto; }
 
 .ec_admin_preview_button_container input:focus{ outline:none; }
 

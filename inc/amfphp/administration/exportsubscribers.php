@@ -33,7 +33,7 @@ if( !empty( $users ) || is_user_logged_in( ) ){
 	$header = "";
 	$data = "";
 	$sql = "SELECT * FROM ec_subscriber ORDER BY ec_subscriber.email ASC";
-	$results = $wpdb->get_results( $sql );
+	$results = $wpdb->get_results( $sql, ARRAY_A );
 	$keys = array_keys( $results[0] );
 	
 	foreach( $keys as $key ){

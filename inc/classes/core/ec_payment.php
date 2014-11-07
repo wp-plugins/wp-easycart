@@ -66,7 +66,9 @@ class ec_payment{
 		define('WP_PROXY_HOST', $proxy_address);
 	}
 	
-	
+	public function show_paypal_iframe( $amount ){
+		$this->third_party->display_iframe( $amount );
+	}
 	
 	public function process_payment( $cart, $user, $shipping, $tax, $discount, $order_totals, $order_id ){
 		
@@ -117,6 +119,7 @@ class ec_payment{
 			 if( $this->third_party_type == "dwolla_thirdparty" )				return new ec_dwolla_thirdparty( );
 		else if( $this->third_party_type == "nets" )							return new ec_nets( );
 		else if( $this->third_party_type == "paypal" )							return new ec_paypal( );
+		else if( $this->third_party_type == "paypal_advanced" )					return new ec_paypal_advanced( );
 		else if( $this->third_party_type == "skrill" )							return new ec_skrill( );
 		else if( $this->third_party_type == "realex_thirdparty" )				return new ec_realex_thirdparty( );
 		else if( $this->third_party_type == "paymentexpress_thirdparty" )		return new ec_paymentexpress_thirdparty( );

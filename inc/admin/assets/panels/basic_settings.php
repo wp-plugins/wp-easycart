@@ -87,6 +87,13 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 		?>
     </select></span>
 </div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Newsletter Popup on Site</em>If you turn this on, a user will be prompted to sign up for your newsletter subscription list when they visit your site. Their sign up is tracked by session and cookie through their browser, so once they sign up or hide the box, they will not be shown it again.</span></a></span>
+    <span class="ec_setting_row_label">Show Newsletter Popup on Site:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_enable_newsletter_popup" style="width:100px;"><option value="0"<?php if( get_option('ec_option_enable_newsletter_popup') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_enable_newsletter_popup') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Currency Display: <?php echo $GLOBALS['currency']->get_currency_display( 1999.990 ); ?></div></div>
@@ -142,18 +149,14 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 
 <div class="ec_status_header"><div class="ec_status_header_text">Store Page Display Options</div></div>
 
-<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
-/* V2 ONLY */
-?>
 <div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Product Layout Format</em>This will display the products in either a grid or list view. Some product types are best displayed in a grid view, others in a list view, choose what makes the most sense for you.</span></a></span>
-    <span class="ec_setting_row_label">Product Layout Format:</span>
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Product Layout Format (V2 ONLY)</em>This will display the products in either a grid or list view. Some product types are best displayed in a grid view, others in a list view, choose what makes the most sense for you. For V3 users, you can choose the list type 6 from the product display types in the live editor on the store page and set your columns to 1.</span></a></span>
+    <span class="ec_setting_row_label">Product Layout Format (V2 ONLY):</span>
     <span class="ec_setting_row_input"><select name="ec_option_product_layout_type" id="ec_option_product_layout_type">
                 <option value="grid_only" <?php if (get_option('ec_option_product_layout_type') == 'grid_only') echo ' selected'; ?>>Grid Layout</option>
                 <option value="list_only" <?php if (get_option('ec_option_product_layout_type') == 'list_only') echo ' selected'; ?>>List Layout</option>
               </select></span>
 </div>
-<?php }?>
 
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Default Product Sort</em>This will set the default sort technique for the products page. For example, changing to Title A-Z will have the products sorted this way by default.</span></a></span>

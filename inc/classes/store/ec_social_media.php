@@ -247,11 +247,13 @@ class ec_social_media{
 		
 	}
 	
-	private function get_icon_image( $image ){
+	public function get_icon_image( $image ){
 		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ). "/ec_product_details_page/" . $image ) )
 			return plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ). "/ec_product_details_page/" . $image );
+		else if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ). "/images/" . $image ) )
+			return plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ). "/images/" . $image );
 		else
-			return plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_base_theme' ). "/ec_product_details_page/" . $image );
+			return plugins_url( EC_PLUGIN_DIRECTORY . "/design/theme/" . get_option( 'ec_option_latest_theme' ). "/images/" . $image );
 	}
 	
 	private function get_product_clean_title( ){

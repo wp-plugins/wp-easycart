@@ -111,21 +111,25 @@ if( $admin_access || $use_quickview ){ ?>
                         <div class="ec_product_quickview_content_add_to_cart"><a href="<?php echo $product->get_subscription_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_sign_up_now' ); ?></a></div>
                         
                         <?php }else if( $product->in_stock( ) ){ ?>
+                        
+                        <div class="ec_details_option_row_error" id="ec_addtocart_quantity_exceeded_error_<?php echo $product->model_number; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_maximum_quantity' ); ?></div>
+            			<div class="ec_details_option_row_error" id="ec_addtocart_quantity_minimum_error_<?php echo $product->model_number; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text1' ); ?> <?php echo $product->min_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text2' ); ?></div>
+                        
                         <table class="ec_product_quickview_content_quantity">
                         	<tr>
                             	<td>
-                        			<input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $product->model_number; ?>' );" />
+                        			<input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $product->model_number; ?>', <?php echo $product->min_purchase_quantity; ?> );" />
                             	</td>
                                 <td>
-                                    <input type="number" value="<?php if( $product->min_purchase_quantity > 0 ){ echo $product->min_purchase_quantity; }else{ echo '1'; } ?>" name="quantity" id="ec_quantity_<?php echo $product->model_number; ?>" autocomplete="off" step="1" min="<?php if( $product->min_purchase_quantity > 0 ){ echo $product->min_purchase_quantity; }else{ echo '1'; } ?>" class="ec_quantity" />
+                                    <input type="number" value="<?php if( $product->min_purchase_quantity > 0 ){ echo $product->min_purchase_quantity; }else{ echo '1'; } ?>" name="quantity" id="ec_quantity_<?php echo $product->model_number; ?>" autocomplete="off" step="1" min="<?php if( $product->min_purchase_quantity > 0 ){ echo $product->min_purchase_quantity; }else{ echo '1'; } ?>"<?php if( $product->show_stock_quantity ){ ?> max="<?php echo $product->stock_quantity; ?>"<?php }?> class="ec_quantity" />
                                 </td>
                                 <td>
-                            		<input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $product->model_number; ?>' );" />
+                            		<input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $product->model_number; ?>', <?php echo $product->show_stock_quantity; ?>, <?php echo $product->stock_quantity; ?> );" />
                                 </td>
                             </tr>
                             <tr>
                             	<td colspan="3">
-                                	<input type="button" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', jQuery( '#ec_quantity_<?php echo $product->model_number; ?>' ).val( ) ); ec_product_hide_quick_view_link( '<?php echo $product->model_number; ?>' );" />
+                                	<input type="button" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', jQuery( '#ec_quantity_<?php echo $product->model_number; ?>' ).val( ), <?php echo $product->show_stock_quantity; ?>, <?php echo $product->min_purchase_quantity; ?>, <?php echo $product->stock_quantity; ?> );" />
                                 </td>
                              </tr>
                         </table>
@@ -282,7 +286,7 @@ jQuery( '#ec_product_quickview_container_<?php echo $product->model_number; ?>' 
         	<div class="ec_product_quickview_container"><span class="ec_product_quickview"<?php if( !$use_quickview ){ echo " style='display:none;'"; } ?>><input type="button" onclick="ec_product_show_quick_view_link( '<?php echo $product->model_number; ?>' );" value="<?php echo $GLOBALS['language']->get_text( 'product_page', 'product_quick_view' ); ?>" /> </span></div>
         	<?php }?>
 			
-			<?php if( $product->in_stock( ) && $product->has_options( ) ){ ?>
+			<?php if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation ) ){ ?>
             <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_product_link( ); ?>" target="_self"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_select_options' ); ?></a></span></div>
             
             <?php }else if( $product->in_stock( ) && $product->is_subscription_item ){ ?>

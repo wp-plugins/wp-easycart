@@ -710,9 +710,9 @@ function ec_admin_save_product_details_options( ){
                 <?php /* REGULAR BUTTON + QUANTITY */ ?>
                 <?php }else if( $this->product->in_stock( ) ){ ?>
                 <div class="ec_details_quantity"<?php if( $has_quantity_grid ){ ?> style="display:none;"<?php }?>>
-                	<input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $this->product->model_number; ?>' );" />
-                    <input type="number" value="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" name="ec_quantity" id="ec_quantity" autocomplete="off" step="1" min="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" class="ec_quantity" />
-                    <input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $this->product->model_number; ?>' );" />
+                	<input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->min_purchase_quantity; ?> );" />
+                    <input type="number" value="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" name="ec_quantity" id="ec_quantity" autocomplete="off" step="1" min="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" class="ec_quantity"<?php if( $this->product->show_stock_quantity ){ ?> max="<?php echo $this->product->stock_quantity; ?>"<?php }?> />
+                    <input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->show_stock_quantity; ?>, <?php echo $this->product->min_purchase_quantity; ?>, <?php echo $this->product->stock_quantity; ?> );" />
                 </div>
                 <div class="ec_details_add_to_cart">
                 	<input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="return ec_details_add_to_cart( );"<?php if( $has_quantity_grid ){ ?> style="margin-left:0px !important;"<?php }?> />
@@ -758,39 +758,39 @@ function ec_admin_save_product_details_options( ){
             <div class="ec_details_social">
             	
                 <?php if( get_option( 'ec_option_use_facebook_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_facebook"><a href="<?php echo $this->product->social_icons->get_facebook_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/facebook-icon.png" ); ?>" alt="Facebook" /></a></div>
+                <div class="ec_details_social_icon ec_facebook"><a href="<?php echo $this->product->social_icons->get_facebook_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "facebook-icon.png" ); ?>" alt="Facebook" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_twitter_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_twitter"><a href="<?php echo $this->product->social_icons->get_twitter_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/twitter-icon.png" ); ?>" alt="Twitter" /></a></div>
+                <div class="ec_details_social_icon ec_twitter"><a href="<?php echo $this->product->social_icons->get_twitter_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "twitter-icon.png" ); ?>" alt="Twitter" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_email_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_email"><a href="<?php echo $this->product->social_icons->get_email_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/email-icon.png" ); ?>" alt="Email" /></a></div>
+                <div class="ec_details_social_icon ec_email"><a href="<?php echo $this->product->social_icons->get_email_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "email-icon.png" ); ?>" alt="Email" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_pinterest_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_pinterest"><a href="<?php echo $this->product->social_icons->get_pinterest_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/pinterest-icon.png" ); ?>" alt="Pinterest" /></a></div>
+                <div class="ec_details_social_icon ec_pinterest"><a href="<?php echo $this->product->social_icons->get_pinterest_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "pinterest-icon.png" ); ?>" alt="Pinterest" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_googleplus_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_googleplus"><a href="<?php echo $this->product->social_icons->get_googleplus_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/google-icon.png" ); ?>" alt="Google+" /></a></div>
+                <div class="ec_details_social_icon ec_googleplus"><a href="<?php echo $this->product->social_icons->get_googleplus_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "google-icon.png" ); ?>" alt="Google+" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_linkedin_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_linkedin"><a href="<?php echo $this->product->social_icons->get_linkedin_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/linkedin-icon.png" ); ?>" alt="LinkedIn" /></a></div>
+                <div class="ec_details_social_icon ec_linkedin"><a href="<?php echo $this->product->social_icons->get_linkedin_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "linkedin-icon.png" ); ?>" alt="LinkedIn" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_myspace_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_myspace"><a href="<?php echo $this->product->social_icons->get_myspace_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/myspace-icon.png" ); ?>" alt="MySpace" /></a></div>
+                <div class="ec_details_social_icon ec_myspace"><a href="<?php echo $this->product->social_icons->get_myspace_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "myspace-icon.png" ); ?>" alt="MySpace" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_digg_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_digg"><a href="<?php echo $this->product->social_icons->get_digg_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/digg-icon.png" ); ?>" alt="Digg" /></a></div>
+                <div class="ec_details_social_icon ec_digg"><a href="<?php echo $this->product->social_icons->get_digg_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "digg-icon.png" ); ?>" alt="Digg" /></a></div>
                 <?php }?>
             	
                 <?php if( get_option( 'ec_option_use_delicious_icon' ) ){ ?>
-                <div class="ec_details_social_icon ec_delicious"><a href="<?php echo $this->product->social_icons->get_delicious_link( ); ?>" target="_blank"><img src="<?php echo plugins_url( "/" . $folder. "/design/theme/" . $theme . "/images/delicious-icon.png" ); ?>" alt="Delicious" /></a></div>
+                <div class="ec_details_social_icon ec_delicious"><a href="<?php echo $this->product->social_icons->get_delicious_link( ); ?>" target="_blank"><img src="<?php echo $this->product->social_icons->get_icon_image( "delicious-icon.png" ); ?>" alt="Delicious" /></a></div>
                 <?php }?>
                 
             </div>
@@ -993,7 +993,7 @@ function ec_admin_save_product_details_options( ){
         </ul>
 	</div>
     <?php }?>
-
+	<div style="clear:both;"></div>
 </section>
 
 <script>
@@ -1182,7 +1182,12 @@ jQuery( '.ec_details_swatches > li.ec_option1' ).click( function( ){
 jQuery( '.ec_details_swatches > li.ec_option2' ).click( function( ){
 	
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
-		var optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
+		var optionitem_id_1 = 0;
+		if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
+			optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
+		}else{
+			optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
+		}
 		var optionitem_id_2 = jQuery( this ).attr( 'data-optionitem-id' );
 		
 		<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
@@ -1204,8 +1209,18 @@ jQuery( '.ec_details_swatches > li.ec_option2' ).click( function( ){
 jQuery( '.ec_details_swatches > li.ec_option3' ).click( function( ){
 	
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
-			var optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
-		var optionitem_id_2 = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-id' );
+		var optionitem_id_1 = 0;
+		if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
+			optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
+		}else{
+			optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
+		}
+		var optionitem_id_2 = 0;
+		if( jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).length ){
+			optionitem_id_2 = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-id' );
+		}else{
+			optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
+		}
 		var optionitem_id_3 = jQuery( this ).attr( 'data-optionitem-id' );
 		
 		<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
@@ -1227,9 +1242,24 @@ jQuery( '.ec_details_swatches > li.ec_option3' ).click( function( ){
 jQuery( '.ec_details_swatches > li.ec_option4' ).click( function( ){
 	
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
-		var optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
-		var optionitem_id_2 = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-id' );
-		var optionitem_id_3 = jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).attr( 'data-optionitem-id' );
+		var optionitem_id_1 = 0;
+		if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
+			optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
+		}else{
+			optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
+		}
+		var optionitem_id_2 = 0;
+		if( jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).length ){
+			optionitem_id_2 = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-id' );
+		}else{
+			optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
+		}
+		var optionitem_id_3 = 0;
+		if( jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).length ){
+			optionitem_id_3 = jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).attr( 'data-optionitem-id' );
+		}else{
+			optionitem_id_3 = jQuery( '.ec_details_combo.ec_option3' ).val( );
+		}
 		var optionitem_id_4 = jQuery( this ).attr( 'data-optionitem-id' );
 		
 		<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
@@ -1287,7 +1317,12 @@ jQuery( '.ec_details_combo.ec_option1' ).change( function( ){
 jQuery( '.ec_details_combo.ec_option2' ).change( function( ){
 	
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
-	var optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
+	var optionitem_id_1 = 0;
+	if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
+		optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
+	}else{
+		optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
+	}
 	var optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
 	var quantity = jQuery( '.ec_details_combo.ec_option2 option:selected' ).attr( 'data-optionitem-quantity' );
 	
@@ -1307,8 +1342,18 @@ jQuery( '.ec_details_combo.ec_option2' ).change( function( ){
 jQuery( '.ec_details_combo.ec_option3' ).change( function( ){
 	
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
-	var optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
-	var optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
+	var optionitem_id_1 = 0;
+	if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
+		optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
+	}else{
+		optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
+	}
+	var optionitem_id_2 = 0;
+	if( jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).length ){
+		optionitem_id_2 = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-id' );
+	}else{
+		optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
+	}
 	var optionitem_id_3 = jQuery( '.ec_details_combo.ec_option3' ).val( );
 	var quantity = jQuery( '.ec_details_combo.ec_option3 option:selected' ).attr( 'data-optionitem-quantity' );
 	
@@ -1328,9 +1373,24 @@ jQuery( '.ec_details_combo.ec_option3' ).change( function( ){
 jQuery( '.ec_details_combo.ec_option4' ).change( function( ){
 	
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
-	var optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
-	var optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
-	var optionitem_id_3 = jQuery( '.ec_details_combo.ec_option3' ).val( );
+	var optionitem_id_1 = 0;
+	if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
+		optionitem_id_1 = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-id' );
+	}else{
+		optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
+	}
+	var optionitem_id_2 = 0;
+	if( jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).length ){
+		optionitem_id_2 = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-id' );
+	}else{
+		optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
+	}
+	var optionitem_id_3 = 0;
+	if( jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).length ){
+		optionitem_id_3 = jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).attr( 'data-optionitem-id' );
+	}else{
+		optionitem_id_3 = jQuery( '.ec_details_combo.ec_option3' ).val( );
+	}
 	var optionitem_id_4 = jQuery( '.ec_details_combo.ec_option4' ).val( );
 	var quantity = jQuery( '.ec_details_combo.ec_option4 option:selected' ).attr( 'data-optionitem-quantity' );
 	

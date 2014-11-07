@@ -32,6 +32,11 @@ if( !isset( $_SESSION['ec_cart_id'] ) && !isset( $_COOKIE['ec_cart_id'] ) ){
 	$_SESSION['ec_cart_id'] = $_COOKIE['ec_cart_id'];
 	setcookie( 'ec_cart_id', $_SESSION['ec_cart_id'], time( ) + ( 3600 * 24 * 30 ) );
 }
+
+// Newsletter Popup Cookie Search
+if( isset( $_COOKIE['ec_newsletter_popup'] ) && !isset( $_SESSION['ec_newsletter_popup'] ) ){
+	$_SESSION['ec_newsletter_popup'] = $_COOKIE['ec_newsletter_popup'];
+}
 	
 // Language Translation Check
 if( isset( $_POST['ec_language_conversion'] ) ){
@@ -100,6 +105,8 @@ if( get_option( 'ec_option_payment_third_party' ) == 'dwolla_thirdparty' ){
 }else if( get_option( 'ec_option_payment_third_party' ) == 'paypal' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypal.php' );
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_ipnlistener.php' );
+}else if( get_option( 'ec_option_payment_third_party' ) == 'paypal_advanced' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paypal_advanced.php' );
 }else if( get_option( 'ec_option_payment_third_party' ) == 'nets' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_nets.php' );
 }else if( get_option( 'ec_option_payment_third_party' ) == 'realex_thirdparty' ){

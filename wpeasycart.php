@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.6
+ * Version: 3.0.7
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.6
+ * @version 3.0.7
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_6' );
-define( 'EC_CURRENT_DB', '1_24' );
+define( 'EC_CURRENT_VERSION', '3_0_7' );
+define( 'EC_CURRENT_DB', '1_25' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -560,6 +560,9 @@ function load_ec_pre(){
 	if( isset( $_POST['ec_newsletter_email'] ) ){
 		$ec_db = new ec_db();
 		$ec_db->insert_subscriber( $_POST['ec_newsletter_email'], "", "" );
+		
+		$_SESSION['ec_newsletter_popup'] = 'hide';
+		setcookie( 'ec_newsletter_popup', $_SESSION['ec_newsletter_popup'], time( ) + ( 10 * 365 * 24 * 60 * 60 ) );
 	}
 	
 	// END STATS AND FORM PROCESSING
@@ -1313,6 +1316,16 @@ function ec_plugins_loaded( ){
 	}
 }
 
+function ec_footer_load( ){
+	if( get_option( 'ec_option_enable_newsletter_popup' ) && !isset( $_SESSION['ec_newsletter_popup'] ) ){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_newsletter_popup.php' ) )	
+			include( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_newsletter_popup.php' );
+		else
+			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_newsletter_popup.php' );
+		
+	}
+}
+
 function wpeasycart_register_widgets( ) {
 	register_widget( 'ec_categorywidget' );
 	register_widget( 'ec_cartwidget' );
@@ -1335,6 +1348,7 @@ add_action( 'wp_enqueue_scripts', 'ec_load_js' );
 add_action( 'widgets_init', 'wpeasycart_register_widgets' );
 add_action( 'send_headers', 'ec_custom_headers' );
 add_action( 'plugins_loaded', 'ec_plugins_loaded' );
+add_action( 'wp_footer', 'ec_footer_load' );
 
 add_shortcode( 'ec_store', 'load_ec_store' );
 add_shortcode( 'ec_cart', 'load_ec_cart' );
@@ -1864,6 +1878,31 @@ function ec_ajax_live_search( ){
 	$db = new ec_db();
 	$results = $db->get_live_search_options( $search_val );
 	echo json_encode( $results );
+	
+	die(); // this is required to return a proper result
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_close_newsletter', 'ec_ajax_close_newsletter' );
+add_action( 'wp_ajax_nopriv_ec_ajax_close_newsletter', 'ec_ajax_close_newsletter' );
+function ec_ajax_close_newsletter( ){
+	
+	$_SESSION['ec_newsletter_popup'] = 'hide';
+	setcookie( 'ec_newsletter_popup', $_SESSION['ec_newsletter_popup'], time( ) + ( 10 * 365 * 24 * 60 * 60 ) );
+	
+	die(); // this is required to return a proper result
+	
+}
+
+add_action( 'wp_ajax_ec_ajax_submit_newsletter_signup', 'ec_ajax_submit_newsletter_signup' );
+add_action( 'wp_ajax_nopriv_ec_ajax_submit_newsletter_signup', 'ec_ajax_submit_newsletter_signup' );
+function ec_ajax_submit_newsletter_signup( ){
+	
+	$ec_db = new ec_db();
+	$ec_db->insert_subscriber( $_POST['email_address'], "", "" );
+	
+	$_SESSION['ec_newsletter_popup'] = 'hide';
+	setcookie( 'ec_newsletter_popup', $_SESSION['ec_newsletter_popup'], time( ) + ( 10 * 365 * 24 * 60 * 60 ) );
 	
 	die(); // this is required to return a proper result
 	

@@ -360,6 +360,13 @@ class ec_accountpage{
 		}
 	}
 	
+	public function get_print_order_icon_url( ){
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/print_icon.png" ) )
+			return plugins_url( "wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/print_icon.png"  );
+		else
+			return plugins_url( "wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/print_icon.png"  );
+	}
+	
 	public function display_complete_payment_link( ){
 		if( $this->order && $this->order->orderstatus_id == 8 ){
 			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_page=third_party&order_id=" . $this->order->order_id . "\" class=\"ec_account_complete_order_link\">Complete Order Payment</a> ";

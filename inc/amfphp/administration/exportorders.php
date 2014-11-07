@@ -59,7 +59,7 @@ if( !empty( $users ) || is_user_logged_in( ) ){
 		
 		}
 		
-		$results = $wpdb->get_results( $sql );
+		$results = $wpdb->get_results( $sql, ARRAY_A );
 		$keys = array_keys( $results[0] );
 		
 		foreach( $keys as $key ){

@@ -1219,7 +1219,7 @@ class ec_db{
 	public function add_to_cart( $product_id, $session_id, $quantity, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5, $gift_card_message="", $gift_card_to_name="", $gift_card_from_name="", $donation_price=0.00, $use_advanced_optionset=false, $return_tempcart=1, $gift_card_email="" ){
 		
 		// Get the limit on this product
-		$product_sql = "SELECT stock_quantity, use_optionitem_quantity_tracking FROM ec_product WHERE product_id = %d";
+		$product_sql = "SELECT stock_quantity, use_optionitem_quantity_tracking, show_stock_quantity FROM ec_product WHERE product_id = %d";
 		$optionitem_sql = "SELECT quantity FROM ec_optionitemquantity WHERE product_id = %d AND optionitem_id_1 = %d AND optionitem_id_2 = %d AND optionitem_id_3 = %d AND optionitem_id_4 = %d AND optionitem_id_5 = %d";
 		$tempcart_optionitem_sql = "SELECT quantity FROM ec_tempcart WHERE session_id = '%s' AND product_id = %d AND optionitem_id_1 = %d AND optionitem_id_2 = %d AND optionitem_id_3 = %d AND optionitem_id_4 = %d AND optionitem_id_5 = %d";
 		
@@ -2653,7 +2653,7 @@ class ec_db{
 	}
 	
 	public function get_settings( ){
-		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, ups_conversion_rate, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, fedex_conversion_rate, fedex_test_account, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode, fraktjakt_customer_id, fraktjakt_login_key, fraktjakt_conversion_rate, fraktjakt_test_mode, fraktjakt_address, fraktjakt_city, fraktjakt_state, fraktjakt_zip, fraktjakt_country FROM ec_setting WHERE setting_id = 1";
+		$sql = "SELECT shipping_method, shipping_expedite_rate, shipping_handling_rate, ups_access_license_number, ups_user_id, ups_password, ups_ship_from_zip, ups_shipper_number, ups_country_code, ups_weight_type, ups_conversion_rate, ups_ship_from_state, ups_negotiated_rates, usps_user_name, usps_ship_from_zip, fedex_key, fedex_account_number, fedex_meter_number, fedex_password, fedex_ship_from_zip, fedex_weight_units, fedex_country_code, fedex_conversion_rate, fedex_test_account, auspost_api_key, auspost_ship_from_zip, dhl_site_id, dhl_password, dhl_ship_from_country, dhl_ship_from_zip, dhl_weight_unit, dhl_test_mode, fraktjakt_customer_id, fraktjakt_login_key, fraktjakt_conversion_rate, fraktjakt_test_mode, fraktjakt_address, fraktjakt_city, fraktjakt_state, fraktjakt_zip, fraktjakt_country FROM ec_setting WHERE setting_id = 1";
 			return $this->mysqli->get_row( $sql );
 	}
 	
@@ -2981,14 +2981,16 @@ class ec_db{
 								'orderstatus_id'			=> 6,
 								'sub_total'					=> number_format( ( $webhook_data->subtotal / 100 ), 3, '.', '' ),
 								'grand_total'				=> number_format( ( $webhook_data->total / 100 ), 3, '.', '' ),
-								'billing_first_name'		=> $user->first_name,
-								'billing_last_name'			=> $user->last_name,
-								'billing_address_line_1'	=> $user->address_line_1,
-								'billing_city'				=> $user->city,
-								'billing_state'				=> $user->state,
-								'billing_country'			=> $user->country,
-								'billing_zip'				=> $user->zip,
-								'billing_phone'				=> $user->phone,
+								'billing_first_name'		=> $user->billing_first_name,
+								'billing_last_name'			=> $user->billing_last_name,
+								'billing_company_name'		=> $user->billing_company_name,
+								'billing_address_line_1'	=> $user->billing_address_line_1,
+								'billing_address_line_2'	=> $user->billing_address_line_2,
+								'billing_city'				=> $user->billing_city,
+								'billing_state'				=> $user->billing_state,
+								'billing_country'			=> $user->billing_country,
+								'billing_zip'				=> $user->billing_zip,
+								'billing_phone'				=> $user->billing_phone,
 								'payment_method'			=> $user->default_card_type,
 								'creditcard_digits'			=> $user->default_card_last4,
 								'stripe_charge_id'			=> $webhook_data->charge,

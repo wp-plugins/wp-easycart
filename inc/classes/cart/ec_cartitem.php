@@ -443,7 +443,7 @@ class ec_cartitem{
 	public function get_image_url( ){
 		
 		if( $this->is_deconetwork ){
-			return get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_image_link;
+			return "https://" . get_option( 'ec_option_deconetwork_url' ) . $this->deconetwork_image_link . "?version=" . $this->deconetwork_version;
 		
 		}else if( $this->image1_optionitem && file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) && !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $this->image1_optionitem ) ){
 			return plugins_url( "wp-easycart-data/products/pics1/" . $this->image1_optionitem );

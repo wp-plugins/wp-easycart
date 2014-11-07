@@ -79,6 +79,20 @@ class ec_setting{
 		else
 			return "";
 	}
+
+	public function get_ups_ship_from_state( ){
+		if( isset( $this->setting_row->ups_ship_from_state ) )
+			return $this->setting_row->ups_ship_from_state;
+		else
+			return "";
+	}
+
+	public function get_ups_negotiated_rates( ){
+		if( isset( $this->setting_row->ups_negotiated_rates ) )
+			return $this->setting_row->ups_negotiated_rates;
+		else
+			return 0;
+	}
 	
 	public function get_usps_user_name( ){
 		if( isset( $this->setting_row->usps_user_name ) )

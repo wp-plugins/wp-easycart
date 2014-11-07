@@ -4,11 +4,13 @@ class ec_ups{
 	private $ups_access_license_number; 						// Your UPS license number
 	private $ups_user_id; 										// Your UPS user id
 	private $ups_password; 										// Your UPS password
+	private $ups_ship_from_state; 								// Your UPS ship from state code
 	private $ups_ship_from_zip; 								// Your UPS ship from zip code
 	private $ups_shipper_number; 								// Your UPS shipper number
 	private $ups_country_code;									// Your UPS country code
 	private $ups_weight_type;									// Your UPS weight type
 	private $ups_conversion_rate;								// A Conversion Rate
+	private $ups_negotiated_rates;								// Optional negotiated rates
 	
 	private $shipper_url;										// String
 	
@@ -16,11 +18,13 @@ class ec_ups{
 		$this->ups_access_license_number = $ec_setting->get_ups_access_license_number( );
 		$this->ups_user_id = $ec_setting->get_ups_user_id( );
 		$this->ups_password = $ec_setting->get_ups_password( );
+		$this->ups_ship_from_state = $ec_setting->get_ups_ship_from_state( );
 		$this->ups_ship_from_zip = $ec_setting->get_ups_ship_from_zip( );
 		$this->ups_shipper_number = $ec_setting->get_ups_shipper_number( );
 		$this->ups_country_code = $ec_setting->get_ups_country_code( );
 		$this->ups_weight_type = $ec_setting->get_ups_weight_type( );
 		$this->ups_conversion_rate = $ec_setting->get_ups_conversion_rate( );
+		$this->ups_negotiated_rates = $ec_setting->get_ups_negotiated_rates( );
 		
 		$this->shipper_url = "https://www.ups.com/ups.app/xml/Rate";
 	}
@@ -165,54 +169,74 @@ class ec_ups{
 					<RequestAction>Rate</RequestAction>
 					<RequestOption>Shop</RequestOption>
 				</Request>
-			<PickupType>
-				<Code>01</Code>
-			</PickupType>
-			<Shipment>
-				<Shipper>
-					<Address>
-						<PostalCode>$this->ups_ship_from_zip</PostalCode>
-						<CountryCode>$this->ups_country_code</CountryCode>
-					</Address>
-				<ShipperNumber>$this->ups_shipper_number</ShipperNumber>
-				</Shipper>
-				<ShipTo>
-					<Address>
-						<PostalCode>$destination_zip</PostalCode>
-						<CountryCode>$destination_country</CountryCode>
-					<ResidentialAddressIndicator/>
-					</Address>
-				</ShipTo>
-				<ShipFrom>
-					<Address>
-						<PostalCode>$this->ups_ship_from_zip</PostalCode>
-						<CountryCode>$this->ups_country_code</CountryCode>
-					</Address>
-				</ShipFrom>
-				<Package>
-					<PackagingType>
-						<Code>02</Code>
-					</PackagingType>
-					<PackageWeight>
-						<UnitOfMeasurement>
-							<Code>$this->ups_weight_type</Code>
-						</UnitOfMeasurement>
-						<Weight>$weight</Weight>
-					</PackageWeight>
-					<Dimensions>
-						<UnitOfMeasurement>
-							<Code>IN</Code>
-						</UnitOfMeasurement>
-						<Length>$length</Length>
-						<Width>$width</Width>
-						<Height>$height</Height>
-					</Dimensions>
-					<PackageServiceOptions>
-						<CurrencyCode>" . get_option( 'ec_option_base_currency' ) . "</CurrencyCode>
-						<MonetaryValue>$declared_value</MonetaryValue>
-					</PackageServiceOptions>
-				</Package>
-			</Shipment>
+				<PickupType>
+					<Code>01</Code>
+				</PickupType>
+				<Shipment>
+					<Shipper>
+						<Address>
+							<PostalCode>$this->ups_ship_from_zip</PostalCode>
+							<CountryCode>$this->ups_country_code</CountryCode>
+						</Address>
+					<ShipperNumber>$this->ups_shipper_number</ShipperNumber>
+					</Shipper>
+					<ShipTo>
+						<Address>
+							<PostalCode>$destination_zip</PostalCode>
+							<CountryCode>$destination_country</CountryCode>
+						<ResidentialAddressIndicator/>
+						</Address>
+					</ShipTo>
+					<ShipFrom>
+						<Address>";
+								if( $this->ups_negotiated_rates ){
+								$shipper_data .= "
+								<StateProvinceCode>$this->ups_ship_from_state</StateProvinceCode>";
+								}
+								$shipper_data .= "
+								<PostalCode>$this->ups_ship_from_zip</PostalCode>
+							<CountryCode>$this->ups_country_code</CountryCode>
+						</Address>
+					</ShipFrom>
+					<Package>
+						<PackagingType>
+							<Code>02</Code>
+						</PackagingType>
+						<PackageWeight>
+							<UnitOfMeasurement>
+								<Code>$this->ups_weight_type</Code>
+							</UnitOfMeasurement>
+							<Weight>$weight</Weight>
+						</PackageWeight>
+						<Dimensions>
+							<UnitOfMeasurement>
+								<Code>";
+	
+								if( $this->ups_weight_type == 'LBS' ){
+									$shipper_data .= "IN";
+								}else{
+									$shipper_data .= "CM";
+								}
+	
+								$shipper_data .= "</Code>
+							</UnitOfMeasurement>
+							<Length>$length</Length>
+							<Width>$width</Width>
+							<Height>$height</Height>
+						</Dimensions>
+						<PackageServiceOptions>
+							<CurrencyCode>" . get_option( 'ec_option_base_currency' ) . "</CurrencyCode>
+							<MonetaryValue>$declared_value</MonetaryValue>
+						</PackageServiceOptions>
+					</Package>";
+					if( $this->ups_negotiated_rates ){
+					$shipper_data .= "
+					<RateInformation>
+						<NegotiatedRatesIndicator/>
+					</RateInformation>";
+					}
+				$shipper_data .= "
+				</Shipment>
 			</RatingServiceSelectionRequest>";
 		return $shipper_data;
 	} 
