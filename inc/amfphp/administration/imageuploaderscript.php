@@ -33,9 +33,8 @@ $imagequality = $_POST['imagequality'];
 if( $useoptionitemimages ){
 
 	$sql = "SELECT COUNT(ec_optionitemimage.optionitemimage_id) as numrows FROM ec_optionitemimage WHERE ec_optionitemimage.optionitem_id = %s AND ec_optionitemimage.product_id = %s";
-	$results = $wpdb->get_results( $wpdb->prepare( $sql, $optionitemid, $productid ) );
-	
-	if( empty( $results ) ){
+	$results = $wpdb->get_row( $wpdb->prepare( $sql, $optionitemid, $productid ) );
+	if( $results->numrows == 0 ){
 		
 		$sql = "INSERT INTO ec_optionitemimage( ec_optionitemimage.optionitem_id, ec_optionitemimage.product_id ) VALUES( %s, %s )";
 		$wpdb->query( $wpdb->prepare( $sql, $optionitemid, $productid ) );
