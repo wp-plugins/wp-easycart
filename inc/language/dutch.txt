@@ -1640,6 +1640,14 @@
 				"account_navigation_dashboard":{
 					"title":"Account, Navigatie, Dashboard Link",
 					"value":"Account Dashboard"
+				},
+				"account_navigation_billing_information":{
+					"title":"Account, Navigation, Billing Link",
+					"value":"factuurgegevens"
+				},
+				"account_navigation_shipping_information":{
+					"title":"Account, Navigation, Shipping Link",
+					"value":"verzendgegevens"
 				}
 			}
 		},

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 3.0.7
+Stable tag: 3.0.8
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,18 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.8 =
+* Improvement - Account design improved to match the rest of the V3 store.
+* Bug Fix - Adding a coupon code or gift card code with a cart widget was not updating the quantity value correctly.
+* Bug Fix - V3 with no child theme was not allowing updating of colorization options in the admin.
+* Bug Fix - Option Item Images were not saving correctly.
+* Bug Fix - Advanced Swatches not saving.
+* Bug Fix - System was not deleting all ties to products with advanced options when removing an advanced option, causing random data errors.
+* Bug Fix - Gift card emailers were sending even when non-paid status.
+* Bug Fix - Resend email with no child theme for gift cards was not working.
+* Bug Fix - Multiple gift card additions to cart would result in an incorrect quantity added.
+* Bug Fix - Multiple gift cards would end up in an incorrect quantity value in the email receipt.
+* Bug Fix - Third party checkouts were not sending a gift card emailer once payment was confirmed.
 = 3.0.7 =
 * Feature - You can now turn on an automatic newsletter sign up popup window, prompting users to sign up for a newsletter the second they get to your site. This is available in the basic settings of your store setup.
 * Improvement - UPS Now offers negotiated rates for those that it applies to. Simply add your state code and check the negotiated rates box to complete these option.

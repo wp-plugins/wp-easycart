@@ -111,7 +111,7 @@ class ec_order{
 			}
 			
 			if( $this->process_result == "1" ){
-				$this->insert_details();
+				$this->insert_details( $payment_type );
 				$this->update_user_addresses();
 				
 				if( $this->shipping->shipping_method == "fraktjakt" ){
@@ -160,14 +160,14 @@ class ec_order{
 		}
 	}
 	
-	private function insert_details(){
+	private function insert_details( $payment_type ){
 		
 		for( $i = 0; $i < count( $this->cart->cart ); $i++ ){
-			$this->insert_details_helper( $this->cart->cart[$i] );
+			$this->insert_details_helper( $this->cart->cart[$i], $payment_type );
 		}
 	}
 	
-	private function insert_details_helper( &$cart_item ){
+	private function insert_details_helper( &$cart_item, $payment_type ){
 		
 		if( $cart_item->is_giftcard || $cart_item->is_download ){
 			$num_times = $cart_item->quantity;
@@ -179,7 +179,8 @@ class ec_order{
 				if( $cart_item->is_giftcard) 			$giftcard_id = $this->mysqli->insert_new_giftcard( $cart_item->unit_price, $cart_item->gift_card_message );
 														$cart_item->giftcard_id = $giftcard_id;
 																
-				if( $cart_item->is_giftcard )			$this->send_gift_card_email( $cart_item, $giftcard_id );
+				if( $cart_item->is_giftcard && $payment_type != "manual_bill" && $payment_type != "third_party" && !$this->payment->is_3d_auth )			
+														$this->send_gift_card_email( $cart_item, $giftcard_id );
 																
 														$download_id = 0;
 				if( $cart_item->is_download )			$download_id = $this->mysqli->insert_new_download( 	$this->order_id, $cart_item->download_file_name, $cart_item->product_id, $cart_item->is_amazon_download, $cart_item->amazon_key );
@@ -187,6 +188,8 @@ class ec_order{
 				
 				$orderdetail_id = $this->mysqli->insert_order_detail( $this->order_id, $giftcard_id, $download_id, $cart_item );
 			}
+			
+			$cart_item->quantity = $num_times;
 		
 		}else{
 			$orderdetail_id = $this->mysqli->insert_order_detail( $this->order_id, 0, 0, $cart_item );

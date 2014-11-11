@@ -592,6 +592,7 @@ function ec_admin_save_product_details_options( ){
 					/* START ADVANCED SWATCH TYPE */
 					}else if( $optionset->option_type == "swatch" ){
 					?>
+                    	<input type="hidden" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" value="0" />
                     	<ul class="ec_details_swatches">
 							<?php
                             for( $j=0; $j<count( $optionitems ); $j++ ){
@@ -1436,6 +1437,8 @@ jQuery( '.ec_details_swatches > li.ec_advanced' ).click( function( ){
 	
 	var optionitem_id = jQuery( this ).attr( 'data-optionitem-id' );
 	var option_id = jQuery( this ).attr( 'data-option-id' );
+		
+	jQuery( '#ec_option_' + option_id ).val( optionitem_id );
 	
 	jQuery( '.ec_details_swatches > li.ec_option_' + option_id ).removeClass( 'ec_selected' );
 	jQuery( this ).addClass( 'ec_selected' );

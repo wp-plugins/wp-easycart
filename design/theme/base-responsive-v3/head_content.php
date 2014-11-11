@@ -336,6 +336,9 @@ ul.ec_menu_vertical ul li a:hover, ul.ec_menu_vertical ul ul li a:hover, .ec_cat
 .ec_newsletter_content input[type='submit']{ background-color:<?php echo $color1; ?>;}
 .ec_newsletter_content input[type='submit']:hover{ background-color:<?php echo $color2; ?>; }
 
+.ec_account_dashboard_row_divider a, .ec_account_order_line_column5 a, .ec_account_complete_payment_button{ background-color:<?php echo $color1; ?> !important; }
+.ec_account_dashboard_row_divider a:hover, .ec_account_order_line_column5 a:hover, .ec_account_complete_payment_button:hover{ background:<?php echo $color2; ?> !important; background-color:<?php echo $color2; ?> !important; }
+
 @media only screen and ( min-width:1140px ){
 	.ec_product_li{ width:<?php echo $display_width_desktop; ?>; }
 	.ec_product_li:nth-child( <?php echo $columns_desktop; ?>n+1 ){ clear:both; }

@@ -256,6 +256,7 @@ class ec_db_admin extends ec_db{
 				ec_orderdetail.gift_card_message, 
 				ec_orderdetail.gift_card_from_name, 
 				ec_orderdetail.gift_card_to_name,
+				ec_orderdetail.gift_card_email,
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 

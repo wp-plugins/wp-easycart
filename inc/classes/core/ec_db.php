@@ -40,6 +40,7 @@ class ec_db{
 				ec_orderdetail.gift_card_message, 
 				ec_orderdetail.gift_card_from_name, 
 				ec_orderdetail.gift_card_to_name,
+				ec_orderdetail.gift_card_email,
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
@@ -131,6 +132,7 @@ class ec_db{
 				ec_orderdetail.gift_card_message, 
 				ec_orderdetail.gift_card_from_name, 
 				ec_orderdetail.gift_card_to_name,
+				ec_orderdetail.gift_card_email,
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
@@ -1244,12 +1246,15 @@ class ec_db{
 			$stock_quantity = 1000000;
 		}
 		
+		if( $gift_card_message != "" || $gift_card_from_name != "" || $gift_card_from_name != "" || $gift_card_email != "" ){
+			// Do nothing, use quantity entered.
+			
 		// OPTION ITEM QUANTITY TRACKING AND ENTERED QUANITTY GOES OVER ITEM LIMIT
 		// IF    1. Using advanced option items
 		//		 2. using basic quantity tracking
 		//       2. quantity in cart + new quantity is greater than the amount in stock
 		// THEN     use max for that option item set
-		if( $use_advanced_optionset && isset( $product->show_stock_quantity ) && $quantity + $tempcart->quantity > $stock_quantity ){
+		}else if( $use_advanced_optionset && isset( $product->show_stock_quantity ) && $quantity + $tempcart->quantity > $stock_quantity ){
 			$quantity = $stock_quantity - $tempcart->quantity;
 			
 		// OPTION ITEM QUANTITY TRACKING AND ENTERED QUANITTY GOES OVER ITEM LIMIT
@@ -2734,7 +2739,7 @@ class ec_db{
 	}
 	
 	public function get_advanced_optionsets( $product_id ){
-		$sql = "SELECT ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required, ec_option.option_error_text FROM ec_option_to_product LEFT JOIN ec_option ON ec_option.option_id = ec_option_to_product.option_id WHERE ec_option_to_product.product_id = %d ORDER BY ec_option_to_product.option_to_product_id ASC";
+		$sql = "SELECT ec_option.option_id, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_option.option_required, ec_option.option_error_text FROM ec_option_to_product LEFT JOIN ec_option ON ec_option.option_id = ec_option_to_product.option_id WHERE ec_option_to_product.product_id = %d AND ec_option.option_id != '' ORDER BY ec_option_to_product.option_to_product_id ASC";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $product_id ) );
 	}
 	

@@ -106,9 +106,9 @@ class ec_cartpage{
 		
 		// Credit Card
 		if( isset( $_POST['ec_cart_payment_type'] ) )
-			$credit_card = new ec_credit_card( $_POST['ec_cart_payment_type'], $_POST['ec_card_holder_name'], $this->sanatize_card_number( $_POST['ec_card_number'] ), $_POST['ec_expiration_month'], $_POST['ec_expiration_year'], $_POST['ec_security_code'] );
+			$credit_card = new ec_credit_card( $_POST['ec_cart_payment_type'], stripslashes( $_POST['ec_card_holder_name'] ), $this->sanatize_card_number( $_POST['ec_card_number'] ), $_POST['ec_expiration_month'], $_POST['ec_expiration_year'], $_POST['ec_security_code'] );
 		else if( isset( $_POST['ec_card_number'] ) )
-			$credit_card = new ec_credit_card( $this->get_payment_type( $this->sanatize_card_number( $_POST['ec_card_number'] ) ), $_POST['ec_card_holder_name'],  $this->sanatize_card_number( $_POST['ec_card_number'] ), $_POST['ec_expiration_month'], $_POST['ec_expiration_year'], $_POST['ec_security_code'] );
+			$credit_card = new ec_credit_card( $this->get_payment_type( $this->sanatize_card_number( $_POST['ec_card_number'] ) ), stripslashes( $_POST['ec_card_holder_name'] ),  $this->sanatize_card_number( $_POST['ec_card_number'] ), $_POST['ec_expiration_month'], $_POST['ec_expiration_year'], $_POST['ec_security_code'] );
 		else
 			$credit_card = new ec_credit_card( "", "", "", "", "", "" );
 		
@@ -736,7 +736,7 @@ class ec_cartpage{
 	}
 	
 	public function get_discount_total( ){
-		return $GLOBALS['currency']->get_currency_display( $this->order_totals->discount_total );
+		return $GLOBALS['currency']->get_currency_display( (-1) * $this->order_totals->discount_total );
 	}
 	
 	public function display_grand_total( ){
@@ -1944,9 +1944,9 @@ class ec_cartpage{
 		$send_copy = false;
 		$has_product_options = false;
 		
-		if( isset( $_POST['ec_inquiry_name'] ) )			$inquiry_name = $_POST['ec_inquiry_name'];
-		if( isset( $_POST['ec_inquiry_email'] ) )			$inquiry_email = $_POST['ec_inquiry_email'];
-		if( isset( $_POST['ec_inquiry_message'] ) )			$inquiry_message = $_POST['ec_inquiry_message'];
+		if( isset( $_POST['ec_inquiry_name'] ) )			$inquiry_name = stripslashes( $_POST['ec_inquiry_name'] );
+		if( isset( $_POST['ec_inquiry_email'] ) )			$inquiry_email = stripslashes( $_POST['ec_inquiry_email'] );
+		if( isset( $_POST['ec_inquiry_message'] ) )			$inquiry_message = stripslashes( $_POST['ec_inquiry_message'] );
 		if( isset( $_POST['ec_inquiry_send_copy'] ) )		$send_copy = true;
 		
 		//Product Options
@@ -2436,6 +2436,8 @@ class ec_cartpage{
 		
 		if( isset( $_GET['subscription'] ) ){
 			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $_GET['subscription'] );
+		}else if( !get_option( 'ec_option_skip_cart_login' ) && file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) ){
+			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_login");
 		}else{
 			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info");
 		}
@@ -2460,7 +2462,7 @@ class ec_cartpage{
 		$billing_last_name = $shipping_last_name = stripslashes( $_POST['ec_cart_billing_last_name'] );
 			
 		if( isset( $_POST['ec_cart_billing_company_name'] ) ){
-			$billing_company_name = $shipping_company_name = $_POST['ec_cart_billing_company_name'];
+			$billing_company_name = $shipping_company_name = stripslashes( $_POST['ec_cart_billing_company_name'] );
 		}else{
 			$billing_company_name = $shipping_company_name = "";
 		}
@@ -2498,7 +2500,7 @@ class ec_cartpage{
 			$shipping_last_name = stripslashes( $_POST['ec_cart_shipping_last_name'] );
 			
 			if( isset( $_POST['ec_cart_shipping_company_name'] ) ){
-				$shipping_company_name = $_POST['ec_cart_shipping_company_name'];
+				$shipping_company_name = stripslashes( $_POST['ec_cart_shipping_company_name'] );
 			}else{
 				$shipping_company_name = "";
 			}
@@ -2527,7 +2529,7 @@ class ec_cartpage{
 		}
 		
 		if( isset( $_POST['ec_order_notes'] ) ){
-			$order_notes = $_POST['ec_order_notes'];
+			$order_notes = stripslashes( $_POST['ec_order_notes'] );
 		}else if( isset( $_SESSION['ec_order_notes'] ) ){
 			$order_notes = $_SESSION['ec_order_notes'];
 		}else{
@@ -2782,7 +2784,7 @@ class ec_cartpage{
 					$billing_last_name = $shipping_last_name = stripslashes( $_POST['ec_cart_billing_last_name'] );
 						
 					if( isset( $_POST['ec_cart_billing_company_name'] ) ){
-						$billing_company_name = $shipping_company_name = $_POST['ec_cart_billing_company_name'];
+						$billing_company_name = $shipping_company_name = stripslashes( $_POST['ec_cart_billing_company_name'] );
 					}else{
 						$billing_company_name = $shipping_company_name = "";
 					}
@@ -2821,7 +2823,7 @@ class ec_cartpage{
 						$shipping_last_name = stripslashes( $_POST['ec_cart_shipping_last_name'] );
 						
 						if( isset( $_POST['ec_cart_shipping_company_name'] ) ){
-							$shipping_company_name = $_POST['ec_cart_shipping_company_name'];
+							$shipping_company_name = stripslashes( $_POST['ec_cart_shipping_company_name'] );
 						}else{
 							$shipping_company_name = "";
 						}
@@ -2851,7 +2853,7 @@ class ec_cartpage{
 					
 					// Order Notes
 					if( isset( $_POST['ec_order_notes'] ) ){
-						$order_notes = $_POST['ec_order_notes'];
+						$order_notes = stripslashes( $_POST['ec_order_notes'] );
 					}else{
 						$order_notes = "";
 					}
@@ -3125,9 +3127,9 @@ class ec_cartpage{
 	
 	private function process_send_inquiry( ){
 		
-		$inquiry_email = $_POST['inquiry_email'];
-		$inquiry_name = $_POST['inquiry_name'];
-		$inquiry_message = $_POST['inquiry_message'];
+		$inquiry_email = stripslashes( $_POST['inquiry_email'] );
+		$inquiry_name = stripslashes( $_POST['inquiry_name'] );
+		$inquiry_message = stripslashes( $_POST['inquiry_message'] );
 		$model_number = $_POST['inquiry_model_number'];
 		if( isset( $_POST['inquiry_send_copy'] ) )
 			$send_copy = true;

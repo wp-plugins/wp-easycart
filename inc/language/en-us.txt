@@ -905,7 +905,7 @@
 				},
 				"cart_login_account_information_text2":{
 					"title":"Cart, Login Complete Text Part 2",
-					"value":". To checkout with a different account,"
+					"value":" to checkout with a different account,"
 				},
 				"cart_login_account_information_logout_link":{
 					"title":"Cart, Login Complete, Logout Link",
@@ -1614,16 +1614,16 @@
 					"value":"Account Navigation"
 				},
 				"account_navigation_basic_inforamtion":{
-					"title":"Account, Navigation, Edit Basic Information Link",
-					"value":"edit basic information"
+					"title":"Account, Navigation, Basic Information Link",
+					"value":"basic information"
 				},
 				"account_navigation_orders":{
 					"title":"Account, Navigation, View Orders Link",
 					"value":"view orders"
 				},
 				"account_navigation_password":{
-					"title":"Account, Navigation, Edit Password Link",
-					"value":"edit password"
+					"title":"Account, Navigation, Change Password Link",
+					"value":"change password"
 				},
 				"account_navigation_subscriptions":{
 					"title":"Account, Navigation, Subscriptions Link",
@@ -1640,6 +1640,14 @@
 				"account_navigation_dashboard":{
 					"title":"Account, Navigation, Dashboard Link",
 					"value":"account dashboard"
+				},
+				"account_navigation_billing_information":{
+					"title":"Account, Navigation, Billing Link",
+					"value":"billing information"
+				},
+				"account_navigation_shipping_information":{
+					"title":"Account, Navigation, Shipping Link",
+					"value":"shipping information"
 				}
 			}
 		},

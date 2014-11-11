@@ -1102,31 +1102,31 @@ class ec_accountpage{
 	
 	private function process_update_billing_information( ){
 		
-		$country = $_POST['ec_account_billing_information_country'];
+		$country = stripslashes( $_POST['ec_account_billing_information_country'] );
 		
-		$first_name = $_POST['ec_account_billing_information_first_name'];
-		$last_name = $_POST['ec_account_billing_information_last_name'];
+		$first_name = stripslashes( $_POST['ec_account_billing_information_first_name'] );
+		$last_name = stripslashes( $_POST['ec_account_billing_information_last_name'] );
 		if( isset( $_POST['ec_account_billing_information_company_name'] ) ){
-			$company_name = $_POST['ec_account_billing_information_company_name'];
+			$company_name = stripslashes( $_POST['ec_account_billing_information_company_name'] );
 		}else{
 			$company_name = "";
 		}
-		$address = $_POST['ec_account_billing_information_address'];
+		$address = stripslashes( $_POST['ec_account_billing_information_address'] );
 		if( isset( $_POST['ec_account_billing_information_address2'] ) ){
-			$address2 = $_POST['ec_account_billing_information_address2'];
+			$address2 = stripslashes( $_POST['ec_account_billing_information_address2'] );
 		}else{
 			$address2 = "";
 		}
 		
-		$city = $_POST['ec_account_billing_information_city'];
+		$city = stripslashes( $_POST['ec_account_billing_information_city'] );
 		if( isset( $_POST['ec_account_billing_information_state_' . $country] ) ){
-			$state = $_POST['ec_account_billing_information_state_' . $country];
+			$state = stripslashes( $_POST['ec_account_billing_information_state_' . $country] );
 		}else{
-			$state = $_POST['ec_account_billing_information_state'];
+			$state = stripslashes( $_POST['ec_account_billing_information_state'] );
 		}
 		
-		$zip = $_POST['ec_account_billing_information_zip'];
-		$phone = $_POST['ec_account_billing_information_phone'];
+		$zip = stripslashes( $_POST['ec_account_billing_information_zip'] );
+		$phone = stripslashes( $_POST['ec_account_billing_information_phone'] );
 		
 		if( $first_name == $this->user->billing->first_name && 
 			$last_name == $this->user->billing->last_name && 
@@ -1160,31 +1160,31 @@ class ec_accountpage{
 	
 	private function process_update_shipping_information( ){
 		
-		$country = $_POST['ec_account_shipping_information_country'];
+		$country = stripslashes( $_POST['ec_account_shipping_information_country'] );
 		
-		$first_name = $_POST['ec_account_shipping_information_first_name'];
-		$last_name = $_POST['ec_account_shipping_information_last_name'];
+		$first_name = stripslashes( $_POST['ec_account_shipping_information_first_name'] );
+		$last_name = stripslashes( $_POST['ec_account_shipping_information_last_name'] );
 		if( isset( $_POST['ec_account_shipping_information_company_name'] ) ){
-			$company_name = $_POST['ec_account_shipping_information_company_name'];
+			$company_name = stripslashes( $_POST['ec_account_shipping_information_company_name'] );
 		}else{
 			$company_name = "";
 		}
-		$address = $_POST['ec_account_shipping_information_address'];
+		$address = stripslashes( $_POST['ec_account_shipping_information_address'] );
 		if( isset( $_POST['ec_account_shipping_information_address2'] ) ){
-			$address2 = $_POST['ec_account_shipping_information_address2'];
+			$address2 = stripslashes( $_POST['ec_account_shipping_information_address2'] );
 		}else{
 			$address2 = "";
 		}
 		
-		$city = $_POST['ec_account_shipping_information_city'];
+		$city = stripslashes( $_POST['ec_account_shipping_information_city'] );
 		if( isset( $_POST['ec_account_shipping_information_state_' . $country] ) ){
-			$state = $_POST['ec_account_shipping_information_state_' . $country];
+			$state = stripslashes( $_POST['ec_account_shipping_information_state_' . $country] );
 		}else{
-			$state = $_POST['ec_account_shipping_information_state'];
+			$state = stripslashes( $_POST['ec_account_shipping_information_state'] );
 		}
 		
-		$zip = $_POST['ec_account_shipping_information_zip'];
-		$phone = $_POST['ec_account_shipping_information_phone'];
+		$zip = stripslashes( $_POST['ec_account_shipping_information_zip'] );
+		$phone = stripslashes( $_POST['ec_account_shipping_information_phone'] );
 		
 		if( $first_name == $this->user->shipping->first_name && 
 			$last_name == $this->user->shipping->last_name && 
@@ -1296,17 +1296,17 @@ class ec_accountpage{
 			
 			//Upgrade and billing adjustment
 			if( isset( $_POST['ec_card_number'] ) && $_POST['ec_card_number'] != "" ){
-				$first_name = $_POST['ec_account_billing_information_first_name'];
-				$last_name = $_POST['ec_account_billing_information_last_name'];
-				$address = $_POST['ec_account_billing_information_address'];
-				$city = $_POST['ec_account_billing_information_city'];
-				$state = $_POST['ec_account_billing_information_state'];
-				$zip = $_POST['ec_account_billing_information_zip'];
-				$country = $_POST['ec_account_billing_information_country'];
-				$phone = $_POST['ec_account_billing_information_phone'];
+				$first_name = stripslashes( $_POST['ec_account_billing_information_first_name'] );
+				$last_name = stripslashes( $_POST['ec_account_billing_information_last_name'] );
+				$address = stripslashes( $_POST['ec_account_billing_information_address'] );
+				$city = stripslashes( $_POST['ec_account_billing_information_city'] );
+				$state = stripslashes( $_POST['ec_account_billing_information_state'] );
+				$zip = stripslashes( $_POST['ec_account_billing_information_zip'] );
+				$country = stripslashes( $_POST['ec_account_billing_information_country'] );
+				$phone = stripslashes( $_POST['ec_account_billing_information_phone'] );
 				
 				$card_type = $this->get_payment_type( $this->sanatize_card_number( $_POST['ec_card_number'] ) );
-				$card_holder_name = $_POST['ec_account_billing_information_first_name'] . " " . $_POST['ec_account_billing_information_last_name'];
+				$card_holder_name = stripslashes( $_POST['ec_account_billing_information_first_name'] ) . " " . stripslashes( $_POST['ec_account_billing_information_last_name'] );
 				$card_number = $_POST['ec_card_number'];
 				$exp_month = $_POST['ec_expiration_month'];
 				$exp_year = $_POST['ec_expiration_year'];

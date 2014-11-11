@@ -96,6 +96,10 @@ class ec_admin_options{
 			
 		}
 		
+		// Delete all option to products for advanced options	
+		$sql = "DELETE FROM ec_option_to_product WHERE ec_option_to_product.option_id = %d";
+		$this->db->query( $this->db->prepare( $sql, $optionid ) );
+		
 		if( $rows_affected ){
 			return array( "success" );
 		}else{

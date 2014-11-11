@@ -119,21 +119,43 @@
         <div class="ec_cart_header ec_top"><?php echo $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_title' )?></div>
         
         <div class="ec_cart_input_row">
-        	<?php $this->display_personal_information_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_basic_inforamtion' ) ); ?>
-        </div>
-        
+
+			<?php $this->display_billing_information_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_billing_information' ) ); ?>
+
+		</div>
+
         <div class="ec_cart_input_row">
-        	<?php $this->display_password_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_password' ) ); ?>
-        </div>
-        
-        <?php if( $this->using_subscriptions( ) ){ ?>
+
+			<?php $this->display_shipping_information_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_shipping_information' ) ); ?>
+
+		</div>
+
         <div class="ec_cart_input_row">
-        	<?php $this->display_subscriptions_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_subscriptions' )); ?>
+
+			<?php $this->display_personal_information_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_basic_inforamtion' ) ); ?>
+
+		</div>
+
+       <div class="ec_cart_input_row">
+
+          <?php $this->display_password_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_password' ) ); ?>
+
         </div>
+
+		<?php if( $this->using_subscriptions( ) ){ ?>
+
+        <div class="ec_cart_input_row">
+
+          <?php $this->display_subscriptions_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_subscriptions' )); ?>
+
+        </div>
+
         <?php }?>
-        
+
         <div class="ec_cart_input_row">
-        	<?php $this->display_logout_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_sign_out' )); ?>
+
+          <?php $this->display_logout_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_sign_out' )); ?>
+
         </div>
         
     </div>

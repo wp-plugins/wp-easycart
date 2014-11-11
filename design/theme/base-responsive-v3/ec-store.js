@@ -223,8 +223,7 @@ function ec_plus_quantity( model_number, track_quantity, max_quantity ){
 function ec_cartitem_delete( cartitem_id, model_number ){
 	var data = {
 		action: 'ec_ajax_cartitem_delete',
-		cartitem_id: cartitem_id,
-		quantity: jQuery( '#ec_quantity_' + model_number ).val( )
+		cartitem_id: cartitem_id
 	}
 	
 	jQuery( '#ec_cartitem_delete_' + cartitem_id ).hide( );
@@ -393,7 +392,7 @@ function ec_update_cart( data, cartitem_id, model_number ){
 			jQuery( '#ec_cart_duty' ).html( data_arr[5] );
 			jQuery( '#ec_cart_vat' ).html( data_arr[6] );
 			jQuery( '#ec_cart_total' ).html( data_arr[7] );
-			jQuery( '.ec_cart_items_total' ).html( data_arr[9] );
+			jQuery( '.ec_cart_items_total' ).html( data_arr[0] );
 		}
 	}
 }
@@ -1078,6 +1077,22 @@ function ec_live_search_update( ){
 	
 }
 
+function ec_account_forgot_password_button_click( ){
+	
+	var errors = false;
+	var email = jQuery( '#ec_account_forgot_password_email' ).val( );
+	
+	if( !ec_validate_email( email ) ){
+		errors = true;
+		ec_show_error( 'ec_account_forgot_password_email' );
+	}else{
+		ec_hide_error( 'ec_account_forgot_password_email' );
+	}
+	
+	return( !errors );
+	
+}
+
 function ec_account_register_button_click2( ){
 	var top_half = ec_account_register_button_click( );
 	var bottom_half = true;
@@ -1120,6 +1135,67 @@ function ec_account_shipping_information_update_click( ){
 		return true;
 	else
 		return false;
+	
+}
+
+function ec_account_personal_information_update_click( ){
+	
+	var errors = false;
+	var email = jQuery( '#ec_account_personal_information_email' ).val( );
+	
+	if( jQuery( '#ec_account_personal_information_first_name' ).length && !ec_validate_text( jQuery( '#ec_account_personal_information_first_name' ).val( ) ) ){
+		errors = true;
+		ec_show_error( 'ec_account_personal_information_first_name' );
+	}else{
+		ec_hide_error( 'ec_account_personal_information_first_name' );
+	}
+	
+	if( jQuery( '#ec_account_personal_information_last_name' ).length && !ec_validate_text( jQuery( '#ec_account_personal_information_last_name' ).val( ) ) ){
+		errors = true;
+		ec_show_error( 'ec_account_personal_information_last_name' );
+	}else{
+		ec_hide_error( 'ec_account_personal_information_last_name' );
+	}
+	
+	if( !ec_validate_email( email ) ){
+		errors = true;
+		ec_show_error( 'ec_account_personal_information_email' );
+	}else{
+		ec_hide_error( 'ec_account_personal_information_email' );
+	}
+	
+	return( !errors );
+}
+
+function ec_account_password_button_click( ){
+	
+	var errors = false;
+	var current_password = jQuery( '#ec_account_password_current_password' ).val( );
+	var new_password = jQuery( '#ec_account_password_new_password' ).val( );
+	var retype_password = jQuery( '#ec_account_password_retype_new_password' ).val( );
+	
+	if( !ec_validate_password( current_password ) ){
+		errors = true;
+		ec_show_error( 'ec_account_password_current_password' );
+	}else{
+		ec_hide_error( 'ec_account_password_current_password' );
+	}
+	
+	if( !ec_validate_password( new_password ) ){
+		errors = true;
+		ec_show_error( 'ec_account_password_new_password' );
+	}else{
+		ec_hide_error( 'ec_account_password_new_password' );
+	}
+	
+	if( !ec_validate_match( new_password, retype_password ) ){
+		errors = true;
+		ec_show_error( 'ec_account_password_retype_new_password' );
+	}else{
+		ec_hide_error( 'ec_account_password_retype_new_password' );
+	}
+	
+	return( !errors );
 	
 }
 

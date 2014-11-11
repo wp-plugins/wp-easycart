@@ -1640,6 +1640,14 @@
 				"account_navigation_dashboard":{
 					"title":"Account, Navigation, Dashboard Link",
 					"value":"cuenta salpicadero"
+				},
+				"account_navigation_billing_information":{
+					"title":"Account, Navigation, Billing Link",
+					"value":"información de facturación"
+				},
+				"account_navigation_shipping_information":{
+					"title":"Account, Navigation, Shipping Link",
+					"value":"información de envío"
 				}
 			}
 		},

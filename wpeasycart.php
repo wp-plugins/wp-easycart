@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.7
+ * Version: 3.0.8
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.7
+ * @version 3.0.8
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_7' );
+define( 'EC_CURRENT_VERSION', '3_0_8' );
 define( 'EC_CURRENT_DB', '1_25' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -411,7 +411,7 @@ function load_ec_pre(){
 								'post_type'		=> "ec_store"
 							  );
 				$post_id = wp_insert_post( $post );
-				$db->update_product_post_id( $category_single->category_id, $post_id );
+				$db->update_category_post_id( $category_single->category_id, $post_id );
 			}
 		}
 		
@@ -1642,7 +1642,7 @@ function ec_ajax_cartitem_update( ){
 			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" .  
 			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->discount_total ) . "***" .
+			$GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ) . "***" .
 			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 			
 	if( $cart->total_items > 0 ){
@@ -1683,7 +1683,7 @@ function ec_ajax_cartitem_delete( ){
 			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" .  
 			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->discount_total ) . "***" .
+			$GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ) . "***" .
 			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	
 	if( $cart->total_items > 0 ){
@@ -1725,7 +1725,7 @@ function ec_ajax_redeem_coupon_code( ){
 			$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->discount_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
@@ -1760,7 +1760,7 @@ function ec_ajax_redeem_gift_card( ){
 			$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->discount_total ) . "***" . 
+			$GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );

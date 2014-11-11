@@ -1163,6 +1163,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_privacy_link', $_POST['ec_option_privacy_link'] );
 	update_option( 'ec_option_weight', $_POST['ec_option_weight'] );
 	update_option( 'ec_option_show_menu_cart_icon', $_POST['ec_option_show_menu_cart_icon'] );
+	if( isset( $_POST['ec_option_cart_menu_id'] ) )
 	update_option( 'ec_option_cart_menu_id', implode( '***', $_POST['ec_option_cart_menu_id'] ) );
 	update_option( 'ec_option_enable_newsletter_popup', $_POST['ec_option_enable_newsletter_popup'] );
 	
@@ -1305,7 +1306,7 @@ function ec_update_advanced_setup( ){
 function ec_update_colors( ){
 	
 	// V2
-	if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
+	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) ){ 
 		
 		//update options
 		$css_options = get_option( 'ec_option_css_replacements' ); 

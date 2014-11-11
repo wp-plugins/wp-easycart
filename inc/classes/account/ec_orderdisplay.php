@@ -109,24 +109,24 @@ class ec_orderdisplay{
 		$this->user_email = $order_row->user_email; 
 		$this->user_level = $order_row->user_level; 
 		
-		$this->billing_first_name = $order_row->billing_first_name; 
-		$this->billing_last_name = $order_row->billing_last_name; 
-		$this->billing_company_name = $order_row->billing_company_name; 
-		$this->billing_address_line_1 = $order_row->billing_address_line_1; 
-		$this->billing_address_line_2 = $order_row->billing_address_line_2; 
-		$this->billing_city = $order_row->billing_city; 
+		$this->billing_first_name = $order_row->billing_first_name;
+		$this->billing_last_name = $order_row->billing_last_name;
+		$this->billing_company_name = $order_row->billing_company_name;
+		$this->billing_address_line_1 = $order_row->billing_address_line_1;
+		$this->billing_address_line_2 = $order_row->billing_address_line_2;
+		$this->billing_city = $order_row->billing_city;
 		$this->billing_state = $order_row->billing_state; 
 		$this->billing_zip = $order_row->billing_zip; 
 		$this->billing_country = $order_row->billing_country; 
 		$this->billing_country_name = $order_row->billing_country_name; 
 		$this->billing_phone = $order_row->billing_phone; 
 		
-		$this->shipping_first_name = $order_row->shipping_first_name; 
-		$this->shipping_last_name = $order_row->shipping_last_name; 
+		$this->shipping_first_name = $order_row->shipping_first_name;
+		$this->shipping_last_name = $order_row->shipping_last_name;
 		$this->shipping_company_name = $order_row->shipping_company_name;
-		$this->shipping_address_line_1 = $order_row->shipping_address_line_1; 
-		$this->shipping_address_line_2 = $order_row->shipping_address_line_2; 
-		$this->shipping_city = $order_row->shipping_city; 
+		$this->shipping_address_line_1 = $order_row->shipping_address_line_1;
+		$this->shipping_address_line_2 = $order_row->shipping_address_line_2;
+		$this->shipping_city = $order_row->shipping_city;
 		$this->shipping_state = $order_row->shipping_state; 
 		$this->shipping_zip = $order_row->shipping_zip; 
 		$this->shipping_country = $order_row->shipping_country; 
@@ -168,7 +168,7 @@ class ec_orderdisplay{
 				$result = $this->mysqli->get_order_details( $this->order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
 				
 			foreach( $result as $item ){
-				array_push( $this->cart->cart, (object) array( "orderdetail_id"=>$item->orderdetail_id, "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity, "image1"=>$item->image1, "optionitem1_name"=>$item->optionitem_name_1, "optionitem2_name"=>$item->optionitem_name_2, "optionitem3_name"=>$item->optionitem_name_3, "optionitem4_name"=>$item->optionitem_name_4, "optionitem5_name"=>$item->optionitem_name_5, "optionitem1_label"=>$item->optionitem_label_1, "optionitem2_label"=>$item->optionitem_label_2, "optionitem3_label"=>$item->optionitem_label_3, "optionitem4_label"=>$item->optionitem_label_4, "optionitem5_label"=>$item->optionitem_label_5, "optionitem1_price"=>$item->optionitem_price_1, "optionitem2_price"=>$item->optionitem_price_2, "optionitem3_price"=>$item->optionitem_price_3, "optionitem4_price"=>$item->optionitem_price_4, "optionitem5_price"=>$item->optionitem_price_5, "use_advanced_optionset"=>$item->use_advanced_optionset, "is_download"=>$item->is_download, "model_number"=>$item->model_number, "giftcard_id"=>$item->giftcard_id, "gift_card_message"=>$item->gift_card_message, "gift_card_from_name"=>$item->gift_card_from_name, "gift_card_to_name"=>$item->gift_card_to_name, "is_giftcard"=>$item->is_giftcard ) );
+				array_push( $this->cart->cart, (object) array( "orderdetail_id"=>$item->orderdetail_id, "unit_price"=>$item->unit_price, "total_price"=>$item->total_price, "title"=>$item->title, "quantity"=>$item->quantity, "image1"=>$item->image1, "optionitem1_name"=>$item->optionitem_name_1, "optionitem2_name"=>$item->optionitem_name_2, "optionitem3_name"=>$item->optionitem_name_3, "optionitem4_name"=>$item->optionitem_name_4, "optionitem5_name"=>$item->optionitem_name_5, "optionitem1_label"=>$item->optionitem_label_1, "optionitem2_label"=>$item->optionitem_label_2, "optionitem3_label"=>$item->optionitem_label_3, "optionitem4_label"=>$item->optionitem_label_4, "optionitem5_label"=>$item->optionitem_label_5, "optionitem1_price"=>$item->optionitem_price_1, "optionitem2_price"=>$item->optionitem_price_2, "optionitem3_price"=>$item->optionitem_price_3, "optionitem4_price"=>$item->optionitem_price_4, "optionitem5_price"=>$item->optionitem_price_5, "use_advanced_optionset"=>$item->use_advanced_optionset, "is_download"=>$item->is_download, "model_number"=>$item->model_number, "giftcard_id"=>$item->giftcard_id, "gift_card_message"=>$item->gift_card_message, "gift_card_from_name"=>$item->gift_card_from_name, "gift_card_to_name"=>$item->gift_card_to_name, "is_giftcard"=>$item->is_giftcard, "gift_card_email"=>$item->gift_card_email ) );
 				array_push( $this->orderdetails, new ec_orderdetail( $item ) );
 				
 			}
@@ -441,6 +441,41 @@ class ec_orderdisplay{
 		}else{
 			mail( $this->user_email, $GLOBALS['language']->get_text( "ec_errors", "subscription_payment_failed_title" ), $message, implode("\r\n", $headers) );
 			mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "ec_errors", "subscription_payment_failed_title" ), $message, implode("\r\n", $headers) );
+		}
+	}
+	
+	public function send_gift_cards( ){
+		
+		foreach( $this->cart->cart as $cart_item ){
+			if( $cart_item->is_giftcard ){
+				
+				$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
+	 			$giftcard_id = $cart_item->giftcard_id;
+		
+				$headers   = array();
+				$headers[] = "MIME-Version: 1.0";
+				$headers[] = "Content-Type: text/html; charset=utf-8";
+				$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+				$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+				$headers[] = "X-Mailer: PHP/".phpversion();
+				
+				ob_start();
+				if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_giftcard.php' ) )	
+					include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_giftcard.php';
+				else
+					include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_cart_email_giftcard.php';
+					
+				$message = ob_get_clean();
+				
+				if( get_option( 'ec_option_use_wp_mail' ) ){
+					wp_mail( $cart_item->gift_card_email, $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+					wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+				}else{
+					mail( $cart_item->gift_card_email, $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+					mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_giftcard_receipt_title" ), $message, implode("\r\n", $headers) );
+				}
+				
+			}
 		}
 	}
 	

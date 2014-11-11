@@ -1,4 +1,4 @@
-<div class="ec_account_left">
+<div class="ec_account_left ec_account_login">
 	
 	<?php $this->display_account_login_form_start(); ?>
     
@@ -38,7 +38,7 @@
 
 </div>
 
-<div class="ec_account_right">
+<div class="ec_account_right ec_account_login">
 
 	<div class="ec_cart_header ec_top">
     	<?php echo $GLOBALS['language']->get_text( 'account_login', 'account_new_user_title' )?>
