@@ -220,6 +220,15 @@ if( ec_using_live_shipping( ) && ec_using_auspost_shipping( ) && ec_auspost_ship
 <?php } 
 
 ////////////////////////////
+// Canada Post Shipping Check
+////////////////////////////
+if( ec_using_live_shipping( ) && ec_using_canadapost_shipping( ) && ec_canadapost_shipping_setup( ) ){ ?>
+<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have successfully setup Canada Post live shipping.</span></div>
+<?php }else if( ec_using_live_shipping( ) && ec_using_canadapost_shipping( ) ){ ?>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">Canada Post live shipping setup incorrectly.</span></div>
+<?php } 
+
+////////////////////////////
 // Fraktjakt Shipping Check
 ////////////////////////////
 if( ec_using_fraktjakt_shipping( ) && ec_fraktjakt_shipping_setup( ) ){ ?>

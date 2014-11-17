@@ -382,7 +382,7 @@ function ec_live_shipping_setup( ){
 	$shippingrates = $db->get_shipping_data( );
 	$has_live_shipping = false;
 	foreach( $shippingrates as $shiprate ){
-		if( $shiprate->is_ups_based || $shiprate->is_usps_based || $shiprate->is_fedex_based || $shiprate->is_dhl_based || $shiprate->is_auspost_based ){
+		if( $shiprate->is_ups_based || $shiprate->is_usps_based || $shiprate->is_fedex_based || $shiprate->is_dhl_based || $shiprate->is_auspost_based || $shiprate->is_canadapost_based ){
 			$has_live_shipping = true;
 			break;
 		}
@@ -593,6 +593,44 @@ function ec_auspost_shipping_setup( ){
 	}
 	
 	return ( $auspost_has_settings && $auspost_setup );
+}
+
+function ec_using_canadapost_shipping( ){
+	$db = new ec_db_admin( );
+	$shippingrates = $db->get_shipping_data( );
+	$has_canadapost_shipping = false;
+	foreach( $shippingrates as $shiprate ){
+		if( $shiprate->is_canadapost_based ){
+			$has_canadapost_shipping = true;
+			break;
+		}
+	}
+	return $has_canadapost_shipping;
+}
+
+function ec_canadapost_shipping_setup( ){
+	$canadapost_has_settings = false;
+	$canadapost_setup = false;
+	$canadapost_error_reason = 0;
+	
+	$db = new ec_db_admin( );
+	$setting_row = $db->get_settings( );
+	$settings = new ec_setting( $setting_row );
+
+	if( $setting_row->canadapost_username && $setting_row->canadapost_password && $setting_row->canadapost_customer_number && $setting_row->canadapost_ship_from_zip ){
+		$canadapost_has_settings = true;
+		
+		// Run test of the settings
+		$canadapost_class = new ec_canadapost( $settings );
+		$canadapost_response = $canadapost_class->get_rate_test( "DOM.RP", $setting_row->canadapost_ship_from_zip, "CA", "1" );
+		
+		if( !$canadapost_response )
+			$canadapost_error_reason = "1";
+		else
+			$canadapost_setup = true;
+	}
+	
+	return ( $canadapost_has_settings && $canadapost_setup );
 }
 
 function ec_using_fraktjakt_shipping( ){
@@ -954,20 +992,27 @@ function ec_update_pages( $store_id, $account_id, $cart_id ){
 
 function ec_add_store_shortcode( $store_id ){
 	$the_page = get_page( $store_id );
-	$the_page->post_content = "[ec_store]" . $the_page->post_content;
-	wp_update_post( $the_page );
+	
+	if( !strstr( $the_page->post_content, '[ec_store' ) ){
+		$the_page->post_content = "[ec_store]" . $the_page->post_content;
+		wp_update_post( $the_page );
+	}
 }
 
 function ec_add_account_shortcode( $account_id ){
 	$the_page = get_page( $account_id );
-	$the_page->post_content = "[ec_account]" . $the_page->post_content;
-	wp_update_post( $the_page );
+	if( !strstr( $the_page->post_content, '[ec_account' ) ){
+		$the_page->post_content = "[ec_account]" . $the_page->post_content;
+		wp_update_post( $the_page );
+	}
 }
 
 function ec_add_cart_shortcode( $cart_id ){
 	$the_page = get_page( $cart_id );
-	$the_page->post_content = "[ec_cart]" . $the_page->post_content;
-	wp_update_post( $the_page );
+	if( !strstr( $the_page->post_content, '[ec_cart' ) ){
+		$the_page->post_content = "[ec_cart]" . $the_page->post_content;
+		wp_update_post( $the_page );
+	}
 }
 
 function ec_add_store_page( ){

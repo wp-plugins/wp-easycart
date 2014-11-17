@@ -116,9 +116,9 @@ if( get_option( 'ec_option_payment_third_party' ) == 'dwolla_thirdparty' ){
 }
 
 // INCLUDE SHIPPER CLASSES
-$use_auspost = false; $use_dhl = false; $use_fedex = false; $use_ups = false; $use_usps = false;
+$use_auspost = false; $use_dhl = false; $use_fedex = false; $use_ups = false; $use_usps = false; $use_canadapost = false;
 global $wpdb;
-$rates = $wpdb->get_results( "SELECT shippingrate_id, is_ups_based, is_usps_based, is_fedex_based, is_auspost_based, is_dhl_based FROM ec_shippingrate" );
+$rates = $wpdb->get_results( "SELECT shippingrate_id, is_ups_based, is_usps_based, is_fedex_based, is_auspost_based, is_dhl_based, is_canadapost_based FROM ec_shippingrate" );
 $shipping_method = $wpdb->get_var( "SELECT shipping_method FROM ec_setting WHERE setting_id = 1" );
 
 foreach( $rates as $rate ){
@@ -132,6 +132,8 @@ foreach( $rates as $rate ){
 		$use_ups = true;
 	else if( $rate->is_usps_based )
 		$use_usps = true;
+	else if( $rate->is_canadapost_based )
+		$use_canadapost = true;
 }
 
 if( $shipping_method == 'live' && $use_auspost )
@@ -148,6 +150,8 @@ if( $shipping_method == 'live' && $use_ups )
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_ups.php' );
 if( $shipping_method == 'live' && $use_usps )
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_usps.php' );
+if( $shipping_method == 'live' && $use_canadapost )
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_canadapost.php' );
 
 // INCLUDE CORE CLASSES
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_address.php' );

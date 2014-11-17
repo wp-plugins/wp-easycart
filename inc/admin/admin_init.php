@@ -693,7 +693,7 @@ function ec_print_product_select( $id ){
 // Print the display types available for the product display
 function ec_print_product_display_type_select( $id ){
 	echo "<select class=\"ec_editor_select_box\" id=\"" . $id . "\">";
-		echo "<option value=\"1\" selected=\"selected\">Same as Store Product Display</option>";
+		echo "<option value=\"1\" selected=\"selected\">Default Product Display Type</option>";
 		echo "<option value=\"2\">Same as Product Widget Display</option>";
 		echo "<option value=\"3\">Custom Display Type 1</option>";
 	echo "</select>";
@@ -714,9 +714,11 @@ function ec_print_editor_multiple_products( ){
 		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Display Type:</span><span class=\"ec_editor_select_row_input\">";
 		ec_print_product_display_type_select( 'ec_editor_multiple_products_display_type' );
 		echo "</div>";
-		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Columns:</span><span class=\"ec_editor_select_row_input\">";
-		ec_print_product_columns_select( 'ec_editor_multiple_products_columns' );
-		echo "</div>";
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) ){
+			echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Columns:</span><span class=\"ec_editor_select_row_input\">";
+			ec_print_product_columns_select( 'ec_editor_multiple_products_columns' );
+			echo "</div>";
+		}
 		echo "<div class=\"ec_editor_submit_row\"><span class=\"ec_editor_select_row_input\"><input type=\"button\" value=\"ADD SHORTCODE\" id=\"ec_add_multiple_products\" class=\"ec_editor_button\"></span></div>";
 		
 	echo "</div>";

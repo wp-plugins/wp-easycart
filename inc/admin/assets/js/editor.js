@@ -317,7 +317,10 @@ function ec_reset_single_product( ){
 jQuery( '#ec_add_multiple_products' ).click( function( ){
 	var productids = jQuery( '#ec_editor_multiple_products_select' ).val( );
 	var display_type = jQuery( '#ec_editor_multiple_products_display_type' ).val( );
-	var columns = jQuery( '#ec_editor_multiple_products_columns' ).val( );
+	var columns = 0;
+	if( jQuery( '#ec_editor_multiple_products_columns' ).length ){
+		columns = jQuery( '#ec_editor_multiple_products_columns' ).val( );
+	}
 	var selected_products = ""; 
 	var added = 0;
 
@@ -333,7 +336,12 @@ jQuery( '#ec_add_multiple_products' ).click( function( ){
 	});
 	
 	if( added > 0 ){
-		tinyMCE.activeEditor.execCommand( 'mceInsertContent', 0, "[ec_product productid=\"" + selected_products + "\" style=\"" + display_type + "\" columns=\"" + columns + "\"]" );
+		var shortcode = "[ec_product productid=\"" + selected_products + "\" style=\"" + display_type + "\" ";
+		if( columns ){
+			shortcode = shortcode + "columns=\"" + columns + "\"";
+		}
+		shortcode = shortcode + "]";
+		tinyMCE.activeEditor.execCommand( 'mceInsertContent', 0, shortcode );
 		ec_close_editor( );
 		ec_reset_multiple_products( );
 	}else{

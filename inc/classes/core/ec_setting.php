@@ -290,6 +290,48 @@ class ec_setting{
 			return "";
 	}
 	
+	public function get_canadapost_username( ){
+		if( isset( $this->setting_row->canadapost_username ) )
+			return $this->setting_row->canadapost_username;
+		else
+			return "";
+	}
+	
+	public function get_canadapost_password( ){
+		if( isset( $this->setting_row->canadapost_password ) )
+			return $this->setting_row->canadapost_password;
+		else
+			return "";
+	}
+	
+	public function get_canadapost_customer_number( ){
+		if( isset( $this->setting_row->canadapost_customer_number ) )
+			return $this->setting_row->canadapost_customer_number;
+		else
+			return "";
+	}
+	
+	public function get_canadapost_contract_id( ){
+		if( isset( $this->setting_row->canadapost_contract_id ) )
+			return $this->setting_row->canadapost_contract_id;
+		else
+			return "";
+	}
+	
+	public function get_canadapost_test_mode( ){
+		if( isset( $this->setting_row->canadapost_test_mode ) )
+			return $this->setting_row->canadapost_test_mode;
+		else
+			return "";
+	}
+	
+	public function get_canadapost_ship_from_zip( ){
+		if( isset( $this->setting_row->canadapost_ship_from_zip ) )
+			return $this->setting_row->canadapost_ship_from_zip;
+		else
+			return "";
+	}
+	
 }
 
 ?>

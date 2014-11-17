@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 3.0.8
+Stable tag: 3.0.9
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,18 +118,33 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.9 =
+* New Feature - Canada Post live shipping now available.
+* Fix - Swatch uploading was not functioning following a script upgrade for PHP5.5
+* Fix - Closed security issue in the admin scripts area.
+* Fix - Switching between shipping types can lock you out of any shipping rate, resolved.
+* Fix - For servers that alter images and wrap them in tags, some hover effects were not working, correction has been made.
+* Fix - Trimming product description and specs to prevent data errors with advanced content.
+* Fix - When adding shortcodes to pages in the basic setup, possible to add duplicate store, account, or cart shortcodes, which is not what is needed and has been corrected.
+* Fix - Using product short codes now show up with your default.
+* Fix - Using selected products short code, now shows up in the default column layout for V3.
+* Fix - Flipbook image effect on products now works correctly with option item images.
+* Fix - Random warning on invalid page entry removed.
+* Fix - Prior to this, product uploads for downloadable products would not work unless logged into WordPress. This has been corrected and secured.
+* Fix - When an error occurs during the upload of a downloadable good, the customer end will notify the user that an error has occured, instead of downloading an unlimited size empty file.
+* Fix - Display on live rates with global handling fee was incorrect compared to the cart value (which was correct) and has been corrected.
 = 3.0.8 =
 * Improvement - Account design improved to match the rest of the V3 store.
-* Bug Fix - Adding a coupon code or gift card code with a cart widget was not updating the quantity value correctly.
-* Bug Fix - V3 with no child theme was not allowing updating of colorization options in the admin.
-* Bug Fix - Option Item Images were not saving correctly.
-* Bug Fix - Advanced Swatches not saving.
-* Bug Fix - System was not deleting all ties to products with advanced options when removing an advanced option, causing random data errors.
-* Bug Fix - Gift card emailers were sending even when non-paid status.
-* Bug Fix - Resend email with no child theme for gift cards was not working.
-* Bug Fix - Multiple gift card additions to cart would result in an incorrect quantity added.
-* Bug Fix - Multiple gift cards would end up in an incorrect quantity value in the email receipt.
-* Bug Fix - Third party checkouts were not sending a gift card emailer once payment was confirmed.
+* Fix - Adding a coupon code or gift card code with a cart widget was not updating the quantity value correctly.
+* Fix - V3 with no child theme was not allowing updating of colorization options in the admin.
+* Fix - Option Item Images were not saving correctly.
+* Fix - Advanced Swatches not saving.
+* Fix - System was not deleting all ties to products with advanced options when removing an advanced option, causing random data errors.
+* Fix - Gift card emailers were sending even when non-paid status.
+* Fix - Resend email with no child theme for gift cards was not working.
+* Fix - Multiple gift card additions to cart would result in an incorrect quantity added.
+* Fix - Multiple gift cards would end up in an incorrect quantity value in the email receipt.
+* Fix - Third party checkouts were not sending a gift card emailer once payment was confirmed.
 = 3.0.7 =
 * Feature - You can now turn on an automatic newsletter sign up popup window, prompting users to sign up for a newsletter the second they get to your site. This is available in the basic settings of your store setup.
 * Improvement - UPS Now offers negotiated rates for those that it applies to. Simply add your state code and check the negotiated rates box to complete these option.

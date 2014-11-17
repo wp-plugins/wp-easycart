@@ -28,7 +28,7 @@ if( isset( $_GET['reqID'] ) )
 $user_sql = "SELECT  ec_user.*, ec_role.admin_access FROM ec_user LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE ec_user.password = %s AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)";
 $users = $wpdb->get_results( $wpdb->prepare( $user_sql, $requestID ) );
 
-if( !empty( $users ) || is_user_logged_in( ) ){
+if( !empty( $users ) ){
 	
 	//first, organize tables in order
 	$wpdb->query( "ALTER TABLE ec_product MODIFY COLUMN product_id INTEGER(11) NOT NULL AUTO_INCREMENT FIRST");
@@ -167,7 +167,7 @@ if( !empty( $users ) || is_user_logged_in( ) ){
 	
 	header("Content-type: application/vnd.ms-excel");
 	header("Content-Transfer-Encoding: binary"); 
-	header("Content-Disposition: attachment; filename=gatewaylog.xls");
+	header("Content-Disposition: attachment; filename=products.xls");
 	header("Pragma: no-cache");
 	header("Expires: 0");
 

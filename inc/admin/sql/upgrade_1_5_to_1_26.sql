@@ -1,40 +1,4 @@
 ﻿;
-ALTER TABLE ec_country ADD `vat_rate_cnt` float(9,3) NOT NULL DEFAULT '0.000';
-CREATE TABLE IF NOT EXISTS `ec_role` (
-  `role_id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_label` varchar(20) COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `admin_access` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`role_id`),
-  UNIQUE KEY `role_id` (`role_id`)
-) ENGINE=MyISAM 
-AUTO_INCREMENT=3 CHARACTER SET 'utf8' COLLATE
- 'utf8_general_ci'
-;
-CREATE TABLE IF NOT EXISTS `ec_roleprice` (
-  `roleprice_id` int(11) NOT NULL AUTO_INCREMENT,
-  `product_id` int(11) NOT NULL DEFAULT '0',
-  `role_label` varchar(20) COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `role_price` float(15,3) NOT NULL DEFAULT '0.000',
-  PRIMARY KEY (`roleprice_id`),
-  UNIQUE KEY `roleprice_id` (`roleprice_id`)
-) ENGINE=MyISAM 
-AUTO_INCREMENT=3 CHARACTER SET 'utf8' COLLATE
- 'utf8_general_ci'
-;
-CREATE TABLE IF NOT EXISTS `ec_roleaccess` (
-  `roleaccess_id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_label` varchar(20) COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `admin_panel` varchar(20) COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`roleaccess_id`),
-  UNIQUE KEY `roleaccess_id` (`roleaccess_id`)
-) ENGINE=MyISAM 
-AUTO_INCREMENT=100 CHARACTER SET 'utf8' COLLATE
- 'utf8_general_ci'
-;
-INSERT INTO `ec_role` (`role_id`, `role_label`, `admin_access`) VALUES
-  (1, 'admin', 1),
-  (2, 'shopper', 0)
-;
 ALTER TABLE ec_order ADD `txn_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Quickbooks Specific TXN ID.';
 ALTER TABLE ec_order ADD `edit_sequence` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Quickbooks Specific Edit Sequence.';
 ALTER TABLE ec_product ADD `list_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Quickbooks Specific List ID.';
@@ -605,3 +569,10 @@ ALTER TABLE ec_order ADD `guest_key` VARCHAR(124) NOT NULL DEFAULT '' COMMENT 'U
 ALTER TABLE ec_user ADD `user_notes` text COLLATE utf8_general_ci COMMENT 'This is available for an admin to keep notes on a user.';
 ALTER TABLE ec_setting ADD `ups_ship_from_state` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This sets the ship from state when using UPS.';
 ALTER TABLE ec_setting ADD `ups_negotiated_rates` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'This sets the ship from state when using UPS.';
+ALTER TABLE ec_setting ADD `canadapost_username` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post API username.';
+ALTER TABLE ec_setting ADD `canadapost_password` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post API password.';
+ALTER TABLE ec_setting ADD `canadapost_customer_number` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post customer number.';
+ALTER TABLE ec_setting ADD `canadapost_contract_id` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post contract id (optional for special rates).';
+ALTER TABLE ec_setting ADD `canadapost_test_mode` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'This points to the test or live API URL for Canada Post.';
+ALTER TABLE ec_setting ADD `canadapost_ship_from_zip` VARCHAR(100) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post ship from zip.';
+ALTER TABLE ec_shippingrate ADD `is_canadapost_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'This sets the rate type to Canada Post.';

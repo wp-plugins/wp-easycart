@@ -478,60 +478,69 @@ class ec_orderdetail{
 					else
 						$file = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products/downloads/" . $this->download->download_file_name;
 					
-					$ext = substr( $this->download->download_file_name, strrpos( $this->download->download_file_name, '.' ) + 1);
+					if( file_exists( $file ) ){
 					
-					switch( $ext ){
-						case "pdf":
-							$mm_type="application/pdf";
-							break;
-						case "zip":
-							$mm_type="application/zip";
-							break;
-						case "xlsx":
-							$mm_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-							break;
-						case "xls":
-							$mm_type="application/vnd.ms-excel";
-							break;
-						default:
-							$mm_type="application/octet-stream";
-							break;
+						$ext = substr( $this->download->download_file_name, strrpos( $this->download->download_file_name, '.' ) + 1);
+					
+						switch( $ext ){
+							case "pdf":
+								$mm_type="application/pdf";
+								break;
+							case "zip":
+								$mm_type="application/zip";
+								break;
+							case "xlsx":
+								$mm_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+								break;
+							case "xls":
+								$mm_type="application/vnd.ms-excel";
+								break;
+							default:
+								$mm_type="application/octet-stream";
+								break;
+						}
+						
+						$date = new DateTime();
+						$time_stamp = $date->getTimestamp();
+						
+						$filename_arr = explode( "_", $this->download->download_file_name );
+						$file_start_name = "";
+						for( $i=0; $i<count($filename_arr)-1; $i++ ){
+							if( $i>0 )
+								$file_start_name .= "_";
+							$file_start_name .= $filename_arr[$i];
+						}
+						
+						$filename = $file_start_name . "_" . $time_stamp . "." . $ext;
+						
+						header( "Cache-Control: public, must-revalidate" );
+						header( "Pragma: no-cache" );
+						header( "Content-Type: " . $mm_type );
+						header( "Content-Length: " . ( string )( filesize( $file ) ) );
+						header( 'Content-Disposition: attachment; filename="' . $file_start_name . "." . $ext . '"' );
+						header( "Content-Transfer-Encoding: binary\n" );
+						
+						$fh = fopen( $file, "rb" );
+						
+						while( !feof( $fh ) ){
+							$buffer = fread( $fh, 8192 );
+							echo $buffer;
+							ob_flush( );
+							flush( ); 
+						}
+						
+						fclose( $fh );
+						
+						$this->mysqli->update_download_count( $this->download_id, $this->download_count );
+						
+						die( );
+						
+					}else{
+						
+						echo "This download is not available on the sever.";
+						die( );
+					
 					}
-					
-					$date = new DateTime();
-					$time_stamp = $date->getTimestamp();
-					
-					$filename_arr = explode( "_", $this->download->download_file_name );
-					$file_start_name = "";
-					for( $i=0; $i<count($filename_arr)-1; $i++ ){
-						if( $i>0 )
-							$file_start_name .= "_";
-						$file_start_name .= $filename_arr[$i];
-					}
-					
-					$filename = $file_start_name . "_" . $time_stamp . "." . $ext;
-					
-					header( "Cache-Control: public, must-revalidate" );
-					header( "Pragma: no-cache" );
-					header( "Content-Type: " . $mm_type );
-					header( "Content-Length: " . ( string )( filesize( $file ) ) );
-					header( 'Content-Disposition: attachment; filename="' . $file_start_name . "." . $ext . '"' );
-					header( "Content-Transfer-Encoding: binary\n" );
-					
-					$fh = fopen( $file, "rb" );
-					
-					while( !feof( $fh ) ){
-						$buffer = fread( $fh, 8192 );
-						echo $buffer;
-						ob_flush( );
-						flush( ); 
-					}
-					
-					fclose( $fh );
-					
-					$this->mysqli->update_download_count( $this->download_id, $this->download_count );
-					
-					die( );
 				}
 			}
 		}

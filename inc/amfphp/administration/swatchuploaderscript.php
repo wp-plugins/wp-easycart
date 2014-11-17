@@ -28,7 +28,7 @@ if( isset( $_POST['reqID'] ) )
 $user_sql = "SELECT  ec_user.*, ec_role.admin_access FROM ec_user LEFT JOIN ec_role ON (ec_user.user_level = ec_role.role_label) WHERE ec_user.password = %s AND  (ec_user.user_level = 'admin' OR ec_role.admin_access = 1)";
 $users = $wpdb->get_results( $wpdb->prepare( $user_sql, $requestID ) );
 
-if( !empty( $users ) || is_user_logged_in( ) ){
+if( !empty( $users ) ){
 
 	$settings_sql = "SELECT max_width, max_height FROM ec_setting";
 	$settings_row = $wpdb->get_row( $settings_sql );

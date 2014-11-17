@@ -853,6 +853,12 @@ CREATE TABLE IF NOT EXISTS `ec_setting` (
   `fraktjakt_country` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Fraktjakt used for shipping estimate.',
   `ups_ship_from_state` VARCHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This sets the ship from state when using UPS.',
   `ups_negotiated_rates` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'This sets the ship from state when using UPS.',
+  `canadapost_username` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post API username.',
+  `canadapost_password` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post API password.',
+  `canadapost_customer_number` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post customer number.',
+  `canadapost_contract_id` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post contract id (optional for special rates).',
+  `canadapost_test_mode` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'This points to the test or live API URL for Canada Post.',
+  `canadapost_ship_from_zip` VARCHAR(100) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is your Canada Post ship from zip.',
 
   PRIMARY KEY (`setting_id`)
 )ENGINE=MyISAM
@@ -873,6 +879,7 @@ CREATE TABLE IF NOT EXISTS `ec_shippingrate` (
   `is_fedex_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, the live rate system for FedEx.',
   `is_auspost_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, the live rate system for Australian Post is used.',
   `is_dhl_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, the live rate system for DHL.',
+  `is_canadapost_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'This sets the rate type to Canada Post.',
   `trigger_rate` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'The price or weight that triggers a different shipping rate.',
   `shipping_rate` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'The price for shipping at this trigger_rate.',
   `shipping_label` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is the label used for shipping methods requiring a label.',

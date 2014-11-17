@@ -4,12 +4,12 @@
 if( isset( $product->page_options->product_type ) )
 	$product_type = $product->page_options->product_type;
 else
-	$product_type = '1';
+	$product_type = get_option( 'ec_option_default_product_type' );
 
 if( isset( $product->page_options->use_quickview ) )
 	$use_quickview = $product->page_options->use_quickview;
 else
-	$use_quickview = true;
+	$use_quickview = get_option( 'ec_option_default_quick_view' );
 	
 if( isset( $product->page_options->image_height_desktop ) )
 	$image_height_desktop = $product->page_options->image_height_desktop;
@@ -262,7 +262,7 @@ jQuery( '#ec_product_quickview_container_<?php echo $product->model_number; ?>' 
 			
 			if( ( $admin_access || $product->image_hover_type == 10 ) && !$ipad && !$iphone ){ ?>
         	
-            <div class="ec_flipbook"<?php if( $product->image_hover_type != 10 ){ ?> style="display:none;"<?php }?> data-image-list="<?php echo $product->get_first_image_url( ); if( $product->images->image2 != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics2/" . $product->images->image2 ); } if( $product->images->image3 != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics3/" . $product->images->image3 ); } if( $product->images->image4 != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics4/" . $product->images->image4 ); } if( $product->images->image5 != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics5/" . $product->images->image5 ); } ?>">
+            <div class="ec_flipbook"<?php if( $product->image_hover_type != 10 ){ ?> style="display:none;"<?php }?> data-image-list="<?php if( $product->images->use_optionitem_images ){ for( $i=0; $i<count( $product->images->imageset ); $i++ ){ if( $i > 0 ){ echo ","; } echo plugins_url( "/wp-easycart-data/products/pics1/" . $product->images->imageset[$i]->image1 ); } }else{ echo $product->get_first_image_url( ); if( trim( $product->images->image2 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics2/" . $product->images->image2 ); } if( trim( $product->images->image3 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics3/" . $product->images->image3 ); } if( trim( $product->images->image4 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics4/" . $product->images->image4 ); } if( trim( $product->images->image5 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics5/" . $product->images->image5 ); } } ?>">
             	<div class="ec_flipbook_left">&#65513;</div>
                 <div style="" class="ec_flipbook_right">&#65515;</div>
                 <img src="<?php echo $product->get_first_image_url( ); ?>"/>

@@ -163,7 +163,7 @@ class ec_shipping{
 	}
 	
 	private function is_live_based( $shipping_row ){
-		if( $shipping_row->is_ups_based || $shipping_row->is_usps_based || $shipping_row->is_fedex_based || $shipping_row->is_auspost_based || $shipping_row->is_dhl_based )
+		if( $shipping_row->is_ups_based || $shipping_row->is_usps_based || $shipping_row->is_fedex_based || $shipping_row->is_auspost_based || $shipping_row->is_dhl_based || $shipping_row->is_canadapost_based )
 			return true;
 		else
 			return false;
@@ -180,6 +180,8 @@ class ec_shipping{
 			return "auspost";
 		else if( $shipping_row->is_dhl_based )
 			return "dhl";
+		else if( $shipping_row->is_canadapost_based )
+			return "canadapost";
 		else
 			return "none";
 	}
@@ -380,6 +382,8 @@ class ec_shipping{
 		
 		if( $rate != "ERROR" ){
 		
+			$rate = doubleval( $rate ) + doubleval( $this->handling );
+		
 			$ret_string = "";
 			
 			$ret_string .= "<div class=\"ec_cart_shipping_method_row\">";
@@ -403,7 +407,9 @@ class ec_shipping{
 	private function get_live_based_select( $i, $rate ){
 		
 		if( $rate != "ERROR" ){
-		
+			
+			$rate = doubleval( $rate ) + doubleval( $this->handling );
+			
 			$ret_string = "";
 			$ret_string .= "<option value=\"" . $this->live_based[$i][0] . "\"";
 			
@@ -420,6 +426,9 @@ class ec_shipping{
 	private function get_live_based_div( $i, $rate ){
 		
 		if( $rate != "ERROR" ){
+			
+			$rate = doubleval( $rate ) + doubleval( $this->handling );
+			
 			$ret_string = "<div id=\"" . $this->live_based[$i][0] . "\"> " . $this->live_based[$i][1] . " " . $GLOBALS['currency']->get_currency_display( $rate ) . "</div>";
 			return $ret_string;
 		}
@@ -459,7 +468,7 @@ class ec_shipping{
 						$rate = $this->live_based[$i][4] + $this->handling;
 						return "<div id=\"" . $this->live_based[$i][0] . "\"> " . $this->live_based[$i][1] . " " . $GLOBALS['currency']->get_currency_display( $rate ) . "</div>";
 					}else
-						$rate = (float) $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
+						$rate = doubleval( $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal ) ) + doubleval( $this->handling );
 					
 					return $this->get_live_based_div( $i, $rate + $this->handling );
 				}
@@ -538,9 +547,15 @@ class ec_shipping{
 				$rate = $this->method_based[0][0];
 			
 			else{
+				$rate_found = false;
 				for( $i=0; $i<count( $this->method_based ); $i++ ){
-					if( $_SESSION['ec_shipping_method'] == $this->method_based[$i][2] )
+					if( $_SESSION['ec_shipping_method'] == $this->method_based[$i][2] ){
 						$rate = $this->method_based[$i][0];
+						$rate_found = true;
+					}
+				}
+				if( !$rate_found ){
+					$rate = $this->method_based[0][0];
 				}
 			}
 			

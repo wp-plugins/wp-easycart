@@ -2,7 +2,7 @@
 jQuery( document ).ready( function( ){
 	jQuery( '.ec_flipbook_left' ).click( 
 		function( event ){
-			var current_image = jQuery( event.target ).parent( ).children( 'img' ).attr( 'src' );
+			var current_image = jQuery( event.target ).parent( ).find( 'img' ).attr( 'src' );
 			var image_list_string = jQuery( event.target ).parent( ).data( 'image-list' );
 			var image_list = image_list_string.split( ',' );
 			var prev = image_list[image_list.length - 1]; 
@@ -13,12 +13,12 @@ jQuery( document ).ready( function( ){
 					prev = image_list[i]; 
 				} 
 			}
-			jQuery( event.target ).parent( ).children( 'img' ).attr( 'src', prev );
+			jQuery( event.target ).parent( ).find( 'img' ).attr( 'src', prev );
 		}
 	);
 	jQuery( '.ec_flipbook_right' ).click( 
 		function( event ){
-			var current_image = jQuery( event.target ).parent( ).children( 'img' ).attr( 'src' );
+			var current_image = jQuery( event.target ).parent( ).find( 'img' ).attr( 'src' );
 			var image_list_string = jQuery( event.target ).parent( ).data( 'image-list' );
 			var image_list = image_list_string.split( ',' );
 			var prev = image_list[0]; 
@@ -29,7 +29,7 @@ jQuery( document ).ready( function( ){
 					prev = image_list[i]; 
 				} 
 			}
-			jQuery( event.target ).parent( ).children( 'img' ).attr( 'src', prev );
+			jQuery( event.target ).parent( ).find( 'img' ).attr( 'src', prev );
 		}
 	);
 	jQuery( '#ec_cart_billing_country' ).change( function( ){
@@ -533,11 +533,11 @@ function ec_show_cc_type( type ){
 
 function ec_validate_cart_details( ){
 	
-	login_complete = true;
-	billing_complete = ec_validate_address_block( 'ec_cart_billing' );
-	shipping_complete = true;
-	email_complete = true;
-	create_account_complete = true;
+	var login_complete = true;
+	var billing_complete = ec_validate_address_block( 'ec_cart_billing' );
+	var shipping_complete = true;
+	var email_complete = true;
+	var create_account_complete = true;
 	
 	if( jQuery( '#ec_login_selector' ).is( ':checked' ) )
 		login_complete = ec_validate_cart_login( );
@@ -1259,5 +1259,18 @@ function ec_submit_newsletter_signup( ){
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 	} } );
+	
+}
+
+function update_download_count( orderdetail_id ){
+	
+	if( jQuery( '#ec_download_count_' + orderdetail_id ).length ){
+		var count = Number( jQuery( '#ec_download_count_' + orderdetail_id ).html( ) );
+		var max_count = Number( jQuery( '#ec_download_count_max_' + orderdetail_id ).html( ) );
+		if( count < max_count ){
+			count++;
+			jQuery( '#ec_download_count_' + orderdetail_id ).html( count );
+		}
+	}
 	
 }

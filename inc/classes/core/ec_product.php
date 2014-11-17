@@ -150,9 +150,9 @@ class ec_product{
 		$this->post_id = $product_data['post_id'];
 		$this->activate_in_store = $product_data['activate_in_store'];
 		$this->title = $GLOBALS['language']->convert_text( $product_data['title'] );
-		$this->description = $GLOBALS['language']->convert_text( $product_data['description'] );
+		$this->description = $GLOBALS['language']->convert_text( trim( $product_data['description'] ) );
 		$this->short_description = $GLOBALS['language']->convert_text( $product_data['short_description'] );
-		$this->specifications = $GLOBALS['language']->convert_text( $product_data['specifications'] );
+		$this->specifications = $GLOBALS['language']->convert_text( trim( $product_data['specifications'] ) );
 		$this->price = $product_data['price']; 
 		$this->list_price = $product_data['list_price'];
 		$this->vat_rate = $product_data['vat_rate'];

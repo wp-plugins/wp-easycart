@@ -36,11 +36,21 @@ class ec_paymentexpress_thirdparty extends ec_third_party{
 		
 		$response_body = $response["body"];
 		$xml = new SimpleXMLElement($response_body);
-		$this->payment_express_redirect_url = $xml->URI;
 		
-		echo "<form action=\"" . $this->payment_express_redirect_url . "\" method=\"post\" name=\"ec_paymentexpress_auto_form\">";
-		echo "</form>";
-		echo "<SCRIPT LANGUAGE=\"Javascript\">document.ec_paymentexpress_auto_form.submit();</SCRIPT>";
+		if( isset( $xml->URI ) ){
+			
+			$this->payment_express_redirect_url = $xml->URI;
+		
+			echo "<form action=\"" . $this->payment_express_redirect_url . "\" method=\"post\" name=\"ec_paymentexpress_auto_form\" id=\"ec_paymentexpress_auto_form\">";
+			echo "</form>";
+			echo "<SCRIPT LANGUAGE=\"Javascript\">document.ec_paymentexpress_auto_form.submit();</SCRIPT>";
+	
+		}else{
+			
+			header( "location: " . $_SERVER['HTTP_REFERER'] . "&ec_cart_error=thirdparty_failed" );
+			
+		}
+		
 	}
 	
 	private function send_xml_request( $xml ){
