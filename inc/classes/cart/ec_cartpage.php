@@ -918,7 +918,7 @@ class ec_cartpage{
 				$current_state_group = "";
 				$close_last_state_group = false;
 				
-				foreach($states as $state){
+				foreach($states as $state){ if( $state->iso2_cnt ){
 					if( $current_country != $state->iso2_cnt ){
 						if( $close_last_state ){
 							echo "</select>";
@@ -958,7 +958,7 @@ class ec_cartpage{
 					if( $state->code_sta == $selected_state )
 						echo " selected=\"selected\"";
 					echo ">" . $state->name_sta . "</option>";
-				}
+				} }
 				
 				if( $close_last_state_group ){
 					echo "</optgroup>";

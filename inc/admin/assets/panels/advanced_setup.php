@@ -128,6 +128,11 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
+<div class="ec_admin_page_title_secondary">Custom CSS</div>
+<div class="ec_adin_page_intro">Any CSS you add here will over-ride the css in your EasyCart theme files. If you have an error in CSS here, it may effect your entire site, so please be cautious and pay attention to syntax errors.</div>
+<div class="ec_adin_page_intro"><textarea style="width:100%; height:250px;" name="ec_option_custom_css"><?php echo stripslashes( get_option( 'ec_option_custom_css' ) ); ?></textarea></div>
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
+
 <div class="ec_admin_page_title">Amazon S3 Setup</div>
 <div class="ec_adin_page_intro">If you plan to use Amazon S3 for downloads, you will want to enter your setup data here.</div>
 
@@ -181,12 +186,48 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
-<div class="ec_admin_page_title_secondary">Custom CSS</div>
-<div class="ec_adin_page_intro">Any CSS you add here will over-ride the css in your EasyCart theme files. If you have an error in CSS here, it may effect your entire site, so please be cautious and pay attention to syntax errors.</div>
-<div class="ec_adin_page_intro"><textarea style="width:100%; height:250px;" name="ec_option_custom_css"><?php echo stripslashes( get_option( 'ec_option_custom_css' ) ); ?></textarea></div>
+<div class="ec_admin_page_title">Tax Cloud Setup</div>
+<div class="ec_adin_page_intro">If you want to get the best possible tax rates, Tax Cloud is your solution! If you enter API credentials here, the tax rates entered will be ignored and the Tax Cloud provided rate will be used at all times.</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>API ID</em>This is the API ID provided by your Tax Cloud account.</span></a></span>
+    <span class="ec_setting_row_label">API ID:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_api_id" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_api_id'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>API Key</em>This is the API Key provided by your Tax Cloud account.</span></a></span>
+    <span class="ec_setting_row_label">API Key:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_api_key" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_api_key'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Origin Address</em>This is the shipping FROM address for all goods.</span></a></span>
+    <span class="ec_setting_row_label">Origin Address:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_address" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_address'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Origin City</em>This is the shipping FROM city for all goods.</span></a></span>
+    <span class="ec_setting_row_label">Origin City:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_city" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_city'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Origin State</em>This is the shipping FROM state for all goods.</span></a></span>
+    <span class="ec_setting_row_label">Origin State (2 Characters):</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_state" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_state'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Origin Zip</em>This is the shipping FROM zip for all goods.</span></a></span>
+    <span class="ec_setting_row_label">Origin Zip:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_zip" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_zip'); ?>" /></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
-<?php if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) ){ 
+<?php if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) ){ 
 /* V2 ONLY */
 ?>
 <div class="ec_admin_page_title_secondary">Responsive Size Points</div>

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 3.0.9
+Stable tag: 3.0.10
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,14 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.10 =
+* New Feature - Tax Cloud tax rate system added to the store (beta version).
+* New Feature - Canada Post live shipping now available.
+* Fix - Canada Post test script added to admin.
+* Fix - Product shortcode when using products with add to cart button now display a view cart bar like the store page shows.
+* Fix - Admin advanced setup when no child theme selected shouldn't have been showing V2 options, this has been corrected.
+* Fix - Backup script can now be run to recover the EasyCart data.
+* Fix - When a country is deleted, states associate with that country remain and were messing up the advanced state display option. This has been corrected.
 = 3.0.9 =
 * New Feature - Canada Post live shipping now available.
 * Fix - Swatch uploading was not functioning following a script upgrade for PHP5.5

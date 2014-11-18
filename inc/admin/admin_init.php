@@ -317,10 +317,19 @@ function ec_databasedump_table_data( $table ){
 	$return_string = "";
 	$sql = "select * from `$table`;";
 	$results = $wpdb->get_results( $sql, ARRAY_N );
+	$keys = $wpdb->get_results( "SHOW COLUMNS FROM `$table`;", ARRAY_N );
 	if( !empty( $results ) ){
 		$return_string .= "/* dumping data for table `$table` */\n";
-		
-		$return_string .= "insert into `$table` values\n";
+		$return_string .= "TRUNCATE `$table`;\n";
+		$return_string .= "INSERT INTO `$table`(";
+		$index_keys = 0;
+		foreach( $keys as $key ){
+			$return_string .= "`" . $key[0] . "`";
+			if( $index_keys < count( $keys ) - 1 )
+				$return_string .= ",";
+			$index_keys++;
+		}
+		$return_string .= ") VALUES\n";
 		$index = 0;
 		
 		foreach( $results as $row ){
@@ -329,7 +338,7 @@ function ec_databasedump_table_data( $table ){
 				if( is_null( $row[$i] ) )
 					$return_string .= "null";
 				else{
-					$return_string .= "'".$row[$i]."'";
+					$return_string .= "'".str_replace( "'", "\'", $row[$i])."'";
 				}
 
 				if( $i < count( $row ) - 1 )

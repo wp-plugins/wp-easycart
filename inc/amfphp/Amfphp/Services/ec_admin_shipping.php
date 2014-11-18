@@ -29,8 +29,8 @@ class ec_admin_shipping{
 	
 	//secure all of the services for logged in authenticated users only	
 	public function _getMethodRoles( $methodName ){
-	   
-	   if( 		$methodName == 'upstest' ) 						return array('admin');
+	   if( 		$methodName == 'canadaposttest' ) 				return array('admin');
+	   else if( $methodName == 'upstest' ) 						return array('admin');
 	   else if( $methodName == 'uspstest') 						return array('admin');
 	   else if( $methodName == 'fedextest') 					return array('admin');
 	   else if( $methodName == 'dhltest') 						return array('admin');
@@ -58,6 +58,10 @@ class ec_admin_shipping{
 	   else if( $methodName == 'deletedhl') 					return array('admin');
 	   else if( $methodName == 'updatedhl') 					return array('admin');
 	   else if( $methodName == 'adddhl') 						return array('admin');
+	   else if( $methodName == 'getcanadapost') 				return array('admin');
+	   else if( $methodName == 'deletecanadapost') 				return array('admin');
+	   else if( $methodName == 'updatecanadapost') 				return array('admin');
+	   else if( $methodName == 'addcanadapost') 				return array('admin');
 	   else if( $methodName == 'updateexpeditedrates') 			return array('admin');
 	   else if( $methodName == 'getmethodshippingrates') 		return array('admin');
 	   else if( $methodName == 'deleteshippingmethodrate') 		return array('admin');
@@ -88,6 +92,52 @@ class ec_admin_shipping{
 	/////////////////////////////////////////////////////////////////////////////////
 	//Shipping Testers
 	/////////////////////////////////////////////////////////////////////////////////
+	function canadaposttest() {
+		//test function for canada post
+		$db = new ec_db_admin( );
+		$setting_row = $db->get_settings( );
+		$settings = new ec_setting( $setting_row );
+		
+		if( $setting_row->canadapost_username && $setting_row->canadapost_password && $setting_row->canadapost_customer_number && $setting_row->canadapost_ship_from_zip ){
+			if( !class_exists( "ec_shipper" ) ){
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
+			}
+			if( !class_exists( "ec_canadapost" ) ){
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_canadapost.php' );
+			}
+			
+			$canadapost = new ec_canadapost( $settings );
+			if( $canadapost->get_rate_test( "DOM.PC", $setting_row->canada_ship_from_zip, "CA", "1" ) ){
+				$result = 1;
+			}else{
+				$message = "Rate test failed while connecting to Canada Post. Usually this happens when invalid credentials are entered.";
+				$result = 3;
+			}
+		}else{
+			$result = 3;
+			$message = "Missing required credentials";
+		}
+		
+		$finalresults = new StdClass;
+		if( $result == 1 ){
+			//if success (green light)
+			$finalresults->success_code = 1;
+			$finalresults->success_message = 'success';
+		}else if( $result == 2 ){	
+			//if problem (yellow light)
+			$finalresults->success_code = 2;
+			$finalresults->success_message = $message;
+		}else if( $result == 3 ) {	
+			//if error (red light)
+			$finalresults->success_code = 3;
+			$finalresults->success_message = $message;
+		}
+		$returnArray[] = $finalresults;
+		return $returnArray;
+		
+	}
+	
+	
 	function upstest( ){
 		
 		$db = new ec_db_admin( );
@@ -505,7 +555,7 @@ class ec_admin_shipping{
 	/////////////////////////////////////////////////////////////////////////////////
 	function getshippingsettings( ){
 		  
-		  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.ups_conversion_rate, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.fedex_conversion_rate, ec_setting.fedex_test_account, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip, ec_setting.dhl_site_id, ec_setting.dhl_password, ec_setting.dhl_ship_from_country, ec_setting.dhl_ship_from_zip, ec_setting.dhl_weight_unit, ec_setting.dhl_test_mode, ec_setting.fraktjakt_customer_id, ec_setting.fraktjakt_login_key, ec_setting.fraktjakt_conversion_rate, ec_setting.fraktjakt_test_mode, ec_setting.fraktjakt_address, ec_setting.fraktjakt_city, ec_setting.fraktjakt_state, ec_setting.fraktjakt_zip, ec_setting.fraktjakt_country FROM ec_setting  WHERE ec_setting.setting_id = 1";
+		  $sql = "SELECT SQL_CALC_FOUND_ROWS ec_setting.shipping_method, ec_setting.shipping_expedite_rate, ec_setting.shipping_handling_rate, ec_setting.ups_access_license_number, ec_setting.ups_user_id, ec_setting.ups_password, ec_setting.ups_ship_from_zip, ec_setting.ups_shipper_number, ec_setting.ups_country_code, ec_setting.ups_weight_type, ec_setting.ups_conversion_rate, ec_setting.usps_user_name, ec_setting.usps_ship_from_zip, ec_setting.fedex_key, ec_setting.fedex_account_number, ec_setting.fedex_meter_number, ec_setting.fedex_password, ec_setting.fedex_ship_from_zip, ec_setting.fedex_weight_units, ec_setting.fedex_country_code, ec_setting.fedex_conversion_rate, ec_setting.fedex_test_account, ec_setting.auspost_api_key, ec_setting.auspost_ship_from_zip, ec_setting.dhl_site_id, ec_setting.dhl_password, ec_setting.dhl_ship_from_country, ec_setting.dhl_ship_from_zip, ec_setting.dhl_weight_unit, ec_setting.dhl_test_mode, ec_setting.fraktjakt_customer_id, ec_setting.fraktjakt_login_key, ec_setting.fraktjakt_conversion_rate, ec_setting.fraktjakt_test_mode, ec_setting.fraktjakt_address, ec_setting.fraktjakt_city, ec_setting.fraktjakt_state, ec_setting.fraktjakt_zip, ec_setting.fraktjakt_country, ec_setting.canadapost_username, ec_setting.canadapost_password, ec_setting.canadapost_customer_number, ec_setting.canadapost_contract_id, ec_setting.canadapost_test_mode, ec_setting.canadapost_ship_from_zip FROM ec_setting  WHERE ec_setting.setting_id = 1";
 		  $results = $this->db->get_results( $sql );
 		  $totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 
@@ -536,7 +586,7 @@ class ec_admin_shipping{
 	function updateshippingsettings($shippingsettings) {
 		
 		$shippingsettings = (array)$shippingsettings;
-		$sql = "UPDATE ec_setting SET ec_setting.shipping_method=%s, ec_setting.shipping_handling_rate=%s, ec_setting.ups_access_license_number=%s, ec_setting.ups_user_id=%s, ec_setting.ups_password=%s, ec_setting.ups_ship_from_zip=%s, ec_setting.ups_shipper_number=%s, ec_setting.ups_country_code=%s, ec_setting.ups_weight_type=%s, ec_setting.ups_conversion_rate =%s, ec_setting.usps_user_name=%s, ec_setting.usps_ship_from_zip=%s, ec_setting.fedex_key=%s, ec_setting.fedex_account_number=%s, ec_setting.fedex_meter_number=%s, ec_setting.fedex_password=%s, ec_setting.fedex_ship_from_zip=%s, ec_setting.fedex_weight_units=%s, ec_setting.fedex_country_code=%s,  ec_setting.fedex_conversion_rate =%s, ec_setting.fedex_test_account=%s, ec_setting.auspost_api_key = %s, ec_setting.auspost_ship_from_zip = %s , ec_setting.dhl_site_id = %s, ec_setting.dhl_password = %s, ec_setting.dhl_ship_from_country = %s, ec_setting.dhl_ship_from_zip = %s, ec_setting.dhl_weight_unit = %s, ec_setting.dhl_test_mode = %s, ec_setting.fraktjakt_customer_id = %s, ec_setting.fraktjakt_login_key = %s, ec_setting.fraktjakt_conversion_rate = %s, ec_setting.fraktjakt_test_mode = %s, ec_setting.fraktjakt_address = %s, ec_setting.fraktjakt_city = %s, ec_setting.fraktjakt_state = %s, ec_setting.fraktjakt_zip = %s, ec_setting.fraktjakt_country = %s WHERE ec_setting.setting_id = 1";
+		$sql = "UPDATE ec_setting SET ec_setting.shipping_method=%s, ec_setting.shipping_handling_rate=%s, ec_setting.ups_access_license_number=%s, ec_setting.ups_user_id=%s, ec_setting.ups_password=%s, ec_setting.ups_ship_from_zip=%s, ec_setting.ups_shipper_number=%s, ec_setting.ups_country_code=%s, ec_setting.ups_weight_type=%s, ec_setting.ups_conversion_rate =%s, ec_setting.usps_user_name=%s, ec_setting.usps_ship_from_zip=%s, ec_setting.fedex_key=%s, ec_setting.fedex_account_number=%s, ec_setting.fedex_meter_number=%s, ec_setting.fedex_password=%s, ec_setting.fedex_ship_from_zip=%s, ec_setting.fedex_weight_units=%s, ec_setting.fedex_country_code=%s,  ec_setting.fedex_conversion_rate =%s, ec_setting.fedex_test_account=%s, ec_setting.auspost_api_key = %s, ec_setting.auspost_ship_from_zip = %s , ec_setting.dhl_site_id = %s, ec_setting.dhl_password = %s, ec_setting.dhl_ship_from_country = %s, ec_setting.dhl_ship_from_zip = %s, ec_setting.dhl_weight_unit = %s, ec_setting.dhl_test_mode = %s, ec_setting.fraktjakt_customer_id = %s, ec_setting.fraktjakt_login_key = %s, ec_setting.fraktjakt_conversion_rate = %s, ec_setting.fraktjakt_test_mode = %s, ec_setting.fraktjakt_address = %s, ec_setting.fraktjakt_city = %s, ec_setting.fraktjakt_state = %s, ec_setting.fraktjakt_zip = %s, ec_setting.fraktjakt_country = %s, ec_setting.canadapost_username = %s, ec_setting.canadapost_password = %s, ec_setting.canadapost_customer_number = %s, ec_setting.canadapost_contract_id = %s, ec_setting.canadapost_test_mode = %s, ec_setting.canadapost_ship_from_zip = %s WHERE ec_setting.setting_id = 1";
 		$rows_affected = $this->db->query( $this->db->prepare( $sql, 
 					$shippingsettings['shippingmethod'], 
 					$shippingsettings['handlingcharge'], 
@@ -575,7 +625,13 @@ class ec_admin_shipping{
 					$shippingsettings['fj_city'],
 					$shippingsettings['fj_state'],
 					$shippingsettings['fj_zip'],
-					$shippingsettings['fj_country']));
+					$shippingsettings['fj_country'],
+					$shippingsettings['canadapost_username'],
+					$shippingsettings['canadapost_password'],
+					$shippingsettings['canadapost_customer_number'],
+					$shippingsettings['canadapost_contract_id'],
+					$shippingsettings['canadapost_test_mode'],
+					$shippingsettings['canadapost_ship_from_zip']));
 		
 		if( $rows_affected ){
 			return array( "success" );
@@ -660,6 +716,83 @@ class ec_admin_shipping{
 		}
 		
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////
+	//CANADA POST BASED SHIPPING
+	/////////////////////////////////////////////////////////////////////////////////
+	function getcanadapost( ){
+		  
+		$sql = "SELECT SQL_CALC_FOUND_ROWS ec_shippingrate.* FROM ec_shippingrate WHERE ec_shippingrate.is_canadapost_based = 1 ORDER BY ec_shippingrate.shipping_order ASC";
+		$results = $this->db->get_results( $sql );
+		$totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
+		
+		if( !empty( $results ) ){
+			$results[0]->totalrows = $totalrows;
+			return $results;
+		}else{
+			return array( "noresults" );
+		}
+		  
+	}
+	
+	function deletecanadapost( $keyfield ){
+		
+		$deletesql = "DELETE FROM ec_shippingrate WHERE ec_shippingrate.shippingrate_id = %s";
+		$rows_affected = $this->db->query( $this->db->prepare( $deletesql, $keyfield));
+		
+		if( $rows_affected ){
+			return array( "success" );
+		}else{
+			return array( "error" );
+		}
+		
+	}
+	
+	function updatecanadapost ($keyfield, $info ){
+		
+		$info = (array)$info;
+		if( $info['shippingoverride'] != '' ){
+			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id)
+		values('".$keyfield."', %s, %s,%s, %s, 1, %s)";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
+		
+		}else{
+			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id)
+		values('".$keyfield."', %s, %s, %s, null, 1, %s)";
+		
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ) );
+		}
+		
+		if( $rows_affected ) {
+			return array( "success" );
+		} else {
+			return array( "error" );
+		}
+		
+	}
+	
+	function addcanadapost($info) {
+		$info = (array)$info;
+		
+		if( $info['shippingoverride'] != '' ){
+			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id)
+		values(null, %s, %s,%s,%s, 1, %s)";
+		
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ) );
+		}else{
+			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id)
+		values(null, %s, %s, %s, null, 1, %s)";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ) );
+		}
+		
+		if( $rows_affected ){
+			return array( "success" );
+		}else{
+			return array( "error" );
+		}
+		
+	}
+	
 	
 	/////////////////////////////////////////////////////////////////////////////////
 	//AUS POST BASED SHIPPING

@@ -1292,6 +1292,12 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_amazon_bucket', $_POST['ec_option_amazon_bucket'] );
 	update_option( 'ec_option_deconetwork_url', $_POST['ec_option_deconetwork_url'] );
 	update_option( 'ec_option_deconetwork_password', $_POST['ec_option_deconetwork_password'] );
+	update_option( 'ec_option_tax_cloud_api_id', $_POST['ec_option_tax_cloud_api_id'] );
+	update_option( 'ec_option_tax_cloud_api_key', $_POST['ec_option_tax_cloud_api_key'] );
+	update_option( 'ec_option_tax_cloud_address', $_POST['ec_option_tax_cloud_address'] );
+	update_option( 'ec_option_tax_cloud_city', $_POST['ec_option_tax_cloud_city'] );
+	update_option( 'ec_option_tax_cloud_state', $_POST['ec_option_tax_cloud_state'] );
+	update_option( 'ec_option_tax_cloud_zip', $_POST['ec_option_tax_cloud_zip'] );
 	
 	//update sizes
 	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 

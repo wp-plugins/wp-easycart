@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.9
+ * Version: 3.0.10
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.9
+ * @version 3.0.10
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_9' );
+define( 'EC_CURRENT_VERSION', '3_0_10' );
 define( 'EC_CURRENT_DB', '1_26' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
@@ -1053,6 +1053,21 @@ function load_ec_product( $atts ){
 	}
 	if( count( $products ) > 0 ){
 		echo "<div style=\"float:left; width:100%;\"><ul class=\"ec_productlist_ul\" style=\"list-style:none; margin: 0px; float:left; width:100%; min-height:" . $minheight . ";\">";
+		
+		if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) ){
+			$cart_page_id = get_option('ec_option_cartpage');
+			if( function_exists( 'icl_object_id' ) ){
+				$cart_page_id = icl_object_id( $cart_page_id, 'page', true, ICL_LANGUAGE_CODE );
+			}
+			$cart_page = get_permalink( $cart_page_id );
+			if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+				$https_class = new WordPressHTTPS( );
+				$cart_page = $https_class->makeUrlHttps( $cart_page );
+			}
+			
+			echo "<div class=\"ec_product_added_to_cart\"><div class=\"ec_product_added_icon\"></div><a href=\"" . $cart_page . "\" title=\"View Cart\">" . $GLOBALS['language']->get_text( "product_page", "product_view_cart" ) . "</a> " . $GLOBALS['language']->get_text( "product_page", "product_product_added_note" ) . "</div><div id=\"ec_current_media_size\"></div>";
+		}
+		
 		for( $prod_index=0; $prod_index<count( $products ); $prod_index++ ){
 			$product = new ec_product( $products[$prod_index], 0, 0, 1 );
 			if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) ){
