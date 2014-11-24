@@ -52,7 +52,7 @@ COMMENT=''
 CREATE TABLE IF NOT EXISTS `ec_country` (
   `id_cnt` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT
    'The unique identifier for the ec_country table.',
-  `name_cnt` VARCHAR(100) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
+  `name_cnt` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
    'Name of the country.',
   `iso2_cnt` CHAR(2) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT
    '2 digit country code.',
