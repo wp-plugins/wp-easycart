@@ -52,13 +52,9 @@ class ec_admin_pricetiers{
 	function updatepricetier( $id, $price, $quantity ){
 		
 		$sql = "UPDATE ec_pricetier SET ec_pricetier.price = %s, ec_pricetier.quantity = %s WHERE ec_pricetier.pricetier_id = %d";
-		$success = $this->db->query( $this->db->prepare( $sql, $price, $quantity, $id ) );
+		$this->db->query( $this->db->prepare( $sql, $price, $quantity, $id ) );
 		
-		if( $success === FALSE ){
-			return array( "error" );
-		}else{
-			return array( "success" );
-		}
+		return array( "success" );
 		
 	}
 	

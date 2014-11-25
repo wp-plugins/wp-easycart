@@ -523,7 +523,9 @@ if( $safari && $is_admin && !$ipad ){ ?>
         <div class="ec_product_admin_reorder_button_holder"><div class="ec_product_admin_reorder_button" onclick="ec_admin_show_product_sorter( );">Re-Order Products</div></div>
         <?php }?>
         
+        <?php if( $this->has_banner( ) ){ ?>
         <div class="ec_product_banner"><?php $this->display_optional_banner( ); ?></div>
+        <?php }?>
         
         <?php $perpage = new ec_perpage( ); ?>
         

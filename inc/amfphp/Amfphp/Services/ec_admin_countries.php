@@ -52,13 +52,10 @@ class ec_admin_countries{
 	function updatecountry( $id, $name, $iso2, $iso3, $vatrate, $sortorder ){
 		
 		$sql = "UPDATE ec_country SET ec_country.name_cnt = %s, ec_country.iso2_cnt = %s, ec_country.iso3_cnt = %s, ec_country.vat_rate_cnt = %s, ec_country.sort_order = %s WHERE ec_country.id_cnt = %s";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $name, $iso2, $iso3, $vatrate, $sortorder, $id ) );
+		$this->db->query( $this->db->prepare( $sql, $name, $iso2, $iso3, $vatrate, $sortorder, $id ) );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
+		
 	}//updatecountry
 	
 	function deletecountry( $id ){

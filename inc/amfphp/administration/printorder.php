@@ -35,6 +35,7 @@ if( !empty( $users ) ){
 		$order_id = $_GET["OrderID"];
 	
 	$db = new ec_db_admin( );
+	$mysqli = new ec_db_admin( );
 	$order = $db->get_order_row_admin( $order_id );
 	$order_details = $db->get_order_details_admin( $order_id );
 	
@@ -62,7 +63,7 @@ if( !empty( $users ) ){
 	if( $order->subscription_id ){
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_print_receipt.php' ) )
 			include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_print_receipt.php';
-		else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_subscription_print_receipt.php' ) )
+		else
 			include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_subscription_print_receipt.php';
 	}else{
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_account_print_receipt.php' ) )

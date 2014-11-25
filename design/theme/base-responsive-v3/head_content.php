@@ -240,6 +240,8 @@ jQuery( document ).ready( function( ){
 .ec_product_type1 .ec_product_addtocart{ background-color:<?php echo $color1; ?>; border-bottom-color:<?php echo $color2; ?>; }
 .ec_product_type1 .ec_product_addtocart:hover{ background-color:<?php echo $color2; ?>; border-bottom-color:<?php echo $color1; ?>; }
 .ec_product_type1 .ec_product_quickview > input:hover{ background:<?php echo $color1; ?>; background-color:<?php echo $color1; ?>; }
+.ec_product_type3 .ec_product_addtocart{ background-color:<?php echo $color1; ?> !important; }
+.ec_product_type3 .ec_product_addtocart:hover{ background-color:<?php echo $color2; ?> !important; }
 .ec_product_type3 .ec_product_addtocart:hover{ background-color:<?php echo $color1; ?>; }
 .ec_product_type3 .ec_product_quickview > input:hover{ background:<?php echo $color1; ?>; background-color:<?php echo $color1; ?>; }
 .ec_product_type5 .ec_product_addtocart:hover{ background-color:<?php echo $color1; ?>; }

@@ -248,10 +248,13 @@ class ec_cartitem{
 		$options_weight_onetime = 0;
 		$grid_weight_change = 0;
 		$grid_price_change = 0;
+		$price_multiplier = 0;
+		$weight_multiplier = 0;
 		
 		$this->advanced_options = $this->mysqli->get_advanced_cart_options( $this->cartitem_id );
 		
 		if( $this->use_advanced_optionset ){
+			
 			foreach( $this->advanced_options as $advanced_option ){
 				
 				if( $advanced_option->optionitem_model_number != "" )
@@ -265,6 +268,8 @@ class ec_cartitem{
 						$grid_price_change = $grid_price_change + $advanced_option->optionitem_price_onetime; 
 					}else if( $advanced_option->optionitem_price_override >= 0 ){
 						$grid_price_change = $grid_price_change + ( ( $advanced_option->optionitem_price_override - $cartitem_data->price ) * $advanced_option->optionitem_value );
+					}else if( $advanced_option->optionitem_price_multiplier > 1 ){
+						$grid_price_change = $cartitem_data->price * ( $advanced_option->optionitem_price_multiplier - 1 );
 					}
 					
 					if( $advanced_option->optionitem_weight != 0 ){
@@ -273,6 +278,8 @@ class ec_cartitem{
 						$grid_weight_change = $grid_weight_change + $advanced_option->optionitem_weight_onetime; 
 					}else if( $advanced_option->optionitem_weight_override >= 0 ){
 						$grid_weight_change = $grid_weight_change + ( ( $advanced_option->optionitem_weight_override - $cartitem_data->weight ) * $advanced_option->optionitem_value );
+					}else if( $advanced_option->optionitem_weight_multiplier > 1 ){
+						$grid_weight_change = $cartitem_data->weight * ( $advanced_option->optionitem_weight_multiplier - 1 );
 					}
 					
 				}else{
@@ -284,12 +291,20 @@ class ec_cartitem{
 						$cartitem_data->price = $advanced_option->optionitem_price_override;
 					}
 					
+					if( $advanced_option->optionitem_price_multiplier > 1 ){
+						$price_multiplier = $advanced_option->optionitem_price_multiplier;
+					}
+					
 					if( $advanced_option->optionitem_weight != 0 ){
 						$options_weight = $options_weight + $advanced_option->optionitem_weight; 
 					}else if( $advanced_option->optionitem_weight_onetime != 0 ){ 
 						$options_weight_onetime = $options_weight_onetime + $advanced_option->optionitem_weight_onetime; 
 					}else if( $advanced_option->optionitem_weight_override >= 0 ){
 						$this->weight = $advanced_option->optionitem_weight_override;
+					}
+					
+					if( $advanced_option->optionitem_weight_multiplier > 1 ){
+						$weight_multiplier = $advanced_option->optionitem_weight_multiplier;
 					}
 				}
 			}
@@ -323,6 +338,14 @@ class ec_cartitem{
 			}
 		}else{
 			$this->unit_price = $cartitem_data->price + $options_price;	
+		}
+		
+		if( $price_multiplier > 1 ){
+			$this->unit_price = $this->unit_price * $price_multiplier;
+		}
+		
+		if( $weight_multiplier > 1 ){
+			$this->weight = $this->weight * $weight_multiplier;
 		}
 		
 		$this->total_price = ( $this->unit_price * $this->quantity ) + $options_price_onetime + $grid_price_change;

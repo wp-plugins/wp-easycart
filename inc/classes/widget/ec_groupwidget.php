@@ -2,15 +2,15 @@
 class ec_groupwidget extends WP_Widget{
 	
 	function ec_groupwidget(){
-		$widget_ops = array('classname' => 'ec_groupwidget', 'description' => 'Displays the Groups For Your WP EasyCart' );
-		$this->WP_Widget('ec_groupwidget', 'WP EasyCart Group Filter', $widget_ops);
+		$widget_ops = array('classname' => 'ec_groupwidget', 'description' => 'Displays the Categories For Your WP EasyCart' );
+		$this->WP_Widget('ec_groupwidget', 'WP EasyCart Category Filter', $widget_ops);
 	}
 	
 	function form($instance){
 		if( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
 		}else {
-			$title = __( 'Current Sales Groups', 'text_domain' );
+			$title = __( 'Current Categories', 'text_domain' );
 		}
 		
 		echo "<p><label for=\"" . $this->get_field_name( 'title' ) . "\">" . _e( 'Title:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'title' ) . "\" name=\"" . $this->get_field_name( 'title' ) . "\" type=\"text\" value=\"" . esc_attr( $title ) . "\" /></p>";

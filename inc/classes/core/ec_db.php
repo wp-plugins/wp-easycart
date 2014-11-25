@@ -211,6 +211,36 @@ class ec_db{
 		return $this->mysqli->get_row( $sql );	
 	}
 	
+	public function get_review_list( ){
+		$sql = "SELECT
+				ec_review.product_id,
+				ec_review.rating, 
+				ec_review.title,
+				ec_review.description,
+				ec_review.date_submitted
+				
+				FROM ec_review
+				
+				WHERE ec_review.approved = 1
+				
+				ORDER BY ec_review.date_submitted DESC";
+				
+		return $this->mysqli->get_results( $sql );
+	}
+	
+	public function get_pricetier_list( ){
+		$sql = "SELECT
+				ec_pricetier.product_id,
+				ec_pricetier.price,
+				ec_pricetier.quantity
+				
+				FROM ec_pricetier
+				
+				ORDER BY ec_pricetier.quantity ASC";
+		
+		return $this->mysqli->get_results( $sql );
+	}
+	
 	public function get_option_list( ){
 		$sql = "SELECT
 				ec_option.option_id,
@@ -233,9 +263,11 @@ class ec_db{
 				optionitem.optionitem_price, 
 				optionitem.optionitem_price_onetime,
 				optionitem.optionitem_price_override,
+				optionitem.optionitem_price_multiplier,
 				optionitem.optionitem_weight, 
 				optionitem.optionitem_weight_onetime,
 				optionitem.optionitem_weight_override,
+				optionitem.optionitem_weight_multiplier,
 				optionitem.optionitem_icon,
 				ec_option.option_label,
 				ec_option.option_name
@@ -276,11 +308,24 @@ class ec_db{
 	}
 	
 	public function get_product_list( $where_query, $order_query, $limit_query, $session_id ){
-		$query = "SET SESSION group_concat_max_len = 20000";
-		$update = $this->mysqli->query($query);
 		
-		//Setup the Product Query
-		$sql = "SELECT
+		$sql1 = "SELECT product.product_id
+				
+				FROM ec_product as product 
+				
+				LEFT JOIN ec_manufacturer as manufacturer ON manufacturer.manufacturer_id = product.manufacturer_id
+				
+				LEFT JOIN ec_categoryitem ON ec_categoryitem.product_id = product.product_id 
+				
+				LEFT JOIN ec_menulevel1 ON ( ec_menulevel1.menulevel1_id = product.menulevel1_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel2_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel3_id_1 )
+				
+				LEFT JOIN ec_menulevel2 ON ( ec_menulevel2.menulevel2_id = product.menulevel1_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel2_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel3_id_2 )
+				
+				LEFT JOIN ec_menulevel3 ON ( ec_menulevel3.menulevel3_id = product.menulevel1_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel2_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel3_id_3 )
+				
+				";
+		
+		$sql2 = "SELECT
 				product.product_id,
 				product.model_number,
 				product.post_id,
@@ -323,12 +368,6 @@ class ec_db{
 				product.trial_period_days,
 				product.stripe_plan_added,
 				
-				CONCAT_WS('***', option1.option_id, option1.option_name, option1.option_label) as option_data_1,
-				CONCAT_WS('***', option2.option_id, option2.option_name, option2.option_label) as option_data_2,
-				CONCAT_WS('***', option3.option_id, option3.option_name, option3.option_label) as option_data_3,
-				CONCAT_WS('***', option4.option_id, option4.option_name, option4.option_label) as option_data_4,
-				CONCAT_WS('***', option5.option_id, option5.option_name, option5.option_label) as option_data_5,
-				
 				product.use_advanced_optionset,
 				product.use_optionitem_images,
 				
@@ -363,149 +402,153 @@ class ec_db{
 				product.tag_text_color,
 				product.tag_text,
 				
-				GROUP_CONCAT(review.rating) as review_data,
-				AVG(review.rating) as review_average,
+				product.option_id_1,
+				product.option_id_2,
+				product.option_id_3,
+				product.option_id_4,
+				product.option_id_5,
 				
-				product.views,
-				
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', pricetier.price, pricetier.quantity) ORDER BY pricetier.quantity ASC SEPARATOR '---') as pricetier_data,
-				
-				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
+				product.views
 				
 				FROM ec_product as product 
 				
-				LEFT JOIN ec_option as option1
-				ON option1.option_id = product.option_id_1
+				LEFT JOIN ec_manufacturer as manufacturer ON manufacturer.manufacturer_id = product.manufacturer_id
 				
-				LEFT JOIN ec_option as option2
-				ON option2.option_id = product.option_id_2
+				LEFT JOIN ec_categoryitem ON ec_categoryitem.product_id = product.product_id 
 				
-				LEFT JOIN ec_option as option3
-				ON option3.option_id = product.option_id_3
+				LEFT JOIN ec_menulevel1 ON ( ec_menulevel1.menulevel1_id = product.menulevel1_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel2_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel3_id_1 )
 				
-				LEFT JOIN ec_option as option4
-				ON option4.option_id = product.option_id_4
+				LEFT JOIN ec_menulevel2 ON ( ec_menulevel2.menulevel2_id = product.menulevel1_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel2_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel3_id_2 )
 				
-				LEFT JOIN ec_option as option5
-				ON option5.option_id = product.option_id_5
+				LEFT JOIN ec_menulevel3 ON ( ec_menulevel3.menulevel3_id = product.menulevel1_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel2_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel3_id_3 )
 				
-				LEFT JOIN ec_manufacturer as manufacturer
-				ON manufacturer.manufacturer_id = product.manufacturer_id
-				
-				LEFT JOIN ec_review as review
-				ON review.product_id = product.product_id
-				
-				LEFT JOIN ec_pricetier as pricetier
-				ON pricetier.product_id = product.product_id 
-				
-				LEFT JOIN ec_customfield
-				ON ec_customfield.table_name = 'ec_product'
-				
-				LEFT JOIN ec_customfielddata
-				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = product.product_id 
-				
-				LEFT JOIN ec_categoryitem
-				ON ec_categoryitem.product_id = product.product_id 
-				
-				LEFT JOIN ec_menulevel1
-				ON ( ec_menulevel1.menulevel1_id = product.menulevel1_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel2_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel3_id_1 )
-				
-				LEFT JOIN ec_menulevel2
-				ON ( ec_menulevel2.menulevel2_id = product.menulevel1_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel2_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel3_id_2 )
-				
-				LEFT JOIN ec_menulevel3
-				ON ( ec_menulevel3.menulevel3_id = product.menulevel1_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel2_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel3_id_3 )
 				";
 				
-				$group_query = " GROUP BY 
-				product.product_id,
-				product.option_id_1, 
-				product.option_id_2, 
-				product.option_id_3, 
-				product.option_id_4, 
-				product.option_id_5 ";
+		$group_query = " GROUP BY product.product_id ";
 				
-		
-		$result = $this->mysqli->get_results( $this->mysqli->prepare( $sql, $session_id ) . $where_query . $group_query . $order_query );
+		$result = $this->mysqli->get_results( $sql1 . $where_query . $group_query );
 		$result_count = count($result);
 		
-		$result2 = $this->mysqli->get_results( $this->mysqli->prepare( $sql, $session_id ) . $where_query . $group_query . $order_query . $limit_query );
+		$result2 = $this->mysqli->get_results( $sql2 . $where_query . $group_query . $order_query . $limit_query );
 		
 		//Process the Result
+		$option_list = $this->get_option_list( );
+		$review_list = $this->get_review_list( );
+		$pricetier_list = $this->get_pricetier_list( );
 		$optionitem_list = $this->get_optionitem_list( );
 		$optionitem_image_list = $this->get_optionitem_image_list( );
 		$product_list = array();
 		
 		foreach($result2 as $row){
-		
-			$option1_data_array = explode("***", $row->option_data_1);
-			$option2_data_array = explode("***", $row->option_data_2);
-			$option3_data_array = explode("***", $row->option_data_3);
-			$option4_data_array = explode("***", $row->option_data_4);
-			$option5_data_array = explode("***", $row->option_data_5);
 			
-			$review_data_array = explode(",", $row->review_data);
-			
-			$pricetier_data_array = explode("---", $row->pricetier_data);
-			$pricetier_data_array2 = array();
-			for($i=0; $i<count($pricetier_data_array); $i++){
-				$temp_arr = explode("***", $pricetier_data_array[$i]);
-				array_push($pricetier_data_array2, $temp_arr);
+			$option1 = ""; $option2 = ""; $option3 = ""; $option4 = ""; $option5 = "";
+			$option1_data = array( ); $option2_data = array( ); $option3_data = array( ); $option4_data = array( ); $option5_data = array( );
+			$optionitem1_data = array( ); $optionitem2_data = array( ); $optionitem3_data = array( ); $optionitem4_data = array( ); $optionitem5_data = array( );
+				
+			// Loop through for option data if options used.
+			if( $row->option_id_1 || $row->option_id_2 || $row->option_id_3 || $row->option_id_4 || $row->option_id_5 ){
+				
+				foreach( $option_list as $option ){
+					if( $row->option_id_1 == $option->option_id ){
+						$option1_data = array( $option->option_id, $option->option_name, $option->option_label );
+					}
+					
+					if( $row->option_id_2 == $option->option_id ){
+						$option2_data = array( $option->option_id, $option->option_name, $option->option_label );
+					}
+					
+					if( $row->option_id_3 == $option->option_id ){
+						$option3_data = array( $option->option_id, $option->option_name, $option->option_label );
+					}
+					
+					if( $row->option_id_4 == $option->option_id ){
+						$option4_data = array( $option->option_id, $option->option_name, $option->option_label );
+					}
+					
+					if( $row->option_id_5 == $option->option_id ){
+						$option5_data = array( $option->option_id, $option->option_name, $option->option_label );
+					}
+				}
 			}
 			
-			// Get option items if needed
-			$optionitem1_data = array();
-			$optionitem2_data = array();
-			$optionitem3_data = array();
-			$optionitem4_data = array();
-			$optionitem5_data = array();
-			
-			if( $row->option_data_1 || $row->option_data_2 || $row->option_data_3 || $row->option_data_4 || $row->option_data_5 ){
-				for( $i=0; $i<count( $optionitem_list ); $i++ ){
-					if( $row->option_data_1 && $optionitem_list[$i]->option_id == $option1_data_array[0] )
-						array_push( $optionitem1_data, $optionitem_list[$i] );
-						
-					if( $row->option_data_2 && $optionitem_list[$i]->option_id == $option2_data_array[0] )
-						array_push( $optionitem2_data, $optionitem_list[$i] );
-						
-					if( $row->option_data_3 && $optionitem_list[$i]->option_id == $option3_data_array[0] )
-						array_push( $optionitem3_data, $optionitem_list[$i] );
-						
-					if( $row->option_data_4 && $optionitem_list[$i]->option_id == $option4_data_array[0] )
-						array_push( $optionitem4_data, $optionitem_list[$i] );
-						
-					if( $row->option_data_5 && $optionitem_list[$i]->option_id == $option5_data_array[0] )
-						array_push( $optionitem5_data, $optionitem_list[$i] );
+			// Loop through and get option items if needed
+			if( $row->option_id_1 || $row->option_id_2 || $row->option_id_3 || $row->option_id_4 || $row->option_id_5 ){
+				
+				foreach( $optionitem_list as $optionitem ){
+					
+					if( $row->option_id_1 == $optionitem->option_id ){
+						$optionitem1_data[] = $optionitem;
+					}
+					
+					if( $row->option_id_2 == $optionitem->option_id ){
+						$optionitem2_data[] = $optionitem;
+					}
+					
+					if( $row->option_id_3 == $optionitem->option_id ){
+						$optionitem3_data[] = $optionitem;
+					}
+					
+					if( $row->option_id_4 == $optionitem->option_id ){
+						$optionitem4_data[] = $optionitem;
+					}
+					
+					if( $row->option_id_5 == $optionitem->option_id ){
+						$optionitem5_data[] = $optionitem;
+					}
 				
 				}
 			}
 			
+			// Finalize the option data here
+			if( $row->option_id_1 && count( $option1_data ) >= 3 )
+				$option1 = array( $option1_data[0], $option1_data[1], $option1_data[2], $optionitem1_data);
+			
+			if( $row->option_id_2 && count( $option2_data ) >= 3 )
+				$option2 = array( $option2_data[0], $option2_data[1], $option2_data[2], $optionitem2_data);
+			
+			if( $row->option_id_3 && count( $option3_data ) >= 3 )
+				$option3 = array( $option3_data[0], $option3_data[1], $option3_data[2], $optionitem3_data);
+			
+			if( $row->option_id_4 && count( $option4_data ) >= 3 )
+				$option4 = array( $option4_data[0], $option4_data[1], $option4_data[2], $optionitem4_data);
+			
+			if( $row->option_id_5 && count( $option5_data ) >= 3 )
+				$option5 = array( $option5_data[0], $option5_data[1], $option5_data[2], $optionitem5_data);
+			
 			// Get option item images if needed
 			$optionitemimage_data = array();
 			if( $row->use_optionitem_images ){
-				for( $i=0; $i<count( $optionitem_image_list ); $i++ ){
-					if( $optionitem_image_list[$i]->product_id == $row->product_id )
-						array_push( $optionitemimage_data, $optionitem_image_list[$i] );
+				
+				foreach( $optionitem_image_list as $optionitem_image ){
+					
+					if( $optionitem_image->product_id == $row->product_id )
+						$optionitemimage_data[] = $optionitem_image;
+				
 				}
 			}
 			
-			$option1 = ""; $option2 = ""; $option3 = ""; $option4 = ""; $option5 = "";
+			// Get the review data for the product
+			$review_data = array( );
+			foreach( $review_list as $review ){
+				if( $review->product_id == $row->product_id ){
+					$review_data[] = $review->rating;
+				}
+			}
 			
-			if( $row->option_data_1 )
-				$option1 = array($option1_data_array[0], $option1_data_array[1], $option1_data_array[2], $optionitem1_data);
+			// Get the review average
+			if( count( $review_data_array ) > 0 ){
+				$review_average = array_sum( $review_data_array ) / count( $review_data_array );
+			}else{
+				$review_average = 0;
+			}
 			
-			if( $row->option_data_2 )
-				$option2 = array($option2_data_array[0], $option2_data_array[1], $option2_data_array[2], $optionitem2_data);
-			
-			if( $row->option_data_3 )
-				$option3 = array($option3_data_array[0], $option3_data_array[1], $option3_data_array[2], $optionitem3_data);
-			
-			if( $row->option_data_4 )
-				$option4 = array($option4_data_array[0], $option4_data_array[1], $option4_data_array[2], $optionitem4_data);
-			
-			if( $row->option_data_5 )
-				$option5 = array($option5_data_array[0], $option5_data_array[1], $option5_data_array[2], $optionitem5_data);
-			
+			// Get the price tier data
+			$pricetier_data = array( );
+			foreach( $pricetier_list as $pricetier ){
+				if( $pricetier->product_id == $row->product_id ){
+					$pricetier_data[] = array( $pricetier->price, $pricetier->quantity );
+				}
+			}
 			
 			//Setup Return Array
 			$temp_product = array(
@@ -585,10 +628,10 @@ class ec_db{
 						"deconetwork_color_id" => $row->deconetwork_color_id,
 						"deconetwork_design_id" => $row->deconetwork_design_id,
 						
-						"review_data" => $review_data_array,
-						"review_average" => $row->review_average,
+						"review_data" => $review_data,
+						"review_average" => $review_average,
 						"views" => $row->views,
-						"pricetier_data" => $pricetier_data_array2,
+						"pricetier_data" => $pricetier_data,
 						
 						"display_type" => $row->display_type,
 						"image_hover_type" => $row->image_hover_type,
@@ -599,7 +642,7 @@ class ec_db{
 						"tag_text" => $row->tag_text
 			);
 			
-			array_push($product_list, $temp_product);
+			$product_list[] = $temp_product;
 			
 		}
 		
@@ -1473,7 +1516,7 @@ class ec_db{
 	}
 	
 	public function get_shipping_data( ){
-		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.zone_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_quantity_based, ec_shippingrate.is_percentage_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.is_dhl_based, ec_shippingrate.is_canadapost_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.is_quantity_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.zone_id DESC, ec_shippingrate.shipping_order";
+		$sql = "SELECT ec_shippingrate.shippingrate_id, ec_shippingrate.zone_id, ec_shippingrate.is_price_based, ec_shippingrate.is_weight_based, ec_shippingrate.is_method_based, ec_shippingrate.is_quantity_based, ec_shippingrate.is_percentage_based, ec_shippingrate.is_ups_based, ec_shippingrate.is_usps_based, ec_shippingrate.is_fedex_based, ec_shippingrate.is_auspost_based, ec_shippingrate.is_dhl_based, ec_shippingrate.is_canadapost_based, ec_shippingrate.trigger_rate, ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order, ec_shippingrate.shipping_code, ec_shippingrate.shipping_override_rate, ec_shippingrate.free_shipping_at FROM ec_shippingrate ORDER BY ec_shippingrate.is_price_based DESC, ec_shippingrate.is_weight_based DESC, ec_shippingrate.is_method_based DESC, ec_shippingrate.is_quantity_based DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.trigger_rate DESC, ec_shippingrate.zone_id DESC, ec_shippingrate.shipping_order";
 		return $this->mysqli->get_results( $sql );
 		
 	}
@@ -2751,9 +2794,11 @@ class ec_db{
 					ec_optionitem.optionitem_price, 
 					ec_optionitem.optionitem_price_onetime, 
 					ec_optionitem.optionitem_price_override, 
+					ec_optionitem.optionitem_price_multiplier, 
 					ec_optionitem.optionitem_weight, 
 					ec_optionitem.optionitem_weight_onetime, 
 					ec_optionitem.optionitem_weight_override, 
+					ec_optionitem.optionitem_weight_multiplier, 
 					ec_optionitem.optionitem_order, 
 					ec_optionitem.optionitem_icon, 
 					ec_optionitem.optionitem_initial_value, 
@@ -2778,7 +2823,7 @@ class ec_db{
 	}
 	
 	public function get_advanced_cart_options( $tempcart_id ){
-		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_tempcart_optionitem.optionitem_model_number, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id WHERE ec_tempcart_optionitem.tempcart_id = %d";
+		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_tempcart_optionitem.optionitem_model_number, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_price_multiplier, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_weight_multiplier FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id WHERE ec_tempcart_optionitem.tempcart_id = %d";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $tempcart_id ) );
 	}
 	

@@ -250,9 +250,11 @@ CREATE TABLE IF NOT EXISTS `ec_optionitem` (
   `optionitem_price` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Price change value for an optionitem.',
   `optionitem_price_onetime` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Price change one-time addition to total price.',
   `optionitem_price_override` FLOAT(15,3) NOT NULL DEFAULT -1.000 COMMENT 'Price change to override product price.',
+  `optionitem_price_multiplier` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 'This multiplies your unit price by the value here.',
   `optionitem_weight` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Weight change value for an optionitem.',
   `optionitem_weight_onetime` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Weight change one-time addition to total weight.',
   `optionitem_weight_override` FLOAT(15,3) NOT NULL DEFAULT -1.000 COMMENT 'Weight change to override product weight.',
+  `optionitem_weight_multiplier` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 'This multiplies your weight by the value here.',
   `optionitem_order` INTEGER(11) NOT NULL DEFAULT 1 COMMENT 'Gives a user selected order of display for the optionitems.',
   `optionitem_icon` VARCHAR(512) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Gives the optionitem an icon for displaying optionitem swatch sets.',
   `optionitem_initial_value` VARCHAR(64) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'For some options an initial value is useful.',
@@ -886,6 +888,7 @@ CREATE TABLE IF NOT EXISTS `ec_shippingrate` (
   `shipping_order` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'This is the order used to display shipping methods.',
   `shipping_code` VARCHAR(255) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'This is the code used for methods like UPS to determine the cost for this method.',
   `shipping_override_rate` FLOAT(11,3) NULL COMMENT 'This is the override price for live shipping rates.',
+  `free_shipping_at` FLOAT(15,3) NOT NULL DEFAULT '-1.000' COMMENT 'This is a subtotal price at which a live or method based rate gives the customer free shipping.',
   
   PRIMARY KEY (`shippingrate_id`),
   UNIQUE KEY `shippingrate_id` (`shippingrate_id`)

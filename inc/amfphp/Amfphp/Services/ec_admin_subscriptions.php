@@ -204,13 +204,9 @@ class ec_admin_subscriptions{
 	function updatesubscriptionplanrecord( $subscription_plan_id, $subscription ){
 		  
 		$sql = "UPDATE ec_subscription_plan SET ec_subscription_plan.plan_title = %s, ec_subscription_plan.can_downgrade = %s WHERE ec_subscription_plan.subscription_plan_id = %d";
-		$success = $this->db->query( $this->db->prepare( $sql, $subscription->subscriptionplantitle, $subscription->candowngrade, $subscription_plan_id ) );
+		$this->db->query( $this->db->prepare( $sql, $subscription->subscriptionplantitle, $subscription->candowngrade, $subscription_plan_id ) );
 		
-		if( $success === FALSE ){
-			return array( "error" );
-		}else{
-			return array( "success" );
-		}
+		return array( "success" );
 		
 	}
 	function addsubscriptionplanrecord( $subscription ){

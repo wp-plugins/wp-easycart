@@ -86,41 +86,39 @@ class ec_admin_promotions{
 	
 	function updatepromotion($promotionid, $promotioninfo) {
 			
-			//convert object to array
-			 $promotioninfo = (array)$promotioninfo;
-			
-
-			if ($promotioninfo['startdate'] != '') {
-				$unixstartdate = $promotioninfo['startdate']->timeStamp / 1000;
-				$startdate = date("'Y-m-d H:i:s'", strtotime("midnight", $unixstartdate));
-			} else {
-				$startdate = 'NULL';
-			}
-			if ($promotioninfo['enddate'] != '') {
-				$unixenddate = $promotioninfo['enddate']->timeStamp / 1000;
-				$enddate = date("'Y-m-d H:i:s'", strtotime("tomorrow", $unixenddate) -1);
-			} else {
-				$enddate = 'NULL';
-			}
-			  //Create SQL Query
-			  $sql = "Replace into ec_promotion(ec_promotion.promotion_id, ec_promotion.name, ec_promotion.type, ec_promotion.start_date, ec_promotion.end_date, ec_promotion.product_id_1, ec_promotion.manufacturer_id_1, ec_promotion.category_id_1, ec_promotion.price1, ec_promotion.price2, ec_promotion.percentage1)
-				values('".$promotionid."', '%s', '%s', ".$startdate.", ".$enddate.", '%s', '%s', '%s', '%s', '%s', '%s')";
-			
-	
-			$this->db->query( $this->db->prepare( $sql,  $promotioninfo['promotionname'],
-				 $promotioninfo['promotiontype'],
-				 $promotioninfo['product1'],
-				 $promotioninfo['manufacturer1'],
-				 $promotioninfo['category1'],
-				 $promotioninfo['price1'],
-				 $promotioninfo['price2'],
-				 $promotioninfo['percentage1']));
-			//if no errors, return their current Client ID
-			//if results, convert to an array for use in flash
-			
-			return array( "success" );
-			
+		//convert object to array
+		$promotioninfo = (array)$promotioninfo;
+		
+		if( $promotioninfo['startdate'] != '' ){
+			$unixstartdate = $promotioninfo['startdate']->timeStamp / 1000;
+			$startdate = date("'Y-m-d H:i:s'", strtotime("midnight", $unixstartdate));
+		}else{
+			$startdate = 'NULL';
 		}
+		
+		if( $promotioninfo['enddate'] != '' ){
+			$unixenddate = $promotioninfo['enddate']->timeStamp / 1000;
+			$enddate = date("'Y-m-d H:i:s'", strtotime("tomorrow", $unixenddate) -1);
+		}else{
+			$enddate = 'NULL';
+		}
+		
+		//Create SQL Query
+		$sql = "Replace into ec_promotion(ec_promotion.promotion_id, ec_promotion.name, ec_promotion.type, ec_promotion.start_date, ec_promotion.end_date, ec_promotion.product_id_1, ec_promotion.manufacturer_id_1, ec_promotion.category_id_1, ec_promotion.price1, ec_promotion.price2, ec_promotion.percentage1)
+		values('".$promotionid."', '%s', '%s', ".$startdate.", ".$enddate.", '%s', '%s', '%s', '%s', '%s', '%s')";
+		
+		$this->db->query( $this->db->prepare( $sql,  $promotioninfo['promotionname'],
+				$promotioninfo['promotiontype'],
+				$promotioninfo['product1'],
+				$promotioninfo['manufacturer1'],
+				$promotioninfo['category1'],
+				$promotioninfo['price1'],
+				$promotioninfo['price2'],
+				$promotioninfo['percentage1']));
+		
+		return array( "success" );
+			
+	}
 	
 	function addpromotion($promotioninfo) {
 			

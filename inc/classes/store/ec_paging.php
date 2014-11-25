@@ -147,7 +147,7 @@ class ec_paging{
 		
 		}
 		
-		$page_url = preg_replace( '/([&]*[?]*pagenum\=[\d])/', '', $page_url );
+		$page_url = preg_replace( '/([&]*[?]*pagenum\=[\d]*)/', '', $page_url );
 		
 		if( substr_count( $page_url, '?' ) )						
 			$page_url .= "&";

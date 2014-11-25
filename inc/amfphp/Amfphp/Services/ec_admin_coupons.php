@@ -93,21 +93,21 @@ class ec_admin_coupons{
 				WHERE ec_promocode.promocode_id = %s";
 				
 		$rows_affected = $this->db->query( $this->db->prepare( 	$sql, 
-												$promocode['dollaramount'], 
-												$promocode['usedollar'], 
-												$promocode['percentageamount'], 
-												$promocode['usepercentage'], 
-												$promocode['shippingamount'], 
-												$promocode['useshipping'], 
-												'0.00', 
-												$promocode['usefreeitem'], 
-												$promocode['promodescription'], 
-												$promocode['manufacturers'], 
-												$promocode['products'], 
-												$promocode['attachmanufacturer'], 
-												$promocode['attachproduct'], 
-												$promocode['attachall'],
-												$promocode_id ) );
+					$promocode['dollaramount'], 
+					$promocode['usedollar'], 
+					$promocode['percentageamount'], 
+					$promocode['usepercentage'], 
+					$promocode['shippingamount'], 
+					$promocode['useshipping'], 
+					'0.00', 
+					$promocode['usefreeitem'], 
+					$promocode['promodescription'], 
+					$promocode['manufacturers'], 
+					$promocode['products'], 
+					$promocode['attachmanufacturer'], 
+					$promocode['attachproduct'], 
+					$promocode['attachall'],
+					$promocode_id ) );
 		
 		if( $rows_affected ){
 			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
@@ -123,18 +123,9 @@ class ec_admin_coupons{
 									
 				$stripe->insert_coupon( $coupon );
 			}
-			
-			return array( "success" );
-		}else{
-			$sql = "SELECT * FROM ec_promocode WHERE promocode_id = %s";
-			$results = $this->db->get_results( $this->db->prepare( $sql, $promocode_id ) );
-			
-			if( empty( $results ) ){
-				return array( "Unknown error has occurred" );
-			}else{
-				return array( "duplicate" );
-			}
 		}
+		
+		return array( "success" );
 	
 	}//updatecoupon
 	

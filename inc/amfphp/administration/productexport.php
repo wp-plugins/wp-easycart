@@ -130,39 +130,43 @@ if( !empty( $users ) ){
 	$header = "";
 	$data = "";
 	$sql = "SELECT * FROM ec_product ORDER BY ec_product.product_id ASC";
-	$results = $wpdb->get_results( $sql );
-	$keys = array_keys( $results[0] );
+	$results = $wpdb->get_results( $sql, ARRAY_A );
 	
-	foreach( $keys as $key ){
-		$header .= $key."\t";
-	}
-
-	foreach( $results as $result ){
-
-		$line = '';
-		foreach( $result as $value ){
-
-			if( !isset( $value ) || $value == "" ){
-				$value = "\t";
-
-			}else{
-				$value = str_replace( '"', '""', $value);
-				$value = '"' . utf8_decode($value) . '"' . "\t";
-
-			}
-
-			$line .= $value;
-
+	if( count( $results ) > 0 ){
+		
+		$keys = array_keys( $results[0] );
+		
+		foreach( $keys as $key ){
+			$header .= $key."\t";
 		}
-
-		$data .= trim( $line )."\n";
-
-	}
 	
-	$data = str_replace( "\r", "", $data );
-
-	if( $data == "" ){
-		$data = "\nno matching records found\n";
+		foreach( $results as $result ){
+	
+			$line = '';
+			foreach( $result as $value ){
+	
+				if( !isset( $value ) || $value == "" ){
+					$value = "\t";
+	
+				}else{
+					$value = str_replace( '"', '""', $value);
+					$value = '"' . utf8_decode($value) . '"' . "\t";
+	
+				}
+	
+				$line .= $value;
+	
+			}
+	
+			$data .= trim( $line )."\n";
+	
+		}
+		
+		$data = str_replace( "\r", "", $data );
+	}else{
+		if( $data == "" ){
+			$data = "\nno matching records found\n";
+		}
 	}
 	
 	header("Content-type: application/vnd.ms-excel");

@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: Shopping Cart, Wordpress Shopping Cart, Wordpress Cart, Wordpress PayPal, eCommerce, e-Commerce, Storefront, Cart, EasyCart, WordPress Plugin
 Requires at least: 3.8
-Tested up to: 4.0
-Stable tag: 3.0.10
+Tested up to: 4.0.1
+Stable tag: 3.0.11
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -118,6 +118,29 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.11 =
+* New Feature - You can now add an option item with a price or weight multiplier. Great when adding packs of things to the cart, e.g. order a 6, 12, or 24 pack and multiply the unit price by the pack amount selected!
+* New Feature - Live shipping and static shipping methods now allow you to specify a subtotal amount that, when reached, gives the customer free shipping on that shipping rate.
+* Improvement - Added the option to send in the language of your store in a URL get variable. For example, send in a user to site.com?eclang=NL to force a user to the Dutch langauge set for the store.
+* Fix - USPS improvement to include more rates, specifically First Class Mail.
+* Fix - Per page and page number links using their geturl functions needed a slight correction to work in more situations.
+* Fix - When returning to the product details page during an add to cart and no child theme, the link was incorrect.
+* Fix - Some themes were making check boxes and radio buttons -webkit-appearance set to none, causing a lot of the functionality of the store to be compromised.
+* Fix - Some hosts felt the product list query was too long, we have altered the method to pull all product data to use a few queries instead of concatenating multiple tables together. This should lighten the load on your server.
+* Fix - Product export keys were not being produced from the sql query, wrong format.
+* Fix - Removed link to phpinfo for security reasons.
+* Fix - Admin services were returning a failing result when updates occurred, but no data changed.
+* Fix - Correction made to validate address, not valid if account is not US based.
+* Fix - Product short code had an extra div in the wrong place, this has been corrected.
+* Fix - Increase in the characters for countries to allows some longer names to function.
+* Fix - USPS was not accepting the value Korea, Republic of as the country name for South Korea, it has been corrected to an accpetable value at the code level for this shipping method.
+* Fix - Admin Australia Post not pulling rates entered.
+* Fix - Grid type 3, add to cart button was not matching the colorization options.
+* Fix - Print order from admin with subscriptions and no child theme was failing.
+* Fix - Print order from admin with advanced option was failing.
+* Fix - Removed extra div for menu banner images that was empty when no image added, should not have effected functionality, but cleans up the code.
+* Fix - Discover card validation is not working correctly and has been corrected.
+* Fix - Customer side receipts for subscriptions were not displaying when using no child theme.
 = 3.0.10 =
 * New Feature - Tax Cloud tax rate system added to the store (beta version).
 * New Feature - Canada Post live shipping now available.

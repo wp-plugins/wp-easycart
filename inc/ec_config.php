@@ -41,6 +41,8 @@ if( isset( $_COOKIE['ec_newsletter_popup'] ) && !isset( $_SESSION['ec_newsletter
 // Language Translation Check
 if( isset( $_POST['ec_language_conversion'] ) ){
 	$_SESSION['ec_translate_to'] = $_POST['ec_language_conversion'];
+}else if( isset( $_GET['eclang'] ) ){
+	$_SESSION['ec_translate_to'] = $_GET['eclang'];
 }
 	
 // Currency Conversion Check

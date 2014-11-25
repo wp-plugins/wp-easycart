@@ -389,6 +389,26 @@ class ec_storepage{
 		}
 	}
 	
+	public function has_banner( ){
+		$menu_level = $this->product_list->filter->get_menu_level( );
+		if( $menu_level == 1 && isset( $this->product_list->filter->menulevel1->menu_id ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $this->product_list->filter->menulevel1->menu_id, 1 );
+		}else if( $menu_level == 2 && isset( $this->product_list->filter->menulevel2->menu_id ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $this->product_list->filter->menulevel2->menu_id, 2 );
+		}else if( $menu_level == 3 && isset( $this->product_list->filter->menulevel3->menu_id ) ){
+			$db = new ec_db( );
+			$menu_row = $db->get_menu_row( $this->product_list->filter->menulevel3->menu_id, 3 );
+		}
+		
+		if( isset( $menu_row ) && isset( $menu_row->banner_image ) && $menu_row->banner_image != "" ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	public function get_products_no_limit( ){
 		
 		return $this->product_list->get_products_no_limit( );

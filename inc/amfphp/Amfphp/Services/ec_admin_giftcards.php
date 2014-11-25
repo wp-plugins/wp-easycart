@@ -67,20 +67,10 @@ class ec_admin_giftcards{
 		$card = (array)$card;
 		
 		$sql = "UPDATE ec_giftcard SET ec_giftcard.amount = %s, ec_giftcard.message = %s WHERE ec_giftcard.giftcard_id = %s";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $card['giftcardamount'], $card['giftcardmessage'], $cardid ) );
+		$this->db->query( $this->db->prepare( $sql, $card['giftcardamount'], $card['giftcardmessage'], $cardid ) );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			$sql = "SELECT * FROM ec_giftcard WHERE giftcard_id = %s";
-			$results = $this->db->get_results( $this->db->prepare( $sql, $cardid ) );
-			
-			if( empty( $results ) ){
-				return array( "Unknown error has occurred" );
-			}else{
-				return array( "duplicate" );
-			}
-		}
+		return array( "success" );
+		
 	}//updategiftcard
 	
 	function addgiftcard( $card ){

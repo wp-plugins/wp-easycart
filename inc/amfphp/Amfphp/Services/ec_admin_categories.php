@@ -96,7 +96,7 @@ class ec_admin_categories{
 	function updatecategory( $categoryid, $categoryname ){
 		
 		$sql = "UPDATE ec_category SET category_name = %s WHERE category_id = %d";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $categoryname, $categoryid ) );
+		$this->db->query( $this->db->prepare( $sql, $categoryname, $categoryid ) );
 		
 		// Update WordPress Post
 		$sql = "SELECT post_id FROM ec_category WHERE category_id = %d";
@@ -114,11 +114,7 @@ class ec_admin_categories{
 		// Update WordPress Post
 		wp_update_post( $post );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}//updatecategory
 	

@@ -112,11 +112,11 @@ class ec_shipping{
 				// Method and Zoned Based
 				else if( $shipping_row->is_method_based && $shipping_row->zone_id > 0 ){
 					if( in_array( $shipping_row->zone_id, $zones ) )
-						array_push( $this->method_based, array( $shipping_row->shipping_rate, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id ) );
+						array_push( $this->method_based, array( $shipping_row->shipping_rate, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id, $shipping_row->free_shipping_at ) );
 					
 				// Method Based	
 				}else if( $shipping_row->is_method_based )			
-					array_push( $this->method_based, array( $shipping_row->shipping_rate, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id ) );
+					array_push( $this->method_based, array( $shipping_row->shipping_rate, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id, $shipping_row->free_shipping_at ) );
 					
 				// Quantity and Zoned Based
 				else if( $shipping_row->is_quantity_based && $shipping_row->zone_id > 0 ){
@@ -139,11 +139,11 @@ class ec_shipping{
 				// Live and Zoned Based
 				else if( $this->is_live_based( $shipping_row ) && $shipping_row->zone_id > 0 ){
 					if( in_array( $shipping_row->zone_id, $zones ) )
-						array_push( $this->live_based, array( $shipping_row->shipping_code, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
+						array_push( $this->live_based, array( $shipping_row->shipping_code, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate, $shipping_row->free_shipping_at ) );
 				
 				// Live Based	
 				}else if( $this->is_live_based( $shipping_row ) ){	
-					array_push( $this->live_based, array( $shipping_row->shipping_code, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate ) );
+					array_push( $this->live_based, array( $shipping_row->shipping_code, $GLOBALS['language']->convert_text( $shipping_row->shipping_label ), $shipping_row->shippingrate_id, $this->get_live_type( $shipping_row ), $shipping_row->shipping_override_rate, $shipping_row->free_shipping_at ) );
 				}
 			}
 			
@@ -294,12 +294,17 @@ class ec_shipping{
 				$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
 			
 			for( $i=0; $i<count( $this->live_based ); $i++){
-				if( $this->live_based[$i][4] != NULL )
-					$rate = $this->live_based[$i][4];
+				if( $this->live_based[$i][4] != NULL ){
+					if( $this->live_based[$i][4] == 0 )
+						$rate = "FREE";
+					else
+						$rate = $this->live_based[$i][4];
+						
+				}else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
+					$rate = "FREE";
+					
 				else
 					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
-				
-				//$rate = $GLOBALS['currency']->get_currency_display( $rate );
 				
 				if( $this->display_type == "RADIO" )
 					$ret_string .= $this->get_live_based_radio( $i, $rate );
@@ -351,7 +356,13 @@ class ec_shipping{
 		if( ( !isset( $_SESSION['ec_shipping_method'] ) && $i==0 ) || ( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] == $this->method_based[$i][2] ) )
 		$ret_string .= " checked=\"checked\"";
 		
-		$ret_string .= " /> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] + $this->handling ) . ")</div>";
+		if( $this->method_based[$i][3] > 0 && $this->subtotal >= $this->method_based[$i][3] )
+			$rate = $this->handling;
+			
+		else
+			$rate = $this->method_based[$i][0] + $this->handling;
+		
+		$ret_string .= " /> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $rate ) . ")</div>";
 		
 		return $ret_string;
 	}
@@ -364,7 +375,13 @@ class ec_shipping{
 		if( ( !isset( $_SESSION['ec_shipping_method'] ) && $i==0 ) || ( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] == $this->method_based[$i][2] ) )
 		$ret_string .= " selected=\"selected\"";
 		
-		$ret_string .= "> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] + $this->handling ) . ")</option>";
+		if( $this->method_based[$i][3] > 0 && $this->subtotal >= $this->method_based[$i][3] )
+			$rate = $this->handling;
+			
+		else
+			$rate = $this->method_based[$i][0] + $this->handling;
+		
+		$ret_string .= "> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $rate ) . ")</option>";
 		
 		return $ret_string;
 	}
@@ -373,7 +390,13 @@ class ec_shipping{
 		
 		$ret_string = "";
 		
-		$ret_string .= "<div class=\"ec_cart_shipping_method_row\ id=\"" . $this->method_based[$i][2] . "\"> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $this->method_based[$i][0] + $this->handling ) . ")</div>";
+		if( $this->method_based[$i][3] > 0 && $this->subtotal >= $this->method_based[$i][3] )
+			$rate = $this->handling;
+			
+		else
+			$rate = $this->method_based[$i][0] + $this->handling;
+		
+		$ret_string .= "<div class=\"ec_cart_shipping_method_row\ id=\"" . $this->method_based[$i][2] . "\"> " . $this->method_based[$i][1] . " (" . $GLOBALS['currency']->get_currency_display( $rate ) . ")</div>";
 		
 		return $ret_string;
 	}
@@ -381,7 +404,9 @@ class ec_shipping{
 	private function get_live_based_radio( $i, $rate ){
 		
 		if( $rate != "ERROR" ){
-		
+			if( $rate == "FREE" )
+				$rate = 0;
+				
 			$rate = doubleval( $rate ) + doubleval( $this->handling );
 		
 			$ret_string = "";
@@ -408,6 +433,9 @@ class ec_shipping{
 		
 		if( $rate != "ERROR" ){
 			
+			if( $rate == "FREE" )
+				$rate = 0;
+				
 			$rate = doubleval( $rate ) + doubleval( $this->handling );
 			
 			$ret_string = "";
@@ -426,6 +454,9 @@ class ec_shipping{
 	private function get_live_based_div( $i, $rate ){
 		
 		if( $rate != "ERROR" ){
+			
+			if( $rate == "FREE" )
+				$rate = 0;
 			
 			$rate = doubleval( $rate ) + doubleval( $this->handling );
 			
@@ -543,19 +574,32 @@ class ec_shipping{
 			if( $this->subtotal <= 0 )
 				$rate = "0.00";
 			
-			else if( !isset( $_SESSION['ec_shipping_method'] ) )
-				$rate = $this->method_based[0][0];
+			else if( !isset( $_SESSION['ec_shipping_method'] ) ){
+				if( $this->method_based[0][3] > 0 && $this->subtotal >= $this->method_based[0][3] ){
+					$rate = 0;
+				}else{
+					$rate = $this->method_based[0][0];
+				}
 			
-			else{
+			}else{
 				$rate_found = false;
 				for( $i=0; $i<count( $this->method_based ); $i++ ){
 					if( $_SESSION['ec_shipping_method'] == $this->method_based[$i][2] ){
-						$rate = $this->method_based[$i][0];
+						if( $this->method_based[$i][3] > 0 && $this->subtotal >= $this->method_based[$i][3] ){
+							$rate = 0;
+						}else{
+							$rate = $this->method_based[$i][0];
+						}
 						$rate_found = true;
 					}
 				}
+				
 				if( !$rate_found ){
-					$rate = $this->method_based[0][0];
+					if( $this->method_based[0][3] > 0 && $this->subtotal >= $this->method_based[0][3] ){
+						$rate = 0;
+					}else{
+						$rate = $this->method_based[0][0];
+					}
 				}
 			}
 			
@@ -593,6 +637,8 @@ class ec_shipping{
 				if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] ){
 					if( $this->live_based[$i][4] != NULL )
 						$rate = $this->live_based[$i][4];
+					else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
+						$rate = 0;
 					else
 						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
 					

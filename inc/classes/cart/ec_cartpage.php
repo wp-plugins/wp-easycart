@@ -764,10 +764,10 @@ class ec_cartpage{
 			$_SESSION['ec_username'] = "guest";
 			$_SESSION['ec_password'] = "guest";
 		}
-		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/head_content.php" ) )
-			echo "<a href=\"" . $this->cart_page . "\" class=\"ec_cart_checkout_link\">" . $button_text . "</a>";
-		else
+		if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) )
 			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $checkout_page . "\" class=\"ec_cart_checkout_link\">" . $button_text . "</a>";
+		else
+			echo "<a href=\"" . $this->cart_page . "\" class=\"ec_cart_checkout_link\">" . $button_text . "</a>";
 	}
 	/* END CART FUNCTIONS */
 

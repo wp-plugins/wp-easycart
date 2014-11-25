@@ -138,13 +138,9 @@ class ec_admin_mainmenu{
 		
 		//Update EC DB Fields
 		$sql = "UPDATE ec_menulevel1 SET ec_menulevel1.name = %s, ec_menulevel1.clicks = %s, ec_menulevel1.order = %s, ec_menulevel1.seo_keywords = %s, ec_menulevel1.seo_description = %s, ec_menulevel1.banner_image = %s WHERE ec_menulevel1.menulevel1_id = %d";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel1['menuname'], $menulevel1['clicks'], $menulevel1['menu1order'], $menulevel1['seokeywords'], $menulevel1['seodescription'], $menulevel1['bannerimage'], $keyfield ) );
+		$this->db->query( $this->db->prepare( $sql, $menulevel1['menuname'], $menulevel1['clicks'], $menulevel1['menu1order'], $menulevel1['seokeywords'], $menulevel1['seodescription'], $menulevel1['bannerimage'], $keyfield ) );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 	
 	}//updatemenulevel1
 	
@@ -254,13 +250,9 @@ class ec_admin_mainmenu{
 		
 		// Update EC DB Item
 		$sql = "UPDATE ec_menulevel2 SET ec_menulevel2.menulevel1_id = %d, ec_menulevel2.name = %s, ec_menulevel2.clicks = %s, ec_menulevel2.order = %s, ec_menulevel2.seo_keywords = %s, ec_menulevel2.seo_description = %s, ec_menulevel2.banner_image = %s WHERE ec_menulevel2.menulevel2_id = %d";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel2['menuparentid'], $menulevel2['menuname'], $menulevel2['clicks'], $menulevel2['menu2order'], $menulevel2['seokeywords'], $menulevel2['seodescription'], $menulevel2['bannerimage'], $keyfield ) );
+		$this->db->query( $this->db->prepare( $sql, $menulevel2['menuparentid'], $menulevel2['menuname'], $menulevel2['clicks'], $menulevel2['menu2order'], $menulevel2['seokeywords'], $menulevel2['seodescription'], $menulevel2['bannerimage'], $keyfield ) );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}//updatemenulevel2
 	
@@ -357,13 +349,9 @@ class ec_admin_mainmenu{
 		
 		// Update EC DB Item
 		$sql = "UPDATE ec_menulevel3 SET ec_menulevel3.menulevel2_id = %d, ec_menulevel3.name = %s, ec_menulevel3.clicks = %s, ec_menulevel3.order = %s, ec_menulevel3.seo_keywords = %s, ec_menulevel3.seo_description = %s, ec_menulevel3.banner_image = %s WHERE ec_menulevel3.menulevel3_id = %d";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $menulevel3['menuparentid'], $menulevel3['menuname'], $menulevel3['clicks'], $menulevel3['menu3order'], $menulevel3['seokeywords'], $menulevel3['seodescription'], $menulevel3['bannerimage'], $keyfield ) );
+		$this->db->query( $this->db->prepare( $sql, $menulevel3['menuparentid'], $menulevel3['menuname'], $menulevel3['clicks'], $menulevel3['menu3order'], $menulevel3['seokeywords'], $menulevel3['seodescription'], $menulevel3['bannerimage'], $keyfield ) );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}//updatemenulevel3
 	

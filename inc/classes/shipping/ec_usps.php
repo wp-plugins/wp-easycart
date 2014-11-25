@@ -231,14 +231,17 @@ class ec_usps{
 		
 	}
 	
-	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight ){
+	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight, $height = 1, $width = 1, $length = 1 ){
 				
 		$lbs = floor( $weight );
 		$ounces = floor( 16 * ( $weight - $lbs  ) );
 		
 		if( $destination_country != "US" ){
 			$db = new ec_db( );
-			$country_name = $db->get_country_name( $destination_country );
+			if( $destination_country == "KR" )
+				$country_name = "KOREA";
+			else
+				$country_name = $db->get_country_name( $destination_country );
 			$this->use_international = true;
 				
 			$shipper_data = "<IntlRateV2Request USERID='" . $this->usps_user_name . "' >
@@ -256,9 +259,9 @@ class ec_usps{
 								<Country>" . $country_name . "</Country>
 								<Container>RECTANGULAR</Container>
 								<Size>REGULAR</Size>
-								<Width>1</Width>
-								<Length>1</Length>
-								<Height>1</Height>
+								<Width>" . $width . "</Width>
+								<Length>" . $length . "</Length>
+								<Height>" . $height . "</Height>
 								<Girth>1</Girth>
 								<OriginZip>" . $this->usps_ship_from_zip . "</OriginZip>
 							</Package>
@@ -275,8 +278,11 @@ class ec_usps{
 								<ZipDestination>" . $destination_zip . "</ZipDestination>
 								<Pounds>" . $lbs . "</Pounds>
 								<Ounces>" . $ounces . "</Ounces>
-								<Container/>
-								<Size>REGULAR</Size>
+								<Container>RECTANGULAR</Container>
+								<Size>LARGE</Size>
+								<Width>" . $width . "</Width>
+								<Length>" . $length . "</Length>
+								<Height>" . $height . "</Height>
 								<Machinable>true</Machinable>
 							</Package>
 						</RateV4Request>";
@@ -293,7 +299,10 @@ class ec_usps{
 		
 		if( $destination_country != "US" ){
 			$db = new ec_db( );
-			$country_name = $db->get_country_name( $destination_country );
+			if( $destination_country == "KR" )
+				$country_name = "KOREA";
+			else
+				$country_name = $db->get_country_name( $destination_country );
 			$this->use_international = true;
 				
 			$shipper_data = "<IntlRateV2Request USERID='" . $this->usps_user_name . "' >
@@ -330,8 +339,11 @@ class ec_usps{
 								<ZipDestination>" . $destination_zip . "</ZipDestination>
 								<Pounds>" . $lbs . "</Pounds>
 								<Ounces>" . $ounces . "</Ounces>
-								<Container/>
-								<Size>REGULAR</Size>
+								<Container>RECTANGULAR</Container>
+								<Size>LARGE</Size>
+								<Width>" . $width . "</Width>
+								<Length>" . $length . "</Length>
+								<Height>" . $height . "</Height>
 								<Machinable>true</Machinable>
 							</Package>
 						</RateV4Request>";
@@ -387,6 +399,8 @@ class ec_usps{
 					$rates[] = array( 'rate_code' => "EXPRESS", 'rate' => $service->Postage );
 				}else if( (string)$service->attributes()->ID == "2" ){
 					$rates[] = array( 'rate_code' => "PRIORITY", 'rate' => $service->Postage );
+				}else if( (string)$service->attributes()->ID == "15" ){
+					$rates[] = array( 'rate_code' => "FIRST CLASS", 'rate' => $service->Postage );
 				}
 				
 			}
@@ -397,14 +411,15 @@ class ec_usps{
 				$rates[] = array( 'rate_code' => 'ALL', 'rate' => $min_rate );
 					
 		}else{
-			$rate_codes = array(	"1" => "PRIORITY",
+			$rate_codes = array(	"1" =>  "PRIORITY",
 									"33" => "PRIORITY HFP COMMERCIAL", 
-									"3" => "EXPRESS",
+									"3" =>  "EXPRESS",
 									"23" => "EXPRESS SH",   
-									"2" => "EXPRESS HFP CPP", 
-									"4" => "STANDARD POST", 
-									"6" => "MEDIA", 
-									"7" => "LIBRARY"
+									"2" =>  "EXPRESS HFP CPP", 
+									"4" =>  "STANDARD POST", 
+									"6" =>  "MEDIA", 
+									"7" =>  "LIBRARY",
+									"0" =>  "FIRST CLASS"
 								);
 								
 			
@@ -422,6 +437,8 @@ class ec_usps{
 	}
 	
 	public function validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
+		
+		return true;
 		
 		$ship_code = 'ALL';
 		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, 5 );

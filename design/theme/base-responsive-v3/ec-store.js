@@ -902,7 +902,8 @@ function ec_get_card_type( card_number ){
 	if( num.match( /^5[1-5]\d{14}$/ ) )														return "mastercard";
 	else if( num.match( /^4\d{15}/ ) || num.match( /^4\d{12}/ ) )							return "visa";
 	else if( num.match( /(^3[47])((\d{11}$)|(\d{13}$))/ ) )									return "amex";
-	else if( num.match( /(^3[47])((\d{11}$)|(\d{13}$))/ ) )									return "discover";
+	else if( num.match( /^6(?:011\d{12}|5\d{14}|4[4-9]\d{13}|22(?:1(?:2[6-9]|[3-9]\d)|[2-8]\d{2}|9(?:[01]\d|2[0-5]))\d{10})$/ ) )									
+																							return "discover";
 	else if( num.match( /^(?:5[0678]\d\d|6304|6390|67\d\d)\d{8,15}$/ ) )					return "maestro";
 	else if( num.match( /(^(352)[8-9](\d{11}$|\d{12}$))|(^(35)[3-8](\d{12}$|\d{13}$))/ ) )	return "jcb";
 	else if( num.match( /(^(30)[0-5]\d{11}$)|(^(36)\d{12}$)|(^(38[0-8])\d{11}$)/ ) )		return "diners";
@@ -919,7 +920,8 @@ function ec_validate_credit_card( card_number ){
 		else 																						return false;
 	
 	}else if( card_type == "discover" ){
-		if( /^6(?:011|5[0-9]{2})[0-9]{12}$/.test( card_number ) )									return true;
+		if( /^6(?:011\d{12}|5\d{14}|4[4-9]\d{13}|22(?:1(?:2[6-9]|[3-9]\d)|[2-8]\d{2}|9(?:[01]\d|2[0-5]))\d{10})$/.test( card_number ) )	
+																									return true;
 		else																						return false;
 	
 	}else if( card_type == "mastercard" || card_type == "mcdebit" ){

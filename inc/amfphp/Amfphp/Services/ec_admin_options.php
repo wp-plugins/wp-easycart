@@ -112,7 +112,7 @@ class ec_admin_options{
 		
 		$option = (array)$option;
 		
-		$rows_affected = $sql = "UPDATE ec_option SET ec_option.option_name = %s, ec_option.option_label = %s, ec_option.option_type = %s, ec_option.option_required = %s, ec_option.option_error_text = %s WHERE ec_option.option_id = %d";
+		$sql = "UPDATE ec_option SET ec_option.option_name = %s, ec_option.option_label = %s, ec_option.option_type = %s, ec_option.option_required = %s, ec_option.option_error_text = %s WHERE ec_option.option_id = %d";
 		$this->db->query( $this->db->prepare( $sql, $option['optionname'], $option['optionlabel'], $option['optiontype'], $option['optionrequired'], $option['optionerror'], $optionid ) );
 		
 		//if we are switching from a swatch based option to other option, remove images
@@ -121,11 +121,7 @@ class ec_admin_options{
 			$this->db->query( $this->db->prepare( $sql,  $optionid ) );
 		}
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}//updateoption
 	

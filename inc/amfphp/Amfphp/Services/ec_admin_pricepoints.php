@@ -52,13 +52,9 @@ class ec_admin_pricepoints{
 	function updatepricepoint( $id, $pricepoint ){
 		
 		$sql = "UPDATE ec_pricepoint SET ec_pricepoint.is_less_than = %s, ec_pricepoint.is_greater_than = %s, ec_pricepoint.low_point = %s, ec_pricepoint.high_point = %s, ec_pricepoint.order = %s WHERE ec_pricepoint.pricepoint_id = %d";
-		$success = $this->db->query( $this->db->prepare( $sql, $pricepoint->lessthan, $pricepoint->greaterthan, $pricepoint->lowpoint, $pricepoint->highpoint, $pricepoint->pricepointorder, $id ) );
+		$this->db->query( $this->db->prepare( $sql, $pricepoint->lessthan, $pricepoint->greaterthan, $pricepoint->lowpoint, $pricepoint->highpoint, $pricepoint->pricepointorder, $id ) );
 		
-		if( $success === FALSE ){
-			return array( "error" );
-		}else{
-			return array( "success" );
-		}
+		return array( "success" );
 		
 	}
 	

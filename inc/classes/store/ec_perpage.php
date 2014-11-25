@@ -71,7 +71,7 @@ class ec_perpage{
 		
 		}
 		
-		$page_url = preg_replace( '/([&]*[?]*perpage\=[\d])/', '', $page_url );
+		$page_url = preg_replace( '/([&]*[?]*perpage\=[\d]*)/', '', $page_url );
 		
 		if( substr_count( $page_url, '?' ) )						
 			$page_url .= "&";

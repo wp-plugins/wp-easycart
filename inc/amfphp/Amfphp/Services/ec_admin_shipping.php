@@ -99,6 +99,7 @@ class ec_admin_shipping{
 		$settings = new ec_setting( $setting_row );
 		
 		if( $setting_row->canadapost_username && $setting_row->canadapost_password && $setting_row->canadapost_customer_number && $setting_row->canadapost_ship_from_zip ){
+			
 			if( !class_exists( "ec_shipper" ) ){
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_shipper.php' );
 			}
@@ -573,13 +574,9 @@ class ec_admin_shipping{
 	function updateshippingmethodsetting( $shippingmethod, $handlingcharge ){
 		
 		$sql = "UPDATE ec_setting SET ec_setting.shipping_method=%s, ec_setting.shipping_handling_rate=%s WHERE ec_setting.setting_id = 1";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $shippingmethod, $handlingcharge ) );
+		$this->db->query( $this->db->prepare( $sql, $shippingmethod, $handlingcharge ) );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}	 
 	
@@ -587,7 +584,7 @@ class ec_admin_shipping{
 		
 		$shippingsettings = (array)$shippingsettings;
 		$sql = "UPDATE ec_setting SET ec_setting.shipping_method=%s, ec_setting.shipping_handling_rate=%s, ec_setting.ups_access_license_number=%s, ec_setting.ups_user_id=%s, ec_setting.ups_password=%s, ec_setting.ups_ship_from_zip=%s, ec_setting.ups_shipper_number=%s, ec_setting.ups_country_code=%s, ec_setting.ups_weight_type=%s, ec_setting.ups_conversion_rate =%s, ec_setting.usps_user_name=%s, ec_setting.usps_ship_from_zip=%s, ec_setting.fedex_key=%s, ec_setting.fedex_account_number=%s, ec_setting.fedex_meter_number=%s, ec_setting.fedex_password=%s, ec_setting.fedex_ship_from_zip=%s, ec_setting.fedex_weight_units=%s, ec_setting.fedex_country_code=%s,  ec_setting.fedex_conversion_rate =%s, ec_setting.fedex_test_account=%s, ec_setting.auspost_api_key = %s, ec_setting.auspost_ship_from_zip = %s , ec_setting.dhl_site_id = %s, ec_setting.dhl_password = %s, ec_setting.dhl_ship_from_country = %s, ec_setting.dhl_ship_from_zip = %s, ec_setting.dhl_weight_unit = %s, ec_setting.dhl_test_mode = %s, ec_setting.fraktjakt_customer_id = %s, ec_setting.fraktjakt_login_key = %s, ec_setting.fraktjakt_conversion_rate = %s, ec_setting.fraktjakt_test_mode = %s, ec_setting.fraktjakt_address = %s, ec_setting.fraktjakt_city = %s, ec_setting.fraktjakt_state = %s, ec_setting.fraktjakt_zip = %s, ec_setting.fraktjakt_country = %s, ec_setting.canadapost_username = %s, ec_setting.canadapost_password = %s, ec_setting.canadapost_customer_number = %s, ec_setting.canadapost_contract_id = %s, ec_setting.canadapost_test_mode = %s, ec_setting.canadapost_ship_from_zip = %s WHERE ec_setting.setting_id = 1";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, 
+		$this->db->query( $this->db->prepare( $sql, 
 					$shippingsettings['shippingmethod'], 
 					$shippingsettings['handlingcharge'], 
 					$shippingsettings['ups_access_license_number'], 
@@ -633,11 +630,7 @@ class ec_admin_shipping{
 					$shippingsettings['canadapost_test_mode'],
 					$shippingsettings['canadapost_ship_from_zip']));
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}
 	
@@ -675,38 +668,35 @@ class ec_admin_shipping{
 	function updatedhl( $keyfield, $info ){
 		
 		$info = (array)$info;
+		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s,%s, %s, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = %s, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
 		
 		}else{
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s, %s, null, 1, %s)";
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = NULL, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ) );
 		}
 		
-		if( $rows_affected ) {
-			return array( "success" );
-		} else {
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}
 	
 	function adddhl($info) {
+		
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
-		values(null, %s, %s,%s,%s, 1, %s)";
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, %s, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'] ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ) );
 		}else{
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id)
-		values(null, %s, %s, %s, null, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ) );
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.is_dhl_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'] ) );
+		
 		}
 		
 		if( $rows_affected ){
@@ -751,38 +741,35 @@ class ec_admin_shipping{
 	function updatecanadapost ($keyfield, $info ){
 		
 		$info = (array)$info;
+		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s,%s, %s, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = %s, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
 		
 		}else{
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s, %s, null, 1, %s)";
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = NULL, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ) );
 		}
 		
-		if( $rows_affected ) {
-			return array( "success" );
-		} else {
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}
 	
 	function addcanadapost($info) {
+		
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id)
-		values(null, %s, %s,%s,%s, 1, %s)";
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, %s, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'] ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ) );
 		}else{
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id)
-		values(null, %s, %s, %s, null, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ) );
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.is_canadapost_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'] ) );
+		
 		}
 		
 		if( $rows_affected ){
@@ -803,7 +790,7 @@ class ec_admin_shipping{
 		$results = $this->db->get_results( $sql );
 		$totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 		
-		if(  !empty( $results ) ){
+		if( $totalrows ){
 			$results[0]->totalrows = $totalrows;
 			return $results;
 		}else{
@@ -829,21 +816,16 @@ class ec_admin_shipping{
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s,%s, %s, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
-		}else{
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s, %s, null, 1, %s)";
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = %s, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
+		}else{
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = NULL, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
+		
 		}
 		
-		if($rows_affected ) {
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}
 	
@@ -852,14 +834,15 @@ class ec_admin_shipping{
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
-		values(null, %s, %s,%s,%s, 1, %s)";
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, %s, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'] ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ) );
 		}else{
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id)
-		values(null, %s, %s, %s, null, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.is_auspost_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'] ) );
+		
 		}
 		
 		if( $rows_affected ){
@@ -906,21 +889,16 @@ class ec_admin_shipping{
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s,%s, %s, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
-		}else{
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s, %s, null, 1, %s)";
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = %s, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
+		}else{
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = NULL, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
+		
 		}
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}
 	
@@ -929,14 +907,15 @@ class ec_admin_shipping{
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
-		values(null, %s, %s,%s,%s, 1, %s)";
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, %s, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'] ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 		}else{
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id)
-		values(null, %s, %s, %s, null, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.is_ups_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'] ) );
+		
 		}
 		
 		if( $rows_affected ){
@@ -983,21 +962,16 @@ class ec_admin_shipping{
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s,%s, %s, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ) );
-		}else{
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s, %s, null, 1, %s)";
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = %s, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
+		}else{
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = NULL, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
+		
 		}
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}
 	
@@ -1006,14 +980,15 @@ class ec_admin_shipping{
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
-		values(null, %s, %s,%s,%s, 1, %s)";
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, %s, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'] ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ));
 		}else{
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id)
-		values(null, %s, %s, %s, null, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.is_usps_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'] ) );
+		
 		}
 		
 		if( $rows_affected ){
@@ -1061,21 +1036,16 @@ class ec_admin_shipping{
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s,%s, %s, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ) );
-		}else{
-			$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code,  ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s, %s, null, 1, %s)";
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = %s, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
+		}else{
+			$sql = "UPDATE ec_shippingrate SET ec_shippingrate.shipping_label = %s, ec_shippingrate.shipping_code = %s, ec_shippingrate.shipping_order = %d, ec_shippingrate.shipping_override_rate = NULL, ec_shippingrate.zone_id = %d, ec_shippingrate.free_shipping_at = %s WHERE ec_shippingrate.shippingrate_id = %d";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'], $keyfield ) );
+		
 		}
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}
 	
@@ -1084,14 +1054,15 @@ class ec_admin_shipping{
 		$info = (array)$info;
 		
 		if( $info['shippingoverride'] != '' ){
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
-		values(null, %s, %s,%s,%s, 1, %s)";
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, %s, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'], $info['free_shipping_at'] ) );
 		
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['shippingoverride'], $info['zoneid'] ) );
 		}else{
-			$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id, ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.shipping_override_rate, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id)
-		values(null, %s, %s, %s, null, 1, %s)";
-			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'],$info['shippingcode'], $info['shipping_order'], $info['zoneid'] ));
+			
+			$sql = "INSERT INTO ec_shippingrate( ec_shippingrate.shipping_label, ec_shippingrate.shipping_code, ec_shippingrate.shipping_order, ec_shippingrate.is_fedex_based, ec_shippingrate.zone_id, ec_shippingrate.free_shipping_at ) VALUES( %s, %s, %d, 1, %d, %s )";
+			$rows_affected = $this->db->query( $this->db->prepare( $sql, $info['shippinglabel'], $info['shippingcode'], $info['shipping_order'], $info['zoneid'], $info['free_shipping_at'] ) );
+		
 		}
 		
 		if( $rows_affected ){

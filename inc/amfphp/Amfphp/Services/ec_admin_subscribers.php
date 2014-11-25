@@ -75,13 +75,9 @@ class ec_admin_subscribers{
 		$subscriber = (array)$subscriber;
 		
 		$sql = "UPDATE ec_subscriber SET ec_subscriber.email = %s, ec_subscriber.first_name = %s, ec_subscriber.last_name = %s WHERE ec_subscriber.subscriber_id = %s";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $subscriber['email'], $subscriber['firstname'], $subscriber['lastname'], $subscriberid ) );
+		$this->db->query( $this->db->prepare( $sql, $subscriber['email'], $subscriber['firstname'], $subscriber['lastname'], $subscriberid ) );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}
 	

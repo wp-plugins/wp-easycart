@@ -51,13 +51,9 @@ class ec_admin_perpage{
 	function updateperpage( $id, $perpage ){
 		
 		$sql = "UPDATE ec_perpage SET ec_perpage.perpage='%s' WHERE ec_perpage.perpage_id = %d";
-		$success = $this->db->query( $this->db->prepare( $sql, $perpage, $id));
+		$this->db->query( $this->db->prepare( $sql, $perpage, $id));
 		
-		if( $success === FALSE ){
-			return array( "error" );
-		}else{
-			return array( "success" );
-		}
+		return array( "success" );
 		
 	}	
 	

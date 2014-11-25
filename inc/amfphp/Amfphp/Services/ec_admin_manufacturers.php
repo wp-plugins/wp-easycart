@@ -103,13 +103,9 @@ class ec_admin_manufacturers{
 		
 		// Update EC DB Item
 		$sql = "UPDATE ec_manufacturer SET ec_manufacturer.name = %s, ec_manufacturer.clicks = %s WHERE ec_manufacturer.manufacturer_id = %d";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $manufacturer['manufacturername'], $manufacturer['clicks'], $manufacturerid ) );
+		$this->db->query( $this->db->prepare( $sql, $manufacturer['manufacturername'], $manufacturer['clicks'], $manufacturerid ) );
 		
-		if( $rows_affected ){
-			return array( "success" );
-		}else{
-			return array( "error" );
-		}
+		return array( "success" );
 		
 	}//updatemanufacturer
 	

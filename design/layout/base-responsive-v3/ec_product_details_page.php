@@ -472,7 +472,7 @@ function ec_admin_save_product_details_options( ){
 							$optionitem_in_stock = true;
 						}
 					?>
-					<li class="ec_details_swatch ec_option<?php echo ($i+1); ?><?php if( $optionitem_in_stock ){ ?> ec_active <?php }?>" data-optionitem-id="<?php echo $optionsets[$i]->optionset[$j]->optionitem_id; ?>"<?php if( $this->product->use_optionitem_quantity_tracking && $i == 0 ){ ?> data-optionitem-quantity="<?php echo $this->product->option1quantity[$j]->quantity; ?>"<?php }?> data-optionitem-price="<?php if( $optionsets[$i]->optionset[$j]->optionitem_price != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price; }else{ echo "0.00"; } ?>" data-optionitem-price-onetime="<?php if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price_onetime; }else{ echo "0.00"; } ?>" data-optionitem-price-override="<?php if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_override ) && $optionsets[$i]->optionset[$j]->optionitem_price_override != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price_override; }else{ echo "-1.00"; } ?>"><img src="<?php echo plugins_url( "/wp-easycart-data/products/swatches/" . $optionsets[$i]->optionset[$j]->optionitem_icon ); ?>" title="<?php echo $optionsets[$i]->optionset[$j]->optionitem_name; ?><?php if( $optionsets[$i]->optionset[$j]->optionitem_price > 0 ){ ?> ( +<?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ); ?> )<?php }else if( $optionsets[$i]->optionset[$j]->optionitem_price < 0 ){ ?> ( <?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ); ?> )<?php }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime > 0 ){ ?> ( +<?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ); ?> )<?php }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime < 0 ){ ?> ( <?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ); ?> )<?php }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_override ) && $optionsets[$i]->optionset[$j]->optionitem_price_override > -1 ){ ?> ( <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_override ); ?> )<?php }?>" /></li>
+					<li class="ec_details_swatch ec_option<?php echo ($i+1); ?><?php if( $optionitem_in_stock ){ ?> ec_active <?php }?>" data-optionitem-id="<?php echo $optionsets[$i]->optionset[$j]->optionitem_id; ?>"<?php if( $this->product->use_optionitem_quantity_tracking && $i == 0 ){ ?> data-optionitem-quantity="<?php echo $this->product->option1quantity[$j]->quantity; ?>"<?php }?> data-optionitem-price="<?php if( $optionsets[$i]->optionset[$j]->optionitem_price != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price; }else{ echo "0.00"; } ?>" data-optionitem-price-onetime="<?php if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price_onetime; }else{ echo "0.00"; } ?>" data-optionitem-price-override="<?php if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_override ) && $optionsets[$i]->optionset[$j]->optionitem_price_override != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price_override; }else{ echo "-1.00"; } ?>" data-optionitem-price-multiplier="<?php echo $optionsets[$i]->optionset[$j]->optionitem_price_multiplier; ?>"><img src="<?php echo plugins_url( "/wp-easycart-data/products/swatches/" . $optionsets[$i]->optionset[$j]->optionitem_icon ); ?>" title="<?php echo $optionsets[$i]->optionset[$j]->optionitem_name; ?><?php if( $optionsets[$i]->optionset[$j]->optionitem_price > 0 ){ ?> ( +<?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ); ?> )<?php }else if( $optionsets[$i]->optionset[$j]->optionitem_price < 0 ){ ?> ( <?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ); ?> )<?php }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime > 0 ){ ?> ( +<?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ); ?> )<?php }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime < 0 ){ ?> ( <?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ); ?> )<?php }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_override ) && $optionsets[$i]->optionset[$j]->optionitem_price_override > -1 ){ ?> ( <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_override ); ?> )<?php }?>" /></li>
 					<?php
                     }
 					?>
@@ -488,7 +488,7 @@ function ec_admin_save_product_details_options( ){
                 
                 <div class="ec_details_option_row">
 					<select name="ec_option<?php echo ($i+1); ?>" id="ec_option<?php echo ($i+1); ?>" class="ec_details_combo ec_option<?php echo ($i+1); ?><?php if( $this->product->use_optionitem_quantity_tracking && $i > 0 ){ ?> ec_inactive<?php }?>"<?php if( $this->product->use_optionitem_quantity_tracking && $i > 0 ){ ?> disabled="disabled"<?php }?>>
-                    <option value="0"<?php if( $this->product->use_optionitem_quantity_tracking && $i == 0 ){ ?> data-optionitem-quantity="<?php echo $this->product->stock_quantity; ?>"<?php }?> data-optionitem-price="0.00" data-optionitem-price-onetime="0.00" data-optionitem-price-override="-1"><?php echo $optionsets[$i]->option_label; ?></option>
+                    <option value="0"<?php if( $this->product->use_optionitem_quantity_tracking && $i == 0 ){ ?> data-optionitem-quantity="<?php echo $this->product->stock_quantity; ?>"<?php }?> data-optionitem-price="0.00" data-optionitem-price-onetime="0.00" data-optionitem-price-override="-1" data-optionitem-price-multiplier="-1.00"><?php echo $optionsets[$i]->option_label; ?></option>
 					<?php
                     for( $j=0; $j<count( $optionsets[$i]->optionset ); $j++ ){
 						// Check the in stock status for this option item
@@ -499,7 +499,7 @@ function ec_admin_save_product_details_options( ){
 						}
 					?>
                     <?php if( !$this->product->use_optionitem_quantity_tracking || $i != 0 || $this->product->option1quantity[$j]->quantity > 0 ){ ?> 
-					<option value="<?php echo $optionsets[$i]->optionset[$j]->optionitem_id; ?>"<?php if( $this->product->use_optionitem_quantity_tracking && $i == 0 ){ ?> data-optionitem-quantity="<?php echo $this->product->option1quantity[$j]->quantity; ?>"<?php }?> data-optionitem-price="<?php if( $optionsets[$i]->optionset[$j]->optionitem_price != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price; }else{ echo "0.00"; } ?>" data-optionitem-price-onetime="<?php if( $optionsets[$i]->optionset[$j]->optionitem_price_onetime != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price_onetime; }else{ echo "0.00"; } ?>" data-optionitem-price-override="<?php if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_override ) && $optionsets[$i]->optionset[$j]->optionitem_price_override != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price_override; }else{ echo "-1.00"; } ?>"><?php echo $optionsets[$i]->optionset[$j]->optionitem_name; ?><?php if( $optionsets[$i]->optionset[$j]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionsets[$i]->optionset[$j]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_override ) && $optionsets[$i]->optionset[$j]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_override ) . ')'; } ?></option>
+					<option value="<?php echo $optionsets[$i]->optionset[$j]->optionitem_id; ?>"<?php if( $this->product->use_optionitem_quantity_tracking && $i == 0 ){ ?> data-optionitem-quantity="<?php echo $this->product->option1quantity[$j]->quantity; ?>"<?php }?> data-optionitem-price="<?php if( $optionsets[$i]->optionset[$j]->optionitem_price != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price; }else{ echo "0.00"; } ?>" data-optionitem-price-onetime="<?php if( $optionsets[$i]->optionset[$j]->optionitem_price_onetime != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price_onetime; }else{ echo "0.00"; } ?>" data-optionitem-price-override="<?php if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_override ) && $optionsets[$i]->optionset[$j]->optionitem_price_override != "" ){ echo $optionsets[$i]->optionset[$j]->optionitem_price_override; }else{ echo "-1.00"; } ?>" data-optionitem-price-multiplier="<?php echo $optionsets[$i]->optionset[$j]->optionitem_price_multiplier; ?>"><?php echo $optionsets[$i]->optionset[$j]->optionitem_name; ?><?php if( $optionsets[$i]->optionset[$j]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionsets[$i]->optionset[$j]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) && $optionsets[$i]->optionset[$j]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionsets[$i]->optionset[$j]->optionitem_price_override ) && $optionsets[$i]->optionset[$j]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $optionsets[$i]->optionset[$j]->optionitem_price_override ) . ')'; } ?></option>
                     <?php }?>	
 					<?php
                     }
@@ -548,7 +548,7 @@ function ec_admin_save_product_details_options( ){
 						foreach( $optionitems as $optionitem ){
 						?>
                         	
-                            <div class="ec_details_checkbox_row"><input type="checkbox" class="ec_option_<?php echo $optionset->option_id; ?>" name="ec_option_<?php echo $optionset->option_id; ?>_<?php echo $optionitem->optionitem_id; ?>" value="<?php echo $optionitem->optionitem_name; ?>" data-optionitem-price="<?php echo $optionitem->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitem->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitem->optionitem_price_override; ?>" /> <?php echo $optionitem->optionitem_name; ?><?php if( $optionitem->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitem->optionitem_price_override ) && $optionitem->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ')'; } ?></div>
+                            <div class="ec_details_checkbox_row"><input type="checkbox" class="ec_option_<?php echo $optionset->option_id; ?>" name="ec_option_<?php echo $optionset->option_id; ?>_<?php echo $optionitem->optionitem_id; ?>" value="<?php echo $optionitem->optionitem_name; ?>" data-optionitem-price="<?php echo $optionitem->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitem->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitem->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitem->optionitem_price_multiplier; ?>" /> <?php echo $optionitem->optionitem_name; ?><?php if( $optionitem->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitem->optionitem_price_override ) && $optionitem->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ')'; } ?></div>
                             
                         <?php
 						}
@@ -560,12 +560,12 @@ function ec_admin_save_product_details_options( ){
 					}else if( $optionset->option_type == "combo" ){
 					?>
                     	<select name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>">
-                        <option value="0" data-optionitem-price="0.000" data-optionitem-price-onetime="0.000" data-optionitem-price-override="-1.000"><?php echo $optionset->option_label; ?></option>
+                        <option value="0" data-optionitem-price="0.000" data-optionitem-price-onetime="0.000" data-optionitem-price-override="-1.000" data-optionitem-price-multiplier="-1.000"><?php echo $optionset->option_label; ?></option>
                     	<?php
 						foreach( $optionitems as $optionitem ){
 						?>
                         	
-                            <option value="<?php echo $optionitem->optionitem_id; ?>" data-optionitem-price="<?php echo $optionitem->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitem->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitem->optionitem_price_override; ?>"><?php echo $optionitem->optionitem_name; ?><?php if( $optionitem->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitem->optionitem_price_override ) && $optionitem->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ')'; } ?></option>
+                            <option value="<?php echo $optionitem->optionitem_id; ?>" data-optionitem-price="<?php echo $optionitem->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitem->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitem->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitem->optionitem_price_multiplier; ?>"><?php echo $optionitem->optionitem_name; ?><?php if( $optionitem->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitem->optionitem_price_override ) && $optionitem->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ')'; } ?></option>
                             
                         <?php
 						}
@@ -577,7 +577,7 @@ function ec_admin_save_product_details_options( ){
 					}else if( $optionset->option_type == "date" ){
 					?>
                     
-                    	<input type="date" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" /><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
+                    	<input type="date" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[0]->optionitem_price_multiplier; ?>" /><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
                     
                     <?php
 					
@@ -585,7 +585,7 @@ function ec_admin_save_product_details_options( ){
 					}else if( $optionset->option_type == "file" ){
 					?>
                     
-                    	<input type="file" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" /><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
+                    	<input type="file" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[0]->optionitem_price_multiplier; ?>" /><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
                     
                     <?php
 					
@@ -597,7 +597,7 @@ function ec_admin_save_product_details_options( ){
 							<?php
                             for( $j=0; $j<count( $optionitems ); $j++ ){
                             ?>
-                            	<li class="ec_details_swatch ec_advanced ec_option_<?php echo $optionset->option_id; ?> ec_active" data-optionitem-id="<?php echo $optionitems[$j]->optionitem_id; ?>" data-option-id="<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[$j]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[$j]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[$j]->optionitem_price_override; ?>"><img src="<?php echo plugins_url( "/wp-easycart-data/products/swatches/" . $optionitems[$j]->optionitem_icon ); ?>"<?php if( $optionitems[$j]->optionitem_price > 0 ){ ?> title="+<?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ); ?>"<?php }else if( $optionitems[$j]->optionitem_price < 0 ){ ?> title="<?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ); ?>"<?php }else if( $optionitems[$j]->optionitem_price_onetime > 0 ){ ?> title="+<?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price_onetime ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ); ?>"<?php }else if( $optionitems[$j]->optionitem_price_onetime < 0 ){ ?> title="<?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price_onetime ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ); ?>"<?php }else if( isset( $optionitems[$j]->optionitem_price_override ) && $optionitems[$j]->optionitem_price_override > -1 ){ ?> title="<?php $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price_override ); ?>"<?php }?>/></li>
+                            	<li class="ec_details_swatch ec_advanced ec_option_<?php echo $optionset->option_id; ?> ec_active" data-optionitem-id="<?php echo $optionitems[$j]->optionitem_id; ?>" data-option-id="<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[$j]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[$j]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[$j]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[$j]->optionitem_price_multiplier; ?>"><img src="<?php echo plugins_url( "/wp-easycart-data/products/swatches/" . $optionitems[$j]->optionitem_icon ); ?>"<?php if( $optionitems[$j]->optionitem_price > 0 ){ ?> title="+<?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ); ?>"<?php }else if( $optionitems[$j]->optionitem_price < 0 ){ ?> title="<?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ); ?>"<?php }else if( $optionitems[$j]->optionitem_price_onetime > 0 ){ ?> title="+<?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price_onetime ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ); ?>"<?php }else if( $optionitems[$j]->optionitem_price_onetime < 0 ){ ?> title="<?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price_onetime ); ?> <?php echo $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ); ?>"<?php }else if( isset( $optionitems[$j]->optionitem_price_override ) && $optionitems[$j]->optionitem_price_override > -1 ){ ?> title="<?php $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $optionitems[$j]->optionitem_price_override ); ?>"<?php }?>/></li>
                             <?php
 							}
 							?>
@@ -622,7 +622,7 @@ function ec_admin_save_product_details_options( ){
 						}
 						?>
                         	
-                            <div class="ec_details_grid_row"><span><?php echo $optionitem->optionitem_name; ?></span><input type="number" min="0" step="1" name="ec_option_<?php echo $optionset->option_id; ?>_<?php echo $optionitem->optionitem_id; ?>" value="<?php echo number_format( $optionitem->optionitem_initial_value, 0, "", "" ); ?>" data-optionitem-price="<?php echo $optionitem->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitem->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitem->optionitem_price_override; ?>" /><?php if( $optionitem->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitem->optionitem_price_override ) && $optionitem->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ')'; } ?></div>
+                            <div class="ec_details_grid_row"><span><?php echo $optionitem->optionitem_name; ?></span><input type="number" min="0" step="1" name="ec_option_<?php echo $optionset->option_id; ?>_<?php echo $optionitem->optionitem_id; ?>" value="<?php echo number_format( $optionitem->optionitem_initial_value, 0, "", "" ); ?>" data-optionitem-price="<?php echo $optionitem->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitem->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitem->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitem->optionitem_price_multiplier; ?>" /><?php if( $optionitem->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitem->optionitem_price_override ) && $optionitem->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ')'; } ?></div>
                             
                         <?php
 						}
@@ -638,7 +638,7 @@ function ec_admin_save_product_details_options( ){
 						foreach( $optionitems as $optionitem ){
 						?>
                         	
-                            <div class="ec_details_radio_row"><input type="radio" name="ec_option_<?php echo $optionset->option_id; ?>" value="<?php echo $optionitem->optionitem_id; ?>" data-optionitem-price="<?php echo $optionitem->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitem->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitem->optionitem_price_override; ?>" /> <?php echo $optionitem->optionitem_name; ?><?php if( $optionitem->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitem->optionitem_price_override ) && $optionitem->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ')'; } ?></div>
+                            <div class="ec_details_radio_row"><input type="radio" name="ec_option_<?php echo $optionset->option_id; ?>" value="<?php echo $optionitem->optionitem_id; ?>" data-optionitem-price="<?php echo $optionitem->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitem->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitem->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitem->optionitem_price_multiplier; ?>" /> <?php echo $optionitem->optionitem_name; ?><?php if( $optionitem->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitem->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitem->optionitem_price_override ) && $optionitem->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitem->optionitem_price_override ) . ')'; } ?></div>
                             
                         <?php
 						}
@@ -650,7 +650,7 @@ function ec_admin_save_product_details_options( ){
 					}else if( $optionset->option_type == "text" ){
 					?>
                     
-                    	<input type="text" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" /><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
+                    	<input type="text" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[0]->optionitem_price_multiplier; ?>" /><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
                     
                     <?php
 					
@@ -658,7 +658,7 @@ function ec_admin_save_product_details_options( ){
 					}else if( $optionset->option_type == "textarea" ){
 					?>
                     
-                    	<textarea name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>"></textarea><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
+                    	<textarea name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[0]->optionitem_price_multiplier; ?>"></textarea><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
                     
                     <?php
 					}
@@ -1475,10 +1475,12 @@ function ec_details_base_adjust_price( ){
 		option1_price_adj = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-price' );
 		option1_price_add = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-price-onetime' );
 		option1_price_override = Number( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-price-override' ) );
+		option1_price_multiplier = Number( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}else if( jQuery( '.ec_details_combo.ec_option1' ).length ){
 		option1_price_adj = jQuery( '.ec_details_combo.ec_option1 option:selected' ).attr( 'data-optionitem-price' );
 		option1_price_add = jQuery( '.ec_details_combo.ec_option1 option:selected' ).attr( 'data-optionitem-price-onetime' );
 		option1_price_override = Number( jQuery( '.ec_details_combo.ec_option1 option:selected' ).attr( 'data-optionitem-price-override' ) );
+		option1_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option1 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
 	
 	// Option 2 Price Adjustment
@@ -1486,10 +1488,12 @@ function ec_details_base_adjust_price( ){
 		option2_price_adj = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-price' );
 		option2_price_add = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-price-onetime' );
 		option2_price_override = Number( jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-price-override' ) );
+		option2_price_multiplier = Number( jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}else if( jQuery( '.ec_details_combo.ec_option2' ).length ){
 		option2_price_adj = jQuery( '.ec_details_combo.ec_option2 option:selected' ).attr( 'data-optionitem-price' );
 		option2_price_add = jQuery( '.ec_details_combo.ec_option2 option:selected' ).attr( 'data-optionitem-price-onetime' );
 		option2_price_override = Number( jQuery( '.ec_details_combo.ec_option2 option:selected' ).attr( 'data-optionitem-price-override' ) );
+		option2_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option2 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
 	
 	// Option 3 Price Adjustment
@@ -1497,10 +1501,12 @@ function ec_details_base_adjust_price( ){
 		option3_price_adj = jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).attr( 'data-optionitem-price' );
 		option3_price_add = jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).attr( 'data-optionitem-price-onetime' );
 		option3_price_override = Number( jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).attr( 'data-optionitem-price-override' ) );
+		option3_price_multiplier = Number( jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}else if( jQuery( '.ec_details_combo.ec_option3' ).length ){
 		option3_price_adj = jQuery( '.ec_details_combo.ec_option3 option:selected' ).attr( 'data-optionitem-price' );
 		option3_price_add = jQuery( '.ec_details_combo.ec_option3 option:selected' ).attr( 'data-optionitem-price-onetime' );
 		option3_price_override = Number( jQuery( '.ec_details_combo.ec_option3 option:selected' ).attr( 'data-optionitem-price-override' ) );
+		option3_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option3 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
 	
 	// Option 4 Price Adjustment
@@ -1508,10 +1514,12 @@ function ec_details_base_adjust_price( ){
 		option4_price_adj = jQuery( '.ec_details_swatches > li.ec_option4.ec_selected' ).attr( 'data-optionitem-price' );
 		option4_price_add = jQuery( '.ec_details_swatches > li.ec_option4.ec_selected' ).attr( 'data-optionitem-price-onetime' );
 		option4_price_override = Number( jQuery( '.ec_details_swatches > li.ec_option4.ec_selected' ).attr( 'data-optionitem-price-override' ) );
+		option4_price_multiplier = Number( jQuery( '.ec_details_swatches > li.ec_option4.ec_selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}else if( jQuery( '.ec_details_combo.ec_option4' ).length ){
 		option4_price_adj = jQuery( '.ec_details_combo.ec_option4 option:selected' ).attr( 'data-optionitem-price' );
 		option4_price_add = jQuery( '.ec_details_combo.ec_option4 option:selected' ).attr( 'data-optionitem-price-onetime' );
 		option4_price_override = Number( jQuery( '.ec_details_combo.ec_option4 option:selected' ).attr( 'data-optionitem-price-override' ) );
+		option4_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option4 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
 	
 	// Option 5 Price Adjustment
@@ -1519,10 +1527,12 @@ function ec_details_base_adjust_price( ){
 		option5_price_adj = jQuery( '.ec_details_swatches > li.ec_option5.ec_selected' ).attr( 'data-optionitem-price' );
 		option5_price_add = jQuery( '.ec_details_swatches > li.ec_option5.ec_selected' ).attr( 'data-optionitem-price-onetime' );
 		option5_price_override = Number( jQuery( '.ec_details_swatches > li.ec_option5.ec_selected' ).attr( 'data-optionitem-price-override' ) );
+		option5_price_multiplier = Number( jQuery( '.ec_details_swatches > li.ec_option5.ec_selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}else if( jQuery( '.ec_details_combo.ec_option5' ).length ){
 		option5_price_adj = jQuery( '.ec_details_combo.ec_option5 option:selected' ).attr( 'data-optionitem-price' );
 		option5_price_add = jQuery( '.ec_details_combo.ec_option5 option:selected' ).attr( 'data-optionitem-price-onetime' );
 		option5_price_override = Number( jQuery( '.ec_details_combo.ec_option5 option:selected' ).attr( 'data-optionitem-price-override' ) );
+		option5_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option5 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
 	
 	var num_decimals = <?php echo $GLOBALS['currency']->decimal_length; ?>;
@@ -1564,6 +1574,7 @@ function ec_details_advanced_adjust_price( ){
 	
 	var base_price = Number( jQuery( '#ec_base_price' ).html( ) );
 	var override_price = -1;
+	var price_multiplier = 0;
 	
 	// Checkbox Price Adjustments
 	var checkbox_adj = 0;
@@ -1615,6 +1626,10 @@ function ec_details_advanced_adjust_price( ){
 			override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 		}
 		
+		if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+			price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
+		}
+		
 	} );
 	
 	jQuery( '.ec_details_option_row.ec_option_type_combo > .ec_details_option_data > select option:selected' ).each( function( ){
@@ -1629,6 +1644,10 @@ function ec_details_advanced_adjust_price( ){
 		
 		if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 			override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
+		}
+		
+		if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+			price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 		}
 		
 	} );
@@ -1648,6 +1667,11 @@ function ec_details_advanced_adjust_price( ){
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
+			
+			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
+			}
+			
 		}
 		
 	} );
@@ -1667,6 +1691,11 @@ function ec_details_advanced_adjust_price( ){
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
+			
+			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
+			}
+			
 		}
 		
 	} );
@@ -1685,6 +1714,10 @@ function ec_details_advanced_adjust_price( ){
 			override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 		}
 		
+		if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+			price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
+		}
+		
 	} );
 	
 	jQuery( '.ec_details_radio_row > input:checked' ).each( function( ){
@@ -1699,6 +1732,10 @@ function ec_details_advanced_adjust_price( ){
 		
 		if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 			override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
+		}
+		
+		if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+			price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 		}
 		
 	} );
@@ -1718,6 +1755,11 @@ function ec_details_advanced_adjust_price( ){
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
+			
+			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
+			}
+			
 		}
 		
 	} );
@@ -1737,6 +1779,11 @@ function ec_details_advanced_adjust_price( ){
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
+			
+			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
+			}
+			
 		}
 		
 	} );
@@ -1752,6 +1799,10 @@ function ec_details_advanced_adjust_price( ){
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
+			
+			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
+				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
+			}
 		}
 		
 	} );
@@ -1766,6 +1817,14 @@ function ec_details_advanced_adjust_price( ){
 		jQuery( '#ec_final_price' ).html( ec_details_format_money( override_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) );
 	}else{
 		jQuery( '#ec_final_price' ).html( new_price );
+	}
+	
+	if( price_multiplier > 1 && override_price > -1 ){
+		console.log( "Order Price: " + override_price + ", Order Add = " + order_price + ", Price Multiplier = " + price_multiplier );
+		jQuery( '#ec_final_price' ).html( ec_details_format_money( ( Number( override_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
+	}else if( price_multiplier > 1 ){
+		console.log( "Order Price: " + base_price + ", Order Add = " + order_price + ", Price Multiplier = " + price_multiplier );
+		jQuery( '#ec_final_price' ).html( ec_details_format_money( ( Number( base_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
 	}
 	
 	if( order_price != 0 ){
