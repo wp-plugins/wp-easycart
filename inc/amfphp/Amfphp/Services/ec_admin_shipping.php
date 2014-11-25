@@ -803,7 +803,7 @@ class ec_admin_shipping{
 		$results = $this->db->get_results( $sql );
 		$totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 		
-		if( $rows_affected ){
+		if(  !empty( $results ) ){
 			$results[0]->totalrows = $totalrows;
 			return $results;
 		}else{
