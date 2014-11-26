@@ -223,7 +223,6 @@ class ec_db_admin extends ec_db{
 	}
 	
 	public function get_order_details_admin( $order_id ){
-		
 		$orderdetail_sql = "SELECT 
 				ec_orderdetail.orderdetail_id, 
 				ec_orderdetail.order_id, 
@@ -290,13 +289,11 @@ class ec_db_admin extends ec_db{
 				ON ec_customfield.table_name = 'ec_orderdetail'
 				
 				LEFT JOIN ec_customfielddata
-				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id, 
+				ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_orderdetail.orderdetail_id 
 				
-				ec_order, ec_user
+				
 				
 				WHERE 
-				ec_order.order_id = ec_orderdetail.order_id AND 
-				ec_user.user_id = ec_order.user_id AND 
 				ec_orderdetail.order_id = %d
 				
 				GROUP BY
