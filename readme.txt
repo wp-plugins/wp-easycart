@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.0.1
-Stable tag: 3.0.11
+Stable tag: 3.0.12
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,14 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.12 =
+* Fix - V2 next and previous pages were jumping around randomly. Only applies as a fix for V2.
+* Fix - Using advanced content with specifications but not description was not processing the content.
+* Fix - Manufacturer link in the product details was incorrect.
+* Fix - USPS, fix to ensure valid length x width x height values.
+* Fix - Some servers erroring with javascript for products with no quantity tracking.
+* Fix - Language selector was not applying to advanced options.
+* Security Fixes Included
 = 3.0.11 =
 * New Feature - You can now add an option item with a price or weight multiplier. Great when adding packs of things to the cart, e.g. order a 6, 12, or 24 pack and multiply the unit price by the pack amount selected!
 * New Feature - Live shipping and static shipping methods now allow you to specify a subtotal amount that, when reached, gives the customer free shipping on that shipping rate.

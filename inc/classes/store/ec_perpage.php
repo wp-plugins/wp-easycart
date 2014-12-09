@@ -14,8 +14,8 @@ class ec_perpage{
 	}
 	
 	private function get_selected(){
-		if( isset( $_GET['perpage'] ) )							return $_GET['perpage'];
-		else if( isset( $_SESSION['perpage'] ) )				return $_SESSION['perpage'];
+		if( isset( $_GET['perpage'] ) )							return $this->mysqli->get_perpage( $_GET['perpage'] );
+		else if( isset( $_SESSION['perpage'] ) )				return $this->mysqli->get_perpage( $_SESSION['perpage'] );
 		else													return $this->get_default( );
 		
 	}

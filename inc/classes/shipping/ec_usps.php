@@ -11,10 +11,7 @@ class ec_usps{
 		$this->usps_user_name = $ec_setting->get_usps_user_name();
 		$this->usps_ship_from_zip = $ec_setting->get_usps_ship_from_zip();	
 		
-		//if( isset( $_SERVER['HTTPS'] ) )
-			//$this->shipper_url = "https://secure.shippingapis.com/ShippingAPI.dll";
-		//else
-			$this->shipper_url = "http://production.shippingapis.com/ShippingAPI.dll";
+		$this->shipper_url = "http://production.shippingapis.com/ShippingAPI.dll";
 	}
 		
 	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight ){
@@ -116,6 +113,16 @@ class ec_usps{
 		
 		if( $weight == 0 )
 			return "0.00";
+			
+		$length = ceil( $length );
+		if( $length <= 0 )
+			$length = 1;
+		$width = ceil( $width );
+		if( $width <= 0 )
+			$width = 1;
+		$height = ceil( $height );
+		if( $height <= 0 )
+			$height = 1;
 			
 		if( !$destination_country )
 			$destination_country = "US";
@@ -235,6 +242,16 @@ class ec_usps{
 				
 		$lbs = floor( $weight );
 		$ounces = floor( 16 * ( $weight - $lbs  ) );
+			
+		$length = ceil( $length );
+		if( $length <= 0 )
+			$length = 1;
+		$width = ceil( $width );
+		if( $width <= 0 )
+			$width = 1;
+		$height = ceil( $height );
+		if( $height <= 0 )
+			$height = 1;
 		
 		if( $destination_country != "US" ){
 			$db = new ec_db( );
@@ -296,6 +313,16 @@ class ec_usps{
 				
 		$lbs = floor( $weight );
 		$ounces = floor( 16 * ( $weight - $lbs  ) );
+			
+		$length = ceil( $length );
+		if( $length <= 0 )
+			$length = 1;
+		$width = ceil( $width );
+		if( $width <= 0 )
+			$width = 1;
+		$height = ceil( $height );
+		if( $height <= 0 )
+			$height = 1;
 		
 		if( $destination_country != "US" ){
 			$db = new ec_db( );

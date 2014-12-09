@@ -24,11 +24,9 @@
 
 					<?php $this->orders->display_order_list( ); //prints out a list of orders of type ec_account_order_line.php ?>
 
-				</div>
+            </div>
 
-			</div>
-
-		</div>
+        </div>
     
     </div>
 

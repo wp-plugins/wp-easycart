@@ -273,6 +273,9 @@ class ec_orderdisplay{
 		echo $this->shipping_method;
 		
 		if( $this->fraktjakt_shipment_id ){
+			if( !class_exists( "ec_fraktjakt" ) ){
+				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/shipping/ec_fraktjakt.php' );
+			}
 			$fraktjakt = new ec_fraktjakt( );
 			$status = $fraktjakt->get_shipping_status( $this->fraktjakt_shipment_id );
 			

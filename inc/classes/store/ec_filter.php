@@ -68,7 +68,7 @@ class ec_filter{
 	}
 	
 	private function get_menu1_id(){
-		if( $this->get_menu_level() == 1 )						return $_GET['menuid'];
+		if( $this->get_menu_level() == 1 )						return $this->mysqli->get_menulevel1_id( $_GET['menuid'] );
 		
 		else if( $this->get_menu_level() == 2 )					return $this->mysqli->get_menulevel1_id_from_menulevel2( $this->get_displayed_menu_id( ) );
 			
@@ -80,7 +80,7 @@ class ec_filter{
 	}
 	
 	private function get_menu2_id(){
-		if( $this->get_menu_level() == 2)						return $_GET['submenuid'];
+		if( $this->get_menu_level() == 2)						return $this->mysqli->get_menulevel2_id( $_GET['submenuid'] );
 			
 		else if( $this->get_menu_level() == 3)					return $this->mysqli->get_menulevel2_id_from_menulevel3( $this->get_displayed_menu_id() );
 		
@@ -88,14 +88,14 @@ class ec_filter{
 	}
 	
 	private function get_menu3_id(){
-		if( $this->get_menu_level() == 3)						return $_GET['subsubmenuid'];
+		if( $this->get_menu_level() == 3)						return $this->mysqli->get_menulevel3_id( $_GET['subsubmenuid'] );
 																return 0;
 	}
 	
 	private function get_displayed_menu_id(){
-		if(isset($_GET['menuid']))								return $_GET['menuid'];
-		else if(isset($_GET['submenuid']))						return $_GET['submenuid'];
-		else if(isset($_GET['subsubmenuid']))					return $_GET['subsubmenuid'];
+		if(isset($_GET['menuid']))								return $this->mysqli->get_menulevel1_id( $_GET['menuid'] );
+		else if(isset($_GET['submenuid']))						return $this->mysqli->get_menulevel2_id( $_GET['submenuid'] );
+		else if(isset($_GET['subsubmenuid']))					return $this->mysqli->get_menulevel3_id( $_GET['subsubmenuid'] );
 		else													return 0;
 	}
 	
@@ -123,12 +123,12 @@ class ec_filter{
 	}
 	
 	public function get_manufacturer_id(){
-		if( isset( $_GET['manufacturer'] ) )					return $_GET['manufacturer'];
+		if( isset( $_GET['manufacturer'] ) )					return $this->mysqli->get_manufacturer_id( $_GET['manufacturer'] );
 		else													return 0;	
 	}
 	
 	private function get_pricepoint_id(){
-		if(isset($_GET['pricepoint']))							return $_GET['pricepoint'];
+		if(isset($_GET['pricepoint']))							return $this->mysqli->get_pricepoint_id( $_GET['pricepoint'] );
 		else													return 0;	
 	}
 	
@@ -139,17 +139,17 @@ class ec_filter{
 			$post_id = $post_obj->ID;
 			$group = $this->mysqli->get_category_id_from_post_id( $post_id );
 		
-			if( isset( $_GET['group_id'] ) )						return $_GET['group_id'];
+			if( isset( $_GET['group_id'] ) )						return $this->mysqli->get_category_id( $_GET['group_id'] );
 			else if( isset( $group ) )								return $group->category_id;
 			else													return 0;
 		}else{
-			if( isset( $_GET['group_id'] ) )						return $_GET['group_id'];
+			if( isset( $_GET['group_id'] ) )						return $this->mysqli->get_category_id( $_GET['group_id'] );
 			else													return 0;
 		}
 	}
 	
 	private function get_model_number(){
-		if(isset($_GET['model_number']))						return $_GET['model_number'];
+		if(isset($_GET['model_number']))						return $this->mysqli->get_model_number( $_GET['model_number'] );
 		else if(isset($this->model_number))						return $this->model_number;
 		else													return "";
 	}

@@ -271,6 +271,12 @@ class ec_product{
 				$this->option1quantity = $this->mysqli->get_option_quantity_values( $this->product_id );
 			}
 			$this->advanced_optionsets = $this->mysqli->get_advanced_optionsets( $this->product_id );
+			
+			// Loop through options, select correct text if transalation used
+			for( $adv_index = 0; $adv_index < count( $this->advanced_optionsets ); $adv_index++ ){
+				$this->advanced_optionsets[$adv_index]->option_label = $GLOBALS['language']->convert_text( $this->advanced_optionsets[$adv_index]->option_label );
+				$this->advanced_optionsets[$adv_index]->option_error_text = $GLOBALS['language']->convert_text( $this->advanced_optionsets[$adv_index]->option_error_text );
+			}
 		}
 		
 		// DISPLAY VARS
@@ -1031,7 +1037,7 @@ class ec_product{
 	public function display_product_specifications( ){
 		
 		
-		if( substr( $this->description, 0, 3 ) == "[ec" ){
+		if( substr( $this->specifications, 0, 3 ) == "[ec" ){
 			$content = $this->process_special_content( $this->specifications );
 			echo $content;
 		}else{
@@ -1520,7 +1526,11 @@ class ec_product{
 	}
 	
 	public function get_advanced_optionitems( $option_id ){
-		return $this->mysqli->get_advanced_optionitems( $option_id );
+		$optionitems = $this->mysqli->get_advanced_optionitems( $option_id );
+		for( $opt_index = 0; $opt_index < count( $optionitems ); $opt_index++ ){
+			$optionitems[$opt_index]->optionitem_name = $GLOBALS['language']->convert_text( $optionitems[$opt_index]->optionitem_name );
+		}
+		return $optionitems;
 	}
 	
 	public function get_deconetwork_link( ){
@@ -1546,7 +1556,7 @@ class ec_product{
 		if( !get_option( 'ec_option_use_old_linking_style' ) && $manufacturer_row->post_id ){
 			return get_permalink( $manufacturer_row->post_id );
 		}else{
-			return $this->store_page . $this->permalink_divider . "manufacturer_id=" . $this->manufacturer_id;
+			return $this->store_page . $this->permalink_divider . "manufacturer=" . $this->manufacturer_id;
 		}
 		
 	}

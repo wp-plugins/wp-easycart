@@ -523,7 +523,7 @@ input[type="radio"]{ -webkit-appearance:radio; }
 .ec_details_social_icon:hover > a > img{ top:-40px; }
 .ec_details_extra_area{ float:left; width:100%; margin-top:25px; }
 .ec_details_tabs{ display:block; width:100%; overflow:hidden; margin:0 0 10px !important; list-style-position:outside; list-style-type:disc; border-top:1px solid #CCC; padding:0px !important; color:#222222; }
-.ec_details_tab{ font-family: 'Lato', Arial, sans-serif !important; font-size:14px !important; list-style:none; display:inline-block; margin:0 35px 0 0; margin-left:0 !important; border-top:solid 3px #222222; line-height:2.6em; text-transform:uppercase; font-weight:bold; cursor:pointer; }
+.ec_details_tab{ font-family: 'Lato', Arial, sans-serif !important; font-size:14px !important; list-style:none; display:inline-block; margin:0 35px 0 0 !important; margin-left:0 !important; border-top:solid 3px #222222; line-height:2.6em; text-transform:uppercase; font-weight:bold; cursor:pointer; }
 .ec_details_tab.ec_active{ border-top:solid 3px #222222; }
 .ec_details_description_content{ float:left; width:100%; }
 .ec_details_edit_buttons{ float:left; width:100%; margin:5px 0 15px; }
@@ -949,7 +949,7 @@ td.ec_cartitem_total{ text-align:right; padding:0 12px 0 0 !important; font-size
 .ec_account_order_details_right .right{ float:right; position:absolute; top:13px; right:0px; }
 
 /* Account Order Details Table */
-.ec_account_order_details_table{ min-width:500px; width:100%; padding:0; margin:0; border-collapse:collapse; border-spacing:0; }
+.ec_account_order_details_table{ min-width:400px; width:100%; padding:0; margin:0; border-collapse:collapse; border-spacing:0; }
 .ec_account_order_details_table > thead{ width:100%; border-bottom:3px solid #E1E1E1; }
 .ec_account_order_details_table > thead > tr > th{ font-family:'Lato', Arial, sans-serif !important; color:#222222; font-weight:bold; background:#FFF; border-left:0px solid #CCC; border-right:0px solid #CCC; border-top:0px solid #CCC; border-bottom:0px solid #CCC; text-transform:uppercase; font-size:100%; letter-spacing:1.5px; }
 

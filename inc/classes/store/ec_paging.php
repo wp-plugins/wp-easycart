@@ -40,8 +40,8 @@ class ec_paging{
 	}
 	
 	private function get_current_page( ){
-		if(isset($_GET['pagenum']))									return $_GET['pagenum'];
-		else														return 1;
+		if( isset( $_GET['pagenum'] ) )										return intval( $_GET['pagenum'] );
+		else																return 1;
 	}
 	
 	private function get_total_pages( ){
@@ -70,7 +70,7 @@ class ec_paging{
 		
 																	$ret_string = "";
 														
-		if($this->start_page() != 1)								$ret_string .= "<a href=\"".$link_string."&amp;pagenum=".$this->start_page()."\" class=\"ec_prev_link\">< Prev</a>" . $divider;
+		if( $this->current_page != 1 )								$ret_string .= "<a href=\"".$link_string."&amp;pagenum=".($this->current_page-1)."\" class=\"ec_prev_link\">< Prev</a>" . $divider;
 		
 		for($i = $this->start_page(); $i<=$this->end_page(); $i++){
 			
@@ -81,7 +81,7 @@ class ec_paging{
 			
 		}
 		
-		if($this->end_page() != $this->total_pages)					$ret_string .= $divider . "<a href=\"".$link_string."&amp;pagenum=".$this->end_page()."\" class=\"ec_next_link\">Next ></a>";
+		if( $this->current_page != $this->total_pages)				$ret_string .= $divider . "<a href=\"".$link_string."&amp;pagenum=".($this->current_page+1)."\" class=\"ec_next_link\">Next ></a>";
 		
 																	return $ret_string;
 		

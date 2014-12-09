@@ -252,6 +252,12 @@ class ec_cartitem{
 		$weight_multiplier = 0;
 		
 		$this->advanced_options = $this->mysqli->get_advanced_cart_options( $this->cartitem_id );
+			
+		// Loop through options, select correct text if transalation used
+		for( $adv_index = 0; $adv_index < count( $this->advanced_options ); $adv_index++ ){
+			$this->advanced_options[$adv_index]->option_label = $GLOBALS['language']->convert_text( $this->advanced_options[$adv_index]->option_label );
+			$this->advanced_options[$adv_index]->optionitem_value = $GLOBALS['language']->convert_text( $this->advanced_options[$adv_index]->optionitem_value );
+		}
 		
 		if( $this->use_advanced_optionset ){
 			

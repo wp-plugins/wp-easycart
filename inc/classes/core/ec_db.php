@@ -773,6 +773,11 @@ class ec_db{
 		return $quant;
 	}
 	
+	public function get_perpage( $perpage ){
+		$sql = "SELECT ec_perpage.perpage FROM ec_perpage WHERE ec_perpage.perpage = %d";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $perpage ) );
+	}
+	
 	public function get_perpage_values(){
 		$vals = $this->mysqli->get_results( "SELECT perpage.perpage FROM ec_perpage as perpage ORDER BY perpage.perpage ASC" );
 		$array = array( );
@@ -941,20 +946,32 @@ class ec_db{
 	
 	public function get_menuname( $menu_id, $menu_level ){
 		if( $menu_level == 1 )
-			return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT name FROM ec_menulevel1 WHERE menulevel1_id = '%s'", $menu_id ) );
+			return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT name FROM ec_menulevel1 WHERE menulevel1_id = %d", $menu_id ) );
 		else if( $menu_level == 2 )
-			return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT name FROM ec_menulevel2 WHERE menulevel2_id = '%s'", $menu_id ) );
+			return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT name FROM ec_menulevel2 WHERE menulevel2_id = %d", $menu_id ) );
 		else if( $menu_level == 3 )
-			return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT name FROM ec_menulevel3 WHERE menulevel3_id = '%s'", $menu_id ) );
+			return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT name FROM ec_menulevel3 WHERE menulevel3_id = %d", $menu_id ) );
+	}
+	
+	public function get_menulevel1_id( $menulevel1_id ){
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel1.menulevel1_id FROM ec_menulevel1 WHERE ec_menulevel1.menulevel1_id = %d", $menulevel1_id ) );
+	}
+	
+	public function get_menulevel2_id( $menulevel2_id ){
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel2.menulevel2_id FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = %d", $menulevel1_id ) );
+	}
+	
+	public function get_menulevel3_id( $menulevel3_id ){
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel3.menulevel3_id FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d", $menulevel1_id ) );
 	}
 	
 	public function get_menulevel1_id_from_menulevel2( $menulevel2_id ){
-		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel2.menulevel1_id FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = '%s'", $menulevel2_id ) );
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel2.menulevel1_id FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = %d", $menulevel2_id ) );
 	}
 	
 	
 	public function get_menulevel2_id_from_menulevel3( $menulevel3_id ){
-		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel3.menulevel2_id FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = '%s'", $menulevel3_id ) );
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel3.menulevel2_id FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d", $menulevel3_id ) );
 	}
 	
 	public function get_customer_reviews( $product_id ){
@@ -2756,14 +2773,34 @@ class ec_db{
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
 	}
 	
+	public function get_category_id( $category_id ){
+		$sql = "SELECT ec_category.category_id FROM ec_category WHERE ec_category.category_id = %d";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $category_id ) );
+	}
+	
 	public function get_category_id_from_post_id( $post_id ){
 		$sql = "SELECT ec_category.category_id FROM ec_category WHERE ec_category.post_id = %d";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
 	}
 	
+	public function get_manufacturer_id( $manufacturer_id ){
+		$sql = "SELECT ec_manufacturer.manufacturer_id FROM ec_manufacturer WHERE ec_manufacturer.manufacturer_id = %d";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $manufacturer_id ) );
+	}
+	
 	public function get_manufacturer_id_from_post_id( $post_id ){
 		$sql = "SELECT ec_manufacturer.manufacturer_id FROM ec_manufacturer WHERE ec_manufacturer.post_id = %d";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $post_id ) );
+	}
+	
+	public function get_pricepoint_id( $pricepoint_id ){
+		$sql = "SELECT ec_pricepoint.pricepoint_id FROM ec_pricepoint WHERE ec_pricepoint.pricepoint_id = %d";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $pricepoint_id ) );
+	}
+	
+	public function get_model_number( $model_number ){
+		$sql = "SELECT ec_product.model_number FROM ec_product WHERE ec_product.model_number = %s";
+		return $this->mysqli->get_var( $this->mysqli->prepare( $sql, $model_number ) );
 	}
 	
 	public function get_roleprice( $email, $password, $product_id ){

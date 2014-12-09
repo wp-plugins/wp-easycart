@@ -2099,7 +2099,10 @@ function ec_details_add_to_cart( ){
 	
 	// Maximum Quantity Check
 	var entered_quantity = Number( jQuery( '#ec_quantity' ).val( ) );
-	var allowed_quantity = Number( jQuery( '#ec_details_stock_quantity' ).html( ) );
+	var allowed_quantity = 9999999999999;
+	if( jQuery( '#ec_details_stock_quantity' ).length ){
+		allowed_quantity = Number( jQuery( '#ec_details_stock_quantity' ).html( ) );
+	}
 	
 	if( entered_quantity > allowed_quantity ){
 		jQuery( '#ec_addtocart_quantity_exceeded_error' ).show( );
