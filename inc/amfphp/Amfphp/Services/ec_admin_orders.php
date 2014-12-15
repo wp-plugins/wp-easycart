@@ -357,6 +357,16 @@ class ec_admin_orders{
 			
 			$this->db->query( $this->db->prepare( "UPDATE ec_order SET ec_order.refund_total = ( ec_order.refund_total + %s ), ec_order.order_notes = %s, ec_order.orderstatus_id = %d WHERE ec_order.order_id = %d", $refund_amount, $new_order_notes, $orderstatus_id, $order_id ) );
 			
+			if( $orderstatus_id == 16 ){
+				// Check for gift card to refund
+				$order_details = $this->db->get_results( $this->db->prepare( "SELECT is_giftcard, giftcard_id FROM ec_orderdetail WHERE order_id = %d", $order_id ) );
+				foreach( $order_details as $detail ){
+					if( $detail->is_giftcard ){
+						$this->db->query( $this->db->prepare( "DELETE FROM ec_giftcard WHERE ec_giftcard.giftcard_id = %s", $detail->giftcard_id ) );
+					}
+				}
+			}
+			
 			return array( "order_notes" => $new_order_notes, "orderstatus_id" => $orderstatus_id );
 			
 		}else{

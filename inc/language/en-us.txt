@@ -768,6 +768,10 @@
 					"title":"Cart, Invalid Coupon",
 					"value":"Not a valid coupon code"
 				},
+				"cart_max_exceeded_coupon":{
+					"title":"Cart, Max Coupon Use Exceeded",
+					"value":"Max uses exceeded"
+				},
 				"cart_invalid_giftcard":{
 					"title":"Cart, Invalid Gift Card",
 					"value":"Not a valid gift card number"
@@ -905,7 +909,7 @@
 				},
 				"cart_login_account_information_text2":{
 					"title":"Cart, Login Complete Text Part 2",
-					"value":" to checkout with a different account,"
+					"value":" to checkout with a different account."
 				},
 				"cart_login_account_information_logout_link":{
 					"title":"Cart, Login Complete, Logout Link",

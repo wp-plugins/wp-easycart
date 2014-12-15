@@ -768,6 +768,10 @@
 					"title":"Cart, Invalid Coupon",
 					"value":"\u0394\u03b5\u03bd \u03b5\u03af\u03bd\u03b1\u03b9 \u03ad\u03b3\u03ba\u03c5\u03c1\u03bf\u03c2 \u03bf \u03ba\u03c9\u03b4\u03b9\u03ba\u03cc\u03c2 \u03ba\u03bf\u03c5\u03c0\u03bf\u03bd\u03b9\u03bf\u03cd"
 				},
+				"cart_max_exceeded_coupon":{
+					"title":"Cart, Max Coupon Use Exceeded",
+					"value":"Χρήσεις υπερβεί το ανώτατο όριο"
+				},
 				"cart_invalid_giftcard":{
 					"title":"Cart, Invalid Gift Card",
 					"value":"\u0394\u03b5\u03bd \u03b5\u03af\u03bd\u03b1\u03b9 \u03ad\u03b3\u03ba\u03c5\u03c1\u03bf\u03c2 \u03bf \u03b1\u03c1\u03b9\u03b8\u03bc\u03cc\u03c2 \u03ba\u03ac\u03c1\u03c4\u03b1\u03c2 \u03b4\u03ce\u03c1\u03bf\u03c5"

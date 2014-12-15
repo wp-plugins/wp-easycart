@@ -408,7 +408,9 @@ class ec_db{
 				product.option_id_4,
 				product.option_id_5,
 				
-				product.views
+				product.views,
+				
+				AVG( ec_review.rating ) as review_average
 				
 				FROM ec_product as product 
 				
@@ -421,6 +423,8 @@ class ec_db{
 				LEFT JOIN ec_menulevel2 ON ( ec_menulevel2.menulevel2_id = product.menulevel1_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel2_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel3_id_2 )
 				
 				LEFT JOIN ec_menulevel3 ON ( ec_menulevel3.menulevel3_id = product.menulevel1_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel2_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel3_id_3 )
+				
+				LEFT JOIN ec_review ON ( ec_review.product_id = product.product_id AND ec_review.approved = 1 )
 				
 				";
 				
@@ -958,11 +962,11 @@ class ec_db{
 	}
 	
 	public function get_menulevel2_id( $menulevel2_id ){
-		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel2.menulevel2_id FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = %d", $menulevel1_id ) );
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel2.menulevel2_id FROM ec_menulevel2 WHERE ec_menulevel2.menulevel2_id = %d", $menulevel2_id ) );
 	}
 	
 	public function get_menulevel3_id( $menulevel3_id ){
-		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel3.menulevel3_id FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d", $menulevel1_id ) );
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT ec_menulevel3.menulevel3_id FROM ec_menulevel3 WHERE ec_menulevel3.menulevel3_id = %d", $menulevel3_id ) );
 	}
 	
 	public function get_menulevel1_id_from_menulevel2( $menulevel2_id ){
@@ -1295,7 +1299,7 @@ class ec_db{
 		$tempcart_optionitem = $this->mysqli->get_row( $this->mysqli->prepare( $tempcart_optionitem_sql, $session_id, $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5 ) );
 		//Get this tempcart total quantity
 		$tempcart = $this->mysqli->get_row( $this->mysqli->prepare( $tempcart_sql, $session_id, $product_id ) );
-		//
+		
 		$optionitem_quantity = $this->mysqli->get_row( $this->mysqli->prepare( $optionitem_sql, $product_id, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5 ) );
 		
 		if( $product->use_optionitem_quantity_tracking == 1 ){
@@ -1329,28 +1333,29 @@ class ec_db{
 		// IF    1. using option item quantity tracking
 		//       2. quantity + item in cart with same options quantity > amount available for this option
 		// THEN     use max for that option item set
-		}else if( $product->use_optionitem_quantity_tracking == 1 && isset( $tempcart_optionitem ) && $quantity + $tempcart_optionitem->quantity > $stock_quantity ){			
+		}else if( $product->use_optionitem_quantity_tracking == 1 && isset( $tempcart_optionitem ) && $quantity + $tempcart_optionitem->quantity > $stock_quantity ){
 			$quantity = $stock_quantity;
 		
 		// OPTION ITEM QUANTITY TRACKING AND AMOUNT ENTERED IS TOO MUCH
 		// IF    1. using option item quanitty tracking
 		//       2. item with theme options is not in the cart yet
 		// THEN     use the quantity entered by the user
-		}else if( $product->use_optionitem_quantity_tracking == 1 && $quantity > $optionitem_quantity ){
-			$quantity = $optionitem_quantity;
-			
-		// OPTION ITEM QUANTITY TRACKING AND NONE YET ADDED
-		// IF    1. using option item quanitty tracking
-		//       2. item with theme options is not in the cart yet
-		// THEN     use the quantity entered by the user
-		}else if( $product->use_optionitem_quantity_tracking == 1 && !$tempcart_optionitem ){
-			// USE THE QUANITTY ENTERED
+		}else if( $product->use_optionitem_quantity_tracking == 1 && $quantity > $stock_quantity ){
+			$quantity = $stock_quantity;
 		
+		
+		// OIQT + Valid Quantity -- Add the quantities up for updating the item
+		}else if( $product->use_optionitem_quantity_tracking == 1 && isset( $tempcart_optionitem )  ){
+			$quantity = $quantity + $tempcart_optionitem->quantity;
+		
+		// OIQT + Valid quantity and none in cart, use value entered
+		}else if( $product->use_optionitem_quantity_tracking == 1 ){
+			
 		// BASIC QUANTITY TRACKING and THIS OPTION CHOICE IS IN CART and ENTERED QUANTITY + ALL QUANITY OF SAME PROD IDS MORE THAN QUANTITY IN STOCK
 		// IF    1. using general quantity tracking
 		//       2. quantity + the quantity of all items with same product id > amount available
 		// THEN     use the total in stock - the total in cart so far
-		}else if( isset( $product->show_stock_quantity ) && $tempcart_optionitem && $quantity + $tempcart->quantity > $stock_quantity ){			
+		}else if( isset( $product->show_stock_quantity ) && isset( $tempcart_optionitem ) && $quantity + $tempcart->quantity > $stock_quantity ){			
 			$quantity = $stock_quantity - $tempcart->quantity + $tempcart_optionitem->quantity;
 		
 		// BASIC QUANTITY TRACKING and THIS OPTION CHOICE IS NOT IN CART and ENTERED QUANTITY + ALL QUANITY OF SAME PROD IDS MORE THAN QUANTITY IN STOCK
@@ -1364,8 +1369,8 @@ class ec_db{
 		// IF    1. using general quantity tracking
 		//       2. quantity + the quantity of all items with same product id > amount available
 		// THEN     use the total in stock - the total in cart so far
-		}else if( isset( $product->show_stock_quantity ) && $tempcart_optionitem ){			
-			$quantity = $quantity + $tempcart_optionitem + $quantity;	
+		}else if( isset( $product->show_stock_quantity ) && isset( $tempcart_optionitem ) ){			
+			$quantity = $quantity + $tempcart_optionitem->quantity;	
 		
 		// BASIC QUANTITY TRACKING and THIS OPTION CHOICE IS NOT IN CART
 		// IF    1. using general quantity tracking
@@ -1747,7 +1752,15 @@ class ec_db{
 								)
 							);	
 									
-		return $this->mysqli->insert_id;
+		$order_id = $this->mysqli->insert_id;
+		
+		// If coupon used, update usage numbers
+		if( $coupon_code != "" ){
+			$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_promocode SET times_redeemed = times_redeemed + 1" ) );
+		}
+		
+		return $order_id;
+		
 	}
 	
 	public function update_order_status( $order_id, $orderstatus_id ){

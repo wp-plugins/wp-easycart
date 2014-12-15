@@ -247,9 +247,9 @@
 			){ ?>
     
     <div class="ec_cart_header">
-        <?php if( get_option( 'ec_option_allow_guest' ) ){ ?><input type="checkbox" name="ec_create_account_selector" id="ec_create_account_selector" value="create_account" onchange="ec_toggle_create_account( );" /> <?php }else{ ?><input type="hidden" name="ec_create_account_selector" id="ec_create_account_selector" value="create_account" /><?php }?><?php echo $GLOBALS['language']->get_text( 'cart_contact_information', 'cart_contact_information_create_account' ); ?>
+        <?php if( get_option( 'ec_option_allow_guest' ) && !$this->has_downloads ){ ?><input type="checkbox" name="ec_create_account_selector" id="ec_create_account_selector" value="create_account" onchange="ec_toggle_create_account( );" /> <?php }else{ ?><input type="hidden" name="ec_create_account_selector" id="ec_create_account_selector" value="create_account" /><?php }?><?php echo $GLOBALS['language']->get_text( 'cart_contact_information', 'cart_contact_information_create_account' ); ?>
     </div>
-    <?php if( get_option( 'ec_option_allow_guest' ) ){ ?><div id="ec_user_create_form"><?php }?>
+    <?php if( get_option( 'ec_option_allow_guest' ) && !$this->has_downloads ){ ?><div id="ec_user_create_form"><?php }?>
         <?php if( get_option( 'ec_option_use_contact_name' ) ){ ?>
         <div class="ec_cart_input_row">
             <label for="ec_contact_first_name"><?php echo $GLOBALS['language']->get_text( 'cart_contact_information', 'cart_contact_information_first_name' ); ?>*</label>
@@ -281,7 +281,7 @@
                 <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_passwords_do_not_match' ); ?>
             </div>
         </div>
-    <?php if( get_option( 'ec_option_allow_guest' ) ){ ?></div><?php }?>
+    <?php if( get_option( 'ec_option_allow_guest' ) && !$this->has_downloads ){ ?></div><?php }?>
     <?php } ?>
     <?php if( get_option( 'ec_option_user_order_notes' ) ){ ?>
     <div class="ec_cart_header">

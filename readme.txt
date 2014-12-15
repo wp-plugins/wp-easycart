@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.0.1
-Stable tag: 3.0.12
+Stable tag: 3.0.13
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,16 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.13 =
+* Fix - Add to cart with specific option combinations were not updating quantity correctly.
+* Fix - Updated link to categories from product details.
+* Fix - Last version security fix broke linkage to sub and sub sub menu items.
+* Fix - Best rating filter option was not functioning.
+* Fix - Using refund button in the admin or refunding via PayPal will remove any gift cards that were purchased, preventing unauthorized use after a refund.
+* Fix - Exporting an empty gateway log displayed warnings and has been corrected.
+* Fix - If downloads in your cart, you can no longer checkout as a guest.
+* Fix - If not on page 1 and switch the per page, the link was not resetting the page number.
+* Addition - Max coupon redemptions is available in the main plugin and will be added soon to the admin console.
 = 3.0.12 =
 * Fix - V2 next and previous pages were jumping around randomly. Only applies as a fix for V2.
 * Fix - Using advanced content with specifications but not description was not processing the content.

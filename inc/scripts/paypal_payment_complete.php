@@ -101,6 +101,15 @@ if( $verified ) {
 			
 		} else if( $_POST['payment_status'] == 'Refunded' ){ 
 			$mysqli->update_order_status( $order_id, "16" );
+			
+			// Check for gift card to refund
+			$order_details = $mysqli->get_results( $mysqli->prepare( "SELECT is_giftcard, giftcard_id FROM ec_orderdetail WHERE order_id = %d", $order_id ) );
+			foreach( $order_details as $detail ){
+				if( $detail->is_giftcard ){
+					$mysqli->query( $mysqli->prepare( "DELETE FROM ec_giftcard WHERE ec_giftcard.giftcard_id = %s", $detail->giftcard_id ) );
+				}
+			}
+			
 		} else {
 			$mysqli->update_order_status( $order_id, "8" );
 		}

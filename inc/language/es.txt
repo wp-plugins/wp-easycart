@@ -768,6 +768,10 @@
 					"title":"Cart, Invalid Coupon",
 					"value":"No es un código de descuento válido"
 				},
+				"cart_max_exceeded_coupon":{
+					"title":"Cart, Max Coupon Use Exceeded",
+					"value":"Max utiliza superó"
+				},
 				"cart_invalid_giftcard":{
 					"title":"Cart, Invalid Gift Card",
 					"value":"No es un número de tarjeta de regalo válido"

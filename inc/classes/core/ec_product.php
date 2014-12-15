@@ -1566,7 +1566,7 @@ class ec_product{
 		if( !get_option( 'ec_option_use_old_linking_style' ) && $post_id ){
 			return get_permalink( $post_id );
 		}else{
-			return $this->store_page . $this->permalink_divider . "category_id=" . $category_id;
+			return $this->store_page . $this->permalink_divider . "group_id=" . $category_id;
 		}
 		
 	}

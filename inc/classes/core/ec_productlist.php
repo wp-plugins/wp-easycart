@@ -100,6 +100,10 @@ class ec_productlist{
 		}
 		$pageURL .= "://";
 		$pageURL .= $_SERVER['HTTP_HOST'] . $uri_parts[0];
+		
+		if( isset( $_GET['page_id'] ) )
+			$pageURL .= "?page_id=" . get_the_ID( );
+		
 		return $pageURL;
 	}
 	

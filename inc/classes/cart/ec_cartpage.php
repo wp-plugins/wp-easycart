@@ -36,6 +36,8 @@ class ec_cartpage{
 	
 	public $subscription_advanced_options;		// Array
 	
+	public $has_downloads;						// BOOL
+	
 	public $store_page;							// VARCHAR
 	public $cart_page;							// VARCHAR
 	public $account_page;						// VARCHAR
@@ -205,6 +207,15 @@ class ec_cartpage{
 		while( isset( $_SESSION['ec_subscription_advanced_option' . $i] ) ){
 			$this->subscription_advanced_options[] = $_SESSION['ec_subscription_advanced_option' . $i];
 			$i++;
+		}
+		
+		// Check for downloads in cart
+		$this->has_downloads = false;
+		foreach( $this->cart->cart as $cart_item ){
+			if( $cart_item->is_download ){
+				$this->has_downloads = true;
+				break;
+			}
 		}
 		
 	}

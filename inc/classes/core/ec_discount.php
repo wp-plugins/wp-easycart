@@ -46,7 +46,7 @@ class ec_discount{
 	private function get_coupon_discount( ){
 		
 		$promocode_row = $this->mysqli->redeem_coupon_code( $this->coupon_code );
-		if( $promocode_row ){
+		if( $promocode_row && ( $promocode_row->max_redemptions == 999 || $promocode_row->times_redeemed < $promocode_row->max_redemptions ) ){
 			if( 
 				( $promocode_row->by_manufacturer_id && 	$this->has_manufacturer_match( $promocode_row->manufacturer_id ) 	) ||
 				( $promocode_row->by_product_id && 			$this->has_product_match( $promocode_row->product_id )				) || 
