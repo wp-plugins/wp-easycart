@@ -286,7 +286,16 @@ jQuery( '#ec_product_quickview_container_<?php echo $product->model_number; ?>' 
         	<div class="ec_product_quickview_container"><span class="ec_product_quickview"<?php if( !$use_quickview ){ echo " style='display:none;'"; } ?>><input type="button" onclick="ec_product_show_quick_view_link( '<?php echo $product->model_number; ?>' );" value="<?php echo $GLOBALS['language']->get_text( 'product_page', 'product_quick_view' ); ?>" /> </span></div>
         	<?php }?>
 			
-			<?php if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation ) ){ ?>
+			<?php if( get_option( 'ec_option_display_as_catalog' ) ){
+			// Show nothing
+			
+			}else if( $product->is_catalog_mode ){ ?>
+			<div class="ec_seasonal_mode"><?php echo $product->catalog_mode_phrase; ?></div>	
+
+			<?php }else if( $product->is_deconetwork ){ ?>
+			<div class="ec_product_quickview_content_add_to_cart"><a href="<?php echo $product->get_deconetwork_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_design_now' ); ?></a></div>
+			
+			<?php }else if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation ) ){ ?>
             <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_product_link( ); ?>" target="_self"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_select_options' ); ?></a></span></div>
             
             <?php }else if( $product->in_stock( ) && $product->is_subscription_item ){ ?>

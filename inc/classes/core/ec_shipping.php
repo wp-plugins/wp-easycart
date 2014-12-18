@@ -645,7 +645,13 @@ class ec_shipping{
 				}else{
 				
 					// Find lowest
-					$subrate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
+					if( $this->live_based[$i][4] != NULL )
+						$subrate = $this->live_based[$i][4];
+					else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
+						$subrate = 0;
+					else
+						$subrate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
+					
 					if( $subrate != "ERROR" && floatval( $subrate ) < $lowest ){
 						$lowest = floatval( $subrate );
 						$lowest_ship_method = $this->live_based[$i][2];
@@ -657,7 +663,8 @@ class ec_shipping{
 			
 			if( $rate == "ERROR" && $lowest_ship_method != "ERROR" ){
 				$rate = $lowest;
-				$_SESSION['ec_shipping_method'] = $lowest_ship_method;
+				if( isset( $this->destination_zip ) )
+					$_SESSION['ec_shipping_method'] = $lowest_ship_method;
 			}
 			
 		}else if( $this->shipping_method == "fraktjakt" ){

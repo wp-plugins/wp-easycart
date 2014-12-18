@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
-Tested up to: 4.0.1
-Stable tag: 3.0.13
+Tested up to: 4.1
+Stable tag: 3.0.14
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.14 =
+* Fix - Shipping estimate with rates that require a zone were not available and blocked.
+* Fix - Display Type List Type 6 was showing add to cart button even when it shouldn't.
+* Fix - When multiple store or cart shortcodes were on a single page, the live editor would not work properly.
+* Fix - Base theme fixed to work correctly with the new WordPress included theme.
+*** Tested with new version 4.1 of WordPress
 = 3.0.13 =
 * Fix - Add to cart with specific option combinations were not updating quantity correctly.
 * Fix - Updated link to categories from product details.

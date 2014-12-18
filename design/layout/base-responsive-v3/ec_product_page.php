@@ -202,7 +202,11 @@ if( $is_preview_holder && $is_admin ){ ?>
 	</div>
 </div>
 
-<?php }else if( $admin_access && !$safari && !$is_preview ){ ?>
+<?php }else if( $admin_access && !$safari && !$is_preview && !isset( $GLOBALS['ec_live_editor_loaded'] ) ){ 
+
+$GLOBALS['ec_live_editor_loaded'] = true;
+
+?>
 
 <div class="ec_admin_video_container" id="ec_admin_video_container"<?php if( !$show_video ){ ?> style="display:none;"<?php }?>>
 	<div class="ec_admin_video_content">
