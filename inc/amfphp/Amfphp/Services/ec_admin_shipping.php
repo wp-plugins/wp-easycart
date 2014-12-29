@@ -1124,9 +1124,9 @@ class ec_admin_shipping{
 		
 		$rate = (array)$rate;
 		
-		$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id,  ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order,  ec_shippingrate.is_method_based, ec_shippingrate.zone_id)
-		values('".$keyfield."', %s, %s, %s, 1, %s)";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $rate['shippingrate'],$rate['shippinglabel'], $rate['shippingorder'], $rate['zoneid'] ));
+		$sql = "Replace into ec_shippingrate(ec_shippingrate.shippingrate_id,  ec_shippingrate.shipping_rate, ec_shippingrate.free_shipping_at, ec_shippingrate.shipping_label,  ec_shippingrate.shipping_order,  ec_shippingrate.is_method_based, ec_shippingrate.zone_id)
+		values('".$keyfield."', %s, %s, %s, %s, 1, %s)";
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $rate['shippingrate'], $rate['free_shipping_at'], $rate['shippinglabel'], $rate['shippingorder'], $rate['zoneid'] ));
 		
 		if( $rows_affected ){
 			return array( "success" );
@@ -1140,9 +1140,9 @@ class ec_admin_shipping{
 		
 		$rate = (array)$rate;
 		
-		$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id,  ec_shippingrate.shipping_rate, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order,  ec_shippingrate.is_method_based, ec_shippingrate.zone_id)
-		values(null, %s, %s, %s, 1, %s)";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $rate['shippingrate'],$rate['shippinglabel'], $rate['shippingorder'], $rate['zoneid'] ));
+		$sql = "INSERT INTO ec_shippingrate(ec_shippingrate.shippingrate_id,  ec_shippingrate.shipping_rate,  ec_shippingrate.free_shipping_at, ec_shippingrate.shipping_label, ec_shippingrate.shipping_order,  ec_shippingrate.is_method_based, ec_shippingrate.zone_id)
+		values(null, %s, %s, %s, %s, 1, %s)";
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $rate['shippingrate'], $rate['free_shipping_at'],$rate['shippinglabel'], $rate['shippingorder'], $rate['zoneid'] ));
 		
 		if( $rows_affected ){
 			return array( "success" );
