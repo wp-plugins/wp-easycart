@@ -9,7 +9,7 @@
         
         <div class="ec_cart_input_row">
             <label for="ec_cart_login_email"><?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_email_label' ); ?>*</label>
-            <input type="email" id="ec_cart_login_email" name="ec_cart_login_email" />
+            <input type="email" id="ec_cart_login_email" name="ec_cart_login_email" novalidate />
         </div>
         <div class="ec_cart_error_row" id="ec_cart_login_email_error">
             <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_please_enter_your' ); ?> <?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_email_label' ); ?>

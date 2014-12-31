@@ -411,6 +411,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_input"><select name="ec_option_use_contact_name" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_contact_name') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_contact_name') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Enable Estimate Shipping</em>If enabled, your customer will see an estimate shipping area during the checkout process.</span></a></span>
+    <span class="ec_setting_row_label">Enable Estimate Shipping:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_use_estimate_shipping" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_estimate_shipping') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_estimate_shipping') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Account Page Display Options</div></div>

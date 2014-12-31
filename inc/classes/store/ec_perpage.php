@@ -63,7 +63,7 @@ class ec_perpage{
 		
 		$page_url .= "://";
 		
-		if( $_SERVER["SERVER_PORT"] != "80") {
+		if( $_SERVER["SERVER_PORT"] != "80" && $_SERVER["SERVER_PORT"] != "443" ) {
 			$page_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
 		
 		}else{

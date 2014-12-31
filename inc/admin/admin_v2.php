@@ -34,6 +34,8 @@ $ec_license = new ec_license( );
 			include( "assets/elements/popup.php" );
 			if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "statistics" ){
 				include( "assets/panels/dashboard_statistics.php" );
+			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "inventory-status" ){
+				include( "assets/panels/dashboard_inventory.php" );
 			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "store-status" ){
 				include( "assets/panels/dashboard_status.php" );
 			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "backup-store" ){

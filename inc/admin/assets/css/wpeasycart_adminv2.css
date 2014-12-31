@@ -421,7 +421,28 @@
 	padding:15px;
 }
 
+/**************************************
+/* STORE INVENTORY STATUS
+/**************************************/
+.ec_inventory_status_section {
+	float:inherit;
+	width: 875px;
+	border: 1px solid #CCC;	
+	margin-bottom: 20px;
+	margin-top: 5px;
+}
+.ec_inventory_export_row{ width:100%; float:left; padding:4px 10px; }
+.ec_inventory_status_table{ width:100%; float:left; margin-top:25px; }
+.ec_inventory_status_table thead tr {
+   border: 1px solid black;
+   font-weight:bold; font-size:16px; color:#333;
+}
 
+.ec_inventory_status_table td{ padding:4px 7px; }
+.ec_inventory_status_table tbody td{ border-bottom:1px solid #CCC; }
+.ec_inventory_status_table tbody .inventory_fine{ background-color:#CDF2BE; }
+.ec_inventory_status_table tbody .inventory_low{ background-color:#F2C58A; }
+.ec_inventory_status_table tbody .out_of_stock{ background-color:#F28A8A; }
 
 /**************************************
 /* STORE STATUS button sections

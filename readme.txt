@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 3.0.14
+Stable tag: 3.0.15
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.15 =
+* New Option - Enable/Disable the estimate shipping box on the checkout page.
+* New Feature - In the EasyCart Admin -> Dashboard there is a new option, Inventory Status, which allows you to view a quick overview of your products and their inventory remaining.
+* New Feature - In the EasyCart Admin -> Dashboard there is a new option, Inventory Status, you can download the list of items and quantity to a CVS file for use outside of the EasyCart system.
+* Fix - Cloudfire hosting caused the auto forwarding PayPal form to break by adding custom code to the form and a fix has been inserted.
+* Fix - Static shipping methods could not be added in the admin.
+* Fix - Products that are disabled from the store should no longer show up in the global search. Users who need this feature will need to edit and save the products that are visible when they shouldn't be to correct the issue.
 = 3.0.14 =
 * Fix - Shipping estimate with rates that require a zone were not available and blocked.
 * Fix - Display Type List Type 6 was showing add to cart button even when it shouldn't.

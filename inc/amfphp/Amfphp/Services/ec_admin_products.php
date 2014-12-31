@@ -405,8 +405,12 @@ class ec_admin_products{
 			// Insert a WordPress Custom post type post.
 			$sql = "SELECT ec_product.title FROM ec_product WHERE ec_product.model_number = %s";
 			$product = $this->db->get_row( $this->db->prepare( $sql, $randmodel ) );
+			if( $product->listproduct )
+				$status = "publish";
+			else
+				$status = "private";
 			$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $randmodel . "\"]",
-							'post_status'	=> "publish",
+							'post_status'	=> $status,
 							'post_title'	=> $GLOBALS['language']->convert_text( $product->title ),
 							'post_type'		=> "ec_store"
 						  );
@@ -471,9 +475,13 @@ class ec_admin_products{
 		// Update the WordPress Entry
 		$sql = "SELECT ec_product.post_id FROM ec_product WHERE ec_product.product_id = %d";
 		$this_post_id = $this->db->get_var( $this->db->prepare( $sql, $productid ) );
+		if( $product->listproduct )
+			$status = "publish";
+		else
+			$status = "private";
 		$post = array(	'ID'			=> $this_post_id,
 						'post_content'	=> "[ec_store modelnumber=\"" . $product->modelnumber . "\"]",
-						'post_status'	=> "publish",
+						'post_status'	=> $status,
 						'post_title'	=> $GLOBALS['language']->convert_text( $product->producttitle ),
 						'post_type'		=> "ec_store",
 						'post_name'		=> str_replace(' ', '-', $GLOBALS['language']->convert_text( $product->producttitle ) ),
@@ -611,8 +619,12 @@ class ec_admin_products{
 		}
 		
 		// Insert a WordPress Custom post type post.
+		if( $product->listproduct )
+			$status = "publish";
+		else
+			$status = "private";
 		$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $product->modelnumber . "\"]",
-					'post_status'	=> "publish",
+					'post_status'	=> $status,
 					'post_title'	=> $GLOBALS['language']->convert_text( $product->producttitle ),
 					'post_type'		=> "ec_store"
 				  );

@@ -272,6 +272,9 @@ class ec_ups{
 	
 	public function validate_address( $destination_city, $destination_state, $destination_zip, $destination_country ){
 		
+		// For now, limit errors
+		return true;
+		
 		// This service is limited to the US by EasyCart to prevent common issues.
 		if( $this->ups_country_code != "US" || $destination_country != "US" )
 			return true;

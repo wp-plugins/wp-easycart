@@ -200,22 +200,24 @@ if( $this->should_display_cart( ) ){
         </div>
         <?php }?>
         
-        <?php if( get_option( 'ec_option_use_shipping' ) && $this->cart->shipping_subtotal > 0 ){ ?>
-        <div class="ec_cart_header">
-        	<?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_button' )?>
-        </div>
-        <?php if( get_option( 'ec_option_estimate_shipping_country' ) ){ ?>
-        <div class="ec_cart_input_row">
-        	<?php $this->display_estimate_shipping_country_select( ); ?>
-        </div>
-        <?php }?>
-        <div class="ec_cart_input_row">
-            <input type="text" name="ec_estimate_zip" id="ec_estimate_zip" value="<?php if( isset( $_SESSION['ec_temp_zipcode'] ) ){ echo $_SESSION['ec_temp_zipcode']; } ?>" placeholder="<?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_hint' )?>" />
-        </div>
-        <div class="ec_cart_button_row">
-        	<div class="ec_cart_button" id="ec_estimate_shipping" onclick="ec_estimate_shipping( );"><?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_button' ); ?></div>
-            <div class="ec_cart_button_working" id="ec_estimating_shipping"><?php echo $GLOBALS['language']->get_text( 'cart', 'cart_please_wait' )?></div>
-        </div>
+        <?php if( get_option( 'ec_option_use_estimate_shipping' ) ){ ?>
+        	<?php if( get_option( 'ec_option_use_shipping' ) && $this->cart->shipping_subtotal > 0 ){ ?>
+        	<div class="ec_cart_header">
+        		<?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_button' )?>
+        	</div>
+			<?php if( get_option( 'ec_option_estimate_shipping_country' ) ){ ?>
+            <div class="ec_cart_input_row">
+                <?php $this->display_estimate_shipping_country_select( ); ?>
+            </div>
+            <?php }?>
+            <div class="ec_cart_input_row">
+                <input type="text" name="ec_estimate_zip" id="ec_estimate_zip" value="<?php if( isset( $_SESSION['ec_temp_zipcode'] ) ){ echo $_SESSION['ec_temp_zipcode']; } ?>" placeholder="<?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_hint' )?>" />
+            </div>
+            <div class="ec_cart_button_row">
+                <div class="ec_cart_button" id="ec_estimate_shipping" onclick="ec_estimate_shipping( );"><?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_button' ); ?></div>
+                <div class="ec_cart_button_working" id="ec_estimating_shipping"><?php echo $GLOBALS['language']->get_text( 'cart', 'cart_please_wait' )?></div>
+            </div>
+        	<?php }?>
         <?php }?>
         
     </div>
