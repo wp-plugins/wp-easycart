@@ -10,7 +10,13 @@ foreach( $users as $user ){
 }
 $reqid = $admin_password_hash;
 
-
+//get store startup page from url variable
+if(isset($_GET["ec_admin_panel"])){
+   $startpage = $_GET["ec_admin_panel"];
+}
+else{
+   $startpage = '';
+}
 
 //get the site url without http:// https:// or www.
 if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
@@ -60,7 +66,7 @@ jQuery( document ).bind( 'keydown', function( e ){
 <table align="left" width="95%" border="0" cellspacing="0" cellpadding="0">
     <tr id="ec_wordpress_content">
 
-      <td width="100%" colspan="2" align="center"><?php wp_easycart_load_admin( $domain, $userlogin, $reqid, $is_secure ); ?></td>
+      <td width="100%" colspan="2" align="center"><?php wp_easycart_load_admin( $domain, $userlogin, $reqid, $is_secure, $startpage ); ?></td>
      
       <td height="10" colspan="2"></td>
     </tr>
