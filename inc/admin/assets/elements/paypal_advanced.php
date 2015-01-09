@@ -16,7 +16,7 @@
                         <option value="BRL" <?php if (get_option('ec_option_paypal_advanced_currency') == 'BRL') echo ' selected'; ?>>Brazilian Real</option>
                         <option value="CAD" <?php if (get_option('ec_option_paypal_advanced_currency') == 'CAD') echo ' selected'; ?>>Canadian Dollar</option>
                         <option value="CZK" <?php if (get_option('ec_option_paypal_advanced_currency') == 'CZK') echo ' selected'; ?>>Czech Koruna</option>
-                        <option value="CZK" <?php if (get_option('ec_option_paypal_advanced_currency') == 'CZK') echo ' selected'; ?>>Danish Krone</option>
+                        <option value="CZK" <?php if (get_option('ec_option_paypal_advanced_currency') == 'DKK') echo ' selected'; ?>>Danish Krone</option>
                         <option value="EUR" <?php if (get_option('ec_option_paypal_advanced_currency') == 'EUR') echo ' selected'; ?>>Euro</option>
                         <option value="HKD" <?php if (get_option('ec_option_paypal_advanced_currency') == 'HKD') echo ' selected'; ?>>Hong Kong Dollar</option>
                         <option value="HUF" <?php if (get_option('ec_option_paypal_advanced_currency') == 'HUF') echo ' selected'; ?>>Hungarian Forint</option>
