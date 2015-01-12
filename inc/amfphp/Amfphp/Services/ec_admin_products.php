@@ -54,6 +54,7 @@ class ec_admin_products{
 		else if($methodName == 'deleteoptionitemimage') return array('admin');
 		else if($methodName == 'deletefiledownload') return array('admin');
 		else if($methodName == 'getawsfiles') return array('admin');
+		else if($methodName == 'listproduct') return array('admin');
 		else  return null;
 	}
 	
@@ -717,6 +718,20 @@ class ec_admin_products{
 			
 		}else{
 			return array( "noresults" );
+		}
+		
+	}
+	
+	function listproduct($productid, $is_listed ){
+				
+		$sql = "UPDATE ec_product SET activate_in_store = %s WHERE product_id = %d";
+		
+		$success = $this->db->get_results( $this->db->prepare( $sql, $is_listed, $productid ) );
+		
+		if( $success === FALSE ){
+			return array( "error" );
+		}else{
+			return array( "success" );
 		}
 		
 	}
