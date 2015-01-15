@@ -54,6 +54,8 @@ $ec_license = new ec_license( );
 				include( "assets/panels/advanced_language.php" );
 			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" ){
 				include( "assets/panels/advanced_setup.php" );
+			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "google-merchant" ){
+				include( "assets/panels/google_merchant.php" );
 			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" ){
 				include( "assets/panels/design_management.php" );
 			}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "simple-admin" ){

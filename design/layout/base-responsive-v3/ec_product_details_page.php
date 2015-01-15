@@ -721,7 +721,7 @@ function ec_admin_save_product_details_options( ){
                 
                 <?php /* PRICING AREA FOR OPTIONS */ ?>
 				<?php if( $this->product->has_options || $this->product->use_advanced_optionset ){ ?>
-                <div class="ec_details_final_price">Your Price: <?php echo $GLOBALS['currency']->get_symbol( ); ?><span id="ec_final_price"><?php if( $override_price_grid > -1 ){ echo $GLOBALS['currency']->get_number_only( $override_price_grid ); }else{ echo $GLOBALS['currency']->get_number_only( $this->product->price ); } ?></span><span class="ec_details_hidden_base_price" id="ec_base_price"><?php echo $GLOBALS['currency']->get_number_only( $this->product->price ); ?></span></div>
+                <div class="ec_details_final_price">Your Price: <?php echo $GLOBALS['currency']->get_symbol( ); ?><span id="ec_final_price"><?php if( $override_price_grid > -1 ){ echo $GLOBALS['currency']->get_number_only( $override_price_grid ); }else{ echo $GLOBALS['currency']->get_number_only( $this->product->price ); } ?></span><span class="ec_details_hidden_base_price" id="ec_base_price"><?php echo $this->product->price; ?></span></div>
 				<?php } ?>
                 
                 <?php /* OUT OF STOCK INFO (NO ADD TO CART CASE) */ ?>
@@ -1837,6 +1837,9 @@ function ec_details_advanced_adjust_price( ){
 }
 
 function ec_details_format_money( price, num_decimals, grouping_symbol, decimal_symbol ){
+	var num_decimals = <?php echo $GLOBALS['currency']->decimal_length; ?>;
+	var decimal_symbol = '<?php echo $GLOBALS['currency']->decimal_symbol; ?>';
+	var grouping_symbol = '<?php echo $GLOBALS['currency']->grouping_symbol; ?>';
     var n = price,
         num_decimals = isNaN(num_decimals = Math.abs(num_decimals)) ? 2 : num_decimals,
         decimal_symbol = decimal_symbol == undefined ? "." : decimal_symbol,

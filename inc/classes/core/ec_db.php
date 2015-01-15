@@ -1756,7 +1756,7 @@ class ec_db{
 		
 		// If coupon used, update usage numbers
 		if( $coupon_code != "" ){
-			$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_promocode SET times_redeemed = times_redeemed + 1" ) );
+			$this->mysqli->query( "UPDATE ec_promocode SET times_redeemed = times_redeemed + 1" );
 		}
 		
 		return $order_id;
@@ -3514,7 +3514,7 @@ class ec_db{
 	}
 	
 	public function get_live_search_options( $search_val ){
-		$sql = "SELECT ec_product.title FROM ec_product WHERE ec_product.title LIKE %s OR ec_product.model_number";
+		$sql = "SELECT ec_product.title FROM ec_product WHERE ( ec_product.title LIKE %s OR ec_product.model_number ) AND ec_product.activate_in_store = 1";
 		$products = $this->mysqli->get_results( $this->mysqli->prepare( $sql, '%' . $search_val . '%', '%' . $search_val . '%' ) );
 		
 		$sql = "SELECT ec_category.category_name as title FROM ec_category WHERE ec_category.category_name LIKE %s";

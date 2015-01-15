@@ -210,9 +210,10 @@ class ec_db_admin extends ec_db{
 			ON ec_customfield.table_name = 'ec_order'
 			
 			LEFT JOIN ec_customfielddata
-			ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id, 
+			ON ec_customfielddata.customfield_id = ec_customfield.customfield_id AND ec_customfielddata.table_id = ec_order.order_id
 			
-			ec_user
+			LEFT JOIN ec_user
+			ON ec_user.user_id = ec_order.user_id
 			
 			WHERE ec_order.order_id = %d
 			

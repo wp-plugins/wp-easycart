@@ -47,6 +47,14 @@ function ec_install_admin_notice() {
     <?php	
 	}
 	
+	if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.10" ){
+		?>
+        <div class="error">
+        	<p>The latest WP EasyCart Store Admin version is 3.0.10, please update for best results!</p>
+   		</div>
+        <?php
+	}
+	
 	if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){ ?>
 	
     <div class="error">
@@ -322,7 +330,129 @@ function ec_custom_downloads( ){
 		
 		die( );
 		
-	} // Close if/else to decide which action to take
+	}else if( current_user_can( 'manage_options' ) && isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && isset( $_GET['ec_action'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "google-merchant" && $_GET['ec_action'] == "download-feed" ){
+		//Download XML Feed
+		global $wpdb;
+		$products = $wpdb->get_results( "SELECT ec_product.product_id, ec_product.model_number, ec_product.title, ec_product.description, ec_product.price, ec_product.list_price, ec_product.weight, ec_product.post_id, ec_product.image1, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_manufacturer.name as manufacturer_name FROM ec_product LEFT JOIN ec_manufacturer ON ec_manufacturer.manufacturer_id = ec_product.manufacturer_id WHERE ec_product.activate_in_store = 1 ORDER BY ec_product.title ASC" );
+		
+			
+		$file_contents =  "<?xml version=\"1.0\"?>\r\n";
+		$file_contents .=  "<rss version=\"2.0\" xmlns:g=\"http://base.google.com/ns/1.0\">\r\n";
+			$file_contents .=  "<channel>\r\n";
+				$file_contents .=  "<title>WP EasyCart Data Feed</title>\r\n";
+				$file_contents .=  "<link>http://www.wpeasycartdev2.com</link>\r\n";
+				$file_contents .=  "<description>A description of your content</description>\r\n";
+				foreach( $products as $product ){
+					
+					// Get Product Link
+					if( !get_option( 'ec_option_use_old_linking_style' ) && $product->post_id != "0" ){
+						$link = get_permalink( $product->post_id );
+					}else{
+						$storepageid = get_option( 'ec_option_storepage' );
+						if( function_exists( 'icl_object_id' ) ){
+							$storepageid = icl_object_id( $storepageid, 'page', true, ICL_LANGUAGE_CODE );
+						}
+						
+						$store_page = get_permalink( $storepageid );
+						
+						if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+							$https_class = new WordPressHTTPS( );
+							$store_page = $https_class->makeUrlHttps( $store_page );
+						}
+						
+						if( substr_count( $store_page, '?' ) )						
+							$permalink_divider = "&";
+						else																
+							$permalink_divider = "?";
+						
+						$link = $store_page . $permalink_divider . "model_number=" . $product->model_number;
+					}
+					
+					// Get Image Link
+					$test_src = ABSPATH . "wp-content/plugins/wp-easycart-data/products/pics1/" . $product->image1;
+					$test_src2 = ABSPATH . "wp-content/plugins/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg";
+					
+					if( file_exists( $test_src ) && !is_dir( $test_src ) ){
+						$image_link = plugins_url( "/wp-easycart-data/products/pics1/" . $product->image1 );
+					}else if( file_exists( $test_src2 ) ){
+						$image_link = plugins_url( "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/images/ec_image_not_found.jpg" );
+					}else{
+						$image_link = plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/ec_image_not_found.jpg" );
+					}
+					
+					// Get Attributes
+					$attributes_result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ec_product_google_attributes WHERE ec_product_google_attributes.product_id = %d", $product->product_id ) );
+					
+					$attributes = json_decode( $attributes_result->attribute_value, true );
+					
+					// Check the product has required attributes
+					$is_valid = true;
+					if( $attributes['gtin'] == "" && $attributes['mpn'] == "" ){
+						$is_valid = false;
+					}
+					
+					if( $attributes['condition'] == "" ){
+						$is_valid = false;
+					}
+					
+					if( $is_valid ){
+					
+				$file_contents .=  "<item>\r\n";
+					$file_contents .=  "<g:id>" . htmlspecialchars( $product->model_number ) . "</g:id>\r\n";
+					$file_contents .=  "<g:title>" . htmlspecialchars( $product->title ) . "</g:title>\r\n";
+					$file_contents .=  "<g:description>" . htmlspecialchars( $product->description ) . "</g:description>\r\n";
+					$file_contents .=  "<g:link>" . htmlspecialchars( $link ) . "</g:link>\r\n";
+					$file_contents .=  "<g:image_link>" . htmlspecialchars( $image_link ) . "</g:image_link>\r\n";
+					if( $product->stock_quantity > 0 ){
+						$file_contents .=  "<g:availability>in stock</g:availability>\r\n";
+					}else{
+						$file_contents .=  "<g:availability>out of stock</g:availability>\r\n";
+					}
+					if( $product->list_price > 0 ){
+						$file_contents .=  "<g:price currency=\"" . get_option( 'ec_option_base_currency' ). "\">" . number_format( $product->list_price, 2, '.', '' ) . "</g:price>\r\n";
+						$file_contents .=  "<g:sale_price currency=\"" . get_option( 'ec_option_base_currency' ). "\">" . number_format( $product->price, 2, '.', '' ) . "</g:sale_price>\r\n";
+					}else{
+						$file_contents .=  "<g:price currency=\"" . get_option( 'ec_option_base_currency' ). "\">" . number_format( $product->price, 2, '.', '' ) . "</g:price>\r\n";
+					}
+					$file_contents .=  "<g:brand>" . htmlspecialchars( $product->manufacturer_name ) . "</g:brand>\r\n";
+					
+					foreach( $attributes as $key => $value ){
+						if( $key == "weight_type" ){
+							$file_contents .=  "<g:shipping_weight>".$product->weight . " " . $value ."</g:shipping_weight>\r\n";
+						}else if( $value != "" && $value != "None Selected" ){
+							$file_contents .=  "<g:".$key.">".htmlspecialchars( $value )."</g:".$key.">\r\n";
+						}
+					}
+					
+				$file_contents .=  "</item>\r\n";
+					}// Close check is valid
+				
+				}// Close foreach loop
+			
+			$file_contents .=  "</channel>\r\n";
+		$file_contents .=  "</rss>\r\n";
+		
+		$xml_shortname = "Google_Merchant_Feed_" . date( 'Y_m_d' ) . ".xml";
+		$xmlname = WP_PLUGIN_DIR . "/wp-easycart-data/" . $xml_shortname;
+		
+		file_put_contents( $xmlname, $file_contents );
+		
+		header( "Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header( "Content-type: text/xml");
+		header( 'Content-Disposition: attachment; filename=' . $xml_shortname );
+		header( 'Content-Length: ' . ( string )( filesize( $xmlname ) ) );
+		header( "Content-Transfer-Encoding: binary" );
+		header( 'Expires: 0');
+		header( 'Cache-Control: private');
+		header( 'Pragma: private');
+		
+		readfile( $xmlname );
+		unlink( $xmlname );
+		
+		// Stop the page execution so that it doesn't print HTML to the file accidently
+		die();
+		
+	}// Close if/else to decide which action to take
 	
 }
 
@@ -392,7 +522,7 @@ function ec_databasedump( ){
 	
 	if( !empty( $results ) ){
 		foreach( $results as $row ){
-			if( substr( $row[0], 0, 3 ) == "ec_" ){
+			if( substr( $row[0], 0, 3 ) == "ec_" || substr( $row[0], 0, 11 ) == "quickbooks_" ){
 				$return_string .= ec_databasedump_table_data( $row[0] );
 			}
 		}

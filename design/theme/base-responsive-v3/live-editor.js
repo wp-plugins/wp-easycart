@@ -395,72 +395,76 @@ function ec_admin_save_order( ids, post_id ){
 
 function ec_admin_resizer_function( ){
 	
-	var window_width = jQuery( '#ec_current_media_size' ).css( "max-width" ).replace( "px", "" );
+	if( jQuery( '#ec_current_media_size' ).length ){
 	
-	// Image Heights
-	var new_height = jQuery( '#ec_page_options_image_height_desktop' ).val( );
-	
-	if( window_width > 1139 ){
-		new_height = jQuery( '#ec_page_options_image_height_desktop' ).val( );
-	}else if( window_width > 989 ){
-		new_height = jQuery( '#ec_page_options_image_height_laptop' ).val( );
-	}else if( window_width > 767 ){
-		new_height = jQuery( '#ec_page_options_image_height_tablet_wide' ).val( );
-	}else if( window_width > 480 ){
-		new_height = jQuery( '#ec_page_options_image_height_tablet' ).val( );
-	}else{
-		new_height = jQuery( '#ec_page_options_image_height_smartphone' ).val( );
-	}
-	
-	// Column Widths
-	var columns = jQuery( '#ec_page_options_columns_desktop' ).val( );
-	if( window_width > 1140 ){
-		columns = jQuery( '#ec_page_options_columns_desktop' ).val( );
-	}else if( window_width > 990 ){
-		columns = jQuery( '#ec_page_options_columns_laptop' ).val( );
-	}else if( window_width > 768 ){
-		columns = jQuery( '#ec_page_options_columns_tablet_wide' ).val( );
-	}else if( window_width > 481 ){
-		columns = jQuery( '#ec_page_options_columns_tablet' ).val( );
-	}else{
-		columns = jQuery( '#ec_page_options_columns_smartphone' ).val( );
-	}
-	
-	var column_width = (100/columns) + '%';
-	
-	// Update Classes
-	jQuery( '.ec_image_container_none, .ec_image_container_border, .ec_image_container_shadow, .ec_image_container_none > div, .ec_image_container_border > div, .ec_image_container_shadow > div' ).css( 'min-height', new_height + 'px' ).css( 'height', new_height + 'px' );
-	jQuery( '.ec_product_li' ).css( 'width', column_width );
-	
-	// Update nth children...
-	var product_list = jQuery( '.ec_product_li' );
-	var count = 0;
-	
-	product_list.each( function( index ){
+		var window_width = jQuery( '#ec_current_media_size' ).css( "max-width" ).replace( "px", "" );
 		
-		if( jQuery( this ).hasClass( 'hidden' ) ){
-			// Let's skip hidden elements.
-			jQuery( this ).removeClass( 'first' );
-			jQuery( this ).removeClass( 'not_first' );
-			jQuery( this ).addClass( 'not_first' );
+		// Image Heights
+		var new_height = jQuery( '#ec_page_options_image_height_desktop' ).val( );
+		
+		if( window_width > 1139 ){
+			new_height = jQuery( '#ec_page_options_image_height_desktop' ).val( );
+		}else if( window_width > 989 ){
+			new_height = jQuery( '#ec_page_options_image_height_laptop' ).val( );
+		}else if( window_width > 767 ){
+			new_height = jQuery( '#ec_page_options_image_height_tablet_wide' ).val( );
+		}else if( window_width > 480 ){
+			new_height = jQuery( '#ec_page_options_image_height_tablet' ).val( );
 		}else{
-			jQuery( this ).removeClass( 'hidden' );
-			jQuery( this ).removeClass( 'first' );
-			jQuery( this ).removeClass( 'not_first' );
-			
-			if( count % columns == 0 ){
-				jQuery( this ).addClass( 'first' );
-			}else{
-				jQuery( this ).addClass( 'not_first' );
-			}
-			
-			count++;
-			
+			new_height = jQuery( '#ec_page_options_image_height_smartphone' ).val( );
 		}
 		
-	} );
+		// Column Widths
+		var columns = jQuery( '#ec_page_options_columns_desktop' ).val( );
+		if( window_width > 1140 ){
+			columns = jQuery( '#ec_page_options_columns_desktop' ).val( );
+		}else if( window_width > 990 ){
+			columns = jQuery( '#ec_page_options_columns_laptop' ).val( );
+		}else if( window_width > 768 ){
+			columns = jQuery( '#ec_page_options_columns_tablet_wide' ).val( );
+		}else if( window_width > 481 ){
+			columns = jQuery( '#ec_page_options_columns_tablet' ).val( );
+		}else{
+			columns = jQuery( '#ec_page_options_columns_smartphone' ).val( );
+		}
+		
+		var column_width = (100/columns) + '%';
+		
+		// Update Classes
+		jQuery( '.ec_image_container_none, .ec_image_container_border, .ec_image_container_shadow, .ec_image_container_none > div, .ec_image_container_border > div, .ec_image_container_shadow > div' ).css( 'min-height', new_height + 'px' ).css( 'height', new_height + 'px' );
+		jQuery( '.ec_product_li' ).css( 'width', column_width );
+		
+		// Update nth children...
+		var product_list = jQuery( '.ec_product_li' );
+		var count = 0;
+		
+		product_list.each( function( index ){
+			
+			if( jQuery( this ).hasClass( 'hidden' ) ){
+				// Let's skip hidden elements.
+				jQuery( this ).removeClass( 'first' );
+				jQuery( this ).removeClass( 'not_first' );
+				jQuery( this ).addClass( 'not_first' );
+			}else{
+				jQuery( this ).removeClass( 'hidden' );
+				jQuery( this ).removeClass( 'first' );
+				jQuery( this ).removeClass( 'not_first' );
+				
+				if( count % columns == 0 ){
+					jQuery( this ).addClass( 'first' );
+				}else{
+					jQuery( this ).addClass( 'not_first' );
+				}
+				
+				count++;
+				
+			}
+			
+		} );
+		
+		jQuery( '#ec_products_sortable' ).css( 'width', ( columns * 220 ) + 'px' );
 	
-	jQuery( '#ec_products_sortable' ).css( 'width', ( columns * 220 ) + 'px' );
+	}
 	
 }
 

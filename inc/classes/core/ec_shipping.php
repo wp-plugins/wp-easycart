@@ -416,8 +416,7 @@ class ec_shipping{
 			
 			if( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] )
 				$ret_string .= " checked=\"checked\"";
-			else if( !isset( $_SESSION['ec_shipping_method'] ) ){
-				$_SESSION['ec_shipping_method'] = $this->live_based[$i][2];
+			else if( !isset( $_SESSION['ec_shipping_method'] ) && $i == 0 ){
 				$ret_string .= " checked=\"checked\"";
 			}
 			

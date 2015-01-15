@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.15
+ * Version: 3.0.16
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.15
+ * @version 3.0.16
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_15' );
-define( 'EC_CURRENT_DB', '1_27' );
+define( 'EC_CURRENT_VERSION', '3_0_16' );
+define( 'EC_CURRENT_DB', '1_28' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -2267,6 +2267,24 @@ function ec_create_post_type_menu() {
 		update_option( 'ec_option_wpoptions_version', EC_CURRENT_VERSION );
 	}
 	
+	// Update store item posts, set to private if inactive in store
+	if( !get_option( 'ec_option_published_check' ) || get_option( 'ec_option_published_check' ) != EC_CURRENT_VERSION ){	
+		global $wpdb;
+		$language = new ec_language( );
+		$inactive_products = $wpdb->get_results( "SELECT ec_product.post_id, ec_product.model_number, ec_product.title FROM ec_product WHERE ec_product.activate_in_store = 0" );
+		foreach( $inactive_products as $product ){
+			$post = array(	'ID'			=> $product->post_id,
+							'post_content'	=> "[ec_store modelnumber=\"" . $product->model_number . "\"]",
+							'post_status'	=> "private",
+							'post_title'	=> $language->convert_text( $product->title ),
+							'post_type'		=> "ec_store",
+							'post_name'		=> str_replace(' ', '-', $language->convert_text( $product->title ) ),
+					  );
+			wp_update_post( $post );
+		}
+		update_option( 'ec_option_published_check', EC_CURRENT_VERSION );
+	}
+	
 	$store_id = get_option( 'ec_option_storepage' );
 	if( $store_id ){
 		$store_slug = ec_get_the_slug( $store_id );
@@ -2325,7 +2343,7 @@ add_action( 'wp', 'ec_force_page_type' );
 function ec_force_page_type() {
 	global $wp_query, $post_type;
 	
-	if( $post_type == 'ec_store' ){
+	if( $post_type == 'ec_store' && !get_option( 'ec_option_use_custom_post_theme_template' ) ){
 		$wp_query->is_page = true;
 		$wp_query->is_single = false;
 		$wp_query->query_vars['post_type'] = "page";
@@ -2418,10 +2436,10 @@ function ec_custom_cart_in_menu ( $items, $args ) {
 		}
 		
 		if( $cart->total_items > 0 ){
-			$items .= '<li><a href="' . $cartpage . '"><span class="dashicons dashicons-cart" style="vertical-align:middle; margin-top:-5px; margin-right:5px;"></span> ' . ' (<span class="ec_menu_cart_text"><span class="ec_cart_items_total">' . $cart->total_items . '</span> ' . $items_label . ' <span class="ec_cart_price_total">' . $GLOBALS['currency']->get_currency_display( $cart->subtotal ) . '</span></span>)</a></li>';
+			$items .= '<li><a href="' . $cartpage . '"><span class="dashicons dashicons-cart" style="vertical-align:middle; margin-top:-5px; margin-right:5px;"></span> ' . ' ( <span class="ec_menu_cart_text"><span class="ec_cart_items_total">' . $cart->total_items . '</span> ' . $items_label . ' <span class="ec_cart_price_total">' . $GLOBALS['currency']->get_currency_display( $cart->subtotal ) . '</span></span> )</a></li>';
 		
 		}else{
-			$items .= '<li><a href="' . $cartpage . '"><span class="dashicons dashicons-cart" style="vertical-align:middle; margin-top:-5px; margin-right:5px;"></span> ' . ' (' . $cart->total_items . ' ' . $items_label . ')</a></li>';
+			$items .= '<li><a href="' . $cartpage . '"><span class="dashicons dashicons-cart" style="vertical-align:middle; margin-top:-5px; margin-right:5px;"></span> ' . ' ( <span class="ec_menu_cart_text"><span class="ec_cart_items_total">' . $cart->total_items . '</span> ' . $items_label . ' <span class="ec_cart_price_total"></span></span> )</a></li>';
 		}
 		
 	}

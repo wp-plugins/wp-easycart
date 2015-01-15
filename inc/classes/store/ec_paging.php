@@ -103,22 +103,8 @@ class ec_paging{
 	}
 	
 	public function get_prev_page_link( ){
-		$return_link = $this->store_page . $this->permalink_divider;
-		$vars_added = 0;
-		foreach( $_GET as $key => $getvar ){
-			if( $key != 'pagenum' ){
-				if( $vars_added > 0 )
-					$return_link .= "&amp;";
-				$return_link .= $key . "=" . $getvar;
-				$vars_added++;
-			}
-		}
-		if( $vars_added > 0 )
-			$return_link .= "&amp;";
-			
-		$return_link .= "pagenum=" . ( $this->current_page - 1 );
-		return $return_link;
-			
+		$return_link = $this->get_current_url( ) . "pagenum=" . ( $this->current_page - 1 );
+		return $return_link;	
 	}
 	
 	public function get_page_link( $i ){

@@ -1,7 +1,4 @@
 <?php
-ini_set( 'log_errors', true );
-ini_set( 'error_log', dirname( __FILE__ ).'/stripe_log.txt' );
-
 //Load Wordpress Connection Data
 define( 'WP_USE_THEMES', false );
 require( '../../../../../wp-load.php' );
@@ -108,8 +105,7 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			$stripe_charge_id = $webhook_data->charge;
 			$subscription = $mysqli->get_stripe_subscription( $stripe_subscription_id );
 			
-			error_log( "SUBSCRIPTION FOUND: " . $stripe_subscription_id );
-			error_log( print_r( $subscription, true ) );
+			$mysqli->insert_response( 0, 1, "STRIPE Subscription", print_r( $subscription, true ) );
 			
 			if( $subscription->last_payment_date == $payment_timestamp ){
 				$mysqli->update_stripe_order( $subscription->subscription_id, $stripe_charge_id );
@@ -128,8 +124,7 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			$stripe_charge_id = $webhook_data->charge;
 			$subscription = $mysqli->get_stripe_subscription( $stripe_subscription_id );
 			
-			error_log( "FAILED, SUBSCRIPTION FOUND: " . $stripe_subscription_id );
-			error_log( print_r( $subscription, true ) );
+			$mysqli->insert_response( 0, 1, "STRIPE Subscription Failed", print_r( $subscription, true ) );
 			
 			$order_id = $mysqli->insert_stripe_failed_order( $subscription, $webhook_data );
 			$mysqli->update_stripe_subscription_failed( $subscription_id, $webhook_data );

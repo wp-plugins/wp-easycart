@@ -1,7 +1,4 @@
 <?php
-ini_set( 'log_errors', true );
-ini_set( 'error_log', dirname( __FILE__ ).'/realex_log.txt' );
-
 if( isset( $_POST['ORDER_ID'] ) ){
 
 	//Load Wordpress Connection Data

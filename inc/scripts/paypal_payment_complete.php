@@ -1,7 +1,4 @@
 <?php
-ini_set( 'log_errors', true );
-ini_set( 'error_log', dirname( __FILE__ ).'/paypal_log.txt' );
-
 //Load Wordpress Connection Data
 define( 'WP_USE_THEMES', false );
 require( '../../../../../wp-load.php' );
@@ -16,7 +13,7 @@ try{
 	$listener->requirePostMethod( );
 	$verified = $listener->processIpn( );
 }catch( Exception $e ){
-	error_log( $e->getMessage( ) );
+	$mysqli->insert_response( 0, 1, "PayPal Standard", $e->getMessage( ) );
 	exit( 0 );
 }
 
@@ -49,7 +46,7 @@ if( $verified ) {
     if( !empty( $errmsg ) ){
         $body = "IPN failed fraud checks: \n";
         $body .= $listener->getTextReport();
-       	error_log( $body );
+       	$mysqli->insert_response( 0, 1, "PayPal Standard", $body );
     
 	}else{
 		

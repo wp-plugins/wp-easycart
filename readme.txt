@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 3.0.15
+Stable tag: 3.0.16
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,22 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.16 =
+* New Feature - Connect your EasyCart products to your Google Merchant Account via an XML export. Look in the Store Setup -> Google Merchant Setup for more information.
+* New Feature - You can now choose to use a custom post file from your theme as the product display type. Add single-ec_store.php to your theme and turn on the option in your advanced options to activate.
+* Improvement - WP EasyCart now notifies you when your admin console should be updated.
+* Fix - Based on response from previous version, we have automated the process to turn inactive products' custom posts to private, fixing a previous issue.
+* Fix - Version 2 design, some had incorrect link from the product title, this has been corrected.
+* Fix - Added logo to the shipping email sent from the admin (to match the order email receipt).
+* Fix - Security fixes.
+* Fix - Various store admin console improvements and updates.
+* Fix - Quickbooks plugin connector files fixed and adjusted.
+* Fix - Featured products that become inactive in store are no longer allowed to show in the product display.
+* Fix - Currency display for advanced option item price change only worked with basic USD display, now functional with all display methods.
+* Fix - Cart without items in it, using the show cart in menu option, needed to update when item added to cart on products page.
+* Fix - Estimate live shipping now provides only the lowest rate UNLESS the customer has already gone through and selected another shipping method. This is a fix because it would lock in a rate and changing quantities in the cart could provide a higher rate that necessary.
+* Fix - Previous paging link was not sticking to the category or menu the page was on.
+* Fix - Live search completion tool was including inactive products, even though they were not available in the search results.
 = 3.0.15 =
 * New Option - Enable/Disable the estimate shipping box on the checkout page.
 * New Feature - In the EasyCart Admin -> Dashboard there is a new option, Inventory Status, which allows you to view a quick overview of your products and their inventory remaining.

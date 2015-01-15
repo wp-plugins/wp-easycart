@@ -445,7 +445,11 @@ class ec_product{
 			if( get_option( 'ec_option_use_old_linking_style' ) ){
 				$add_options = "&" . $add_options;
 			}else{
-				$add_options = $this->permalink_divider . $add_options;
+				if( substr_count( $permalink, '?' ) ){
+					$add_options = "&" . $add_options;
+				}else{
+					$add_options = $this->permalink_divider . $add_options;
+				}
 			}
 		}
 		if( $this->is_deconetwork )

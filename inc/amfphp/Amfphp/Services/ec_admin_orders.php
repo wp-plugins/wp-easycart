@@ -294,6 +294,8 @@ class ec_admin_orders{
 			$trackingnumber = $order[0]->tracking_number;
 			$shipcarrier = $order[0]->shipping_carrier;
 			
+			$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
+	 	
 			$orderfromemail = get_option( 'ec_option_order_from_email' );
 			
 			ob_start( );

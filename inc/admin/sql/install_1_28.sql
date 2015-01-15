@@ -634,6 +634,14 @@ AUTO_INCREMENT=248 AVG_ROW_LENGTH=1960 CHARACTER SET 'utf8' COLLATE
  'utf8_general_ci'
 COMMENT=''
 ;
+CREATE TABLE IF NOT EXISTS `ec_product_google_attributes` (
+  `product_google_attribute_id` INTEGER(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID for this table.',
+  `product_id` INTEGER(11) NOT NULL COMMENT 'Link to a specific product.',
+  `attribute_value` TEXT COLLATE utf8_general_ci COMMENT 'json data stored here to use with product in google merchant feed.',
+  PRIMARY KEY (`product_google_attribute_id`),
+  UNIQUE KEY `product_google_attribute_id` (`product_google_attribute_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci'
+;
 CREATE TABLE IF NOT EXISTS `ec_promocode` (
   `promocode_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT ''
    COMMENT 'The unique identifier for ec_promocode.',

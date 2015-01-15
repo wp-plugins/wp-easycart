@@ -17,7 +17,7 @@ class ec_featuredproducts{
 														$where_statement .= " OR product.product_id = '"  . $product_id_2 . "'";
 														$where_statement .= " OR product.product_id = '"  . $product_id_3 . "'";
 														$where_statement .= " OR product.product_id = '"  . $product_id_4 . "'";
-														$where_statement .= " ) ";
+														$where_statement .= " ) AND product.activate_in_store = 1 ";
 											
 														$order_statement  = " ORDER BY FIELD(product.product_id ";
 			if( $product_id_1 )							$order_statement .= ", '" . $product_id_1 . "'";

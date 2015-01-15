@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS `ec_perpage`;
 DROP TABLE IF EXISTS `ec_pricepoint`;
 DROP TABLE IF EXISTS `ec_pricetier`;
 DROP TABLE IF EXISTS `ec_product`;
+DROP TABLE IF EXISTS `ec_product_google_attributes`;
 DROP TABLE IF EXISTS `ec_promocode`;
 DROP TABLE IF EXISTS `ec_promotion`;
 DROP TABLE IF EXISTS `ec_response`;
