@@ -34,6 +34,7 @@ class ec_admin_categories{
 	   else if( $methodName == 'updatecategory' ) 		return array( 'admin' );
 	   else if( $methodName == 'addcategory' ) 			return array( 'admin' );
 	   else if( $methodName == 'getcategoryitems' ) 	return array( 'admin' );
+	   else if( $methodName == 'deleteindividualcategoryitem' ) 	return array( 'admin' );
 	   else if( $methodName == 'deletecategoryitem' ) 	return array( 'admin' );
 	   else if( $methodName == 'addcategoryitem' ) 		return array( 'admin' );
 	   else if( $methodName == 'getcategoryproducts' ) 	return array( 'admin' );
@@ -159,10 +160,23 @@ class ec_admin_categories{
 		}
 	}//getcategoryitems
 	
-	function deletecategoryitem( $categoryitemid ){
+	function deleteindividualcategoryitem(  $categoryitemid ){
 		  
 		$sql = "DELETE FROM ec_categoryitem WHERE ec_categoryitem.categoryitem_id = %d";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $categoryitemid ) );
+		$rows_affected = $this->db->query( $this->db->prepare( $sql,  $categoryitemid) );
+		
+		if( $rows_affected ){
+			return array( "success" );
+		}else{
+			return array( "error" );
+		}
+		
+	}//deletecategoryitem
+	
+	function deletecategoryitem(  $productid, $categoryid ){
+		  
+		$sql = "DELETE FROM ec_categoryitem WHERE ec_categoryitem.product_id = %d AND ec_categoryitem.category_id = %d";
+		$rows_affected = $this->db->query( $this->db->prepare( $sql,  $productid, $categoryid  ) );
 		
 		if( $rows_affected ){
 			return array( "success" );
@@ -185,15 +199,32 @@ class ec_admin_categories{
 		
 	}//addcategoryitem
 
-	function getcategoryproducts( ){
+	function getcategoryproducts( $categoryid, $startrecord, $limit, $orderby, $ordertype, $filter  ){
 		
-		$results = $this->db->get_results( "SELECT ec_product.title, ec_product.product_id FROM ec_product ORDER BY ec_product.title ASC" );
+		
+		$sql = "SELECT SQL_CALC_FOUND_ROWS 
+		ec_product.*, 
+		ec_categoryitem.categoryitem_id, 
+		ec_categoryitem.category_id,
+		ec_manufacturer.name AS manufacturer 
+		FROM ec_product 
+		LEFT OUTER JOIN ec_categoryitem ON (ec_product.product_id = ec_categoryitem.product_id AND ec_categoryitem.category_id = ".$categoryid.")
+		LEFT OUTER JOIN ec_manufacturer ON (ec_product.manufacturer_id = ec_manufacturer.manufacturer_id)   
+		WHERE ec_product.product_id != '' " . $filter . " 
+		ORDER BY ".  $orderby ." ".  $ordertype . " 
+		LIMIT ".  $startrecord . ", ". $limit;
+		
+		$results = $this->db->get_results( $sql );
+		$totalquery = $this->db->get_var( "SELECT FOUND_ROWS()" );
 		
 		if( count( $results ) > 0 ){
+			$results[0]->totalrows = $totalquery;
 			return $results;
 		}else{
 			return array( "noresults" );
 		}
+		
+		
 		
 	}//getcategoryproducts
 
