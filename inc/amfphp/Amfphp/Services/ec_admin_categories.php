@@ -48,6 +48,24 @@ class ec_admin_categories{
 		
 		$totalquery = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 		
+		//trying to return total products inside this category_id
+		if(count( $results ) > 0 ) {
+			$rowcount = 0;
+			foreach( $results as $row ){ 
+				
+				$current_category_id = $row->category_id;
+				$product_sql = "SELECT SQL_CALC_FOUND_ROWS ec_categoryitem.* FROM ec_categoryitem WHERE ec_categoryitem.category_id = '".$current_category_id."'";
+				$product_results = $this->db->get_results( $product_sql );
+				$total_products = 0;
+				if(count( $product_results ) > 0 ) {
+					$total_products = $this->db->get_var( "SELECT FOUND_ROWS( )" );
+				}
+				$results[$rowcount]->totalproducts = $total_products;
+				$rowcount++; 
+			}
+		}
+		//end new section
+		
 		if( count( $results ) > 0 ){
 			$results[0]->totalrows = $totalquery;
 			return $results;
