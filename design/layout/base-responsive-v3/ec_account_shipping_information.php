@@ -37,7 +37,7 @@
         <?php if( get_option( 'ec_option_enable_company_name' ) ){ ?>
         <div class="ec_cart_input_row">
             <label for="ec_account_shipping_information_company_name"><?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_company_name' ); ?></label>
-            <input type="text" name="ec_account_shipping_information_company_name" id="ec_account_shipping_information_company_name" class="ec_account_shipping_information_input_field" value="<?php echo $this->user->shipping->company_name; ?>">
+            <input type="text" name="ec_account_shipping_information_company_name" id="ec_account_shipping_information_company_name" class="ec_account_shipping_information_input_field" value="<?php echo htmlspecialchars( $this->user->shipping->company_name, ENT_QUOTES ); ?>">
             <div class="ec_cart_error_row" id="ec_account_shipping_information_company_name_error">
                 <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_please_enter_your' ); ?> <?php echo $GLOBALS['language']->get_text( 'account_shipping_information', 'cart_shipping_information_company_name' ); ?>
             </div>

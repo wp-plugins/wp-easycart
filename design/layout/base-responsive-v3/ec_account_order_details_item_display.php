@@ -30,7 +30,7 @@
 
 			}else{
 
-				echo "<div class=\"ec_account_order_details_item_display_option\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $advanced_option->option_value . $advanced_option->option_price_change . "</div>";
+				echo "<div class=\"ec_account_order_details_item_display_option\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . htmlspecialchars( $advanced_option->option_value, ENT_QUOTES ) . $advanced_option->option_price_change . "</div>";
 
 			}
 

@@ -73,6 +73,8 @@ if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_goemerchant.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'moneris_ca' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_moneris_ca.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'moneris_us' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_moneris_us.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'paymentexpress' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_paymentexpress.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'paypal_payments_pro' ){
@@ -87,6 +89,8 @@ if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_sagepay.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'sagepayus' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_sagepayus.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'securenet' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_securenet.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'securepay' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_securepay.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){

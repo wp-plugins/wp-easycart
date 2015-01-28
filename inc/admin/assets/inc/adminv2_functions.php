@@ -893,6 +893,11 @@ function ec_live_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $live_payment == "moneris_us" ){
+		if( get_option( 'ec_option_moneris_us_store_id' ) != "" && get_option( 'ec_option_moneris_us_api_token' ) != "" )
+			return true;
+		else
+			return false;
 	}else if( $live_payment == "paymentexpress" ){
 		if( get_option( 'ec_option_payment_express_username' ) != "" && get_option( 'ec_option_payment_express_password' ) != "" )
 			return true;
@@ -925,6 +930,11 @@ function ec_live_payment_setup( ){
 			return false;
 	}else if( $live_payment == "sagepayus" ){
 		if( get_option( 'ec_option_sagepayus_mid' ) != "" && get_option( 'ec_option_sagepayus_mkey' ) != "" && get_option( 'ec_option_sagepayus_application_id' ) != "" )
+			return true;
+		else
+			return false;
+	}else if( $live_payment == "securenet" ){
+		if( get_option( 'ec_option_securenet_id' ) != "" && get_option( 'ec_option_securenet_secure_key' ) != "" )
 			return true;
 		else
 			return false;
@@ -962,6 +972,8 @@ function ec_get_live_payment_method( ){
 		return "GoeMerchant";
 	else if( $live_payment == "moneris_ca" )
 		return "Moneris Canada";
+	else if( $live_payment == "moneris_us" )
+		return "Moneris US";
 	else if( $live_payment == "paymentexpress" )
 		return "Payment Express PxPost";
 	else if( $live_payment == "paypal_pro" )
@@ -976,6 +988,8 @@ function ec_get_live_payment_method( ){
 		return "Sagepay";
 	else if( $live_payment == "sagepayus" )
 		return "Sagepay US";
+	else if( $live_payment == "securenet" )
+		return "SecureNet";
 	else if( $live_payment == "securepay" )
 		return "SecurePay";
 	else if( $live_payment == "stripe" )
@@ -1506,10 +1520,14 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_nets_token', $_POST['ec_option_nets_token'] );
 	update_option( 'ec_option_nets_currency', $_POST['ec_option_nets_currency'] );
 	update_option( 'ec_option_nets_test_mode', $_POST['ec_option_nets_test_mode'] );
-	//Moneris_CA
+	//Moneris CA
 	update_option( 'ec_option_moneris_ca_store_id', $_POST['ec_option_moneris_ca_store_id'] );
 	update_option( 'ec_option_moneris_ca_api_token', $_POST['ec_option_moneris_ca_api_token'] );
 	update_option( 'ec_option_moneris_ca_test_mode', $_POST['ec_option_moneris_ca_test_mode'] );
+	//Moneris US
+	update_option( 'ec_option_moneris_us_store_id', $_POST['ec_option_moneris_us_store_id'] );
+	update_option( 'ec_option_moneris_us_api_token', $_POST['ec_option_moneris_us_api_token'] );
+	update_option( 'ec_option_moneris_us_test_mode', $_POST['ec_option_moneris_us_test_mode'] );
 	//PaymentExpress
 	update_option( 'ec_option_payment_express_username', $_POST['ec_option_payment_express_username'] );
 	update_option( 'ec_option_payment_express_password', $_POST['ec_option_payment_express_password'] );
@@ -1569,6 +1587,10 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_sagepayus_mid', $_POST['ec_option_sagepayus_mid'] );
 	update_option( 'ec_option_sagepayus_mkey', $_POST['ec_option_sagepayus_mkey'] );
 	update_option( 'ec_option_sagepayus_application_id', $_POST['ec_option_sagepayus_application_id'] );
+	//SecureNet
+	update_option( 'ec_option_securenet_id', $_POST['ec_option_securenet_id'] );
+	update_option( 'ec_option_securenet_secure_key', $_POST['ec_option_securenet_secure_key'] );
+	update_option( 'ec_option_securenet_use_sandbox', $_POST['ec_option_securenet_use_sandbox'] );
 	//Securepay
 	update_option( 'ec_option_securepay_merchant_id', $_POST['ec_option_securepay_merchant_id'] );
 	update_option( 'ec_option_securepay_password', $_POST['ec_option_securepay_password'] );

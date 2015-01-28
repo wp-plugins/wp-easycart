@@ -42,14 +42,14 @@ class ec_paypal extends ec_third_party{
 		echo "<input type=\"hidden\" name=\"cancel_return\" value=\"". $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment\" />";
 		
 		//customer billing information and address info
-		echo "<input name=\"first_name\" id=\"first_name\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_first_name ) . "\" />";
-		echo "<input name=\"last_name\" id=\"last_name\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_last_name ) . "\" />";
-		echo "<input name=\"address1\" id=\"address1\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_address_line_1 ) . "\" />";
-		echo "<input name=\"city\" id=\"city\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_city ) . "\" />";
-		echo "<input name=\"state\" id=\"state\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', strtoupper($this->order->billing_state ) ) . "\" />";
-		echo "<input name=\"zip\" id=\"zip\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_zip ) . "\" />";
-		echo "<input name=\"country\" id=\"country\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_country ) . "\" />";
-		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->user_email ) . "\" />";
+		echo "<input name=\"first_name\" id=\"first_name\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_first_name, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"last_name\" id=\"last_name\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_last_name, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"address1\" id=\"address1\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_address_line_1, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"city\" id=\"city\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_city, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"state\" id=\"state\" type=\"hidden\" value=\"" . htmlspecialchars( strtoupper($this->order->billing_state ), ENT_QUOTES ) . "\" />";
+		echo "<input name=\"zip\" id=\"zip\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_zip, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"country\" id=\"country\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_country, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->user_email, ENT_QUOTES ) . "\" />";
 		
 		//add the cart contents to paypal
 		for( $i = 0; $i<count( $this->order_details ); $i++ ){
@@ -72,6 +72,108 @@ class ec_paypal extends ec_third_party{
 		//this is actionscript version in flash
 		if( $paypal_use_sandbox )			$paypal_request = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 		else								$paypal_request = "https://www.paypal.com/cgi-bin/webscr";
+		
+		echo "<style>
+		.ec_third_party_loader{ display:block !important; position:absolute; top:50%; left:50%; }
+		@-webkit-keyframes ec_third_party_loader {
+		  0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		  }
+		
+		  100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		  }
+		}
+		
+		@-moz-keyframes ec_third_party_loader {
+		  0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		  }
+		
+		  100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		  }
+		}
+		
+		@-o-keyframes ec_third_party_loader {
+		  0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		  }
+		
+		  100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		  }
+		}
+		
+		@keyframes ec_third_party_loader {
+		  0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		  }
+		
+		  100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		  }
+		}
+		
+		/* Styles for old versions of IE */
+		.ec_third_party_loader {
+		  font-family: sans-serif;
+		  font-weight: 100;
+		}
+		
+		/* :not(:required) hides this rule from IE9 and below */
+		.ec_third_party_loader:not(:required) {
+		  -webkit-animation: ec_third_party_loader 1250ms infinite linear;
+		  -moz-animation: ec_third_party_loader 1250ms infinite linear;
+		  -ms-animation: ec_third_party_loader 1250ms infinite linear;
+		  -o-animation: ec_third_party_loader 1250ms infinite linear;
+		  animation: ec_third_party_loader 1250ms infinite linear;
+		  border: 8px solid #3388ee;
+		  border-right-color: transparent;
+		  border-radius: 16px;
+		  box-sizing: border-box;
+		  display: inline-block;
+		  position: relative;
+		  overflow: hidden;
+		  text-indent: -9999px;
+		  width: 32px;
+		  height: 32px;
+		}
+		</style>";
+		
+		echo "<div style=\"display:none;\" class=\"ec_third_party_loader\">Loading...</div>";
 		
 		echo "<form name=\"ec_paypal_standard_auto_form\" action=\"" . $paypal_request . "\" method=\"post\">";
 		echo "<input name=\"cmd\" id=\"cmd\" type=\"hidden\" value=\"_cart\" />";
@@ -103,14 +205,14 @@ class ec_paypal extends ec_third_party{
 		echo "<input type=\"hidden\" name=\"cancel_return\" value=\"". $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment\" />";
 		
 		//customer billing information and address info
-		echo "<input name=\"first_name\" id=\"first_name\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_first_name ) . "\" />";
-		echo "<input name=\"last_name\" id=\"last_name\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_last_name ) . "\" />";
-		echo "<input name=\"address1\" id=\"address1\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_address_line_1 ) . "\" />";
-		echo "<input name=\"city\" id=\"city\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_city ) . "\" />";
-		echo "<input name=\"state\" id=\"state\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', strtoupper($this->order->billing_state ) ) . "\" />";
-		echo "<input name=\"zip\" id=\"zip\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_zip ) . "\" />";
-		echo "<input name=\"country\" id=\"country\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->billing_country ) . "\" />";
-		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order->user_email ) . "\" />";
+		echo "<input name=\"first_name\" id=\"first_name\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_first_name, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"last_name\" id=\"last_name\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_last_name, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"address1\" id=\"address1\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_address_line_1, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"city\" id=\"city\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_city, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"state\" id=\"state\" type=\"hidden\" value=\"" . htmlspecialchars( strtoupper($this->order->billing_state ), ENT_QUOTES ) . "\" />";
+		echo "<input name=\"zip\" id=\"zip\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_zip, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"country\" id=\"country\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->billing_country, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . htmlspecialchars( $this->order->user_email, ENT_QUOTES ) . "\" />";
 		
 		//add the cart contents to paypal
 		for( $i = 0; $i<count( $this->order_details ); $i++ ){

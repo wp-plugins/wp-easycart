@@ -625,8 +625,8 @@ class ec_shipping{
 				$rate = $rate + $this->express_price;
 			
 		}else if( $this->shipping_method == "live" ){
-			if( !isset( $_SESSION['ec_shipping_method'] ) )
-				$_SESSION['ec_shipping_method'] = 0;
+			//if( !isset( $_SESSION['ec_shipping_method'] ) )
+				//$_SESSION['ec_shipping_method'] = 0;
 				
 			$lowest = 100000.00;
 			$lowest_ship_method = "ERROR";
@@ -662,8 +662,8 @@ class ec_shipping{
 			
 			if( $rate == "ERROR" && $lowest_ship_method != "ERROR" ){
 				$rate = $lowest;
-				if( isset( $this->destination_zip ) )
-					$_SESSION['ec_shipping_method'] = $lowest_ship_method;
+				//if( isset( $this->destination_zip ) )
+					//$_SESSION['ec_shipping_method'] = $lowest_ship_method;
 			}
 			
 		}else if( $this->shipping_method == "fraktjakt" ){

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 3.0.16
+Stable tag: 3.0.17
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,17 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.17 =
+* New Feature - Moneris is now a payment option for US merchants.
+* New Feature - Orders now store evidence that a user has agreed to your terms and conditions (if applicable) and the customer's IP Address.
+* New Feature - SecureNet payment gateway added, but in beta mode until next version.
+* Improvement - New CSV Import/Export on the product level. Product importing is much more forgiving and does not require all fields now or a specific order to the columns.
+* Fix - Subscription emailer was not including address line 2.
+* Fix - Category widget without custom permalinks was not formatting correctly, this has been corrected.
+* Fix - Danish Krona with PayPal had the wrong currency code making it impossible to select.
+* Fix - Firefox was doing its own validation on the log in email box during checkout, even when not logging in. Corrected by switching it to a basic text box.
+* Fix - Price display on the product details page was not working with price adjustment with grid quantity advanced option. This has been improved.
+* Fix - Security improvements.
 = 3.0.16 =
 * New Feature - Connect your EasyCart products to your Google Merchant Account via an XML export. Look in the Store Setup -> Google Merchant Setup for more information.
 * New Feature - You can now choose to use a custom post file from your theme as the product display type. Add single-ec_store.php to your theme and turn on the option in your advanced options to activate.

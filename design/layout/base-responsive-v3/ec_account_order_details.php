@@ -60,7 +60,7 @@
         
         <?php if( $this->order->billing_company_name != "" ){ ?>
         
-        <div class="ec_cart_input_row"><?php echo $this->order->billing_company_name; ?></div>
+        <div class="ec_cart_input_row"><?php echo htmlspecialchars( $this->order->billing_company_name, ENT_QUOTES ); ?></div>
         
         <?php }?>
 
@@ -68,7 +68,7 @@
 
         <?php if( $this->order->billing_address_line_2 != "" ){ ?>
 
-        <div class="ec_cart_input_row"><?php echo $this->order->billing_address_line_2; ?></div>
+        <div class="ec_cart_input_row"><?php echo htmlspecialchars( $this->order->billing_address_line_2, ENT_QUOTES ); ?></div>
 
         <?php }?>
 
@@ -88,7 +88,7 @@
         
         <?php if( $this->order->shipping_company_name != "" ){ ?>
         
-        <div class="ec_cart_input_row"><?php echo $this->order->shipping_company_name; ?></div>
+        <div class="ec_cart_input_row"><?php echo htmlspecialchars( $this->order->shipping_company_name, ENT_QUOTES ); ?></div>
         
         <?php }?>
 
@@ -96,7 +96,7 @@
 
         <?php if( $this->order->shipping_address_line_2 != "" ){ ?>
 
-        <div class="ec_cart_input_row"><?php echo $this->order->shipping_address_line_2; ?></div>
+        <div class="ec_cart_input_row"><?php echo htmlspecialchars( $this->order->shipping_address_line_2, ENT_QUOTES ); ?></div>
 
         <?php }?>
 

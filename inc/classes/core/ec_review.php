@@ -22,7 +22,7 @@ class ec_review{
 	}
 	
 	public function display_review_title(){
-		echo $this->title;
+		echo htmlspecialchars( $this->title, ENT_QUOTES );
 	}
 	
 	public function display_review_stars( ){
@@ -54,7 +54,7 @@ class ec_review{
 	}
 	
     public function display_review_description(){
-		echo $this->description;
+		echo nl2br( htmlspecialchars( $this->description, ENT_QUOTES ) );
 	}
 	
 }

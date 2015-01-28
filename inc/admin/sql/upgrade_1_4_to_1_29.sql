@@ -1,5 +1,4 @@
 ﻿;
-ALTER TABLE ec_country ADD `vat_rate_cnt` float(9,3) NOT NULL DEFAULT '0.000';
 CREATE TABLE IF NOT EXISTS `ec_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_label` varchar(20) COLLATE utf8_general_ci NOT NULL DEFAULT '',
@@ -622,3 +621,5 @@ CREATE TABLE IF NOT EXISTS `ec_product_google_attributes` (
   PRIMARY KEY (`product_google_attribute_id`),
   UNIQUE KEY `product_google_attribute_id` (`product_google_attribute_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci';
+ALTER TABLE ec_order ADD `agreed_to_terms` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'This value is used to verify the user agreed to your terms and conditions during checkout.';
+ALTER TABLE ec_order ADD `order_ip_address` VARCHAR(125) NOT NULL DEFAULT '' COMMENT 'The IP Address of the user during checkout, for evidence later if necessary.';

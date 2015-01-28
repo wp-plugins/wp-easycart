@@ -80,6 +80,7 @@ class ec_payment{
 		else if($this->proccess_method == "firstdata"		)			$gateway = new ec_firstdata();
 		else if($this->proccess_method == "goemerchant"		)			$gateway = new ec_goemerchant();
 		else if($this->proccess_method == "moneris_ca"		)			$gateway = new ec_moneris_ca();
+		else if($this->proccess_method == "moneris_us"		)			$gateway = new ec_moneris_us();
 		else if($this->proccess_method == "paymentexpress"	)			$gateway = new ec_paymentexpress();
 		else if($this->proccess_method == "paypal_payments_pro"	)		$gateway = new ec_paypal_payments_pro();
 		else if($this->proccess_method == "paypal_pro"		)			$gateway = new ec_paypal_pro();
@@ -89,6 +90,7 @@ class ec_payment{
 		else if($this->proccess_method == "sagepay"			)			$gateway = new ec_sagepay();
 		else if($this->proccess_method == "sagepay3d"		)			$gateway = new ec_sagepay3d();
 		else if($this->proccess_method == "sagepayus"		)			$gateway = new ec_sagepayus();
+		else if($this->proccess_method == "securenet"		)			$gateway = new ec_securenet();
 		else if($this->proccess_method == "securepay"		)			$gateway = new ec_securepay();
 		else if($this->proccess_method == "stripe"			)			$gateway = new ec_stripe();
 		else if($this->proccess_method == "virtualmerchant"	)			$gateway = new ec_virtualmerchant();

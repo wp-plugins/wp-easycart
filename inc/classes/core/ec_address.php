@@ -63,43 +63,43 @@ class ec_address{
 	}
 	
 	public function display_first_name( ){
-		echo $this->first_name;
+		echo htmlspecialchars( $this->first_name, ENT_QUOTES );
 	}
 	
 	public function display_last_name( ){
-		echo $this->last_name;
+		echo htmlspecialchars( $this->last_name, ENT_QUOTES );
 	}
 	
 	public function display_address_line_1( ){
-		echo $this->address_line_1;
+		echo htmlspecialchars( $this->address_line_1, ENT_QUOTES );
 	}
 	
 	public function display_address_line_2( ){
-		echo $this->address_line_2;
+		echo htmlspecialchars( $this->address_line_2, ENT_QUOTES );
 	}
 	
 	public function display_city( ){
-		echo $this->city;
+		echo htmlspecialchars( $this->city, ENT_QUOTES );
 	}
 	
 	public function display_state( ){
-		echo $this->state;
+		echo htmlspecialchars( $this->state, ENT_QUOTES );
 	}
 	
 	public function display_zip( ){
-		echo $this->zip;
+		echo htmlspecialchars( $this->zip, ENT_QUOTES );
 	}
 	
 	public function display_country( ){
-		echo $this->country_name;
+		echo htmlspecialchars( $this->country_name, ENT_QUOTES );
 	}
 	
 	public function display_phone( ){
-		echo $this->phone;
+		echo htmlspecialchars( $this->phone, ENT_QUOTES );
 	}
 	
 	public function display_company_name( ){
-		echo $this->company_name;
+		echo htmlspecialchars( $this->company_name, ENT_QUOTES );
 	}
 	
 }

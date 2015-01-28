@@ -40,35 +40,35 @@
 					
 					billing: {
 						name: {
-							first:					"<?php echo $this->user->billing->first_name; ?>",
-							last:					"<?php echo $this->user->billing->last_name; ?>"
+							first:					"<?php echo htmlspecialchars( $this->user->billing->first_name, ENT_QUOTES ); ?>",
+							last:					"<?php echo htmlspecialchars( $this->user->billing->last_name, ENT_QUOTES ); ?>"
 						},
 						address: {
-							line1:					"<?php echo $this->user->billing->address_line_1; ?>",
-							line2:					"<?php echo $this->user->billing->address_line_2; ?>",
-							city:					"<?php echo $this->user->billing->city; ?>",
-							state:					"<?php echo $this->user->billing->state; ?>",
-							zipcode:				"<?php echo $this->user->billing->zip; ?>",
-							country:				"<?php echo $this->user->billing->country; ?>"
+							line1:					"<?php echo htmlspecialchars( $this->user->billing->address_line_1, ENT_QUOTES ); ?>",
+							line2:					"<?php echo htmlspecialchars( $this->user->billing->address_line_2, ENT_QUOTES ); ?>",
+							city:					"<?php echo htmlspecialchars( $this->user->billing->city, ENT_QUOTES ); ?>",
+							state:					"<?php echo htmlspecialchars( $this->user->billing->state, ENT_QUOTES ); ?>",
+							zipcode:				"<?php echo htmlspecialchars( $this->user->billing->zip, ENT_QUOTES ); ?>",
+							country:				"<?php echo htmlspecialchars( $this->user->billing->country, ENT_QUOTES ); ?>"
 						},
-						phone_number:				"<?php echo $this->user->billing->phone; ?>",
-						email:						"<?php echo $this->user->email; ?>"
+						phone_number:				"<?php echo htmlspecialchars( $this->user->billing->phone, ENT_QUOTES ); ?>",
+						email:						"<?php echo htmlspecialchars( $this->user->email, ENT_QUOTES ); ?>"
 					},
 					
 					shipping: {
 						name: {
-							first:					"<?php echo $this->user->shipping->first_name; ?>",
-							last:					"<?php echo $this->user->shipping->last_name; ?>"
+							first:					"<?php echo htmlspecialchars( $this->user->shipping->first_name, ENT_QUOTES ); ?>",
+							last:					"<?php echo htmlspecialchars( $this->user->shipping->last_name, ENT_QUOTES ); ?>"
 						},
 						address: {
-							line1:					"<?php echo $this->user->shipping->address_line_1; ?>",
-							line2:					"<?php echo $this->user->shipping->address_line_2; ?>",
-							city:					"<?php echo $this->user->shipping->city; ?>",
-							state:					"<?php echo $this->user->shipping->state; ?>",
-							zipcode:				"<?php echo $this->user->shipping->zip; ?>",
-							country:				"<?php echo $this->user->shipping->country; ?>"
+							line1:					"<?php echo htmlspecialchars( $this->user->shipping->address_line_1, ENT_QUOTES ); ?>",
+							line2:					"<?php echo htmlspecialchars( $this->user->shipping->address_line_2, ENT_QUOTES ); ?>",
+							city:					"<?php echo htmlspecialchars( $this->user->shipping->city, ENT_QUOTES ); ?>",
+							state:					"<?php echo htmlspecialchars( $this->user->shipping->state, ENT_QUOTES ); ?>",
+							zipcode:				"<?php echo htmlspecialchars( $this->user->shipping->zip, ENT_QUOTES ); ?>",
+							country:				"<?php echo htmlspecialchars( $this->user->shipping->country, ENT_QUOTES ); ?>"
 						},
-						phone_number:				"<?php echo $this->user->shipping->phone; ?>"
+						phone_number:				"<?php echo htmlspecialchars( $this->user->shipping->phone, ENT_QUOTES ); ?>"
 					},
 					
 					items: [<?php for( $i=0; $i<count( $this->cart->cart ); $i++ ){ ?>{
@@ -216,7 +216,7 @@
         <?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_title' ); ?>
     </div>
     <div class="ec_cart_input_row">
-    	<?php echo $_SESSION['ec_order_notes']; ?>
+    	<?php echo htmlspecialchars( $_SESSION['ec_order_notes'], ENT_QUOTES ); ?>
     </div>
     <?php }?>
     
@@ -226,36 +226,36 @@
         </div>
         
         <div class="ec_cart_input_row">
-            <?php echo $this->user->billing->first_name; ?> <?php echo $this->user->billing->last_name; ?>
+            <?php echo htmlspecialchars( $this->user->billing->first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->billing->last_name, ENT_QUOTES ); ?>
         </div>
         
         <?php if( strlen( $this->user->billing->company_name ) > 0 ){ ?>
         <div class="ec_cart_input_row">
-            <?php echo $this->user->billing->company_name; ?>
+            <?php echo htmlspecialchars( $this->user->billing->company_name, ENT_QUOTES ); ?>
         </div>
         <?php }?>
         
         <div class="ec_cart_input_row">
-            <?php echo $this->user->billing->address_line_1; ?>
+            <?php echo htmlspecialchars( $this->user->billing->address_line_1, ENT_QUOTES ); ?>
         </div>
         
         <?php if( strlen( $this->user->billing->address_line_2 ) > 0 ){ ?>
         <div class="ec_cart_input_row">
-            <?php echo $this->user->billing->address_line_2; ?>
+            <?php echo htmlspecialchars( $this->user->billing->address_line_2, ENT_QUOTES ); ?>
         </div>
         <?php }?>
         
         <div class="ec_cart_input_row">
-            <?php echo $this->user->billing->city; ?>, <?php echo $this->user->billing->state; ?> <?php echo $this->user->billing->zip; ?>
+            <?php echo htmlspecialchars( $this->user->billing->city, ENT_QUOTES ); ?>, <?php echo htmlspecialchars( $this->user->billing->state, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->billing->zip, ENT_QUOTES ); ?>
         </div>
         
         <div class="ec_cart_input_row">
-            <?php echo $this->user->billing->country_name; ?>
+            <?php echo htmlspecialchars( $this->user->billing->country_name, ENT_QUOTES ); ?>
         </div>
         
         <?php if( strlen( $this->user->billing->phone ) > 0 ){ ?>
         <div class="ec_cart_input_row">
-            <?php echo $this->user->billing->phone; ?>
+            <?php echo htmlspecialchars( $this->user->billing->phone, ENT_QUOTES ); ?>
         </div>
         <?php }?>
         
@@ -268,36 +268,36 @@
         </div>
         
         <div class="ec_cart_input_row">
-            <?php echo $this->user->shipping->first_name; ?> <?php echo $this->user->shipping->last_name; ?>
+            <?php echo htmlspecialchars( $this->user->shipping->first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->shipping->last_name, ENT_QUOTES ); ?>
         </div>
         
         <?php if( strlen( $this->user->shipping->company_name ) > 0 ){ ?>
         <div class="ec_cart_input_row">
-            <?php echo $this->user->shipping->company_name; ?>
+            <?php echo htmlspecialchars( $this->user->shipping->company_name, ENT_QUOTES ); ?>
         </div>
         <?php }?>
         
         <div class="ec_cart_input_row">
-            <?php echo $this->user->shipping->address_line_1; ?>
+            <?php echo htmlspecialchars( $this->user->shipping->address_line_1, ENT_QUOTES ); ?>
         </div>
         
         <?php if( strlen( $this->user->shipping->address_line_2 ) > 0 ){ ?>
         <div class="ec_cart_input_row">
-            <?php echo $this->user->shipping->address_line_2; ?>
+            <?php echo htmlspecialchars( $this->user->shipping->address_line_2, ENT_QUOTES ); ?>
         </div>
         <?php }?>
         
         <div class="ec_cart_input_row">
-            <?php echo $this->user->shipping->city; ?>, <?php echo $this->user->shipping->state; ?> <?php echo $this->user->shipping->zip; ?>
+            <?php echo htmlspecialchars( $this->user->shipping->city, ENT_QUOTES ); ?>, <?php echo htmlspecialchars( $this->user->shipping->state, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->shipping->zip, ENT_QUOTES ); ?>
         </div>
         
         <div class="ec_cart_input_row">
-            <?php echo $this->user->shipping->country_name; ?>
+            <?php echo htmlspecialchars( $this->user->shipping->country_name, ENT_QUOTES ); ?>
         </div>
         
         <?php if( strlen( $this->user->shipping->phone ) > 0 ){ ?>
         <div class="ec_cart_input_row">
-            <?php echo $this->user->shipping->phone; ?>
+            <?php echo htmlspecialchars( $this->user->shipping->phone, ENT_QUOTES ); ?>
         </div>
         <?php }?>
         
@@ -394,36 +394,36 @@
     </div>
     
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->billing->first_name; ?> <?php echo $this->user->billing->last_name; ?>
+    	<?php echo htmlspecialchars( $this->user->billing->first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->billing->last_name, ENT_QUOTES ); ?>
     </div>
     
     <?php if( strlen( $this->user->billing->company_name ) > 0 ){ ?>
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->billing->company_name; ?>
+    	<?php echo htmlspecialchars( $this->user->billing->company_name, ENT_QUOTES ); ?>
     </div>
     <?php }?>
     
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->billing->address_line_1; ?>
+    	<?php echo htmlspecialchars( $this->user->billing->address_line_1, ENT_QUOTES ); ?>
     </div>
     
     <?php if( strlen( $this->user->billing->address_line_2 ) > 0 ){ ?>
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->billing->address_line_2; ?>
+    	<?php echo htmlspecialchars( $this->user->billing->address_line_2, ENT_QUOTES ); ?>
     </div>
     <?php }?>
     
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->billing->city; ?>, <?php echo $this->user->billing->state; ?> <?php echo $this->user->billing->zip; ?>
+    	<?php echo htmlspecialchars( $this->user->billing->city, ENT_QUOTES ); ?>, <?php echo htmlspecialchars( $this->user->billing->state, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->billing->zip, ENT_QUOTES ); ?>
     </div>
     
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->billing->country_name; ?>
+    	<?php echo htmlspecialchars( $this->user->billing->country_name, ENT_QUOTES ); ?>
     </div>
     
     <?php if( strlen( $this->user->billing->phone ) > 0 ){ ?>
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->billing->phone; ?>
+    	<?php echo htmlspecialchars( $this->user->billing->phone, ENT_QUOTES ); ?>
     </div>
     <?php }?>
     
@@ -437,36 +437,36 @@
     </div>
     
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->shipping->first_name; ?> <?php echo $this->user->shipping->last_name; ?>
+    	<?php echo htmlspecialchars( $this->user->shipping->first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->shipping->last_name, ENT_QUOTES ); ?>
     </div>
     
     <?php if( strlen( $this->user->shipping->company_name ) > 0 ){ ?>
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->shipping->company_name; ?>
+    	<?php echo htmlspecialchars( $this->user->shipping->company_name, ENT_QUOTES ); ?>
     </div>
     <?php }?>
     
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->shipping->address_line_1; ?>
+    	<?php echo htmlspecialchars( $this->user->shipping->address_line_1, ENT_QUOTES ); ?>
     </div>
     
     <?php if( strlen( $this->user->shipping->address_line_2 ) > 0 ){ ?>
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->shipping->address_line_2; ?>
+    	<?php echo htmlspecialchars( $this->user->shipping->address_line_2, ENT_QUOTES ); ?>
     </div>
     <?php }?>
     
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->shipping->city; ?>, <?php echo $this->user->shipping->state; ?> <?php echo $this->user->shipping->zip; ?>
+    	<?php echo htmlspecialchars( $this->user->shipping->city, ENT_QUOTES ); ?>, <?php echo htmlspecialchars( $this->user->shipping->state, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->shipping->zip, ENT_QUOTES ); ?>
     </div>
     
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->shipping->country_name; ?>
+    	<?php echo htmlspecialchars( $this->user->shipping->country_name, ENT_QUOTES ); ?>
     </div>
     
     <?php if( strlen( $this->user->shipping->phone ) > 0 ){ ?>
     <div class="ec_cart_input_row">
-    	<?php echo $this->user->shipping->phone; ?>
+    	<?php echo htmlspecialchars( $this->user->shipping->phone, ENT_QUOTES ); ?>
     </div>
     <?php }?>
     

@@ -84,7 +84,7 @@ class ec_accountpage{
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_account_page.php' );
 		echo "<input type=\"hidden\" name=\"ec_account_base_path\" id=\"ec_account_base_path\" value=\"" . plugins_url( ) . "\" />";
 		echo "<input type=\"hidden\" name=\"ec_account_session_id\" id=\"ec_account_session_id\" value=\"" . session_id() . "\" />";
-		echo "<input type=\"hidden\" name=\"ec_account_email\" id=\"ec_account_email\" value=\"" . $this->user_email . "\" />";
+		echo "<input type=\"hidden\" name=\"ec_account_email\" id=\"ec_account_email\" value=\"" . htmlspecialchars( $this->user_email, ENT_QUOTES ) . "\" />";
 		
 		$page_name = "";
 		if( isset( $_GET['ec_page'] ) )
@@ -394,19 +394,19 @@ class ec_accountpage{
 	}
 	
 	public function display_account_personal_information_first_name_input( ){
-		echo "<input type=\"text\" name=\"ec_account_personal_information_first_name\" id=\"ec_account_personal_information_first_name\" class=\"ec_account_personal_information_input_field\" value=\"" . $this->user->first_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_personal_information_first_name\" id=\"ec_account_personal_information_first_name\" class=\"ec_account_personal_information_input_field\" value=\"" . htmlspecialchars( $this->user->first_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_personal_information_last_name_input( ){
-		echo "<input type=\"text\" name=\"ec_account_personal_information_last_name\" id=\"ec_account_personal_information_last_name\" class=\"ec_account_personal_information_input_field\" value=\"" . $this->user->last_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_personal_information_last_name\" id=\"ec_account_personal_information_last_name\" class=\"ec_account_personal_information_input_field\" value=\"" . htmlspecialchars( $this->user->last_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_personal_information_zip_input( ){
-		echo "<input type=\"text\" name=\"ec_account_personal_information_zip\" id=\"ec_account_personal_information_zip\" class=\"ec_account_personal_information_input_field\" value=\"" . $this->user->billing->zip . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_personal_information_zip\" id=\"ec_account_personal_information_zip\" class=\"ec_account_personal_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->zip, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_personal_information_email_input( ){
-		echo "<input type=\"email\" name=\"ec_account_personal_information_email\" id=\"ec_account_personal_information_email\" class=\"ec_account_personal_information_input_field\" value=\"" . $this->user->email . "\" />";
+		echo "<input type=\"email\" name=\"ec_account_personal_information_email\" id=\"ec_account_personal_information_email\" class=\"ec_account_personal_information_input_field\" value=\"" . htmlspecialchars( $this->user->email, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_personal_information_is_subscriber_input( ){
@@ -486,27 +486,27 @@ class ec_accountpage{
 	}
 	
 	public function display_account_billing_information_first_name_input(){
-		echo "<input type=\"text\" name=\"ec_account_billing_information_first_name\" id=\"ec_account_billing_information_first_name\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->first_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_billing_information_first_name\" id=\"ec_account_billing_information_first_name\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->first_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_billing_information_last_name_input(){
-		echo "<input type=\"text\" name=\"ec_account_billing_information_last_name\" id=\"ec_account_billing_information_last_name\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->last_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_billing_information_last_name\" id=\"ec_account_billing_information_last_name\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->last_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_billing_information_company_name_input(){
-		echo "<input type=\"text\" name=\"ec_account_billing_information_company_name\" id=\"ec_account_billing_information_company_name\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->company_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_billing_information_company_name\" id=\"ec_account_billing_information_company_name\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->company_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_billing_information_address_input(){
-		echo "<input type=\"text\" name=\"ec_account_billing_information_address\" id=\"ec_account_billing_information_address\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->address_line_1 . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_billing_information_address\" id=\"ec_account_billing_information_address\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->address_line_1, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_billing_information_address2_input(){
-		echo "<input type=\"text\" name=\"ec_account_billing_information_address2\" id=\"ec_account_billing_information_address2\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->address_line_2 . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_billing_information_address2\" id=\"ec_account_billing_information_address2\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->address_line_2, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_billing_information_city_input(){
-		echo "<input type=\"text\" name=\"ec_account_billing_information_city\" id=\"ec_account_billing_information_city\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->city . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_billing_information_city\" id=\"ec_account_billing_information_city\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->city, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_billing_information_state_input(){
@@ -573,7 +573,7 @@ class ec_accountpage{
 			echo "</select>";
 			
 			// DISPLAY STATE TEXT INPUT	
-			echo "<input type=\"text\" name=\"ec_account_billing_information_state\" id=\"ec_account_billing_information_state\" class=\"ec_account_billing_information_input_field\" value=\"" . $selected_state . "\"";
+			echo "<input type=\"text\" name=\"ec_account_billing_information_state\" id=\"ec_account_billing_information_state\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $selected_state, ENT_QUOTES ) . "\"";
 			if( $state_found ){
 				echo " style=\"display:none;\"";
 			}
@@ -595,14 +595,14 @@ class ec_accountpage{
 				}
 				echo "</select>";
 			}else{
-				echo "<input type=\"text\" name=\"ec_account_billing_information_state\" id=\"ec_account_billing_information_state\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->state . "\" />";
+				echo "<input type=\"text\" name=\"ec_account_billing_information_state\" id=\"ec_account_billing_information_state\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->state, ENT_QUOTES ) . "\" />";
 			}
 		}// Close if/else for state display type
 		
 	}
 	
 	public function display_account_billing_information_zip_input(){
-		echo "<input type=\"text\" name=\"ec_account_billing_information_zip\" id=\"ec_account_billing_information_zip\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->zip . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_billing_information_zip\" id=\"ec_account_billing_information_zip\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->zip, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_billing_information_country_input(){
@@ -620,12 +620,12 @@ class ec_accountpage{
 			}
 			echo "</select>";
 		}else{
-			echo "<input type=\"text\" name=\"ec_account_billing_information_country\" id=\"ec_account_billing_information_country\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->country . "\" />";
+			echo "<input type=\"text\" name=\"ec_account_billing_information_country\" id=\"ec_account_billing_information_country\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->country, ENT_QUOTES ) . "\" />";
 		}
 	}
 	
 	public function display_account_billing_information_phone_input(){
-		echo "<input type=\"text\" name=\"ec_account_billing_information_phone\" id=\"ec_account_billing_information_phone\" class=\"ec_account_billing_information_input_field\" value=\"" . $this->user->billing->phone . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_billing_information_phone\" id=\"ec_account_billing_information_phone\" class=\"ec_account_billing_information_input_field\" value=\"" . htmlspecialchars( $this->user->billing->phone, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_billing_information_update_button( $button_text ){
@@ -658,23 +658,23 @@ class ec_accountpage{
 	}
 	
 	public function display_account_shipping_information_first_name_input(){
-		echo "<input type=\"text\" name=\"ec_account_shipping_information_first_name\" id=\"ec_account_shipping_information_first_name\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->first_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_shipping_information_first_name\" id=\"ec_account_shipping_information_first_name\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->first_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_shipping_information_last_name_input(){
-		echo "<input type=\"text\" name=\"ec_account_shipping_information_last_name\" id=\"ec_account_shipping_information_last_name\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->last_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_shipping_information_last_name\" id=\"ec_account_shipping_information_last_name\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->last_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_shipping_information_address_input(){
-		echo "<input type=\"text\" name=\"ec_account_shipping_information_address\" id=\"ec_account_shipping_information_address\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->address_line_1 . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_shipping_information_address\" id=\"ec_account_shipping_information_address\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->address_line_1, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_shipping_information_address2_input(){
-		echo "<input type=\"text\" name=\"ec_account_shipping_information_address2\" id=\"ec_account_shipping_information_address2\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->address_line_2 . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_shipping_information_address2\" id=\"ec_account_shipping_information_address2\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->address_line_2, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_shipping_information_city_input(){
-		echo "<input type=\"text\" name=\"ec_account_shipping_information_city\" id=\"ec_account_shipping_information_city\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->city . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_shipping_information_city\" id=\"ec_account_shipping_information_city\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->city, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_shipping_information_state_input(){
@@ -741,7 +741,7 @@ class ec_accountpage{
 			echo "</select>";
 			
 			// DISPLAY STATE TEXT INPUT	
-			echo "<input type=\"text\" name=\"ec_account_shipping_information_state\" id=\"ec_account_shipping_information_state\" class=\"ec_account_shipping_information_input_field\" value=\"" . $selected_state . "\"";
+			echo "<input type=\"text\" name=\"ec_account_shipping_information_state\" id=\"ec_account_shipping_information_state\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $selected_state, ENT_QUOTES ) . "\"";
 			if( $state_found ){
 				echo " style=\"display:none;\"";
 			}
@@ -763,14 +763,14 @@ class ec_accountpage{
 				}
 				echo "</select>";
 			}else{
-				echo "<input type=\"text\" name=\"ec_account_shipping_information_state\" id=\"ec_account_shipping_information_state\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->state . "\" />";
+				echo "<input type=\"text\" name=\"ec_account_shipping_information_state\" id=\"ec_account_shipping_information_state\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->state, ENT_QUOTES ) . "\" />";
 			}
 		}// Close if/else for state display type
 		
 	}
 	
 	public function display_account_shipping_information_zip_input(){
-		echo "<input type=\"text\" name=\"ec_account_shipping_information_zip\" id=\"ec_account_shipping_information_zip\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->zip . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_shipping_information_zip\" id=\"ec_account_shipping_information_zip\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->zip, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_shipping_information_country_input(){
@@ -788,12 +788,12 @@ class ec_accountpage{
 			}
 			echo "</select>";
 		}else{
-			echo "<input type=\"text\" name=\"ec_account_shipping_information_country\" id=\"ec_account_shipping_information_country\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->country . "\" />";
+			echo "<input type=\"text\" name=\"ec_account_shipping_information_country\" id=\"ec_account_shipping_information_country\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->country, ENT_QUOTES ) . "\" />";
 		}
 	}
 	
 	public function display_account_shipping_information_phone_input(){
-		echo "<input type=\"text\" name=\"ec_account_shipping_information_phone\" id=\"ec_account_shipping_information_phone\" class=\"ec_account_shipping_information_input_field\" value=\"" . $this->user->shipping->phone . "\" />";
+		echo "<input type=\"text\" name=\"ec_account_shipping_information_phone\" id=\"ec_account_shipping_information_phone\" class=\"ec_account_shipping_information_input_field\" value=\"" . htmlspecialchars( $this->user->shipping->phone, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function display_account_shipping_information_update_button( $button_text ){

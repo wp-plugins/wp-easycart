@@ -47,7 +47,7 @@
 
 <p class="ec_cart_success_info"><strong><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_order_number_is' ); ?> <?php $this->display_order_number_link( $order_id ); ?></strong></p>
 
-<p class="ec_cart_success_info"><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_will_receive_email' ); ?> <?php echo $order->user_email; ?></p>
+<p class="ec_cart_success_info"><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_will_receive_email' ); ?> <?php echo htmlspecialchars( $order->user_email, ENT_QUOTES); ?></p>
 
 <p class="ec_cart_success_info"><?php $this->display_print_receipt_link( $GLOBALS['language']->get_text( 'cart_success', 'cart_success_print_receipt_text' ), $order_id ); ?></p>
 

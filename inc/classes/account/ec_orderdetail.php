@@ -355,7 +355,7 @@ class ec_orderdetail{
 	
 	public function display_gift_card_message( $label_text ){
 		if( $this->is_giftcard )
-			echo $label_text . $this->gift_card_message;
+			echo $label_text . htmlspecialchars( $this->gift_card_message, ENT_QUOTES );
 	}
 	
 	public function has_gift_card_from_name( ){
@@ -367,7 +367,7 @@ class ec_orderdetail{
 	
 	public function display_gift_card_from_name( $label_text ){
 		if( $this->is_giftcard )
-			echo $label_text . $this->gift_card_from_name;
+			echo $label_text . htmlspecialchars( $this->gift_card_from_name, ENT_QUOTES );
 	}
 	
 	public function has_gift_card_to_name( ){
@@ -379,7 +379,7 @@ class ec_orderdetail{
 	
 	public function display_gift_card_to_name( $label_text ){
 		if( $this->is_giftcard )
-			echo $label_text . $this->gift_card_to_name;
+			echo $label_text . htmlspecialchars( $this->gift_card_to_name, ENT_QUOTES );
 	}
 	
 	public function display_gift_card_id( $label_text ){

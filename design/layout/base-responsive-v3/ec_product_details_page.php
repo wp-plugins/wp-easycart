@@ -519,6 +519,7 @@ function ec_admin_save_product_details_options( ){
             <?php /* PRODUCT ADVANCED OPTIONS */ ?>
             <?php 
 			
+			$add_price_grid = 0;
 			$add_order_price_grid = 0;
 			$override_price_grid = -1;
 			if( $this->product->use_advanced_optionset && count( $this->product->advanced_optionsets ) > 0 ){ ?>
@@ -614,10 +615,15 @@ function ec_admin_save_product_details_options( ){
 						foreach( $optionitems as $optionitem ){
 						
 						if( $optionitem->optionitem_initial_value > 0 ){	
-							if( $optionitem->optionitem_price_override >= 0 ){
+							if( $optionitem->optionitem_price >= 0 ){
+								$add_price_grid = $add_price_grid + $optionitem->optionitem_price;
+							
+							}else if( $optionitem->optionitem_price_override >= 0 ){
 								$override_price_grid = $optionitem->optionitem_price_override;
+							
 							}else if( $optionitem->optionitem_price_onetime > 0 ){
 								$add_order_price_grid = $add_order_price_grid + $optionitem->optionitem_price_onetime;
+							
 							}
 						}
 						?>
@@ -721,7 +727,7 @@ function ec_admin_save_product_details_options( ){
                 
                 <?php /* PRICING AREA FOR OPTIONS */ ?>
 				<?php if( $this->product->has_options || $this->product->use_advanced_optionset ){ ?>
-                <div class="ec_details_final_price">Your Price: <?php echo $GLOBALS['currency']->get_symbol( ); ?><span id="ec_final_price"><?php if( $override_price_grid > -1 ){ echo $GLOBALS['currency']->get_number_only( $override_price_grid ); }else{ echo $GLOBALS['currency']->get_number_only( $this->product->price ); } ?></span><span class="ec_details_hidden_base_price" id="ec_base_price"><?php echo $this->product->price; ?></span></div>
+                <div class="ec_details_final_price">Your Price: <?php echo $GLOBALS['currency']->get_symbol( ); ?><span id="ec_final_price"><?php if( $override_price_grid > -1 ){ echo $GLOBALS['currency']->get_number_only( $override_price_grid ); }else if( $add_price_grid > 0 ){ echo $GLOBALS['currency']->get_number_only( $this->product->price + $add_price_grid ); }else{ echo $GLOBALS['currency']->get_number_only( $this->product->price ); } ?></span><span class="ec_details_hidden_base_price" id="ec_base_price"><?php echo $this->product->price; ?></span></div>
 				<?php } ?>
                 
                 <?php /* OUT OF STOCK INFO (NO ADD TO CART CASE) */ ?>
@@ -1792,6 +1798,10 @@ function ec_details_advanced_adjust_price( ){
 		
 		if( jQuery( this ).val( ) > 0 ){
 		
+			if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
+				textarea_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
+			}
+		
 			if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 				textarea_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 			}
@@ -1820,10 +1830,8 @@ function ec_details_advanced_adjust_price( ){
 	}
 	
 	if( price_multiplier > 1 && override_price > -1 ){
-		console.log( "Order Price: " + override_price + ", Order Add = " + order_price + ", Price Multiplier = " + price_multiplier );
 		jQuery( '#ec_final_price' ).html( ec_details_format_money( ( Number( override_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
 	}else if( price_multiplier > 1 ){
-		console.log( "Order Price: " + base_price + ", Order Add = " + order_price + ", Price Multiplier = " + price_multiplier );
 		jQuery( '#ec_final_price' ).html( ec_details_format_money( ( Number( base_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
 	}
 	

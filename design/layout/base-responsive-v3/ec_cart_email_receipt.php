@@ -51,7 +51,7 @@
 
 			<td colspan='4' align='left' class='style22'>
 
-				<p><br><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_1" ) . " " . $this->user->billing->first_name . " " . $this->user->billing->last_name; ?>:</p>
+				<p><br><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_1" ) . " " . htmlspecialchars( $this->user->billing->first_name, ENT_QUOTES ) . " " . htmlspecialchars( $this->user->billing->last_name, ENT_QUOTES ); ?>:</p>
 
                 <p><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_2" ); ?> <strong><?php echo $this->order_id; ?></strong></p>
 
@@ -108,33 +108,33 @@
 
                     <tr>
 
-                    	<td><span class='style22'><?php echo $this->user->billing->first_name; ?> <?php echo $this->user->billing->last_name; ?></span></td>
+                    	<td><span class='style22'><?php echo htmlspecialchars( $this->user->billing->first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->billing->last_name, ENT_QUOTES ); ?></span></td>
 
                         <td>&nbsp;</td>
 
-                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->first_name; ?> <?php echo $this->user->shipping->last_name; ?><?php }?></span></td>
+                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $this->user->shipping->first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->shipping->last_name, ENT_QUOTES ); ?><?php }?></span></td>
 
                     </tr>
                     
                     <?php if( $this->user->billing->company_name != "" || ( get_option( 'ec_option_use_shipping' ) && $this->user->shipping->company_name != "" ) ){ ?>
                     <tr>
 
-                    	<td><span class='style22'><?php echo $this->user->billing->company_name; ?></span></td>
+                    	<td><span class='style22'><?php echo htmlspecialchars( $this->user->billing->company_name, ENT_QUOTES ); ?></span></td>
 
                         <td>&nbsp;</td>
 
-                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->company_name; ?><?php }?></span></td>
+                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $this->user->shipping->company_name, ENT_QUOTES ); ?><?php }?></span></td>
 
                     </tr>
                     <?php }?>
 
                     <tr>
 
-                    	<td><span class='style22'><?php echo $this->user->billing->address_line_1; ?></span></td>
+                    	<td><span class='style22'><?php echo htmlspecialchars( $this->user->billing->address_line_1, ENT_QUOTES ); ?></span></td>
 
                         <td>&nbsp;</td>
 
-                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->address_line_1; ?><?php }?></span></td>
+                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $this->user->shipping->address_line_1, ENT_QUOTES ); ?><?php }?></span></td>
 
                     </tr>
 
@@ -142,11 +142,11 @@
 
                     <tr>
 
-                      <td class='style22'><?php echo $this->user->billing->address_line_2; ?></td>
+                      <td class='style22'><?php echo htmlspecialchars( $this->user->billing->address_line_2, ENT_QUOTES ); ?></td>
 
                       <td>&nbsp;</td>
 
-                      <td class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){ ?><?php echo $this->user->shipping->address_line_2; ?><?php }?></td>
+                      <td class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){ ?><?php echo htmlspecialchars( $this->user->shipping->address_line_2, ENT_QUOTES ); ?><?php }?></td>
 
                     </tr>
 
@@ -154,31 +154,31 @@
 
                     <tr>
 
-                    	<td><span class='style22'><?php echo $this->user->billing->city; ?>, <?php echo $this->user->billing->state; ?> <?php echo $this->user->billing->zip; ?></span></td>
+                    	<td><span class='style22'><?php echo htmlspecialchars( $this->user->billing->city, ENT_QUOTES ); ?>, <?php echo htmlspecialchars( $this->user->billing->state, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->billing->zip, ENT_QUOTES ); ?></span></td>
 
                         <td>&nbsp;</td>
 
-                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->city; ?>, <?php echo $this->user->shipping->state; ?> <?php echo $this->user->shipping->zip; ?><?php }?></span></td>
+                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $this->user->shipping->city, ENT_QUOTES ); ?>, <?php echo htmlspecialchars( $this->user->shipping->state, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->shipping->zip, ENT_QUOTES ); ?><?php }?></span></td>
 
                     </tr>
 
                     <tr>
 
-                    	<td><span class='style22'><?php echo $this->user->billing->country_name; ?></span></td>
+                    	<td><span class='style22'><?php echo htmlspecialchars( $this->user->billing->country_name, ENT_QUOTES ); ?></span></td>
 
                         <td>&nbsp;</td>
 
-                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->country_name; ?><?php }?></span></td>
+                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $this->user->shipping->country_name, ENT_QUOTES ); ?><?php }?></span></td>
 
                     </tr>
 
                     <tr>
 
-                    	<td><span class='style22'><?php echo $this->user->billing->phone; ?></span></td>
+                    	<td><span class='style22'><?php echo htmlspecialchars( $this->user->billing->phone, ENT_QUOTES ); ?></span></td>
 
                         <td>&nbsp;</td>
 
-                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $this->user->shipping->phone; ?><?php }?></span></td>
+                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $this->user->shipping->phone, ENT_QUOTES ); ?><?php }?></span></td>
 
                     </tr>
 
@@ -277,7 +277,7 @@
                                 
                                 	<td class='style22'>
 
-                      					<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_message' ) . $this->cart->cart[$i]->gift_card_message; ?>
+                      					<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_message' ) . htmlspecialchars( $this->cart->cart[$i]->gift_card_message, ENT_QUOTES ); ?>
 
                     				</td>
                                     
@@ -291,7 +291,7 @@
                                 	
                                     <td class='style22'>
 
-										<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_from' ) . $this->cart->cart[$i]->gift_card_from_name; ?>
+										<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_from' ) . htmlspecialchars( $this->cart->cart[$i]->gift_card_from_name, ENT_QUOTES ); ?>
 
                     				</td>
                                     
@@ -305,7 +305,7 @@
                                 	
                                     <td class='style22'>
 
-                      					<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_to' ) . $this->cart->cart[$i]->gift_card_to_name; ?>
+                      					<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_gift_to' ) . htmlspecialchars( $this->cart->cart[$i]->gift_card_to_name, ENT_QUOTES ); ?>
 
                     				</td>
                                     
@@ -358,7 +358,7 @@
 
 										}else{
 
-											echo "<tr><td><span class=\"ec_option_label\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $advanced_option->option_value . $advanced_option->option_price_change . "</span></td></tr>";
+											echo "<tr><td><span class=\"ec_option_label\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . htmlspecialchars( $advanced_option->option_value, ENT_QUOTES ) . $advanced_option->option_price_change . "</span></td></tr>";
 
 										}
 
@@ -583,7 +583,7 @@
 
                     <h4><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_title' ); ?></h4>
 
-                    <p><?php echo nl2br( $this->order_customer_notes ); ?></p>
+                    <p><?php echo nl2br( htmlspecialchars( $this->order_customer_notes, ENT_QUOTES ) ); ?></p>
 
                     <br>
 

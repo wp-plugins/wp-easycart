@@ -16,16 +16,13 @@ class ec_stripe extends ec_gateway{
 		$gateway_response = $this->get_gateway_response( $gateway_url );
 		
 		if( !$gateway_response ){
-			error_log( "error in process_credit_card, could not get a response from the server." );
 			return false;
 		}else{
-			$this->handle_gateway_response( $gateway_response );
 			if( $this->is_success )
 				return true;
-			else{
-				error_log( "error in process_credit_card from processor: " . $this->error_message );
+			else
 				return false;
-			}
+			
 		}
 	}
 	
@@ -38,7 +35,6 @@ class ec_stripe extends ec_gateway{
 			$this->mysqli->update_order_stripe_charge_id( $this->order_id, $response->id );
 			return true;
 		}else{
-			error_log( "error in process_credit_card from processor: " . $this->error_message );
 			return false;
 		}
 			

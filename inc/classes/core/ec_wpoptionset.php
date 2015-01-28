@@ -28,7 +28,7 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-install-group');
 		
 		//Use this to track the db																					
-		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_28' );
+		array_push($this->wp_option_names, 'ec_option_db_version');							array_push($this->wp_option_defaults, '1_29' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_show_lite_message');					array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
@@ -336,6 +336,12 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_moneris_ca_test_mode');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_moneris_us_store_id');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_moneris_us_api_token');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_moneris_us_test_mode');				array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_payment_express_username');			array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_payment_express_password');			array_push($this->wp_option_defaults, '' );
@@ -429,6 +435,12 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_sagepayus_mkey');						array_push($this->wp_option_defaults, 'A1B2C3D4E5F6' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_sagepayus_application_id');			array_push($this->wp_option_defaults, 'SAGETEST1' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_securenet_id');						array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_securenet_secure_key');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_securenet_use_sandbox');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_securepay_merchant_id');				array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');

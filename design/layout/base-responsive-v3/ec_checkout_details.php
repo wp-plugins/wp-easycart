@@ -34,7 +34,7 @@
     </div>
     
     <div class="ec_cart_input_row">
-        <?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_account_information_text' ); ?> <?php echo $this->user->first_name; ?> <?php echo $this->user->last_name; ?>, <a href="<?php echo $this->cart_page . $this->permalink_divider . "ec_cart_action=logout"; ?>"><?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_account_information_logout_link' ); ?></a> <?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_account_information_text2' ); ?>
+        <?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_account_information_text' ); ?> <?php echo htmlspecialchars( $this->user->first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $this->user->last_name, ENT_QUOTES ); ?>, <a href="<?php echo $this->cart_page . $this->permalink_divider . "ec_cart_action=logout"; ?>"><?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_account_information_logout_link' ); ?></a> <?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_account_information_text2' ); ?>
     </div>
     <?php }?>
 
@@ -289,7 +289,7 @@
     </div>
     <div class="ec_cart_input_row">
     	<?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_message' ); ?>
-        <textarea name="ec_order_notes" id="ec_order_notes"><?php if( isset( $_SESSION['ec_order_notes'] ) ){ echo $_SESSION['ec_order_notes']; } ?></textarea>
+        <textarea name="ec_order_notes" id="ec_order_notes"><?php if( isset( $_SESSION['ec_order_notes'] ) ){ echo htmlspecialchars( $_SESSION['ec_order_notes'], ENT_QUOTES ); } ?></textarea>
     </div>
     <?php }?>
 </div>

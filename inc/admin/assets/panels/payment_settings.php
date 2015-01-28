@@ -106,6 +106,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
             	<li>Eway</li>
             	<li>GoeMerchant</li>
             	<li>Moneris Canada</li>
+            	<li>Moneris USA</li>
             	<li>Payment Express PxPost</li>
             	<li>PayPal PayFlow Pro</li>
             	<li>PayPal Payments Pro</li>
@@ -113,6 +114,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
             	<li>Realex</li>
             	<li>Sagepay</li>
             	<li>Sagepay US</li>
+            	<li>SecureNet</li>
             	<li>SecurePay</li>
             	<li>Stripe</li>
             	<li>Virtual Merchant</li>
@@ -133,6 +135,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "firstdata" ){ echo '_inactive'; } ?>" id="firstdata_title">First Data Global Gateway e4</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "goemerchant" ){ echo '_inactive'; } ?>" id="goemerchant_title">GoeMerchant</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "moneris_ca" ){ echo '_inactive'; } ?>" id="moneris_ca_title">Moneris Canada</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "moneris_us" ){ echo '_inactive'; } ?>" id="moneris_us_title">Moneris USA</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paymentexpress" ){ echo '_inactive'; } ?>" id="paymentexpress_title">Payment Express PxPost</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paypal_pro" ){ echo '_inactive'; } ?>" id="paypal_pro_title">PayPal PayFlow Pro</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paypal_payments_pro" ){ echo '_inactive'; } ?>" id="paypal_payments_pro_title">PayPal Payments Pro</div>
@@ -140,6 +143,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "realex" ){ echo '_inactive'; } ?>" id="realex_title">Realex</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "sagepay" ){ echo '_inactive'; } ?>" id="sagepay_title">Sagepay</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "sagepayus" ){ echo '_inactive'; } ?>" id="sagepayus_title">Sagepay US</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "securenet" ){ echo '_inactive'; } ?>" id="securenet_title">SecureNet</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "securepay" ){ echo '_inactive'; } ?>" id="securepay_title">SecurePay</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "stripe" ){ echo '_inactive'; } ?>" id="stripe_title">Stripe</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "virtualmerchant" ){ echo '_inactive'; } ?>" id="virtualmerchant_title">Virtual Merchant</div>
@@ -153,6 +157,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
                 <option value="firstdata" <?php if( get_option('ec_option_payment_process_method') == "firstdata" ){ echo " selected"; } ?>>First Data Global Gateway e4</option>
                 <option value="goemerchant" <?php if( get_option('ec_option_payment_process_method') == "goemerchant" ){ echo " selected"; } ?>>GoeMerchant</option>
                 <option value="moneris_ca" <?php if( get_option('ec_option_payment_process_method') == "moneris_ca" ){ echo " selected"; } ?>>Moneris Canada</option>
+                <option value="moneris_us" <?php if( get_option('ec_option_payment_process_method') == "moneris_us" ){ echo " selected"; } ?>>Moneris USA</option>
                 <option value="paymentexpress" <?php if( get_option('ec_option_payment_process_method') == "paymentexpress" ){ echo " selected"; } ?>>Payment Express PxPost</option>
                 <option value="paypal_pro" <?php if( get_option('ec_option_payment_process_method') == "paypal_pro" ){ echo " selected"; } ?>>PayPal PayFlow Pro</option>
                 <option value="paypal_payments_pro" <?php if( get_option('ec_option_payment_process_method') == "paypal_payments_pro" ){ echo " selected"; } ?>>PayPal Payments Pro</option>
@@ -160,6 +165,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
                 <option value="realex" <?php if( get_option('ec_option_payment_process_method') == "realex" ){ echo " selected"; } ?>>Realex</option>
                 <option value="sagepay" <?php if( get_option('ec_option_payment_process_method') == "sagepay" ){ echo " selected"; } ?>>Sagepay</option>
                 <option value="sagepayus" <?php if( get_option('ec_option_payment_process_method') == "sagepayus" ){ echo " selected"; } ?>>Sagepay US</option>
+                <option value="securenet" <?php if( get_option('ec_option_payment_process_method') == "securenet" ){ echo " selected"; } ?>>SecureNet</option>
                 <option value="securepay" <?php if( get_option('ec_option_payment_process_method') == "securepay" ){ echo " selected"; } ?>>SecurePay</option>
                 <option value="stripe" <?php if( get_option('ec_option_payment_process_method') == "stripe" ){ echo " selected"; } ?>>Stripe</option>
                 <option value="virtualmerchant" <?php if( get_option('ec_option_payment_process_method') == "virtualmerchant" ){ echo " selected"; } ?>>Virtual Merchant</option>
@@ -172,6 +178,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/firstdata.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/goemerchant.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/moneris_ca.php" ); ?>
+        <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/moneris_us.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/paymentexpress.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/payflowpro.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/paymentspro.php" ); ?>
@@ -179,6 +186,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/realex.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/sagepay.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/sagepayus.php" ); ?>
+        <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/securenet.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/securepay.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/stripe.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/virtualmerchant.php" ); ?>

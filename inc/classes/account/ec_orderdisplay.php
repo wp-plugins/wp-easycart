@@ -304,67 +304,67 @@ class ec_orderdisplay{
 	}
 	
 	public function display_order_billing_first_name( ){
-		echo $this->billing_first_name;
+		echo htmlspecialchars( $this->billing_first_name, ENT_QUOTES );
 	}
 	
 	public function display_order_billing_last_name( ){
-		echo $this->billing_last_name;
+		echo htmlspecialchars( $this->billing_last_name, ENT_QUOTES );
 	}
 	
 	public function display_order_billing_address_line_1( ){
-		echo $this->billing_address_line_1;
+		echo htmlspecialchars( $this->billing_address_line_1, ENT_QUOTES );
 	}
 	
 	public function display_order_billing_city( ){
-		echo $this->billing_city;
+		echo htmlspecialchars( $this->billing_city, ENT_QUOTES );
 	}
 	
 	public function display_order_billing_state( ){
-		echo $this->billing_state;
+		echo htmlspecialchars( $this->billing_state, ENT_QUOTES );
 	}
 	
 	public function display_order_billing_zip( ){
-		echo $this->billing_zip;
+		echo htmlspecialchars( $this->billing_zip, ENT_QUOTES );
 	}
 	
 	public function display_order_billing_country( ){
-		echo $this->billing_country_name;
+		echo htmlspecialchars( $this->billing_country_name, ENT_QUOTES );
 	}
 	
 	public function display_order_billing_phone( ){
-		echo $this->billing_phone;
+		echo htmlspecialchars( $this->billing_phone, ENT_QUOTES );
 	}
 	
 	public function display_order_shipping_first_name( ){
-		echo $this->shipping_first_name;
+		echo htmlspecialchars( $this->shipping_first_name, ENT_QUOTES );
 	}
 	
 	public function display_order_shipping_last_name( ){
-		echo $this->shipping_last_name;
+		echo htmlspecialchars( $this->shipping_last_name, ENT_QUOTES );
 	}
 	
 	public function display_order_shipping_address_line_1( ){
-		echo $this->shipping_address_line_1;
+		echo htmlspecialchars( $this->shipping_address_line_1, ENT_QUOTES );
 	}
 	
 	public function display_order_shipping_city( ){
-		echo $this->shipping_city;
+		echo htmlspecialchars( $this->shipping_city, ENT_QUOTES );
 	}
 	
 	public function display_order_shipping_state( ){
-		echo $this->shipping_state;
+		echo htmlspecialchars( $this->shipping_state, ENT_QUOTES );
 	}
 	
 	public function display_order_shipping_zip( ){
-		echo $this->shipping_zip;
+		echo htmlspecialchars( $this->shipping_zip, ENT_QUOTES );
 	}
 	
 	public function display_order_shipping_country( ){
-		echo $this->shipping_country_name;
+		echo htmlspecialchars( $this->shipping_country_name, ENT_QUOTES );
 	}
 	
 	public function display_order_shipping_phone( ){
-		echo $this->shipping_phone;
+		echo htmlspecialchars( $this->shipping_phone, ENT_QUOTES );
 	}
 	
 	public function display_payment_method( ){

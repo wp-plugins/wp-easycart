@@ -58,7 +58,7 @@
     <td colspan='4' align='left' class='style22'><p><br>
 
 
-        <?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_1" ) . " " . $order->billing_first_name . " " . $order->billing_last_name; ?>:</p>
+        <?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_1" ) . " " . htmlspecialchars( $order->billing_first_name, ENT_QUOTES ) . " " . htmlspecialchars( $order->billing_last_name, ENT_QUOTES ); ?>:</p>
 
 
       <p><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_2" ); ?> <strong><?php echo $order_id; ?></strong></p>
@@ -106,13 +106,13 @@
         <tr>
 
 
-          <td><span class='style22'><?php echo $order->billing_first_name; ?> <?php echo $order->billing_last_name; ?></span></td>
+          <td><span class='style22'><?php echo htmlspecialchars( $order->billing_first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $order->billing_last_name, ENT_QUOTES ); ?></span></td>
 
 
           <td>&nbsp;</td>
 
 
-          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_first_name; ?> <?php echo $order->shipping_last_name; ?><?php }?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $order->shipping_first_name, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $order->shipping_last_name, ENT_QUOTES ); ?><?php }?></span></td>
 
 
         </tr>
@@ -122,13 +122,13 @@
         <tr>
 
 
-          <td><span class='style22'><?php echo $order->billing_company_name; ?></span></td>
+          <td><span class='style22'><?php echo htmlspecialchars( $order->billing_company_name, ENT_QUOTES ); ?></span></td>
 
 
           <td>&nbsp;</td>
 
 
-          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_company_name; ?><?php }?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $order->shipping_company_name, ENT_QUOTES ); ?><?php }?></span></td>
 
 
         </tr>
@@ -138,13 +138,13 @@
         <tr>
 
 
-          <td><span class='style22'><?php echo $order->billing_address_line_1; ?></span></td>
+          <td><span class='style22'><?php echo htmlspecialchars( $order->billing_address_line_1, ENT_QUOTES ); ?></span></td>
 
 
           <td>&nbsp;</td>
 
 
-          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_address_line_1; ?><?php }?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $order->shipping_address_line_1, ENT_QUOTES ); ?><?php }?></span></td>
 
 
         </tr>
@@ -156,13 +156,13 @@
         <tr>
 
 
-          <td><span class='style22'><?php echo $order->billing_address_line_2; ?></span></td>
+          <td><span class='style22'><?php echo htmlspecialchars( $order->billing_address_line_2, ENT_QUOTES ); ?></span></td>
 
 
           <td>&nbsp;</td>
 
 
-          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_address_line_2; ?><?php }?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $order->shipping_address_line_2, ENT_QUOTES ); ?><?php }?></span></td>
 
 
         </tr>
@@ -174,13 +174,13 @@
         <tr>
 
 
-          <td><span class='style22'><?php echo $order->billing_city; ?>, <?php echo $order->billing_state; ?> <?php echo $order->billing_zip; ?></span></td>
+          <td><span class='style22'><?php echo htmlspecialchars( $order->billing_city, ENT_QUOTES ); ?>, <?php echo htmlspecialchars( $order->billing_state, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $order->billing_zip, ENT_QUOTES ); ?></span></td>
 
 
           <td>&nbsp;</td>
 
 
-          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_city; ?>, <?php echo $order->shipping_state; ?> <?php echo $order->shipping_zip; ?><?php }?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $order->shipping_city, ENT_QUOTES ); ?>, <?php echo htmlspecialchars( $order->shipping_state, ENT_QUOTES ); ?> <?php echo htmlspecialchars( $order->shipping_zip, ENT_QUOTES ); ?><?php }?></span></td>
 
 
         </tr>
@@ -189,13 +189,13 @@
         <tr>
 
 
-          <td><span class='style22'><?php echo $order->billing_country; ?></span></td>
+          <td><span class='style22'><?php echo htmlspecialchars( $order->billing_country, ENT_QUOTES ); ?></span></td>
 
 
           <td>&nbsp;</td>
 
 
-          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_country; ?><?php }?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $order->shipping_country, ENT_QUOTES ); ?><?php }?></span></td>
 
 
         </tr>
@@ -204,13 +204,13 @@
         <tr>
 
 
-          <td><span class='style22'><?php echo $order->billing_phone; ?></span></td>
+          <td><span class='style22'><?php echo htmlspecialchars( $order->billing_phone, ENT_QUOTES ); ?></span></td>
 
 
           <td>&nbsp;</td>
 
 
-          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo $order->shipping_phone; ?><?php }?></span></td>
+          <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $order->shipping_phone, ENT_QUOTES ); ?><?php }?></span></td>
 
 
         </tr>
@@ -342,7 +342,7 @@
 					}else{
 
 
-						echo "<tr><td><span class=\"ec_option_label\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . $advanced_option->option_value . $advanced_option->option_price_change . "</span></td></tr>";
+						echo "<tr><td><span class=\"ec_option_label\">" . $advanced_option->option_name . ":</span> <span class=\"ec_option_name\">" . htmlspecialchars( $advanced_option->option_value, ENT_QUOTES ) . $advanced_option->option_price_change . "</span></td></tr>";
 
 
 					}
@@ -702,7 +702,7 @@
             <h4><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_order_notes_title' ); ?></h4>
 
 
-            <p><?php echo nl2br( $order->order_customer_notes ); ?></p>
+            <p><?php echo nl2br( htmlspecialchars( $order->order_customer_notes, ENT_QUOTES ) ); ?></p>
 
 
             <br>

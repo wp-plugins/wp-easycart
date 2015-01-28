@@ -905,7 +905,7 @@ class ec_cartpage{
 				else
 					$selected_country = $this->user->billing->get_value( "country" );
 					
-				echo "<input type=\"text\" name=\"ec_cart_billing_country\" id=\"ec_cart_billing_country\" class=\"ec_cart_billing_input_text\" value=\"" . $selected_country . "\" />";
+				echo "<input type=\"text\" name=\"ec_cart_billing_country\" id=\"ec_cart_billing_country\" class=\"ec_cart_billing_input_text\" value=\"" . htmlspecialchars( $selected_country, ENT_QUOTES ) . "\" />";
 			}
 		}else if( $name == "state" ){
 			
@@ -978,7 +978,7 @@ class ec_cartpage{
 				echo "</select>";
 				
 				// DISPLAY STATE TEXT INPUT	
-				echo "<input type=\"text\" name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\" value=\"" . $selected_state . "\"";
+				echo "<input type=\"text\" name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\" value=\"" . htmlspecialchars( $selected_state, ENT_QUOTES ) . "\"";
 				if( $state_found ){
 					echo " style=\"display:none;\"";
 				}
@@ -1010,7 +1010,7 @@ class ec_cartpage{
 					else
 						$selected_state = $this->user->billing->get_value( "state" );
 						
-					echo "<input type=\"text\" name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\" value=\"" . $selected_state . "\" />";
+					echo "<input type=\"text\" name=\"ec_cart_billing_state\" id=\"ec_cart_billing_state\" class=\"ec_cart_billing_input_text\" value=\"" . htmlspecialchars( $selected_state, ENT_QUOTES ) . "\" />";
 				}
 			}// Close if/else for state display type
 			
@@ -1018,7 +1018,7 @@ class ec_cartpage{
 		
 			$value = $this->user->billing->get_value( $name );
 			
-			echo "<input type=\"text\" name=\"ec_cart_billing_" . $name . "\" id=\"ec_cart_billing_" . $name . "\" class=\"ec_cart_billing_input_text\" value=\"" . $value . "\" />";
+			echo "<input type=\"text\" name=\"ec_cart_billing_" . $name . "\" id=\"ec_cart_billing_" . $name . "\" class=\"ec_cart_billing_input_text\" value=\"" . htmlspecialchars( $value, ENT_QUOTES ) . "\" />";
 			
 		}
 	}
@@ -1088,7 +1088,7 @@ class ec_cartpage{
 				else
 					$selected_country = $this->user->shipping->get_value( "country" );
 					
-				echo "<input type=\"text\" name=\"ec_cart_shipping_country\" id=\"ec_cart_shipping_country\" class=\"ec_cart_shipping_input_text\" value=\"" . $selected_country . "\" />";
+				echo "<input type=\"text\" name=\"ec_cart_shipping_country\" id=\"ec_cart_shipping_country\" class=\"ec_cart_shipping_input_text\" value=\"" . htmlspecialchars( $selected_country, ENT_QUOTES ) . "\" />";
 			}
 		}else if( $name == "state" ){
 			
@@ -1160,7 +1160,7 @@ class ec_cartpage{
 				echo "</select>";
 				
 				// DISPLAY STATE TEXT INPUT	
-				echo "<input type=\"text\" name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\" value=\"" . $selected_state . "\"";
+				echo "<input type=\"text\" name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\" value=\"" . htmlspecialchars( $selected_state, ENT_QUOTES ) . "\"";
 				if( $state_found ){
 					echo " style=\"display:none;\"";
 				}
@@ -1192,7 +1192,7 @@ class ec_cartpage{
 					else
 						$selected_state = $this->user->shipping->get_value( "state" );
 						
-					echo "<input type=\"text\" name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\" value=\"" . $selected_state . "\" />";
+					echo "<input type=\"text\" name=\"ec_cart_shipping_state\" id=\"ec_cart_shipping_state\" class=\"ec_cart_shipping_input_text\" value=\"" . htmlspecialchars( $selected_state, ENT_QUOTES ) . "\" />";
 				}
 				
 			}// Close if/else for state display type
@@ -1200,7 +1200,7 @@ class ec_cartpage{
 		}else{
 			$value = $this->user->shipping->get_value( $name );
 			
-			echo "<input type=\"text\" name=\"ec_cart_shipping_" . $name . "\" id=\"ec_cart_shipping_" . $name . "\" class=\"ec_cart_shipping_input_text\" value=\"" . $value . "\" />";
+			echo "<input type=\"text\" name=\"ec_cart_shipping_" . $name . "\" id=\"ec_cart_shipping_" . $name . "\" class=\"ec_cart_shipping_input_text\" value=\"" . htmlspecialchars( $value, ENT_QUOTES ) . "\" />";
 		}
 	}
 	/* END SHIPPING FUNCTIONS */
@@ -1208,8 +1208,8 @@ class ec_cartpage{
 	/* START SHIPPING METHOD FUNCTIONS */
 	public function display_shipping_method( ){
 		if(	$this->cart->total_items > 0 ){
-			echo "<input type=\"hidden\" id=\"ec_cart_zip_code\" value=\"" . $this->user->shipping->zip . "\" />";
-			echo "<input type=\"hidden\" id=\"ec_cart_country\" value=\"" . $this->user->shipping->country . "\" />";
+			echo "<input type=\"hidden\" id=\"ec_cart_zip_code\" value=\"" . htmlspecialchars( $this->user->shipping->zip, ENT_QUOTES ) . "\" />";
+			echo "<input type=\"hidden\" id=\"ec_cart_country\" value=\"" . htmlspecialchars( $this->user->shipping->country, ENT_QUOTES ) . "\" />";
 			echo "<input type=\"hidden\" id=\"ec_cart_shipping\" value=\"\" />";
 			echo "<input type=\"hidden\" id=\"ec_cart_grandtotal\" value=\"\" />";
 			
@@ -1364,7 +1364,7 @@ class ec_cartpage{
 	}
 	
 	public function display_review_billing( $name ){
-		echo $this->user->billing->get_value( $name );
+		echo htmlspecialchars( $this->user->billing->get_value( $name ), ENT_QUOTES );
 	}
 	
 	public function has_billing_address_line2( ){
@@ -1376,7 +1376,7 @@ class ec_cartpage{
 	}
 	
 	public function display_review_shipping( $name ){
-		echo $this->user->shipping->get_value( $name );
+		echo htmlspecialchars( $this->user->shipping->get_value( $name ), ENT_QUOTES );
 	}
 	
 	public function has_shipping_address_line2( ){
@@ -1592,7 +1592,7 @@ class ec_cartpage{
 	}
 	
 	public function ec_cart_display_card_holder_name_hidden_input(){
-		echo "<input type=\"hidden\" name=\"ec_card_holder_name\" id=\"ec_card_holder_name\" class=\"ec_cart_payment_information_input_text\" value=\"" . $this->user->billing->first_name . " " . $this->user->billing->last_name . "\" />";
+		echo "<input type=\"hidden\" name=\"ec_card_holder_name\" id=\"ec_card_holder_name\" class=\"ec_cart_payment_information_input_text\" value=\"" . htmlspecialchars( $this->user->billing->first_name, ENT_QUOTES ) . " " . htmlspecialchars( $this->user->billing->last_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function ec_cart_display_card_number_input(){
@@ -1644,7 +1644,7 @@ class ec_cartpage{
 		if( $first_name == "guest" )
 			$first_name = "";
 			
-		echo "<input type=\"text\" name=\"ec_contact_first_name\" id=\"ec_contact_first_name\" class=\"ec_cart_contact_information_input_text\" value=\"" . $first_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_contact_first_name\" id=\"ec_contact_first_name\" class=\"ec_cart_contact_information_input_text\" value=\"" . htmlspecialchars( $first_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function ec_cart_display_contact_last_name_input(){
@@ -1656,7 +1656,7 @@ class ec_cartpage{
 		if( $last_name == "guest" )
 			$last_name = "";
 			
-		echo "<input type=\"text\" name=\"ec_contact_last_name\" id=\"ec_contact_last_name\" class=\"ec_cart_contact_information_input_text\" value=\"" . $last_name . "\" />";
+		echo "<input type=\"text\" name=\"ec_contact_last_name\" id=\"ec_contact_last_name\" class=\"ec_cart_contact_information_input_text\" value=\"" . htmlspecialchars( $last_name, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function ec_cart_display_contact_email_input(){
@@ -1668,7 +1668,7 @@ class ec_cartpage{
 		if( $email == "guest" )
 			$email = "";
 			
-		echo "<input type=\"text\" name=\"ec_contact_email\" id=\"ec_contact_email\" class=\"ec_cart_contact_information_input_text\" value=\"" . $email . "\" />";
+		echo "<input type=\"text\" name=\"ec_contact_email\" id=\"ec_contact_email\" class=\"ec_cart_contact_information_input_text\" value=\"" . htmlspecialchars( $email, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function ec_cart_display_contact_email_retype_input(){
@@ -1680,7 +1680,7 @@ class ec_cartpage{
 		if( $email == "guest" )
 			$email = "";
 			
-		echo "<input type=\"text\" name=\"ec_contact_email_retype\" id=\"ec_contact_email_retype\" class=\"ec_cart_contact_information_input_text\" value=\"" . $email . "\" />";
+		echo "<input type=\"text\" name=\"ec_contact_email_retype\" id=\"ec_contact_email_retype\" class=\"ec_cart_contact_information_input_text\" value=\"" . htmlspecialchars( $email, ENT_QUOTES ) . "\" />";
 	}
 	
 	public function ec_cart_display_contact_create_account_box( ){

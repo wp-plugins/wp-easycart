@@ -1688,6 +1688,10 @@ class ec_db{
 		if( isset( $_SESSION['ec_guest_key'] ) )
 			$guest_key = $_SESSION['ec_guest_key'];
 		
+		$agreed_to_terms = 0;
+		if( isset( $_POST['ec_terms_agree'] ) && $_POST['ec_terms_agree'] == '1' )
+			$agreed_to_terms = 1;
+		
 		$this->mysqli->insert(  'ec_order', 
 								array( 	'user_id' 						=> $user->user_id, 
 										'last_updated' 					=> date( 'Y-m-d H:i:s' ),
@@ -1738,7 +1742,9 @@ class ec_db{
 										'creditcard_digits'				=> $credit_card_last_four,
 										'order_gateway'					=> $order_gateway,
 										
-										'guest_key'						=> $guest_key
+										'guest_key'						=> $guest_key,
+										'agreed_to_terms'				=> $agreed_to_terms,
+										'order_ip_address'				=> $_SERVER['REMOTE_ADDR']
 								), 
 								array( 	'%d', '%s', '%d', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
@@ -1748,7 +1754,7 @@ class ec_db{
 										'%s', '%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', 
-										'%s'
+										'%s', '%d', '%s'
 								)
 							);	
 									
