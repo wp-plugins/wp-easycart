@@ -88,7 +88,7 @@ class ec_accountpage{
 		
 		$page_name = "";
 		if( isset( $_GET['ec_page'] ) )
-			$page_name = $_GET['ec_page'];
+			$page_name = htmlspecialchars( $_GET['ec_page'], ENT_QUOTES );
 		
 		echo "<input type=\"hidden\" name=\"ec_account_start_page\" id=\"ec_account_start_page\" value=\"" . $page_name . "\" />";
 		echo "</div>";
@@ -1145,7 +1145,7 @@ class ec_accountpage{
 		
 			$address_id = $this->user->billing_id;
 			if( $address_id )
-				$success = $this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name );
+				$success = $this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name, $this->user->user_id );
 			else{
 				$success = $this->mysqli->insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $this->user_email, $this->user_password, "billing", $company_name );
 			}
@@ -1203,7 +1203,7 @@ class ec_accountpage{
 		
 			$address_id = $this->user->shipping_id;
 			if( $address_id )
-				$success = $this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name );
+				$success = $this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name, $this->user->user_id );
 			else{
 				$success = $this->mysqli->insert_user_address( $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $this->user_email, $this->user_password, "shipping", $company_name );
 			}
@@ -1313,7 +1313,7 @@ class ec_accountpage{
 				$security_code = $_POST['ec_security_code'];
 				
 				$address_id = $this->user->billing_id;
-				$this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, "", $city, $state, $zip, $country, $phone );
+				$this->mysqli->update_user_address( $address_id, $first_name, $last_name, $address, "", $city, $state, $zip, $country, $phone, $this->user->user_id );
 				$this->user->setup_billing_info_data( $first_name, $last_name, $address, "", $city, $state, $country, $zip, $phone );
 				$card = new ec_credit_card( $card_type, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
 				

@@ -2615,7 +2615,7 @@ class ec_db{
 										array(	'%s', '%s', '%s' ) );
 	}
 	
-	public function update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name ){
+	public function update_user_address( $address_id, $first_name, $last_name, $address, $address2, $city, $state, $zip, $country, $phone, $company_name, $user_id ){
 		return $this->mysqli->update(	'ec_address', 
 										array(	'first_name'						=> $first_name,
 												'last_name'							=> $last_name,
@@ -2628,8 +2628,9 @@ class ec_db{
 												'phone'								=> $phone ,
 												'company_name'						=> $company_name 
 											 ),
-										array( 	'address_id' 						=> $address_id ), 
-										array( 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' )
+										array( 	'address_id' 						=> $address_id,
+												'user_id'							=> $user_id ), 
+										array( 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d' )
 								  );
 	}
 	

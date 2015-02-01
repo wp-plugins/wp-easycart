@@ -211,9 +211,9 @@ class ec_order{
 	}
 	
 	private function update_user_addresses( ){
-		$this->mysqli->update_user_address( $this->user->billing_id, $this->user->billing->first_name, $this->user->billing->last_name, $this->user->billing->address_line_1, $this->user->billing->address_line_2, $this->user->billing->city, $this->user->billing->state, $this->user->billing->zip, $this->user->billing->country, $this->user->billing->phone, $this->user->billing->company_name );
+		$this->mysqli->update_user_address( $this->user->billing_id, $this->user->billing->first_name, $this->user->billing->last_name, $this->user->billing->address_line_1, $this->user->billing->address_line_2, $this->user->billing->city, $this->user->billing->state, $this->user->billing->zip, $this->user->billing->country, $this->user->billing->phone, $this->user->billing->company_name, $this->user->user_id );
 		
-		$this->mysqli->update_user_address( $this->user->shipping_id, $this->user->shipping->first_name, $this->user->shipping->last_name, $this->user->shipping->address_line_1, $this->user->shipping->address_line_2, $this->user->shipping->city, $this->user->shipping->state, $this->user->shipping->zip, $this->user->shipping->country, $this->user->shipping->phone, $this->user->shipping->company_name );
+		$this->mysqli->update_user_address( $this->user->shipping_id, $this->user->shipping->first_name, $this->user->shipping->last_name, $this->user->shipping->address_line_1, $this->user->shipping->address_line_2, $this->user->shipping->city, $this->user->shipping->state, $this->user->shipping->zip, $this->user->shipping->country, $this->user->shipping->phone, $this->user->shipping->company_name, $this->user->user_id );
 	}
 	
 	private function send_email_receipt(){

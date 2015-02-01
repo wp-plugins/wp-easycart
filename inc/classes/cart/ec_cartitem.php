@@ -715,7 +715,7 @@ class ec_cartitem{
 		if( !$this->is_deconetwork ){
 			
 			if( isset( $_GET['ec_page'] ) )
-				echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] . "\" method=\"post\">";
+				echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . htmlspecialchars ( $_GET['ec_page'], ENT_QUOTES ) . "\" method=\"post\">";
 			else
 				echo "<form action=\"" . $this->cart_page . "\" method=\"post\">";
 		
@@ -766,7 +766,7 @@ class ec_cartitem{
 	public function display_delete_button( $remove_text ){
 		
 		if( isset( $_GET['ec_page'] ) )
-			echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] . "\" method=\"post\">";
+			echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . htmlspecialchars ( $_GET['ec_page'], ENT_QUOTES ) . "\" method=\"post\">";
 		else
 			echo "<form action=\"" . $this->cart_page . "\" method=\"post\">";
 			

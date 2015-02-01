@@ -2225,7 +2225,7 @@ class ec_cartpage{
 		$this->mysqli->update_cartitem( $cartitem_id, $_SESSION['ec_cart_id'], $new_quantity );
 		
 		if( isset( $_GET['ec_page'] ) )
-			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] );	
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . htmlspecialchars( $_GET['ec_page'], ENT_QUOTES ) );	
 		else
 			header( "location: " . $this->cart_page );
 	}
@@ -2234,7 +2234,7 @@ class ec_cartpage{
 		$this->mysqli->delete_cartitem( $cartitem_id, $_SESSION['ec_cart_id'] );
 		
 		if( isset( $_GET['ec_page'] ) )
-			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $_GET['ec_page'] );	
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . htmlspecialchars( $_GET['ec_page'], ENT_QUOTES ) );	
 		else
 			header( "location: " . $this->cart_page );
 	}

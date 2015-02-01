@@ -20,7 +20,7 @@ $has_tax = ec_has_tax( );
 $has_shipping = ec_has_shipping( );
 $has_order = ec_has_order( );
 
-$ec_url = "admin.php?page=" . $_GET['page'] . "&ec_page=" . $_GET['ec_page'] . "&ec_panel=" . $_GET['ec_panel'];
+$ec_url = "admin.php?page=" . htmlspecialchars ( $_GET['page'], ENT_QUOTES ) . "&ec_page=" . htmlspecialchars ( $_GET['ec_page'], ENT_QUOTES ) . "&ec_panel=" . htmlspecialchars ( $_GET['ec_panel'], ENT_QUOTES );
 $store_id = get_option( 'ec_option_storepage' );
 $store_page = get_permalink( $store_id );
 ?>

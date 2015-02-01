@@ -932,9 +932,9 @@ function ec_curPageURL() {
 
 	$pageURL .= "://";
 	if( $_SERVER["SERVER_PORT"] != "80" )
-		$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+		$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].htmlspecialchars ( $_SERVER["REQUEST_URI"], ENT_QUOTES );
 	else
-		$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		$pageURL .= $_SERVER["SERVER_NAME"].htmlspecialchars ( $_SERVER["REQUEST_URI"], ENT_QUOTES );
 
 	return $pageURL;
 }
