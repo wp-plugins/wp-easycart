@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 3.0.17
+Stable tag: 3.0.18
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,8 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.18 =
+* Security Fix
 = 3.0.17 =
 * New Feature - Moneris is now a payment option for US merchants.
 * New Feature - Orders now store evidence that a user has agreed to your terms and conditions (if applicable) and the customer's IP Address.
