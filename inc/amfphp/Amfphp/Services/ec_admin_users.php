@@ -142,16 +142,35 @@ class ec_admin_users{
 			return array( "noadminerror" );
 		
 		}else{
+			
+			if($client->billing_id == 0) {
+				// Insert Billing Address
+				$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+				$success1 = $this->db->query( $this->db->prepare( $sql, $clientid, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone ) );
+				$billing_id = $this->db->insert_id;
+			} else {
+				// Update Addresses
+				$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.company_name = %s,  ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
+				
+				$success1 = $this->db->query( $this->db->prepare( $sql, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone, $client->billing_id) );
+				$billing_id = $client->billing_id;
+			}
+			
+			if ($client->shipping_id  == 0) {
+				// Insert Shipping Address
+				$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+				$success2 = $this->db->query( $this->db->prepare( $sql, $clientid, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone ) );
+				$shipping_id = $this->db->insert_id;
+			} else {
 			// Update Addresses
-			$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.company_name = %s,  ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
-			
-			$success1 = $this->db->query( $this->db->prepare( $sql, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone, $client->billing_id ) );
-			
-			$success2 = $this->db->query( $this->db->prepare( $sql, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone, $client->shipping_id ) );
+				$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.company_name = %s,  ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
+				$success2 = $this->db->query( $this->db->prepare( $sql, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone, $client->shipping_id ) );
+				$shipping_id = $client->shipping_id;
+			}
 			
 			// Update User
 			$sql = "UPDATE ec_user SET ec_user.email = %s, ec_user.password = %s, ec_user.first_name = %s, ec_user.last_name = %s, ec_user.default_billing_address_id = %d, ec_user.default_shipping_address_id = %d, ec_user.user_level = %s, ec_user.is_subscriber = %d, ec_user.exclude_tax = %s, ec_user.exclude_shipping = %s, ec_user.user_notes = %s WHERE ec_user.user_id = %d";
-			$success3 = $this->db->query( $this->db->prepare( $sql, $client->email, $client->password, $client->firstname, $client->lastname, $client->billing_id, $client->shipping_id, $client->userlevel, $client->subscriber, $client->exclude_tax, $client->exclude_shipping, $client->usernotes, $clientid ) );
+			$success3 = $this->db->query( $this->db->prepare( $sql, $client->email, $client->password, $client->firstname, $client->lastname, $billing_id, $shipping_id, $client->userlevel, $client->subscriber, $client->exclude_tax, $client->exclude_shipping, $client->usernotes, $clientid ) );
 			
 			//Enqueue Quickbooks Update Customer
 			if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
