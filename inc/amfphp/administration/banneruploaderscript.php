@@ -42,9 +42,13 @@ if( !empty( $users ) ){
 	$nameoffile = $explodedfilename['filename'];
 	$fileextension = $explodedfilename['extension'];
 
-	// Place file on server, into the banners folder
-	move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/banners/".$nameoffile."_".$date.".".$fileextension);
-	copy( "../../../products/banners/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/banners/".$nameoffile."_".$date.".".$fileextension );
+	if($fileextension  == 'jpg' ||$fileextension  == 'jpeg' ||$fileextension  == 'gif' ||$fileextension  == 'png') {
+		// Place file on server, into the banners folder
+		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/banners/".$nameoffile."_".$date.".".$fileextension);
+		copy( "../../../products/banners/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/banners/".$nameoffile."_".$date.".".$fileextension );
+	} else {
+		return 'not allowed';
+	}
 	
 }
 

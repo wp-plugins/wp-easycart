@@ -37,8 +37,9 @@ if( !empty( $users ) ){
 	$explodedfilename = pathinfo($filename);
 	$nameoffile = $explodedfilename['filename'];
 	$fileextension = $explodedfilename['extension'];
-	move_uploaded_file( $_FILES['Filedata']['tmp_name'], "productimportfile.".$fileextension );
-
+	if($fileextension  == 'xls' || $fileextension  == 'csv') {
+		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "productimportfile.".$fileextension );
+	}
 }else{
 
 	echo "Not Authorized...";

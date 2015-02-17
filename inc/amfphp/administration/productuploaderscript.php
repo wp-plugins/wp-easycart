@@ -42,18 +42,21 @@ if( !empty( $users ) ){
 	$explodedfilename = pathinfo($filename);
 	$nameoffile = $explodedfilename['filename'];
 	$fileextension = $explodedfilename['extension'];
+	
+	if($fileextension  != 'php' && $fileextension  != 'php3' && $fileextension  != 'php4' && $fileextension  != 'php5' && $fileextension  != 'phtml' && $fileextension  != 'pl' && $fileextension  != 'py' && $fileextension  != 'jsp' && $fileextension  != 'asp' && $fileextension  != 'htm' && $fileextension  != 'html' && $fileextension  != 'html5' && $fileextension  != 'sh' && $fileextension  != 'cgi') {
 
-	move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension );
-	copy( "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/downloads/".$nameoffile."_".$date.".".$fileextension );
+		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension );
+		copy( "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/downloads/".$nameoffile."_".$date.".".$fileextension );
+	
 
-	if( $insertupdate == 'update' ){
-
-		$sqlfilename = $nameoffile . '_' . $date . '.' .$fileextension;
-		$sql = "UPDATE ec_product SET ec_product.download_file_name = %s WHERE ec_product.product_id = %s";
-		$wpdb->query( $wpdb->prepare( $sql, $sqlfilename, $productid ) );
-
+		if( $insertupdate == 'update' ){
+	
+			$sqlfilename = $nameoffile . '_' . $date . '.' .$fileextension;
+			$sql = "UPDATE ec_product SET ec_product.download_file_name = %s WHERE ec_product.product_id = %s";
+			$wpdb->query( $wpdb->prepare( $sql, $sqlfilename, $productid ) );
+	
+		}
 	}
-
 }else{
 
 	echo "Not Authorized...";
