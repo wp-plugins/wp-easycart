@@ -164,6 +164,16 @@ class ec_user{
 		$this->user_id = $this->mysqli->insert_user( $this->email, $this->password, $this->first_name, $this->last_name, $this->billing_id, $this->shipping_id, "shopper", $this->is_subscriber );
 		$this->mysqli->update_address_user_id( $this->billing_id, $this->user_id );
 		$this->mysqli->update_address_user_id( $this->shipping_id, $this->user_id );
+			
+		// MyMail Hook
+		if( function_exists( 'mymail' ) ){
+			$subscriber_id = mymail('subscribers')->add(array(
+				'fistname' => $this->first_name,
+				'lastname' => $this->last_name,
+				'email' => $this->email,
+				'status' => 1,
+			), false );
+		}
 	}
 	
 	public function insert_billing_info( ){

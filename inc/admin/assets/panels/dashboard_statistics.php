@@ -304,6 +304,10 @@ $highest_point = $high_point + $split;
         <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/language.png', __FILE__); ?>" /></div></a>
         <div class="ec_stats_button_label">Language Editor</div>
       </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=woo-importer">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/woo-import.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Import From Woo</div>
+      </div>
     </div>
   </div>
   
@@ -324,6 +328,18 @@ $highest_point = $high_point + $split;
         <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/designfiles.png', __FILE__); ?>" /></div></a>
         <div class="ec_stats_button_label">Design Files</div>
       </div>
+      <div class="ec_stats_button"><a href="http://themeforest.net/collections/3385661-wp-easycart-theme-collection?ref=wpeasycart" target="_blank">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/theme-forest.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Partner Themes</div>
+      </div>
+      <div class="ec_stats_button"><a href="http://www.wpeasycart.com/videos/V3%20admin%20sidebar.mp4" target="_blank">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/design-tutorial.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Design Tutorial</div>
+      </div>
+      <div class="ec_stats_button"><a href="http://developers.wpeasycart.com/category/designer-articles/" target="_blank">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/designer-articles.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Designer Articles</div>
+      </div>
     </div>
   </div>
   
@@ -336,13 +352,55 @@ $highest_point = $high_point + $split;
         <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/storeadmin.png', __FILE__); ?>" /></div></a>
         <div class="ec_stats_button_label">Store Admin</div>
       </div>
-      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=store-status"> 
-        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/status.png', __FILE__); ?>" /></div></a>
-        <div class="ec_stats_button_label">Store Status</div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=products">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/products.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Products</div>
       </div>
-      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=backup-store">
-        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/backup.png', __FILE__); ?>" /></div></a>
-        <div class="ec_stats_button_label">Store Backup</div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=orders">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/orders.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Orders</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=users">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/accounts.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Accounts</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=shipping">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/shipping.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Shipping</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=taxes">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/taxes.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Taxes</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="ec_stats_section">
+    <div class="ec_stats_heading">Marketing Tools</div>
+    <div class="ec_stats_button_container">
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=coupons">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/coupons.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Coupons</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=promotions">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/promotions.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Promotions</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=newsletter">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/subscribers.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Subscribers</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=affiliates">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/affiliates.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Affiliate Rules</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&store-setup&ec_panel=google-merchant">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/google-merchant.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Google Merchant</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&store-setup&ec_panel=mymail-integration">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/mymail.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">MyMail Integration</div>
       </div>
     </div>
   </div>
@@ -352,6 +410,14 @@ $highest_point = $high_point + $split;
    <div class="ec_stats_section">
     <div class="ec_stats_heading">Support</div>
     <div class="ec_stats_button_container">
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=store-status"> 
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/status.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Store Status</div>
+      </div>
+      <div class="ec_stats_button"><a href="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=backup-store">
+        <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/backup.png', __FILE__); ?>" /></div></a>
+        <div class="ec_stats_button_label">Store Backup</div>
+      </div>
       <div class="ec_stats_button"><a href="http://www.wpeasycart.com/forums" target="_blank">
         <div class="ec_stats_button_img"><img src="<?php echo plugins_url('../images/dashboard_buttons/forums.png', __FILE__); ?>" /></div></a>
         <div class="ec_stats_button_label">Online Forums</div>

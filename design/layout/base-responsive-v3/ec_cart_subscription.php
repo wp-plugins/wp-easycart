@@ -597,7 +597,13 @@ function ec_admin_save_cart_options( ){
                 </div>
             </div>
         </div>
-        <?php }?>
+        <?php }else{ //use paypal ?>
+        
+        <div class="ec_cart_input_row">
+        	<?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_third_party_first' )?> <?php $this->ec_cart_display_current_third_party_name( ); ?> <?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_third_party_second' )?>
+        </div>
+		
+		<?php } ?>
         
         <div class="ec_cart_header">
 			<?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_submit_order_button' )?>

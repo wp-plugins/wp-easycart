@@ -997,6 +997,36 @@ class ec_accountpage{
 				$quickbooks->add_user( $user_id );
 			}
 			
+			// MyMail Hook
+			if( function_exists( 'mymail' ) ){
+				$subscriber_id = mymail('subscribers')->add(array(
+					'firstname' => $first_name,
+					'lastname' => $last_name,
+					'email' => $email,
+					'status' => 1,
+				), false );
+			}
+			
+			// Send registration email if needed
+			if( get_option( 'ec_option_send_signup_email' ) ){
+				
+				$headers   = array();
+				$headers[] = "MIME-Version: 1.0";
+				$headers[] = "Content-Type: text/html; charset=utf-8";
+				$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+				$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+				$headers[] = "X-Mailer: PHP/".phpversion();
+				
+				$message = $GLOBALS['language']->get_text( "account_register", "account_register_email_message" ) . " " . $email;
+				
+				if( get_option( 'ec_option_use_wp_mail' ) ){
+					wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "account_register", "account_register_email_title" ), $message, implode("\r\n", $headers) );
+				}else{
+					mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "account_register", "account_register_email_title" ), $message, implode("\r\n", $headers) );
+				}
+				
+			}
+			
 			if( $user_id ){
 				
 				if( get_option( 'ec_option_require_email_validation' ) ){
@@ -1390,6 +1420,16 @@ class ec_accountpage{
 			
 			$user_id = $this->mysqli->insert_user( $email, $password, $order_row->billing_first_name, $order_row->billing_last_name, $billing_id, $shipping_id, "shopper", 0 );
 			$this->mysqli->update_order_user( $user_id, $order_id );
+			
+			// MyMail Hook
+			if( function_exists( 'mymail' ) ){
+				$subscriber_id = mymail('subscribers')->add(array(
+					'firstname' => $order_row->billing_first_name,
+					'lastname' => $order_row->billing_last_name,
+					'email' => $email,
+					'status' => 1,
+				), false );
+			}
 			
 			$_SESSION['ec_user_id'] = $user_id;
 			$_SESSION['ec_email'] = $email;

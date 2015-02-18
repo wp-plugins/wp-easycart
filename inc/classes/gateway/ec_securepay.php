@@ -46,7 +46,7 @@ class ec_securepay extends ec_gateway{
 											<CreditCardInfo> 
 												<cardNumber>" . $this->credit_card->card_number . "</cardNumber>
 												<cvv>" . $this->credit_card->security_code . "</cvv>
-												<expiryDate> " . $this->credit_card->expiration_month . "/" . $this->credit_card->get_expiration_year( 2 ) . "</expiryDate> 
+												<expiryDate>" . $this->credit_card->expiration_month . "/" . $this->credit_card->get_expiration_year( 2 ) . "</expiryDate> 
 											</CreditCardInfo> 
 										</Txn> 
 									</TxnList> 

@@ -107,15 +107,47 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			
 			$mysqli->insert_response( 0, 1, "STRIPE Subscription", print_r( $subscription, true ) );
 			
-			if( $subscription->last_payment_date == $payment_timestamp ){
+			if( $subscription && $subscription->last_payment_date == $payment_timestamp ){
 				$mysqli->update_stripe_order( $subscription->subscription_id, $stripe_charge_id );
-			}else{
+			}else if( $subscription ){
 				$order_id = $mysqli->insert_stripe_order( $subscription, $webhook_data );
 				$mysqli->update_stripe_subscription( $subscription_id, $webhook_data );
 				$db_admin = new ec_db_admin( );
 				$order_row = $db_admin->get_order_row_admin( $order_id );
 				$order = new ec_orderdisplay( $order_row, true, true );
 				$order->send_email_receipt( );
+				
+				if( class_exists( "Affiliate_WP" ) && affiliate_wp( )->tracking->was_referred( ) ){
+			
+					$affiliate_id = affiliate_wp( )->tracking->get_affiliate_id( );
+					$default_rate = affwp_get_affiliate_rate( $affiliate_id );
+					$has_affiliate_rule = false;
+				
+					$affiliate_rule = $mysqli->get_affiliate_rule( affiliate_wp()->tracking->get_affiliate_id( ), $subscription->product_id );
+					if( $affiliate_rule )
+						$has_affiliate_rule = true;
+					
+					if( $has_affiliate_rule && $affiliate_rule->rule_recurring ){
+						if( $affiliate_rule->rule_type == "percentage" )
+							$total_earned += ( $subscription->price * ( $affiliate_rule->rule_amount / 100 ) );
+								
+						else if( $affiliate_rule->rule_type == "amount" )
+							$total_earned += $affiliate_rule->rule_amount;	
+						
+					}else
+						$total_earned += ( $subscription->price * $default_rate );
+					
+					$data = array(
+						'affiliate_id' => $affiliate_id,
+						'visit_id'     => affiliate_wp()->tracking->get_visit_id( ),
+						'amount'       => $total_earned,
+						'description'  => $subscription->first_name . " " . $subscription->last_name,
+						'reference'    => $order_id,
+						'context'      => 'WP EasyCart',
+					);
+					$result = affiliate_wp()->referrals->add( $data );
+		
+				}
 			}
 			
 		}else if( $webhook_type == "invoice.payment_failed" ){

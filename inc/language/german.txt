@@ -362,6 +362,10 @@
 				"product_details_gift_card_error":{
 					"title":"Gift Card Option Error Text",
 					"value":"Fehlende Giftcard-Optionen"
+				},
+				"product_details_your_price":{
+					"title":"Your Price:",
+					"value":"Ihr Preis:"
 				}
 			}
 		},
@@ -865,6 +869,10 @@
 				"cart_totals_grand_total":{
 					"title":"Warenkorb, Warenkorb beträgt, Gesamtbetrag",
 					"value":"Gesamtbetrag"
+				},
+				"cart_totals_label":{
+					"title":"Cart Totals Label",
+					"value":"Warenkorb Totals"
 				}
 			}
 		},
@@ -1607,6 +1615,14 @@
 				"account_billing_information_user_notes":{
 					"title":"Account, Billing, User Notes",
 					"value":"Weitere Informationen über Ihre Registrierung"
+				},
+				"account_register_email_title":{
+					"title":"Account, Register Email Title",
+					"value":"New EasyCart Registrierung"
+				},
+				"account_register_email_message":{
+					"title":"Account, Register Email Message",
+					"value":"Neuanmeldung mit E-Mail-Adresse:"
 				}
 			}
 		},
@@ -2096,6 +2112,10 @@
 				"account_orders_details_downloads_expire_time":{
 					"title":"Benutzerkonto, Bestelldetails, Download abgelaufen",
 					"value":"Download läuft ab am:"
+				},
+				"account_orders_details_your_codes":{
+					"title":"Account, Orders Details, Your Codes",
+					"value":"Ihre Codes:"
 				}
 			}
 		},
@@ -2371,6 +2391,71 @@
 				"adding_to_cart":{
 					"title":"Store, Adding to Cart",
 					"value":"Hinzufügen den Warenkorb..."
+				}
+			}
+		},
+		"ec_shipping_email":{
+			"label":"Shipping Emailer",
+			"options":{
+				"shipping_email_title":{
+					"title":"Shipping Email Title",
+					"value":"Versandbestätigung - Bestellnummer"
+				},
+				"shipping_dear":{
+					"title":"Shipping Dear Customer",
+					"value":"Sehr Geehrte"
+				},
+				"shipping_subtitle1":{
+					"title":"Order Shipped First Half",
+					"value":"Ihre letzten Bestellung mit der Nummer"
+				},
+				"shipping_subtitle2":{
+					"title":"Order Shipped Second Half",
+					"value":"versendet worden! Sie sollten sie innerhalb einer kurzen Zeitspanne erhalten."
+				},
+				"shipping_description":{
+					"title":"Order Shipped Description",
+					"value":"Sie können den Status Ihrer Bestellung, indem Sie Ihren Trägern Website und mit dem folgenden Spurhaltungszahl überprüfen."
+				},
+				"shipping_carrier":{
+					"title":"Order Shipped Carrier",
+					"value":"Paket-Fördermaschine:"
+				},
+				"shipping_tracking":{
+					"title":"Order Shipped Tracking Number",
+					"value":"Paket Tracking-Nummer:"
+				},
+				"shipping_billing_label":{
+					"title":"Billing Label",
+					"value":"Rechnungsadresse"
+				},
+				"shipping_shipping_label":{
+					"title":"Shipping Label",
+					"value":"Versandadresse"
+				},
+				"shipping_product":{
+					"title":"Product Label",
+					"value":"Produkt"
+				},
+				"shipping_quantity":{
+					"title":"Quantity Label",
+					"value":"Menge"
+				},
+				"shipping_unit_price":{
+					"title":"Unit Price Label",
+					"value":"Stückpreis"
+				},
+				"shipping_total_price":{
+					"title":"Total Price Label",
+					"value":"Gesamtpreis"
+				},
+				"shipping_final_note1":{
+					"title":"Shipping Emailer Final Note Line 1",
+					"value":"Bitte überprüfen Sie Ihre Bestellung, wenn Sie es erhalten und lassen Sie uns sofort wissen, wenn es irgendwelche Bedenken oder Fragen. Wir schätzen immer Ihr Unternehmen und hoffen, dass Sie Ihr Produkt."
+				},
+				"shipping_final_note2":{
+					"title":"Shipping Emailer Final Note Line 2",
+					"value":"Ich danke Ihnen sehr!"
 				}
 			}
 		},

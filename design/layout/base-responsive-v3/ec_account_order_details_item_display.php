@@ -11,12 +11,18 @@
     <div class="ec_account_order_details_item_display_option"><?php echo $order_item->model_number; ?></div>
 
     <?php 
+	
+	$advanced_optionitem_download_allowed = true;
 
 	if( $order_item->use_advanced_optionset ){
 
 		$advanced_options = $this->mysqli->get_order_options( $order_item->orderdetail_id );
 
 		foreach( $advanced_options as $advanced_option ){
+			
+			if( !$advanced_option->optionitem_allow_download ){
+				$advanced_optionitem_download_allowed = false;
+			}
 
 			if( $advanced_option->option_type == "file" ){
 
@@ -134,7 +140,7 @@
 
     <?php }?>
 
-    <?php if( $order_item->has_download_link( ) && $this->is_approved ){ ?>
+    <?php if( $order_item->has_download_link( ) && $this->is_approved && $advanced_optionitem_download_allowed ){ ?>
 
     <div class="ec_account_order_details_item_display_option">
 
@@ -162,6 +168,23 @@
 
         <?php }?>
 
+    <?php }?>
+    
+    <?php if( $order_item->include_code && $this->is_approved ){ 
+	
+	global $wpdb;
+	$codes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ec_code WHERE ec_code.orderdetail_id = %d", $this->cart->cart[$i]->orderdetail_id ) );
+	$code_list = "";
+	for( $code_index = 0; $code_index < count( $codes ); $code_index++ ){
+		if( $code_index > 0 )
+			$code_list .= ", ";
+		$code_list .= $codes[$code_index]->code_val;
+	}
+	
+	?>
+                                
+    <div class="ec_account_order_details_item_display_option"><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_your_codes' ); ?> <?php echo $code_list; ?></div>
+    
     <?php }?>
 
   </td>

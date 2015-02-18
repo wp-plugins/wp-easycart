@@ -43,13 +43,16 @@ class ec_db{
 				ec_orderdetail.gift_card_email,
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
-				ec_orderdetail.is_taxable, 
+				ec_orderdetail.is_taxable,
+				ec_orderdetail.is_shippable, 
 				ec_download.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
 				ec_orderdetail.download_timelimit_seconds,
 				ec_download.is_amazon_download,
 				ec_download.amazon_key,
+				
+				ec_orderdetail.include_code,
 				
 				ec_orderdetail.is_deconetwork,
 				ec_orderdetail.deconetwork_id,
@@ -136,6 +139,7 @@ class ec_db{
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
+				ec_orderdetail.is_shippable, 
 				ec_download.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
@@ -151,6 +155,8 @@ class ec_db{
 				ec_orderdetail.deconetwork_color_code,
 				ec_orderdetail.deconetwork_product_id,
 				ec_orderdetail.deconetwork_image_link,
+				
+				ec_orderdetail.include_code,
 				
 				";
 		
@@ -355,11 +361,14 @@ class ec_db{
 				product.show_stock_quantity,
 				product.is_special,
 				product.is_taxable,
+				product.is_shippable,
 				product.is_giftcard,
 				product.is_download,
 				product.is_donation,
 				product.is_subscription_item,
 				product.is_deconetwork,
+				
+				product.include_code,
 				
 				product.download_file_name,
 				
@@ -586,11 +595,14 @@ class ec_db{
 						"show_stock_quantity" => $row->show_stock_quantity, 
 						"is_special" => $row->is_special, 
 						"is_taxable" => $row->is_taxable, 
+						"is_shippable" => $row->is_shippable, 
 						"is_giftcard" => $row->is_giftcard, 
 						"is_download" => $row->is_download,
 						"is_donation" => $row->is_donation,
 						"is_subscription_item" => $row->is_subscription_item,
 						"is_deconetwork" => $row->is_deconetwork,
+						
+						"include_code" => $row->include_code,
 						
 						"download_file_name" => $row->download_file_name,
 						
@@ -1002,6 +1014,7 @@ class ec_db{
 				product.is_download,
 				product.is_donation,
 				product.is_taxable,
+				product.is_shippable,
 				product.download_file_name,
 				product.use_optionitem_quantity_tracking,
 				product.show_stock_quantity,
@@ -1010,6 +1023,7 @@ class ec_db{
 				product.use_advanced_optionset,
 				product.is_amazon_download,
 				product.amazon_key,
+				product.include_code,
 				
 				tempcart.tempcart_id as cartitem_id,
 				tempcart.quantity,
@@ -1320,6 +1334,9 @@ class ec_db{
 		// THEN     use max for that option item set
 		}else if( $use_advanced_optionset && isset( $product->show_stock_quantity ) && $quantity + $tempcart->quantity > $stock_quantity ){
 			$quantity = $stock_quantity - $tempcart->quantity;
+			if( $quantity == 0 ){
+				return 0;
+			}
 			
 		// OPTION ITEM QUANTITY TRACKING AND ENTERED QUANITTY GOES OVER ITEM LIMIT
 		// IF    1. using advanced option items
@@ -1907,6 +1924,7 @@ class ec_db{
 								'is_giftcard'					=> $cart_item->is_giftcard,
 								
 								'is_taxable'					=> $cart_item->is_taxable,
+								'is_shippable'					=> $cart_item->is_shippable,
 								'download_file_name'			=> $cart_item->download_file_name,
 								'download_key'					=> $download_key,
 								'maximum_downloads_allowed'		=> $cart_item->maximum_downloads_allowed,
@@ -1922,7 +1940,9 @@ class ec_db{
 								'deconetwork_options'			=> $cart_item->deconetwork_options,
 								'deconetwork_color_code'		=> $cart_item->deconetwork_color_code,
 								'deconetwork_product_id'		=> $cart_item->deconetwork_product_id,
-								'deconetwork_image_link'		=> $cart_item->deconetwork_image_link );
+								'deconetwork_image_link'		=> $cart_item->deconetwork_image_link,
+								
+								'include_code'					=> $cart_item->include_code );
 								
 										
 		$percent_array = array( '%d', '%d', '%s', '%s', '%s',
@@ -1932,9 +1952,10 @@ class ec_db{
 								'%s', '%s', '%s', '%s', '%s',
 								'%d', '%s', '%s',
 								'%s', '%s', '%s', '%d', '%d', 
-								'%d', '%s', '%s', '%d', '%d', 
+								'%d', '%d', '%s', '%s', '%d', '%d', 
 								'%d', '%s',
-								'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
+								'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
+								'%d' );
 								
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
 			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
@@ -1960,11 +1981,19 @@ class ec_db{
 			}
 		}
 		
+		// If including a code, apply one here
+		if( $cart_item->include_code ){
+			$codes = $this->mysqli->get_results( $this->mysqli->prepare( "SELECT ec_code.code_id FROM ec_code WHERE ec_code.product_id = %d AND orderdetail_id = 0", $cart_item->product_id ) );
+			for( $i=0; $i<$cart_item->quantity; $i++ ){
+				$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_code SET ec_code.orderdetail_id = %d WHERE ec_code.code_id = %d AND ec_code.product_id = %d", $orderdetail_id, $codes[$i]->code_id, $cart_item->product_id ) );
+			}
+		}
+		
 		return $orderdetail_id;
 	}
 	
 	public function insert_order_option( $orderdetail_id, $tempcart_id, $advanced_option ){
-		$sql = "INSERT INTO ec_order_option(orderdetail_id, option_name, optionitem_name, option_type, option_value, option_price_change) VALUES(%d, %s, %s, %s, %s, %s)";
+		$sql = "INSERT INTO ec_order_option(orderdetail_id, option_name, optionitem_name, option_type, option_value, option_price_change, optionitem_allow_download) VALUES(%d, %s, %s, %s, %s, %s, %d)";
 		// Set the display text for an option item price adjustment
 		$optionitem_price = ""; 
 		if( $advanced_option->optionitem_price > 0 ){ 
@@ -1976,14 +2005,14 @@ class ec_db{
 		}else if( $advanced_option->optionitem_price_onetime < 0 ){ 
 			$optionitem_price = " (" . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_onetime ) . ")"; 
 		}else if( $advanced_option->optionitem_price_override >= 0 ){ 
-			$optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_override ) . ")"; 
+			$optionitem_price = " (" . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . " " . $GLOBALS['currency']->get_currency_display( $advanced_option->optionitem_price_override ) . ")"; 
 		}
 		
 		$option_value = $advanced_option->optionitem_value;
 		if( $advanced_option->option_type == "file" )
 			$option_value = $tempcart_id . "/" . $option_value;
 		
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $orderdetail_id, $advanced_option->option_name, $advanced_option->optionitem_name, $advanced_option->option_type, $option_value, $optionitem_price ) );
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $orderdetail_id, $advanced_option->option_name, $advanced_option->optionitem_name, $advanced_option->option_type, $option_value, $optionitem_price, $advanced_option->optionitem_allow_download ) );
 	}
 	
 	public function insert_response( $order_id, $is_error, $processor, $response_text ){
@@ -2390,6 +2419,8 @@ class ec_db{
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
+				ec_orderdetail.is_shippable, 
+				ec_orderdetail.include_code,
 				ec_download.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
@@ -2472,6 +2503,7 @@ class ec_db{
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
+				ec_orderdetail.is_shippable, 
 				ec_orderdetail.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
@@ -2880,12 +2912,12 @@ class ec_db{
 	}
 	
 	public function get_advanced_cart_options( $tempcart_id ){
-		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_tempcart_optionitem.optionitem_model_number, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_price_multiplier, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_weight_multiplier FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id WHERE ec_tempcart_optionitem.tempcart_id = %d";
+		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_tempcart_optionitem.optionitem_model_number, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_price_multiplier, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_weight_multiplier, ec_optionitem.optionitem_allow_download, ec_optionitem.optionitem_disallow_shipping FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id WHERE ec_tempcart_optionitem.tempcart_id = %d";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $tempcart_id ) );
 	}
 	
 	public function get_order_options( $orderdetail_id ){
-		$sql = "SELECT ec_order_option.option_name, ec_order_option.optionitem_name, ec_order_option.option_type, ec_order_option.option_value, ec_order_option.option_price_change FROM ec_order_option WHERE ec_order_option.orderdetail_id = %d";
+		$sql = "SELECT ec_order_option.option_name, ec_order_option.optionitem_name, ec_order_option.option_type, ec_order_option.option_value, ec_order_option.option_price_change, ec_order_option.optionitem_allow_download FROM ec_order_option WHERE ec_order_option.orderdetail_id = %d";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $orderdetail_id ) );
 	}
 	
@@ -2971,6 +3003,28 @@ class ec_db{
 	public function insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_code, $order_notes, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label ){
 		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, creditcard_digits, subscription_id, order_customer_notes, billing_company_name, shipping_company_name, billing_address_line_2, shipping_address_line_2) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s)";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price, $product->price, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, $card->payment_method, $card->get_last_four( ), $subscription_id, $order_notes, $user->billing->company_name, $user->shipping->company_name, $user->billing->address_line_2, $user->shipping->address_line_2 ) );
+		
+		$order_id = $this->mysqli->insert_id;
+		$image1 = $product->images->get_single_image( );
+		
+		$sql = "INSERT INTO ec_orderdetail( order_id, product_id, title, model_number, order_date, unit_price, total_price, quantity, image1, optionitem_name_1, optionitem_name_2, optionitem_name_3, optionitem_name_4, optionitem_name_5, optionitem_label_1, optionitem_label_2, optionitem_label_3, optionitem_label_4, optionitem_label_5, use_advanced_optionset ) VALUES( %d, %d, %s, %s, NOW( ), %s, %s, 1, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $order_id, $product->product_id, $product->title, $product->model_number, $product->price, $product->price, $image1, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label, $product->use_advanced_optionset ) );
+		
+		$orderdetail_id = $this->mysqli->insert_id;
+		
+		$i=0;
+		while( isset( $_SESSION['ec_subscription_advanced_option' . $i] ) ){
+			$sql = "INSERT INTO ec_order_option( orderdetail_id, option_name, optionitem_name, option_type, option_value ) VALUES( %d, %s, %s, %s, %s )";
+			$this->mysqli->query( $this->mysqli->prepare( $sql, $orderdetail_id, $_SESSION['ec_subscription_advanced_option' . $i]['option_name'], $_SESSION['ec_subscription_advanced_option' . $i]['optionitem_name'], $_SESSION['ec_subscription_advanced_option' . $i]['option_type'], $_SESSION['ec_subscription_advanced_option' . $i]['optionitem_value'] ) );
+			$i++;
+		}
+		
+		return $order_id;
+	}
+	
+	public function insert_paypal_subscription_order( $product, $user, $coupon_code, $order_notes, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label ){
+		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, order_customer_notes, billing_company_name, shipping_company_name, billing_address_line_2, shipping_address_line_2) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 8, $product->price, $product->price, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, 'PayPal', $order_notes, $user->billing->company_name, $user->shipping->company_name, $user->billing->address_line_2, $user->shipping->address_line_2 ) );
 		
 		$order_id = $this->mysqli->insert_id;
 		$image1 = $product->images->get_single_image( );
@@ -3437,11 +3491,14 @@ class ec_db{
 				product.show_stock_quantity,
 				product.is_special,
 				product.is_taxable,
+				product.is_shippable,
 				product.is_giftcard,
 				product.is_download,
 				product.is_donation,
 				product.is_subscription_item,
 				product.is_deconetwork,
+				
+				product.include_code,
 				
 				product.download_file_name,
 				
@@ -3537,6 +3594,10 @@ class ec_db{
 		$menu3 = $this->mysqli->get_results( $this->mysqli->prepare( $sql, '%' . $search_val . '%' ) );
 		
 		return array_merge( $products, $categories, $menu1, $menu2, $menu3 );
+	}
+	
+	public function get_affiliate_rule( $affiliate_id, $product_id ){
+		return $this->mysqli->get_row( $this->mysqli->prepare( "SELECT ec_affiliate_rule.* FROM ec_affiliate_rule, ec_affiliate_rule_to_product, ec_affiliate_rule_to_affiliate WHERE ec_affiliate_rule_to_affiliate.affiliate_id = %s AND ec_affiliate_rule_to_product.product_id = %d AND ec_affiliate_rule.affiliate_rule_id = ec_affiliate_rule_to_affiliate.affiliate_rule_id AND ec_affiliate_rule.affiliate_rule_id = ec_affiliate_rule_to_product.affiliate_rule_id AND ec_affiliate_rule.rule_active = 1", $affiliate_id, $product_id ) );
 	}
 	
 }

@@ -2642,6 +2642,36 @@ class ec_cartpage{
 				$quickbooks->add_user( $user_id );
 			}
 			
+			// MyMail Hook
+			if( function_exists( 'mymail' ) ){
+				$subscriber_id = mymail('subscribers')->add(array(
+					'firstname' => $first_name,
+					'lastname' => $last_name,
+					'email' => $email,
+					'status' => 1,
+				), false );
+			}
+			
+			// Send registration email if needed
+			if( get_option( 'ec_option_send_signup_email' ) ){
+				
+				$headers   = array();
+				$headers[] = "MIME-Version: 1.0";
+				$headers[] = "Content-Type: text/html; charset=utf-8";
+				$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+				$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+				$headers[] = "X-Mailer: PHP/".phpversion();
+				
+				$message = $GLOBALS['language']->get_text( "account_register", "account_register_email_message" ) . " " . $email;
+				
+				if( get_option( 'ec_option_use_wp_mail' ) ){
+					wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "account_register", "account_register_email_title" ), $message, implode("\r\n", $headers) );
+				}else{
+					mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "account_register", "account_register_email_title" ), $message, implode("\r\n", $headers) );
+				}
+				
+			}
+			
 			if( $user_id != 0 ){
 			
 				$_SESSION['ec_user_id'] = $user_id;
@@ -2774,8 +2804,11 @@ class ec_cartpage{
 						if( $is_match ){
 							$coupon = $coupon_row->promocode_id;
 						}
-					}
 					
+					}
+					// END COUPON FIND SECTION
+					
+					// IF MATCH FOUND, APPLY TO PRODUCT
 					if( $is_match ){
 						
 						if( $coupon_row->is_dollar_based ){
@@ -2787,6 +2820,7 @@ class ec_cartpage{
 						}
 				
 					}
+					// END MATCHING COUPON SECTION
 				
 					// Billing Information
 					$billing_country = $shipping_country = stripslashes( $_POST['ec_cart_billing_country'] );
@@ -2820,6 +2854,7 @@ class ec_cartpage{
 					}else{
 						$billing_phone = "";
 					}
+					// END BILLING INFO
 					
 					// Shipping Information
 					if( isset( $_POST['ec_shipping_selector'] ) )
@@ -2861,6 +2896,7 @@ class ec_cartpage{
 							$shipping_phone = "";
 						}
 					}
+					// END SHIPPING INFO
 					
 					// Order Notes
 					if( isset( $_POST['ec_order_notes'] ) ){
@@ -2891,15 +2927,7 @@ class ec_cartpage{
 						$create_account = true;
 					else
 						$create_account = false;
-						
-						
-					// Payment Information
-					$payment_method = $this->get_payment_type( $this->sanatize_card_number( $_POST['ec_card_number'] ) );
-					$card_holder_name = stripslashes( $_POST['ec_cart_billing_first_name'] . " " . $_POST['ec_cart_billing_last_name'] );
-					$card_number = $_POST['ec_card_number'];
-					$exp_month = $_POST['ec_expiration_month'];
-					$exp_year = $_POST['ec_expiration_year'];
-					$security_code = $_POST['ec_security_code'];
+					
 					
 					// CREATE ACCOUNT IF NEEDED
 					if( isset( $_POST['ec_contact_email'] ) ){
@@ -2937,6 +2965,16 @@ class ec_cartpage{
 						if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
 							$quickbooks = new ec_quickbooks( );
 							$quickbooks->add_user( $user_id );
+						}
+			
+						// MyMail Hook
+						if( function_exists( 'mymail' ) ){
+							$subscriber_id = mymail('subscribers')->add(array(
+								'firstname' => $first_name,
+								'lastname' => $last_name,
+								'email' => $email,
+								'status' => 1,
+							), false );
 						}
 						
 						if( $user_id != 0 ){
@@ -2982,141 +3020,229 @@ class ec_cartpage{
 					
 					$_SESSION['ec_order_notes'] = $order_notes;
 					
-					// Setup for processing
 					$user = new ec_user( "" );
 					$user->setup_billing_info_data( $billing_first_name, $billing_last_name, $billing_address, $billing_address2, $billing_city, $billing_state, $billing_country, $billing_zip, $billing_phone, $billing_company_name );
 					$user->setup_shipping_info_data( $shipping_first_name, $shipping_last_name, $shipping_address, $shipping_address2, $shipping_city, $shipping_state, $shipping_country, $shipping_zip, $shipping_phone, $shipping_company_name );
-					$card = new ec_credit_card( $payment_method, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
 					$product = new ec_product( $products[0] );
-					$stripe = new ec_stripe( );
-					$customer_id = $user->stripe_customer_id;
 					
-					// Tests vars
-					$need_to_update_customer_id = false;
-					$customer_insert_test = false;
 					
-					if( $customer_id == "" ){
-						$customer_id = $stripe->insert_customer( $user );
-						$need_to_update_customer_id = true;
-					}
-					
-					if( $need_to_update_customer_id && $customer_id ){ // Customer inserted to stripe successfully
-						$this->mysqli->update_user_stripe_id( $user->user_id, $customer_id );
-						$user->stripe_customer_id = $customer_id;
-						$customer_insert_test = true;
-					}else if( $need_to_update_customer_id && !$customer_id ){
+					// Setup for processing
+					if( class_exists( "ec_stripe" ) ){
+						
+						// Payment Information
+						$payment_method = $this->get_payment_type( $this->sanatize_card_number( $_POST['ec_card_number'] ) );
+						$card_holder_name = stripslashes( $_POST['ec_cart_billing_first_name'] . " " . $_POST['ec_cart_billing_last_name'] );
+						$card_number = $_POST['ec_card_number'];
+						$exp_month = $_POST['ec_expiration_month'];
+						$exp_year = $_POST['ec_expiration_year'];
+						$security_code = $_POST['ec_security_code'];
+						
+						$card = new ec_credit_card( $payment_method, $card_holder_name, $card_number, $exp_month, $exp_year, $security_code );
+						$stripe = new ec_stripe( );
+						$customer_id = $user->stripe_customer_id;
+						
+						// Tests vars
+						$need_to_update_customer_id = false;
 						$customer_insert_test = false;
-					}else{
-						$customer_insert_test = true;
-					}
-					
-					if( $customer_insert_test ){ // Customer inserted successfully (OR didn't need to be inserted)
 						
-						$card_result = $stripe->insert_card( $user, $card );
-							
+						if( $customer_id == "" ){
+							$customer_id = $stripe->insert_customer( $user );
+							$need_to_update_customer_id = true;
+						}
 						
-						if( $card_result ){ //Card Submitted Successfully
+						if( $need_to_update_customer_id && $customer_id ){ // Customer inserted to stripe successfully
+							$this->mysqli->update_user_stripe_id( $user->user_id, $customer_id );
+							$user->stripe_customer_id = $customer_id;
+							$customer_insert_test = true;
+						}else if( $need_to_update_customer_id && !$customer_id ){
+							$customer_insert_test = false;
+						}else{
+							$customer_insert_test = true;
+						}
+						
+						if( $customer_insert_test ){ // Customer inserted successfully (OR didn't need to be inserted)
 							
-							$plan_added = $product->stripe_plan_added;
-							
-							if( !$product->stripe_plan_added ){ // Add plan if needed
-								$plan_added = $stripe->insert_plan( $product );
-								$this->mysqli->update_product_stripe_added( $product->product_id );
-							}
-							
-							if( $plan_added ){ // Plan added successfully
-							
-								$stripe_response = $stripe->insert_subscription( $product, $user, $card, $coupon );
+							$card_result = $stripe->insert_card( $user, $card );
 								
-								if( $stripe_response ){ // Subscription added successfully
-									
-									$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user, $card );
-									$subscription_row = $this->mysqli->get_subscription_row( $subscription_id );
-									$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_row->promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
-									$this->mysqli->update_user_default_card( $user, $card );
-									
-									$subscription = new ec_subscription( $subscription_row );
-									$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-									$order = new ec_orderdisplay( $order_row );
-									$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-									$subscription->send_email_receipt( $user, $order, $order_details );
-									$this->mysqli->update_product_stock( $product->product_id, 1 );
-									
-									// Unset Variables Entered
-									unset( $_SESSION['ec_subscription_option1'] );
-									unset( $_SESSION['ec_subscription_option2'] );
-									unset( $_SESSION['ec_subscription_option3'] );
-									unset( $_SESSION['ec_subscription_option4'] );
-									unset( $_SESSION['ec_subscription_option5'] );
-									
-									$i=0;
-									while( isset( $_SESSION['ec_subscription_advanced_option' . $i] ) ){
-										unset( $_SESSION['ec_subscription_advanced_option' . $i] );
-										$i++;
-									}
-									
-									unset( $_SESSION['ec_billing_first_name'] );
-									unset( $_SESSION['ec_billing_last_name'] );
-									unset( $_SESSION['ec_billing_address'] );
-									unset( $_SESSION['ec_billing_address2'] );
-									unset( $_SESSION['ec_billing_city'] );
-									unset( $_SESSION['ec_billing_state'] );
-									unset( $_SESSION['ec_billing_zip'] );
-									unset( $_SESSION['ec_billing_country'] );
-									unset( $_SESSION['ec_billing_phone'] );
-									
-									unset( $_SESSION['ec_shipping_selector'] );
-									unset( $_SESSION['ec_shipping_first_name'] );
-									unset( $_SESSION['ec_shipping_last_name'] );
-									unset( $_SESSION['ec_shipping_address'] );
-									unset( $_SESSION['ec_shipping_address2'] );
-									unset( $_SESSION['ec_shipping_city'] );
-									unset( $_SESSION['ec_shipping_state'] );
-									unset( $_SESSION['ec_shipping_zip'] );
-									unset( $_SESSION['ec_shipping_country'] );
-									unset( $_SESSION['ec_shipping_phone'] );
-									
-									unset( $_SESSION['ec_use_shipping'] );
-									unset( $_SESSION['ec_shipping_method'] );
-									unset( $_SESSION['ec_expedited_shipping'] ); 
-									
-									if( !isset( $_SESSION['ec_user_id'] ) ){
-										unset( $_SESSION['ec_email'] );
-										unset( $_SESSION['ec_first_name'] );
-										unset( $_SESSION['ec_last_name'] );
-									}
-									
-									unset( $_SESSION['ec_create_account'] );
-									unset( $_SESSION['ec_couponcode'] );
-									unset( $_SESSION['ec_giftcard'] );
-									unset( $_SESSION['ec_order_notes'] );
-									unset( $_SESSION['ec_cart_id'] );
-									unset( $_COOKIE['ec_cart_id'] );
-									$vals = array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' );
-									$_SESSION['ec_cart_id'] = $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)];
-									setcookie( 'ec_cart_id', $_SESSION['ec_cart_id'], time( ) + ( 3600 * 24 * 30 ) );
-									
-									header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );	
+							
+							if( $card_result ){ //Card Submitted Successfully
 								
+								$plan_added = $product->stripe_plan_added;
+								
+								if( !$product->stripe_plan_added ){ // Add plan if needed
+									$plan_added = $stripe->insert_plan( $product );
+									$this->mysqli->update_product_stripe_added( $product->product_id );
+								}
+								
+								if( $plan_added ){ // Plan added successfully
+								
+									$stripe_response = $stripe->insert_subscription( $product, $user, $card, $coupon );
+									
+									if( $stripe_response ){ // Subscription added successfully
+										
+										$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user, $card );
+										$subscription_row = $this->mysqli->get_subscription_row( $subscription_id );
+										$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_row->promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
+										$this->mysqli->update_user_default_card( $user, $card );
+										
+										// Affiliate Insert
+										$referral_id = "";
+										if( class_exists( "Affiliate_WP" ) )
+											$referral_id = $this->add_affiliatewp_subscription_order( $order_id, $user, $product );
+											
+										if( $referral_id != "" ){
+											$this->mysqli->update_affiliate_referral_id( $order_id, $referral_id );
+										}
+										
+										$subscription = new ec_subscription( $subscription_row );
+										$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+										$order = new ec_orderdisplay( $order_row );
+										$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+										$subscription->send_email_receipt( $user, $order, $order_details );
+										$this->mysqli->update_product_stock( $product->product_id, 1 );
+										
+										// Unset Variables Entered
+										unset( $_SESSION['ec_subscription_option1'] );
+										unset( $_SESSION['ec_subscription_option2'] );
+										unset( $_SESSION['ec_subscription_option3'] );
+										unset( $_SESSION['ec_subscription_option4'] );
+										unset( $_SESSION['ec_subscription_option5'] );
+										
+										$i=0;
+										while( isset( $_SESSION['ec_subscription_advanced_option' . $i] ) ){
+											unset( $_SESSION['ec_subscription_advanced_option' . $i] );
+											$i++;
+										}
+										
+										unset( $_SESSION['ec_billing_first_name'] );
+										unset( $_SESSION['ec_billing_last_name'] );
+										unset( $_SESSION['ec_billing_address'] );
+										unset( $_SESSION['ec_billing_address2'] );
+										unset( $_SESSION['ec_billing_city'] );
+										unset( $_SESSION['ec_billing_state'] );
+										unset( $_SESSION['ec_billing_zip'] );
+										unset( $_SESSION['ec_billing_country'] );
+										unset( $_SESSION['ec_billing_phone'] );
+										
+										unset( $_SESSION['ec_shipping_selector'] );
+										unset( $_SESSION['ec_shipping_first_name'] );
+										unset( $_SESSION['ec_shipping_last_name'] );
+										unset( $_SESSION['ec_shipping_address'] );
+										unset( $_SESSION['ec_shipping_address2'] );
+										unset( $_SESSION['ec_shipping_city'] );
+										unset( $_SESSION['ec_shipping_state'] );
+										unset( $_SESSION['ec_shipping_zip'] );
+										unset( $_SESSION['ec_shipping_country'] );
+										unset( $_SESSION['ec_shipping_phone'] );
+										
+										unset( $_SESSION['ec_use_shipping'] );
+										unset( $_SESSION['ec_shipping_method'] );
+										unset( $_SESSION['ec_expedited_shipping'] ); 
+										
+										if( !isset( $_SESSION['ec_user_id'] ) ){
+											unset( $_SESSION['ec_email'] );
+											unset( $_SESSION['ec_first_name'] );
+											unset( $_SESSION['ec_last_name'] );
+										}
+										
+										unset( $_SESSION['ec_create_account'] );
+										unset( $_SESSION['ec_couponcode'] );
+										unset( $_SESSION['ec_giftcard'] );
+										unset( $_SESSION['ec_order_notes'] );
+										unset( $_SESSION['ec_cart_id'] );
+										unset( $_COOKIE['ec_cart_id'] );
+										$vals = array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' );
+										$_SESSION['ec_cart_id'] = $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)];
+										setcookie( 'ec_cart_id', $_SESSION['ec_cart_id'], time( ) + ( 3600 * 24 * 30 ) );
+										
+										header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );	
+									
+									}else{
+										header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_failed" );	
+									
+									}// Close check for subscription insertion
+									
 								}else{
-									header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_failed" );	
+									header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_added_failed" );
 								
-								}// Close check for subscription insertion
+								}// Close check for stripe plan insertion
 								
 							}else{
-								header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_added_failed" );
+								header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=card_error" );
 							
-							}// Close check for stripe plan insertion
-							
-						}else{
-							header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=card_error" );
+							}// Close check for card insertion
 						
-						}// Close check for card insertion
-					
-					}else{
-						header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=user_insert_error" );
-					
-					}// Close check for customer insertion to stripe check
+						}else{
+							header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=user_insert_error" );
+						
+						}// Close check for customer insertion to stripe check
+						
+					}else if( class_exists( 'ec_paypal' ) ){ // Close check for stripe
+						
+						$order_id = $this->mysqli->insert_paypal_subscription_order( $product, $user, $coupon_row->promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
+						
+						$paypal = new ec_paypal( );
+						$paypal->display_subscription_form( $order_id, $user, $product );
+						
+						// Unset Variables Entered
+						unset( $_SESSION['ec_subscription_option1'] );
+						unset( $_SESSION['ec_subscription_option2'] );
+						unset( $_SESSION['ec_subscription_option3'] );
+						unset( $_SESSION['ec_subscription_option4'] );
+						unset( $_SESSION['ec_subscription_option5'] );
+						
+						$i=0;
+						while( isset( $_SESSION['ec_subscription_advanced_option' . $i] ) ){
+							unset( $_SESSION['ec_subscription_advanced_option' . $i] );
+							$i++;
+						}
+						
+						unset( $_SESSION['ec_billing_first_name'] );
+						unset( $_SESSION['ec_billing_last_name'] );
+						unset( $_SESSION['ec_billing_address'] );
+						unset( $_SESSION['ec_billing_address2'] );
+						unset( $_SESSION['ec_billing_city'] );
+						unset( $_SESSION['ec_billing_state'] );
+						unset( $_SESSION['ec_billing_zip'] );
+						unset( $_SESSION['ec_billing_country'] );
+						unset( $_SESSION['ec_billing_phone'] );
+						
+						unset( $_SESSION['ec_shipping_selector'] );
+						unset( $_SESSION['ec_shipping_first_name'] );
+						unset( $_SESSION['ec_shipping_last_name'] );
+						unset( $_SESSION['ec_shipping_address'] );
+						unset( $_SESSION['ec_shipping_address2'] );
+						unset( $_SESSION['ec_shipping_city'] );
+						unset( $_SESSION['ec_shipping_state'] );
+						unset( $_SESSION['ec_shipping_zip'] );
+						unset( $_SESSION['ec_shipping_country'] );
+						unset( $_SESSION['ec_shipping_phone'] );
+						
+						unset( $_SESSION['ec_use_shipping'] );
+						unset( $_SESSION['ec_shipping_method'] );
+						unset( $_SESSION['ec_expedited_shipping'] ); 
+						
+						if( !isset( $_SESSION['ec_user_id'] ) ){
+							unset( $_SESSION['ec_email'] );
+							unset( $_SESSION['ec_first_name'] );
+							unset( $_SESSION['ec_last_name'] );
+						}
+						
+						unset( $_SESSION['ec_create_account'] );
+						unset( $_SESSION['ec_couponcode'] );
+						unset( $_SESSION['ec_giftcard'] );
+						unset( $_SESSION['ec_order_notes'] );
+						unset( $_SESSION['ec_cart_id'] );
+						unset( $_COOKIE['ec_cart_id'] );
+						$vals = array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' );
+						$_SESSION['ec_cart_id'] = $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)];
+						setcookie( 'ec_cart_id', $_SESSION['ec_cart_id'], time( ) + ( 3600 * 24 * 30 ) );
+						
+						die( );
+						
+					}else{ // Close check for paypal
+						header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_setup_error" );
+					}
 			
 				}else{
 					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=already_subscribed" );
@@ -3333,6 +3459,46 @@ class ec_cartpage{
 		}else{
 			return plugins_url( "/wp-easycart/design/theme/" . get_option( 'ec_option_latest_theme' ) . "/images/" . $image );
 		}
+		
+	}
+	
+	private function add_affiliatewp_subscription_order( $order_id, $user, $product ){
+		
+		if( affiliate_wp( )->tracking->was_referred( ) ){
+			
+			$affiliate_id = affiliate_wp( )->tracking->get_affiliate_id( );
+			$default_rate = affwp_get_affiliate_rate( $affiliate_id );
+			$has_affiliate_rule = false;
+		
+			$affiliate_rule = $this->mysqli->get_affiliate_rule( affiliate_wp()->tracking->get_affiliate_id( ), $product->product_id );
+			if( $affiliate_rule )
+				$has_affiliate_rule = true;
+			
+			if( $has_affiliate_rule ){
+				if( $affiliate_rule->rule_type == "percentage" )
+					$total_earned += ( $product->price * ( $affiliate_rule->rule_amount / 100 ) );
+						
+				else if( $affiliate_rule->rule_type == "amount" )
+					$total_earned += $affiliate_rule->rule_amount;	
+				
+			}else
+				$total_earned += ( $product->price * $default_rate );
+			
+			$data = array(
+				'affiliate_id' => $affiliate_id,
+				'visit_id'     => affiliate_wp()->tracking->get_visit_id( ),
+				'amount'       => $total_earned,
+				'description'  => $user->billing->first_name . " " . $user->billing->last_name,
+				'reference'    => $order_id,
+				'context'      => 'WP EasyCart',
+			);
+			$result = affiliate_wp()->referrals->add( $data );
+			
+			return $result;
+
+		}
+		
+		return "";
 		
 	}
 	

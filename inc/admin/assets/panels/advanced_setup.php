@@ -128,8 +128,14 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Use Theme Custom Post Template for Store Items</em>This option allows you to customize your store design with your theme. The default is to use your page design for all store items, but turning this on will force the system to use your single.php file. Customize store pages by adding a single-ec_store.php file to your theme and turning this option on.</span></a></span>
-    <span class="ec_setting_row_label">Use Theme Custom Post Template for Store Items:</span>
+    <span class="ec_setting_row_label">Use Theme Custom Post Template:</span>
     <span class="ec_setting_row_input"><select name="ec_option_use_custom_post_theme_template" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_custom_post_theme_template') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_custom_post_theme_template') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Send Email When New Account Created</em>This option allows you to receive a notification email every time someone creates a new account in your EasyCart system.</span></a></span>
+    <span class="ec_setting_row_label">Send Email When New Account Created:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_send_signup_email" style="width:100px;"><option value="0"<?php if( get_option('ec_option_send_signup_email') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_send_signup_email') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>

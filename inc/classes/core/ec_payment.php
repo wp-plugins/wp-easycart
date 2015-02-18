@@ -94,6 +94,8 @@ class ec_payment{
 		else if($this->proccess_method == "securepay"		)			$gateway = new ec_securepay();
 		else if($this->proccess_method == "stripe"			)			$gateway = new ec_stripe();
 		else if($this->proccess_method == "virtualmerchant"	)			$gateway = new ec_virtualmerchant();
+		else if($this->proccess_method == "custom" && class_exists( "ec_customgateway" ) )			
+																		$gateway = new ec_customgateway();
 		else{
 			error_log( "Setup error, no payment gateway selected." );
 			return "Setup error, no payment gateway selected."; 

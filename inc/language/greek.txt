@@ -362,6 +362,10 @@
 				"product_details_gift_card_error":{
 					"title":"Gift Card Option Error Text",
 					"value":"Λείπει Επιλογές Giftcard"
+				},
+				"product_details_your_price":{
+					"title":"Your Price:",
+					"value":"Τιμή σας:"
 				}
 			}
 		},
@@ -865,6 +869,10 @@
 				"cart_totals_grand_total":{
 					"title":"Cart, Cart Totals, Grand Total",
 					"value":"\u03a4\u03b5\u03bb\u03b9\u03ba\u03cc \u03c0\u03bf\u03c3\u03cc"
+				},
+				"cart_totals_label":{
+					"title":"Cart Totals Label",
+					"value":"Καλάθι Σύνολα"
 				}
 			}
 		},
@@ -1607,6 +1615,14 @@
 				"account_billing_information_user_notes":{
 					"title":"Account, Billing, User Notes",
 					"value":"Πρόσθετες πληροφορίες σχετικά με την εγγραφή σας"
+				},
+				"account_register_email_title":{
+					"title":"Account, Register Email Title",
+					"value":"Νέα EasyCart Εγγραφή"
+				},
+				"account_register_email_message":{
+					"title":"Account, Register Email Message",
+					"value":"Νέα εγγραφή με διεύθυνση ηλεκτρονικού ταχυδρομείου:"
 				}
 			}
 		},
@@ -2096,6 +2112,10 @@
 				"account_orders_details_downloads_expire_time":{
 					"title":"Account, Orders Details, Download Expiration",
 					"value":"Το κατέβασμα λήγει στις :"
+				},
+				"account_orders_details_your_codes":{
+					"title":"Account, Orders Details, Your Codes",
+					"value":"Κώδικες σας:"
 				}
 			}
 		},
@@ -2371,6 +2391,71 @@
 				"adding_to_cart":{
 					"title":"Store, Adding to Cart",
 					"value":"Προσθήκη στο καλάθι..."
+				}
+			}
+		},
+		"ec_shipping_email":{
+			"label":"Shipping Emailer",
+			"options":{
+				"shipping_email_title":{
+					"title":"Shipping Email Title",
+					"value":"Αποστολές Επιβεβαίωση - Αριθμός Παραγγελίας"
+				},
+				"shipping_dear":{
+					"title":"Shipping Dear Customer",
+					"value":"αγαπητός"
+				},
+				"shipping_subtitle1":{
+					"title":"Order Shipped First Half",
+					"value":"Πρόσφατη παραγγελία σας με τον αριθμό"
+				},
+				"shipping_subtitle2":{
+					"title":"Order Shipped Second Half",
+					"value":"έχει αποσταλεί! Θα πρέπει να την έχει παραλάβει μέσα σε σύντομο χρονικό διάστημα."
+				},
+				"shipping_description":{
+					"title":"Order Shipped Description",
+					"value":"Μπορείτε να ελέγξετε την κατάσταση της παραγγελίας σας με την επίσκεψη στην ιστοσελίδα του φορέα σας και χρησιμοποιώντας την ακόλουθη αριθμό καταδίωξης."
+				},
+				"shipping_carrier":{
+					"title":"Order Shipped Carrier",
+					"value":"Πακέτο Μεταφορέα:"
+				},
+				"shipping_tracking":{
+					"title":"Order Shipped Tracking Number",
+					"value":"Τον αριθμό καταδίωξης συσκευασίας:"
+				},
+				"shipping_billing_label":{
+					"title":"Billing Label",
+					"value":"Διεύθυνση χρέωσης"
+				},
+				"shipping_shipping_label":{
+					"title":"Shipping Label",
+					"value":"Διεύθυνση αποστολής"
+				},
+				"shipping_product":{
+					"title":"Product Label",
+					"value":"προϊόν"
+				},
+				"shipping_quantity":{
+					"title":"Quantity Label",
+					"value":"ποσότητα"
+				},
+				"shipping_unit_price":{
+					"title":"Unit Price Label",
+					"value":"Τιμή Μονάδας"
+				},
+				"shipping_total_price":{
+					"title":"Total Price Label",
+					"value":"Συνολική Τιμή"
+				},
+				"shipping_final_note1":{
+					"title":"Shipping Emailer Final Note Line 1",
+					"value":"Παρακαλούμε ελέγξτε την παραγγελία σας, όταν μπορείτε να λάβετε και να μας ενημερώσετε αμέσως εάν υπάρχουν οποιεσδήποτε ανησυχίες ή ζητήματα. Εκτιμούμε πάντα την επιχείρησή σας και ελπίζουμε να απολαύσετε το προϊόν σας."
+				},
+				"shipping_final_note2":{
+					"title":"Shipping Emailer Final Note Line 2",
+					"value":"Σας ευχαριστώ πολύ!"
 				}
 			}
 		},

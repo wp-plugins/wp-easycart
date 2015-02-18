@@ -953,6 +953,11 @@ function ec_live_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $live_payment == "custom" ){
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/ec_customgateway.php' ) )
+			return true;
+		else
+			return false;
 	}
 }
 
@@ -996,6 +1001,8 @@ function ec_get_live_payment_method( ){
 		return "Stripe";
 	else if( $live_payment == "virtualmerchant" )
 		return "Virtual Merchant";
+	else if( $live_payment == "custom" )
+		return "Custom Payment Gateway";
 }
 
 function ec_update_pages( $store_id, $account_id, $cart_id ){
@@ -1275,6 +1282,11 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_skip_shipping_page', $_POST['ec_option_skip_shipping_page'] );
 	update_option( 'ec_option_skip_reivew_screen', $_POST['ec_option_skip_reivew_screen'] );
 	update_option( 'ec_option_require_terms_agreement', $_POST['ec_option_require_terms_agreement'] );
+	update_option( 'ec_option_show_email_on_receipt', $_POST['ec_option_show_email_on_receipt'] );
+	update_option( 'ec_option_show_breadcrumbs', $_POST['ec_option_show_breadcrumbs'] );
+	update_option( 'ec_option_show_model_number', $_POST['ec_option_show_model_number'] );
+	update_option( 'ec_option_show_categories', $_POST['ec_option_show_categories'] );
+	update_option( 'ec_option_show_manufacturer', $_POST['ec_option_show_manufacturer'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
@@ -1303,6 +1315,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_collect_shipping_for_subscriptions', $_POST['ec_option_collect_shipping_for_subscriptions'] );
 	update_option( 'ec_option_restrict_store', implode( '***', $_POST['ec_option_restrict_store'] ) );
 	update_option( 'ec_option_use_custom_post_theme_template', $_POST['ec_option_use_custom_post_theme_template'] );
+	update_option( 'ec_option_send_signup_email', $_POST['ec_option_send_signup_email'] );
 	update_option( 'ec_option_amazon_key', $_POST['ec_option_amazon_key'] );
 	update_option( 'ec_option_amazon_secret', $_POST['ec_option_amazon_secret'] );
 	update_option( 'ec_option_amazon_bucket', $_POST['ec_option_amazon_bucket'] );
@@ -1947,6 +1960,16 @@ function ec_has_order( ){
 		return false;
 	else
 		return true;
+}
+
+function ec_has_demouser( ){
+	global $wpdb;
+	$user = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ec_user WHERE ec_user.email = 'demouser@demo.com' AND ec_user.password = %s AND ec_user.user_level = 'admin'", md5( "demouser" ) ) );
+	if( count( $user ) > 0 ){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 function ec_easycart_add_pages( ){

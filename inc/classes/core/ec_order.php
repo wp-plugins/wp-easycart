@@ -114,6 +114,10 @@ class ec_order{
 				$this->insert_details( $payment_type );
 				$this->update_user_addresses();
 				
+				// Affiliate Functionality
+				if( class_exists( "Affiliate_WP" ) )
+					$this->add_affiliatewp_order( );
+				
 				if( $this->shipping->shipping_method == "fraktjakt" ){
 					// Insert order for shipping method
 					$ship_order_info = $this->shipping->submit_fraktjakt_shipping_order( );
@@ -155,7 +159,6 @@ class ec_order{
 			return $this->process_result;
 			
 		}else{
-			error_log( "error in submit_order(), couldn't insert order." );
 			return "Error Inserting Order";
 		}
 	}
@@ -218,41 +221,10 @@ class ec_order{
 	
 	private function send_email_receipt(){
 		
-		$tax_struct = new ec_tax( 0,0,0, "", "");
-		$total = $GLOBALS['currency']->get_currency_display( $this->order_totals->grand_total );
-		$subtotal = $GLOBALS['currency']->get_currency_display( $this->order_totals->sub_total );
-		$tax = $GLOBALS['currency']->get_currency_display( $this->order_totals->tax_total );
-		if( $this->order_totals->duty_total > 0 ){ $has_duty = true; }else{ $has_duty = false; }
-		$duty = $GLOBALS['currency']->get_currency_display( $this->order_totals->duty_total );
-		$vat = $GLOBALS['currency']->get_currency_display( $this->order_totals->vat_total );
-		$vat_rate = number_format( $this->tax->vat_rate, 0, '', '' );
-		$shipping = $GLOBALS['currency']->get_currency_display( $this->order_totals->shipping_total );
-		$discount = $GLOBALS['currency']->get_currency_display( $this->order_totals->discount_total );
-		
-		$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
-	 	
-		$headers   = array();
-		$headers[] = "MIME-Version: 1.0";
-		$headers[] = "Content-Type: text/html; charset=utf-8";
-		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
-		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
-		$headers[] = "X-Mailer: PHP/".phpversion();
-		
-		ob_start();
-        if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_receipt.php' ) )	
-			include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_email_receipt.php';
-		else
-			include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_cart_email_receipt.php';
-			
-        $message = ob_get_clean();
-		
-		if( get_option( 'ec_option_use_wp_mail' ) ){
-			wp_mail( $this->user->email, $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $this->order_id, $message, implode("\r\n", $headers) );
-			wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $this->order_id, $message, implode("\r\n", $headers) );
-		}else{
-			mail( $this->user->email, $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $this->order_id, $message, implode("\r\n", $headers) );
-			mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $this->order_id, $message, implode("\r\n", $headers) );
-		}
+		$db_admin = new ec_db_admin( );
+		$order_row = $db_admin->get_order_row_admin( $this->order_id );
+		$order_display = new ec_orderdisplay( $order_row, true, true );
+		$order_display->send_email_receipt( );
 		
 	}
 	
@@ -386,6 +358,59 @@ class ec_order{
 			
 		}
 	
+	}
+	
+	private function add_affiliatewp_order( ){
+		
+		if( affiliate_wp( )->tracking->was_referred( ) ){
+			
+			$affiliate_id = affiliate_wp( )->tracking->get_affiliate_id( );
+			$exclude_shipping = affiliate_wp( )->settings->get( 'exclude_shipping' );
+			$exclude_tax = affiliate_wp( )->settings->get( 'exclude_tax' );
+			$default_rate = affwp_get_affiliate_rate( $affiliate_id );
+			$total_earned = 0;
+				
+			if( !$exclude_shipping )
+				$total_earned += ( $this->order_totals->shipping_total * $default_rate );
+			
+			if( !$exclude_tax )
+				$total_earned += ( $this->order_totals->tax_total * $default_rate );
+			
+			foreach( $this->cart->cart as $cart_item ){
+				
+				if( $cart_item->has_affiliate_rule ){
+					if( $cart_item->affiliate_rule->rule_type == "percentage" ){
+						if( $cart_item->affiliate_rule->rule_limit > 0 && $cart_item->affiliate_rule->rule_limit < $cart_item->quantity )
+							$total_earned += ( $cart_item->unit_price * $cart_item->affiliate_rule->rule_limit * ( $cart_item->affiliate_rule->rule_amount / 100 ) );
+						else
+							$total_earned += ( $cart_item->total_price * ( $cart_item->affiliate_rule->rule_amount / 100 ) );
+							
+					}else if( $cart_item->affiliate_rule->rule_type == "amount" ){
+						if( $cart_item->affiliate_rule->rule_limit > 0 && $cart_item->affiliate_rule->rule_limit < $cart_item->quantity )
+							$total_earned += $cart_item->affiliate_rule->rule_amount * $cart_item->affiliate_rule->rule_limit;
+						else
+							$total_earned += $cart_item->affiliate_rule->rule_amount * $cart_item->quantity;
+							
+					}
+					
+				}else{
+					$total_earned += ( $cart_item->total_price * $default_rate );
+				}
+			
+			}
+			
+			$data = array(
+				'affiliate_id' => $affiliate_id,
+				'visit_id'     => affiliate_wp()->tracking->get_visit_id( ),
+				'amount'       => $total_earned,
+				'description'  => $this->user->first_name . " " . $this->user->last_name,
+				'reference'    => $this->order_id,
+				'context'      => 'WP EasyCart',
+			);
+			$result = affiliate_wp()->referrals->add( $data );
+
+		}
+		
 	}
 	
 	public function get_shipping_method_name( ){

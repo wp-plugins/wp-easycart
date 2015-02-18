@@ -44,12 +44,14 @@ class ec_product{
 	public $is_giftcard;						// Bool
 	public $is_special;							// Bool
 	public $is_taxable;							// Bool
+	public $is_shippable;						// Bool
 	public $is_download;						// Bool
 	public $is_donation;						// Bool
 	public $is_subscription_item;				// Bool
 	public $is_catalog_mode;					// Bool
 	public $is_inquiry_mode;					// Bool
 	public $is_deconetwork;						// Bool
+	public $include_code;						// Bool
 	
 	public $catalog_mode_phrase;				// VARCHAR 1024
 	public $inquiry_url;						// VARCHAR 1024
@@ -193,12 +195,14 @@ class ec_product{
 		$this->is_giftcard = $product_data['is_giftcard'];
 		$this->is_special = $product_data['is_special'];
 		$this->is_taxable = $product_data['is_taxable'];
+		$this->is_shippable = $product_data['is_shippable'];
 		$this->is_download = $product_data['is_download'];
 		$this->is_donation = $product_data['is_donation'];
 		$this->is_subscription_item = $product_data['is_subscription_item'];
 		$this->is_catalog_mode = $product_data['catalog_mode'];
 		$this->is_inquiry_mode = $product_data['inquiry_mode'];
 		$this->is_deconetwork = $product_data['is_deconetwork'];
+		$this->include_code = $product_data['include_code'];
 		
 		$this->catalog_mode_phrase = $product_data['catalog_mode_phrase'];
 		$this->inquiry_url = $product_data['inquiry_url'];
@@ -263,6 +267,8 @@ class ec_product{
 			$this->promotion_text = 0;	
 		}
 		
+		$this->advanced_optionsets = $this->mysqli->get_advanced_optionsets( $this->product_id );
+		
 		if( $this->is_product_details ){
 			// Get menu and category connections
 			$this->menuitems = $this->mysqli->get_menu_values( $this->product_id );
@@ -270,7 +276,6 @@ class ec_product{
 			if( $this->use_optionitem_quantity_tracking ){
 				$this->option1quantity = $this->mysqli->get_option_quantity_values( $this->product_id );
 			}
-			$this->advanced_optionsets = $this->mysqli->get_advanced_optionsets( $this->product_id );
 			
 			// Loop through options, select correct text if transalation used
 			for( $adv_index = 0; $adv_index < count( $this->advanced_optionsets ); $adv_index++ ){
@@ -1514,7 +1519,7 @@ class ec_product{
 	
 	public function has_options( ){
 		
-		if( $this->has_options || $this->use_advanced_optionset )
+		if( $this->has_options || ( $this->use_advanced_optionset && count( $this->advanced_optionsets ) > 0 ) )
 			return true;
 		else
 			return false;

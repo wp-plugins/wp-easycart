@@ -362,6 +362,10 @@
 				"product_details_gift_card_error":{
 					"title":"Gift Card Option Error Text",
 					"value":"Missing Giftcard Opties"
+				},
+				"product_details_your_price":{
+					"title":"Your Price:",
+					"value":"uw Prijs:"
 				}
 			}
 		},
@@ -865,6 +869,10 @@
 				"cart_totals_grand_total":{
 					"title":"Winkelmand, Winkelmandtotalen, Ordertotaal",
 					"value":"Ordertotaal"
+				},
+				"cart_totals_label":{
+					"title":"Cart Totals Label",
+					"value":"kar Totalen"
 				}
 			}
 		},
@@ -1607,6 +1615,14 @@
 				"account_billing_information_user_notes":{
 					"title":"Account, Billing, User Notes",
 					"value":"Aanvullende informatie over uw registratie"
+				},
+				"account_register_email_title":{
+					"title":"Account, Register Email Title",
+					"value":"Nieuwe EasyCart Registratie"
+				},
+				"account_register_email_message":{
+					"title":"Account, Register Email Message",
+					"value":"Nieuwe Registratie bij E-mailadres:"
 				}
 			}
 		},
@@ -2096,6 +2112,10 @@
 				"account_orders_details_downloads_expire_time":{
 					"title":"Account, Orderdetails, Download Verval",
 					"value":"Download vervalt op:"
+				},
+				"account_orders_details_your_codes":{
+					"title":"Account, Orders Details, Your Codes",
+					"value":"uw Codes:"
 				}
 			}
 		},
@@ -2371,6 +2391,71 @@
 				"adding_to_cart":{
 					"title":"Store, Adding to Cart",
 					"value":"Toevoegen aan winkelwagen ..."
+				}
+			}
+		},
+		"ec_shipping_email":{
+			"label":"Shipping Emailer",
+			"options":{
+				"shipping_email_title":{
+					"title":"Shipping Email Title",
+					"value":"Ordre sendt - Bekreftelse"
+				},
+				"shipping_dear":{
+					"title":"Shipping Dear Customer",
+					"value":"Lieve"
+				},
+				"shipping_subtitle1":{
+					"title":"Order Shipped First Half",
+					"value":"Uw recente bestelling met het aantal"
+				},
+				"shipping_subtitle2":{
+					"title":"Order Shipped Second Half",
+					"value":"is verzonden! U moet worden ontvangen binnen een korte periode."
+				},
+				"shipping_description":{
+					"title":"Order Shipped Description",
+					"value":"U kunt de status van uw bestelling te controleren door een bezoek aan uw vervoerders website en het gebruik van de volgende tracking nummer."
+				},
+				"shipping_carrier":{
+					"title":"Order Shipped Carrier",
+					"value":"pakket Carrier:"
+				},
+				"shipping_tracking":{
+					"title":"Order Shipped Tracking Number",
+					"value":"Pakket het volgen aantal:"
+				},
+				"shipping_billing_label":{
+					"title":"Billing Label",
+					"value":"factuuradres"
+				},
+				"shipping_shipping_label":{
+					"title":"Shipping Label",
+					"value":"verzendadres"
+				},
+				"shipping_product":{
+					"title":"Product Label",
+					"value":"Product"
+				},
+				"shipping_quantity":{
+					"title":"Quantity Label",
+					"value":"hoeveelheid"
+				},
+				"shipping_unit_price":{
+					"title":"Unit Price Label",
+					"value":"eenheidsprijs"
+				},
+				"shipping_total_price":{
+					"title":"Total Price Label",
+					"value":"totale prijs"
+				},
+				"shipping_final_note1":{
+					"title":"Shipping Emailer Final Note Line 1",
+					"value":"Kijk uw bestelling bij ontvangst en laat ons direct weten of er sprake is van problemen of problemen. Wij waarderen altijd uw bedrijf en hopen dat u geniet van uw product."
+				},
+				"shipping_final_note2":{
+					"title":"Shipping Emailer Final Note Line 2",
+					"value":"Heel erg bedankt!"
 				}
 			}
 		},

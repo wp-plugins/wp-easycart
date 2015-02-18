@@ -210,6 +210,16 @@ class ec_admin_users{
 		$sql = "UPDATE ec_user SET ec_user.default_billing_address_id = %d, ec_user.default_shipping_address_id = %d WHERE ec_user.user_id = %d";
 		$success4 = $this->db->query( $this->db->prepare( $sql, $billing_id, $shipping_id, $user_id ) );
 		
+		// MyMail Hook
+		if( function_exists( 'mymail' ) ){
+			mymail('subscribers')->add(array(
+				'firstname' => $client->billname,
+				'lastname' => $client->billlastname,
+				'email' => $client->email,
+				'status' => 1,
+			), false );
+		}
+		
 		//Enqueue Quickbooks Add Customer
 		if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
 			$quickbooks = new ec_quickbooks( );

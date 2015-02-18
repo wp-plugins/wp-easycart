@@ -50,9 +50,9 @@
 
                 <p><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_4" ); ?><?php if( $order->has_membership_page( ) ){ ?></p>
 
-                <p><a href="<?php echo $order->get_membership_page_link( ); ?>"><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_5" ); ?></a><?php }?><br>
-
-                <br><br></p>
+                <p><a href="<?php echo $order->get_membership_page_link( ); ?>"><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_5" ); ?></a><?php }?></p>
+                
+                <?php if( get_option( 'ec_option_show_email_on_receipt' ) ){ ?><p><strong><?php echo htmlspecialchars( $user->email, ENT_QUOTES ); ?></strong></p><?php }?>
 
             </td>
 
@@ -82,14 +82,14 @@
 
                     </tr>
                     
-                    <?php if( $order->billing_company_name != "" || ( get_option( 'ec_option_use_shipping' ) && $order->shipping_company_name != "" ) ){ ?>
+                    <?php if( $order->billing_company_name != "" || ( get_option( 'ec_option_collect_shipping_for_subscriptions' ) && $order->shipping_company_name != "" ) ){ ?>
                     <tr>
 
                     	<td><span class='style22'><?php echo htmlspecialchars( $order->billing_company_name, ENT_QUOTES ); ?></span></td>
 
                         <td>&nbsp;</td>
 
-                        <td><span class='style22'><?php if( get_option( 'ec_option_use_shipping' ) ){?><?php echo htmlspecialchars( $order->shipping_company_name, ENT_QUOTES ); ?><?php }?></span></td>
+                        <td><span class='style22'><?php if( get_option( 'ec_option_collect_shipping_for_subscriptions' ) ){?><?php echo htmlspecialchars( $order->shipping_company_name, ENT_QUOTES ); ?><?php }?></span></td>
 
                     </tr>
                     <?php }?>

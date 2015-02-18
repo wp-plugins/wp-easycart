@@ -339,7 +339,7 @@ input[type="radio"]{ -webkit-appearance:radio; }
 .ec_product_quickview_content_divider{ background-color:#DADADA; width:55px; margin:0px 0px 15px; padding:1px 0px; }
 .ec_product_quickview_content_price{ font-family: 'Lato', Arial, sans-serif; color:#000; font-size:18px; font-weight:bold; margin:0px 0px 15px; text-shadow:none; }
 .ec_product_quickview_content_price > .ec_list_price{ text-decoration:line-through; color:#C4C4C4; margin-right:10px; text-shadow:none; }
-.ec_product_quickview_content_description{ font-family: 'Lato', Arial, sans-serif; color:#8D8D8D; font-size:13px; margin:0px 0px 15px; max-height:250px; overflow:hidden; line-height:1.6em; text-shadow:none; }
+.ec_product_quickview_content_description{ font-family: 'Lato', Arial, sans-serif; color:#8D8D8D; font-size:13px; margin:0px 0px 15px; max-height:250px; overflow:hidden; line-height:1.6em; text-shadow:none; overflow-y:auto; }
 .ec_product_quickview_price_tier{ font-family: 'Lato', Arial, sans-serif; color:#777; font-size:13px; margin:0px 0px 15px; line-height:1.1em; list-style:none; }
 .ec_product_quickview_price_tier > li{ padding:4px 0px; }
 .ec_product_quickview_shipping_notice{ font-family: 'Lato', Arial, sans-serif; color:#C04729; font-size:13px; margin:0px 0px 15px; line-height:1.1em; }
@@ -717,6 +717,7 @@ td.ec_cartitem_total{ text-align:right; padding:0 12px 0 0 !important; font-size
 .ec_cart_header{ float:left; width:100%; font-family:'Lato', Arial, sans-serif !important; color:#222222; letter-spacing:1.5px; font-size:100%; font-weight:bold; border-bottom:3px solid #CCC; text-transform:uppercase; padding:9px 0; margin-top:15px; }
 .ec_cart_header.ec_top{ margin-top:0px; }
 .ec_cart_price_row{ float:left; width:100%; padding:5px 0 0 0; border-bottom:1px solid #CCCCCC; line-height:1.5em; }
+.ec_cart_price_row.ec_no_discount{ display:none; }
 .ec_cart_price_row_label{ float:left; font-family:'Lato', Arial, sans-serif !important; color:#222222; font-size:12px; font-weight:bold; max-width:75%; }
 .ec_cart_price_row_total{ float:right; font-family:'Lato', Arial, sans-serif !important; color:#222222; font-size:12px; font-weight:normal; }
 #ec_cart_total{ font-weight:bold; }

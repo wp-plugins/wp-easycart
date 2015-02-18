@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.18
+ * Version: 3.0.19
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.18
+ * @version 3.0.19
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,8 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_18' );
-define( 'EC_CURRENT_DB', '1_29' );
+define( 'EC_CURRENT_VERSION', '3_0_19' );
+define( 'EC_CURRENT_DB', '1_30' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -560,6 +560,14 @@ function load_ec_pre(){
 	if( isset( $_POST['ec_newsletter_email'] ) ){
 		$ec_db = new ec_db();
 		$ec_db->insert_subscriber( $_POST['ec_newsletter_email'], "", "" );
+			
+		// MyMail Hook
+		if( function_exists( 'mymail' ) ){
+			$subscriber_id = mymail('subscribers')->add(array(
+				'email' => $email,
+				'status' => 1,
+			), false );
+		}
 		
 		$_SESSION['ec_newsletter_popup'] = 'hide';
 		setcookie( 'ec_newsletter_popup', $_SESSION['ec_newsletter_popup'], time( ) + ( 10 * 365 * 24 * 60 * 60 ) );
@@ -1752,6 +1760,11 @@ function ec_ajax_redeem_coupon_code( ){
 	
 	else
 		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_coupon' ) . "***" . "invalid";
+		
+	if( $order_totals->discount_total == 0 )
+		echo "***0";
+	else
+		echo "***1";
 	
 	die(); // this is required to return a proper result
 	
@@ -1789,6 +1802,11 @@ function ec_ajax_redeem_gift_card( ){
 		unset( $_SESSION['ec_giftcard'] );
 		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_giftcard' ) . "***" . "invalid";
 	}
+		
+	if( $order_totals->discount_total == 0 )
+		echo "***0";
+	else
+		echo "***1";
 	
 	die(); // this is required to return a proper result
 	
@@ -1918,6 +1936,14 @@ function ec_ajax_submit_newsletter_signup( ){
 	
 	$ec_db = new ec_db();
 	$ec_db->insert_subscriber( $_POST['email_address'], "", "" );
+			
+	// MyMail Hook
+	if( function_exists( 'mymail' ) ){
+		$subscriber_id = mymail('subscribers')->add(array(
+			'email' => $_POST['email_address'],
+			'status' => 1,
+		), false );
+	}
 	
 	$_SESSION['ec_newsletter_popup'] = 'hide';
 	setcookie( 'ec_newsletter_popup', $_SESSION['ec_newsletter_popup'], time( ) + ( 10 * 365 * 24 * 60 * 60 ) );
@@ -2283,6 +2309,17 @@ function ec_create_post_type_menu() {
 			wp_update_post( $post );
 		}
 		update_option( 'ec_option_published_check', EC_CURRENT_VERSION );
+	}
+	
+	// Upgrading Fix for Product Shippable Option
+	if( get_option( 'ec_option_product_ship_fix' ) != '3.0.19' ){
+		
+		global $wpdb;
+		$wpdb->query( "UPDATE ec_product SET ec_product.is_shippable = 0 WHERE ec_product.is_giftcard = 1 OR ec_product.is_download = 1 OR ec_product.is_donation = 1 OR ec_product.is_subscription_item = 1 OR ec_product.weight <= 0" );
+		$wpdb->query( "UPDATE ec_orderdetail SET ec_orderdetail.is_shippable = 0 WHERE ec_orderdetail.is_giftcard = 1 OR ec_orderdetail.is_download = 1" );
+		
+		add_option( 'ec_option_product_ship_fix', '3.0.19' );
+		
 	}
 	
 	$store_id = get_option( 'ec_option_storepage' );

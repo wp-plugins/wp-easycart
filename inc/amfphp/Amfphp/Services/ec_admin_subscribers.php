@@ -88,6 +88,16 @@ class ec_admin_subscribers{
 		$sql = "INSERT INTO ec_subscriber( ec_subscriber.email, ec_subscriber.first_name, ec_subscriber.last_name ) VALUES( %s, %s, %s )";
 		$rows_affected = $this->db->query( $this->db->prepare( $sql, $subscriber['email'], $subscriber['firstname'], $subscriber['lastname'] ) );
 		
+		// MyMail Hook
+		if( function_exists( 'mymail' ) ){
+			mymail('subscribers')->add(array(
+				'firstname' => $subscriber['firstname'],
+				'lastname' => $subscriber['lastname'],
+				'email' => $subscriber['email'],
+				'status' => 1,
+			), false );
+		}
+		
 		if( $rows_affected ){
 			return array( "success" );
 		}else{

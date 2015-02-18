@@ -296,6 +296,43 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
                   <option value="0" <?php if (get_option('ec_option_use_pinterest_icon') == 0) echo ' selected'; ?>>No</option>
               	</select></span>
 </div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Breadcrumbs</em>By turning this option on/off you are showing and hiding the breadcrumbs display within the product details page (only applies to the store not your theme).</span></a></span>
+    <span class="ec_setting_row_label">Show Breadcrumbs:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_breadcrumbs" id="select">
+                  <option value="1" <?php if (get_option('ec_option_show_breadcrumbs') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_show_breadcrumbs') == 0) echo ' selected'; ?>>No</option>
+              	</select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Model Number</em>By turning this option on/off you are showing and hiding the model number display within the product details page.</span></a></span>
+    <span class="ec_setting_row_label">Show Model Number:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_model_number" id="select">
+                  <option value="1" <?php if (get_option('ec_option_show_model_number') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_show_model_number') == 0) echo ' selected'; ?>>No</option>
+              	</select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Categories</em>By turning this option on/off you are showing and hiding the categories display within the product details page if the product is attached to categories.</span></a></span>
+    <span class="ec_setting_row_label">Show Categories:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_categories" id="select">
+                  <option value="1" <?php if (get_option('ec_option_show_categories') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_show_categories') == 0) echo ' selected'; ?>>No</option>
+              	</select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Manufacturer</em>By turning this option on/off you are showing and hiding the manufacturer link display within the product details page if the product.</span></a></span>
+    <span class="ec_setting_row_label">Show Manufacturer:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_manufacturer" id="select">
+                  <option value="1" <?php if (get_option('ec_option_show_manufacturer') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_show_manufacturer') == 0) echo ' selected'; ?>>No</option>
+              	</select></span>
+</div>
+
 <a id="cart-settings"></a>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
@@ -415,6 +452,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Enable Estimate Shipping</em>If enabled, your customer will see an estimate shipping area during the checkout process.</span></a></span>
     <span class="ec_setting_row_label">Enable Estimate Shipping:</span>
     <span class="ec_setting_row_input"><select name="ec_option_use_estimate_shipping" style="width:100px;"><option value="0"<?php if( get_option('ec_option_use_estimate_shipping') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_use_estimate_shipping') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Email on Receipt</em>If enabled, your email receipts will include the email address of the customer on the receipt.</span></a></span>
+    <span class="ec_setting_row_label">Show Email on Receipt:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_email_on_receipt" style="width:100px;"><option value="0"<?php if( get_option('ec_option_show_email_on_receipt') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_show_email_on_receipt') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>

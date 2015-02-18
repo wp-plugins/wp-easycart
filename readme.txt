@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 3.0.18
+Stable tag: 3.0.19
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,34 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.19 =
+* New Feature - Now integrated with AffiliateWP Plugin! Simply install their plugin, setup basic options in their plugin, then add the affiliate rules in the admin console to get up and running!
+* New Feature - You can now disable the download link via an option item checkbox, great feature when setting up an ebook, print, or both option set.
+* New Feature - You can now disable shipping via an option item checkbox, great feature for ebooks/print type product and allowing a customer to pickup a specific item in store.
+* New Feature - Products are now allowed to be turned on and off with a shipping checkbox, just as you do now with tax and vat on the product level.
+* New Feature - We now allow you to create your own custom payment gateway! This will allow those developers with the necessary programming skills to integrate with any and all payment live payment gateways on the planet!
+* New Feature - In the Basic Setup section of the EasyCart Admin area, you can now import your WOO products, categories, and option sets in one click! All product options that are standard with the basic WOO install will be transferred immediately, including cross sales, images, downloads, category connections, pricing, and more.
+* New Feature - WP EasyCart is now integrated with the MyMail Newsletter plugin! MyMail makes managing your subscribers and sending newsletters easier than ever.
+* New Feature - You can now turn on the option to include the customer's email address in the email receipt.
+* New Feature - You can now turn on/off breadcrumbs, model number, categories, and manufacturer displays in the product details. These options are available in your basic settings.
+* New Feature - You can now turn on new account sign up notifications that send an email to the admin email addresses whenever a customer registers for an account in your EasyCart.
+* Fix - A common problem seen with jQuery has been that the id selector would not work and was broken by other themes and plugins. This issue has been bypassed by using the javascript element by id function. Should improve compatibility in WordPress sites.
+* Fix - Google Merchant Feed, changed product category drop down to text input to speed up load time of the page.
+* Fix - Google Merchant Feed, fixed the availability status in the feed.
+* Fix - Product details 'Your Price' was not translated within the plugin.
+* Fix - Cart items did not have cart totals or update translated within the file for the plugin.
+* Fix - The case where VAT is included in the price of the product and a customer checks out with a VAT rate different from the default, the unit price now updates accordingly to include the proper VAT for the situation.
+* Fix - Order with option price over ride was missing a space between wording and pricing as saved to the DB and then in display in the account order details.
+* Fix - Order option price field needed to be extended for override pricing as it was cutting off after 20 characters.
+* Fix - Shipping emailer now has translation available in the advanced language
+* Fix - Quick view, when using short description, overflow in the y direction was hidden, now automatically switches to scrolling when needed.
+* Fix - If no discount is applied, the line item is hidden in the cart and hides/shows when coupon codes and gift cards are applied.
+* Fix - SecurePay payment fix made.
+* Fix - Selecting advanced options, but adding no options was preventing add to cart in the product list view.
+* Fix - Newsletter widget uses jQuery + AJAX to submit the request behind the scenes, giving the same success message as is shown in the newsletter popup.
+* Fix - PayPal Subscriptions were not working correctly.
+* Fix - Shipping on subscriptions turned off, receipt was still showing company name when it shouldn't have.
+* Fix - General Security Enhancements.
 = 3.0.18 =
 * Security Fix
 = 3.0.17 =

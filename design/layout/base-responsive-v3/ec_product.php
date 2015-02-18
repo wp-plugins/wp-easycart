@@ -129,7 +129,7 @@ if( $admin_access || $use_quickview ){ ?>
                             </tr>
                             <tr>
                             	<td colspan="3">
-                                	<input type="button" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', jQuery( '#ec_quantity_<?php echo $product->model_number; ?>' ).val( ), <?php echo $product->show_stock_quantity; ?>, <?php echo $product->min_purchase_quantity; ?>, <?php echo $product->stock_quantity; ?> );" />
+                                	<input type="button" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', jQuery( document.getElementById( 'ec_quantity_<?php echo $product->model_number; ?>' ) ).val( ), <?php echo $product->show_stock_quantity; ?>, <?php echo $product->min_purchase_quantity; ?>, <?php echo $product->stock_quantity; ?> );" />
                                 </td>
                              </tr>
                         </table>
@@ -147,7 +147,7 @@ if( $admin_access || $use_quickview ){ ?>
 	</div>
 </div>
 <script>
-jQuery( '#ec_product_quickview_container_<?php echo $product->model_number; ?>' ).appendTo( document.body );
+jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $product->model_number; ?>" ) ).appendTo( document.body );
 </script>
 <?php }  ?>
 

@@ -362,6 +362,10 @@
 				"product_details_gift_card_error":{
 					"title":"Gift Card Option Error Text",
 					"value":"Missing Gift Card Options"
+				},
+				"product_details_your_price":{
+					"title":"Your Price:",
+					"value":"Your Price:"
 				}
 			}
 		},
@@ -865,6 +869,10 @@
 				"cart_totals_grand_total":{
 					"title":"Cart, Cart Totals, Grand Total",
 					"value":"Grand Total"
+				},
+				"cart_totals_label":{
+					"title":"Cart Totals Label",
+					"value":"Cart Totals"
 				}
 			}
 		},
@@ -1607,6 +1615,14 @@
 				"account_billing_information_user_notes":{
 					"title":"Account, Billing, User Notes",
 					"value":"Additional Information about your Registration"
+				},
+				"account_register_email_title":{
+					"title":"Account, Register Email Title",
+					"value":"New EasyCart Registration"
+				},
+				"account_register_email_message":{
+					"title":"Account, Register Email Message",
+					"value":"New Registration with Email Address:"
 				}
 			}
 		},
@@ -2096,6 +2112,10 @@
 				"account_orders_details_downloads_expire_time":{
 					"title":"Account, Orders Details, Download Expiration",
 					"value":"Download Expires On:"
+				},
+				"account_orders_details_your_codes":{
+					"title":"Account, Orders Details, Your Codes",
+					"value":"Your Code(s):"
 				}
 			}
 		},
@@ -2371,6 +2391,71 @@
 				"adding_to_cart":{
 					"title":"Store, Adding to Cart",
 					"value":"Adding to Cart..."
+				}
+			}
+		},
+		"ec_shipping_email":{
+			"label":"Shipping Emailer",
+			"options":{
+				"shipping_email_title":{
+					"title":"Shipping Email Title",
+					"value":"Shipping Confirmation - Order Number"
+				},
+				"shipping_dear":{
+					"title":"Shipping Dear Customer",
+					"value":"Dear"
+				},
+				"shipping_subtitle1":{
+					"title":"Order Shipped First Half",
+					"value":"Your recent order  with the number"
+				},
+				"shipping_subtitle2":{
+					"title":"Order Shipped Second Half",
+					"value":"has been shipped! You should be receiving it within a short time period."
+				},
+				"shipping_description":{
+					"title":"Order Shipped Description",
+					"value":"You may check the status of your order by visiting your carrier's website and using the following tracking number."
+				},
+				"shipping_carrier":{
+					"title":"Order Shipped Carrier",
+					"value":"Package Carrier:"
+				},
+				"shipping_tracking":{
+					"title":"Order Shipped Tracking Number",
+					"value":"Package Tracking Number:"
+				},
+				"shipping_billing_label":{
+					"title":"Billing Label",
+					"value":"Billing Address"
+				},
+				"shipping_shipping_label":{
+					"title":"Shipping Label",
+					"value":"Shipping Address"
+				},
+				"shipping_product":{
+					"title":"Product Label",
+					"value":"Product"
+				},
+				"shipping_quantity":{
+					"title":"Quantity Label",
+					"value":"Qty"
+				},
+				"shipping_unit_price":{
+					"title":"Unit Price Label",
+					"value":"Unit Price"
+				},
+				"shipping_total_price":{
+					"title":"Total Price Label",
+					"value":"Ext Price"
+				},
+				"shipping_final_note1":{
+					"title":"Shipping Emailer Final Note Line 1",
+					"value":"Please double check your order when you receive it and let us know immediately if there are any concerns or issues. We always value your business and hope you enjoy your product."
+				},
+				"shipping_final_note2":{
+					"title":"Shipping Emailer Final Note Line 2",
+					"value":"Thank you very much!"
 				}
 			}
 		},

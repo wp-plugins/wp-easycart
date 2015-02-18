@@ -147,6 +147,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "securepay" ){ echo '_inactive'; } ?>" id="securepay_title">SecurePay</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "stripe" ){ echo '_inactive'; } ?>" id="stripe_title">Stripe</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "virtualmerchant" ){ echo '_inactive'; } ?>" id="virtualmerchant_title">Virtual Merchant</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "custom" ){ echo '_inactive'; } ?>" id="custom_title">Custom Payment Gateway</div>
         <div class="ec_payment_type_selector">Select a Payment Type: 
         	<select id="paymentmethod" name="ec_option_payment_process_method" onchange="toggle_live_gateways();" value="<?php echo get_option('ec_option_payment_process_method'); ?>" style="width:250px;">
                 <option value="0" <?php if( get_option('ec_option_payment_process_method') == "0" ){ echo " selected"; } ?>>No Live Payment Processor</option>
@@ -169,6 +170,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
                 <option value="securepay" <?php if( get_option('ec_option_payment_process_method') == "securepay" ){ echo " selected"; } ?>>SecurePay</option>
                 <option value="stripe" <?php if( get_option('ec_option_payment_process_method') == "stripe" ){ echo " selected"; } ?>>Stripe</option>
                 <option value="virtualmerchant" <?php if( get_option('ec_option_payment_process_method') == "virtualmerchant" ){ echo " selected"; } ?>>Virtual Merchant</option>
+                <option value="custom" <?php if( get_option('ec_option_payment_process_method') == "custom" ){ echo " selected"; } ?>>Custom Payment Gateway</option>
             </select>
         </div>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/authorize.php" ); ?>
@@ -190,6 +192,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/securepay.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/stripe.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/virtualmerchant.php" ); ?>
+        <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/customgateway.php" ); ?>
         <?php } ?>
     </div>
 </div>

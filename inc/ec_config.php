@@ -97,6 +97,8 @@ if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_stripe.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'virtualmerchant' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_virtualmerchant.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'custom' && file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/ec_customgateway.php' ) ){
+	include( WP_PLUGIN_DIR . '/wp-easycart-data/ec_customgateway.php' );
 }
 
 // THIRD PARTY GATEWAYS

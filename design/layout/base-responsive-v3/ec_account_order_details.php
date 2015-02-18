@@ -80,7 +80,7 @@
 
         <div class="ec_cart_input_row">&nbsp;&nbsp;&nbsp;</div>
 
-        <?php if( get_option( 'ec_option_use_shipping' ) && ( !$this->order->subscription_id || get_option( 'ec_option_collect_shipping_for_subscriptions' ) ) && $this->order->shipping_method ){?>
+        <?php if( get_option( 'ec_option_use_shipping' ) && ( !$this->order->subscription_id || get_option( 'ec_option_collect_shipping_for_subscriptions' ) ) ){?>
 
         <div class="ec_cart_input_row"><strong><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_shipping_label' )?></strong></div>
 

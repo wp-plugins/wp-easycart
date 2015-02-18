@@ -32,73 +32,73 @@ jQuery( document ).ready( function( ){
 			jQuery( event.target ).parent( ).find( 'img' ).attr( 'src', prev );
 		}
 	);
-	jQuery( '#ec_cart_billing_country' ).change( function( ){
-		if( ec_is_state_required( jQuery( '#ec_cart_billing_country' ).val( ) ) )
-			jQuery( '#ec_billing_state_required' ).show( );
+	jQuery( document.getElementById( 'ec_cart_billing_country' ) ).change( function( ){
+		if( ec_is_state_required( jQuery( document.getElementById( 'ec_cart_billing_country' ) ).val( ) ) )
+			jQuery( document.getElementById( 'ec_billing_state_required' ) ).show( );
 		else
-			jQuery( '#ec_billing_state_required' ).hide( );
+			jQuery( document.getElementById( 'ec_billing_state_required' ) ).hide( );
 		
-		if( document.getElementById( 'ec_cart_billing_state_' + jQuery( '#ec_cart_billing_country' ).val( ) ) ){
+		if( document.getElementById( 'ec_cart_billing_state_' + jQuery( document.getElementById( 'ec_cart_billing_country' ) ).val( ) ) ){
 			jQuery( '.ec_billing_state_dropdown, #ec_cart_billing_state' ).hide( );
-			jQuery( '#ec_cart_billing_state_' + jQuery( '#ec_cart_billing_country' ).val( ) ).show( );
+			jQuery( document.getElementById( 'ec_cart_billing_state_' + jQuery( document.getElementById( 'ec_cart_billing_country' ) ).val( ) ) ).show( );
 		}else{
 			jQuery( '.ec_billing_state_dropdown' ).hide( );
-			jQuery( '#ec_cart_billing_state' ).show( );
+			jQuery( document.getElementById( 'ec_cart_billing_state' ) ).show( );
 		}
 	} );
-	jQuery( '#ec_cart_shipping_country' ).change( function( ){
-		if( ec_is_state_required( jQuery( '#ec_cart_shipping_country' ).val( ) ) )
-			jQuery( '#ec_shipping_state_required' ).show( );
+	jQuery( document.getElementById( 'ec_cart_shipping_country' ) ).change( function( ){
+		if( ec_is_state_required( jQuery( document.getElementById( 'ec_cart_shipping_country' ) ).val( ) ) )
+			jQuery( document.getElementById( 'ec_shipping_state_required' ) ).show( );
 		else
-			jQuery( '#ec_shipping_state_required' ).hide( );
+			jQuery( document.getElementById( 'ec_shipping_state_required' ) ).hide( );
 		
-		if( document.getElementById( 'ec_cart_shipping_state_' + jQuery( '#ec_cart_shipping_country' ).val( ) ) ){
+		if( document.getElementById( 'ec_cart_shipping_state_' + jQuery( document.getElementById( 'ec_cart_shipping_country' ) ).val( ) ) ){
 			jQuery( '.ec_shipping_state_dropdown, #ec_cart_shipping_state' ).hide( );
-			jQuery( '#ec_cart_shipping_state_' + jQuery( '#ec_cart_shipping_country' ).val( ) ).show( );
+			jQuery( document.getElementById( 'ec_cart_shipping_state_' + jQuery( document.getElementById( 'ec_cart_shipping_country' ) ).val( ) ) ).show( );
 		}else{
 			jQuery( '.ec_shipping_state_dropdown' ).hide( );
-			jQuery( '#ec_cart_shipping_state' ).show( );
+			jQuery( document.getElementById( 'ec_cart_shipping_state' ) ).show( );
 		}
 	} );
-	jQuery( '#ec_account_billing_information_country' ).change( function( ){
-		if( ec_is_state_required( jQuery( '#ec_account_billing_information_country' ).val( ) ) )
-			jQuery( '#ec_billing_state_required' ).show( );
+	jQuery( document.getElementById( 'ec_account_billing_information_country' ) ).change( function( ){
+		if( ec_is_state_required( jQuery( document.getElementById( 'ec_account_billing_information_country' ) ).val( ) ) )
+			jQuery( document.getElementById( 'ec_billing_state_required' ) ).show( );
 		else
-			jQuery( '#ec_billing_state_required' ).hide( );
+			jQuery( document.getElementById( 'ec_billing_state_required' ) ).hide( );
 		
-		if( document.getElementById( 'ec_account_billing_information_state_' + jQuery( '#ec_account_billing_information_country' ).val( ) ) ){
+		if( document.getElementById( 'ec_account_billing_information_state_' + jQuery( document.getElementById( 'ec_account_billing_information_country' ) ).val( ) ) ){
 			jQuery( '.ec_billing_state_dropdown, #ec_account_billing_information_state' ).hide( );
-			jQuery( '#ec_account_billing_information_state_' + jQuery( '#ec_account_billing_information_country' ).val( ) ).show( );
+			jQuery( document.getElementById( 'ec_account_billing_information_state_' + jQuery( document.getElementById( 'ec_account_billing_information_country' ) ).val( ) ) ).show( );
 		}else{
 			jQuery( '.ec_billing_state_dropdown' ).hide( );
-			jQuery( '#ec_account_billing_information_state' ).show( );
+			jQuery( document.getElementById( 'ec_account_billing_information_state' ) ).show( );
 		}
 	} );
-	jQuery( '#ec_account_shipping_information_country' ).change( function( ){
-		if( ec_is_state_required( jQuery( '#ec_account_shipping_information_country' ).val( ) ) )
-			jQuery( '#ec_shipping_state_required' ).show( );
+	jQuery( document.getElementById( 'ec_account_shipping_information_country' ) ).change( function( ){
+		if( ec_is_state_required( jQuery( document.getElementById( 'ec_account_shipping_information_country' ) ).val( ) ) )
+			jQuery( document.getElementById( 'ec_shipping_state_required' ) ).show( );
 		else
-			jQuery( '#ec_shipping_state_required' ).hide( );
+			jQuery( document.getElementById( 'ec_shipping_state_required' ) ).hide( );
 		
-		if( document.getElementById( 'ec_account_shipping_information_state_' + jQuery( '#ec_account_shipping_information_country' ).val( ) ) ){
+		if( document.getElementById( 'ec_account_shipping_information_state_' + jQuery( document.getElementById( 'ec_account_shipping_information_country' ) ).val( ) ) ){
 			jQuery( '.ec_shipping_state_dropdown, #ec_account_shipping_information_state' ).hide( );
-			jQuery( '#ec_account_shipping_information_state_' + jQuery( '#ec_account_shipping_information_country' ).val( ) ).show( );
+			jQuery( document.getElementById( 'ec_account_shipping_information_state_' + jQuery( document.getElementById( 'ec_account_shipping_information_country' ) ).val( ) ) ).show( );
 		}else{
 			jQuery( '.ec_shipping_state_dropdown' ).hide( );
-			jQuery( '#ec_account_shipping_information_state' ).show( );
+			jQuery( document.getElementById( 'ec_account_shipping_information_state' ) ).show( );
 		}
 	} );
-	jQuery( '#ec_card_number' ).keydown( function( ){
-		ec_show_cc_type( ec_get_card_type( jQuery( '#ec_card_number' ).val( ) ) )
+	jQuery( document.getElementById( 'ec_card_number' ) ).keydown( function( ){
+		ec_show_cc_type( ec_get_card_type( jQuery( document.getElementById( 'ec_card_number' ) ).val( ) ) )
 	} );
 });
 
 function ec_product_show_quick_view_link( modelnum ){
-	jQuery('#ec_product_quickview_container_' + modelnum).fadeIn(100);	
+	jQuery( document.getElementById( 'ec_product_quickview_container_' + modelnum ) ).fadeIn(100);	
 }
 
 function ec_product_hide_quick_view_link( modelnum ){
-	jQuery('#ec_product_quickview_container_' + modelnum).fadeOut(100);	
+	jQuery( document.getElementById( 'ec_product_quickview_container_' + modelnum ) ).fadeOut(100);	
 }
 
 function change_product_sort( menu_id, menu_name, submenu_id, submenu_name, subsubmenu_id, subsubmenu_name, manufacturer_id, pricepoint_id, currentpage_selected, perpage, URL, divider ){
@@ -145,10 +145,10 @@ function ec_add_to_cart( product_id, model_number, quantity, use_quantity_tracki
 	if( !use_quantity_tracking || ( !isNaN( quantity ) && quantity > 0 && quantity >= min_quantity && quantity <= max_quantity ) ){
 		
 		ec_product_hide_quick_view_link( model_number );
-		jQuery( '#ec_addtocart_quantity_exceeded_error_' + model_number ).hide( );
-		jQuery( '#ec_addtocart_quantity_minimum_error_' + model_number ).hide( );
+		jQuery( document.getElementById( 'ec_addtocart_quantity_exceeded_error_' + model_number ) ).hide( );
+		jQuery( document.getElementById( 'ec_addtocart_quantity_minimum_error_' + model_number ) ).hide( );
 		
-		jQuery( "#ec_product_loader_" + model_number ).show( );
+		jQuery( document.getElementById( "ec_product_loader_" + model_number ) ).show( );
 		var data = {
 			action: 'ec_ajax_add_to_cart',
 			product_id: product_id,
@@ -158,8 +158,8 @@ function ec_add_to_cart( product_id, model_number, quantity, use_quantity_tracki
 		
 		jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-			jQuery( "#ec_product_loader_" + model_number ).hide( );
-			jQuery( "#ec_product_added_" + model_number ).show( ).delay( 2500 ).fadeOut( 'slow' );
+			jQuery( document.getElementById( "ec_product_loader_" + model_number ) ).hide( );
+			jQuery( document.getElementById( "ec_product_added_" + model_number ) ).show( ).delay( 2500 ).fadeOut( 'slow' );
 			jQuery( '.ec_product_added_to_cart' ).fadeIn( 'slow' );
 			jQuery( ".ec_cart_items_total" ).html( json_data[0].total_items );
 			jQuery( ".ec_cart_price_total" ).html( json_data[0].total_price );
@@ -188,18 +188,18 @@ function ec_add_to_cart( product_id, model_number, quantity, use_quantity_tracki
 		
 	}else{
 		if( !isNaN( quantity ) && ( quantity < min_quantity || quantity < 1 ) ){
-			jQuery( '#ec_addtocart_quantity_minimum_error_' + model_number ).show( );
-			jQuery( '#ec_addtocart_quantity_exceeded_error_' + model_number ).hide( );
+			jQuery( document.getElementById( 'ec_addtocart_quantity_minimum_error_' + model_number ) ).show( );
+			jQuery( document.getElementById( 'ec_addtocart_quantity_exceeded_error_' + model_number ) ).hide( );
 		}else{
-			jQuery( '#ec_addtocart_quantity_exceeded_error_' + model_number ).show( );
-			jQuery( '#ec_addtocart_quantity_minimum_error_' + model_number ).hide( );
+			jQuery( document.getElementById( 'ec_addtocart_quantity_exceeded_error_' + model_number ) ).show( );
+			jQuery( document.getElementById( 'ec_addtocart_quantity_minimum_error_' + model_number ) ).hide( );
 		}
 	}
 	
 }
 
 function ec_minus_quantity( model_number, min_quantity ){
-	var currval = jQuery( '#ec_quantity_' + model_number ).val( );
+	var currval = jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( );
 	currval = Number( currval ) - 1;
 	if( currval <= 0 ){
 		currval = 1;
@@ -207,17 +207,17 @@ function ec_minus_quantity( model_number, min_quantity ){
 	if( currval < min_quantity ){
 		currval = min_quantity;
 	}
-	jQuery( '#ec_quantity_' + model_number ).val( currval );
+	jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( currval );
 }
 
 function ec_plus_quantity( model_number, track_quantity, max_quantity ){
-	var currval = jQuery( '#ec_quantity_' + model_number ).val( );
+	var currval = jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( );
 	if( !track_quantity || currval < max_quantity ){
 		currval = Number( currval ) + 1;
 	}else{
 		currval = max_quantity;
 	}
-	jQuery( '#ec_quantity_' + model_number ).val( currval );
+	jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( currval );
 }
 
 function ec_cartitem_delete( cartitem_id, model_number ){
@@ -226,12 +226,12 @@ function ec_cartitem_delete( cartitem_id, model_number ){
 		cartitem_id: cartitem_id
 	}
 	
-	jQuery( '#ec_cartitem_delete_' + cartitem_id ).hide( );
-	jQuery( '#ec_cartitem_deleting_' + cartitem_id ).show( );
+	jQuery( document.getElementById( 'ec_cartitem_delete_' + cartitem_id ) ).hide( );
+	jQuery( document.getElementById( 'ec_cartitem_deleting_' + cartitem_id ) ).show( );
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function(data){ 
-		jQuery( '#ec_cartitem_row_' + cartitem_id ).remove( );
-		jQuery( '#ec_cart_widget_row_' + cartitem_id ).remove( );
+		jQuery( document.getElementById( 'ec_cartitem_row_' + cartitem_id ) ).remove( );
+		jQuery( document.getElementById( 'ec_cart_widget_row_' + cartitem_id ) ).remove( );
 		ec_update_cart( data, 0, "" );
 	} } );
 }
@@ -240,27 +240,27 @@ function ec_cartitem_update( cartitem_id, model_number ){
 	var data = {
 		action: 'ec_ajax_cartitem_update',
 		cartitem_id: cartitem_id,
-		quantity: jQuery( '#ec_quantity_' + model_number ).val( )
+		quantity: jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( )
 	};
 	
-	jQuery( '#ec_cartitem_updating_' + cartitem_id ).show( );
+	jQuery( document.getElementById( 'ec_cartitem_updating_' + cartitem_id ) ).show( );
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
-		jQuery( '#ec_cartitem_updating_' + cartitem_id ).hide( );
+		jQuery( document.getElementById( 'ec_cartitem_updating_' + cartitem_id ) ).hide( );
 		data_arr = data.split( '***' );
-		var updated_quantity = Number( jQuery( '#ec_quantity_' + model_number ).val( ) );
+		var updated_quantity = Number( jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( ) );
 		var returned_quantity = Number( data_arr[2] );
 		if( updated_quantity > returned_quantity ){
 			//show max quantity error
-			jQuery( '#ec_cartitem_max_error_' + cartitem_id ).show( );
-			jQuery( '#ec_cartitem_min_error_' + cartitem_id ).hide( );
+			jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).show( );
+			jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).hide( );
 		}else if( updated_quantity < returned_quantity ){
 			// show min quantity error
-			jQuery( '#ec_cartitem_max_error_' + cartitem_id ).hide( );
-			jQuery( '#ec_cartitem_min_error_' + cartitem_id ).show( );
+			jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).hide( );
+			jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).show( );
 		}else{
-			jQuery( '#ec_cartitem_max_error_' + cartitem_id ).hide( );
-			jQuery( '#ec_cartitem_min_error_' + cartitem_id ).hide( );
+			jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).hide( );
+			jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).hide( );
 		}
 		ec_update_cart( data, cartitem_id, model_number );
 	} } );
@@ -268,12 +268,12 @@ function ec_cartitem_update( cartitem_id, model_number ){
 
 function ec_apply_coupon( ){
 	
-	jQuery( '#ec_apply_coupon' ).hide( );
-	jQuery( '#ec_applying_coupon' ).show( );
+	jQuery( document.getElementById( 'ec_apply_coupon' ) ).hide( );
+	jQuery( document.getElementById( 'ec_applying_coupon' ) ).show( );
 	
 	var data = {
 		action: 'ec_ajax_redeem_coupon_code',
-		couponcode: jQuery( '#ec_coupon_code').val( )
+		couponcode: jQuery( document.getElementById( 'ec_coupon_code' ) ).val( )
 	};
 	
 	jQuery.ajax( {
@@ -281,30 +281,39 @@ function ec_apply_coupon( ){
 		type: 'post', 
 		data: data, 
 		success: function( data ){ 
-			jQuery( '#ec_apply_coupon' ).show( );
-			jQuery( '#ec_applying_coupon' ).hide( );
+			jQuery( document.getElementById( 'ec_apply_coupon' ) ).show( );
+			jQuery( document.getElementById( 'ec_applying_coupon' ) ).hide( );
 			data_arr = data.split( '***' );
 			if( data_arr[9] == "valid" ){
-				jQuery( '#ec_coupon_error' ).hide( );
-				jQuery( '#ec_coupon_success' ).html( data_arr[8] ).show( );
+				jQuery( document.getElementById( 'ec_coupon_error' ) ).hide( );
+				jQuery( document.getElementById( 'ec_coupon_success' ) ).html( data_arr[8] ).show( );
 			}else{
-				jQuery( '#ec_coupon_success' ).hide( );
-				jQuery( '#ec_coupon_error' ).html( data_arr[8] ).show( );
+				jQuery( document.getElementById( 'ec_coupon_success' ) ).hide( );
+				jQuery( document.getElementById( 'ec_coupon_error' ) ).html( data_arr[8] ).show( );
 			}
 			
 			ec_update_cart( data, 0, "" ); 
+			
+			// Hide/Show Discount
+			if( data[data.length-1] == '1' ){
+				jQuery( '.ec_no_discount' ).show( );
+				jQuery( '.ec_has_discount' ).show( );
+			}else{
+				jQuery( '.ec_no_discount' ).hide( );
+				jQuery( '.ec_has_discount' ).hide( );
+			}
 		} 
 	} );
 }
 
 function ec_apply_gift_card( ){
 	
-	jQuery( '#ec_apply_gift_card' ).hide( );
-	jQuery( '#ec_applying_gift_card' ).show( );
+	jQuery( document.getElementById( 'ec_apply_gift_card' ) ).hide( );
+	jQuery( document.getElementById( 'ec_applying_gift_card' ) ).show( );
 	
 	var data = {
 		action: 'ec_ajax_redeem_gift_card',
-		giftcard: jQuery( '#ec_gift_card').val( )
+		giftcard: jQuery( document.getElementById( 'ec_gift_card' ) ).val( )
 	};
 	
 	jQuery.ajax( {
@@ -312,31 +321,40 @@ function ec_apply_gift_card( ){
 		type: 'post', 
 		data: data, 
 		success: function( data ){ 
-			jQuery( '#ec_apply_gift_card' ).show( );
-			jQuery( '#ec_applying_gift_card' ).hide( );
+			jQuery( document.getElementById( 'ec_apply_gift_card' ) ).show( );
+			jQuery( document.getElementById( 'ec_applying_gift_card' ) ).hide( );
 			data_arr = data.split( '***' );
 			if( data_arr[9] == "valid" ){
-				jQuery( '#ec_gift_card_error' ).hide( );
-				jQuery( '#ec_gift_card_success' ).html( data_arr[8] ).show( );
+				jQuery( document.getElementById( 'ec_gift_card_error' ) ).hide( );
+				jQuery( document.getElementById( 'ec_gift_card_success' ) ).html( data_arr[8] ).show( );
 			}else{
-				jQuery( '#ec_gift_card_success' ).hide( );
-				jQuery( '#ec_gift_card_error' ).html( data_arr[8] ).show( );
+				jQuery( document.getElementById( 'ec_gift_card_success' ) ).hide( );
+				jQuery( document.getElementById( 'ec_gift_card_error' ) ).html( data_arr[8] ).show( );
 			}
 			
 			ec_update_cart( data, 0, "" ); 
+			
+			// Hide/Show Discount
+			if( data[data.length-1] == '1' ){
+				jQuery( '.ec_no_discount' ).show( );
+				jQuery( '.ec_has_discount' ).show( );
+			}else{
+				jQuery( '.ec_no_discount' ).hide( );
+				jQuery( '.ec_has_discount' ).hide( );
+			}
 		} 
 	} );
 }
 
 function ec_estimate_shipping( ){
 	
-	jQuery( '#ec_estimate_shipping' ).hide( );
-	jQuery( '#ec_estimating_shipping' ).show( );
+	jQuery( document.getElementById( 'ec_estimate_shipping' ) ).hide( );
+	jQuery( document.getElementById( 'ec_estimating_shipping' ) ).show( );
 	
 	var data = {
 		action: 'ec_ajax_estimate_shipping',
-		zipcode: jQuery( '#ec_estimate_zip' ).val( ),
-		country: jQuery( '#ec_estimate_country' ).val( )
+		zipcode: jQuery( document.getElementById( 'ec_estimate_zip' ) ).val( ),
+		country: jQuery( document.getElementById( 'ec_estimate_country' ) ).val( )
 	};
 	
 	jQuery.ajax({
@@ -344,11 +362,11 @@ function ec_estimate_shipping( ){
 		type: 'post', 
 		data: data, 
 		success: function( data ){ 
-			jQuery( '#ec_estimate_shipping' ).show( );
-			jQuery( '#ec_estimating_shipping' ).hide( );
+			jQuery( document.getElementById( 'ec_estimate_shipping' ) ).show( );
+			jQuery( document.getElementById( 'ec_estimating_shipping' ) ).hide( );
 			data_arr = data.split( '***' );
-			jQuery( '#ec_cart_shipping' ).html( data_arr[0] );
-			jQuery( '#ec_cart_total' ).html( data_arr[1] );
+			jQuery( document.getElementById( 'ec_cart_shipping' ) ).html( data_arr[0] );
+			jQuery( document.getElementById( 'ec_cart_total' ) ).html( data_arr[1] );
 		} 
 	} );
 }
@@ -360,23 +378,23 @@ function ec_update_cart( data, cartitem_id, model_number ){
 		if( data_arr[2] == 0 ){
 			ec_reload_cart( );
 		}else{
-			jQuery( '#ec_cartitem_price_' + cartitem_id ).html( data_arr[0] );
-			jQuery( '#ec_cartitem_total_' + cartitem_id ).html( data_arr[1] );
+			jQuery( document.getElementById( 'ec_cartitem_price_' + cartitem_id ) ).html( data_arr[0] );
+			jQuery( document.getElementById( 'ec_cartitem_total_' + cartitem_id ) ).html( data_arr[1] );
 			
-			if( jQuery( '#ec_quantity_' + cartitem_id ).length ){
-				jQuery( '#ec_cartitem_unit_price_' + cartitem_id ).html( data_arr[0] );
-				jQuery( '#ec_cartitem_items_' + cartitem_id ).html( jQuery( '#ec_quantity_' + cartitem_id ).val( ) );
+			if( jQuery( document.getElementById( 'ec_quantity_' + cartitem_id ) ).length ){
+				jQuery( document.getElementById( 'ec_cartitem_unit_price_' + cartitem_id ) ).html( data_arr[0] );
+				jQuery( document.getElementById( 'ec_cartitem_items_' + cartitem_id ) ).html( jQuery( document.getElementById( 'ec_quantity_' + cartitem_id ) ).val( ) );
 			}
 			
-			jQuery( '#ec_quantity_' + model_number ).val( data_arr[2] );
-			jQuery( '#ec_cart_subtotal' ).html( data_arr[3] );
+			jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( data_arr[2] );
+			jQuery( document.getElementById( 'ec_cart_subtotal' ) ).html( data_arr[3] );
 			jQuery( '.ec_cart_price_total' ).html( data_arr[3] );
-			jQuery( '#ec_cart_tax' ).html( data_arr[4] );
-			jQuery( '#ec_cart_shipping' ).html( data_arr[5] );
-			jQuery( '#ec_cart_duty' ).html( data_arr[6] );
-			jQuery( '#ec_cart_vat' ).html( data_arr[7] );
-			jQuery( '#ec_cart_discount' ).html( data_arr[8] );
-			jQuery( '#ec_cart_total' ).html( data_arr[9] );
+			jQuery( document.getElementById( 'ec_cart_tax' ) ).html( data_arr[4] );
+			jQuery( document.getElementById( 'ec_cart_shipping' ) ).html( data_arr[5] );
+			jQuery( document.getElementById( 'ec_cart_duty' ) ).html( data_arr[6] );
+			jQuery( document.getElementById( 'ec_cart_vat' ) ).html( data_arr[7] );
+			jQuery( document.getElementById( 'ec_cart_discount' ) ).html( data_arr[8] );
+			jQuery( document.getElementById( 'ec_cart_total' ) ).html( data_arr[9] );
 			jQuery( '.ec_cart_items_total' ).html( data_arr[11] );
 		}
 		
@@ -384,14 +402,14 @@ function ec_update_cart( data, cartitem_id, model_number ){
 		if( data_arr[0] == 0 ){
 			ec_reload_cart( );
 		}else{
-			jQuery( '#ec_cart_subtotal' ).html( data_arr[1] );
+			jQuery( document.getElementById( 'ec_cart_subtotal' ) ).html( data_arr[1] );
 			jQuery( '.ec_cart_price_total' ).html( data_arr[1] );
-			jQuery( '#ec_cart_tax' ).html( data_arr[2] );
-			jQuery( '#ec_cart_shipping' ).html( data_arr[3] );
-			jQuery( '#ec_cart_discount' ).html( data_arr[4] );
-			jQuery( '#ec_cart_duty' ).html( data_arr[5] );
-			jQuery( '#ec_cart_vat' ).html( data_arr[6] );
-			jQuery( '#ec_cart_total' ).html( data_arr[7] );
+			jQuery( document.getElementById( 'ec_cart_tax' ) ).html( data_arr[2] );
+			jQuery( document.getElementById( 'ec_cart_shipping' ) ).html( data_arr[3] );
+			jQuery( document.getElementById( 'ec_cart_discount' ) ).html( data_arr[4] );
+			jQuery( document.getElementById( 'ec_cart_duty' ) ).html( data_arr[5] );
+			jQuery( document.getElementById( 'ec_cart_vat' ) ).html( data_arr[6] );
+			jQuery( document.getElementById( 'ec_cart_total' ) ).html( data_arr[7] );
 			jQuery( '.ec_cart_items_total' ).html( data_arr[0] );
 		}
 	}
@@ -402,130 +420,130 @@ function ec_reload_cart( ){
 }
 
 function ec_open_login_click( ){
-	jQuery( '#ec_alt_login' ).slideToggle(300);
+	jQuery( document.getElementById( 'ec_alt_login' ) ).slideToggle(300);
 	
 	return false;
 }
 
 function ec_update_shipping_view( ){
-	if( jQuery( '#ec_shipping_selector' ).is( ':checked' ) ){
-		jQuery( '#ec_shipping_form' ).show( );
+	if( jQuery( document.getElementById( 'ec_shipping_selector' ) ).is( ':checked' ) ){
+		jQuery( document.getElementById( 'ec_shipping_form' ) ).show( );
 	}else{
-		jQuery( '#ec_shipping_form' ).hide( );
+		jQuery( document.getElementById( 'ec_shipping_form' ) ).hide( );
 	}
 }
 
 function ec_cart_toggle_login( ){
-	if( jQuery( '#ec_user_login_form' ).is( ':visible' ) ){
-		jQuery( '#ec_user_login_form' ).hide( );
+	if( jQuery( document.getElementById( 'ec_user_login_form' ) ).is( ':visible' ) ){
+		jQuery( document.getElementById( 'ec_user_login_form' ) ).hide( );
 	}else{
-		jQuery( '#ec_user_login_form' ).show( );
+		jQuery( document.getElementById( 'ec_user_login_form' ) ).show( );
 	}
 }
 
 function ec_toggle_create_account( ){
-	if( jQuery( '#ec_user_create_form' ).is( ':visible' ) ){
-		jQuery( '#ec_user_create_form' ).hide( );
+	if( jQuery( document.getElementById( 'ec_user_create_form' ) ).is( ':visible' ) ){
+		jQuery( document.getElementById( 'ec_user_create_form' ) ).hide( );
 	}else{
-		jQuery( '#ec_user_create_form' ).show( );
+		jQuery( document.getElementById( 'ec_user_create_form' ) ).show( );
 	}
 }
 
 function ec_update_payment_display( ){
-	jQuery( '#ec_manual_payment_form, #ec_affirm_form, #ec_third_party_form, #ec_credit_card_form' ).hide( );
-	if( jQuery( '#ec_payment_manual' ).is( ':checked' ) ){
-		jQuery( '#ec_manual_payment_form' ).show( );
+	jQuery( document.getElementById( 'ec_manual_payment_form' ), document.getElementById( 'ec_affirm_form' ), document.getElementById( 'ec_third_party_form' ), document.getElementById( 'ec_credit_card_form' ) ).hide( );
+	if( jQuery( document.getElementById( 'ec_payment_manual' ) ).is( ':checked' ) ){
+		jQuery( document.getElementById( 'ec_manual_payment_form' ) ).show( );
 	
-	}else if( jQuery( '#ec_payment_affirm' ).is( ':checked' ) ){
-		jQuery( '#ec_affirm_form' ).show( );
+	}else if( jQuery( document.getElementById( 'ec_payment_affirm' ) ).is( ':checked' ) ){
+		jQuery( document.getElementById( 'ec_affirm_form' ) ).show( );
 	
-	}else if( jQuery( '#ec_payment_third_party' ).is( ':checked' ) ){
-		jQuery( '#ec_third_party_form' ).show( );
+	}else if( jQuery( document.getElementById( 'ec_payment_third_party' ) ).is( ':checked' ) ){
+		jQuery( document.getElementById( 'ec_third_party_form' ) ).show( );
 	
-	}else if( jQuery( '#ec_payment_credit_card' ).is( ':checked' ) ){
-		jQuery( '#ec_credit_card_form' ).show( );
+	}else if( jQuery( document.getElementById( 'ec_payment_credit_card' ) ).is( ':checked' ) ){
+		jQuery( document.getElementById( 'ec_credit_card_form' ) ).show( );
 	}
 }
 
 function ec_show_cc_type( type ){
 	
-	if( jQuery( '#ec_card_visa' ) ){
+	if( jQuery( document.getElementById( 'ec_card_visa' ) ) ){
 		if( type == "visa" || type == "all" ){
-			jQuery( '#ec_card_visa' ).show( );
-			jQuery( '#ec_card_visa_inactive' ).hide( );
+			jQuery( document.getElementById( 'ec_card_visa' ) ).show( );
+			jQuery( document.getElementById( 'ec_card_visa_inactive' ) ).hide( );
 		}else{
-			jQuery( '#ec_card_visa' ).hide( );
-			jQuery( '#ec_card_visa_inactive' ).show( );
+			jQuery( document.getElementById( 'ec_card_visa' ) ).hide( );
+			jQuery( document.getElementById( 'ec_card_visa_inactive' ) ).show( );
 		}
 	}
 	
-	if( jQuery( '#ec_card_discover' ) ){
+	if( jQuery( document.getElementById( 'ec_card_discover' ) ) ){
 		if( type == "discover" || type == "all" ){
-			jQuery( '#ec_card_discover' ).show( );
-			jQuery( '#ec_card_discover_inactive' ).hide( );
+			jQuery( document.getElementById( 'ec_card_discover' ) ).show( );
+			jQuery( document.getElementById( 'ec_card_discover_inactive' ) ).hide( );
 		}else{
-			jQuery( '#ec_card_discover' ).hide( );
-			jQuery( '#ec_card_discover_inactive' ).show( );
+			jQuery( document.getElementById( 'ec_card_discover' ) ).hide( );
+			jQuery( document.getElementById( 'ec_card_discover_inactive' ) ).show( );
 		}
 	}
 	
-	if( jQuery( '#ec_card_mastercard' ) ){
+	if( jQuery( document.getElementById( 'ec_card_mastercard' ) ) ){
 		if( type == "mastercard" || type == "all" ){
-			jQuery( '#ec_card_mastercard' ).show( );
-			jQuery( '#ec_card_mastercard_inactive' ).hide( );
+			jQuery( document.getElementById( 'ec_card_mastercard' ) ).show( );
+			jQuery( document.getElementById( 'ec_card_mastercard_inactive' ) ).hide( );
 		}else{
-			jQuery( '#ec_card_mastercard' ).hide( );
-			jQuery( '#ec_card_mastercard_inactive' ).show( );
+			jQuery( document.getElementById( 'ec_card_mastercard' ) ).hide( );
+			jQuery( document.getElementById( 'ec_card_mastercard_inactive' ) ).show( );
 		}
 	}
 	
-	if( jQuery( '#ec_card_amex' ) ){
+	if( jQuery( document.getElementById( 'ec_card_amex' ) ) ){
 		if( type == "amex" || type == "all" ){
-			jQuery( '#ec_card_amex' ).show( );
-			jQuery( '#ec_card_amex_inactive' ).hide( );
+			jQuery( document.getElementById( 'ec_card_amex' ) ).show( );
+			jQuery( document.getElementById( 'ec_card_amex_inactive' ) ).hide( );
 		}else{
-			jQuery( '#ec_card_amex' ).hide( );
-			jQuery( '#ec_card_amex_inactive' ).show( );
+			jQuery( document.getElementById( 'ec_card_amex' ) ).hide( );
+			jQuery( document.getElementById( 'ec_card_amex_inactive' ) ).show( );
 		}
 	}
 	
-	if( jQuery( '#ec_card_jcb' ) ){
+	if( jQuery( document.getElementById( 'ec_card_jcb' ) ) ){
 		if( type == "jcb" || type == "all" ){
-			jQuery( '#ec_card_jcb' ).show( );
-			jQuery( '#ec_card_jcb_inactive' ).hide( );
+			jQuery( document.getElementById( 'ec_card_jcb' ) ).show( );
+			jQuery( document.getElementById( 'ec_card_jcb_inactive' ) ).hide( );
 		}else{
-			jQuery( '#ec_card_jcb' ).hide( );
-			jQuery( '#ec_card_jcb_inactive' ).show( );
+			jQuery( document.getElementById( 'ec_card_jcb' ) ).hide( );
+			jQuery( document.getElementById( 'ec_card_jcb_inactive' ) ).show( );
 		}
 	}
 	
-	if( jQuery( '#ec_card_diners' ) ){
+	if( jQuery( document.getElementById( 'ec_card_diners' ) ) ){
 		if( type == "diners" || type == "all" ){
-			jQuery( '#ec_card_diners' ).show( );
-			jQuery( '#ec_card_diners_inactive' ).hide( );
+			jQuery( document.getElementById( 'ec_card_diners' ) ).show( );
+			jQuery( document.getElementById( 'ec_card_diners_inactive' ) ).hide( );
 		}else{
-			jQuery( '#ec_card_diners' ).hide( );
-			jQuery( '#ec_card_diners_inactive' ).show( );
+			jQuery( document.getElementById( 'ec_card_diners' ) ).hide( );
+			jQuery( document.getElementById( 'ec_card_diners_inactive' ) ).show( );
 		}
 	}
 	
-	if( jQuery( '#ec_card_laser' ) ){
+	if( jQuery( document.getElementById( 'ec_card_laser' ) ) ){
 		if( type == "laser" || type == "all" ){
-			jQuery( '#ec_card_laser' ).show( );
-			jQuery( '#ec_card_laser_inactive' ).hide( );
+			jQuery( document.getElementById( 'ec_card_laser' ) ).show( );
+			jQuery( document.getElementById( 'ec_card_laser_inactive' ) ).hide( );
 		}else{
-			jQuery( '#ec_card_laser' ).hide( );
-			jQuery( '#ec_card_laser_inactive' ).show( );
+			jQuery( document.getElementById( 'ec_card_laser' ) ).hide( );
+			jQuery( document.getElementById( 'ec_card_laser_inactive' ) ).show( );
 		}
 	}
 	
-	if( jQuery( '#ec_card_maestro' ) ){
+	if( jQuery( document.getElementById( 'ec_card_maestro' ) ) ){
 		if( type == "maestro" || type == "all" ){
-			jQuery( '#ec_card_maestro' ).show( );
-			jQuery( '#ec_card_maestro_inactive' ).hide( );
+			jQuery( document.getElementById( 'ec_card_maestro' ) ).show( );
+			jQuery( document.getElementById( 'ec_card_maestro_inactive' ) ).hide( );
 		}else{
-			jQuery( '#ec_card_maestro' ).hide( );
-			jQuery( '#ec_card_maestro_inactive' ).show( );
+			jQuery( document.getElementById( 'ec_card_maestro' ) ).hide( );
+			jQuery( document.getElementById( 'ec_card_maestro_inactive' ) ).show( );
 		}
 	}
 	
@@ -539,16 +557,16 @@ function ec_validate_cart_details( ){
 	var email_complete = true;
 	var create_account_complete = true;
 	
-	if( jQuery( '#ec_login_selector' ).is( ':checked' ) )
+	if( jQuery( document.getElementById( 'ec_login_selector' ) ).is( ':checked' ) )
 		login_complete = ec_validate_cart_login( );
 	
-	if( jQuery( '#ec_shipping_selector' ).is( ':checked' ) )
+	if( jQuery( document.getElementById( 'ec_shipping_selector' ) ).is( ':checked' ) )
 		shipping_complete = ec_validate_address_block( 'ec_cart_shipping' );
 	
-	if( jQuery( '#ec_contact_email' ).length )
+	if( jQuery( document.getElementById( 'ec_contact_email' ) ).length )
 		email_complete = ec_validate_email_block( 'ec_contact' );
 	
-	if( jQuery( '#ec_create_account_selector:checkbox' ).is( ':checked' ) || jQuery( '#ec_create_account_selector:hidden' ).val( ) == "create_account" )
+	if( jQuery( document.getElementById( 'ec_create_account_selector' ) ).is( ':checked' ) || ( jQuery( document.getElementById( 'ec_create_account_selector' ) ).is(':hidden' ) && jQuery( document.getElementById( 'ec_create_account_selector' ) ).val( ) == "create_account" ) )
 		create_account_complete = ec_validate_create_account( 'ec_contact' );
 		
 	if( login_complete && billing_complete && shipping_complete && email_complete && create_account_complete ){
@@ -567,13 +585,13 @@ function ec_validate_submit_order( ){
 	var terms_complete = ec_validate_terms( );
 	
 	if( payment_method_complete && terms_complete ){
-		jQuery( '#ec_cart_submit_order' ).hide( );
-		jQuery( '#ec_cart_submit_order_working' ).show( );
+		jQuery( document.getElementById( 'ec_cart_submit_order' ) ).hide( );
+		jQuery( document.getElementById( 'ec_cart_submit_order_working' ) ).show( );
 		ec_hide_error( 'ec_submit_order' );
 		return true;
 	}else{
-		jQuery( '#ec_cart_submit_order' ).show( );
-		jQuery( '#ec_cart_submit_order_working' ).hide( );
+		jQuery( document.getElementById( 'ec_cart_submit_order' ) ).show( );
+		jQuery( document.getElementById( 'ec_cart_submit_order_working' ) ).hide( );
 		ec_show_error( 'ec_submit_order' );
 		return false;
 	}
@@ -590,16 +608,16 @@ function ec_validate_submit_subscription( ){
 	var payment_method_complete = ec_validate_payment_method( );
 	var terms_complete = ec_validate_terms( );
 	
-	if( jQuery( '#ec_login_selector' ).is( ':checked' ) )
+	if( jQuery( document.getElementById( 'ec_login_selector' ) ).is( ':checked' ) )
 		login_complete = ec_validate_cart_login( );
 	
-	if( jQuery( '#ec_shipping_selector' ).is( ':checked' ) )
+	if( jQuery( document.getElementById( 'ec_shipping_selector' ) ).is( ':checked' ) )
 		shipping_complete = ec_validate_address_block( 'ec_cart_shipping' );
 		
-	if( jQuery( '#ec_contact_email' ).length )
+	if( jQuery( document.getElementById( 'ec_contact_email' ) ).length )
 		email_complete = ec_validate_email_block( 'ec_contact' );
 	
-	if( jQuery( '#ec_create_account_selector' ).is( ':checked' ) )
+	if( jQuery( document.getElementById( 'ec_create_account_selector' ) ).is( ':checked' ) )
 		create_account_complete = ec_validate_create_account( 'ec_contact' );
 		
 	if( login_complete && billing_complete && shipping_complete && email_complete && create_account_complete && payment_method_complete && terms_complete ){
@@ -615,8 +633,8 @@ function ec_validate_submit_subscription( ){
 function ec_validate_cart_login( ){
 	
 	var errors = false;
-	var email = jQuery( '#ec_cart_login_email' ).val( );
-	var password = jQuery( '#ec_cart_login_password' ).val( );
+	var email = jQuery( document.getElementById( 'ec_cart_login_email' ) ).val( );
+	var password = jQuery( document.getElementById( 'ec_cart_login_password' ) ).val( );
 	
 	if( !ec_validate_email( email ) ){
 		errors = true;
@@ -639,17 +657,17 @@ function ec_validate_cart_login( ){
 function ec_validate_address_block( prefix ){
 	
 	var errors = false;
-	var country = jQuery( '#' + prefix + '_country' ).val( );
-	var first_name = jQuery( '#' + prefix + '_first_name' ).val( );
-	var last_name = jQuery( '#' + prefix + '_last_name' ).val( );
-	var city = jQuery( '#' + prefix + '_city' ).val( );
-	var address = jQuery( '#' + prefix + '_address' ).val( );
-	if( jQuery( '#' + prefix + '_state_' + country ) )
-		var state = jQuery( '#' + prefix + '_state_' + country ).val( );
+	var country = jQuery( document.getElementById( '' + prefix + '_country' ) ).val( );
+	var first_name = jQuery( document.getElementById( '' + prefix + '_first_name' ) ).val( );
+	var last_name = jQuery( document.getElementById( '' + prefix + '_last_name' ) ).val( );
+	var city = jQuery( document.getElementById( '' + prefix + '_city' ) ).val( );
+	var address = jQuery( document.getElementById( '' + prefix + '_address' ) ).val( );
+	if( jQuery( document.getElementById( '' + prefix + '_state_' + country ) ) )
+		var state = jQuery( document.getElementById( '' + prefix + '_state_' + country ) ).val( );
 	else
-		var state = jQuery( '#' + prefix + '_state' ).val( );
-	var zip = jQuery( '#' + prefix + '_zip' ).val( );
-	var phone = jQuery( '#' + prefix + '_phone' ).val( );
+		var state = jQuery( document.getElementById( '' + prefix + '_state' ) ).val( );
+	var zip = jQuery( document.getElementById( '' + prefix + '_zip' ) ).val( );
+	var phone = jQuery( document.getElementById( '' + prefix + '_phone' ) ).val( );
 	
 	if( !ec_validate_select( country ) ){
 		errors = true;
@@ -686,7 +704,7 @@ function ec_validate_address_block( prefix ){
 		ec_hide_error( prefix + '_address' );
 	}
 	
-	if( jQuery( '#' + prefix + '_state_' + country ).length ){
+	if( jQuery( document.getElementById( '' + prefix + '_state_' + country ) ).length ){
 		if( !ec_validate_select( state ) ){
 			errors = true;
 			ec_show_error( prefix + '_state' );
@@ -704,7 +722,7 @@ function ec_validate_address_block( prefix ){
 		ec_hide_error( prefix + '_zip' );
 	}
 	
-	if( jQuery( '#' + prefix + '_phone' ).length && !ec_validate_text( phone ) ){
+	if( jQuery( document.getElementById( '' + prefix + '_phone' ) ).length && !ec_validate_text( phone ) ){
 		errors = true;
 		ec_show_error( prefix + '_phone' );
 	}else{
@@ -718,12 +736,12 @@ function ec_validate_address_block( prefix ){
 function ec_validate_email_block( prefix ){
 	
 	var errors = false;
-	var email = jQuery( '#' + prefix + '_email' ).val( );
+	var email = jQuery( document.getElementById( '' + prefix + '_email' ) ).val( );
 	var retype_email = "";
-	if( jQuery( '#' + prefix + '_email_retype' ).length )
-		retype_email = jQuery( '#' + prefix + '_email_retype' ).val( );
+	if( jQuery( document.getElementById( '' + prefix + '_email_retype' ) ).length )
+		retype_email = jQuery( document.getElementById( '' + prefix + '_email_retype' ) ).val( );
 	else
-		retype_email = jQuery( '#' + prefix + '_retype_email' ).val( );
+		retype_email = jQuery( document.getElementById( '' + prefix + '_retype_email' ) ).val( );
 	
 	if( !ec_validate_email( email ) ){
 		errors = true;
@@ -746,19 +764,19 @@ function ec_validate_email_block( prefix ){
 function ec_validate_create_account( prefix ){
 	
 	var errors = false;
-	var first_name = jQuery( '#' + prefix + '_first_name' ).val( );
-	var last_name = jQuery( '#' + prefix + '_last_name' ).val( );
-	var password = jQuery( '#' + prefix + '_password' ).val( );
-	var retype_password = jQuery( '#' + prefix + '_password_retype' ).val( );
+	var first_name = jQuery( document.getElementById( '' + prefix + '_first_name' ) ).val( );
+	var last_name = jQuery( document.getElementById( '' + prefix + '_last_name' ) ).val( );
+	var password = jQuery( document.getElementById( '' + prefix + '_password' ) ).val( );
+	var retype_password = jQuery( document.getElementById( '' + prefix + '_password_retype' ) ).val( );
 	
-	if( jQuery( '#' + prefix + '_first_name' ).length && !ec_validate_text( first_name ) ){
+	if( jQuery( document.getElementById( '' + prefix + '_first_name' ) ).length && !ec_validate_text( first_name ) ){
 		errors = true;
 		ec_show_error( prefix + '_first_name' );
 	}else{
 		ec_hide_error( prefix + '_first_name' );
 	}
 	
-	if( jQuery( '#' + prefix + '_last_name' ).length && !ec_validate_text( last_name ) ){
+	if( jQuery( document.getElementById( '' + prefix + '_last_name' ) ).length && !ec_validate_text( last_name ) ){
 		errors = true;
 		ec_show_error( prefix + '_last_name' );
 	}else{
@@ -790,10 +808,10 @@ function ec_validate_payment_method( ){
 	if( jQuery( 'input:radio[name=ec_cart_payment_selection]:checked' ).length )
 		payment_method = jQuery( 'input:radio[name=ec_cart_payment_selection]:checked' ).val( );
 	
-	var card_number = jQuery( '#ec_card_number' ).val( );
-	var security_code = jQuery( '#ec_security_code' ).val( );
-	var exp_month = jQuery( '#ec_expiration_month' ).val( );
-	var exp_year = jQuery( '#ec_expiration_year' ).val( );
+	var card_number = jQuery( document.getElementById( 'ec_card_number' ) ).val( );
+	var security_code = jQuery( document.getElementById( 'ec_security_code' ) ).val( );
+	var exp_month = jQuery( document.getElementById( 'ec_expiration_month' ) ).val( );
+	var exp_year = jQuery( document.getElementById( 'ec_expiration_year' ) ).val( );
 	
 	if( payment_method == "affirm" ){
 		ec_checkout_with_affirm( );
@@ -833,7 +851,7 @@ function ec_validate_terms( ){
 	
 	var errors = false;
 	
-	if( jQuery( '#ec_terms_agree' ).is( ':checked' ) || jQuery( '#ec_terms_agree' ).val( ) == '2' ){
+	if( jQuery( document.getElementById( 'ec_terms_agree' ) ).is( ':checked' ) || jQuery( document.getElementById( 'ec_terms_agree' ) ).val( ) == '2' ){
 		ec_hide_error( 'ec_terms' );
 	}else{
 		errors = true;
@@ -954,11 +972,11 @@ function ec_validate_security_code( security_code ){
 }
 
 function ec_show_error( error_field ){
-	jQuery( '#' + error_field + '_error' ).show( );
+	jQuery( document.getElementById( '' + error_field + '_error' ) ).show( );
 }
 
 function ec_hide_error( error_field ){
-	jQuery( '#' + error_field + '_error' ).hide( );
+	jQuery( document.getElementById( '' + error_field + '_error' ) ).hide( );
 }
 
 function ec_cart_shipping_method_change( ){
@@ -1071,9 +1089,9 @@ function ec_live_search_update( ){
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 		data = JSON.parse( data );
-		jQuery( '#ec_search_suggestions' ).empty( );
+		jQuery( document.getElementById( 'ec_search_suggestions' ) ).empty( );
 		for( var i=0; i<data.length; i++ ){
-			jQuery( '#ec_search_suggestions' ).append( "<option value='" + data[i].title + "'>" );
+			jQuery( document.getElementById( 'ec_search_suggestions' ) ).append( "<option value='" + data[i].title + "'>" );
 		}
 	} } );
 	
@@ -1082,7 +1100,7 @@ function ec_live_search_update( ){
 function ec_account_forgot_password_button_click( ){
 	
 	var errors = false;
-	var email = jQuery( '#ec_account_forgot_password_email' ).val( );
+	var email = jQuery( document.getElementById( 'ec_account_forgot_password_email' ) ).val( );
 	
 	if( !ec_validate_email( email ) ){
 		errors = true;
@@ -1098,7 +1116,7 @@ function ec_account_forgot_password_button_click( ){
 function ec_account_register_button_click2( ){
 	var top_half = ec_account_register_button_click( );
 	var bottom_half = true;
-	if( jQuery( '#ec_account_billing_information_country' ).length )
+	if( jQuery( document.getElementById( 'ec_account_billing_information_country' ) ).length )
 		bottom_half = ec_account_billing_information_update_click( );
 	var extra_notes_validated = ec_account_register_validate_notes( );
 	
@@ -1143,16 +1161,16 @@ function ec_account_shipping_information_update_click( ){
 function ec_account_personal_information_update_click( ){
 	
 	var errors = false;
-	var email = jQuery( '#ec_account_personal_information_email' ).val( );
+	var email = jQuery( document.getElementById( 'ec_account_personal_information_email' ) ).val( );
 	
-	if( jQuery( '#ec_account_personal_information_first_name' ).length && !ec_validate_text( jQuery( '#ec_account_personal_information_first_name' ).val( ) ) ){
+	if( jQuery( document.getElementById( 'ec_account_personal_information_first_name' ) ).length && !ec_validate_text( jQuery( document.getElementById( 'ec_account_personal_information_first_name' ) ).val( ) ) ){
 		errors = true;
 		ec_show_error( 'ec_account_personal_information_first_name' );
 	}else{
 		ec_hide_error( 'ec_account_personal_information_first_name' );
 	}
 	
-	if( jQuery( '#ec_account_personal_information_last_name' ).length && !ec_validate_text( jQuery( '#ec_account_personal_information_last_name' ).val( ) ) ){
+	if( jQuery( document.getElementById( 'ec_account_personal_information_last_name' ) ).length && !ec_validate_text( jQuery( document.getElementById( 'ec_account_personal_information_last_name' ) ).val( ) ) ){
 		errors = true;
 		ec_show_error( 'ec_account_personal_information_last_name' );
 	}else{
@@ -1172,9 +1190,9 @@ function ec_account_personal_information_update_click( ){
 function ec_account_password_button_click( ){
 	
 	var errors = false;
-	var current_password = jQuery( '#ec_account_password_current_password' ).val( );
-	var new_password = jQuery( '#ec_account_password_new_password' ).val( );
-	var retype_password = jQuery( '#ec_account_password_retype_new_password' ).val( );
+	var current_password = jQuery( document.getElementById( 'ec_account_password_current_password' ) ).val( );
+	var new_password = jQuery( document.getElementById( 'ec_account_password_new_password' ) ).val( );
+	var retype_password = jQuery( document.getElementById( 'ec_account_password_retype_new_password' ) ).val( );
 	
 	if( !ec_validate_password( current_password ) ){
 		errors = true;
@@ -1202,7 +1220,7 @@ function ec_account_password_button_click( ){
 }
 
 function ec_account_register_validate_notes( ){
-	if( !jQuery( '#ec_account_register_user_notes' ).length || ( jQuery( '#ec_account_register_user_notes' ).length && jQuery( '#ec_account_register_user_notes' ).val( ) != "" ) ){
+	if( !jQuery( document.getElementById( 'ec_account_register_user_notes' ) ).length || ( jQuery( document.getElementById( 'ec_account_register_user_notes' ) ).length && jQuery( document.getElementById( 'ec_account_register_user_notes' ) ).val( ) != "" ) ){
 		ec_hide_error( 'ec_account_register_user_notes' );
 		return true;
 	}else{
@@ -1214,8 +1232,8 @@ function ec_account_register_validate_notes( ){
 function ec_account_login_button_click( ){
 	
 	var errors = false;
-	var email = jQuery( '#ec_account_login_email' ).val( );
-	var password = jQuery( '#ec_account_login_password' ).val( );
+	var email = jQuery( document.getElementById( 'ec_account_login_email' ) ).val( );
+	var password = jQuery( document.getElementById( 'ec_account_login_password' ) ).val( );
 	
 	if( !ec_validate_email( email ) ){
 		errors = true;
@@ -1249,10 +1267,27 @@ function ec_close_popup_newsletter( ){
 
 function ec_submit_newsletter_signup( ){
 	
+	jQuery( document.getElementById( 'ec_newsletter_pre_submit' ) ).hide( );
+	jQuery( document.getElementById( 'ec_newsletter_post_submit' ) ).show( );
+		
+	var email_address = jQuery( document.getElementById( 'ec_newsletter_email' ) ).val( );
+	
+	var data = {
+		action: 'ec_ajax_submit_newsletter_signup',
+		email_address: email_address
+	};
+	
+	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
+	} } );
+	
+}
+
+function ec_submit_newsletter_signup_widget( ){
+	
 	jQuery( '#ec_newsletter_pre_submit' ).hide( );
 	jQuery( '#ec_newsletter_post_submit' ).show( );
 		
-	var email_address = jQuery( '#ec_newsletter_email' ).val( );
+	var email_address = jQuery( '#ec_newsletter_email_widget' ).val( );
 	
 	var data = {
 		action: 'ec_ajax_submit_newsletter_signup',
@@ -1266,12 +1301,12 @@ function ec_submit_newsletter_signup( ){
 
 function update_download_count( orderdetail_id ){
 	
-	if( jQuery( '#ec_download_count_' + orderdetail_id ).length ){
-		var count = Number( jQuery( '#ec_download_count_' + orderdetail_id ).html( ) );
-		var max_count = Number( jQuery( '#ec_download_count_max_' + orderdetail_id ).html( ) );
+	if( jQuery( document.getElementById( 'ec_download_count_' + orderdetail_id ) ).length ){
+		var count = Number( jQuery( document.getElementById( 'ec_download_count_' + orderdetail_id ) ).html( ) );
+		var max_count = Number( jQuery( document.getElementById( 'ec_download_count_max_' + orderdetail_id ) ).html( ) );
 		if( count < max_count ){
 			count++;
-			jQuery( '#ec_download_count_' + orderdetail_id ).html( count );
+			jQuery( document.getElementById( 'ec_download_count_' + orderdetail_id ) ).html( count );
 		}
 	}
 	

@@ -87,6 +87,8 @@
                 <p><strong><?php echo $this->shipping_method; ?></strong></p>
                 
                 <?php }?>
+                
+                <?php if( get_option( 'ec_option_show_email_on_receipt' ) ){ ?><p><strong><?php echo htmlspecialchars( $this->user->email, ENT_QUOTES ); ?></strong></p><?php }?>
 
             </td>
 
@@ -312,40 +314,17 @@
                                 </tr>
 
                     			<?php }?>
-
-                    			<?php if( $this->cart->cart[$i]->is_giftcard || $this->cart->cart[$i]->is_download ){ ?>
-
-                    			<tr>
-                                
-                                	<td class='style22'>
-
-                    				<?php 
-										$account_page_id = get_option('ec_option_accountpage');
-										$account_page = get_permalink( $account_page_id );
-										if( substr_count( $account_page, '?' ) )
-											$permalink_divider = "&";
-										else
-											$permalink_divider = "?";
-
-										if( $this->cart->cart[$i]->is_giftcard ){
-											echo "<a href=\"" . $account_page . $permalink_divider . "ec_page=order_details&order_id=" . $this->order_id . "\" target=\"_blank\">" . $GLOBALS['language']->get_text( "account_order_details", "account_orders_details_print_online" ) . "</a>";
-										
-										}else if( $this->cart->cart[$i]->is_download ){
-											echo "<a href=\"" . $account_page . $permalink_divider . "ec_page=order_details&order_id=" . $this->order_id . "\" target=\"_blank\">" . $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_download' ) . "</a>";
-
-										}
-									?>
-									
-                                    </td>
-                                    
-                                </tr>
-								
-								<?php }
 	
+								<?php 
+								$advanced_option_allow_download = true;
 								if( $this->cart->cart[$i]->use_advanced_optionset ){
 									$advanced_options = $this->mysqli->get_order_options( $this->cart->cart[$i]->orderdetail_id );
 									
 									foreach( $advanced_options as $advanced_option ){
+										
+										if( !$advanced_option->optionitem_allow_download ){
+											$advanced_option_allow_download = false;
+										}
 										
 										if( $advanced_option->option_type == "file" ){
 											
@@ -438,6 +417,58 @@
 	
 								}// Close basic options
 								?>
+
+                    			<?php if( $this->cart->cart[$i]->is_giftcard || ( $this->cart->cart[$i]->is_download && $advanced_option_allow_download ) ){ ?>
+
+                    			<tr>
+                                
+                                	<td class='style22'>
+
+                    				<?php 
+										$account_page_id = get_option('ec_option_accountpage');
+										$account_page = get_permalink( $account_page_id );
+										if( substr_count( $account_page, '?' ) )
+											$permalink_divider = "&";
+										else
+											$permalink_divider = "?";
+
+										if( $this->cart->cart[$i]->is_giftcard ){
+											echo "<a href=\"" . $account_page . $permalink_divider . "ec_page=order_details&order_id=" . $this->order_id . "\" target=\"_blank\">" . $GLOBALS['language']->get_text( "account_order_details", "account_orders_details_print_online" ) . "</a>";
+										
+										}else if( $this->cart->cart[$i]->is_download ){
+											echo "<a href=\"" . $account_page . $permalink_divider . "ec_page=order_details&order_id=" . $this->order_id . "\" target=\"_blank\">" . $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_download' ) . "</a>";
+
+										}
+									?>
+									
+                                    </td>
+                                    
+                                </tr>
+								
+								<?php } ?>
+                                
+                                <?php if( $this->cart->cart[$i]->include_code && $this->is_approved ){ 
+								global $wpdb;
+								$codes = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ec_code WHERE ec_code.orderdetail_id = %d", $this->cart->cart[$i]->orderdetail_id ) );
+								$code_list = "";
+								for( $code_index = 0; $code_index < count( $codes ); $code_index++ ){
+									if( $code_index > 0 )
+										$code_list .= ", ";
+									$code_list .= $codes[$code_index]->code_val;
+								}
+								?>
+                                
+                                <tr>
+                                
+                                	<td class='style22'>
+                                    
+                                    	<?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_your_codes' ); ?> <?php echo $code_list; ?>
+                                    
+                                    </td>
+                                    
+                                </tr>
+                                
+                                <?php }?>
 
 							</table>
                 

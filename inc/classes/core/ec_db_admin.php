@@ -260,6 +260,7 @@ class ec_db_admin extends ec_db{
 				ec_orderdetail.is_download, 
 				ec_orderdetail.is_giftcard, 
 				ec_orderdetail.is_taxable, 
+				ec_orderdetail.is_shippable, 
 				ec_download.download_file_name, 
 				ec_orderdetail.download_key,
 				ec_orderdetail.maximum_downloads_allowed,
@@ -275,6 +276,8 @@ class ec_db_admin extends ec_db{
 				ec_orderdetail.deconetwork_color_code,
 				ec_orderdetail.deconetwork_product_id,
 				ec_orderdetail.deconetwork_image_link,
+				
+				ec_orderdetail.include_code,
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				

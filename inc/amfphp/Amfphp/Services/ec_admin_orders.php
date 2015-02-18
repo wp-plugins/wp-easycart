@@ -313,9 +313,9 @@ class ec_admin_orders{
 			$headers .= "X-Mailer: PHP/".phpversion()  . "\r\n";
 			
 			if( get_option( 'ec_option_use_wp_mail' ) ){
-				wp_mail( $order[0]->user_email, 'Order Shipped - Confirmation' , $message, $headers );
+				wp_mail( $order[0]->user_email, $GLOBALS['language']->get_text( 'ec_shipping_email', 'shipping_email_title' ) . " " . $orderid, $message, $headers );
 			}else{
-				mail( $order[0]->user_email, 'Order Shipped - Confirmation' , $message, $headers  );
+				mail( $order[0]->user_email, $GLOBALS['language']->get_text( 'ec_shipping_email', 'shipping_email_title' ) . " " . $orderid, $message, $headers  );
 			}
 		}
 		

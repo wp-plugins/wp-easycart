@@ -35,12 +35,15 @@ class ec_orderdetail{
 	public $is_download;      							// BOOL
 	public $is_giftcard;       							// BOOL
 	public $is_taxable;       							// BOOL
+	public $is_shippable;       						// BOOL
 	public $download_file_name;       					// VARCHAR 255
 	public $download_id;      							// VARCHAR 255
 	public $maximum_downloads_allowed;       			// INT
 	public $download_timelimit_seconds;      			// INT
 	public $is_amazon_download;							// BOOL
 	public $amazon_key;									// VARCHAR 255
+	
+	public $include_code;								// BOOL
 	
 	public $is_deconetwork;								// BOOL
 	public $deconetwork_id;								// VARCHAR 64
@@ -96,6 +99,7 @@ class ec_orderdetail{
 		$this->is_download = $orderdetail_row->is_download; 
 		$this->is_giftcard = $orderdetail_row->is_giftcard; 
 		$this->is_taxable = $orderdetail_row->is_taxable; 
+		$this->is_shippable = $orderdetail_row->is_shippable; 
 		$this->download_file_name = $orderdetail_row->download_file_name; 
 		$this->download_id = $orderdetail_row->download_key;
 		$this->maximum_downloads_allowed = $orderdetail_row->maximum_downloads_allowed;
@@ -111,6 +115,8 @@ class ec_orderdetail{
 		$this->deconetwork_color_code = $orderdetail_row->deconetwork_color_code;
 		$this->deconetwork_product_id = $orderdetail_row->deconetwork_product_id;
 		$this->deconetwork_image_link = $orderdetail_row->deconetwork_image_link;
+		
+		$this->include_code = $orderdetail_row->include_code;
 		
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
 			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){

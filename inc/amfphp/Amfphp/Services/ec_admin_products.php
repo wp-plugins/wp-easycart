@@ -512,9 +512,49 @@ class ec_admin_products{
 		if( $product->vatrate )
 			$vat_rate = $product->vatrate;
 		
-		$sql = "UPDATE ec_product SET price = %s, title = %s, description = %s, model_number = %s, activate_in_store = %s, manufacturer_id = %s, image1 = %s, image2 = %s, image3 = %s, image4 = %s, image5 = %s, is_giftcard = %s, download_file_name = %s, is_taxable = %s, is_download = %s, weight = %s, stock_quantity = %s, show_on_startup = %s, menulevel1_id_1 = %s, menulevel1_id_2 = %s, menulevel1_id_3 = %s, menulevel2_id_1 = %s, menulevel2_id_2 = %s, menulevel2_id_3 = %s, menulevel3_id_1 = %s, menulevel3_id_2 = %s, menulevel3_id_3 = %s, option_id_1 = %s, option_id_2 = %s, option_id_3 = %s, option_id_4 = %s, option_id_5 = %s, featured_product_id_1 = %s, featured_product_id_2 = %s, featured_product_id_3 = %s, featured_product_id_4 = %s, seo_description = %s, use_specifications = %s, use_customer_reviews = %s, specifications = %s, list_price = %s, seo_keywords = %s, is_special = %s, use_optionitem_images = %s, use_optionitem_quantity_tracking = %s, is_donation = %s, show_stock_quantity = %s, maximum_downloads_allowed = %s, download_timelimit_seconds = %s, handling_price = %s, vat_rate= %s, use_advanced_optionset = %s, is_subscription_item = %s, subscription_bill_length = %s, subscription_bill_period = %s, height = %s, width = %s, length = %s, trial_period_days = %s, allow_multiple_subscription_purchases = %s, subscription_plan_id = %s, membership_page = %s, min_purchase_quantity = %s, is_amazon_download = %s, amazon_key = %s, catalog_mode = %s, catalog_mode_phrase = %s, inquiry_mode = %s, inquiry_url = %s, is_deconetwork = %s, deconetwork_mode = %s, deconetwork_product_id = %s, deconetwork_size_id = %s, deconetwork_color_id = %s, deconetwork_design_id = %s, short_description = %s, tag_type = %s, tag_bg_color = %s, tag_text = %s, tag_text_color = %s, is_shippable = %s  WHERE product_id = %d";
+		$sql = "UPDATE ec_product SET 
+				price = %s, title = %s, description = %s, model_number = %s, activate_in_store = %s, 
+				manufacturer_id = %s, image1 = %s, image2 = %s, image3 = %s, image4 = %s, 
+				image5 = %s, is_giftcard = %s, download_file_name = %s, is_taxable = %s, is_download = %s, 
+				weight = %s, stock_quantity = %s, show_on_startup = %s, menulevel1_id_1 = %s, menulevel1_id_2 = %s, 
+				menulevel1_id_3 = %s, menulevel2_id_1 = %s, menulevel2_id_2 = %s, menulevel2_id_3 = %s, menulevel3_id_1 = %s, 
+				
+				menulevel3_id_2 = %s, menulevel3_id_3 = %s, option_id_1 = %s, option_id_2 = %s, option_id_3 = %s, 
+				option_id_4 = %s, option_id_5 = %s, featured_product_id_1 = %s, featured_product_id_2 = %s, featured_product_id_3 = %s, 
+				featured_product_id_4 = %s, seo_description = %s, use_specifications = %s, use_customer_reviews = %s, specifications = %s, 
+				list_price = %s, seo_keywords = %s, is_special = %s, use_optionitem_images = %s, use_optionitem_quantity_tracking = %s, 
+				is_donation = %s, show_stock_quantity = %s, maximum_downloads_allowed = %s, download_timelimit_seconds = %s, handling_price = %s, 
+				
+				vat_rate= %s, use_advanced_optionset = %s, is_subscription_item = %s, subscription_bill_length = %s, subscription_bill_period = %s, 
+				height = %s, width = %s, length = %s, trial_period_days = %s, allow_multiple_subscription_purchases = %s, 
+				subscription_plan_id = %s, membership_page = %s, min_purchase_quantity = %s, is_amazon_download = %s, amazon_key = %s, 
+				catalog_mode = %s, catalog_mode_phrase = %s, inquiry_mode = %s, inquiry_url = %s, is_deconetwork = %s, 
+				deconetwork_mode = %s, deconetwork_product_id = %s, deconetwork_size_id = %s, deconetwork_color_id = %s, deconetwork_design_id = %s, 
+				
+				short_description = %s, tag_type = %s, tag_bg_color = %s, tag_text = %s, tag_text_color = %s, 
+				is_shippable = %d  
+				WHERE product_id = %d";
 		
-		$success = $this->db->get_results( $this->db->prepare( $sql, $product->listprice, $product->producttitle, $product->productdescription, $product->modelnumber, $product->listproduct, $product->productmanufacturer, $product->Image1, $product->Image2, $product->Image3, $product->Image4, $product->Image5, $product->isgiftcard, $product->downloadid, $product->taxableproduct, $product->isdownload, $product->productweight, $product->quantity, $product->featuredproduct, $product->Cat1Name, $product->Cat2Name, $product->Cat3Name, $product->Cat1bName, $product->Cat2bName, $product->Cat3bName, $product->Cat1cName, $product->Cat2cName, $product->Cat3cName, $product->option1, $product->option2, $product->option3, $product->option4, $product->option5, $product->featureproduct1, $product->featureproduct2, $product->featureproduct3, $product->featureproduct4, $product->seoshortdescription, $product->usespecs, $product->allowreviews, $product->specifications, $product->previousprice, $product->seokeywords, $product->isspecial, $product->useoptionitemimages, $product->usequantitytracking, $product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $product->handling_price, $product->vatrate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, $product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, $product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $product->is_amazon_download, $product->amazon_key, $product->catalog_mode, $product->catalog_mode_phrase, $product->inquiry_mode, $product->inquiry_url, $product->isdeconetwork, $product->deconetwork_mode,$product->deconetwork_product_id,$product->deconetwork_size_id,$product->deconetwork_color_id, $product->deconetwork_design_id, $product->shortdescription, $product->tag_type, $product->tag_bg_color, $product->tag_text, $product->tag_text_color, $product->tag_text_color, $productid ) );
+		$this->db->query( $this->db->prepare( $sql, 
+				$product->listprice, $product->producttitle, $product->productdescription, $product->modelnumber, $product->listproduct, 
+				$product->productmanufacturer, $product->Image1, $product->Image2, $product->Image3, $product->Image4, 
+				$product->Image5, $product->isgiftcard, $product->downloadid, $product->taxableproduct, $product->isdownload, 
+				$product->productweight, $product->quantity, $product->featuredproduct, $product->Cat1Name, $product->Cat2Name, 
+				$product->Cat3Name, $product->Cat1bName, $product->Cat2bName, $product->Cat3bName, $product->Cat1cName, 
+				$product->Cat2cName, $product->Cat3cName, $product->option1, $product->option2, $product->option3, 
+				$product->option4, $product->option5, $product->featureproduct1, $product->featureproduct2, $product->featureproduct3, 
+				$product->featureproduct4, $product->seoshortdescription, $product->usespecs, $product->allowreviews, $product->specifications, 
+				$product->previousprice, $product->seokeywords, $product->isspecial, $product->useoptionitemimages, $product->usequantitytracking, 
+				$product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $product->handling_price, 
+				$product->vatrate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, 
+				$product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, 
+				$product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $product->is_amazon_download, $product->amazon_key, 
+				$product->catalog_mode, $product->catalog_mode_phrase, $product->inquiry_mode, $product->inquiry_url, $product->isdeconetwork, 
+				$product->deconetwork_mode,$product->deconetwork_product_id,$product->deconetwork_size_id, $product->deconetwork_color_id, $product->deconetwork_design_id, 
+				$product->shortdescription, $product->tag_type, $product->tag_bg_color, $product->tag_text, $product->tag_text_color, 
+				$product->is_shippable, 
+				
+				$productid ) );
 		
 		// Enqueue Quickbooks Update Customer
 		if( file_exists( "../../../../wp-easycart-quickbooks/QuickBooks.php" ) ){
@@ -549,11 +589,7 @@ class ec_admin_products{
 			}
 		} // Close Stripe Subscription Check
 		
-		if( $success === FALSE ){
-			return array( "error" );
-		}else{
-			return array( "success" );
-		}
+		return array( "success" );
 		
 	}
 

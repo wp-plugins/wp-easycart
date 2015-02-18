@@ -34,7 +34,38 @@ class ec_cart{
 			$user_email = $_SESSION['ec_email'];
 		
 		$this->user = new ec_user( $user_email );
+		$this->make_vat_adjustments( );
 		$this->update_cart_values();
+	}
+	
+	// Function to adjust VAT prices in the cart 
+	// Used when vat is included and a customer should be applied to a different vat rate.
+	private function make_vat_adjustments( ){
+		$this->user = new ec_user( "" );
+		$tax = new ec_tax( 0, 0, 0, $this->user->shipping->state, $this->user->shipping->country );
+		
+		for($i=0; $i<count( $this->cart ); $i++){
+			
+			if( $this->cart[$i]->vat_enabled ){
+				
+				if( $tax->vat_included && $tax->vat_rate_default != $tax->vat_rate ){ 
+					
+					// Adjust unit price for a different VAT rate
+					$default_vat = $tax->vat_rate_default / 100;
+					$new_vat = $tax->vat_rate / 100;
+					$old_unit_price = $this->cart[$i]->unit_price;
+					$product_actual_price = ( $old_unit_price / ( $default_vat + 1 ) );
+					$unit_price = $product_actual_price + ( $product_actual_price * $new_vat );
+					$total_price = $unit_price * $this->cart[$i]->quantity;
+					
+					$this->cart[$i]->unit_price = $unit_price;
+					$this->cart[$i]->total_price = $total_price;
+				
+				}
+			
+			}
+		
+		}
 	}
 	
 	//set the subtotal
@@ -74,18 +105,18 @@ class ec_cart{
 			if( $this->cart[$i]->is_taxable ) 				
 				$this->taxable_subtotal = $this->taxable_subtotal + $this->cart[$i]->total_price;
 			
-			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation && $this->cart[$i]->weight > 0 )
+			if( $this->cart[$i]->is_shippable )
 				$this->shipping_subtotal = $this->shipping_subtotal + $this->cart[$i]->total_price;
 			
 			if( $this->cart[$i]->vat_enabled )
 				$this->vat_subtotal = $this->vat_subtotal + $this->cart[$i]->total_price;
 			
-			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation )
+			if( $this->cart[$i]->is_shippable )
 				$this->weight = $this->weight + $this->cart[$i]->get_weight();
 			
 			$this->total_items = $this->total_items + $this->cart[$i]->quantity;
 			
-			if( !$this->cart[$i]->is_giftcard && !$this->cart[$i]->is_download && !$this->cart[$i]->is_donation && $this->cart[$i]->weight > 0 )
+			if( $this->cart[$i]->is_shippable )
 				$this->shippable_total_items = $this->shippable_total_items + $this->cart[$i]->quantity;
 		}
 		

@@ -113,7 +113,7 @@ if( $this->should_display_cart( ) ){
                         			<td class="ec_plus_column"><input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $this->cart->cart[$cartitem_index]->cartitem_id; ?>' );" /></td>
                                 </tr>
                                 <tr>
-                                	<td colspan="3"><div class="ec_cartitem_update_button" id="ec_cartitem_update_<?php echo $this->cart->cart[$cartitem_index]->cartitem_id; ?>" onclick="ec_cartitem_update( '<?php echo $this->cart->cart[$cartitem_index]->cartitem_id; ?>', '<?php echo $this->cart->cart[$cartitem_index]->cartitem_id; ?>' );">UPDATE</div></td>
+                                	<td colspan="3"><div class="ec_cartitem_update_button" id="ec_cartitem_update_<?php echo $this->cart->cart[$cartitem_index]->cartitem_id; ?>" onclick="ec_cartitem_update( '<?php echo $this->cart->cart[$cartitem_index]->cartitem_id; ?>', '<?php echo $this->cart->cart[$cartitem_index]->cartitem_id; ?>' );"><?php echo $GLOBALS['language']->get_text( 'cart', 'cart_item_update_button' )?></div></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -127,7 +127,7 @@ if( $this->should_display_cart( ) ){
     </div>
     <div class="ec_cart_right">
     	<div class="ec_cart_header ec_top">
-        	Cart Totals
+        	<?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_label' )?>
         </div>
         <div class="ec_cart_price_row">
         	<div class="ec_cart_price_row_label"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_subtotal' )?></div>
@@ -145,7 +145,7 @@ if( $this->should_display_cart( ) ){
             <div class="ec_cart_price_row_total" id="ec_cart_shipping"><?php echo $this->get_shipping_total( ); ?></div>
         </div>
         <?php }?>
-        <div class="ec_cart_price_row">
+        <div class="ec_cart_price_row<?php if( $this->order_totals->discount_total == 0 ){ ?> ec_no_discount<?php }else{ ?> ec_has_discount<?php }?>">
         	<div class="ec_cart_price_row_label"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_discounts' )?></div>
             <div class="ec_cart_price_row_total" id="ec_cart_discount"><?php echo $this->get_discount_total( ); ?></div>
         </div>

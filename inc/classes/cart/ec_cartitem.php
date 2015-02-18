@@ -37,7 +37,9 @@ class ec_cartitem{
 	public $is_download;											// BOOL
 	public $is_donation;											// BOOL
 	public $is_taxable;												// BOOL
+	public $is_shippable;											// BOOL
 	public $is_amazon_download;										// BOOL
+	public $include_code;											// BOOL
 	
 	public $image1;													// VARCHAR 255
 	public $image1_optionitem;										// VARCHAR 255
@@ -92,6 +94,9 @@ class ec_cartitem{
 	public $deconetwork_total;										// FLOAT 15,3
 	public $deconetwork_version;									// INT
 	
+	public $has_affiliate_rule;										// Bool
+	public $affiliate_rule;											// ec_affiliate_rule Object
+	
 	public $download_id = 0;										// INT
 	public $download_file_name;										// VARCHAR 255
 	public $amazon_key;												// VARCHAR 255
@@ -130,7 +135,9 @@ class ec_cartitem{
 		$this->is_download = $cartitem_data->is_download;
 		$this->is_donation = $cartitem_data->is_donation;
 		$this->is_taxable = $cartitem_data->is_taxable;
+		$this->is_shippable = $cartitem_data->is_shippable;
 		$this->is_amazon_download = $cartitem_data->is_amazon_download;
+		$this->include_code = $cartitem_data->include_code;
 		
 		$this->image1 = $cartitem_data->image1;
 		$this->image1_optionitem = $cartitem_data->optionitemimage_image1;
@@ -263,6 +270,10 @@ class ec_cartitem{
 			
 			foreach( $this->advanced_options as $advanced_option ){
 				
+				if( $advanced_option->optionitem_disallow_shipping ){
+					$this->is_shippable = false;
+				}
+				
 				if( $advanced_option->optionitem_model_number != "" )
 					$this->orderdetails_model_number = $this->orderdetails_model_number . '-' . $advanced_option->optionitem_model_number;
 				
@@ -368,6 +379,14 @@ class ec_cartitem{
 			$this->total_price = $this->deconetwork_total;
 			$this->discount_price = $this->deconetwork_discount;
 		}
+		
+		$this->has_affiliate_rule = false;
+		
+		if( class_exists( "Affiliate_WP" ) ){
+			$this->affiliate_rule = $this->mysqli->get_affiliate_rule( affiliate_wp()->tracking->get_affiliate_id( ), $this->product_id );
+			if( $this->affiliate_rule )
+				$this->has_affiliate_rule = true;
+		}
 			
 		$store_page_id = get_option('ec_option_storepage');
 		$cart_page_id = get_option('ec_option_cartpage');
@@ -419,7 +438,7 @@ class ec_cartitem{
 	}
 	
 	public function get_shippable_total(){
-		if( !$this->is_giftcard && !$this->is_download && !$this->is_donation ){
+		if( $this->is_shippable ){
 			return $this->total_price;
 		}else{
 			return 0;

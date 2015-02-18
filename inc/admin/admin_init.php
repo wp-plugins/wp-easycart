@@ -47,10 +47,10 @@ function ec_install_admin_notice() {
     <?php	
 	}
 	
-	if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.11" ){
+	if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.12" ){
 		?>
         <div class="error">
-        	<p>The latest WP EasyCart Store Admin version is 3.0.11, please update for best results!</p>
+        	<p>The latest WP EasyCart Store Admin version is 3.0.12, please update for best results!</p>
    		</div>
         <?php
 	}
@@ -71,18 +71,16 @@ function ec_install_admin_notice() {
     </div>
     
 	<?php }
-	/*
-	// Check for newer layout/theme files
-	$current_version_design = file_get_contents( "http://www.wpeasycart.com/latest-design-version.txt" );
-	$this_design = get_option( 'ec_option_base_theme' );
-	$has_matches = preg_match( "/([0-9]+?\-[0-3][0-9]\-[0-9][0-9][0-9][0-9])/", $this_design, $matches );
-	if( $has_matches && $matches[0] != $current_version_design ){?>
 	
-    <div class="updated">
-        <p>There is a new version of the store design available (<?php echo $current_version_design; ?>). Please visit your <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=design-management">design file management page</a> and follow the directions to upgrade.</p>
-	</div>
+	global $wpdb;
+	$user = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ec_user WHERE ec_user.email = 'demouser@demo.com' AND ec_user.password = %s AND ec_user.user_level = 'admin'", md5( "demouser" ) ) );
+	if( count( $user ) > 0 ){ ?>
+	
+    <div class="error">
+        <p>We see you have not removed the demo user in your EasyCart, please create your own admin account and remove the demo user before going live. <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=users">Click Here</a> to jump to your account management.</p>
+    </div>
     
-    <?php }*/
+	<?php }
 }
 
 function ec_load_admin_scripts( ){
@@ -333,7 +331,7 @@ function ec_custom_downloads( ){
 	}else if( current_user_can( 'manage_options' ) && isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && isset( $_GET['ec_action'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "google-merchant" && $_GET['ec_action'] == "download-feed" ){
 		//Download XML Feed
 		global $wpdb;
-		$products = $wpdb->get_results( "SELECT ec_product.product_id, ec_product.model_number, ec_product.title, ec_product.description, ec_product.price, ec_product.list_price, ec_product.weight, ec_product.post_id, ec_product.image1, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_manufacturer.name as manufacturer_name FROM ec_product LEFT JOIN ec_manufacturer ON ec_manufacturer.manufacturer_id = ec_product.manufacturer_id WHERE ec_product.activate_in_store = 1 ORDER BY ec_product.title ASC" );
+		$products = $wpdb->get_results( "SELECT ec_product.product_id, ec_product.model_number, ec_product.show_stock_quantity, ec_product.stock_quantity, ec_product.title, ec_product.description, ec_product.price, ec_product.list_price, ec_product.weight, ec_product.post_id, ec_product.image1, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_manufacturer.name as manufacturer_name FROM ec_product LEFT JOIN ec_manufacturer ON ec_manufacturer.manufacturer_id = ec_product.manufacturer_id WHERE ec_product.activate_in_store = 1 ORDER BY ec_product.title ASC" );
 		
 			
 		$file_contents =  "<?xml version=\"1.0\"?>\r\n";
@@ -403,7 +401,7 @@ function ec_custom_downloads( ){
 					$file_contents .=  "<g:description>" . htmlspecialchars( $product->description ) . "</g:description>\r\n";
 					$file_contents .=  "<g:link>" . htmlspecialchars( $link ) . "</g:link>\r\n";
 					$file_contents .=  "<g:image_link>" . htmlspecialchars( $image_link ) . "</g:image_link>\r\n";
-					if( $product->stock_quantity > 0 ){
+					if( !$product->show_stock_quantity || $product->stock_quantity > 0 ){
 						$file_contents .=  "<g:availability>in stock</g:availability>\r\n";
 					}else{
 						$file_contents .=  "<g:availability>out of stock</g:availability>\r\n";
@@ -451,6 +449,380 @@ function ec_custom_downloads( ){
 		
 		// Stop the page execution so that it doesn't print HTML to the file accidently
 		die();
+		
+	}else if( current_user_can( 'manage_options' ) && isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && isset( $_GET['ec_action'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "woo-importer" && $_GET['ec_action'] == "import-woo-products" ){
+		global $wpdb;
+		$prefix = $wpdb->prefix;
+		$new_optionsets = array( ); // Keep list of attribute ids to option_ids
+		$new_categories = array( ); // Keep list of cat ids to category_ids
+		$new_products = array( ); // Keep list of product ids to post ids
+		$add_crosssale = array( ); // Keep list of product_id + cross-sale post_ids, cross-reference new_product with post_id to update products
+		
+		$optionsets = $wpdb->get_results( "SELECT * FROM " . $prefix . "woocommerce_attribute_taxonomies" );
+		
+		foreach( $optionsets as $optionset ){
+			$attribute_id = $optionset->attribute_id;
+			$option_name = $optionset->attribute_name;
+			$option_label = $optionset->attribute_label;
+			$option_type = $optionset->attribute_type;
+			
+			if( $option_type == "select" ){
+				$option_type = "combo";
+			}
+			
+			$optionitems = $wpdb->get_results( $wpdb->prepare( "SELECT " . $prefix . "terms.* FROM " . $prefix . "term_taxonomy LEFT JOIN " . $prefix . "terms ON (" . $prefix . "terms.term_id = " . $prefix . "term_taxonomy.term_id ) WHERE " . $prefix . "term_taxonomy.taxonomy = %s", "pa_" . $option_name ) );
+			
+			// Insert option
+			$wpdb->query( $wpdb->prepare( "INSERT INTO ec_option( option_name, option_label, option_type, option_required ) VALUES( %s, %s, %s, 0 )", $option_name, $option_label, $option_type ) );
+			$option_id = $wpdb->insert_id;
+			$new_optionsets["pa_" . $option_name] = $option_id;
+			
+			// Insert option items
+			$order_num = 0;
+			foreach( $optionitems as $optionitem ){
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_optionitem( option_id, optionitem_name, optionitem_order ) VALUES( %d, %s, %d )", $option_id, $optionitem->name, $order_num ) );
+				$order_num++;
+			}
+		}
+		
+		$categories = $wpdb->get_results( "SELECT " . $prefix . "terms.* FROM " . $prefix . "term_taxonomy LEFT JOIN " . $prefix . "terms ON (" . $prefix . "terms.term_id = " . $prefix . "term_taxonomy.term_id ) WHERE " . $prefix . "term_taxonomy.taxonomy = 'product_cat'" );
+		foreach( $categories as $category ){
+			
+			// Insert Category
+			$wpdb->query( $wpdb->prepare( "INSERT INTO ec_category( category_name ) VALUES( %s )", $category->name ) );
+			$category_id = $wpdb->insert_id;
+			$new_categories["id-".$category->term_id] = $category_id;
+			
+			// Insert Category WordPress Post
+			$post = array(	'post_content'	=> "[ec_store groupid=\"" . $category_id . "\"]",
+							'post_status'	=> "publish",
+							'post_title'	=> $category->name,
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post );
+			
+			// Update Category Post ID
+			$wpdb->query( $wpdb->prepare( "UPDATE ec_category SET ec_category.post_id = %s WHERE ec_category.category_id = %d", $post_id, $category_id ) );
+			
+		}
+		
+		//----------manufacturer-------
+		$wpdb->query( "INSERT INTO ec_manufacturer( `name` ) VALUES( 'Woo Products' )" );
+		$manufacturer_id = $wpdb->insert_id;
+		
+		// Insert a WordPress Custom post type post.
+		$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturer_id . "\"]",
+						'post_status'	=> "publish",
+						'post_title'	=> "WOO Products",
+						'post_type'		=> "ec_store"
+		);
+		$post_id = wp_insert_post( $post );
+		
+		// Update manufacturer
+		$wpdb->query( $wpdb->prepare( "UPDATE ec_manufacturer SET ec_manufacturer.post_id = %s WHERE ec_manufacturer.manufacturer_id = %d", $post_id, $manufacturer_id ) );
+		
+		$product_args = array( 'posts_per_page' => 100000, 'offset' => 0, 'post_type' => 'product' );
+		$woo_products = get_posts( $product_args );
+		
+		foreach( $woo_products as $product ){
+			
+			$post_meta = get_post_meta( $product->ID );
+			
+			//----------model number-------
+			$sku = $post_meta['_sku'][0];
+			if( $sku == "" )
+				$model_number = rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 ) . rand( 0, 9 );
+			else
+				$model_number = $sku;
+			
+			//---------basic info------------
+			$title = $product->post_title;
+			$description = $product->post_content;
+			$short_description = $product->post_excerpt;
+			
+			//---------activate in store------
+			$visibility = $post_meta['_visibility'][0]; // visible if show in store
+			if( $product->post_status == "publish" ){
+				$is_active = true;
+			}else{
+				$is_active = false;
+			}
+			
+			if( $is_active && $visibility == "visible" )
+				$activate_in_store = true;
+			else
+				$activate_in_store = false;
+			
+			//-----------price options------
+			$regular_price = $post_meta['_regular_price'][0];
+			$sale_price = $post_meta['_sale_price'][0]; // use if not empty
+			$price = $post_meta['_price'][0]; // Not sure what is different between price and regular price?
+			if( $sale_price != "" ){ // If a sale is setup
+				$price = $sale_price;
+				$list_price = $regular_price;
+			}
+			
+			//------------tax options-------
+			$tax_status = $post_meta['_tax_status'][0]; // taxable if tax enabled
+			if( $tax_status == "taxable" )
+				$is_taxable = true;
+			else
+				$is_taxable = false;
+			
+			//------------stock options------
+			$manage_stock = $post_meta['_manage_stock'][0]; // yes if we should we keep track of stock
+			$stock_status = $post_meta['_stock_status'][0]; // instock if available
+			$stock = $post_meta['_stock'][0]; // Stock value
+			if( $manage_stock == "yes" && $stock != "" ){
+				$stock_quantity = $stock;
+			}else if( $stock_status == "instock" ){
+				$stock_quantity = 9999;
+			}else{
+				$stock_quantity = 0;
+			}
+			if( $manage_stock == "yes" )
+				$show_stock_quantity = true;
+			else
+				$show_stock_quantity = false;
+			
+			//------------diminsions options-----
+			$virtual = $post_meta['_virtual'][0]; // set values to 0 if service item
+			$weight = $post_meta['_weight'][0]; // if no value, set to 0?
+			if( $weight == "" || $virtual == "yes" )
+				$weight = 0;
+			$length = $post_meta['_length'][0];
+			if( $length == "" || $virtual == "yes"  )
+				$length = 0;
+			$width = $post_meta['_width'][0];
+			if( $width == "" || $virtual == "yes"  )
+				$width = 0;
+			$height = $post_meta['_height'][0];
+			if( $height == "" || $virtual == "yes"  )
+				$height = 0;
+			
+			//-----------custom reviews option-----
+			if( $product->comment_status == "open" )
+				$use_customer_reviews = true;
+			else
+				$use_customer_reviews = false;
+			
+			//----------download-----------
+			$downloadable = $post_meta['_downloadable'][0]; // no if not downloadable
+			if( $downloadable == "yes" ){
+				$files = maybe_unserialize( $post_meta['_downloadable_files'][0] );
+				foreach( $files as $file ){
+					break;
+				}
+				
+				$path = pathinfo( $file['file'] );
+				$file_name = $path['filename'] . "_" . rand( 100000, 999999 ) . "." . $path['extension'];
+				copy( $file['file'], WP_PLUGIN_DIR . "/wp-easycart-data/products/downloads/" . $file_name );
+				
+				$is_download = true;
+				$download_file_name = $file_name;
+				$maximum_downloads_allowed = $post_meta['_download_limit'][0];
+				$download_timelimit_seconds = $post_meta['_download_expiry'][0] * 24 * 60 * 60;
+			}else{
+				$is_download = false;
+				$download_file_name = "";
+				$maximum_downloads_allowed = 0;
+				$download_timelimit_seconds = 0;
+			}
+			
+			//----------images-------------
+			$image1 = wp_get_attachment_url( get_post_thumbnail_id( $product->ID ) );
+			$image2 = "";
+			$image3 = "";
+			$image4 = "";
+			$image5 = "";
+			
+			$gallery_images_string = $post_meta['_product_image_gallery'][0];
+			$gallery_images_array = explode( ",", $gallery_images_string );
+			if( $gallery_images_array[0] != "" ){
+				$product_images = array( );
+				foreach( $gallery_images_array as $gallery_item ){
+					$product_images[] = wp_get_attachment_url( $gallery_item );
+				}
+				
+				for( $i=0; $i<count( $product_images ) && $i<5; $i++ ){
+					if( $i == 0 )
+						$image1 = $product_images[$i];
+					else if( $i == 1 )
+						$image2 = $product_images[$i];
+					else if( $i == 2 )
+						$image3 = $product_images[$i];
+					else if( $i == 3 )
+						$image4 = $product_images[$i];
+					else if( $i == 4 )
+						$image5 = $product_images[$i];
+				}
+			}
+			
+			if( $image1 != "" ){
+				$path = pathinfo( $image1 );
+				$file_name = $path['filename'] . "_" . rand( 100000, 999999 ) . "." . $path['extension'];
+				copy( $image1, WP_PLUGIN_DIR . "/wp-easycart-data/products/pics1/" . $file_name );
+				$image1 = $file_name;
+			}
+			
+			if( $image2 != "" ){
+				$path = pathinfo( $image2 );
+				$file_name = $path['filename'] . "_" . rand( 100000, 999999 ) . "." . $path['extension'];
+				copy( $image2, WP_PLUGIN_DIR . "/wp-easycart-data/products/pics2/" . $file_name );
+				$image2 = $file_name;
+			}
+			
+			if( $image3 != "" ){
+				$path = pathinfo( $image3 );
+				$file_name = $path['filename'] . "_" . rand( 100000, 999999 ) . "." . $path['extension'];
+				copy( $image3, WP_PLUGIN_DIR . "/wp-easycart-data/products/pics3/" . $file_name );
+				$image3 = $file_name;
+			}
+			
+			if( $image4 != "" ){
+				$path = pathinfo( $image4 );
+				$file_name = $path['filename'] . "_" . rand( 100000, 999999 ) . "." . $path['extension'];
+				copy( $image4, WP_PLUGIN_DIR . "/wp-easycart-data/products/pics4/" . $file_name );
+				$image4 = $file_name;
+			}
+			
+			if( $image5 != "" ){
+				$path = pathinfo( $image5 );
+				$file_name = $path['filename'] . "_" . rand( 100000, 999999 ) . "." . $path['extension'];
+				copy( $image5, WP_PLUGIN_DIR . "/wp-easycart-data/products/pics5/" . $file_name );
+				$image5 = $file_name;
+			}
+			
+			//----------options setup------
+			$product_attributes = maybe_unserialize( $post_meta['_product_attributes'][0] ); // need to link to option sets
+			$product_options = array( );
+			foreach( $product_attributes as $key => $value ){
+				$product_options[] = $new_optionsets[$key]; // Add option_id to product option array
+			}
+			
+			//-------------categories-------
+			$product_cats = $wpdb->get_results( $wpdb->prepare( "SELECT " . $prefix . "term_relationships.term_taxonomy_id FROM " . $prefix . "term_relationships, " . $prefix . "terms, " . $prefix . "term_taxonomy WHERE " . $prefix . "term_taxonomy.taxonomy = 'product_cat' AND " . $prefix . "term_taxonomy.term_id = " . $prefix . "terms.term_id AND " . $prefix . "terms.term_id = " . $prefix . "term_relationships.term_taxonomy_id AND " . $prefix . "term_relationships.object_id = %d", $product->ID ) );
+			
+			$product_categories = array( );
+			foreach( $product_cats as $value ){
+				$product_categories[] = $new_categories["id-".$value->term_taxonomy_id]; // Add category_id to product option array
+			}
+			
+			//----------featured products--
+			$crosssell_ids = maybe_unserialize( $post_meta['_crosssell_ids'][0] );
+			
+			//----------startup show-----
+			$show_on_startup = true;
+			
+			//----------shippable status---
+			$is_shippable = true;
+			if( $is_download || $weight <= 0 )
+				$is_shippable = false;
+			
+			//------------Need to insert product----------
+			$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product( 	model_number, activate_in_store, title, description, 
+																	price, list_price, stock_quantity, weight, width, 
+																	height, length, use_customer_reviews, manufacturer_id, download_file_name, 
+																	image1, image2, image3, image4, image5, 
+																	use_advanced_optionset, featured_product_id_1, featured_product_id_2, featured_product_id_3, featured_product_id_4, 
+																	is_download, is_taxable, is_shippable, show_on_startup, show_stock_quantity, 
+																	maximum_downloads_allowed, download_timelimit_seconds ) VALUES( 
+																	%s, %d, %s, %s, 
+																	%s, %s, %d, %s, %s, 
+																	%s, %s, %d, %d, %s, 
+																	%s, %s, %s, %s, %s, 
+																	1, %d, %d, %d, %d, 
+																	%d, %d, %d, %d, %d, 
+																	%s, %s )",
+																	$model_number, $activate_in_store, $title, $description,
+																	$price, $list_price, $stock_quantity, $weight, $width,
+																	$height, $length, $use_customer_reviews, $manufacturer_id, $download_file_name,
+																	$image1, $image2, $image3, $image4, $image5,
+																	$featured_id_1, $featured_id_2, $featured_id_3, $featured_id_4,
+																	$is_download, $is_taxable, $is_shippable, $show_on_startup, $show_stock_quantity,
+																	$maximum_downloads_allowed, $download_timelimit_seconds ) );
+			$product_id = $wpdb->insert_id;
+			$new_products["id-".$product->ID] = $product_id;
+			if( $crosssell_ids )
+				$add_crosssale["id-".$product_id] = $crosssell_ids;
+			
+			
+			// Need to Insert WordPress Post
+			if( $activate_in_store )
+				$status = "publish";
+			else
+				$status = "private";
+			
+			$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $model_number . "\"]",
+							'post_status'	=> $status,
+							'post_title'	=> $title,
+							'post_type'		=> "ec_store"
+						  );
+			$post_id = wp_insert_post( $post );
+			
+			// Need to Update Product for post id
+			$wpdb->query( $wpdb->prepare( "UPDATE ec_product SET ec_product.post_id = %s WHERE ec_product.product_id = %d", $post_id, $product_id ) );
+			
+			// Apply optionsets to product, ec_option_to_product
+			foreach( $product_options as $option_id ){
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_option_to_product( option_id, product_id ) VALUES( %d, %d )", $option_id, $product_id ) );
+			}
+			
+			// Apply products to categories via ec_categoryitem
+			foreach( $product_categories as $category_id ){
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_categoryitem( category_id, product_id ) VALUES( %d, %d )", $category_id, $product_id ) );
+			}
+			
+		}
+		
+		// Now add cross sales to products
+		foreach( $add_crosssale as $key => $value ){
+			
+			$product_id = substr( $key, 3 );
+			$featured_ids = array( );
+			foreach( $value as $the_post_id ){
+				$featured_ids[] = $new_products["id-".$the_post_id];
+			}
+			$featured_id_1 = 0;
+			if( count( $featured_ids ) > 0 )
+				$featured_id_1 = $featured_ids[0];
+			$featured_id_2 = 0;
+			if( count( $featured_ids ) > 1 )
+				$featured_id_2 = $featured_ids[1];
+			$featured_id_3 = 0;
+			if( count( $featured_ids ) > 2 )
+				$featured_id_3 = $featured_ids[2];
+			$featured_id_4 = 0;
+			if( count( $featured_ids ) > 3 )
+				$featured_id_4 = $featured_ids[3];
+				
+			$wpdb->query( $wpdb->prepare( "UPDATE ec_product SET ec_product.featured_product_id_1 = %d, ec_product.featured_product_id_2 = %d, ec_product.featured_product_id_3 = %d, ec_product.featured_product_id_4 = %d WHERE ec_product.product_id = %d", $featured_id_1, $featured_id_2, $featured_id_3, $featured_id_4, $product_id ) ); 
+			
+		}
+		
+		header( "location:admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=woo-importer&ec_success=woo-imported" );
+		
+	}else if( current_user_can( 'manage_options' ) && isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && isset( $_GET['ec_action'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "mymail-integration" && $_GET['ec_action'] == "import-subscribers" ){
+		
+		if( function_exists( 'mymail' ) ){
+			
+			global $wpdb;
+			$subscribers = $wpdb->get_results( "SELECT * FROM ec_subscriber" );
+			
+			foreach( $subscribers as $subscriber ){
+				
+				$subscriber_id = mymail('subscribers')->add(array(
+					'fistname' => $subscriber->first_name,
+					'lastname' => $subscriber->last_name,
+					'email' => $subscriber->email,
+					'status' => 1,
+				), false );
+			
+			}
+			
+			header( "location:admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=mymail-integration&ec_success=mymail-imported" );
+			
+		}
 		
 	}// Close if/else to decide which action to take
 	

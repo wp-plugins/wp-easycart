@@ -19,6 +19,7 @@ $has_payment = ec_has_payment_methods( );
 $has_tax = ec_has_tax( );
 $has_shipping = ec_has_shipping( );
 $has_order = ec_has_order( );
+$has_demouser = ec_has_demouser( );
 
 $ec_url = "admin.php?page=" . htmlspecialchars ( $_GET['page'], ENT_QUOTES ) . "&ec_page=" . htmlspecialchars ( $_GET['ec_page'], ENT_QUOTES ) . "&ec_panel=" . htmlspecialchars ( $_GET['ec_panel'], ENT_QUOTES );
 $store_id = get_option( 'ec_option_storepage' );
@@ -28,6 +29,12 @@ $store_page = get_permalink( $store_id );
 <div class="ec_quick_start_guide">
 <div class="ec_admin_page_title">QUICK SETUP GUIDE</div>
 <h4>The quick start guide should help you find the most important pages to help you setup your store quickly!</h4>
+
+<?php if( class_exists( 'WooCommerce' ) ){ ?>
+<div class="updated">
+    <p>We see you have WooCommerce installed. If you would like to transfer your products to the EasyCart, please visit our <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=woo-importer">WooCommerce importer page here</a>.</p>
+</div>
+<?php } ?>
 
 <div class="ec_quick_setup_area">
     
@@ -71,7 +78,7 @@ $store_page = get_permalink( $store_id );
         	<?php if( !$has_admin ){ ?>
         	<div class="ec_checklist_button">INSTALL ADMIN FIRST</div>
             <?php }else if( !$has_manufacturer ){ ?>
-            <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=add_manufacturer" class="ec_checklist_button">Add Manufacturer Now</a>
+            <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=manufacturers" class="ec_checklist_button">Add Manufacturer Now</a>
             <?php }else{ ?>
             <div class="ec_checklist_completed"></div>
             <?php }?>
@@ -88,7 +95,7 @@ $store_page = get_permalink( $store_id );
         	<?php if( !$has_admin ){ ?>
         	<div class="ec_checklist_button">INSTALL ADMIN FIRST</div>
             <?php }else if( !$has_category){ ?>
-            <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=add_category" class="ec_checklist_button">Add Category Now</a>
+            <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=categories" class="ec_checklist_button">Add Category Now</a>
             <?php }else{ ?>
             <div class="ec_checklist_completed"></div>
             <?php }?>
@@ -105,7 +112,7 @@ $store_page = get_permalink( $store_id );
         	<?php if( !$has_admin ){ ?>
         	<div class="ec_checklist_button">INSTALL ADMIN FIRST</div>
             <?php }else if( !$has_product){ ?>
-            <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=add_product" class="ec_checklist_button">Add Product Now</a>
+            <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=products" class="ec_checklist_button">Add Product Now</a>
             <?php }else{ ?>
             <div class="ec_checklist_completed"></div>
             <?php }?>
@@ -174,11 +181,28 @@ $store_page = get_permalink( $store_id );
         </div>
     </div>
     
+    <div class="ec_checklist_container<?php if( !$has_admin ){ ?> ec_inactive<?php }else if( $has_demouser ){?> ec_required<?php }?>">
+        <div class="ec_checklist_header">
+            <div class="ec_checklist_collapse"></div>
+            <div class="ec_checklist_expand"></div>
+            10. Remove Demo User
+        </div>
+        <div class="ec_checklist_content">
+        	<?php if( !$has_admin ){ ?>
+        	<div class="ec_checklist_button">INSTALL ADMIN FIRST</div>
+            <?php }else if( $has_demouser ){ ?>
+            <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=users" class="ec_checklist_button">Create New Admin Account and Remove Demo User.</a>
+            <?php }else{ ?>
+            <div class="ec_checklist_completed"></div>
+            <?php }?>
+        </div>
+    </div>
+    
     <div class="ec_checklist_container<?php if( !$has_order ){ ?> ec_optional<?php }?>">
         <div class="ec_checklist_header">
             <div class="ec_checklist_collapse"></div>
             <div class="ec_checklist_expand"></div>
-            10.Complete First Order
+            11. Complete First Order
         </div>
         <div class="ec_checklist_content">
         	<?php if( !$has_order ){ ?>

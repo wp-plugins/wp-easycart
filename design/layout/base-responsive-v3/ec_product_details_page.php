@@ -175,6 +175,7 @@ function ec_admin_save_product_details_options( ){
 <section class="ec_product_details_page">
 	
     <?php /* START PRODUCT BREADCRUMBS */ ?>
+    <?php if( get_option( 'ec_option_show_breadcrumbs' ) ){ ?>
 	<h4 class="ec_details_breadcrumbs" id="ec_breadcrumbs_type1">
     	<a href="<?php echo home_url( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_home_link' ); ?></a> / 
         <a href="<?php echo $this->store_page; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_store_link' ); ?></a> 
@@ -196,6 +197,7 @@ function ec_admin_save_product_details_options( ){
 		}else{
 			echo $this->store_page . $this->permalink_divider . "subsubmenuid=" . $this->product->menuitems[0]->menulevel3_1_menu_id; 
 		} ?>"><?php echo $this->product->menuitems[0]->menulevel3_1_name; ?></a><?php } } }?></h4>
+    <?php } ?>
     
     <?php /* START MAIN DATA AREA FOR PRODUCT */ ?>
     <div class="ec_details_content">
@@ -328,6 +330,7 @@ function ec_admin_save_product_details_options( ){
 			<?php }?>
             
         	<?php /* START TOP PRODUCT DATA */ ?>
+        	<?php if( get_option( 'ec_option_show_breadcrumbs' ) ){ ?>
         	<h4 class="ec_details_breadcrumbs ec_small" id="ec_breadcrumbs_type2">
             <a href="<?php echo home_url( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_home_link' ); ?></a> / 
             <a href="<?php echo $this->store_page; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_store_link' ); ?></a> 
@@ -350,6 +353,8 @@ function ec_admin_save_product_details_options( ){
                 echo $this->store_page . $this->permalink_divider . "subsubmenuid=" . $this->product->menuitems[0]->menulevel3_1_menu_id; 
             } ?>"><?php echo $this->product->menuitems[0]->menulevel3_1_name; ?></a><?php } } }?>
             </h4>
+            <?php }?>
+            
             <h1 class="ec_details_title"><?php echo $this->product->title; ?></h1>
             <div class="ec_title_divider"></div>
             <div class="ec_details_price"><?php $this->product->display_product_list_price(); ?><?php $this->product->display_price(); ?></div>
@@ -363,7 +368,11 @@ function ec_admin_save_product_details_options( ){
                 <div class="ec_product_details_star_<?php if( $rating > 4.49 ){ ?>on<?php }else{ ?>off<?php }?>"></div>
             </div>
             <?php }?>
+            
+            <?php if( get_option( 'ec_option_show_model_number' ) ){ ?>
             <div class="ec_details_model_number"><?php echo ucwords( $GLOBALS['language']->get_text( 'product_details', 'product_details_model_number' ) ); ?>: <?php echo $this->product->model_number; ?></div>
+            <?php }?>
+            
             <div class="ec_details_description"><?php echo $this->product->short_description; ?></div>
             
             <?php /* GIFT CARD OPTIONS */ ?>
@@ -727,7 +736,7 @@ function ec_admin_save_product_details_options( ){
                 
                 <?php /* PRICING AREA FOR OPTIONS */ ?>
 				<?php if( $this->product->has_options || $this->product->use_advanced_optionset ){ ?>
-                <div class="ec_details_final_price">Your Price: <?php echo $GLOBALS['currency']->get_symbol( ); ?><span id="ec_final_price"><?php if( $override_price_grid > -1 ){ echo $GLOBALS['currency']->get_number_only( $override_price_grid ); }else if( $add_price_grid > 0 ){ echo $GLOBALS['currency']->get_number_only( $this->product->price + $add_price_grid ); }else{ echo $GLOBALS['currency']->get_number_only( $this->product->price ); } ?></span><span class="ec_details_hidden_base_price" id="ec_base_price"><?php echo $this->product->price; ?></span></div>
+                <div class="ec_details_final_price"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_your_price' ); ?> <?php echo $GLOBALS['currency']->get_symbol( ); ?><span id="ec_final_price"><?php if( $override_price_grid > -1 ){ echo $GLOBALS['currency']->get_number_only( $override_price_grid ); }else if( $add_price_grid > 0 ){ echo $GLOBALS['currency']->get_number_only( $this->product->price + $add_price_grid ); }else{ echo $GLOBALS['currency']->get_number_only( $this->product->price ); } ?></span><span class="ec_details_hidden_base_price" id="ec_base_price"><?php echo $this->product->price; ?></span></div>
 				<?php } ?>
                 
                 <?php /* OUT OF STOCK INFO (NO ADD TO CART CASE) */ ?>
@@ -748,9 +757,13 @@ function ec_admin_save_product_details_options( ){
             
 			<?php if( $this->product->handling_price > 0 ){ ?><div class="ec_details_handling_fee"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $this->product->handling_price ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice2' ); ?></div><?php }?>
             
+			<?php if( get_option( 'ec_option_show_categories' ) ){ ?>
 			<?php if( count( $this->product->categoryitems ) > 0 ){ ?><div class="ec_details_categories"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_categories' ); ?> <?php $categoryitems = array( ); foreach( $this->product->categoryitems as $categoryitem ){ $categoryitems[] = '<a href="' . $this->product->get_category_link( $categoryitem->post_id, $categoryitem->category_id ) . '">' . $categoryitem->category_name . '</a>'; } echo implode( ', ', $categoryitems ); ?></div><?php }?>
+            <?php }?>
             
+            <?php if( get_option( 'ec_option_show_manufacturer' ) ){ ?>
             <div class="ec_details_manufacturer"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_manufacturer' ); ?> <a href="<?php echo $this->product->get_manufacturer_link( ); ?>"><?php echo $this->product->manufacturer_name; ?></a></div>
+			<?php }?>
             
             <?php /* START SOCIAL ICONS */ ?>
             <?php
