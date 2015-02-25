@@ -15,117 +15,128 @@ add_action( 'wp_ajax_ec_editor_update_sub_menu', 'ec_editor_update_sub_menu' );
 add_action( 'wp_ajax_ec_editor_update_subsub_menu', 'ec_editor_update_subsub_menu' );
 
 function ec_install_admin_notice() {
-	if( isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "basic-setup" ){
-		update_option( 'ec_option_show_install_message', '1' );
-	}
-	
-	if( !get_option( 'ec_option_show_install_message' ) && ( !get_option( 'ec_option_accountpage' ) || !get_option( 'ec_option_cartpage' ) || !get_option( 'ec_option_storepage' ) ) ){
-    ?>
-    <div class="updated">
-        <p>You Have not Setup Your WP EasyCart! Please <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-setup">Click Here to Setup</a>.</p>
-    </div>
-    <?php
-	}
-	
-	// Check if the admin manage notice should be removed
-	if( isset( $_GET['page'] ) && $_GET['page'] == "ec_adminv2" && isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "admin-console" && isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "admin" && isset( $_GET['ec_notice'] ) && $_GET['ec_notice'] == "dismiss" ){
-		update_option( 'ec_option_hide_admin_notice', '1' );
-	}
-	
-	// Check if admin is installed
-	if( !is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) ){
-	?>
-    <div class="updated">
-        <p>EasyCart is best run with the WP EasyCart Admin Console, <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin">click here to learn how it can be installed</a>.</p>
-    </div>
-    <?php
-	}else if( !get_option( 'ec_option_hide_admin_notice' ) ){
-	?>
-    <div class="updated">
-        <p>Want to add/edit products, manage orders, manage users, or manage store rates? <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin">click here to view the WP EasyCart Admin Console</a>. <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_notice=dismiss">To dismiss this notice, click here</a></p>
-    </div>
-    <?php	
-	}
-	
-	if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.12" ){
+	if( current_user_can( 'manage_options' ) ){
+		
+		if( isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "basic-setup" ){
+			update_option( 'ec_option_show_install_message', '1' );
+		}
+		
+		if( !get_option( 'ec_option_show_install_message' ) && ( !get_option( 'ec_option_accountpage' ) || !get_option( 'ec_option_cartpage' ) || !get_option( 'ec_option_storepage' ) ) ){
 		?>
-        <div class="error">
-        	<p>The latest WP EasyCart Store Admin version is 3.0.12, please update for best results!</p>
-   		</div>
-        <?php
+		<div class="updated">
+			<p>You Have not Setup Your WP EasyCart! Please <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-setup">Click Here to Setup</a>.</p>
+		</div>
+		<?php
+		}
+		
+		// Check if the admin manage notice should be removed
+		if( isset( $_GET['page'] ) && $_GET['page'] == "ec_adminv2" && isset( $_GET['ec_page'] ) && $_GET['ec_page'] == "admin-console" && isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "admin" && isset( $_GET['ec_notice'] ) && $_GET['ec_notice'] == "dismiss" ){
+			update_option( 'ec_option_hide_admin_notice', '1' );
+		}
+		
+		// Check if admin is installed
+		if( !is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) ){
+		?>
+		<div class="updated">
+			<p>EasyCart is best run with the WP EasyCart Admin Console, <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin">click here to learn how it can be installed</a>.</p>
+		</div>
+		<?php
+		}else if( !get_option( 'ec_option_hide_admin_notice' ) ){
+		?>
+		<div class="updated">
+			<p>Want to add/edit products, manage orders, manage users, or manage store rates? <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin">click here to view the WP EasyCart Admin Console</a>. <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_notice=dismiss">To dismiss this notice, click here</a></p>
+		</div>
+		<?php	
+		}
+		
+		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.12" ){
+			?>
+			<div class="error">
+				<p>The latest WP EasyCart Store Admin version is 3.0.12, please update for best results!</p>
+			</div>
+			<?php
+		}
+		
+		if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){ ?>
+		
+		<div class="error">
+			<p>Your server appears to be missing the wp-easycart-data folder, which could cause data loss on upgrade. Please <a href="http://www.wpeasycart.com/plugin-update-help" target="_blank">click here</a> to learn how to correct this issue.</p>
+		</div>
+			
+		<?php
+		}
+		
+		if( get_option( 'ec_option_display_as_catalog' ) ){ ?>
+		
+		<div class="updated">
+			<p>You currently have your store in catalog only mode. This means that your customers can only view the products, not add to cart or checkout. If you think this was turned on by mistake, you can turn it off by <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-setup">clicking here</a> and set Display Store as Catalog to Off.</p>
+		</div>
+		
+		<?php }
+		/*
+		global $wpdb;
+		$user = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ec_user WHERE ec_user.email = 'demouser@demo.com' AND ec_user.password = %s AND ec_user.user_level = 'admin'", md5( "demouser" ) ) );
+		if( count( $user ) > 0 ){ ?>
+		
+		<div class="error">
+			<p>We see you have not removed the demo user in your EasyCart, please create your own admin account and remove the demo user before going live. <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=users">Click Here</a> to jump to your account management.</p>
+		</div>
+		
+		<?php }*/
 	}
-	
-	if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){ ?>
-	
-    <div class="error">
-        <p>Your server appears to be missing the wp-easycart-data folder, which could cause data loss on upgrade. Please <a href="http://www.wpeasycart.com/plugin-update-help" target="_blank">click here</a> to learn how to correct this issue.</p>
-    </div>
-    	
-	<?php
-    }
-	
-	if( get_option( 'ec_option_display_as_catalog' ) ){ ?>
-	
-    <div class="updated">
-        <p>You currently have your store in catalog only mode. This means that your customers can only view the products, not add to cart or checkout. If you think this was turned on by mistake, you can turn it off by <a href="admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=advanced-setup">clicking here</a> and set Display Store as Catalog to Off.</p>
-    </div>
-    
-	<?php }
-	
-	global $wpdb;
-	$user = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM ec_user WHERE ec_user.email = 'demouser@demo.com' AND ec_user.password = %s AND ec_user.user_level = 'admin'", md5( "demouser" ) ) );
-	if( count( $user ) > 0 ){ ?>
-	
-    <div class="error">
-        <p>We see you have not removed the demo user in your EasyCart, please create your own admin account and remove the demo user before going live. <a href="admin.php?page=ec_adminv2&ec_page=admin-console&ec_panel=admin&ec_admin_panel=users">Click Here</a> to jump to your account management.</p>
-    </div>
-    
-	<?php }
 }
 
 function ec_load_admin_scripts( ){
 	
-	include( 'style.php' );
-	
-	wp_enqueue_media();
-	
-	wp_register_script( 'wpeasycart_admin_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/admin_ajax_functions.js' ), array( 'jquery' ) );
-	wp_enqueue_script( 'wpeasycart_admin_js' );
-	
-	wp_register_script( 'wpeasycart_simple_admin_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/js/admin.js' ), array( 'jquery' ) );
-	wp_enqueue_script( 'wpeasycart_simple_admin_js' );
-	
-	$https_link = "";
-	if( class_exists( "WordPressHTTPS" ) ){
-		$https_class = new WordPressHTTPS( );
-		$https_link = $https_class->getHttpsUrl() . '/wp-admin/admin-ajax.php';
-	}else{
-		$https_link = str_replace( "http://", "https://", admin_url( 'admin-ajax.php' ) );
+	if( current_user_can( 'manage_options' ) ){
+		
+		include( 'style.php' );
+		
+		wp_enqueue_media();
+		
+		wp_register_script( 'wpeasycart_admin_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/admin_ajax_functions.js' ), array( 'jquery' ) );
+		wp_enqueue_script( 'wpeasycart_admin_js' );
+		
+		wp_register_script( 'wpeasycart_simple_admin_js', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/js/admin.js' ), array( 'jquery' ) );
+		wp_enqueue_script( 'wpeasycart_simple_admin_js' );
+		
+		$https_link = "";
+		if( class_exists( "WordPressHTTPS" ) ){
+			$https_class = new WordPressHTTPS( );
+			$https_link = $https_class->getHttpsUrl() . '/wp-admin/admin-ajax.php';
+		}else{
+			$https_link = str_replace( "http://", "https://", admin_url( 'admin-ajax.php' ) );
+		}
+		
+		if( isset( $_SERVER['HTTPS'] ) )
+			wp_localize_script( 'wpeasycart_admin_js', 'ajax_object', array( 'ajax_url' => $https_link ) );
+		else
+			wp_localize_script( 'wpeasycart_admin_js', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+			
 	}
-	
-	if( isset( $_SERVER['HTTPS'] ) )
-		wp_localize_script( 'wpeasycart_admin_js', 'ajax_object', array( 'ajax_url' => $https_link ) );
-	else
-		wp_localize_script( 'wpeasycart_admin_js', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 }
 
 function ec_register_settings() {
 	
-	//register admin css
-	wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ), array(), EC_CURRENT_VERSION );
-	wp_enqueue_style( 'wpeasycart_admin_css' );
-	
-	//register admin css
-	wp_register_style( 'wpeasycart_adminv2_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/wpeasycart_adminv2.css' ), array(), EC_CURRENT_VERSION );
-	wp_enqueue_style( 'wpeasycart_adminv2_css' );
-	
-	//register admin css
-	wp_register_style( 'wpeasycart_editor_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/editor.css' ), array(), EC_CURRENT_VERSION );
-	wp_enqueue_style( 'wpeasycart_editor_css' );
+	if( current_user_can( 'manage_options' ) ){
 		
-	//register options
-	$wpoptions = new ec_wpoptionset();
-	$wpoptions->register_options();
+		//register admin css
+		wp_register_style( 'wpeasycart_admin_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/wpadmin_stylesheet.css' ), array(), EC_CURRENT_VERSION );
+		wp_enqueue_style( 'wpeasycart_admin_css' );
+		
+		//register admin css
+		wp_register_style( 'wpeasycart_adminv2_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/wpeasycart_adminv2.css' ), array(), EC_CURRENT_VERSION );
+		wp_enqueue_style( 'wpeasycart_adminv2_css' );
+		
+		//register admin css
+		wp_register_style( 'wpeasycart_editor_css', plugins_url( EC_PLUGIN_DIRECTORY . '/inc/admin/assets/css/editor.css' ), array(), EC_CURRENT_VERSION );
+		wp_enqueue_style( 'wpeasycart_editor_css' );
+			
+		//register options
+		$wpoptions = new ec_wpoptionset();
+		$wpoptions->register_options();
+	
+	}
 	
 }
 

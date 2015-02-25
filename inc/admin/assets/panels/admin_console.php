@@ -191,7 +191,7 @@ jQuery( document ).bind( 'keydown', function( e ){
       <td height="10" colspan="2"></td>
     </tr>
     <tr id="ec_ipad_content">
-      <td width="600" align="center"><a href="https://itunes.apple.com/us/app/wp-easycart/id616846878?mt=8" target="_blank"><img src="<?php echo plugins_url('../images/ipad_mockup1.png', __FILE__); ?>" alt="iPad Administration Console" width="550" height="432" /></a></td>
+      <td width="600" align="center"><a href="https://itunes.apple.com/us/app/wp-easycart/id616846878?mt=8" target="_blank"><img src="<?php echo plugins_url('../images/ipad_mockup1.jpg', __FILE__); ?>" alt="iPad Administration Console" width="250" height="196" /></a></td>
       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <p><strong>How to Install: </strong></p>
         <p><strong>1. </strong>Simply click the iPad to visit iTunes and download the app from the Apple iTunes store.</p>
@@ -212,7 +212,7 @@ jQuery( document ).bind( 'keydown', function( e ){
       <td colspan="2" height="10"></td>
     </tr>
     <tr id="ec_android_content">
-      <td width="600" align="center"><a href="https://play.google.com/store/search?q=wp+easycart&amp;c=apps&amp;feature=spelling" target="_blank"><img src="<?php echo plugins_url('../images/android_tablet_phone.png', __FILE__); ?>" width="550" height="450" /></a></td>
+      <td width="600" align="center"><a href="https://play.google.com/store/search?q=wp+easycart&amp;c=apps&amp;feature=spelling" target="_blank"><img src="<?php echo plugins_url('../images/android_tablet_phone.jpg', __FILE__); ?>" width="250" height="205" /></a></td>
       <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <p><strong>How to Install: </strong></p>
         <p><strong>1. </strong>Simply click the tablet to visit the Google Play network and download the app from the Play app store.</p>
