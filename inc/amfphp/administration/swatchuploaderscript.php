@@ -48,7 +48,7 @@ if( !empty( $users ) ){
 	$nameoffile = $explodedfilename['filename'];
 	$fileextension = $explodedfilename['extension'];
 
-	if($fileextension  == 'jpg' || $fileextension  == 'jpeg' || $fileextension  == 'gif' || $fileextension  == 'png' || $fileextension  == 'tiff') {
+	if(strtolower($fileextension)  == 'jpg' || strtolower($fileextension)  == 'jpeg' || strtolower($fileextension)  == 'gif' || strtolower($fileextension)  == 'png' || strtolower($fileextension)  == 'tiff') {
 		include( "resizer.php" );
 	
 		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension );

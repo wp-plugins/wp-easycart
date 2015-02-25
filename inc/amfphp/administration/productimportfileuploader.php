@@ -36,8 +36,8 @@ if( !empty( $users ) ){
 	$fileSizeMB = ($_FILES["Filedata"]["size"] / 1024 / 1000);
 	$explodedfilename = pathinfo($filename);
 	$nameoffile = $explodedfilename['filename'];
-	$fileextension = $explodedfilename['extension'];
-	if($fileextension  == 'xls' || $fileextension  == 'csv') {
+	$fileextension = strtolower($explodedfilename['extension']);
+	if(strtolower($fileextension)  == 'xls' || strtolower($fileextension)  == 'csv') {
 		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "productimportfile.".$fileextension );
 	}
 }else{

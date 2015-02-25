@@ -41,9 +41,9 @@ if( !empty( $users ) ){
 
 	$explodedfilename = pathinfo($filename);
 	$nameoffile = $explodedfilename['filename'];
-	$fileextension = $explodedfilename['extension'];
+	$fileextension = strtolower($explodedfilename['extension']);
 	
-	if($fileextension  != 'php' && $fileextension  != 'php3' && $fileextension  != 'php4' && $fileextension  != 'php5' && $fileextension  != 'phtml' && $fileextension  != 'pl' && $fileextension  != 'py' && $fileextension  != 'jsp' && $fileextension  != 'asp' && $fileextension  != 'htm' && $fileextension  != 'html' && $fileextension  != 'html5' && $fileextension  != 'sh' && $fileextension  != 'cgi') {
+	if(strtolower($fileextension)  != 'php' && strtolower($fileextension)  != 'php3' && strtolower($fileextension)  != 'php4' && strtolower($fileextension)  != 'php5' && strtolower($fileextension)  != 'phtml' && strtolower($fileextension)  != 'pl' && strtolower($fileextension)  != 'py' && strtolower($fileextension)  != 'jsp' && strtolower($fileextension)  != 'asp' && strtolower($fileextension)  != 'htm' && strtolower($fileextension)  != 'html' && strtolower($fileextension)  != 'html5' && strtolower($fileextension)  != 'sh' && strtolower($fileextension)  != 'cgi') {
 
 		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension );
 		copy( "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/downloads/".$nameoffile."_".$date.".".$fileextension );

@@ -40,7 +40,7 @@ if( !empty( $users ) ){
 
 	$explodedfilename = pathinfo($filename);
 	$nameoffile = $explodedfilename['filename'];
-	$fileextension = $explodedfilename['extension'];
+	$fileextension = strtolower($explodedfilename['extension']);
 
 	if($fileextension  == 'jpg' ||$fileextension  == 'jpeg' ||$fileextension  == 'gif' ||$fileextension  == 'png') {
 		// Place file on server, into the banners folder
