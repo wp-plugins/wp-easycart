@@ -14,6 +14,7 @@ class ec_cartitem{
 	public $use_advanced_optionset;									// BOOL
 	
 	public $quantity;												// INT
+	public $min_purchase_quantity;									// INT
 	public $grid_quantity;											// INT
 	public $weight;													// INT
 	public $total_weight;											// FLOAT
@@ -119,6 +120,7 @@ class ec_cartitem{
 		$this->manufacturer_id = $cartitem_data->manufacturer_id;
 		
 		$this->quantity = $cartitem_data->quantity;
+		$this->min_purchase_quantity = $cartitem_data->min_purchase_quantity;
 		$this->grid_quantity = $cartitem_data->grid_quantity;
 		if( $this->grid_quantity > 0 )
 			$this->quantity = $this->grid_quantity;

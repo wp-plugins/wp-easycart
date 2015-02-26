@@ -57,6 +57,12 @@ class ec_groupwidget extends WP_Widget{
 		if( substr_count( $store_page, '?' ) )						$permalink_divider = "&";
 		else														$permalink_divider = "?";
 		
+		$group_id = 0;
+		if( isset( $_GET['group_id'] ) )
+			$group_id = $_GET['group_id'];
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][4] ) )
+			$group_id = $GLOBALS['ec_store_shortcode_options'][4];
+		
 		$groups = $mysqli->get_groups( );
 		for( $i=0; $i<count( $groups ); $i++ ){
 			$groups[$i]->category_name = $GLOBALS['language']->convert_text( $groups[$i]->category_name );

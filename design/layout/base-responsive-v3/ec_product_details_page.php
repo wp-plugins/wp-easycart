@@ -439,7 +439,7 @@ function ec_admin_save_product_details_options( ){
             <?php } ?>
             <?php /* END INQUIRY OPTIONS */ ?>
             
-			<?php if( count( $this->product->pricetiers[0] ) > 1 ){ ?>
+			<?php if( isset( $this->product->pricetiers[0] ) && count( $this->product->pricetiers[0] ) > 1 ){ ?>
             <ul class="ec_details_tiers">
             	<?php 
 				foreach( $this->product->pricetiers as $pricetier ){
@@ -493,7 +493,7 @@ function ec_admin_save_product_details_options( ){
 				
 				/* START COMBO BOX AREA */
 				}else if( count( $optionsets[$i]->optionset ) > 0 && $optionsets[$i]->optionset[0]->optionitem_name != "" ){ ?>
-                <div class="ec_details_option_row_error ec_option<?php echo ( $i+1 ); ?>" id="ec_details_option_row_error_<?php echo $optionset->option_id; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_missing_option' ); ?> <?php echo $optionsets[$i]->option_label; ?></div>
+                <div class="ec_details_option_row_error ec_option<?php echo ( $i+1 ); ?>" id="ec_details_option_row_error_<?php echo $optionsets[$i]->option_id; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_missing_option' ); ?> <?php echo $optionsets[$i]->option_label; ?></div>
                 
                 <div class="ec_details_option_row">
 					<select name="ec_option<?php echo ($i+1); ?>" id="ec_option<?php echo ($i+1); ?>" class="ec_details_combo ec_option<?php echo ($i+1); ?><?php if( $this->product->use_optionitem_quantity_tracking && $i > 0 ){ ?> ec_inactive<?php }?>"<?php if( $this->product->use_optionitem_quantity_tracking && $i > 0 ){ ?> disabled="disabled"<?php }?>>
@@ -1143,7 +1143,7 @@ function ec_volume_price_update( ){
 	
 	var quantity = Number( jQuery( '#ec_quantity' ).val( ) );
 	
-	<?php if( count( $this->product->pricetiers[0] ) > 1 ){
+	<?php if( isset( $this->product->pricetiers[0] ) && count( $this->product->pricetiers[0] ) > 1 ){
 		foreach( $this->product->pricetiers as $pricetier ){
 			$tier_price = $GLOBALS['currency']->get_number_only( $pricetier[0] );
 			$tier_quantity = $pricetier[1];

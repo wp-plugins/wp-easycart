@@ -64,7 +64,7 @@ class ec_prodimages{
 	}
 	
 	public function get_single_image( ){
-		if( $this->use_optionitem_images ){
+		if( $this->use_optionitem_images && isset( $this->imageset[0] ) ){
 			return $this->imageset[0]->image1;	
 		}else{
 			return $this->image1;

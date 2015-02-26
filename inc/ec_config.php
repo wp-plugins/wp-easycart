@@ -125,9 +125,14 @@ if( get_option( 'ec_option_payment_third_party' ) == 'dwolla_thirdparty' ){
 
 // INCLUDE SHIPPER CLASSES
 $use_auspost = false; $use_dhl = false; $use_fedex = false; $use_ups = false; $use_usps = false; $use_canadapost = false;
-global $wpdb;
-$rates = $wpdb->get_results( "SELECT shippingrate_id, is_ups_based, is_usps_based, is_fedex_based, is_auspost_based, is_dhl_based, is_canadapost_based FROM ec_shippingrate" );
-$shipping_method = $wpdb->get_var( "SELECT shipping_method FROM ec_setting WHERE setting_id = 1" );
+if( get_option( 'ec_option_is_installed' ) ){
+	global $wpdb;
+	$rates = $wpdb->get_results( "SELECT shippingrate_id, is_ups_based, is_usps_based, is_fedex_based, is_auspost_based, is_dhl_based, is_canadapost_based FROM ec_shippingrate" );
+	$shipping_method = $wpdb->get_var( "SELECT shipping_method FROM ec_setting WHERE setting_id = 1" );
+}else{
+	$rates = array( );
+	$shipping_method = "";
+}
 
 foreach( $rates as $rate ){
 	if( $rate->is_auspost_based )

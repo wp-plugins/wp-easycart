@@ -263,6 +263,8 @@
             <a href="<?php echo $this->cart_page . $this->permalink_divider; ?>ec_page=checkout_info"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_edit_billing_link' ); ?></a>
         </div>
         
+        <?php if( get_option( 'ec_option_use_shipping' ) && $this->cart->shipping_subtotal > 0 ){ ?>
+        
         <div class="ec_cart_header ec_top">
             <?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_title' ); ?>
         </div>
@@ -314,6 +316,8 @@
         <div class="ec_cart_input_row">
             <a href="<?php echo $this->cart_page . $this->permalink_divider; ?>ec_page=checkout_shipping"><?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_edit_shipping_method_link' ); ?></a>
         </div>
+        
+        <?php }?>
     </div>
     
     <div class="ec_cart_header">

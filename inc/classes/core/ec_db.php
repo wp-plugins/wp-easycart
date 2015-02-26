@@ -549,8 +549,8 @@ class ec_db{
 			}
 			
 			// Get the review average
-			if( count( $review_data_array ) > 0 ){
-				$review_average = array_sum( $review_data_array ) / count( $review_data_array );
+			if( count( $review_data ) > 0 ){
+				$review_average = array_sum( $review_data ) / count( $review_data );
 			}else{
 				$review_average = 0;
 			}
@@ -808,7 +808,7 @@ class ec_db{
 		if( $manufacturer_id )
 			$sql = $this->mysqli->prepare( "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product WHERE ec_product.activate_in_store = 1 AND ec_product.show_on_startup = 1 AND ec_product.manufacturer_id = %d AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id) as product_count FROM ec_manufacturer ORDER BY name ASC", $manufacturer_id );
 		else if( $category_id )
-			$sql = $this->mysqli->prepare( "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product, ec_categoryitem WHERE ec_product.activate_in_store = 1 AND ec_product.show_on_startup = 1 AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id AND ec_product.product_id = ec_categoryitem.product_id AND ec_categoryitem.category_id = %d) as product_count FROM ec_manufacturer ORDER BY name ASC", $category_id );
+			$sql = $this->mysqli->prepare( "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product, ec_categoryitem WHERE ec_product.activate_in_store = 1 AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id AND ec_product.product_id = ec_categoryitem.product_id AND ec_categoryitem.category_id = %d) as product_count FROM ec_manufacturer ORDER BY name ASC", $category_id );
 		else if( $level == 0 )
 			$sql = "SELECT manufacturer_id, name, (SELECT COUNT( ec_product.product_id )FROM ec_product WHERE ec_product.activate_in_store = 1 AND ec_product.show_on_startup = 1 AND ec_product.manufacturer_id = ec_manufacturer.manufacturer_id) as product_count FROM ec_manufacturer ORDER BY name ASC";
 		else
@@ -875,6 +875,10 @@ class ec_db{
 			$cat_sql = "";
 		}
 		
+		$show_on_startup = "";
+		if( $menuid == 0 && $category_id == 0 )
+			$show_on_startup = "ec_product.show_on_startup = 1 AND ";
+		
 		if( $level == 0 )
 			$sql = "SELECT 
 					ec_pricepoint.pricepoint_id, 
@@ -887,7 +891,7 @@ class ec_db{
 						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
-						ec_product.show_on_startup = 1 AND 
+						".$show_on_startup."
 						ec_product.price < ec_pricepoint.high_point
 						" . $man_sql . "
 						" . $cat_sql . "
@@ -897,7 +901,7 @@ class ec_db{
 						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
-						ec_product.show_on_startup = 1 AND 
+						".$show_on_startup."
 						ec_product.price > ec_pricepoint.low_point
 						" . $man_sql . "
 						" . $cat_sql . "
@@ -907,7 +911,7 @@ class ec_db{
 						FROM ec_product" . $cat_from_sql . "
 						WHERE 
 						ec_product.activate_in_store = 1 AND 
-						ec_product.show_on_startup = 1 AND 
+						".$show_on_startup."
 						ec_product.price <= ec_pricepoint.high_point AND 
 						ec_product.price >= ec_pricepoint.low_point
 						" . $man_sql . "
@@ -1024,6 +1028,7 @@ class ec_db{
 				product.is_amazon_download,
 				product.amazon_key,
 				product.include_code,
+				product.min_purchase_quantity,
 				
 				tempcart.tempcart_id as cartitem_id,
 				tempcart.quantity,

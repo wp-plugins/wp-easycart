@@ -117,6 +117,8 @@ class ec_manufacturerwidget extends WP_Widget{
 			
 			if( isset( $group ) )
 				$group_id = $group->category_id;
+			else if( isset( $_GET['group_id'] ) )
+				$group_id = $_GET['group_id'];
 			else
 				$group_id = 0;
 		}else{

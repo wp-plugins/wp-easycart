@@ -77,7 +77,7 @@ if( $admin_access || $use_quickview ){ ?>
                     <div class="ec_product_quickview_content_divider"></div>
                     <div class="ec_product_quickview_content_price"><?php if( $product->list_price > 0 ){ ?><span class="ec_list_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->list_price ); ?></span><?php }?><span class="ec_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->price ); ?></div>
                     <div class="ec_product_quickview_content_description"><?php echo $product->short_description; ?></div>
-                    <?php if( count( $product->pricetiers[0] ) > 1 ){ ?>
+                    <?php if( isset( $product->pricetiers[0] ) && count( $product->pricetiers[0] ) > 1 ){ ?>
                     
                     <ul class="ec_product_quickview_price_tier">
 						<?php 

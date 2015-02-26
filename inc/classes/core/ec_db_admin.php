@@ -45,7 +45,7 @@ class ec_db_admin extends ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $option_value ) );
 	}
 	
-	public function get_user( $user_id ){
+	public function get_user( $user_id, $password = "" ){
 		$sql = "SELECT ec_user.user_id, ec_user.password, ec_user.list_id, ec_user.edit_sequence, ec_user.email, ec_user.first_name, ec_user.last_name, ec_user.user_level, billing.first_name AS billing_first_name, billing.last_name AS billing_last_name, billing.address_line_1 AS billing_address_line_1, billing.city AS billing_city, billing.state AS billing_state, billing.zip AS billing_zip, billing.country AS billing_country, billing.phone AS billing_phone, shipping.first_name AS shipping_first_name, shipping.last_name AS shipping_last_name, shipping.address_line_1 AS shipping_address_line_1, shipping.city AS shipping_city, shipping.state AS shipping_state, shipping.zip AS shipping_zip, shipping.country AS shipping_country, shipping.phone AS shipping_phone FROM ec_user LEFT JOIN ec_address as billing ON (ec_user.default_billing_address_id = billing.address_id) LEFT JOIN ec_address as shipping ON (ec_user.default_shipping_address_id = shipping.address_id) WHERE ec_user.user_id = %d";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $user_id ) );
 	}
@@ -60,7 +60,7 @@ class ec_db_admin extends ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $list_id, $edit_sequence, $model_number ) );
 	}
 	
-	public function get_product( $model_number ){
+	public function get_product( $model_number, $product_id = 0 ){
 		$sql = "SELECT ec_product.list_id, ec_product.edit_sequence, ec_product.title, ec_product.price, ec_product.model_number, ec_product.stock_quantity FROM ec_product WHERE ec_product.model_number = %s";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $model_number ) );
 	}

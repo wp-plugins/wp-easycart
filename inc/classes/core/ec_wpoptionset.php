@@ -711,7 +711,9 @@ class ec_wpoptionset{
 	
 	public function register_options(){
 		for($i=0; $i<count($this->wp_options); $i++){
-			register_setting( $this->wp_option_groups[$i], $this->wp_options[$i]->wp_option_name);
+			if( isset( $this->wp_option_groups[$i] ) ){
+				register_setting( $this->wp_option_groups[$i], $this->wp_options[$i]->wp_option_name);
+			}
 		}
 	}
 	

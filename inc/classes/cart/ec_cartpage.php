@@ -2163,15 +2163,15 @@ class ec_cartpage{
 				
 				$option_vals = $this->get_advanced_option_vals( $product_id, $tempcart_id );
 				$grid_quantity = $this->get_grid_quantity( $product_id, $tempcart_id );
+			
+				for( $i=0; $i<count( $option_vals ); $i++ ){
+					$this->mysqli->add_option_to_cart( $tempcart_id, $cart_id, $option_vals[$i] );
+				}
 				
-			}
-			
-			for( $i=0; $i<count( $option_vals ); $i++ ){
-				$this->mysqli->add_option_to_cart( $tempcart_id, $cart_id, $option_vals[$i] );
-			}
-			
-			if( $grid_quantity > 0 ){
-				$this->mysqli->update_tempcart_grid_quantity( $tempcart_id, $grid_quantity );
+				if( $grid_quantity > 0 ){
+					$this->mysqli->update_tempcart_grid_quantity( $tempcart_id, $grid_quantity );
+				}
+				
 			}
 			
 			if( get_option( 'ec_option_addtocart_return_to_product' ) ){

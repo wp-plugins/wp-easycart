@@ -156,7 +156,7 @@ function ec_is_demo_data_writable( ){
 	
 	// Test writing
 	$ec_dir_location = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products-test-dir/";
-	$ec_file_start_location = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/images/apple.png";
+	$ec_file_start_location = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/images/apple.png";
 	$ec_file_dest_location = $ec_dir_location . "/test-product-image.png";
 	mkdir( $ec_dir_location );
 	if( is_dir( $ec_dir_location ) )

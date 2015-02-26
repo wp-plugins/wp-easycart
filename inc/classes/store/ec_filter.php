@@ -35,7 +35,6 @@ class ec_filter{
 		$this->menulevel1 = new ec_menuitem( $this->get_menu1_id( ), 1 );
 		$this->menulevel2 = new ec_menuitem( $this->get_menu2_id( ), 2 );
 		$this->menulevel3 = new ec_menuitem( $this->get_menu3_id( ), 3 );
-		$this->show_on_startup = $this->get_show_on_startup( );
 		$this->product_only = $this->get_product_only( );
 		
 		$this->search = $this->get_search( );
@@ -44,6 +43,8 @@ class ec_filter{
 		$this->group_id = $this->get_group_id();
 		$this->pricepoint_id = $this->get_pricepoint_id();
 		$this->model_number = $this->get_model_number();
+		
+		$this->show_on_startup = $this->get_show_on_startup( );
 		
 		$store_page_id = get_option('ec_option_storepage');
 		
@@ -108,7 +109,9 @@ class ec_filter{
 	}
 	
 	public function get_show_on_startup( ){
-		if( isset( $_GET['featured'] ) )						return true;
+		if( $this->get_menu_level( ) == 0 && $this->model_number == "" && $this->search == "" && $this->group_id == 0 )						
+																return true;
+		else if( isset( $_GET['featured'] ) )					return true;
 		else													return false;	
 	}
 	
@@ -133,19 +136,9 @@ class ec_filter{
 	}
 	
 	public function get_group_id(){
-		global $wp_query;
-		$post_obj = $wp_query->get_queried_object();
-		if( isset( $post_obj ) && isset( $post_obj->ID ) ){
-			$post_id = $post_obj->ID;
-			$group = $this->mysqli->get_category_id_from_post_id( $post_id );
-		
-			if( isset( $_GET['group_id'] ) )						return $this->mysqli->get_category_id( $_GET['group_id'] );
-			else if( isset( $group ) )								return $group->category_id;
-			else													return 0;
-		}else{
-			if( isset( $_GET['group_id'] ) )						return $this->mysqli->get_category_id( $_GET['group_id'] );
-			else													return 0;
-		}
+		if( isset( $_GET['group_id'] ) )						return $this->mysqli->get_category_id( $_GET['group_id'] );
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][4] ) && $GLOBALS['ec_store_shortcode_options'][4] != 0 )														return $this->mysqli->get_category_id( $GLOBALS['ec_store_shortcode_options'][4] );
+		else													return 0;
 	}
 	
 	private function get_model_number(){
@@ -326,6 +319,12 @@ class ec_filter{
 		if( $leave_out != 5 ){
 	
 			if($this->current_filter != 0)							$ret_string .= "&amp;filternum=" . $this->current_filter;
+			
+		}
+		
+		if( $leave_out != 6 ){
+	
+			if($this->group_id != 0)								$ret_string .= "&amp;group_id=" . $this->group_id;
 			
 		}
 		

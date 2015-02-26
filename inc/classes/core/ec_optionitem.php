@@ -6,6 +6,8 @@ class ec_optionitem{
 	public $optionitem_id;								// INT
 	public $optionitem_name;							// VARCHAR 33
 	public $optionitem_price;							// FLOAT 7,2
+	public $optionitem_price_multiplier;				// FLOAT 7,2
+	public $optionitem_price_onetime;					// FLOAT 7,2
 	public $optionitem_icon;							// VARCHAR 512
 	
 	function __construct( $option_id, $optionitem_data ){
@@ -13,6 +15,8 @@ class ec_optionitem{
 		$this->optionitem_id = $optionitem_data->optionitem_id;
 		$this->optionitem_name = $GLOBALS['language']->convert_text( $optionitem_data->optionitem_name );
 		$this->optionitem_price = $optionitem_data->optionitem_price;
+		$this->optionitem_price_onetime  = $optionitem_data->optionitem_price_onetime ;
+		$this->optionitem_price_multiplier = $optionitem_data->optionitem_price_multiplier;
 		$this->optionitem_icon = $optionitem_data->optionitem_icon;
 	}
 	

@@ -115,8 +115,8 @@ class ec_pricepointwidget extends WP_Widget{
 			else
 				$man_id = 0;
 				
-			if( isset( $_GET['groupid'] ) )
-				$group_id = $_GET['groupid'];
+			if( isset( $_GET['group_id'] ) )
+				$group_id = $_GET['group_id'];
 			else if( isset( $group ) )
 				$group_id = $group->category_id;
 			else

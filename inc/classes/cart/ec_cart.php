@@ -257,7 +257,7 @@ class ec_cart{
 		$this->height = round( $package_dimensions[1], 0 );
 		$this->length = round( $package_dimensions[2], 0 );
 		
-		return $parcel;
+		return $package_dimensions;
 	}
 
 }
