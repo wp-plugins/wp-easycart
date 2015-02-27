@@ -45,8 +45,7 @@ if( !empty( $users ) ){
 	
 	if(strtolower($fileextension)  != 'php' && strtolower($fileextension)  != 'php3' && strtolower($fileextension)  != 'php4' && strtolower($fileextension)  != 'php5' && strtolower($fileextension)  != 'phtml' && strtolower($fileextension)  != 'pl' && strtolower($fileextension)  != 'py' && strtolower($fileextension)  != 'jsp' && strtolower($fileextension)  != 'asp' && strtolower($fileextension)  != 'htm' && strtolower($fileextension)  != 'html' && strtolower($fileextension)  != 'html5' && strtolower($fileextension)  != 'sh' && strtolower($fileextension)  != 'cgi') {
 
-		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension );
-		copy( "../../../products/downloads/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/downloads/".$nameoffile."_".$date.".".$fileextension );
+		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../../wp-easycart-data/products/downloads/".$nameoffile."_".$date.".".$fileextension );
 	
 
 		if( $insertupdate == 'update' ){

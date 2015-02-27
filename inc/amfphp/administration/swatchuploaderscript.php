@@ -49,16 +49,12 @@ if( !empty( $users ) ){
 	$fileextension = $explodedfilename['extension'];
 
 	if(strtolower($fileextension)  == 'jpg' || strtolower($fileextension)  == 'jpeg' || strtolower($fileextension)  == 'gif' || strtolower($fileextension)  == 'png' || strtolower($fileextension)  == 'tiff') {
-		include( "resizer.php" );
+		//include( "resizer.php" );
 	
-		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension );
-		copy( "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension );
-	
-		$resizeObj = new resizer( "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension );
-		$resizeObj->resize( $maxwidth, $maxheight, "../../../products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
+		move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension );
 		
-		$resizeObj = new resizer( "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension );
-		$resizeObj->resize( $maxwidth, $maxheight, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
+		//$resizeObj = new resizer( "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension );
+		//$resizeObj->resize( $maxwidth, $maxheight, "../../../../wp-easycart-data/products/swatches/".$nameoffile."_".$date.".".$fileextension, $imagequality );
 	
 		$sqlfilename = $nameoffile . '_' . $date . '.' .$fileextension;	
 		$sql = "UPDATE ec_optionitem SET ec_optionitem.optionitem_icon = %s WHERE ec_optionitem.optionitem_id = %s";

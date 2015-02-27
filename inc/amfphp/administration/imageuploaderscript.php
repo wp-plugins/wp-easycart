@@ -58,13 +58,12 @@ if( !empty( $users ) ){
 	$fileextension = $explodedfilename['extension'];
 
 	if(strtolower($fileextension)  == 'jpg' || strtolower($fileextension)  == 'jpeg' || strtolower($fileextension)  == 'gif' || strtolower($fileextension)  == 'png' || strtolower($fileextension)  == 'tiff') {
-		include( "resizer.php" );
+		//include( "resizer.php" );
 	
 		if( $imagenumber == '1' ){
 	
-			move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/pics1/".$nameoffile."_".$date.".".$fileextension );
-			copy( "../../../products/pics1/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics1/".$nameoffile."_".$date.".".$fileextension );
-	
+			$move_results = move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../../wp-easycart-data/products/pics1/".$nameoffile."_".$date.".".$fileextension );
+			
 			if( $useoptionitemimages ){
 				$sql = "UPDATE ec_optionitemimage SET ec_optionitemimage.image1 = '".$nameoffile."_".$date.".".$fileextension."' WHERE ec_optionitemimage.product_id = '".$productid."' AND ec_optionitemimage.optionitem_id = '".$optionitemid."'";
 				$wpdb->query( $sql );
@@ -84,8 +83,7 @@ if( !empty( $users ) ){
 	
 		if( $imagenumber == '2' ){
 	
-			move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/pics2/".$nameoffile."_".$date.".".$fileextension );
-			copy( "../../../products/pics2/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics2/".$nameoffile."_".$date.".".$fileextension  );
+			$move_results = move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../../wp-easycart-data/products/pics2/".$nameoffile."_".$date.".".$fileextension  );
 			
 			if( $useoptionitemimages ){
 		
@@ -107,8 +105,7 @@ if( !empty( $users ) ){
 	
 		if( $imagenumber == '3' ){
 	
-			move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/pics3/".$nameoffile."_".$date.".".$fileextension );
-			copy( "../../../products/pics3/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics3/".$nameoffile."_".$date.".".$fileextension  );
+			$move_results = move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../../wp-easycart-data/products/pics3/".$nameoffile."_".$date.".".$fileextension  );
 			
 			if( $useoptionitemimages ){
 		
@@ -130,8 +127,7 @@ if( !empty( $users ) ){
 	
 		if( $imagenumber == '4' ){
 	
-			move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/pics4/".$nameoffile."_".$date.".".$fileextension );
-			copy( "../../../products/pics4/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics4/".$nameoffile."_".$date.".".$fileextension  );
+			$move_results = move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../../wp-easycart-data/products/pics4/".$nameoffile."_".$date.".".$fileextension  );
 			
 			if( $useoptionitemimages ){
 		
@@ -153,8 +149,7 @@ if( !empty( $users ) ){
 	
 		if( $imagenumber == '5' ){
 	
-			move_uploaded_file( $_FILES['Filedata']['tmp_name'], "../../../products/pics5/".$nameoffile."_".$date.".".$fileextension );
-			copy( "../../../products/pics5/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/pics5/".$nameoffile."_".$date.".".$fileextension  );		
+			$move_results = move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../../wp-easycart-data/products/pics5/".$nameoffile."_".$date.".".$fileextension  );	
 	
 			if( $useoptionitemimages ){
 		
@@ -168,7 +163,7 @@ if( !empty( $users ) ){
 					$sql = "UPDATE ec_product SET ec_product.image5 = '".$nameoffile."_".$date.".".$fileextension."' WHERE ec_product.product_id = ".$productid;
 					$wpdb->query( $sql );
 	
-				}
+				} 
 	
 			}
 	

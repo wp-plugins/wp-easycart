@@ -40,12 +40,11 @@ if( !empty( $users ) ){
 
 	$explodedfilename = pathinfo($filename);
 	$nameoffile = $explodedfilename['filename'];
-	$fileextension = strtolower($explodedfilename['extension']);
+	$fileextension = $explodedfilename['extension'];
 
-	if($fileextension  == 'jpg' ||$fileextension  == 'jpeg' ||$fileextension  == 'gif' ||$fileextension  == 'png') {
+	if(strtolower($fileextension)  == 'jpg' || strtolower($fileextension)  == 'jpeg' || strtolower($fileextension)  == 'gif' || strtolower($fileextension)  == 'png') {
 		// Place file on server, into the banners folder
-		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../products/banners/".$nameoffile."_".$date.".".$fileextension);
-		copy( "../../../products/banners/".$nameoffile."_".$date.".".$fileextension, "../../../../wp-easycart-data/products/banners/".$nameoffile."_".$date.".".$fileextension );
+		move_uploaded_file($_FILES['Filedata']['tmp_name'], "../../../../wp-easycart-data/products/banners/".$nameoffile."_".$date.".".$fileextension );
 	} else {
 		return 'not allowed';
 	}
