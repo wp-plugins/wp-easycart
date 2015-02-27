@@ -16,7 +16,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
 
-$minimumversion = "5.1.0";
+$minimumversion = "5.3.0";
 
 $minimummysqlversion = "3.23.58";
 
@@ -120,7 +120,7 @@ a:active {
           <td width="16%">&nbsp;</td>
         </tr>
         <tr>
-          <td height="41" class="tableheadingbg"><span class="style1">Server Compatability Check </span><span class="style2">- v1.0.1</span></td>
+          <td height="41" class="tableheadingbg"><span class="style1">Server Compatability Check </span><span class="style2">- v3.0</span></td>
           <td height="41" class="style2">&nbsp;</td>
         </tr>
         <tr>
