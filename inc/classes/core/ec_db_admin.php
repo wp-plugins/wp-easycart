@@ -121,6 +121,11 @@ class ec_db_admin extends ec_db{
 		return $this->mysqli->get_results( $sql );
 	}
 	
+	public function get_top_ten_customers( ){
+		$sql = "SELECT SUM( ec_order.grand_total ) as total, ec_order.billing_first_name, ec_order.billing_last_name FROM ec_order GROUP BY ec_order.user_email ORDER BY total DESC LIMIT 10";
+		return $this->mysqli->get_results( $sql );
+	}
+	
 	public function get_order_row_admin( $order_id ){
 		
 		$sql = "SELECT 

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 3.0.21
+Stable tag: 3.0.22
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,11 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.22 =
+* We apologize for the high number of updates as of late and hope this will be the last for a while. Please be sure to upgrade to this version for both security purposes and important bug fixes.
+* Fix - Statistics in the admin for weeks was not working for first 10 weeks of the year.
+* Fix - Statistics section, changed last 10 orders to top 10 customers.
+* Fix - Error introduced in version 3.0.21 with custom post type linking and pulling menu items and manufacturer page products when not featured products has been resolved.
 = 3.0.21 =
 * Fix - Admin uploader scripts were restricting file uploads with lower case required, this has been adjusted.
 * Fix - Manufacturer widget was not filtering correctly for main store page.

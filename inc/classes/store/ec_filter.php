@@ -69,7 +69,8 @@ class ec_filter{
 	}
 	
 	private function get_menu1_id(){
-		if( $this->get_menu_level() == 1 )						return $this->mysqli->get_menulevel1_id( $_GET['menuid'] );
+		
+		if( $this->get_menu_level() == 1 )						return $this->mysqli->get_menulevel1_id( $this->get_displayed_menu_id( ) );
 		
 		else if( $this->get_menu_level() == 2 )					return $this->mysqli->get_menulevel1_id_from_menulevel2( $this->get_displayed_menu_id( ) );
 			
@@ -81,7 +82,7 @@ class ec_filter{
 	}
 	
 	private function get_menu2_id(){
-		if( $this->get_menu_level() == 2)						return $this->mysqli->get_menulevel2_id( $_GET['submenuid'] );
+		if( $this->get_menu_level() == 2)						return $this->mysqli->get_menulevel2_id( $this->get_displayed_menu_id( ) );
 			
 		else if( $this->get_menu_level() == 3)					return $this->mysqli->get_menulevel2_id_from_menulevel3( $this->get_displayed_menu_id() );
 		
@@ -89,14 +90,20 @@ class ec_filter{
 	}
 	
 	private function get_menu3_id(){
-		if( $this->get_menu_level() == 3)						return $this->mysqli->get_menulevel3_id( $_GET['subsubmenuid'] );
+		if( $this->get_menu_level() == 3)						return $this->mysqli->get_menulevel3_id( $this->get_displayed_menu_id( ) );
 																return 0;
 	}
 	
 	private function get_displayed_menu_id(){
 		if(isset($_GET['menuid']))								return $this->mysqli->get_menulevel1_id( $_GET['menuid'] );
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][0] ) && $GLOBALS['ec_store_shortcode_options'][0] != 0 )								
+																return $this->mysqli->get_menulevel1_id( $GLOBALS['ec_store_shortcode_options'][0] );
 		else if(isset($_GET['submenuid']))						return $this->mysqli->get_menulevel2_id( $_GET['submenuid'] );
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][1] ) && $GLOBALS['ec_store_shortcode_options'][1] != 0 )								
+																return $this->mysqli->get_menulevel2_id( $GLOBALS['ec_store_shortcode_options'][1] );
 		else if(isset($_GET['subsubmenuid']))					return $this->mysqli->get_menulevel3_id( $_GET['subsubmenuid'] );
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][2] ) && $GLOBALS['ec_store_shortcode_options'][2] != 0 )								
+																return $this->mysqli->get_menulevel3_id( $GLOBALS['ec_store_shortcode_options'][2] );
 		else													return 0;
 	}
 	
@@ -105,11 +112,17 @@ class ec_filter{
 		else if(isset($_GET['menuid']))							return 1;
 		else if(isset($_GET['submenuid']))						return 2;
 		else if(isset($_GET['subsubmenuid']))					return 3;
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][0] ) && $GLOBALS['ec_store_shortcode_options'][0] != 0 )								
+																return 1;
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][1] ) && $GLOBALS['ec_store_shortcode_options'][1] != 0 )								
+																return 2;
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][2] ) && $GLOBALS['ec_store_shortcode_options'][2] != 0 )								
+																return 3;
 		else													return 0;
 	}
 	
 	public function get_show_on_startup( ){
-		if( $this->get_menu_level( ) == 0 && $this->model_number == "" && $this->search == "" && $this->group_id == 0 )						
+		if( $this->get_menu_level( ) == 0 && $this->manufacturer->manufacturer_id == 0 && $this->model_number == "" && $this->search == "" && $this->group_id == 0 )						
 																return true;
 		else if( isset( $_GET['featured'] ) )					return true;
 		else													return false;	
@@ -127,6 +140,8 @@ class ec_filter{
 	
 	public function get_manufacturer_id(){
 		if( isset( $_GET['manufacturer'] ) )					return $this->mysqli->get_manufacturer_id( $_GET['manufacturer'] );
+		else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && isset( $GLOBALS['ec_store_shortcode_options'][3] ) && $GLOBALS['ec_store_shortcode_options'][3] != 0 )								
+																return $GLOBALS['ec_store_shortcode_options'][3];
 		else													return 0;	
 	}
 	
@@ -395,7 +410,7 @@ class ec_filter{
 	private function has_filters( ){
 		
 		if(	$this->get_menu_level() != 0 || 
-			( isset( $this->manufacturer ) && $this->manufacturer->manufacturer_id && $this->manufacturer->manufacturer_id != 0 ) || 
+			( isset( $this->manufacturer ) && $this->manufacturer->manufacturer_id != 0 && $this->manufacturer->manufacturer_id != 0 ) || 
 			$this->group_id != 0 ||
 			$this->pricepoint_id != 0 || 
 			$this->model_number != "" || 

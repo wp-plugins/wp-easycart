@@ -1337,7 +1337,10 @@ function ec_update_advanced_setup( ){
 	for( $i=0; $i<count($sizes_split); $i++ ){
 		$temp_split = explode( "=", $sizes_split[$i] );
 		$key = $temp_split[0];
-		$val = $_POST[$key];
+		if( isset( $_POST[$key] ) )
+			$val = $_POST[$key];
+		else
+			$val = "";
 		if( $i>0 )
 			$responsive_sizes .= ":::";
 		$responsive_sizes .= $key . "=" . $val;
@@ -1354,7 +1357,10 @@ function ec_update_advanced_setup( ){
 	for( $i=0; $i<count($css_split); $i++ ){
 		$temp_split = explode( "=", $css_split[$i] );
 		$key = $temp_split[0];
-		$val = $_POST[$key];
+		if( isset( $_POST[$key] ) )
+			$val = $_POST[$key];
+		else
+			$val = "";
 		if( $i>0 )
 			$css_options .= ",";
 		$css_options .= $key . "=" . $val;
@@ -1370,7 +1376,10 @@ function ec_update_advanced_setup( ){
 	for( $i=0; $i<count($font_split); $i++ ){
 		$temp_split = explode( "=", $font_split[$i] );
 		$key = $temp_split[0];
-		$val = $_POST[$key];
+		if( isset( $_POST[$key] ) )
+			$val = $_POST[$key];
+		else
+			$val = "";
 		if( $i>0 )
 			$font_options .= ":::";
 		$font_options .= $key . "=" . $val;

@@ -76,6 +76,9 @@ $top_products = $db->get_top_ten_products( );
 // get the last 10 orders
 $last_orders = $db->get_last_ten_orders( );
 
+// get top 10 customers
+$top_customers = $db->get_top_ten_customers( );
+
 $highest_point = $high_point + $split;
 ?>
 
@@ -143,10 +146,13 @@ $highest_point = $high_point + $split;
 				if( count( $orders ) > 0 && $orders[count( $orders ) - 1]->the_day != $current_day_number )
 					$last_total = 0;
 			}else if( isset( $_GET['ec_stat'] ) && $_GET['ec_stat'] == "weeks" ){
-				$last_used_order_index = 0;
+				if( count( $orders ) > 12 )
+					$last_used_order_index = 1;
+				else
+					$last_used_order_index = 0;
+					
 				for( $i=12; $i > 0 && $last_used_order_index < count( $orders ); $i-- ){
-					$current_week_number = date( 'W', strtotime( '-' . $i . ' weeks' ) ); 
-					if( $orders[$last_used_order_index]->the_week == $current_week_number ){
+					if( count( $orders ) > 11 || ( count( $orders ) >= $i ) ){
 						$total = $orders[$last_used_order_index]->total;
 						$last_used_order_index++;
 					}else{
@@ -270,9 +276,9 @@ $highest_point = $high_point + $split;
             <?php }?>
         </div>
         <div class="ec_statistics_quad3">
-            <div class="ec_statistics_title_bar"><div class="ec_statistics_holder_square">Last 10 Orders</div></div>
-            <?php for( $i=0; $i<count( $last_orders ); $i++ ){ ?>
-            <div class="ec_statistics_lineitem<?php echo $i%2; ?>"><div class="ec_statistics_holder_square"><span class="ec_statistics_lineitem_label"><?php echo $last_orders[$i]->billing_first_name . " " . $last_orders[$i]->billing_last_name; ?></span><span class="ec_statistics_lineitem_value"><?php echo $GLOBALS['currency']->get_currency_display( $last_orders[$i]->grand_total ); ?></span></div></div>
+            <div class="ec_statistics_title_bar"><div class="ec_statistics_holder_square">Top 10 Customers</div></div>
+            <?php for( $i=0; $i<count( $top_customers ); $i++ ){ ?>
+            <div class="ec_statistics_lineitem<?php echo $i%2; ?>"><div class="ec_statistics_holder_square"><span class="ec_statistics_lineitem_label"><?php echo $top_customers[$i]->billing_first_name . " " . $top_customers[$i]->billing_last_name; ?></span><span class="ec_statistics_lineitem_value"><?php echo $GLOBALS['currency']->get_currency_display( $top_customers[$i]->total ); ?></span></div></div>
             <?php }?>
         </div>
     </div>
