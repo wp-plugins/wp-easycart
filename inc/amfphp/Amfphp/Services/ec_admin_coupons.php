@@ -88,7 +88,8 @@ class ec_admin_coupons{
 					ec_promocode.product_id = %d, 
 					ec_promocode.by_manufacturer_id = %s, 
 					ec_promocode.by_product_id = %s, 
-					ec_promocode.by_all_products = %s 
+					ec_promocode.by_all_products = %s,
+					ec_promocode.max_redemptions = %s
 					
 				WHERE ec_promocode.promocode_id = %s";
 				
@@ -107,6 +108,7 @@ class ec_admin_coupons{
 					$promocode['attachmanufacturer'], 
 					$promocode['attachproduct'], 
 					$promocode['attachall'],
+					$promocode['max_redemptions'],
 					$promocode_id ) );
 		
 		if( $rows_affected ){
@@ -133,8 +135,8 @@ class ec_admin_coupons{
 		
 		$promocode = (array)$promocode;
 		
-		$sql = "INSERT INTO ec_promocode( ec_promocode.promocode_id, ec_promocode.promo_dollar, ec_promocode.is_dollar_based, ec_promocode.promo_percentage, ec_promocode.is_percentage_based, ec_promocode.promo_shipping, ec_promocode.is_shipping_based, ec_promocode.promo_free_item, ec_promocode.is_free_item_based, ec_promocode.message, ec_promocode.manufacturer_id, ec_promocode.product_id, ec_promocode.by_manufacturer_id, ec_promocode.by_product_id, ec_promocode.by_all_products ) VALUES( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
-		$rows_affected = $this->db->query( $this->db->prepare( $sql, $promocode['promoid'], $promocode['dollaramount'], $promocode['usedollar'], $promocode['percentageamount'], $promocode['usepercentage'], $promocode['shippingamount'], $promocode['useshipping'], '0.00', $promocode['usefreeitem'], $promocode['promodescription'], $promocode['manufacturers'], $promocode['products'], $promocode['attachmanufacturer'], $promocode['attachproduct'], $promocode['attachall'] ) );
+		$sql = "INSERT INTO ec_promocode( ec_promocode.promocode_id, ec_promocode.promo_dollar, ec_promocode.is_dollar_based, ec_promocode.promo_percentage, ec_promocode.is_percentage_based, ec_promocode.promo_shipping, ec_promocode.is_shipping_based, ec_promocode.promo_free_item, ec_promocode.is_free_item_based, ec_promocode.message, ec_promocode.manufacturer_id, ec_promocode.product_id, ec_promocode.by_manufacturer_id, ec_promocode.by_product_id, ec_promocode.by_all_products , ec_promocode.max_redemptions) VALUES( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+		$rows_affected = $this->db->query( $this->db->prepare( $sql, $promocode['promoid'], $promocode['dollaramount'], $promocode['usedollar'], $promocode['percentageamount'], $promocode['usepercentage'], $promocode['shippingamount'], $promocode['useshipping'], '0.00', $promocode['usefreeitem'], $promocode['promodescription'], $promocode['manufacturers'], $promocode['products'], $promocode['attachmanufacturer'], $promocode['attachproduct'], $promocode['attachall'], $promocode['max_redemptions'] ) );
 		
 		if( $rows_affected ){
 			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
