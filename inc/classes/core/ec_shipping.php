@@ -294,7 +294,7 @@ class ec_shipping{
 				$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
 			
 			for( $i=0; $i<count( $this->live_based ); $i++){
-				if( $this->live_based[$i][4] != NULL ){
+				if( $this->live_based[$i][4] != NULL && $this->live_based[$i][4] > 0 ){
 					if( $this->live_based[$i][4] == 0 )
 						$rate = "FREE";
 					else
@@ -494,7 +494,7 @@ class ec_shipping{
 		}else if( $this->shipping_method == "live" ){
 			for( $i=0; $i<count($this->live_based); $i++){
 				if( $this->live_based[$i][2] == $selected_shipping_method_id ){
-					if( $this->live_based[$i][4] != NULL ){
+					if( $this->live_based[$i][4] != NULL && $this->live_based[$i][4] > 0 ){
 						$rate = $this->live_based[$i][4] + $this->handling;
 						return "<div id=\"" . $this->live_based[$i][0] . "\"> " . $this->live_based[$i][1] . " " . $GLOBALS['currency']->get_currency_display( $rate ) . "</div>";
 					}else
@@ -625,16 +625,16 @@ class ec_shipping{
 				$rate = $rate + $this->express_price;
 			
 		}else if( $this->shipping_method == "live" ){
-			//if( !isset( $_SESSION['ec_shipping_method'] ) )
-				//$_SESSION['ec_shipping_method'] = 0;
+			if( !isset( $_SESSION['ec_shipping_method'] ) && !isset( $_SESSION['ec_email'] ) )
+				return doubleval( "0.00" ) + doubleval( $this->handling );
 				
 			$lowest = 100000.00;
 			$lowest_ship_method = "ERROR";
 			
 			for( $i=0; $i<count( $this->live_based ); $i++ ){
 				
-				if( $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] ){
-					if( $this->live_based[$i][4] != NULL )
+				if( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] ){
+					if( $this->live_based[$i][4] != NULL && $this->live_based[$i][4] > 0 )
 						$rate = $this->live_based[$i][4];
 					else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
 						$rate = 0;
@@ -644,7 +644,7 @@ class ec_shipping{
 				}else{
 				
 					// Find lowest
-					if( $this->live_based[$i][4] != NULL )
+					if( $this->live_based[$i][4] != NULL && $this->live_based[$i][4] > 0 )
 						$subrate = $this->live_based[$i][4];
 					else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
 						$subrate = 0;
@@ -694,7 +694,6 @@ class ec_shipping{
 		$discount = $promotion->get_shipping_discounts( $this->subtotal, $rate, $this->shipping_promotion_text );
 		
 		if( $rate == "ERROR" ){
-			error_log( "error getting shipping rate.");
 			return doubleval( "0.00" ) + doubleval( $this->handling );
 		}else{
 			// Add the Handling Rate

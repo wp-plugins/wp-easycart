@@ -130,6 +130,13 @@ if( $admin_access || $use_quickview ){ ?>
                             <tr>
                             	<td colspan="3">
                                 	<input type="button" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', jQuery( document.getElementById( 'ec_quantity_<?php echo $product->model_number; ?>' ) ).val( ), <?php echo $product->show_stock_quantity; ?>, <?php echo $product->min_purchase_quantity; ?>, <?php echo $product->stock_quantity; ?> );" />
+                                    
+                                     <?php if( $product->show_stock_quantity || $product->use_optionitem_quantity_tracking ){ ?><div class="ec_details_stock_total"><span id="ec_details_stock_quantity"><?php echo $product->stock_quantity; ?></span> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_left_in_stock' ); ?></div><?php }?>
+                                    
+                                    <?php if( $product->min_purchase_quantity > 1 ){ ?><div class="ec_details_min_purchase_quantity"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text1' ); ?> <?php echo $product->min_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text2' ); ?></div><?php }?>
+                                    
+                                    <?php if( $product->handling_price > 0 ){ ?><div class="ec_details_handling_fee"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $product->handling_price ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice2' ); ?></div><?php }?>
+                                    
                                 </td>
                              </tr>
                         </table>
@@ -209,7 +216,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
             <?php }
 			
 			if( ( $admin_access || $product->image_hover_type == 2 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_fade_container" style="height:<?php echo $image_height_desktop; ?>;<?php if( $product->image_hover_type != 2 ){ ?> display:none;<?php }?>">
+        	<div class="ec_fade_container"<?php if( $product->image_hover_type != 2 ){ ?> style="display:none;"<?php }?>>
             	<div class="ec_fadder">
 					<div class="ec_image_front_2"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
 					<div class="ec_image_back_2"><img src="<?php echo $product->get_second_image_url( ); ?>" /></div>
@@ -230,7 +237,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
             <?php } 
 			
 			if( ( $admin_access || $product->image_hover_type == 5 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_single_grow_container"<?php echo $image_height_desktop; ?>;<?php if( $product->image_hover_type != 5 ){ ?> style="display:none;"<?php }?>>
+        	<div class="ec_single_grow_container"<?php if( $product->image_hover_type != 5 ){ ?> style="display:none;"<?php }?>>
             	<div class="ec_single_grow"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
             </div>
             <?php } 
@@ -254,7 +261,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
             <?php }
 			
 			if( ( $admin_access || $product->image_hover_type == 9 ) && !$ipad && !$iphone ){ ?>
-        	<div<?php if( $product->image_hover_type != 9 ){ ?> style="display:none;"<?php }?> class="ec_slide_container">
+        	<div class="ec_slide_container"<?php if( $product->image_hover_type != 9 ){ ?> style="display:none;"<?php }?>>
             	<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_front_3" />
 				<img src="<?php echo $product->get_second_image_url( ); ?>" class="ec_image_back_3" />
             </div>
@@ -295,7 +302,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
 			<?php }else if( $product->is_deconetwork ){ ?>
 			<div class="ec_product_quickview_content_add_to_cart"><a href="<?php echo $product->get_deconetwork_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_design_now' ); ?></a></div>
 			
-			<?php }else if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation ) ){ ?>
+			<?php }else if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation || $product->min_purchase_quantity > 1 ) ){ ?>
             <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_product_link( ); ?>" target="_self"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_select_options' ); ?></a></span></div>
             
             <?php }else if( $product->in_stock( ) && $product->is_subscription_item ){ ?>
@@ -330,7 +337,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
 		<?php }else if( $product->is_deconetwork ){ ?>
         <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_deconetwork_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_design_now' ); ?></a></span></div>
         
-        <?php }else if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation ) ){ ?>
+        <?php }else if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation || $product->min_purchase_quantity > 1 ) ){ ?>
         <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_product_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_select_options' ); ?></a></span></div>
         
         <?php }else if( $product->in_stock( ) && $product->is_subscription_item ){ ?>

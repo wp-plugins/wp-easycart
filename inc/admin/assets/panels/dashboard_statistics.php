@@ -117,7 +117,7 @@ $highest_point = $high_point + $split;
 						$i=12;
 					}
 				}else{ //check when dates are split between two months
-					if( count( $orders ) > 0 && $first_num >= $orders[0]->the_day || $orders[0]->the_day <= $last_num ){
+					if( ( count( $orders ) > 0 && isset( $orders[0] ) && $first_num >= $orders[0]->the_day ) || ( count( $orders ) > 0 && $orders[0]->the_day <= $last_num ) ){
 						$i=11;
 					}else{
 						$i=12;

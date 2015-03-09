@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 3.0.22
+Stable tag: 3.0.23
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,23 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.23 =
+* New Feature - Turn on/off the magnification box on the product details page.
+* New Feature - Turn on/off the pop up view for large image view on the product details page.
+* New Action - When order is placed (not necessarily paid), you can hook into it using the WordPress action 'wpeasycart_order_inserted'.
+* New Action - When order is confirmed as paid, you can hook into it using the WordPress action 'wpeasycart_order_paid'.
+* New Action - When order is shipped, you can hook into it using the WordPress action 'wpeasycart_order_shipped'.
+* New Action - When order is fully refunded, you can hook into it using the WordPress action 'wpeasycart_full_order_refund'.
+* New Action - When order is only partially refunded, you can hook into it using the WordPress action 'wpeasycart_partial_order_refund'.
+* New Action - When cart is changed (add, update, or delete cart item), you can hook into it using the WordPress action 'wpeasycart_cart_updated'.
+* WordPress Hooks - Plenty more Actions and Filters to come over the next few weeks!
+* Improvement - Tax Cloud orders are now passed to Tax Cloud and Refunds through the admin console become refunded on Tax Cloud (full refunds only).
+* Improvement - The admin console no longer relies on Tim Thumb and instead uses the built in WordPress image functions. This should vastly improve server compatibility.
+* Fix - Coupon system was still passing through an invalid coupon code or max redemptions exceeded.
+* Fix - Stripe update subscription billing information in the account has been fixed.
+* Fix - Subscription list page with latest design files was not displaying correctly.
+* Fix - Skrill auto-forwarding form was missing.
+* Fix - Live shipping issue with multiple products.
 = 3.0.22 =
 * We apologize for the high number of updates as of late and hope this will be the last for a while. Please be sure to upgrade to this version for both security purposes and important bug fixes.
 * Fix - Statistics in the admin for weeks was not working for first 10 weeks of the year.

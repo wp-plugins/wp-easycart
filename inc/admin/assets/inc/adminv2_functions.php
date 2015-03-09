@@ -148,14 +148,14 @@ function ec_is_demo_data_writable( ){
 	// Test copy of zip
 	$zip_download_url = 'http://www.wpeasycart.com/sampledata/standard_demo/standard_clean_assets.zip';	
 	$sql_download_url = 'http://www.wpeasycart.com/sampledata/standard_demo/standard_demo_install.sql';	
-	$zip_copy_to_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/standard_clean_assets.zip';
-	$sql_copy_to_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/standard_demo_install.sql'; 
+	$zip_copy_to_url = WP_PLUGIN_DIR . '/wp-easycart-data/standard_clean_assets.zip';
+	$sql_copy_to_url = WP_PLUGIN_DIR . '/wp-easycart-data/standard_demo_install.sql'; 
 	
 	copy( $zip_download_url, $zip_copy_to_url );
 	copy( $sql_download_url, $sql_copy_to_url );
 	
 	// Test writing
-	$ec_dir_location = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products-test-dir/";
+	$ec_dir_location = WP_PLUGIN_DIR . '/wp-easycart-data/products-test-dir/';
 	$ec_file_start_location = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/images/apple.png";
 	$ec_file_dest_location = $ec_dir_location . "/test-product-image.png";
 	mkdir( $ec_dir_location );
@@ -1068,8 +1068,7 @@ function ec_add_cart_page( ){
 
 function ec_install_demo_data( ){
 	$datapack_url = 'http://www.wpeasycart.com/sampledata/standard_demo';	
-	$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
-	$install_dir2 = WP_PLUGIN_DIR . "/wp-easycart-data/";
+	$install_dir = WP_PLUGIN_DIR . "/wp-easycart-data/";
 	copy( $datapack_url . "/standard_demo_assets.zip",  $install_dir . "standard_demo_assets.zip" );
 	copy( $datapack_url . "/standard_demo_install.sql",  $install_dir . "standard_demo_install.sql" );
 	
@@ -1093,12 +1092,10 @@ function ec_install_demo_data( ){
 	$zip->open( $install_dir . "standard_demo_assets.zip" );
 	
 	// Now that the zip is open sucessfully, we should remove the products folder
-	ec_recursive_remove_dir( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products" );
 	ec_recursive_remove_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products" );
 	
 	// Now finish extracting
 	$zip->extractTo( $install_dir );
-	$zip->extractTo( $install_dir2 );
 	$zip->close();
 	unlink( $install_dir . "standard_demo_assets.zip" );
 	unlink( $install_dir . "standard_demo_install.sql" );
@@ -1184,8 +1181,7 @@ function ec_uninstall_demo_data( ){
 	}
 	
 	$datapack_url = 'http://www.wpeasycart.com/sampledata';
-	$install_dir = WP_PLUGIN_DIR . "/wp-easycart-data/";
-	$install_dir2 = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
+	$install_dir = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/";
 	copy( $datapack_url . "/clean_assets.zip",  $install_dir . "clean_assets.zip" );
 	copy( $datapack_url . "/demo_uninstall.sql",  $install_dir . "demo_uninstall.sql" );
 	
@@ -1209,12 +1205,10 @@ function ec_uninstall_demo_data( ){
 	$zip->open( $install_dir . "clean_assets.zip" );
 	
 	// Now that the zip is open sucessfully, we should remove the products folder
-	ec_recursive_remove_dir( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/products" );
 	ec_recursive_remove_dir( WP_PLUGIN_DIR . "/wp-easycart-data/products" );
 	
 	// Now finish extracting
 	$zip->extractTo( $install_dir );
-	$zip->extractTo( $install_dir2 );
 	$zip->close();
 	unlink( $install_dir . "clean_assets.zip" );
 	unlink( $install_dir . "demo_uninstall.sql" );
@@ -1287,6 +1281,8 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_show_model_number', $_POST['ec_option_show_model_number'] );
 	update_option( 'ec_option_show_categories', $_POST['ec_option_show_categories'] );
 	update_option( 'ec_option_show_manufacturer', $_POST['ec_option_show_manufacturer'] );
+	update_option( 'ec_option_show_magnification', $_POST['ec_option_show_magnification'] );
+	update_option( 'ec_option_show_large_popup', $_POST['ec_option_show_large_popup'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
@@ -1327,6 +1323,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_tax_cloud_city', $_POST['ec_option_tax_cloud_city'] );
 	update_option( 'ec_option_tax_cloud_state', $_POST['ec_option_tax_cloud_state'] );
 	update_option( 'ec_option_tax_cloud_zip', $_POST['ec_option_tax_cloud_zip'] );
+	update_option( 'ec_option_tax_cloud_usps_id', $_POST['ec_option_tax_cloud_usps_id'] );
 	
 	//update sizes
 	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 
@@ -1566,12 +1563,12 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );
 	update_option( 'ec_option_paypal_collect_shipping', $_POST['ec_option_paypal_collect_shipping'] );		
 	//PayPal Advanced
-	update_option( 'ec_option_paypal_advanced_test_mode', $_POST['ec_option_paypal_advanced_test_mode'] );
-	update_option( 'ec_option_paypal_advanced_currency', $_POST['ec_option_paypal_advanced_currency'] );
-	update_option( 'ec_option_paypal_advanced_vendor', $_POST['ec_option_paypal_advanced_vendor'] );
-	update_option( 'ec_option_paypal_advanced_partner', $_POST['ec_option_paypal_advanced_partner'] );
-	update_option( 'ec_option_paypal_advanced_user', $_POST['ec_option_paypal_advanced_user'] );
-	update_option( 'ec_option_paypal_advanced_password', $_POST['ec_option_paypal_advanced_password'] );
+	//update_option( 'ec_option_paypal_advanced_test_mode', $_POST['ec_option_paypal_advanced_test_mode'] );
+	//update_option( 'ec_option_paypal_advanced_currency', $_POST['ec_option_paypal_advanced_currency'] );
+	//update_option( 'ec_option_paypal_advanced_vendor', $_POST['ec_option_paypal_advanced_vendor'] );
+	//update_option( 'ec_option_paypal_advanced_partner', $_POST['ec_option_paypal_advanced_partner'] );
+	//update_option( 'ec_option_paypal_advanced_user', $_POST['ec_option_paypal_advanced_user'] );
+	//update_option( 'ec_option_paypal_advanced_password', $_POST['ec_option_paypal_advanced_password'] );
 	//PayPal PayFlow Pro
 	update_option( 'ec_option_paypal_pro_test_mode', $_POST['ec_option_paypal_pro_test_mode'] );
 	update_option( 'ec_option_paypal_pro_vendor', $_POST['ec_option_paypal_pro_vendor'] );
@@ -1625,7 +1622,7 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_virtualmerchant_ssl_merchant_id', $_POST['ec_option_virtualmerchant_ssl_merchant_id'] );
 	update_option( 'ec_option_virtualmerchant_ssl_user_id', $_POST['ec_option_virtualmerchant_ssl_user_id'] );
 	update_option( 'ec_option_virtualmerchant_ssl_pin', $_POST['ec_option_virtualmerchant_ssl_pin'] );
-	update_option( 'ec_option_virtualmerchant_currency', $_POST['ec_option_virtualmerchant_currency'] );
+	//update_option( 'ec_option_virtualmerchant_currency', $_POST['ec_option_virtualmerchant_currency'] );
 	update_option( 'ec_option_virtualmerchant_demo_account', $_POST['ec_option_virtualmerchant_demo_account'] );
 	//proxy settings
 	update_option( 'ec_option_use_proxy', $_POST['ec_option_use_proxy'] );

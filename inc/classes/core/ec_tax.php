@@ -12,6 +12,7 @@ class ec_tax{
 	
 	public $duty_total;										// FLOAT 15,3
 	public $vat_total;										// FLOAT 15,3
+	public $shipping_total;									// FLOAT 15,3
 	
 	// State Tax
 	public $state_tax_enabled;								// BOOL
@@ -58,7 +59,7 @@ class ec_tax{
 	
 	private $taxfree;										// BOOLEAN
 	
-	function __construct( $cart_subtotal, $taxable_subtotal, $vatable_total, $shipping_state, $shipping_country, $taxfree = false ){
+	function __construct( $cart_subtotal, $taxable_subtotal, $vatable_total, $shipping_state, $shipping_country, $taxfree = false, $shipping_total = 0.00 ){
 		
 		// Initialize Structures and Lists
 		$this->mysqli 							= 			new ec_db();
@@ -183,8 +184,7 @@ class ec_tax{
 			$this->tax_total = 0;
 			
 		}else if( $this->tax_cloud_enabled ){
-			// Calculate taxes based on tax cloud if enabled
-			$this->tax_total = $this->get_tax_cloud_rate( );
+			$this->tax_total = wpeasycart_taxcloud( )->tax_amount;
 			
 		}else{
 			// Calculate State Tax
@@ -237,139 +237,6 @@ class ec_tax{
 			return true;
 		else
 			return false;
-	}
-	
-	private function get_tax_cloud_rate( ){
-		
-		$api_id = get_option( 'ec_option_tax_cloud_api_id' );
-		$api_key = get_option( 'ec_option_tax_cloud_api_key' );
-		$cart_id = $_SESSION['ec_cart_id'];
-		$user = new ec_user( "" );
-		$cartitems = $this->get_tax_cloud_cartitems( $cart_id );
-		$origin = $this->get_tax_cloud_origin( );
-		$destination = $this->get_tax_cloud_destination( $user );
-		
-		$parameters = array(	"apiLoginID" 		=> $api_id,
-								"apiKey"			=> $api_key,
-								"customerID"		=> $user->user_id,
-								"cartID"			=> $cart_id,
-								"cartItems"			=> $cartitems,
-								"origin"			=> $origin,
-								"destination"		=> $destination,
-								"deliveredBySeller"	=> false,
-								"exemptCert"		=> NULL );
-		
-		
-		if( $destination ){
-			
-			// Address Verified, now return the rate
-			$ch = curl_init( );
-			curl_setopt( $ch, CURLOPT_URL, $this->get_tax_cloud_url( ) . "Lookup" );
-			curl_setopt( $ch, CURLOPT_POST, true); 
-			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true); // tell curl to return data in a variable 
-			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-			curl_setopt( $ch, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json', 'Content-Length: ' . strlen( json_encode( $parameters ) ) ) );
-			curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $parameters ) );								
-			
-			$response = json_decode( curl_exec( $ch ) );
-			curl_close( $ch );
-			
-			if( $response->ResponseType == 0 ){
-				// Invalid call, return 0
-				return 0;
-				
-			}else{
-				$total = 0;
-				foreach( $response->CartItemsResponse as $cart_item ){
-					$total = $total + doubleval( $cart_item->TaxAmount );
-				}
-				
-				return $total;
-				
-			}
-			
-		}else{
-			
-			return 0;
-			
-		}
-		
-	}
-	
-	private function get_tax_cloud_url( ){
-		return "https://api.taxcloud.net/1.0/Taxcloud/";
-	}
-	
-	private function tax_cloud_address_verification( ){
-		
-	}
-	
-	private function get_tax_cloud_cartitems( $cart_id ){
-		$cart = new ec_cart( $cart_id );
-		$cartitems = array( );
-		for( $i=0; $i<count( $cart->cart ); $i++ ){
-			$cartitems[] = array(	"Index"		=> $i,
-									"ItemID"	=> $cart->cart[$i]->model_number,
-									"Price"		=> $cart->cart[$i]->unit_price,
-									"Qty"		=> $cart->cart[$i]->quantity
-								 );
-		}
-		return $cartitems;
-	}
-	
-	private function get_tax_cloud_origin( ){
-		
-		$origin = array(	"Address1"	=> get_option( 'ec_option_tax_cloud_address' ),
-							"City"		=> get_option( 'ec_option_tax_cloud_city' ),
-							"State"		=> get_option( 'ec_option_tax_cloud_state' ),
-							"Zip5"		=> get_option( 'ec_option_tax_cloud_zip' )
-						 );
-		return $origin;
-							 
-	}
-	
-	private function get_tax_cloud_destination( $user ){
-		
-		$usps_id = "399MATTC0543";
-		
-		$parameters = array( 	//'uspsUserID'	=> $usps_id,
-								"Address1"		=> $user->shipping->address_line1,
-								"City"			=> $user->shipping->city,
-								"State"			=> $user->shipping->state,
-								"Zip5"			=> $user->shipping->zip
-							);
-		return $parameters; 
-		
-		
-		$ch = curl_init( $this->get_tax_cloud_url( ) . "VerifyAddress" );
-		curl_setopt_array( $ch, array(	CURLOPT_POST			=> true,
-										CURLOPT_RETURNTRANSFER	=> true,
-										CURLOPT_SSL_VERIFYPEER	=> false,
-										CURLOPT_HTTPHEADER		=> array( 'Content-Type: application/json' ),
-										CURLOPT_POSTFIELDS		=> json_encode( $parameters ) ) );
-										
-		$response = curl_exec( $ch );
-		print_r( $response );
-		curl_close( $ch );
-		$response = json_decode( $response );
-		if( $response->ErrNumber == 0 ){
-		
-			$destination = array(	"Address1"	=> $response->Address1,
-									"Address2"	=> $response->Address2,
-									"City"		=> $response->City,
-									"State"		=> $response->State,
-									"Zip5"		=> $response->Zip5,
-									"Zip4"		=> $response->Zip4
-								 );
-					
-			return $destination;
-			
-		}else{
-			
-			return false;
-			
-		}
-		
 	}
 	
 }

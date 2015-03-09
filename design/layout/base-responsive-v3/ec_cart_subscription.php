@@ -1,4 +1,11 @@
 <?php
+// Video Option
+if( isset( $this->page_options->video_viewed ) || get_option( 'ec_option_hide_design_help_video' ) == '1' ){
+	$show_video = false;
+}else{
+	$show_video = true;
+}
+
 // Check for Safari/Admin //
 $ua = $_SERVER["HTTP_USER_AGENT"];
 $safariorchrome = strpos($ua, 'Safari') ? true : false;

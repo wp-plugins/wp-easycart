@@ -48,9 +48,20 @@ class ec_newsletterwidget extends WP_Widget{
 	function widget($args, $instance){
 	
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$widget_label = apply_filters( 'widget_label', $instance['widget_label'] );
-		$widget_submit = apply_filters( 'widget_submit', $instance['widget_submit'] );
+		if( isset( $instance['title'] ) )
+			$title = apply_filters( 'widget_title', $instance['title'] );
+		else
+			$title = "";
+		
+		if( isset( $instance['widget_label'] ) )
+			$widget_label = apply_filters( 'widget_label', $instance['widget_label'] );
+		else
+			$widget_label = "";
+		
+		if( isset( $instance['widget_submit'] ) )
+			$widget_submit = apply_filters( 'widget_submit', $instance['widget_submit'] );
+		else
+			$widget_submit = "";
 		
 		// Translate if Needed
 		$title = $GLOBALS['language']->convert_text( $title );

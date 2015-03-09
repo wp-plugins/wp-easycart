@@ -1,4 +1,4 @@
-<div id="ec_product_widget_item<?php echo $i+1; ?>" class="ec_product_widget">
+<div id="ec_product_widget_item" class="ec_product_widget">
 	
     <div class="ec_product_widget_images">
 		<?php $product->display_product_image_set( "medium", "ec_image_product_widget_", "" ); ?>

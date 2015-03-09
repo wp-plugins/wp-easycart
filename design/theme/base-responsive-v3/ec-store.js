@@ -450,7 +450,11 @@ function ec_toggle_create_account( ){
 }
 
 function ec_update_payment_display( ){
-	jQuery( document.getElementById( 'ec_manual_payment_form' ), document.getElementById( 'ec_affirm_form' ), document.getElementById( 'ec_third_party_form' ), document.getElementById( 'ec_credit_card_form' ) ).hide( );
+	jQuery( document.getElementById( 'ec_manual_payment_form' ) ).hide( );
+	jQuery( document.getElementById( 'ec_affirm_form' ) ).hide( );
+	jQuery( document.getElementById( 'ec_third_party_form' ) ).hide( );
+	jQuery( document.getElementById( 'ec_credit_card_form' ) ).hide( );
+	
 	if( jQuery( document.getElementById( 'ec_payment_manual' ) ).is( ':checked' ) ){
 		jQuery( document.getElementById( 'ec_manual_payment_form' ) ).show( );
 	
@@ -1310,4 +1314,31 @@ function update_download_count( orderdetail_id ){
 		}
 	}
 	
+}
+
+function show_billing_info( ){
+	jQuery( document.getElementById( 'ec_account_subscription_billing_information' ) ).slideToggle(600);
+	return false;
+}
+
+function ec_check_update_subscription_info( ){
+		
+	if( jQuery( document.getElementById( 'ec_account_subscription_billing_information' ) ).is(":visible") ){
+		
+		var address_validated = ec_validate_address_block( 'ec_account_billing_information' );
+		var payment_method_complete = ec_validate_payment_method( );
+		var terms_complete = ec_validate_terms( );
+		
+		if( address_validated && payment_method_complete && terms_complete )
+			return true;
+		else
+			return false;
+			
+	}else{
+		return true;
+	}
+}
+
+function ec_cancel_subscription_check( confirm_text ){
+	return confirm( confirm_text );
 }

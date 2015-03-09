@@ -1,7 +1,14 @@
 <?php
 	$order_id = $_GET['order_id'];
-	$email = $_SESSION['ec_email'];
-	$password = $_SESSION['ec_password'];
+	if( isset( $_SESSION['ec_email'] ) )
+		$email = $_SESSION['ec_email'];
+	else
+		$email = "";
+	
+	if( isset( $_SESSION['ec_password'] ) )
+		$password = $_SESSION['ec_password'];
+	else
+		$password = "";
 	
 	$mysqli = new ec_db( );
 	

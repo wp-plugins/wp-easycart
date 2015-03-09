@@ -61,6 +61,9 @@ class ec_order{
 		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
+		
+		add_action( 'wpeasycart_order_inserted', array( $this, 'add_affiliatewp_order' ), 10, 5 );
+		
 	}
 	
 	public function submit_order( $payment_type ){
@@ -114,9 +117,7 @@ class ec_order{
 				$this->insert_details( $payment_type );
 				$this->update_user_addresses();
 				
-				// Affiliate Functionality
-				if( class_exists( "Affiliate_WP" ) )
-					$this->add_affiliatewp_order( );
+				do_action( 'wpeasycart_order_inserted', $this->order_id, $this->cart, $this->order_totals, $this->user, $payment_type );
 				
 				if( $this->shipping->shipping_method == "fraktjakt" ){
 					// Insert order for shipping method
@@ -133,6 +134,8 @@ class ec_order{
 				// Run Necessary Processes Based on Payment Type
 				if( !$this->payment->is_3d_auth ){
 					if ($payment_type != 'third_party') {
+						do_action( 'wpeasycart_order_paid', $order_id );
+						
 						// Quickbooks Hook
 						if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
 							$quickbooks = new ec_quickbooks( );
@@ -360,9 +363,11 @@ class ec_order{
 	
 	}
 	
-	private function add_affiliatewp_order( ){
+	public function add_affiliatewp_order( $order_id, $cart, $order_totals, $user, $payment_type ){
 		
-		if( affiliate_wp( )->tracking->was_referred( ) ){
+		if( class_exists( "Affiliate_WP" ) && 
+			affiliate_wp( )->tracking->was_referred( ) && 
+			affwp_get_affiliate_email( affiliate_wp( )->tracking->get_affiliate_id( ) ) != $user->email ){
 			
 			$affiliate_id = affiliate_wp( )->tracking->get_affiliate_id( );
 			$exclude_shipping = affiliate_wp( )->settings->get( 'exclude_shipping' );
@@ -371,12 +376,12 @@ class ec_order{
 			$total_earned = 0;
 				
 			if( !$exclude_shipping )
-				$total_earned += ( $this->order_totals->shipping_total * $default_rate );
+				$total_earned += ( $order_totals->shipping_total * $default_rate );
 			
 			if( !$exclude_tax )
-				$total_earned += ( $this->order_totals->tax_total * $default_rate );
+				$total_earned += ( $order_totals->tax_total * $default_rate );
 			
-			foreach( $this->cart->cart as $cart_item ){
+			foreach( $cart->cart as $cart_item ){
 				
 				if( $cart_item->has_affiliate_rule ){
 					if( $cart_item->affiliate_rule->rule_type == "percentage" ){
@@ -403,8 +408,8 @@ class ec_order{
 				'affiliate_id' => $affiliate_id,
 				'visit_id'     => affiliate_wp()->tracking->get_visit_id( ),
 				'amount'       => $total_earned,
-				'description'  => $this->user->first_name . " " . $this->user->last_name,
-				'reference'    => $this->order_id,
+				'description'  => $user->billing->first_name . " " . $user->billing->last_name,
+				'reference'    => $order_id,
 				'context'      => 'WP EasyCart',
 			);
 			$result = affiliate_wp()->referrals->add( $data );

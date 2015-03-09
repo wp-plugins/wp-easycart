@@ -281,8 +281,14 @@ class ec_subscription{
 		$this->status = $db_row->subscription_status;
 		$this->last_billed = $db_row->last_payment_date;
 		$this->next_payment = $db_row->next_payment_date;
-		$this->card_type = $db_row->credit_card_type;
-		$this->last4 = $db_row->credit_card_last4;
+		if( isset( $db_row->credit_card_type ) )
+			$this->card_type = $db_row->credit_card_type;
+		else
+			$this->card_type = "";
+		if( isset( $db_row->credit_card_last4 ) )
+			$this->last4 = $db_row->credit_card_last4;
+		else
+			$this->last4 = "";
 		$this->stripe_subscription_id = $db_row->stripe_subscription_id;
 		$this->membership_page = $db_row->membership_page;
 		

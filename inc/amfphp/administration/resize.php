@@ -21,19 +21,22 @@ ob_start( NULL, 4096 );
 require_once( '../../../../../../wp-load.php' );
 global $wpdb;
 
-
 $image_name = $_GET['src'];
-if(isset($_GET['w'])) {
+
+if( isset( $_GET['w'] ) )
 	$image_width = $_GET['w'];
-} else {
+else
 	$image_width = 100;
-}
-if(isset($_GET['h'])) {
+
+if( isset( $_GET['h'] ) )
 	$image_height = $_GET['h'];
-} else {
+else
 	$image_height = 100;
-}
-$image_zoomcrop = $_GET['zc'];
+
+if( isset( $_GET['zc'] ) )
+	$image_zoomcrop = $_GET['zc'];
+else
+	$image_zoomcrop = 1;
 
 $image = wp_get_image_editor( '../../../../wp-easycart-data/'.$image_name ); // Return an implementation that extends <tt>WP_Image_Editor</tt>
 

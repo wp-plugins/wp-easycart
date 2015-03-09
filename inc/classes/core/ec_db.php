@@ -275,6 +275,8 @@ class ec_db{
 				optionitem.optionitem_weight_override,
 				optionitem.optionitem_weight_multiplier,
 				optionitem.optionitem_icon,
+				optionitem.optionitem_initially_selected,
+				
 				ec_option.option_label,
 				ec_option.option_name
 				
@@ -2897,6 +2899,7 @@ class ec_db{
 					ec_optionitem.optionitem_icon, 
 					ec_optionitem.optionitem_initial_value, 
 					ec_optionitem.optionitem_model_number,
+					ec_optionitem.optionitem_initially_selected,
 					
 					ec_option.option_name,
 					ec_option.option_type

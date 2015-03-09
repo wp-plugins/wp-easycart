@@ -212,6 +212,15 @@ class ec_admin_orders{
 		$sql = "UPDATE ec_order SET ec_order.orderstatus_id = %s WHERE ec_order.order_id = %d";
 		$rows_affected = $this->db->query( $this->db->prepare( $sql, $status, $orderid ) );
 		
+		if( $status == "1" || $status == "6" || $status == "15" )
+			do_action( 'wpeasycart_order_paid', $orderid );
+		else if( $status == "2" )
+			do_action( 'wpeasycart_order_shipped', $orderid );
+		else if( $status == "16" )
+			do_action( 'wpeasycart_full_order_refund', $orderid );
+		else if( $status == "17" )
+				do_action( 'wpeasycart_partial_order_refund', $orderid );
+		
 		if( $rows_affected ){
 			return array( "success" );
 		}else{
@@ -368,6 +377,10 @@ class ec_admin_orders{
 					}
 				}
 			}
+			if( $is_full_refund || ( $refund_amount + $order->refund_total ) >= $order->grand_total )
+				do_action( 'wpeasycart_full_order_refund', $order_id );
+			else
+				do_action( 'wpeasycart_partial_order_refund', $order_id, $refund_amount, ( $refund_amount + $order->refund_total ) );
 			
 			return array( "order_notes" => $new_order_notes, "orderstatus_id" => $orderstatus_id );
 			

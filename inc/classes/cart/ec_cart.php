@@ -41,31 +41,36 @@ class ec_cart{
 	// Function to adjust VAT prices in the cart 
 	// Used when vat is included and a customer should be applied to a different vat rate.
 	private function make_vat_adjustments( ){
-		$this->user = new ec_user( "" );
-		$tax = new ec_tax( 0, 0, 0, $this->user->shipping->state, $this->user->shipping->country );
 		
-		for($i=0; $i<count( $this->cart ); $i++){
+		if( $this->user->user_id != 0 ){
+		
+			$tax = new ec_tax( 0, 0, 0, $this->user->shipping->state, $this->user->shipping->country );
 			
-			if( $this->cart[$i]->vat_enabled ){
+			for($i=0; $i<count( $this->cart ); $i++){
 				
-				if( $tax->vat_included && $tax->vat_rate_default != $tax->vat_rate ){ 
+				if( $this->cart[$i]->vat_enabled ){
 					
-					// Adjust unit price for a different VAT rate
-					$default_vat = $tax->vat_rate_default / 100;
-					$new_vat = $tax->vat_rate / 100;
-					$old_unit_price = $this->cart[$i]->unit_price;
-					$product_actual_price = ( $old_unit_price / ( $default_vat + 1 ) );
-					$unit_price = $product_actual_price + ( $product_actual_price * $new_vat );
-					$total_price = $unit_price * $this->cart[$i]->quantity;
+					if( $tax->vat_included && $tax->vat_rate_default != $tax->vat_rate ){ 
+						
+						// Adjust unit price for a different VAT rate
+						$default_vat = $tax->vat_rate_default / 100;
+						$new_vat = $tax->vat_rate / 100;
+						$old_unit_price = $this->cart[$i]->unit_price;
+						$product_actual_price = ( $old_unit_price / ( $default_vat + 1 ) );
+						$unit_price = $product_actual_price + ( $product_actual_price * $new_vat );
+						$total_price = $unit_price * $this->cart[$i]->quantity;
+						
+						$this->cart[$i]->unit_price = $unit_price;
+						$this->cart[$i]->total_price = $total_price;
 					
-					$this->cart[$i]->unit_price = $unit_price;
-					$this->cart[$i]->total_price = $total_price;
+					}
 				
 				}
 			
 			}
-		
+			
 		}
+		
 	}
 	
 	//set the subtotal

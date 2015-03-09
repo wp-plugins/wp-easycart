@@ -39,6 +39,7 @@ if( isset( $_POST['ORDER_ID'] ) ){
 		if( $_POST['RESULT'] == '00' ){ 
 			
 			$mysqli->update_order_status( $order_id, "10" );
+			do_action( 'wpeasycart_order_paid', $orderid );
 			
 			// send email
 			$db_admin = new ec_db_admin( );
@@ -55,6 +56,7 @@ if( isset( $_POST['ORDER_ID'] ) ){
 			
 		} else if( $_POST['AUTHCODE'] == 'refund' ){ 
 			$mysqli->update_order_status( $order_id, "16" );
+			do_action( 'wpeasycart_full_order_refund', $orderid );
 		} else {
 			$mysqli->update_order_status( $order_id, "8" );
 		}

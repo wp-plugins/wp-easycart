@@ -81,7 +81,7 @@ class ec_cartpage{
 		$this->shipping = new ec_shipping( $this->cart->shipping_subtotal, $this->cart->weight, $this->cart->shippable_total_items, 'RADIO', $this->user->freeshipping, $this->cart->length, $this->cart->width, $this->cart->height );
 		// Tax (no VAT here)
 		$sales_tax_discount = new ec_discount( $this->cart, $this->cart->subtotal, 0.00, $this->coupon_code, "", 0 );
-		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country, $this->user->taxfree );
+		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, 0, $this->user->shipping->state, $this->user->shipping->country, $this->user->taxfree, $this->shipping->get_shipping_price( ) );
 		// Duty (Based on Product Price) - already calculated in tax
 		// Get Total Without VAT, used only breifly
 		if( get_option( 'ec_option_no_vat_on_shipping' ) ){
@@ -100,7 +100,7 @@ class ec_cartpage{
 		if( $vatable_subtotal < 0 )
 			$vatable_subtotal = 0;
 		// Get Tax Again For VAT
-		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, $vatable_subtotal, $this->user->shipping->state, $this->user->shipping->country, $this->user->taxfree );
+		$this->tax = new ec_tax( $this->cart->subtotal, $this->cart->taxable_subtotal - $sales_tax_discount->coupon_discount, $vatable_subtotal, $this->user->shipping->state, $this->user->shipping->country, $this->user->taxfree, $this->shipping->get_shipping_price( ) );
 		// Discount for Gift Card
 		$this->discount = new ec_discount( $this->cart, $this->cart->subtotal, $this->shipping->get_shipping_price( ), $this->coupon_code, $this->gift_card, $GLOBALS['currency']->get_number_only( $total_without_vat_or_discount ) + $GLOBALS['currency']->get_number_only( $this->tax->vat_total ) );
 		// Order Totals
@@ -337,7 +337,7 @@ class ec_cartpage{
 			
 			$this->user->setup_shipping_info_data( $order->shipping_first_name, $order->shipping_last_name, $order->shipping_address_line_1, $order->shipping_address_line_2, $order->shipping_city, $order->shipping_state, $order->shipping_country, $order->shipping_zip, $order->shipping_phone, $order->shipping_company_name );
 			
-			$tax_struct = new ec_tax( 0,0,0, "", "");
+			$tax_struct = $this->tax;
 			
 			$total = $GLOBALS['currency']->get_currency_display( $order->grand_total );
 			$subtotal = $GLOBALS['currency']->get_currency_display( $order->sub_total );
@@ -1938,6 +1938,8 @@ class ec_cartpage{
 					if( substr_count( $return_url, '?' ) )
 						$divider = "&";
 					
+					do_action( 'wpeasycart_cart_updated' );
+					
 					
 					header( "location: " . $return_url . $divider . "ec_store_success=addtocart&model=" . $_POST['model_number'] );
 				}else{
@@ -2181,6 +2183,8 @@ class ec_cartpage{
 				if( substr_count( $return_url, '?' ) )
 					$divider = "&";
 				
+				do_action( 'wpeasycart_cart_updated' );
+				
 				
 				header( "location: " . $return_url . $divider . "ec_store_success=addtocart&model=" . $product->model_number );
 			
@@ -2224,6 +2228,8 @@ class ec_cartpage{
 	private function process_update_cartitem( $cartitem_id, $new_quantity ){
 		$this->mysqli->update_cartitem( $cartitem_id, $_SESSION['ec_cart_id'], $new_quantity );
 		
+		do_action( 'wpeasycart_cart_updated' );
+		
 		if( isset( $_GET['ec_page'] ) )
 			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . htmlspecialchars( $_GET['ec_page'], ENT_QUOTES ) );	
 		else
@@ -2232,6 +2238,8 @@ class ec_cartpage{
 	
 	private function process_delete_cartitem( $cartitem_id ){
 		$this->mysqli->delete_cartitem( $cartitem_id, $_SESSION['ec_cart_id'] );
+		
+		do_action( 'wpeasycart_cart_updated' );
 		
 		if( isset( $_GET['ec_page'] ) )
 			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . htmlspecialchars( $_GET['ec_page'], ENT_QUOTES ) );	
@@ -2602,7 +2610,7 @@ class ec_cartpage{
 		if( !get_option( 'ec_option_use_shipping' ) || $this->cart->weight == 0 )
 			$next_page = "checkout_payment";
 			
-		if( get_option( 'ec_option_skip_shipping_page' ) || $this->user->freeshipping || $this->discount->shipping_discount == $this->discount->shipping_subtotal )
+		if( get_option( 'ec_option_skip_shipping_page' ) || $this->user->freeshipping )//|| $this->discount->shipping_discount == $this->discount->shipping_subtotal )
 			$next_page = "checkout_payment";
 		
 		if( isset( $_POST['ec_contact_email'] ) ){
@@ -3417,22 +3425,22 @@ class ec_cartpage{
 	
 	private function get_payment_type( $card_number ){
 		
-		if (ereg("^5[1-5][0-9]{14}$", $card_number))
+		if( preg_match("/^5[1-5][0-9]{14}$/", $card_number ) )
                 return "mastercard";
  
-        else if (ereg("^4[0-9]{12}([0-9]{3})?$", $card_number))
+        else if( preg_match( "/^4[0-9]{12}([0-9]{3})?$/", $card_number))
                 return "visa";
  
-        else if (ereg("^3[47][0-9]{13}$", $card_number))
+        else if( preg_match( "/^3[47][0-9]{13}$/", $card_number ) )
                 return "amex";
  
-        else if (ereg("^3(0[0-5]|[68][0-9])[0-9]{11}$", $card_number))
+        else if( preg_match( "/^3(0[0-5]|[68][0-9])[0-9]{11}$/", $card_number ) )
                 return "diners";
  
-        else if (ereg("^6011[0-9]{12}$", $card_number))
+        else if( preg_match( "/^6011[0-9]{12}$/", $card_number ) )
                 return "discover";
  
-        else if (ereg("^(3[0-9]{4}|2131|1800)[0-9]{11}$", $card_number))
+        else if( preg_match( "/^(3[0-9]{4}|2131|1800)[0-9]{11}$/", $card_number ) )
                 return "jcb";
 				
 		else

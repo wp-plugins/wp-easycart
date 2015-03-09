@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple install into new or existing WordPress blogs. Customers purchase directly from your store! Get a full eCommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/2.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.22
+ * Version: 3.0.23
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.22
+ * @version 3.0.23
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,8 +20,9 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_22' );
+define( 'EC_CURRENT_VERSION', '3_0_23' );
 define( 'EC_CURRENT_DB', '1_30' );
+define( 'EC_UPGRADE_DB', '31' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -51,19 +52,11 @@ function ec_activate(){
 	$install_sql = fread( $f, filesize( $install_sql_url ) );
 	$install_sql_array = explode(';', $install_sql);
 	$mysqli->install( $install_sql_array );
-	// END SQL INSTALLER
 	
-	// START SQL UPGRADER
-	if( get_option( 'ec_option_db_version' ) && EC_CURRENT_DB != get_option( 'ec_option_db_version' ) ){
-		$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . get_option( 'ec_option_db_version') . '_to_' . EC_CURRENT_DB . '.sql';
-		$f = fopen( $update_sql_url, "r") or die("The Wp EasyCart plugin was unable to access the database upgrade script. Upgrade halted. To fix this problem, change the permissions on the following files to 775 and try again: wp-easycart/inc/admin/sql/upgrade_x_x_to_x_x (change all upgrade files unless you know what plugin DB version you have and which you are upgrading to). Contact WP EasyCart support by submitting a support ticket at www.wpeasycart.com with FTP access for assistance.");
-		$upgrade_sql = fread( $f, filesize( $update_sql_url ) );
-		$upgrade_sql_array = explode(';', $upgrade_sql);
-		$db = new ec_db();
-		$db->upgrade( $upgrade_sql_array );
-		update_option( 'ec_option_db_version', EC_CURRENT_DB );
-	}
-	// END SQL UPGRADER
+	// First time install, we should set our DB values to most recent.
+	update_option( 'ec_option_db_version', EC_CURRENT_DB );
+	update_option( 'ec_option_db_new_version', EC_UPGRADE_DB );
+	// END SQL INSTALLER
 	
 	// UPDATE SITE URL
 	$site = explode( "://", ec_get_url( ) );
@@ -78,25 +71,6 @@ function ec_activate(){
 	//WE BLOCK THIS FROM THE ec_config.php TO PREVENT OUTPUT ON ACTIVATION, INCLUDE HERE...
 	update_option( 'ec_option_is_installed', '1' );
 	$GLOBALS['setting'] = new ec_setting( );
-	
-	//WRITE OUR EC_CONN FILE FOR AMFPHP
-	global $wpdb;
-	$ec_conn_php = "<?php
-						define ('HOSTNAME','" . DB_HOST . "'); 	
-						define ('DATABASE','" . DB_NAME . "'); 		
-						define ('USERNAME','" . DB_USER . "'); 	
-						define ('PASSWORD','" . DB_PASSWORD . "'); 
-						define ('WP_PREFIX','" . $wpdb->base_prefix . "');
-					?>"; 
-
-	$ec_conn_filename = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/ec_conn.php";
-	
-	if( is_writable( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/connection/" ) ){
-		$ec_conn_filehandler = fopen($ec_conn_filename, 'w');
-		fwrite($ec_conn_filehandler, $ec_conn_php);
-		fclose($ec_conn_filehandler);
-	}
-	//END WRITE FOR EC_CONN FILE FOR AMFPHP
 	
 	// FIX FOR CURRENCY ISSUES
 	if( get_option( 'ec_option_currency' ) == '&#36;' ){
@@ -125,8 +99,11 @@ function ec_activate(){
 			
 			// COPY FROM wp-easycart to wp-easycart-data
 			wpeasycart_copyr( $from . "products", $to . "products" );
-			wpeasycart_copyr( $from . "design", $to . "design" );
-			wpeasycart_copyr( $from . "connection", $to . "connection" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/custom-theme/" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/custom-layout/" );
 			
 		}
 	}
@@ -140,6 +117,7 @@ function ec_activate(){
 	}
 	
 	// Fix for new installs, make sure the smart states is set to true. This is because old installs would be messed up without this.
+	global $wpdb;
 	$fixrow = $wpdb->get_row( "SELECT ec_state.id_sta FROM ec_state WHERE ec_state.name_sta = 'FIXFORFRESHINSTALLS'" );
 	if( $fixrow ){
 		update_option( 'ec_option_use_smart_states', '1' );
@@ -166,6 +144,7 @@ function ec_uninstall(){
 	//delete options
 	$wpoptions = new ec_wpoptionset();
 	$wpoptions->delete_options();
+	delete_option( 'ec_option_db_new_version' );
 	
 	$data_dir = WP_PLUGIN_DIR . "/wp-easycart-data/";
 	if( !is_writable( $data_dir ) ){
@@ -213,6 +192,28 @@ function load_ec_pre(){
 		$db->upgrade( $upgrade_sql_array );
 		update_option( 'ec_option_db_version', EC_CURRENT_DB );
 	}
+	// STARTING 3.0.23 (post DB 30), CHANGED DB UPGRADE METHOD
+	if( !get_option( 'ec_option_db_new_version' ) ){ // If not set, lets start with 30 and upgrade from there
+		$ec_db_version = 30;
+	}else{
+		$ec_db_version = intval( get_option( 'ec_option_db_new_version' ) );
+	}
+	
+	if( $ec_db_version < EC_UPGRADE_DB ){
+		$db = new ec_db();
+		while( $ec_db_version < EC_UPGRADE_DB ){
+			$ec_db_version++; // Update version, upgrade using that script
+			
+			$update_sql_url = WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/sql/upgrade_' . $ec_db_version . '.sql';
+			if( file_exists( $update_sql_url ) ){
+				$f = fopen( $update_sql_url, "r") or exit( "file permissions not allowing us to upgrade with file '" . $update_sql_url . "'." );
+				$upgrade_sql = fread( $f, filesize( $update_sql_url ) );
+				$upgrade_sql_array = explode(';', $upgrade_sql);
+				$db->upgrade( $upgrade_sql_array );
+			}
+		}
+		update_option( 'ec_option_db_new_version', EC_UPGRADE_DB );
+	}
 	// END UPGRADE THE DB IF NEEDED
 	
 	// CREATE DATA FOLDER IF IT DOESN'T EXIST
@@ -230,8 +231,11 @@ function load_ec_pre(){
 			
 			// Now backup
 			wpeasycart_copyr( $from . "products", $to . "products" );
-			wpeasycart_copyr( $from . "design", $to . "design" );
-			wpeasycart_copyr( $from . "connection", $to . "connection" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/custom-theme/" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" );
+			mkdir( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/custom-layout/" );
 			
 		}
 	}
@@ -1610,6 +1614,8 @@ function ec_ajax_add_to_cart( ){
 	$db = new ec_db( );
 	
 	$tempcart = $db->add_to_cart( $product_id, $_SESSION['ec_cart_id'], $quantity, 0, 0, 0, 0, 0, "", "", "", 0.00, false, 1 );
+	do_action( 'wpeasycart_cart_updated' );
+	
 	$cart_arr = array( );
 	$total_items = 0;
 	$total_cost = 0;
@@ -1638,6 +1644,7 @@ function ec_ajax_cartitem_update( ){
 	if( is_numeric( $quantity ) ){
 		$db = new ec_db();
 		$db->update_cartitem( $tempcart_id, $session_id, $quantity );
+		do_action( 'wpeasycart_cart_updated' );
 	}
 	// UPDATE CART ITEM
 	
@@ -1696,6 +1703,7 @@ function ec_ajax_cartitem_delete( ){
 	// DELTE CART ITEM
 	$db = new ec_db();
 	$ret_data = $db->delete_cartitem( $tempcart_id, $session_id );
+	do_action( 'wpeasycart_cart_updated' );
 	// DELETE CART ITEM
 	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$order_totals = ec_get_order_totals( );
@@ -1735,13 +1743,11 @@ function ec_ajax_redeem_coupon_code( ){
 	$coupon_code = "";
 	if( isset( $_POST['couponcode'] ) )
 		$coupon_code = $_POST['couponcode'];
-		
-	$_SESSION['ec_couponcode'] = $coupon_code;
 	
 	$db = new ec_db();
 	$coupon = $db->redeem_coupon_code( $coupon_code );
 	// UPDATE COUPON CODE
-	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
+	$cart = new ec_cart( $coupon_code );
 	$order_totals = ec_get_order_totals( );
 	
 	echo $cart->total_items . "***" . 
@@ -1753,14 +1759,18 @@ function ec_ajax_redeem_coupon_code( ){
 			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
 			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
 	
-	if( $coupon && ( $coupon->max_redemptions == 999 || $coupon->times_redeemed < $coupon->max_redemptions ) )
+	if( $coupon && ( $coupon->max_redemptions == 999 || $coupon->times_redeemed < $coupon->max_redemptions ) ){
 		echo "***" . $coupon->message . "***" . "valid";
+		$_SESSION['ec_couponcode'] = $coupon_code;
 	
-	else if( $coupon && $coupon->times_redeemed >= $coupon->max_redemptions )
+	}else if( $coupon && $coupon->times_redeemed >= $coupon->max_redemptions ){
 		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_max_exceeded_coupon' ) . "***" . "invalid";
+		unset( $_SESSION['ec_couponcode'] );
 	
-	else
+	}else{
 		echo "***" . $GLOBALS['language']->get_text( 'cart_coupons', 'cart_invalid_coupon' ) . "***" . "invalid";
+		unset( $_SESSION['ec_couponcode'] );
+	}
 		
 	if( $order_totals->discount_total == 0 )
 		echo "***0";

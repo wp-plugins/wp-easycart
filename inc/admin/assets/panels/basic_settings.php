@@ -333,6 +333,24 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
               	</select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Use Image Magnification Box</em>By turning this option on/off you are showing or hiding the hover magnification box on the product details page.</span></a></span>
+    <span class="ec_setting_row_label">Use Image Magnification Box:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_magnification" id="select">
+                  <option value="1" <?php if (get_option('ec_option_show_magnification') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_show_magnification') == 0) echo ' selected'; ?>>No</option>
+              	</select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Popup Large Image View</em>By turning this option on/off you are allowing or disallowing the popup box with a large image view.</span></a></span>
+    <span class="ec_setting_row_label">Show Popup Large Image View:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_large_popup" id="select">
+                  <option value="1" <?php if (get_option('ec_option_show_large_popup') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_show_large_popup') == 0) echo ' selected'; ?>>No</option>
+              	</select></span>
+</div>
+
 <a id="cart-settings"></a>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 

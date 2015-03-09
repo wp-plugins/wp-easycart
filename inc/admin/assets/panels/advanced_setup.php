@@ -214,6 +214,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 </div>
 
 <div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>USPS ID</em>This is your USPS user ID, required by tax cloud to use their service.</span></a></span>
+    <span class="ec_setting_row_label">USPS ID:</span>
+    <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_usps_id" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_usps_id'); ?>" /></span>
+</div>
+
+<div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Origin Address</em>This is the shipping FROM address for all goods.</span></a></span>
     <span class="ec_setting_row_label">Origin Address:</span>
     <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_address" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_address'); ?>" /></span>

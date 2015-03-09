@@ -9,6 +9,7 @@ class ec_optionitem{
 	public $optionitem_price_multiplier;				// FLOAT 7,2
 	public $optionitem_price_onetime;					// FLOAT 7,2
 	public $optionitem_icon;							// VARCHAR 512
+	public $optionitem_initially_selected;				// BOOL
 	
 	function __construct( $option_id, $optionitem_data ){
 		$this->option_id = $option_id;
@@ -18,6 +19,7 @@ class ec_optionitem{
 		$this->optionitem_price_onetime  = $optionitem_data->optionitem_price_onetime ;
 		$this->optionitem_price_multiplier = $optionitem_data->optionitem_price_multiplier;
 		$this->optionitem_icon = $optionitem_data->optionitem_icon;
+		$this->optionitem_initially_selected = $optionitem_data->optionitem_initially_selected;
 	}
 	
 	public function get_optionitem_label( ){

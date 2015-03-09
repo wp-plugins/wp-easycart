@@ -81,6 +81,7 @@ if( $verified ) {
 				
 			}else{
 				$mysqli->update_order_status( $order_id, "10" );
+				do_action( 'wpeasycart_order_paid', $orderid );
 				
 				// send email
 				$db_admin = new ec_db_admin( );
@@ -98,6 +99,7 @@ if( $verified ) {
 			
 		} else if( $_POST['payment_status'] == 'Refunded' ){ 
 			$mysqli->update_order_status( $order_id, "16" );
+			do_action( 'wpeasycart_full_order_refund', $orderid );
 			
 			// Check for gift card to refund
 			$order_details = $mysqli->get_results( $mysqli->prepare( "SELECT is_giftcard, giftcard_id FROM ec_orderdetail WHERE order_id = %d", $order_id ) );

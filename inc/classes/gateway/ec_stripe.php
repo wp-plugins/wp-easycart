@@ -49,7 +49,6 @@ class ec_stripe extends ec_gateway{
 	function handle_gateway_response( $response ){
 		
 		$status = $response->error;
-		$failure_message = $response->error->message;
 		
 		if( $status == NULL )
 			$this->is_success = 1;
@@ -59,7 +58,7 @@ class ec_stripe extends ec_gateway{
 		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Stripe", print_r( $response, true ) );
 		
 		if( !$this->is_success )
-			$this->error_message = $failure_message;
+			$this->error_message = $response->error->message;
 			
 	}
 	
