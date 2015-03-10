@@ -38,6 +38,10 @@ if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/ec_hooks.php" ) )
 
 function ec_activate(){
 	
+	if( !get_option( 'ec_option_db_version' ) ){
+		add_option( 'ec_option_db_new_version', EC_UPGRADE_DB );
+	}
+	
 	// ADD WORDPRESS OPTIONS
 	$wpoptions = new ec_wpoptionset();
 	$wpoptions->add_options();
@@ -52,10 +56,6 @@ function ec_activate(){
 	$install_sql = fread( $f, filesize( $install_sql_url ) );
 	$install_sql_array = explode(';', $install_sql);
 	$mysqli->install( $install_sql_array );
-	
-	// First time install, we should set our DB values to most recent.
-	update_option( 'ec_option_db_version', EC_CURRENT_DB );
-	update_option( 'ec_option_db_new_version', EC_UPGRADE_DB );
 	// END SQL INSTALLER
 	
 	// UPDATE SITE URL
