@@ -108,10 +108,11 @@ class ec_admin_shipping{
 			}
 			
 			$canadapost = new ec_canadapost( $settings );
-			if( $canadapost->get_rate_test( "DOM.PC", $setting_row->canada_ship_from_zip, "CA", "1" ) ){
+			$message = $canadapost->get_rate_test( "DOM.PC", $setting_row->canada_ship_from_zip, "CA", "1" );
+			
+			if( $message == "SUCCESS" ){
 				$result = 1;
 			}else{
-				$message = "Rate test failed while connecting to Canada Post. Usually this happens when invalid credentials are entered.";
 				$result = 3;
 			}
 		}else{
@@ -127,11 +128,11 @@ class ec_admin_shipping{
 		}else if( $result == 2 ){	
 			//if problem (yellow light)
 			$finalresults->success_code = 2;
-			$finalresults->success_message = $message;
+			$finalresults->success_message = "Error occured with the response: " . $message;
 		}else if( $result == 3 ) {	
 			//if error (red light)
 			$finalresults->success_code = 3;
-			$finalresults->success_message = $message;
+			$finalresults->success_message = "Error occured with the response: " . $message;
 		}
 		$returnArray[] = $finalresults;
 		return $returnArray;

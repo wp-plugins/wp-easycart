@@ -119,6 +119,9 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.24 =
+* Fix - Canada post with contract id was failing and has been corrected.
+* Fix - Live editor was not updating image heights or columns on screen, refresh was needed, but this has been fixed.
 = 3.0.23 =
 * New Feature - Turn on/off the magnification box on the product details page.
 * New Feature - Turn on/off the pop up view for large image view on the product details page.

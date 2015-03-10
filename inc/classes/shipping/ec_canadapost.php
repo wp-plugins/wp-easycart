@@ -26,7 +26,7 @@ class ec_canadapost{
 			$this->canadapost_url = "https://soa-gw.canadapost.ca/rs/ship/price";
 	}
 	
-	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10 ){
+	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10, $is_test = false ){
 		
 		if( $weight == 0 )
 			return "0.00";
@@ -42,7 +42,7 @@ class ec_canadapost{
 				<customer-number>" . $this->canadapost_customer_number . "</customer-number>";
 				if( $this->canadapost_contract_id ){ 
 				$xmlRequest .= "
-				<contract-id>" . $this->canadapost_customer_number . "</customer-number>";
+				<contract-id>" . $this->canadapost_contract_id . "</contract-id>";
 				}
 				$xmlRequest .= "
 				<parcel-characteristics>
@@ -90,6 +90,9 @@ class ec_canadapost{
 		$response = curl_exec($curl); // Execute REST Request
 		curl_close($curl);
 		
+		if( $is_test )
+			return $response;
+		
 		return $this->process_response( $response );
 		
 	}
@@ -110,7 +113,7 @@ class ec_canadapost{
 				<customer-number>" . $this->canadapost_customer_number . "</customer-number>";
 				if( $this->canadapost_contract_id ){ 
 				$xmlRequest .= "
-				<contract-id>" . $this->canadapost_customer_number . "</customer-number>";
+				<contract-id>" . $this->canadapost_contract_id . "</contract-id>";
 				}
 				$xmlRequest .= "
 				<parcel-characteristics>
@@ -161,11 +164,25 @@ class ec_canadapost{
 	
 	public function get_rate_test( $ship_code, $destination_zip, $destination_country, $weight ){
 		
-		$rate = $this->get_rate( $ship_code, $destination_zip, $destination_country, $weight );
-		if( $rate != "ERROR" )
-			return true;
-		else
-			return false;
+		$response = $this->get_rate( $ship_code, $destination_zip, $destination_country, $weight, 10, 10, 10, true );
+		
+		$xml =  new SimpleXMLElement( $response );
+		
+		if( isset( $xml->message ) && isset( $xml->message->code ) ){
+			
+			$db = new ec_db( );
+			$db->insert_response( 0, 1, "Canada Post Error", (string) $xml->message->description );
+			
+			return (string) $xml->message->description;
+			
+		}else if( isset( $xml->{'price-quote'} ) )
+			return "SUCCESS";
+		
+		else{
+			
+			return "error";
+			
+		}
 		
 	}
 	

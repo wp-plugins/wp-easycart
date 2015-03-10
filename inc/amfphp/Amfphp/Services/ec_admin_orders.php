@@ -219,7 +219,7 @@ class ec_admin_orders{
 		else if( $status == "16" )
 			do_action( 'wpeasycart_full_order_refund', $orderid );
 		else if( $status == "17" )
-				do_action( 'wpeasycart_partial_order_refund', $orderid );
+			do_action( 'wpeasycart_partial_order_refund', $orderid );
 		
 		if( $rows_affected ){
 			return array( "success" );

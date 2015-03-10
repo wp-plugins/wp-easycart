@@ -772,13 +772,61 @@ jQuery( document ).ready( function( ){
 		
 	} );
 	
-	jQuery( document.getElementById( 'ec_page_options_columns_smartphone' ), document.getElementById( 'ec_page_options_columns_tablet' ), document.getElementById( 'ec_page_options_columns_tablet_wide' ), document.getElementById( 'ec_page_options_columns_laptop' ), document.getElementById( 'ec_page_options_columns_desktop' ) ).change( function( ){
+	jQuery( document.getElementById( 'ec_page_options_columns_smartphone' ) ).change( function( ){
 		
 		ec_admin_resizer_function( );
 		
 	} );
 	
-	jQuery( document.getElementById( 'ec_page_options_image_height_smartphone' ), document.getElementById( 'ec_page_options_image_height_tablet' ), document.getElementById( 'ec_page_options_image_height_tablet_wide' ), document.getElementById( 'ec_page_options_image_height_laptop' ), document.getElementById( 'ec_page_options_image_height_desktop' ) ).bind( 'keyup change mouseup scroll mousewheel', function( ){
+	jQuery( document.getElementById( 'ec_page_options_columns_tablet' ) ).change( function( ){
+		
+		ec_admin_resizer_function( );
+	
+	} );
+	
+	jQuery( document.getElementById( 'ec_page_options_columns_tablet_wide' ) ).change( function( ){
+		
+		ec_admin_resizer_function( );
+		
+	} );
+	
+	jQuery( document.getElementById( 'ec_page_options_columns_laptop' ) ).change( function( ){
+		
+		ec_admin_resizer_function( );
+		
+	} );
+	
+	jQuery( document.getElementById( 'ec_page_options_columns_desktop' ) ).change( function( ){
+		
+		ec_admin_resizer_function( );
+		
+	} );
+	
+	jQuery( document.getElementById( 'ec_page_options_image_height_smartphone' ) ).bind( 'keyup change mouseup scroll mousewheel', function( ){
+		
+		ec_admin_resizer_function( );
+		
+	} );
+	
+	jQuery( document.getElementById( 'ec_page_options_image_height_tablet' ) ).bind( 'keyup change mouseup scroll mousewheel', function( ){
+		
+		ec_admin_resizer_function( );
+		
+	} );
+	
+	jQuery( document.getElementById( 'ec_page_options_image_height_tablet_wide' ) ).bind( 'keyup change mouseup scroll mousewheel', function( ){
+		
+		ec_admin_resizer_function( );
+		
+	} );
+	
+	jQuery( document.getElementById( 'ec_page_options_image_height_laptop' ) ).bind( 'keyup change mouseup scroll mousewheel', function( ){
+		
+		ec_admin_resizer_function( );
+		
+	} );
+	
+	jQuery( document.getElementById( 'ec_page_options_image_height_desktop' ) ).bind( 'keyup change mouseup scroll mousewheel', function( ){
 		
 		ec_admin_resizer_function( );
 		
