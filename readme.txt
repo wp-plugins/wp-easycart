@@ -1,6 +1,6 @@
 === WordPress Shopping Cart===
 Contributors: levelfourdevelopment
-Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
+Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1.1
 Stable tag: 3.0.23
@@ -8,12 +8,12 @@ License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
 
-WP EasyCart is an easy to use WordPress Shopping Cart Plugin that can sell products online with only a few clicks!
+WP EasyCart is an easy to use WordPress eCommerce Shopping Cart Plugin that can sell products online with only a few clicks!
 
 == Description ==
 
 WP EasyCart eCommerce plugin is a simple shopping cart plugin that installs into new or existing WordPress blogs and websites. 
-Get a full WordPress Shopping Cart system within minutes! Sell retail products, digital downloadable goods, gift cards and more!  And now with WordPress, the powerful features are still very easy to administrate! 
+Get a full WordPress eCommerce Shopping Cart system within minutes! Sell retail products, digital downloadable goods, gift cards and more!  And now with WordPress, the powerful features are still very easy to administrate! 
 
 WP EasyCart provides administrative software, so there is no need to use WordPress as a management system for your shopping cart. Desktop PC, Mac, iPad, and Android software is available to download and allows you to control the myriad of options the shopping cart software has to offer.
 
@@ -28,17 +28,17 @@ WP EasyCart provides administrative software, so there is no need to use WordPre
 
 
 = WORKS IN NEARLY EVERY THEME =
-WP EasyCart will work in nearly every theme.  The entire shopping cart is a matter of setting up 3 pages for the store, cart/checkout, and customer account areas.  Within 5 minutes the shopping cart plugin can be installed and running.  
+WP EasyCart will work in nearly every theme.  The entire ecommerce shopping cart is a matter of setting up 3 pages for the store, cart/checkout, and customer account areas.  Within 5 minutes the shopping cart plugin can be installed and running.  
 
 Some themes may require minor adjustments due to variations in how themes are developed, but nearly any professional theme will work with the cart plugin.
 
 = MENUS, WIDGETS, AND MORE =
-WP EasyCart gives you many pre-built widgets ready to integrate into your website from the start.  Get horizontal and vertical menus widgets, search widgets, price and manufacturer filtering widgets, category listing widgets, and special and hot item widgets! 
+WP EasyCart gives you many pre-built widgets ready to integrate into your ecommerce website from the start.  Get horizontal and vertical menus widgets, search widgets, price and manufacturer filtering widgets, category listing widgets, and special and hot item widgets! 
 
-The shopping cart even allows you to utilize the standard WordPress menus system to create your own menu structure and tie into your existing theme for a seamless look.
+The ecommerce shopping cart even allows you to utilize the standard WordPress menus system to create your own menu structure and tie into your existing theme for a seamless look.
 
 = FEATURES =
-Whether you are a large scale business or a startup looking to leverage WordPress as your website, WP EasyCart has you covered.  Our feature list is large and proven, with the help of years of e-commerce experience and development making it a solid performer.  For a full feature list, please visit the [WP EasyCart website]( http://www.wpeasycart.com/wordpress_shopping_cart_features/ "WP EasyCart Shopping Cart Plugin") for more information.
+Whether you are a large scale business or a startup looking to leverage WordPress as your website, WP EasyCart has you covered.  Our feature list is large and proven, with the help of years of ecommerce experience and development making it a solid performer.  For a full feature list, please visit the [WP EasyCart website]( http://www.wpeasycart.com/wordpress_shopping_cart_features/ "WP EasyCart Shopping Cart Plugin") for more information.
 
 Key EasyCart features:
 
@@ -53,9 +53,9 @@ Key EasyCart features:
 
 
 = CUSTOM DEVELOPMENT = 
-Don't see what you are looking for?  Perhaps you want a custom design shopping cart or integration into your existing site and need professional EasyCart developers or designers to get you quickly up and running?
+Don't see what you are looking for?  Perhaps you want a custom design ecommerce shopping cart or integration into your existing site and need professional EasyCart developers or designers to get you quickly up and running?
 
-WP EasyCart is a full service agency and offers custom services such as design, cart development, shopping cart payment gateway integration, you name it.  Even if you have a small need such as a custom button somewhere, let our team help get your e-commerce package right for you.  For more information, please visit the [WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") for more information.
+WP EasyCart is a full service agency and offers custom services such as design, cart development, ecommerce, shopping cart payment gateway integration, you name it.  Even if you have a small need such as a custom button somewhere, let our team help get your ecommerce shopping cart package right for you.  For more information, please visit the [WP EasyCart website]( http://www.wpeasycart.com "WP EasyCart Shopping Cart Plugin") for more information.
 
 
 == Installation ==
@@ -93,12 +93,12 @@ Absolutely! If you do not need to sell anything, but would like to leverage our 
 FREE version comes from wordpress and offers limited features for you test.  Manual payments is accepted, but coupons, live shipping rates, promotions are not included.  Lite version jumps up to 3rd party processing (paypal standard).  The Full version jumps up to coupons, promotions, live shipping, and full payment gateways.
 
 = How does a license work with your software? =
-The free plugin is the full shopping cart software version; however, the administrative software that is downloaded from our website is licensed software. The administrative software will allow a certain number of products and features to be used in the cart software. You may continue to run the WordPress plugin, but must purchase a license to use our administrative software.
+The free plugin is the full ecommerce shopping cart software version; however, the administrative software that is downloaded from our website is licensed software. The administrative software will allow a certain number of products and features to be used in the cart software. You may continue to run the WordPress plugin, but must purchase a license to use our administrative software.
 Each license is good for one website URL or WordPress installation. You may transfer a license from a development environment to a production environment at any time; it is your license once you purchase one.
 Licensing gives you features such as coupons, promotions, live shipping rate calculators and more. Plus you will receive support from our staff individually rather than through our community open support systems. For more information on licensing, you can view our website.
 
 = Do I have to pay monthly? =
-Not to us. Our standard shopping cart plugin is a one-time purchase. Your payment gateway provider such as PayPal, Authorize.net, FirstData or others may or may not have monthly fees, but nothing through EasyCart.
+Not to us. Our standard ecommerce shopping cart plugin is a one-time purchase. Your payment gateway provider such as PayPal, Authorize.net, FirstData or others may or may not have monthly fees, but nothing through EasyCart.
 If you purchase a monthly hosted plan, then we do have a monthly charge program for those who prefer this method.
 
 = Can I display specials on any page? =
@@ -112,7 +112,7 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Screenshots ==
 
-1. Professionally shopping cart fits in nearly any theme!
+1. Professionally ecommerce shopping cart fits in nearly any theme!
 2. Beautiful product option and image displays!
 3. Huge selection of features, coupons, promotions, and live shipping options!
 4. Complete administrative software for desktops and mobile devices!
