@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple ecommerce solution that installs into new or existing WordPress blogs. Customers purchase directly from your store! Get a full ecommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/3.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.23
+ * Version: 3.0.24
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.23
+ * @version 3.0.24
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,9 +20,9 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_23' );
+define( 'EC_CURRENT_VERSION', '3_0_24' );
 define( 'EC_CURRENT_DB', '1_30' );
-define( 'EC_UPGRADE_DB', '31' );
+define( 'EC_UPGRADE_DB', '32' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -1649,45 +1649,51 @@ function ec_ajax_cartitem_update( ){
 	// UPDATE CART ITEM
 	
 	// GET NEW CART ITEM INFO
-	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
-	
-	$unit_price = 0;
-	$total_price = 0;
-	$new_quantity = 0;
-	for( $i=0; $i<count( $cart->cart ); $i++ ){
-		if( $cart->cart[$i]->cartitem_id == $tempcart_id ){
-			$unit_price = $cart->cart[$i]->unit_price;
-			$total_price = $cart->cart[$i]->total_price;
-			$new_quantity = $cart->cart[$i]->quantity;
-		}
-	}
-	// GET NEW CART ITEM INFO
-	$order_totals = ec_get_order_totals( );
-	
-	echo $GLOBALS['currency']->get_currency_display( $unit_price ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $total_price ) . "***" . 
-			$new_quantity . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" .  
-			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ) . "***" .
-			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
-			
-	if( $cart->total_items > 0 ){
-		
-		if( $cart->total_items != 1 ){
-			$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label_plural' );
-		}else{
-			$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label' );
-		}
-		
-		echo "***" . $cart->total_items . ' ' . $items_label . ' ' . $GLOBALS['currency']->get_currency_display( $cart->subtotal );
+	if( isset( $_POST['ec_v3_24'] ) ){
+		$return_array = ec_get_cart_data( );
+								
+		echo json_encode( $return_array );
 	}else{
-		echo "***" . $cart->total_items . ' ' . $items_label;
+		$cart = new ec_cart( $_SESSION['ec_cart_id'] );
+		
+		$unit_price = 0;
+		$total_price = 0;
+		$new_quantity = 0;
+		for( $i=0; $i<count( $cart->cart ); $i++ ){
+			if( $cart->cart[$i]->cartitem_id == $tempcart_id ){
+				$unit_price = $cart->cart[$i]->unit_price;
+				$total_price = $cart->cart[$i]->total_price;
+				$new_quantity = $cart->cart[$i]->quantity;
+			}
+		}
+		// GET NEW CART ITEM INFO
+		$order_totals = ec_get_order_totals( );
+		
+		echo $GLOBALS['currency']->get_currency_display( $unit_price ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( $total_price ) . "***" . 
+				$new_quantity . "***" . 
+				$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" .  
+				$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ) . "***" .
+				$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
+				
+		if( $cart->total_items > 0 ){
+			
+			if( $cart->total_items != 1 ){
+				$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label_plural' );
+			}else{
+				$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label' );
+			}
+			
+			echo "***" . $cart->total_items . ' ' . $items_label . ' ' . $GLOBALS['currency']->get_currency_display( $cart->subtotal );
+		}else{
+			echo "***" . $cart->total_items . ' ' . $items_label;
+		}
+		echo "***" . $cart->total_items;
 	}
-	echo "***" . $cart->total_items;
 	
 	die(); // this is required to return a proper result
 }
@@ -1704,32 +1710,40 @@ function ec_ajax_cartitem_delete( ){
 	$db = new ec_db();
 	$ret_data = $db->delete_cartitem( $tempcart_id, $session_id );
 	do_action( 'wpeasycart_cart_updated' );
-	// DELETE CART ITEM
-	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
-	$order_totals = ec_get_order_totals( );
 	
-	echo $cart->total_items . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" .  
-			$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
-			$GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ) . "***" .
-			$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
-	
-	if( $cart->total_items > 0 ){
+	// GET NEW CART ITEM INFO
+	if( isset( $_POST['ec_v3_24'] ) ){
+		$return_array = ec_get_cart_data( );
+								
+		echo json_encode( $return_array );
+	}else{
+		$cart = new ec_cart( $_SESSION['ec_cart_id'] );
+		$order_totals = ec_get_order_totals( );
 		
+		echo $cart->total_items . "***" . 
+				$GLOBALS['currency']->get_currency_display( $order_totals->sub_total ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( $order_totals->tax_total ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ) . "***" .  
+				$GLOBALS['currency']->get_currency_display( $order_totals->duty_total ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( $order_totals->vat_total ) . "***" . 
+				$GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ) . "***" .
+				$GLOBALS['currency']->get_currency_display( $order_totals->grand_total );
+			
 		if( $cart->total_items != 1 ){
 			$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label_plural' );
 		}else{
 			$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label' );
 		}
 		
-		echo "***" . $cart->total_items . ' ' . $items_label . ' ' . $GLOBALS['currency']->get_currency_display( $cart->subtotal );
-	}else{
-		echo "***" . $cart->total_items . ' ' . $items_label;
+		if( $cart->total_items > 0 ){
+			echo "***" . $cart->total_items . ' ' . $items_label . ' ' . $GLOBALS['currency']->get_currency_display( $cart->subtotal );
+		
+		}else{
+			echo "***" . $cart->total_items . ' ' . $items_label;
+		
+		}
+		echo "***" . $cart->total_items;
 	}
-	echo "***" . $cart->total_items;
 	
 	die(); // this is required to return a proper result
 	
@@ -2140,6 +2154,38 @@ function ec_get_order_totals( ){
 	$discount = new ec_discount( $cart, $cart->subtotal, $shipping->get_shipping_price( ), $coupon_code, $gift_card, $GLOBALS['currency']->get_number_only( $grand_total ) + $GLOBALS['currency']->get_number_only( $tax->vat_total ) );
 	$order_totals = new ec_order_totals( $cart, $user, $shipping, $tax, $discount );
 	return $order_totals;
+}
+
+function ec_get_cart_data( ){
+	// GET NEW CART ITEM INFO
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
+	$cart_array = array( );
+	
+	for( $i=0; $i<count( $cart->cart ); $i++ ){
+		$cart_item = array( "id" => $cart->cart[$i]->cartitem_id,
+				"unit_price" => $GLOBALS['currency']->get_currency_display( $cart->cart[$i]->unit_price ),
+				"total_price" => $GLOBALS['currency']->get_currency_display( $cart->cart[$i]->total_price ),
+				"quantity" => $cart->cart[$i]->quantity );
+		$cart_array[] = $cart_item;
+	}
+	// GET NEW CART ITEM INFO
+	$order_totals = ec_get_order_totals( );
+	
+	$order_totals_array = array( 
+			"sub_total" => $GLOBALS['currency']->get_currency_display( $order_totals->sub_total ), 
+			"tax_total" => $GLOBALS['currency']->get_currency_display( $order_totals->tax_total ),
+			"shipping_total" => $GLOBALS['currency']->get_currency_display( $order_totals->shipping_total ),
+			"duty_total" => $GLOBALS['currency']->get_currency_display( $order_totals->duty_total ),
+			"vat_total" => $GLOBALS['currency']->get_currency_display( $order_totals->vat_total ),
+			"discount_total" => $GLOBALS['currency']->get_currency_display( (-1) * $order_totals->discount_total ),
+			"grand_total" => $GLOBALS['currency']->get_currency_display( $order_totals->grand_total )
+			);
+	
+	$final_array = array( 	"cart" => $cart_array,
+							"order_totals" => $order_totals_array,
+							"items_total" => $cart->total_items );
+							
+	return $final_array;
 }
 
 add_action( 'wp_ajax_ec_ajax_get_cart', 'ec_ajax_get_cart' );

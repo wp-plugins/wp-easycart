@@ -118,12 +118,20 @@ class ec_subscription{
 			
         $message = ob_get_clean();
 		
-		if( get_option( 'ec_option_use_wp_mail' ) ){
+		$email_send_method = get_option( 'ec_option_use_wp_mail' );
+		$email_send_method = apply_filters( 'wpeasycart_email_method', $email_send_method );
+		
+		if( $email_send_method == "1" ){
 			wp_mail( $user->email, $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $order->order_id, $message, implode("\r\n", $headers) );
 			wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $order->order_id, $message, implode("\r\n", $headers) );
-		}else{
+		
+		}else if( $email_send_method == "0" ){
 			mail( $user->email, $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $order->order_id, $message, implode("\r\n", $headers) );
 			mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $order->order_id, $message, implode("\r\n", $headers) );
+			
+		}else{
+			do_action( 'wpeasycart_custom_subscription_order_email', get_option( 'ec_option_order_from_email' ), $user->email, get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $order->order_id, $message );
+			
 		}
 		
 	}

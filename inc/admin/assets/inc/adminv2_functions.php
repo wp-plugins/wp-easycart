@@ -1325,6 +1325,8 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_tax_cloud_zip', $_POST['ec_option_tax_cloud_zip'] );
 	update_option( 'ec_option_tax_cloud_usps_id', $_POST['ec_option_tax_cloud_usps_id'] );
 	
+	do_action( 'wpeasycart_admin_process_advanced_options' );
+	
 	//update sizes
 	$responsive_sizes = get_option( 'ec_option_responsive_sizes' ); 
 	$sizes_split = explode( ":::", $responsive_sizes );

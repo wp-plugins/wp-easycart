@@ -263,7 +263,7 @@ class ec_ups{
 		$xml = new SimpleXMLElement($result);
 		
 		for( $i=0; $i<count( $xml->RatedShipment ); $i++ ){
-			$rates[] = array( 'rate_code' => $xml->RatedShipment[$i]->Service->Code[0][0], 'rate' => number_format( floatval( $xml->RatedShipment[$i]->TotalCharges->MonetaryValue ) * $this->ups_conversion_rate, 2, ".", "," ) );
+			$rates[] = array( 'rate_code' => $xml->RatedShipment[$i]->Service->Code[0][0], 'rate' => number_format( floatval( $xml->RatedShipment[$i]->TotalCharges->MonetaryValue ) * $this->ups_conversion_rate, 2, ".", "," ), 'delivery_days' =>  $xml->RatedShipment[$i]->GuaranteedDaysToDelivery );
 		}
 		
 		return $rates;

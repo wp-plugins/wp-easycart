@@ -48,10 +48,7 @@ if( $is_preview_holder && $is_admin ){ ?>
 			<iframe src="<?php the_permalink( ); ?>?model_number=<?php echo $this->product->model_number; ?>&amp;preview=true" width="100%" height="100%" id="ec_admin_preview_iframe"></iframe>
 		</div>
 	</div>
-</div>
-
-<?php }else if( $is_admin && !$safari && !$is_preview ){ ?>
-
+</div><?php }else if( $is_admin && !$safari && !$is_preview ){ ?>
 <div class="ec_admin_video_container" id="ec_admin_video_container"<?php if( !$show_video ){ ?> style="display:none;"<?php }?>>
 	<div class="ec_admin_video_content">
 		<div class="ec_admin_video_padding">
@@ -60,40 +57,32 @@ if( $is_preview_holder && $is_admin ){ ?>
                 	<h3>WP EasyCart Design Help</h3>
                     <h5>Do you need help in designing your perfect store? Watch our short video and start on your way to success.</h5>
                     <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( ); return false;">hide it forever</a></div>
-    	        	
                     <video width="853" height="480" controls>
 						<source src="http://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                    
     	        	<div class="ec_admin_video_close"><input type="button" onclick="ec_admin_close_video_screen( );" value="x"></div>
                 </div>
     	    </div>
     	</div>
 	</div>
 </div>
-
 <div class="ec_admin_successfully_update_container" id="ec_admin_page_updated">
 	<div class="ec_admin_successfully_updated">
     	<div>Your Page Settings Have Been Updated Successfully. The Page Will Now Reload.</div>
     </div>
-</div>
-        
+</div>  
 <div class="ec_admin_loader_container" id="ec_admin_page_updated_loader">
 	<div class="ec_admin_loader">
     	<div>Updating Your Page Options...</div>
     </div>
 </div>
-
 <div class="ec_admin_loader_bg" id="ec_admin_loader_bg"></div>
-
 <div id="ec_page_editor" class="ec_slideout_editor ec_display_editor_false ec_details_editor">
 	<div id="ec_page_editor_openclose_button" class="ec_slideout_openclose" data-post-id="<?php global $post; echo $post->ID; ?>">
     	<div class="dashicons dashicons-admin-generic"></div>
     </div>
-    
     <div class="ec_admin_preview_button"><a href="<?php the_permalink( ); ?>?model_number=<?php echo $this->product->model_number; ?>&amp;previewholder=true" target="_blank">Show Device Preview</a></div>
-    
     <div class="ec_admin_page_size">Product Details Options</div>
     <div><strong>Main Content Color</strong></div>
     <div><input id="ec_option_details_main_color" type="color" value="<?php echo get_option( 'ec_option_details_main_color' ); ?>" /></div>
@@ -138,13 +127,9 @@ if( $is_preview_holder && $is_admin ){ ?>
     
 </div>
 <div id="ec_current_media_size"></div>
-
-<script>
-function ec_admin_save_product_details_options( ){
-	
+<script>function ec_admin_save_product_details_options( ){
 	jQuery( "#ec_admin_page_updated_loader" ).show( );
 	jQuery( "#ec_admin_loader_bg" ).show( );
-	
 	var data = {
 		action: 'ec_ajax_save_product_details_options',
 		ec_option_details_main_color: jQuery( '#ec_option_details_main_color' ).val( ),
@@ -155,31 +140,23 @@ function ec_admin_save_product_details_options( ){
 		ec_option_details_columns_smartphone: jQuery( '#ec_option_details_columns_smartphone' ).val( ),
 		ec_option_use_dark_bg: jQuery( '#ec_option_use_dark_bg' ).val( )
 	}
-	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function(data){ 
 		jQuery( "#ec_admin_page_updated_loader" ).hide( );
 		jQuery( "#ec_admin_page_updated" ).show( );
 		jQuery( "#ec_admin_loader_bg" ).fadeOut( 'slow' );
 		location.reload( );
 	} } );
-	
 	jQuery( '#ec_page_editor' ).animate( { left:'-290px' }, {queue:false, duration:220} ).removeClass( 'ec_display_editor_true' ).addClass( 'ec_display_editor_false' );
-	
-}
-</script>
-
-<?php }// Close editor content ?>
-
-
-<?php /* START PRODUCT DETAILS PAGE */ ?>
-<section class="ec_product_details_page">
-	
-    <?php /* START PRODUCT BREADCRUMBS */ ?>
-    <?php if( get_option( 'ec_option_show_breadcrumbs' ) ){ ?>
+}</script><?php }// Close editor content ?><?php 
+/* START PRODUCT DETAILS PAGE */ 
+?>
+<section class="ec_product_details_page"><?php if( $this->product->has_promotion_text( ) ){ ?>
+	<div class="ec_cart_success"><div><?php $this->product->display_promotion_text( ); ?></div></div><?php }?><?php 
+	/* START PRODUCT BREADCRUMBS */ 
+	?><?php if( get_option( 'ec_option_show_breadcrumbs' ) ){ ?>
 	<h4 class="ec_details_breadcrumbs" id="ec_breadcrumbs_type1">
     	<a href="<?php echo home_url( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_home_link' ); ?></a> / 
-        <a href="<?php echo $this->store_page; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_store_link' ); ?></a> 
-		<?php if( $this->product->menuitems[0]->menulevel1_1_name ){ ?> / 
+        <a href="<?php echo $this->store_page; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_store_link' ); ?></a> <?php if( $this->product->menuitems[0]->menulevel1_1_name ){ ?> / 
         <a href="<?php if( !get_option( 'ec_option_use_old_linking_style' ) && $postid != "0" ){ 
 			echo get_permalink( $this->product->menuitems[0]->menulevel1_1_post_id ); 
 		}else{ 
@@ -197,11 +174,9 @@ function ec_admin_save_product_details_options( ){
 		}else{
 			echo $this->store_page . $this->permalink_divider . "subsubmenuid=" . $this->product->menuitems[0]->menulevel3_1_menu_id; 
 		} ?>"><?php echo $this->product->menuitems[0]->menulevel3_1_name; ?></a><?php } } }?></h4>
-    <?php } ?>
-    
-    <?php /* START MAIN DATA AREA FOR PRODUCT */ ?>
+    <?php } ?><?php 
+	/* START MAIN DATA AREA FOR PRODUCT */ ?>
     <div class="ec_details_content">
-    	
         <?php /* START MOBILE SIZED CONTENT REGION */ ?>
         <div class="ec_details_mobile_title_area">
         	<h1 class="ec_details_title"><?php echo $this->product->title; ?></h1>
@@ -222,10 +197,9 @@ function ec_admin_save_product_details_options( ){
         	<div class="ec_details_clear"></div>
         </div>
         <?php /* END MOBILE SIZED CONTENT REGION */ ?>
-        
         <?php /* START PRODUCT IMAGES AREA */ ?>
         <div class="ec_details_images">
-        	<div class="ec_details_main_image"<?php if( get_option( 'ec_option_show_large_popup' ) ){?> onclick="ec_details_show_image_popup( );"<?php }else{ ?> style="cursor:inherit;"<?php }?>><img src="<?php echo $this->product->get_first_image_url( ); ?>" /></div>
+        	<div class="ec_details_main_image"<?php if( get_option( 'ec_option_show_large_popup' ) ){?> onclick="ec_details_show_image_popup( );"<?php }else{ ?> style="cursor:inherit;"<?php }?>><img src="<?php echo $this->product->get_first_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
             
 			<?php /* START MAIN IMAGE THUMBNAILS */ ?>
             <?php /* START DISPLAY FOR OPTION ITEM IMAGES USEAGE */ ?>
@@ -234,11 +208,11 @@ function ec_admin_save_product_details_options( ){
 				for( $i=0; $i<count( $this->product->images->imageset ); $i++ ){
 					?>
                     <div class="ec_details_thumbnails<?php if( $i > 0 ){ ?> ec_inactive<?php }?><?php if( $this->product->images->imageset[$i]->image2 == "" ){ ?> ec_no_thumbnails<?php }?>" id="ec_details_thumbnails_<?php echo $this->product->images->imageset[$i]->optionitem_id; ?>"<?php if( trim( $this->product->images->imageset[$i]->image2 ) == "" ){ ?> style="display:none !important;"<?php }?>>
-                        <div class="ec_details_thumbnail ec_active"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics1/" . $this->product->images->imageset[$i]->image1 ); ?>" /></div>
-                        <?php if( trim( $this->product->images->imageset[$i]->image2 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics2/" . $this->product->images->imageset[$i]->image2 ); ?>" /></div><?php } ?>
-                        <?php if( trim( $this->product->images->imageset[$i]->image3 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics3/" . $this->product->images->imageset[$i]->image3 ); ?>" /></div><?php } ?>
-                        <?php if( trim( $this->product->images->imageset[$i]->image4 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics4/" . $this->product->images->imageset[$i]->image4 ); ?>" /></div><?php } ?>
-                        <?php if( trim( $this->product->images->imageset[$i]->image5 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics5/" . $this->product->images->imageset[$i]->image5 ); ?>" /></div><?php } ?>
+                        <div class="ec_details_thumbnail ec_active"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics1/" . $this->product->images->imageset[$i]->image1 ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
+                        <?php if( trim( $this->product->images->imageset[$i]->image2 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics2/" . $this->product->images->imageset[$i]->image2 ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+                        <?php if( trim( $this->product->images->imageset[$i]->image3 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics3/" . $this->product->images->imageset[$i]->image3 ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+                        <?php if( trim( $this->product->images->imageset[$i]->image4 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics4/" . $this->product->images->imageset[$i]->image4 ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+                        <?php if( trim( $this->product->images->imageset[$i]->image5 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics5/" . $this->product->images->imageset[$i]->image5 ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
                     </div>
                     <?php
 				}
@@ -250,11 +224,11 @@ function ec_admin_save_product_details_options( ){
 			/* START DISPLAY FOR BASIC IMAGE THUMBNAILS */
 			}else if( trim( $this->product->images->image2 ) != "" ){ ?>
             <div class="ec_details_thumbnails">
-            	<div class="ec_details_thumbnail ec_active"><img src="<?php echo $this->product->get_first_image_url( ); ?>" /></div>
-            	<div class="ec_details_thumbnail"><img src="<?php echo $this->product->get_second_image_url( ); ?>" /></div>
-            	<?php if( trim( $this->product->images->image3 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo $this->product->get_third_image_url( ); ?>" /></div><?php } ?>
-            	<?php if( trim( $this->product->images->image4 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo $this->product->get_fourth_image_url( ); ?>" /></div><?php } ?>
-            	<?php if( trim( $this->product->images->image5 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo $this->product->get_fifth_image_url( ); ?>" /></div><?php } ?>
+            	<div class="ec_details_thumbnail ec_active"><img src="<?php echo $this->product->get_first_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
+            	<div class="ec_details_thumbnail"><img src="<?php echo $this->product->get_second_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
+            	<?php if( trim( $this->product->images->image3 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo $this->product->get_third_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+            	<?php if( trim( $this->product->images->image4 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo $this->product->get_fourth_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+            	<?php if( trim( $this->product->images->image5 ) != "" ){ ?><div class="ec_details_thumbnail"><img src="<?php echo $this->product->get_fifth_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
             </div>
             <?php }?>
             <?php /* END MAIN IMAGE THUMBNAILS */ ?>
@@ -273,7 +247,7 @@ function ec_admin_save_product_details_options( ){
             	<div class="ec_details_large_popup_content">
                 	<div class="ec_details_large_popup_padding">
                     	<div class="ec_details_large_popup_holder">
-                            <div class="ec_details_large_popup_main"><img src="<?php echo $this->product->get_first_image_url( ); ?>" /></div>
+                            <div class="ec_details_large_popup_main"><img src="<?php echo $this->product->get_first_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
                             
                             <?php /* SETUP POPUP THUMBNAILS */ ?>
                             <?php if( $this->product->use_optionitem_images ){ ?>
@@ -281,22 +255,22 @@ function ec_admin_save_product_details_options( ){
                                 for( $i=0; $i<count( $this->product->images->imageset ); $i++ ){
                                     ?>
                                     <div class="ec_details_large_popup_thumbnails<?php if( $i > 0 ){ ?> ec_inactive<?php }?>" id="ec_details_large_popup_thumbnails_<?php echo $this->product->images->imageset[$i]->optionitem_id; ?>"<?php if( trim( $this->product->images->imageset[$i]->image2 ) == "" ){ ?> style="display:none;"<?php }?>>
-                                        <div class="ec_details_large_popup_thumbnail ec_active"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics1/" . $this->product->images->imageset[$i]->image1 ); ?>" /></div>
-                                        <?php if( trim( $this->product->images->imageset[$i]->image2 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics2/" . $this->product->images->imageset[$i]->image2 ); ?>" /></div><?php } ?>
-                                        <?php if( trim( $this->product->images->imageset[$i]->image3 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics3/" . $this->product->images->imageset[$i]->image3 ); ?>" /></div><?php } ?>
-                                        <?php if( trim( $this->product->images->imageset[$i]->image4 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics4/" . $this->product->images->imageset[$i]->image4 ); ?>" /></div><?php } ?>
-                                        <?php if( trim( $this->product->images->imageset[$i]->image5 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics5/" . $this->product->images->imageset[$i]->image5 ); ?>" /></div><?php } ?>
+                                        <div class="ec_details_large_popup_thumbnail ec_active"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics1/" . $this->product->images->imageset[$i]->image1 ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
+                                        <?php if( trim( $this->product->images->imageset[$i]->image2 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics2/" . $this->product->images->imageset[$i]->image2 ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+                                        <?php if( trim( $this->product->images->imageset[$i]->image3 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics3/" . $this->product->images->imageset[$i]->image3 ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+                                        <?php if( trim( $this->product->images->imageset[$i]->image4 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics4/" . $this->product->images->imageset[$i]->image4 ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+                                        <?php if( trim( $this->product->images->imageset[$i]->image5 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo plugins_url( "/wp-easycart-data/products/pics5/" . $this->product->images->imageset[$i]->image5 ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
                                     </div>
                                     <?php
                                 }
                                 ?>
                             <?php }else if( trim( $this->product->images->image2 ) != "" ){ ?>
                             <div class="ec_details_large_popup_thumbnails">
-                                <div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_first_image_url( ); ?>" /></div>
-                                <div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_second_image_url( ); ?>" /></div>
-                                <?php if( trim( $this->product->images->image3 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_third_image_url( ); ?>" /></div><?php } ?>
-                                <?php if( trim( $this->product->images->image4 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_fourth_image_url( ); ?>" /></div><?php } ?>
-                                <?php if( trim( $this->product->images->image5 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_fifth_image_url( ); ?>" /></div><?php } ?>
+                                <div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_first_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
+                                <div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_second_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
+                                <?php if( trim( $this->product->images->image3 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_third_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+                                <?php if( trim( $this->product->images->image4 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_fourth_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
+                                <?php if( trim( $this->product->images->image5 ) != "" ){ ?><div class="ec_details_large_popup_thumbnail"><img src="<?php echo $this->product->get_fifth_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div><?php } ?>
                             </div>
                             <?php }?>
                             <?php /* END POPUP THUMBNAIL SETUP */ ?>
@@ -372,13 +346,10 @@ function ec_admin_save_product_details_options( ){
                 <div class="ec_product_details_star_<?php if( $rating > 4.49 ){ ?>on<?php }else{ ?>off<?php }?>"></div>
             </div>
             <?php }?>
-            
             <?php if( get_option( 'ec_option_show_model_number' ) ){ ?>
             <div class="ec_details_model_number"><?php echo ucwords( $GLOBALS['language']->get_text( 'product_details', 'product_details_model_number' ) ); ?>: <?php echo $this->product->model_number; ?></div>
             <?php }?>
-            
             <div class="ec_details_description"><?php echo $this->product->short_description; ?></div>
-            
             <?php /* GIFT CARD OPTIONS */ ?>
             <?php if( $this->product->is_giftcard ){ ?>
 			<div class="ec_details_options">
@@ -669,7 +640,7 @@ function ec_admin_save_product_details_options( ){
 					}else if( $optionset->option_type == "text" ){
 					?>
                     
-                    	<input type="text" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[0]->optionitem_price_multiplier; ?>" /><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
+                    	<input type="text" name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[0]->optionitem_price_multiplier; ?>" data-optionitem-price-per-character="<?php echo $optionitems[0]->optionitem_price_per_character; ?>" /><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_per_character ) && $optionitems[0]->optionitem_price_per_character > 0 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_per_character ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment_per_character' ) . ')'; } ?>
                     
                     <?php
 					
@@ -677,7 +648,7 @@ function ec_admin_save_product_details_options( ){
 					}else if( $optionset->option_type == "textarea" ){
 					?>
                     
-                    	<textarea name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[0]->optionitem_price_multiplier; ?>"></textarea><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; } ?>
+                    	<textarea name="ec_option_<?php echo $optionset->option_id; ?>" id="ec_option_<?php echo $optionset->option_id; ?>" data-optionitem-price="<?php echo $optionitems[0]->optionitem_price; ?>" data-optionitem-price-onetime="<?php echo $optionitems[0]->optionitem_price_onetime; ?>" data-optionitem-price-override="<?php echo $optionitems[0]->optionitem_price_override; ?>" data-optionitem-price-multiplier="<?php echo $optionitems[0]->optionitem_price_multiplier; ?>" data-optionitem-price-per-character="<?php echo $optionitems[0]->optionitem_price_per_character; ?>"></textarea><?php if( $optionitems[0]->optionitem_price > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime > 0 ){ echo ' (+' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( $optionitems[0]->optionitem_price_onetime < 0 ){ echo ' (' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_onetime ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_order_adjustment' ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_override ) && $optionitems[0]->optionitem_price_override > -1 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_new_price_option' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_override ) . ')'; }else if( isset( $optionitems[0]->optionitem_price_per_character ) && $optionitems[0]->optionitem_price_per_character > 0 ){ echo ' (' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment' ) . ' ' . $GLOBALS['currency']->get_currency_display( $optionitems[0]->optionitem_price_per_character ) . ' ' . $GLOBALS['language']->get_text( 'cart', 'cart_item_adjustment_per_character' ) . ')'; } ?>
                     
                     <?php
 					}
@@ -729,11 +700,7 @@ function ec_admin_save_product_details_options( ){
                 
                 <?php /* REGULAR BUTTON + QUANTITY */ ?>
                 <?php }else if( $this->product->in_stock( ) ){ ?>
-                <div class="ec_details_quantity"<?php if( $has_quantity_grid ){ ?> style="display:none;"<?php }?>>
-                	<input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->min_purchase_quantity; ?> );" />
-                    <input type="number" value="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" name="ec_quantity" id="ec_quantity" autocomplete="off" step="1" min="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" class="ec_quantity"<?php if( $this->product->show_stock_quantity ){ ?> max="<?php echo $this->product->stock_quantity; ?>"<?php }?> />
-                    <input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->show_stock_quantity; ?>, <?php echo $this->product->min_purchase_quantity; ?>, <?php echo $this->product->stock_quantity; ?> );" />
-                </div>
+                <div class="ec_details_quantity"<?php if( $has_quantity_grid ){ ?> style="display:none;"<?php }?>><input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->min_purchase_quantity; ?> );" /><input type="number" value="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" name="ec_quantity" id="ec_quantity" autocomplete="off" step="1" min="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" class="ec_quantity"<?php if( $this->product->show_stock_quantity ){ ?> max="<?php echo $this->product->stock_quantity; ?>"<?php }?> /><input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->show_stock_quantity; ?>, <?php echo $this->product->min_purchase_quantity; ?>, <?php echo $this->product->stock_quantity; ?> );" /></div>
                 <div class="ec_details_add_to_cart">
                 	<input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="return ec_details_add_to_cart( );"<?php if( $has_quantity_grid ){ ?> style="margin-left:0px !important;"<?php }?> />
                 </div>
@@ -1020,33 +987,20 @@ function ec_admin_save_product_details_options( ){
 	<div style="clear:both;"></div>
 </section>
 
-<script>
-
-var img = new Image( );
+<script>var img = new Image( );
 var img_width = 400;
 var img_height = 400;
-var img_ratio = 1;
-
-<?php if( !$ipad && !$iphone && get_option( 'ec_option_show_magnification' ) ){?>
+var img_ratio = 1;<?php if( !$ipad && !$iphone && get_option( 'ec_option_show_magnification' ) ){?>
 jQuery( '.ec_details_main_image' ).mousemove( function( e ){
-	
 	var parentOffset = jQuery( this ).parent( ).offset( ); 
-	
 	var mouse_x = e.pageX - parentOffset.left;
 	var mouse_y = e.pageY - parentOffset.top;
-	
 	var div_width = jQuery( this ).width( );
 	var div_height = jQuery( this ).height( );
-	
 	var x_val = '-' + ( ( img_width - div_width ) * ( mouse_x / div_width ) ) + 'px';
 	var y_val = '-' + ( ( img_height - div_height ) * ( mouse_y / div_height ) ) + 'px';
-	
-	jQuery( '.ec_details_magbox_image' ).css( 'background-position', x_val + ' ' + y_val );
-	//jQuery( '.ec_details_magbox_image' ).css( 'background-position-x', '-' + ( ( img_width - div_width ) * ( mouse_x / div_width ) ) + 'px' );
-	//jQuery( '.ec_details_magbox_image' ).css( 'background-position-y', '-' + ( ( img_height - div_height ) * ( mouse_y / div_height ) ) + 'px' );
-	
+	jQuery( '.ec_details_magbox_image' ).css( 'background-position', x_val + ' ' + y_val );	
 } );
-
 jQuery( '.ec_details_main_image' ).hover( 
 	function( ){ 
 		img = new Image( );
@@ -1054,34 +1008,25 @@ jQuery( '.ec_details_main_image' ).hover(
 			img_width = this.width;
 			img_height = this.height;
 			img_ratio =  img_height / img_width;
-			
 			jQuery( '.ec_details_magbox' ).css( 'width', jQuery( '.ec_details_main_image' ).width( ) + 'px' ).css( 'height', jQuery( '.ec_details_main_image' ).height( ) + 'px' );
 			jQuery( '.ec_details_magbox_image' ).css( 'width', jQuery( '.ec_details_main_image' ).width( ) + 'px' ).css( 'height', jQuery( '.ec_details_main_image' ).height( ) + 'px' );
 		}
 		img.src = jQuery( this ).find( 'img' ).attr( 'src' );
-		
 		jQuery( '.ec_details_magbox' ).fadeIn( 'fast' ); 
 	}, 
 	function( ){ 
 		jQuery( '.ec_details_magbox' ).fadeOut( 'fast' ); 
 	} 
-); 
-
-<?php }?>
-
-jQuery( '.ec_details_thumbnail' ).click( function( e ){
-    
+);<?php }?>
+jQuery( '.ec_details_thumbnail' ).click( function( e ){ 
 	var src = jQuery( this ).find( 'img' ).attr( 'src' );
 	jQuery( '.ec_details_thumbnail' ).removeClass( 'ec_active' );
 	jQuery( this ).addClass( 'ec_active' );
 	jQuery( '.ec_details_main_image' ).find( 'img' ).attr( 'src', src );
 	jQuery( '.ec_details_large_popup_main' ).find( 'img' ).attr( 'src', src );
 	jQuery( '.ec_details_magbox_image' ).css( 'background', 'url( "' + src + '" ) no-repeat' );
-	
 });
-
 jQuery( '.ec_details_large_popup_thumbnail' ).click( function( e ){
-    
 	var src = jQuery( this ).find( 'img' ).attr( 'src' );
 	jQuery( '.ec_details_large_popup_thumbnail' ).removeClass( 'ec_active' );
 	jQuery( this ).addClass( 'ec_active' );
@@ -1089,63 +1034,39 @@ jQuery( '.ec_details_large_popup_thumbnail' ).click( function( e ){
 	jQuery( '.ec_details_main_image' ).find( 'img' ).attr( 'src', src );
 	jQuery( '.ec_details_large_popup_main' ).find( 'img' ).attr( 'src', src );
 	jQuery( '.ec_details_magbox_image' ).css( 'background', 'url( "' + src + '" ) no-repeat' );
-	
 });
-
 function ec_details_show_image_popup( ){
-	
 	jQuery( '.ec_details_large_popup' ).show( );
 	jQuery( 'html' ).css( 'overflow', 'hidden' );
-	
 }
-
 function ec_details_hide_large_popup( ){
-	
 	jQuery( '.ec_details_large_popup' ).hide( );
 	jQuery( 'html' ).css( 'overflow', 'scroll' );
-	
 }
-
 jQuery( '.ec_minus' ).click( function( ){
-	
 	if( Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) > 0 && 
-		Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) > Number( jQuery( this ).parent( ).find( '.ec_quantity' ).attr( 'min' ) ) 
+		Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) > Number( jQuery( this ).parent( ).find( '.ec_quantity' ).attr( 'min' ) )
 	){
 		jQuery( this ).parent( ).find( '.ec_quantity' ).val( Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) - 1 )
 	}
-	
 	ec_volume_price_update( );
-	
 } );
-
 jQuery( '.ec_plus' ).click( function( ){
-	
 	if( !jQuery( this ).parent( ).find( '.ec_quantity' ).attr( 'max' ) || 
-		Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) < Number( jQuery( this ).parent( ).find( '.ec_quantity' ).attr( 'max' ) ) 
+		Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) < Number( jQuery( this ).parent( ).find( '.ec_quantity' ).attr( 'max' ) )
 	){
 		jQuery( this ).parent( ).find( '.ec_quantity' ).val( Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) + 1 )
 	}
-	
 	ec_volume_price_update( );
-	
 } );
-
 jQuery( '#ec_quantity' ).change( function( ){
-	
 	ec_volume_price_update( );
-	
 } );
-
 jQuery( '#ec_donation_amount' ).change( function( ){
-	
 	ec_details_base_adjust_price( );
-	
 } );
-
 function ec_volume_price_update( ){
-	
 	var quantity = Number( jQuery( '#ec_quantity' ).val( ) );
-	
 	<?php if( isset( $this->product->pricetiers[0] ) && count( $this->product->pricetiers[0] ) > 1 ){
 		foreach( $this->product->pricetiers as $pricetier ){
 			$tier_price = $GLOBALS['currency']->get_number_only( $pricetier[0] );
@@ -1153,23 +1074,17 @@ function ec_volume_price_update( ){
 			?>
 		if( quantity >= <?php echo $tier_quantity; ?> )
 			jQuery( '#ec_final_price' ).html( ec_details_format_money( <?php echo $tier_price; ?> ) );
-		
 		<?php 
 		}
 	}
 	?>
-	
 }
-
 jQuery( '.ec_details_tab' ).click( function( ){
-	
 	jQuery( '.ec_details_tab' ).removeClass( 'ec_active' );
 	jQuery( this ).addClass( 'ec_active' );
-	
 	jQuery( '.ec_details_description_tab' ).hide( );
 	jQuery( '.ec_details_specifications_tab' ).hide( );
 	jQuery( '.ec_details_customer_reviews_tab' ).hide( );
-	
 	if( jQuery( this ).hasClass( 'ec_description' ) ){
 		jQuery( '.ec_details_description_tab' ).show( );
 	}else if( jQuery( this ).hasClass( 'ec_specifications' ) ){
@@ -1177,33 +1092,23 @@ jQuery( '.ec_details_tab' ).click( function( ){
 	}else if( jQuery( this ).hasClass( 'ec_customer_reviews' ) ){
 		jQuery( '.ec_details_customer_reviews_tab' ).show( );
 	}
-	
 } );
-
 jQuery( '.ec_details_swatches > li.ec_option1' ).click( function( ){
-	
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
 		var optionitem_id_1 = jQuery( this ).attr( 'data-optionitem-id' );
 		var quantity = jQuery( this ).attr( 'data-optionitem-quantity' );
-		
 		<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 		ec_option1_selected( optionitem_id_1, quantity );
 		<?php }?>
 		ec_option1_image_change( optionitem_id_1, quantity );
-		
 		jQuery( '.ec_details_swatches > li.ec_option1' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
-		
 		jQuery( '.ec_option1.ec_details_option_row_error' ).hide( );
 		jQuery( '#ec_option1' ).val( optionitem_id_1 );
-		
 		ec_details_base_adjust_price( );
 	}
-	
 } );
-
 jQuery( '.ec_details_swatches > li.ec_option2' ).click( function( ){
-	
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
 		var optionitem_id_1 = 0;
 		if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
@@ -1212,25 +1117,18 @@ jQuery( '.ec_details_swatches > li.ec_option2' ).click( function( ){
 			optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
 		}
 		var optionitem_id_2 = jQuery( this ).attr( 'data-optionitem-id' );
-		
 		<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 		var quantity = jQuery( this ).attr( 'data-optionitem-quantity' );
 		option2_selected( optionitem_id_1, optionitem_id_2, quantity );
 		<?php }?>
-		
 		jQuery( '.ec_details_swatches > li.ec_option2' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
-		
 		jQuery( '.ec_option2.ec_details_option_row_error' ).hide( );
 		jQuery( '#ec_option2' ).val( optionitem_id_2 );
-		
 		ec_details_base_adjust_price( );
 	}
-	
 } );
-
 jQuery( '.ec_details_swatches > li.ec_option3' ).click( function( ){
-	
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
 		var optionitem_id_1 = 0;
 		if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
@@ -1245,25 +1143,18 @@ jQuery( '.ec_details_swatches > li.ec_option3' ).click( function( ){
 			optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
 		}
 		var optionitem_id_3 = jQuery( this ).attr( 'data-optionitem-id' );
-		
 		<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 		var quantity = jQuery( this ).attr( 'data-optionitem-quantity' );
 		option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, quantity );
 		<?php }?>
-		
 		jQuery( '.ec_details_swatches > li.ec_option3' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
-		
 		jQuery( '.ec_option3.ec_details_option_row_error' ).hide( );
 		jQuery( '#ec_option3' ).val( optionitem_id_3 );
-		
 		ec_details_base_adjust_price( );
 	}
-	
 } );
-
 jQuery( '.ec_details_swatches > li.ec_option4' ).click( function( ){
-	
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
 		var optionitem_id_1 = 0;
 		if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
@@ -1284,44 +1175,30 @@ jQuery( '.ec_details_swatches > li.ec_option4' ).click( function( ){
 			optionitem_id_3 = jQuery( '.ec_details_combo.ec_option3' ).val( );
 		}
 		var optionitem_id_4 = jQuery( this ).attr( 'data-optionitem-id' );
-		
 		<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 		var quantity = jQuery( this ).attr( 'data-optionitem-quantity' );
 		option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, optionitem_id_4, quantity );
 		<?php }?>
-		
 		jQuery( '.ec_details_swatches > li.ec_option4' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
-		
 		jQuery( '.ec_option4.ec_details_option_row_error' ).hide( );
 		jQuery( '#ec_option4' ).val( optionitem_id_4 );
-		
 		ec_details_base_adjust_price( );
 	}
-	
 } );
-
 jQuery( '.ec_details_swatches > li.ec_option5' ).click( function( ){
-	
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
 		var optionitem_id_5 = jQuery( this ).attr( 'data-optionitem-id' );
-	
 		jQuery( '.ec_details_swatches > li.ec_option5' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
-		
 		jQuery( '.ec_option5.ec_details_option_row_error' ).hide( );
 		jQuery( '#ec_option5' ).val( optionitem_id_5 );
-		
 		ec_details_base_adjust_price( );
 	}
-	
 } );
-
 jQuery( '.ec_details_combo.ec_option1' ).change( function( ){
-	
 	var optionitem_id_1 = jQuery( '.ec_details_combo.ec_option1' ).val( );
 	var quantity = jQuery( '.ec_details_combo.ec_option1 option:selected' ).attr( 'data-optionitem-quantity' );
-	
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 	if( optionitem_id_1 != '0' ){
 		ec_option1_selected( optionitem_id_1, quantity );
@@ -1330,15 +1207,10 @@ jQuery( '.ec_details_combo.ec_option1' ).change( function( ){
 	}
 	<?php }?>
 	ec_option1_image_change( optionitem_id_1, quantity );
-	
 	jQuery( '.ec_option1.ec_details_option_row_error' ).hide( );
-	
 	ec_details_base_adjust_price( );
-	
 } );
-
 jQuery( '.ec_details_combo.ec_option2' ).change( function( ){
-	
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 	var optionitem_id_1 = 0;
 	if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
@@ -1348,22 +1220,16 @@ jQuery( '.ec_details_combo.ec_option2' ).change( function( ){
 	}
 	var optionitem_id_2 = jQuery( '.ec_details_combo.ec_option2' ).val( );
 	var quantity = jQuery( '.ec_details_combo.ec_option2 option:selected' ).attr( 'data-optionitem-quantity' );
-	
 	if( optionitem_id_2 != '0' ){
 		option2_selected( optionitem_id_1, optionitem_id_2, quantity );
 	}else{
 		jQuery( '#ec_details_stock_quantity' ).html( quantity );	
 	}
 	<?php }?>
-	
 	jQuery( '.ec_option2.ec_details_option_row_error' ).hide( );
-	
 	ec_details_base_adjust_price( );
-	
 } );
-
 jQuery( '.ec_details_combo.ec_option3' ).change( function( ){
-	
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 	var optionitem_id_1 = 0;
 	if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
@@ -1386,15 +1252,10 @@ jQuery( '.ec_details_combo.ec_option3' ).change( function( ){
 		jQuery( '#ec_details_stock_quantity' ).html( quantity );	
 	}
 	<?php }?>
-	
 	jQuery( '.ec_option3.ec_details_option_row_error' ).hide( );
-	
 	ec_details_base_adjust_price( );
-	
 } );
-
 jQuery( '.ec_details_combo.ec_option4' ).change( function( ){
-	
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 	var optionitem_id_1 = 0;
 	if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
@@ -1423,75 +1284,64 @@ jQuery( '.ec_details_combo.ec_option4' ).change( function( ){
 		jQuery( '#ec_details_stock_quantity' ).html( quantity );	
 	}
 	<?php }?>
-	
 	jQuery( '.ec_option4.ec_details_option_row_error' ).hide( );
-	
 	ec_details_base_adjust_price( );
-	
 } );
-
 jQuery( '.ec_details_combo.ec_option5' ).change( function( ){
-	
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 	var quantity = jQuery( '.ec_details_combo.ec_option5 option:selected' ).attr( 'data-optionitem-quantity' );
 	jQuery( '#ec_details_stock_quantity' ).html( quantity );
 	<?php }?>
-	
 	jQuery( '.ec_option5.ec_details_option_row_error' ).hide( );
-	
 	ec_details_base_adjust_price( );
-	
 } );
-
 jQuery( '.ec_details_checkbox_row > input, .ec_details_radio_row > input' ).click( function( ){
-	
 	ec_details_advanced_adjust_price( );
-	
 } );
-
-jQuery( '.ec_details_option_row.ec_option_type_combo > .ec_details_option_data > select, .ec_details_option_row.ec_option_type_date > .ec_details_option_data > input, .ec_details_option_row.ec_option_type_file > .ec_details_option_data > input, .ec_details_option_row.ec_option_type_text > .ec_details_option_data > input, .ec_details_option_row.ec_option_type_textarea > .ec_details_option_data > textarea, .ec_details_grid_row > input' ).change( function( ){
-	
+jQuery( '.ec_details_option_row.ec_option_type_combo > .ec_details_option_data > select' ).change( function( ){
 	ec_details_advanced_adjust_price( );
-	
 } );
-
+jQuery( '.ec_details_option_row.ec_option_type_date > .ec_details_option_data > input' ).change( function( ){
+	ec_details_advanced_adjust_price( );
+} );
+jQuery( '.ec_details_option_row.ec_option_type_file > .ec_details_option_data > input' ).change( function( ){
+	ec_details_advanced_adjust_price( );
+} );
+jQuery( '.ec_details_option_row.ec_option_type_text > .ec_details_option_data > input' ).change( function( ){
+	ec_details_advanced_adjust_price( );
+} );
+jQuery( '.ec_details_option_row.ec_option_type_textarea > .ec_details_option_data > textarea' ).change( function( ){
+	ec_details_advanced_adjust_price( );
+} );
+jQuery( '.ec_details_grid_row > input' ).change( function( ){
+	ec_details_advanced_adjust_price( );
+} );
 jQuery( '.ec_details_swatches > li.ec_advanced' ).click( function( ){
-	
 	var optionitem_id = jQuery( this ).attr( 'data-optionitem-id' );
 	var option_id = jQuery( this ).attr( 'data-option-id' );
-		
 	jQuery( '#ec_option_' + option_id ).val( optionitem_id );
-	
 	jQuery( '.ec_details_swatches > li.ec_option_' + option_id ).removeClass( 'ec_selected' );
 	jQuery( this ).addClass( 'ec_selected' );
-	
 	jQuery( '#ec_details_option_row_error_' + option_id ).hide( );
 	ec_details_advanced_adjust_price( );
-
 } );
-
 function ec_details_base_adjust_price( ){
-	
 	var base_price = Number( jQuery( '#ec_base_price' ).html( ) );
-	
 	var option1_price_adj = 0;
 	var option2_price_adj = 0;
 	var option3_price_adj = 0;
 	var option4_price_adj = 0;
 	var option5_price_adj = 0;
-	
 	var option1_price_add = 0;
 	var option2_price_add = 0;
 	var option3_price_add = 0;
 	var option4_price_add = 0;
 	var option5_price_add = 0;
-	
 	var option1_price_override = -1;
 	var option2_price_override = -1;
 	var option3_price_override = -1;
 	var option4_price_override = -1;
 	var option5_price_override = -1;
-	
 	// Option 1 Price Adjustment
 	if( jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).length ){
 		option1_price_adj = jQuery( '.ec_details_swatches > li.ec_option1.ec_selected' ).attr( 'data-optionitem-price' );
@@ -1504,7 +1354,6 @@ function ec_details_base_adjust_price( ){
 		option1_price_override = Number( jQuery( '.ec_details_combo.ec_option1 option:selected' ).attr( 'data-optionitem-price-override' ) );
 		option1_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option1 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
-	
 	// Option 2 Price Adjustment
 	if( jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).length ){
 		option2_price_adj = jQuery( '.ec_details_swatches > li.ec_option2.ec_selected' ).attr( 'data-optionitem-price' );
@@ -1517,7 +1366,6 @@ function ec_details_base_adjust_price( ){
 		option2_price_override = Number( jQuery( '.ec_details_combo.ec_option2 option:selected' ).attr( 'data-optionitem-price-override' ) );
 		option2_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option2 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
-	
 	// Option 3 Price Adjustment
 	if( jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).length ){
 		option3_price_adj = jQuery( '.ec_details_swatches > li.ec_option3.ec_selected' ).attr( 'data-optionitem-price' );
@@ -1530,7 +1378,6 @@ function ec_details_base_adjust_price( ){
 		option3_price_override = Number( jQuery( '.ec_details_combo.ec_option3 option:selected' ).attr( 'data-optionitem-price-override' ) );
 		option3_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option3 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
-	
 	// Option 4 Price Adjustment
 	if( jQuery( '.ec_details_swatches > li.ec_option4.ec_selected' ).length ){
 		option4_price_adj = jQuery( '.ec_details_swatches > li.ec_option4.ec_selected' ).attr( 'data-optionitem-price' );
@@ -1543,7 +1390,6 @@ function ec_details_base_adjust_price( ){
 		option4_price_override = Number( jQuery( '.ec_details_combo.ec_option4 option:selected' ).attr( 'data-optionitem-price-override' ) );
 		option4_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option4 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
-	
 	// Option 5 Price Adjustment
 	if( jQuery( '.ec_details_swatches > li.ec_option5.ec_selected' ).length ){
 		option5_price_adj = jQuery( '.ec_details_swatches > li.ec_option5.ec_selected' ).attr( 'data-optionitem-price' );
@@ -1556,15 +1402,11 @@ function ec_details_base_adjust_price( ){
 		option5_price_override = Number( jQuery( '.ec_details_combo.ec_option5 option:selected' ).attr( 'data-optionitem-price-override' ) );
 		option5_price_multiplier = Number( jQuery( '.ec_details_combo.ec_option5 option:selected' ).attr( 'data-optionitem-price-multiplier' ) );
 	}
-	
 	var num_decimals = <?php echo $GLOBALS['currency']->decimal_length; ?>;
 	var decimal_symbol = '<?php echo $GLOBALS['currency']->decimal_symbol; ?>';
 	var grouping_symbol = '<?php echo $GLOBALS['currency']->grouping_symbol; ?>';
-	
 	var new_price = ec_details_format_money( base_price + Number( option1_price_adj ) + Number( option2_price_adj ) + Number( option3_price_adj ) + Number( option4_price_adj ) + Number( option5_price_adj ) );
-	
 	var order_price = Number( option1_price_add ) + Number( option2_price_add ) + Number( option3_price_add ) + Number( option4_price_add ) + Number( option5_price_add );
-	
 	var override_price = -1;
 	if( option1_price_override > -1 )
 		override_price = option1_price_override;
@@ -1576,290 +1418,214 @@ function ec_details_base_adjust_price( ){
 		override_price = option4_price_override;
 	else if( option5_price_override > -1 )
 		override_price = option5_price_override; 
-	
 	if( override_price > -1 ){
 		jQuery( '#ec_final_price' ).html( ec_details_format_money( override_price ) );
 	}else{
 		jQuery( '#ec_final_price' ).html( new_price );
 	}
-	
 	if( order_price != 0 ){
 		jQuery( '.ec_details_added_price' ).show( );
 		jQuery( '#ec_added_price' ).html( ec_details_format_money( order_price ) );
 	}else{
 		jQuery( '.ec_details_added_price' ).hide( );
 	}
-	
 }
-
-function ec_details_advanced_adjust_price( ){
-	
+function ec_details_advanced_adjust_price( ){	
 	var base_price = Number( jQuery( '#ec_base_price' ).html( ) );
 	var override_price = -1;
 	var price_multiplier = 0;
-	
 	// Checkbox Price Adjustments
 	var checkbox_adj = 0;
 	var checkbox_add = 0;
-	
 	// Combox Price Adjustments
 	var combo_adj = 0;
 	var combo_add = 0;
-	
 	// Date Price Adjustments
 	var date_adj = 0;
 	var date_add = 0;
-	
 	// File Price Adjustments
 	var file_adj = 0;
 	var file_add = 0;
-	
 	// Swatch Price Adjustments
 	var swatch_adj = 0;
 	var swatch_add = 0;
-	
 	// Grid Price Adjustments
 	var grid_adj = 0;
 	var grid_add = 0;
-	
 	// Radio Price Adjustments
 	var radio_adj = 0;
 	var radio_add = 0;
-	
 	// Text Price Adjustments
 	var text_adj = 0;
 	var text_add = 0;
-	
 	// Textarea Price Adjustments
 	var textarea_adj = 0;
 	var textarea_add = 0;
-	
 	jQuery( '.ec_details_checkbox_row > input:checked' ).each( function( ){
-		
 		if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 			checkbox_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 			checkbox_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 			override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 			price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 		}
-		
 	} );
-	
 	jQuery( '.ec_details_option_row.ec_option_type_combo > .ec_details_option_data > select option:selected' ).each( function( ){
-		
 		if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 			combo_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 			combo_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 			override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 			price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 		}
-		
 	} );
-	
 	jQuery( '.ec_details_option_row.ec_option_type_date > .ec_details_option_data > input' ).each( function( ){
-		
 		if( jQuery( this ).val( ) != "" ){
-		
 			if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 				date_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 				date_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 			}
-			
 		}
-		
 	} );
-	
 	jQuery( '.ec_details_option_row.ec_option_type_file > .ec_details_option_data > input' ).each( function( ){
-		
 		if( jQuery( this ).val( ) != "" ){
-		
 			if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 				file_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 				file_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 			}
-			
 		}
-		
 	} );
-	
 	jQuery( '.ec_details_swatch.ec_advanced.ec_selected' ).each( function( ){
-		
 		if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 			swatch_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 			swatch_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 			override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 			price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 		}
-		
 	} );
-	
 	jQuery( '.ec_details_radio_row > input:checked' ).each( function( ){
-		
 		if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 			radio_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 			radio_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 			override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 		}
-		
 		if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 			price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 		}
-		
 	} );
-	
 	jQuery( '.ec_details_option_row.ec_option_type_text > .ec_details_option_data > input' ).each( function( ){
-		
 		if( jQuery( this ).val( ) != "" ){
-		
 			if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 				text_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 				text_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 			}
-			
+			if( jQuery( this ).attr( 'data-optionitem-price-per-character' ) > 0 ){
+				var num_characters = Number(  jQuery( this ).val( ).replace( / /g, '' ).length );
+				var price_per_char = Number( jQuery( this ).attr( 'data-optionitem-price-per-character' ) );
+				text_adj = text_adj + ( num_characters * price_per_char );
+			}
 		}
-		
 	} );
-	
 	jQuery( '.ec_details_option_row.ec_option_type_textarea > .ec_details_option_data > textarea' ).each( function( ){
-		
 		if( jQuery( this ).val( ) != "" ){
-		
 			if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 				textarea_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 				textarea_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 			}
-			
+			if( jQuery( this ).attr( 'data-optionitem-price-per-character' ) > 0 ){
+				var num_characters = Number(  jQuery( this ).val( ).replace( / /g, '' ).length );
+				var price_per_char = Number( jQuery( this ).attr( 'data-optionitem-price-per-character' ) );
+				textarea_adj = textarea_adj + ( num_characters * price_per_char );
+			}
 		}
-		
 	} );
-	
 	jQuery( '.ec_details_grid_row > input' ).each( function( ){
-		
 		if( jQuery( this ).val( ) > 0 ){
-		
 			if( jQuery( this ).attr( 'data-optionitem-price' ) != 0 ){
 				textarea_adj += Number( jQuery( this ).attr( 'data-optionitem-price' ) );
 			}
-		
 			if( jQuery( this ).attr( 'data-optionitem-price-onetime' ) != 0 ){
 				textarea_add += Number( jQuery( this ).attr( 'data-optionitem-price-onetime' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-override' ) >= 0 ){
 				override_price = Number( jQuery( this ).attr( 'data-optionitem-price-override' ) );
 			}
-			
 			if( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) > 0 ){
 				price_multiplier = Number( jQuery( this ).attr( 'data-optionitem-price-multiplier' ) );
 			}
 		}
-		
 	} );
-	
-	
-	
 	var new_price = ec_details_format_money( base_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) );
-	
 	var order_price = Number( checkbox_add ) + Number( combo_add ) + Number( date_add ) + Number( file_add ) + Number( swatch_add ) + Number( grid_add ) + Number( radio_add ) + Number( text_add ) + Number( textarea_add );
-	
 	if( override_price > -1 ){
 		jQuery( '#ec_final_price' ).html( ec_details_format_money( override_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) );
 	}else{
 		jQuery( '#ec_final_price' ).html( new_price );
 	}
-	
 	if( price_multiplier > 1 && override_price > -1 ){
 		jQuery( '#ec_final_price' ).html( ec_details_format_money( ( Number( override_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
 	}else if( price_multiplier > 1 ){
 		jQuery( '#ec_final_price' ).html( ec_details_format_money( ( Number( base_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
 	}
-	
 	if( order_price != 0 ){
 		jQuery( '.ec_details_added_price' ).show( );
 		jQuery( '#ec_added_price' ).html( ec_details_format_money( order_price ) );
 	}else{
 		jQuery( '.ec_details_added_price' ).hide( );
 	}
-	
 }
-
 function ec_details_format_money( price, num_decimals, grouping_symbol, decimal_symbol ){
 	var num_decimals = <?php echo $GLOBALS['currency']->decimal_length; ?>;
 	var decimal_symbol = '<?php echo $GLOBALS['currency']->decimal_symbol; ?>';
@@ -1872,11 +1638,8 @@ function ec_details_format_money( price, num_decimals, grouping_symbol, decimal_
         j = (j = i.length) > 3 ? j % 3 : 0;
     return (j ? i.substr(0, j) + grouping_symbol : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + grouping_symbol) + (num_decimals ? decimal_symbol + Math.abs(n - i).toFixed(num_decimals).slice(2) : "");
 };
-
 function ec_details_add_to_cart( ){
-	
 	var errors = 0; 
-	
 	// Basic Option 1 Error Check
 	if( jQuery( '.ec_details_swatch.ec_option1' ).length && !jQuery( '.ec_option1.ec_selected' ).attr( 'data-optionitem-id' ) ){ 
 		jQuery( '.ec_option1.ec_details_option_row_error' ).show( ); 
@@ -1887,7 +1650,6 @@ function ec_details_add_to_cart( ){
 	}else{ 
 		jQuery( '.ec_option1.ec_details_option_row_error' ).hide( );
 	}
-	
 	// Basic Option 2 Error Check
 	if( jQuery( '.ec_details_swatch.ec_option2' ).length && !jQuery( '.ec_option2.ec_selected' ).attr( 'data-optionitem-id' ) ){ 
 		jQuery( '.ec_option2.ec_details_option_row_error' ).show( ); 
@@ -1898,7 +1660,6 @@ function ec_details_add_to_cart( ){
 	}else{ 
 		jQuery( '.ec_option2.ec_details_option_row_error' ).hide( ); 
 	}
-	
 	// Basic Option 3 Error Check
 	if( jQuery( '.ec_details_swatch.ec_option3' ).length && !jQuery( '.ec_option3.ec_selected' ).attr( 'data-optionitem-id' ) ){ 
 		jQuery( '.ec_option3.ec_details_option_row_error' ).show( );
@@ -1909,7 +1670,6 @@ function ec_details_add_to_cart( ){
 	}else{ 
 		jQuery( '.ec_option3.ec_details_option_row_error' ).hide( ); 
 	}
-	
 	// Basic Option 4 Error Check
 	if( jQuery( '.ec_details_swatch.ec_option4' ).length && !jQuery( '.ec_option4.ec_selected' ).attr( 'data-optionitem-id' ) ){ 
 		jQuery( '.ec_option4.ec_details_option_row_error' ).show( ); 
@@ -1920,7 +1680,6 @@ function ec_details_add_to_cart( ){
 	}else{ 
 		jQuery( '.ec_option4.ec_details_option_row_error' ).hide( ); 
 	}
-	
 	// Basic Option 5 Error Check
 	if( jQuery( '.ec_details_swatch.ec_option5' ).length && !jQuery( '.ec_option5.ec_selected' ).attr( 'data-optionitem-id' ) ){ 
 		jQuery( '.ec_option5.ec_details_option_row_error' ).show( ); 
@@ -1931,9 +1690,7 @@ function ec_details_add_to_cart( ){
 	}else{ 
 		jQuery( '.ec_option5.ec_details_option_row_error' ).hide( ); 
 	}
-	
 	// --------Advanced Option Checks---------- //
-	
 	// Select Box Check
 	var advanced_select_rows = jQuery( '.ec_details_option_row.ec_option_type_combo' );
 	advanced_select_rows.each( function( ){
@@ -1946,7 +1703,6 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// Check Box Check
 	var advanced_checkbox_rows = jQuery( '.ec_details_option_row.ec_option_type_checkbox' );
 	advanced_checkbox_rows.each( function( ){
@@ -1960,7 +1716,6 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// Date Box Check
 	var advanced_date_rows = jQuery( '.ec_details_option_row.ec_option_type_date' );
 	advanced_date_rows.each( function( ){
@@ -1973,12 +1728,10 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// File Upload Check
 	var advanced_file_rows = jQuery( '.ec_details_option_row.ec_option_type_file' );
 	advanced_file_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
-			
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required	
 			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
 			}else{
@@ -1987,7 +1740,6 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// Swatch Check
 	var advanced_swatch_rows = jQuery( '.ec_details_option_row.ec_option_type_swatch' );
 	advanced_swatch_rows.each( function( ){
@@ -2001,7 +1753,6 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// Radio Button Check
 	var advanced_radio_rows = jQuery( '.ec_details_option_row.ec_option_type_radio' );
 	advanced_radio_rows.each( function( ){
@@ -2015,12 +1766,10 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// Text Box Check
 	var advanced_text_rows = jQuery( '.ec_details_option_row.ec_option_type_text' );
 	advanced_text_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
-			
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required	
 			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) != "" ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
 			}else{
@@ -2029,12 +1778,10 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// Text Area Check
 	var advanced_textarea_rows = jQuery( '.ec_details_option_row.ec_option_type_textarea' );
 	advanced_textarea_rows.each( function( ){
-		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
-			
+		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required	
 			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) != "" ){
 				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
 			}else{
@@ -2043,7 +1790,6 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// Quantity Grid Check
 	var advanced_grid_rows = jQuery( '.ec_details_option_row.ec_option_type_grid' );
 	advanced_grid_rows.each( function( ){
@@ -2063,43 +1809,32 @@ function ec_details_add_to_cart( ){
 			}
 		}
 	} );
-	
 	// -------END Advanced Option Checks------- //
-	
-	
 	// -------START GIFT CARD CHECK ----------- //
-	
 	var gift_card_errors = 0;
 	if( document.getElementById( 'ec_giftcard_to_name' ) && jQuery( '#ec_giftcard_to_name' ).val( ) == "" ){
 		errors++;
 		gift_card_errors++;
 	}
-	
 	if( document.getElementById( 'ec_giftcard_to_email' ) && jQuery( '#ec_giftcard_to_email' ).val( ) == "" ){
 		errors++;
 		gift_card_errors++;
 	}
-	
 	if( document.getElementById( 'ec_giftcard_from_name' ) && jQuery( '#ec_giftcard_from_name' ).val( ) == "" ){
 		errors++;
 		gift_card_errors++;
 	}
-	
 	if( document.getElementById( 'ec_giftcard_message' ) && jQuery( '#ec_giftcard_message' ).val( ) == "" ){
 		errors++;
 		gift_card_errors++;
 	}
-	
 	if( gift_card_errors ){
 		jQuery( '#ec_details_giftcard_error' ).show( );
 	}else{
 		jQuery( '#ec_details_giftcard_error' ).hide( );
 	}
-	
 	// -------END GIFT CARD CHECK   ----------- //
-	
 	// -------START DONATION CHECK  ----------- //
-	
 	if( document.getElementById( 'ec_donation_amount' ) ){
 		if( isNaN( jQuery( '#ec_donation_amount' ).val( ) ) || Number( jQuery( '#ec_donation_amount' ).val( ) ) < <?php echo $GLOBALS['currency']->get_number_only( $this->product->price ); ?> ){
 			jQuery( '#ec_details_donation_error' ).show( );
@@ -2108,11 +1843,8 @@ function ec_details_add_to_cart( ){
 			jQuery( '#ec_details_donation_error' ).hide( );
 		}
 	}
-	
 	// -------END DONATION CHECK    ----------- //
-	
 	// -------START INQUIRY CHECK  ----------- //
-	
 	if( document.getElementById( 'ec_inquiry_name' ) ){
 		if( jQuery( '#ec_inquiry_name' ).val( ) == "" || jQuery( '#ec_inquiry_email' ).val( ) == "" || jQuery( '#ec_inquiry_message' ).val( ) == "" ){
 			jQuery( '#ec_details_inquiry_error' ).show( );
@@ -2121,23 +1853,19 @@ function ec_details_add_to_cart( ){
 			jQuery( '#ec_details_inquiry_error' ).hide( );
 		}
 	}
-	
 	// -------END INQUIRY CHECK    ----------- //
-	
 	// Maximum Quantity Check
 	var entered_quantity = Number( jQuery( '#ec_quantity' ).val( ) );
 	var allowed_quantity = 9999999999999;
 	if( jQuery( '#ec_details_stock_quantity' ).length ){
 		allowed_quantity = Number( jQuery( '#ec_details_stock_quantity' ).html( ) );
 	}
-	
 	if( entered_quantity > allowed_quantity ){
 		jQuery( '#ec_addtocart_quantity_exceeded_error' ).show( );
 		errors++;
 	}else{
 		jQuery( '#ec_addtocart_quantity_exceeded_error' ).hide( );
 	}
-	
 	// Minimum Quantity Check
 	var min_quantity = <?php echo $this->product->min_purchase_quantity; ?>;
 	if( entered_quantity < min_quantity ){
@@ -2146,85 +1874,59 @@ function ec_details_add_to_cart( ){
 	}else{
 		jQuery( '#ec_addtocart_quantity_minimum_error' ).hide( );
 	}
-	
 	if( errors > 0 )
 		return false;
 	else
 		return true;
-	
 }
-
-jQuery( '.ec_details_review_input' ).hover( function( ){
-	
+jQuery( '.ec_details_review_input' ).hover( function( ){	
 	var score = jQuery( this ).attr( 'data-review-score' );
 	jQuery( '.ec_details_review_input' ).removeClass( 'ec_product_details_star_on' ).addClass( 'ec_product_details_star_off' );
-	
 	for( var i=0; i<score; i++ ){
 		jQuery( '#ec_details_review_star' + (i+1) ).removeClass( 'ec_product_details_star_off' ).addClass( 'ec_product_details_star_on' );
 	}
-	
 } );
-
 jQuery( '.ec_product_openclose' ).hide( );
-
-function ec_option1_image_change( optionitem_id_1, quantity ){
-	
-	<?php if( $this->product->use_optionitem_images ){ ?>
+function ec_option1_image_change( optionitem_id_1, quantity ){<?php if( $this->product->use_optionitem_images ){ ?>
 		jQuery( '.ec_details_thumbnails' ).hide( );
 		jQuery( '.ec_details_large_popup_thumbnails' ).hide( );
 		jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).find( '.ec_details_thumbnail' ).first( ).trigger( 'click' );
 		if( !jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).hasClass( 'ec_no_thumbnails' ) ){
 			jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).show( );
 			jQuery( '#ec_details_large_popup_thumbnails_' + optionitem_id_1 ).show( );
-		}
-	<?php }?>
-
+		}<?php }?>
 }
-
-function ec_option1_selected( optionitem_id_1, quantity ){
-	
-	<?php if( $this->product->use_optionitem_images ){ ?>
+function ec_option1_selected( optionitem_id_1, quantity ){<?php if( $this->product->use_optionitem_images ){ ?>
 		jQuery( '.ec_details_thumbnails' ).hide( );
 		jQuery( '.ec_details_large_popup_thumbnails' ).hide( );
 		jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).find( '.ec_details_thumbnail' ).first( ).trigger( 'click' );
 		if( !jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).hasClass( 'ec_no_thumbnails' ) ){
 			jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).show( );
 			jQuery( '#ec_details_large_popup_thumbnails_' + optionitem_id_1 ).show( );
-		}
-	<?php }?>
-	
+		}<?php }?>
 	jQuery( '.ec_details_swatches > li.ec_option2' ).removeClass( 'ec_selected' );
 	jQuery( '.ec_details_swatches > li.ec_option3' ).removeClass( 'ec_selected' );
 	jQuery( '.ec_details_swatches > li.ec_option4' ).removeClass( 'ec_selected' );
 	jQuery( '.ec_details_swatches > li.ec_option5' ).removeClass( 'ec_selected' );
-	
 	jQuery( '.ec_details_combo.ec_option2' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option3' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option4' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option5' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
-	
 	jQuery( '#ec_details_stock_quantity' ).html( quantity );
-	
 	jQuery( '#ec_option_loading_2' ).show( );
-	
 	var next_options = jQuery( '.ec_details_swatches > li.ec_option2' );
 	if( next_options.length ){
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
 		} );
-		
-		
 		var data = {
 			action: 'ec_ajax_get_optionitem_quantities',
 			optionitem_id_1: optionitem_id_1,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-	
 			jQuery( '#ec_option_loading_2' ).hide( );
-			
 			var i=0;
 			next_options.each( function( ){
 				jQuery( this ).attr( 'data-optionitem-quantity', json_data[i].quantity );
@@ -2236,25 +1938,18 @@ function ec_option1_selected( optionitem_id_1, quantity ){
 		} } );
 	}else{
 		next_options = jQuery( '.ec_details_combo.ec_option2 option' );
-		
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
 		} );
-		
 		var data = {
 			action: 'ec_ajax_get_optionitem_quantities',
 			optionitem_id_1: optionitem_id_1,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
-			
 			jQuery( '.ec_details_combo.ec_option2' ).prop( 'disabled', false ).removeClass( 'ec_inactive' );
-			
 			var json_data = JSON.parse( data );
-	
 			jQuery( '#ec_option_loading_2' ).hide( );
-			
 			var i=0;
 			next_options.each( function( ){
 				if( i > 0 ){
@@ -2271,25 +1966,18 @@ function ec_option1_selected( optionitem_id_1, quantity ){
 			} );
 		} } );
 	}
-	
 }
-
-function option2_selected( optionitem_id_1, optionitem_id_2, quantity ){
-	
+function option2_selected( optionitem_id_1, optionitem_id_2, quantity ){	
 	jQuery( '.ec_details_swatches > li.ec_option3' ).removeClass( 'ec_selected' );
 	jQuery( '.ec_details_swatches > li.ec_option4' ).removeClass( 'ec_selected' );
 	jQuery( '.ec_details_swatches > li.ec_option5' ).removeClass( 'ec_selected' );
-	
 	jQuery( '.ec_details_combo.ec_option3' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option4' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option5' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_option2.ec_details_option_row_error' ).hide( );
-	
 	jQuery( '#ec_details_stock_quantity' ).html( quantity );
 	var next_options = jQuery( '.ec_details_swatches > li.ec_option3' );
-	
 	jQuery( '#ec_option_loading_3' ).show( );
-	
 	if( next_options.length ){
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
@@ -2300,12 +1988,9 @@ function option2_selected( optionitem_id_1, optionitem_id_2, quantity ){
 			optionitem_id_2: optionitem_id_2,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-	
 			jQuery( '#ec_option_loading_3' ).show( );
-			
 			var i=0;
 			next_options.each( function( ){
 				jQuery( this ).attr( 'data-optionitem-quantity', json_data[i].quantity );
@@ -2317,26 +2002,19 @@ function option2_selected( optionitem_id_1, optionitem_id_2, quantity ){
 		} } );
 	}else{
 		next_options = jQuery( '.ec_details_combo.ec_option3 option' );
-			
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
 		} );
-		
 		var data = {
 			action: 'ec_ajax_get_optionitem_quantities',
 			optionitem_id_1: optionitem_id_1,
 			optionitem_id_2: optionitem_id_2,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
-			
 			jQuery( '.ec_details_combo.ec_option3' ).prop( 'disabled', false ).removeClass( 'ec_inactive' );
-			
 			var json_data = JSON.parse( data );
-	
 			jQuery( '#ec_option_loading_3' ).show( );
-			
 			var i=0;
 			next_options.each( function( ){
 				if( i > 0 ){
@@ -2354,21 +2032,15 @@ function option2_selected( optionitem_id_1, optionitem_id_2, quantity ){
 		} } );
 	}
 }
-
-function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, quantity ){
-	
+function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, quantity ){	
 	jQuery( '.ec_details_swatches > li.ec_option4' ).removeClass( 'ec_selected' );
 	jQuery( '.ec_details_swatches > li.ec_option5' ).removeClass( 'ec_selected' );
-	
 	jQuery( '.ec_details_combo.ec_option4' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option5' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
-	
 	jQuery( '.ec_option3.ec_details_option_row_error' ).hide( );
 	jQuery( '#ec_details_stock_quantity' ).html( quantity );
 	var next_options = jQuery( '.ec_details_swatches > li.ec_option4' );
-	
 	jQuery( '#ec_option_loading_4' ).show( );
-	
 	if( next_options.length ){
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
@@ -2380,12 +2052,9 @@ function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, qu
 			optionitem_id_3: optionitem_id_3,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-	
 			jQuery( '#ec_option_loading_4' ).show( );
-			
 			var i=0;
 			next_options.each( function( ){
 				jQuery( this ).attr( 'data-optionitem-quantity', json_data[i].quantity );
@@ -2397,11 +2066,9 @@ function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, qu
 		} } );
 	}else{
 		next_options = jQuery( '.ec_details_combo.ec_option4 option' );
-			
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
 		} );
-		
 		var data = {
 			action: 'ec_ajax_get_optionitem_quantities',
 			optionitem_id_1: optionitem_id_1,
@@ -2409,15 +2076,10 @@ function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, qu
 			optionitem_id_3: optionitem_id_3,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
-			
 			jQuery( '.ec_details_combo.ec_option4' ).prop( 'disabled', false ).removeClass( 'ec_inactive' );
-			
 			var json_data = JSON.parse( data );
-	
 			jQuery( '#ec_option_loading_4' ).show( );
-			
 			var i=0;
 			next_options.each( function( ){
 				if( i > 0 ){
@@ -2435,20 +2097,13 @@ function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, qu
 		} } );
 	}
 }
-
-function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, optionitem_id_4, quantity ){
-	
+function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, optionitem_id_4, quantity ){	
 	jQuery( '.ec_details_swatches > li.ec_option5' ).removeClass( 'ec_selected' );
-	
 	jQuery( '.ec_details_combo.ec_option5' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
-	
 	jQuery( '.ec_option4.ec_details_option_row_error' ).hide( );
-	
 	jQuery( '#ec_details_stock_quantity' ).html( quantity );
 	var next_options = jQuery( '.ec_details_swatches > li.ec_option5' );
-	
 	jQuery( '#ec_option_loading_5' ).show( );
-	
 	if( next_options.length ){
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
@@ -2461,12 +2116,9 @@ function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, op
 			optionitem_id_4: optionitem_id_4,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-	
 			jQuery( '#ec_option_loading_5' ).show( );
-			
 			var i=0;
 			next_options.each( function( ){
 				jQuery( this ).attr( 'data-optionitem-quantity', json_data[i-1].quantity );
@@ -2478,11 +2130,9 @@ function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, op
 		} } );
 	}else{
 		next_options = jQuery( '.ec_details_combo.ec_option5 option' );
-			
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
 		} );
-		
 		var data = {
 			action: 'ec_ajax_get_optionitem_quantities',
 			optionitem_id_1: optionitem_id_1,
@@ -2491,15 +2141,10 @@ function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, op
 			optionitem_id_4: optionitem_id_4,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
-			
 			jQuery( '.ec_details_combo.ec_option5' ).prop( 'disabled', false ).removeClass( 'ec_inactive' );
-			
 			var json_data = JSON.parse( data );
-	
 			jQuery( '#ec_option_loading_5' ).show( );
-			
 			var i=0;
 			next_options.each( function( ){
 				if( i > 0 ){
@@ -2517,9 +2162,7 @@ function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, op
 		} } );
 	}
 }
-
-function ec_submit_product_review( ){
-	
+function ec_submit_product_review( ){	
 	var review_title = jQuery( '#ec_review_title' ).val( );
 	var review_score = 0;
 	for( var i=1; i<=5; i++ ){
@@ -2528,9 +2171,7 @@ function ec_submit_product_review( ){
 		}
 	}
 	var review_message = jQuery( '#ec_review_message' ).val( );
-	
 	if( review_title != "" && review_score != 0 && review_message != "" ){
-		
 		// Submit a filled out review
 		jQuery( '#ec_details_customer_review_loader' ).show( );
 		jQuery( '#ec_details_review_error' ).hide( );
@@ -2541,7 +2182,6 @@ function ec_submit_product_review( ){
 			review_message: review_message,
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
-		
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			jQuery( '#ec_details_customer_review_loader' ).hide( ); 
 			jQuery( '#ec_review_title' ).val( "" );
@@ -2551,68 +2191,42 @@ function ec_submit_product_review( ){
 			jQuery( '#ec_details_review_submitted_button_row' ).show( );
 			jQuery( '#ec_details_customer_review_success' ).show( ).delay( 1500 ).fadeOut( 'slow' ); 
 		} } );
-		
 	}else{
-		
 		// Something is missing, display error.
 		jQuery( '#ec_details_review_error' ).show( );
-		
 	}
-	
 }
-
-</script>
-
-<?php if( $is_admin && !$safari && !$is_preview ){ ?>
+</script><?php if( $is_admin && !$safari && !$is_preview ){ ?>
 <script>
-
 function ec_admin_show_description_editor( ){
-	
 	jQuery( '.ec_details_description_content' ).hide( );
 	jQuery( '.ec_details_description_editor' ).show( );
-	
 }
-
 function ec_admin_save_description_editor( ){
-
 	var new_html = tinymce.get( 'desc_<?php echo $this->product->model_number; ?>' ).getContent( );
 	jQuery( '.ec_details_description_editor' ).hide( );
 	jQuery( '.ec_details_description_content' ).html( new_html ).show( );
-	
 	var data = {
 		action: 'ec_ajax_ec_update_product_description',
 		description: new_html,
 		product_id: '<?php echo $this->product->product_id; ?>'
 	};
-	
 	jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ } } );
-	
 }
-
-function ec_admin_show_specifications_editor( ){
-	
+function ec_admin_show_specifications_editor( ){	
 	jQuery( '.ec_details_specifications_content' ).hide( );
 	jQuery( '.ec_details_specifications_editor' ).show( );
-	
 }
-
 function ec_admin_save_specifications_editor( ){
-
 	var new_html = tinymce.get( 'specs_<?php echo $this->product->model_number; ?>' ).getContent( );
 	jQuery( '.ec_details_specifications_editor' ).hide( );
 	jQuery( '.ec_details_specifications_content' ).html( new_html ).show( );
-	
 	var data = {
 		action: 'ec_ajax_ec_update_product_specifications',
 		specifications: new_html,
 		product_id: '<?php echo $this->product->product_id; ?>'
 	};
-	
 	jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ } } );
-	
 }
-
-</script>
-<?php } ?>
-
+</script><?php } ?>
 <?php /* END NEW PRODUCT DETAILS CONTENT */ ?>

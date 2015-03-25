@@ -424,48 +424,34 @@ $GLOBALS['ec_live_editor_loaded'] = true;
 
 <?php /* SCRIPT FUNCTIONS REQUIRED TO BE RUN ON THE PRODUCT PAGE */ ?>
 <script>
-
 function ec_admin_apply_product_options( post_id ){
-	
 	var product_list = new Array( <?php for( $i=0; $i<count( $this->product_list->products ); $i++ ){ if( $i > 0 ){ echo ","; } echo "'" . $this->product_list->products[$i]->model_number . "'"; } ?> );
-	
 	if( jQuery( document.getElementById( 'ec_product_image_hover_type' ) ).val( ) != '0' && jQuery( document.getElementById( 'ec_product_image_effect_type' ) ).val( ) != '0' ){
-		
 		jQuery( document.getElementById( "ec_admin_page_updated_loader" ) ).show( );
 		jQuery( document.getElementById( "ec_admin_loader_bg" ) ).show( );
-		
 		jQuery( document.getElementById( 'ec_admin_mass_change_error' ) ).hide( );
-		
 		for( var i=0; i<product_list.length; i++ ){
 			jQuery( document.getElementById( 'ec_product_image_hover_type_' + product_list[i] ) ).val( jQuery( document.getElementById( 'ec_product_image_hover_type' ) ).val( ) );
 			ec_admin_update_image_hover_effect( product_list[i] );
 			jQuery( document.getElementById( 'ec_product_image_effect_type_' + product_list[i] ) ).val( jQuery( document.getElementById( 'ec_product_image_effect_type' ) ).val( ) );
 			ec_admin_update_image_effect_type( product_list[i] );
 		}
-		
 		var data = {
 			action: 'ec_ajax_mass_save_product_options',
 			image_hover_type: jQuery( document.getElementById( 'ec_product_image_hover_type' ) ).val( ),
 			image_effect_type: jQuery( document.getElementById( 'ec_product_image_effect_type' ) ).val( ),
 			products: product_list
 		}
-		
 		jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function(data){ 
 			jQuery( document.getElementById( "ec_admin_page_updated_loader" ) ).hide( );
 			jQuery( document.getElementById( "ec_admin_page_updated" ) ).show( ).delay( 1500 ).fadeOut( 'slow' );
 			jQuery( document.getElementById( "ec_admin_loader_bg" ) ).fadeOut( 'slow' );
 		} } );
-		
 		jQuery( document.getElementById( 'ec_page_editor' ) ).animate( { left:'-290px' }, {queue:false, duration:220} ).removeClass( 'ec_display_editor_true' ).addClass( 'ec_display_editor_false' );
-		
 	}else{
-		
 		jQuery( document.getElementById( 'ec_admin_mass_change_error' ) ).show( );
-		
 	}
-	
 }
-
 function ec_admin_reorder_products( ids ){
 	// Column Widths
 	var window_width = jQuery( document.getElementById( 'ec_current_media_size' ) ).css( "max-width" ).replace( "px", "" );
@@ -482,7 +468,6 @@ function ec_admin_reorder_products( ids ){
 		columns = jQuery( document.getElementById( 'ec_page_options_columns_smartphone' ) ).val( );
 	}
 	var column_width = ( 100 / columns );
-	
 	for( var i=0; i<<?php echo count( $this->product_list->products ); ?>; i++ ){
 		if( !document.getElementById( 'ec_product_li_' + ids[i] ) ){
 			jQuery( document.getElementById( 'ec_store_product_list' ) ).append( '<li class="ec_product_li empty" style="width:' + column_width + '%" id="ec_product_li_' + ids[i] + '">This item was not initially available on the page. Please reload to view this item.</li>' );
@@ -498,12 +483,10 @@ function ec_admin_reorder_products( ids ){
 			jQuery( document.getElementById( 'ec_product_li_' + ids[i] ) ).addClass( 'not_first' );
 		}
 	}
-	
 	for( i; i<ids.length; i++ ){
 		jQuery( document.getElementById( 'ec_product_li_' + ids[i] ) ).addClass( 'hidden' );
 	}
 }
-
 </script>
 
 <?php }?>

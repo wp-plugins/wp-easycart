@@ -453,4 +453,6 @@ foreach( $font_split as $font_item ){
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 <?php }?>
+
+<?php do_action( 'wpeasycart_admin_advanced_options' ); ?>
 </form>

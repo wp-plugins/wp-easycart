@@ -141,13 +141,9 @@ $GLOBALS['ec_live_editor_loaded'] = true;
     <div class="ec_editor_link_row"><a href="<?php echo get_admin_url( ); ?>admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-settings#cart-settings" target="_blank">Edit Basic Cart Settings</a></div>
     
 </div>
-
-<script>
-function ec_admin_save_cart_options( ){
-	
+<script>function ec_admin_save_cart_options( ){
 	jQuery( "#ec_admin_page_updated_loader" ).show( );
 	jQuery( "#ec_admin_loader_bg" ).show( );
-	
 	var data = {
 		action: 'ec_ajax_save_cart_options',
 		ec_option_cart_columns_desktop: jQuery( '#ec_option_cart_columns_desktop' ).val( ),
@@ -157,18 +153,14 @@ function ec_admin_save_cart_options( ){
 		ec_option_cart_columns_smartphone: jQuery( '#ec_option_cart_columns_smartphone' ).val( ),
 		ec_option_use_dark_bg: jQuery( '#ec_option_use_dark_bg' ).val( ),
 	}
-	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function(data){ 
 		jQuery( "#ec_admin_page_updated_loader" ).hide( );
 		jQuery( "#ec_admin_page_updated" ).show( );
 		jQuery( "#ec_admin_loader_bg" ).fadeOut( 'slow' );
 		location.reload( );
 	} } );
-	
 	jQuery( '#ec_page_editor' ).animate( { left:'-290px' }, {queue:false, duration:220} ).removeClass( 'ec_display_editor_true' ).addClass( 'ec_display_editor_false' );
-	
-}
-</script>
+}</script>
 
 <?php }// Close editor content ?>
 

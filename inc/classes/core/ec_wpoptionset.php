@@ -545,27 +545,27 @@ class ec_wpoptionset{
 		
 		array_push($this->wp_option_names, 'ec_option_default_desktop_columns');			array_push($this->wp_option_defaults, '2' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
-		array_push($this->wp_option_names, 'ec_option_default_desktop_image_height');		array_push($this->wp_option_defaults, '210px' );
+		array_push($this->wp_option_names, 'ec_option_default_desktop_image_height');		array_push($this->wp_option_defaults, '310px' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
 		array_push($this->wp_option_names, 'ec_option_default_laptop_columns');				array_push($this->wp_option_defaults, '2' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
-		array_push($this->wp_option_names, 'ec_option_default_laptop_image_height');		array_push($this->wp_option_defaults, '180px' );
+		array_push($this->wp_option_names, 'ec_option_default_laptop_image_height');		array_push($this->wp_option_defaults, '310px' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
 		array_push($this->wp_option_names, 'ec_option_default_tablet_wide_columns');		array_push($this->wp_option_defaults, '2' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
-		array_push($this->wp_option_names, 'ec_option_default_tablet_wide_image_height');	array_push($this->wp_option_defaults, '210px' );
+		array_push($this->wp_option_names, 'ec_option_default_tablet_wide_image_height');	array_push($this->wp_option_defaults, '310px' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
 		array_push($this->wp_option_names, 'ec_option_default_tablet_columns');				array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
-		array_push($this->wp_option_names, 'ec_option_default_tablet_image_height');		array_push($this->wp_option_defaults, '225px' );
+		array_push($this->wp_option_names, 'ec_option_default_tablet_image_height');		array_push($this->wp_option_defaults, '380px' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
 		array_push($this->wp_option_names, 'ec_option_default_smartphone_columns');			array_push($this->wp_option_defaults, '1' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
-		array_push($this->wp_option_names, 'ec_option_default_smartphone_image_height');	array_push($this->wp_option_defaults, '160px' );
+		array_push($this->wp_option_names, 'ec_option_default_smartphone_image_height');	array_push($this->wp_option_defaults, '270px' );
 																							array_push($this->wp_option_groups, 'ec-theme-options-group');
 		
 		array_push($this->wp_option_names, 'ec_option_details_columns_desktop');			array_push($this->wp_option_defaults, '2' );

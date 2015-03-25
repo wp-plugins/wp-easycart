@@ -1466,10 +1466,20 @@ class ec_accountpage{
 		$headers[] = "Reply-To: " . get_option( 'ec_option_password_from_email' );
 		$headers[] = "X-Mailer: PHP/".phpversion();
 		
-		if( get_option( 'ec_option_use_wp_mail' ) )
+		$email_send_method = get_option( 'ec_option_use_wp_mail' );
+		$email_send_method = apply_filters( 'wpeasycart_email_method', $email_send_method );
+		
+		if( $email_send_method == "1" ){
 			wp_mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, implode("\r\n", $headers));
-		else
+		
+		}else if( $email_send_method == "0" ){
 			mail( $email, $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message, implode("\r\n", $headers));
+			
+		}else{
+			do_action( 'wpeasycart_custom_forgot_password_email', get_option( 'ec_option_password_from_email' ), $email, "", $GLOBALS['language']->get_text( "account_forgot_password_email", "account_forgot_password_email_title" ), $message );
+			
+		}
+		
 	}
 	
 	private function get_random_password( ){
@@ -1492,10 +1502,20 @@ class ec_accountpage{
 		$headers[] = "Reply-To: " . get_option( 'ec_option_password_from_email' );
 		$headers[] = "X-Mailer: PHP/".phpversion();
 		
-		if( get_option( 'ec_option_use_wp_mail' ) )
+		$email_send_method = get_option( 'ec_option_use_wp_mail' );
+		$email_send_method = apply_filters( 'wpeasycart_email_method', $email_send_method );
+		
+		if( $email_send_method == "1" ){
 			wp_mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, implode("\r\n", $headers));
-		else
+		
+		}else if( $email_send_method == "0" ){
 			mail( $email, $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message, implode("\r\n", $headers));
+			
+		}else{
+			do_action( 'wpeasycart_custom_register_verification_email', get_option( 'ec_option_password_from_email' ), $email, "", $GLOBALS['language']->get_text( "account_validation_email", "account_validation_email_title" ), $message );
+			
+		}	
+		
 	}
 	
 	public function ec_display_payment_method_input( $select_one_text ){

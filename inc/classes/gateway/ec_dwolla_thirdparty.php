@@ -57,6 +57,108 @@ class ec_dwolla_thirdparty extends ec_third_party{
 		else
 			$test_mode= "false";
 		
+		echo "<style>
+		.ec_third_party_loader{ display:block !important; position:absolute; top:50%; left:50%; }
+		@-webkit-keyframes ec_third_party_loader {
+		  0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		  }
+		
+		  100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		  }
+		}
+		
+		@-moz-keyframes ec_third_party_loader {
+		  0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		  }
+		
+		  100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		  }
+		}
+		
+		@-o-keyframes ec_third_party_loader {
+		  0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		  }
+		
+		  100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		  }
+		}
+		
+		@keyframes ec_third_party_loader {
+		  0% {
+			-webkit-transform: rotate(0deg);
+			-moz-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		  }
+		
+		  100% {
+			-webkit-transform: rotate(360deg);
+			-moz-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		  }
+		}
+		
+		/* Styles for old versions of IE */
+		.ec_third_party_loader {
+		  font-family: sans-serif;
+		  font-weight: 100;
+		}
+		
+		/* :not(:required) hides this rule from IE9 and below */
+		.ec_third_party_loader:not(:required) {
+		  -webkit-animation: ec_third_party_loader 1250ms infinite linear;
+		  -moz-animation: ec_third_party_loader 1250ms infinite linear;
+		  -ms-animation: ec_third_party_loader 1250ms infinite linear;
+		  -o-animation: ec_third_party_loader 1250ms infinite linear;
+		  animation: ec_third_party_loader 1250ms infinite linear;
+		  border: 8px solid #3388ee;
+		  border-right-color: transparent;
+		  border-radius: 16px;
+		  box-sizing: border-box;
+		  display: inline-block;
+		  position: relative;
+		  overflow: hidden;
+		  text-indent: -9999px;
+		  width: 32px;
+		  height: 32px;
+		}
+		</style>";
+		
+		echo "<div style=\"display:none;\" class=\"ec_third_party_loader\">Loading...</div>";
+		
 		echo "<form action=\"" . $this->get_gateway_url( $test_mode ) . "\" method=\"post\" name=\"dwolla_thirdparty_form\">";
 		echo "<input id=\"key\" name=\"key\" type=\"hidden\" value=\"" . $dwolla_key . "\" />";
 		echo "<input id=\"signature\" name=\"signature\" type=\"hidden\" value=\"" . $signature . "\" />";

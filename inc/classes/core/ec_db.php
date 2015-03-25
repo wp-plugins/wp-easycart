@@ -270,6 +270,7 @@ class ec_db{
 				optionitem.optionitem_price_onetime,
 				optionitem.optionitem_price_override,
 				optionitem.optionitem_price_multiplier,
+				optionitem.optionitem_price_per_character,
 				optionitem.optionitem_weight, 
 				optionitem.optionitem_weight_onetime,
 				optionitem.optionitem_weight_override,
@@ -2891,6 +2892,7 @@ class ec_db{
 					ec_optionitem.optionitem_price_onetime, 
 					ec_optionitem.optionitem_price_override, 
 					ec_optionitem.optionitem_price_multiplier, 
+					ec_optionitem.optionitem_price_per_character,
 					ec_optionitem.optionitem_weight, 
 					ec_optionitem.optionitem_weight_onetime, 
 					ec_optionitem.optionitem_weight_override, 
@@ -2920,7 +2922,7 @@ class ec_db{
 	}
 	
 	public function get_advanced_cart_options( $tempcart_id ){
-		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_tempcart_optionitem.optionitem_model_number, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_price_multiplier, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_weight_multiplier, ec_optionitem.optionitem_allow_download, ec_optionitem.optionitem_disallow_shipping FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id WHERE ec_tempcart_optionitem.tempcart_id = %d";
+		$sql = "SELECT ec_tempcart_optionitem.tempcart_id, ec_tempcart_optionitem.option_id, ec_tempcart_optionitem.optionitem_id, ec_tempcart_optionitem.optionitem_value, ec_tempcart_optionitem.optionitem_model_number, ec_option.option_name, ec_option.option_label, ec_option.option_type, ec_optionitem.optionitem_name, ec_optionitem.optionitem_price, ec_optionitem.optionitem_price_onetime, ec_optionitem.optionitem_price_override, ec_optionitem.optionitem_price_multiplier, ec_optionitem.optionitem_price_per_character, ec_optionitem.optionitem_weight, ec_optionitem.optionitem_weight_onetime, ec_optionitem.optionitem_weight_override, ec_optionitem.optionitem_weight_multiplier, ec_optionitem.optionitem_allow_download, ec_optionitem.optionitem_disallow_shipping FROM ec_tempcart_optionitem LEFT JOIN ec_option ON ec_option.option_id = ec_tempcart_optionitem.option_id LEFT JOIN ec_optionitem ON ec_optionitem.optionitem_id = ec_tempcart_optionitem.optionitem_id LEFT JOIN ec_tempcart ON ec_tempcart.tempcart_id = ec_tempcart_optionitem.tempcart_id LEFT JOIN ec_option_to_product ON ( ec_option_to_product.option_id = ec_option.option_id AND ec_option_to_product.product_id = ec_tempcart.product_id ) WHERE ec_tempcart_optionitem.tempcart_id = %d ORDER BY ec_option_to_product.option_to_product_id ASC";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $tempcart_id ) );
 	}
 	
@@ -3606,6 +3608,10 @@ class ec_db{
 	
 	public function get_affiliate_rule( $affiliate_id, $product_id ){
 		return $this->mysqli->get_row( $this->mysqli->prepare( "SELECT ec_affiliate_rule.* FROM ec_affiliate_rule, ec_affiliate_rule_to_product, ec_affiliate_rule_to_affiliate WHERE ec_affiliate_rule_to_affiliate.affiliate_id = %s AND ec_affiliate_rule_to_product.product_id = %d AND ec_affiliate_rule.affiliate_rule_id = ec_affiliate_rule_to_affiliate.affiliate_rule_id AND ec_affiliate_rule.affiliate_rule_id = ec_affiliate_rule_to_product.affiliate_rule_id AND ec_affiliate_rule.rule_active = 1", $affiliate_id, $product_id ) );
+	}
+	
+	public function get_total_cart_items_by_product_id( $product_id, $session_id ){
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT SUM( ec_tempcart.quantity ) FROM ec_tempcart WHERE ec_tempcart.product_id = %d AND ec_tempcart.session_id = %s", $product_id, $session_id ) );
 	}
 	
 }

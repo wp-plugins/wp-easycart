@@ -12,8 +12,26 @@ if( strtoupper(substr(PHP_OS, 0, 3)) != 'WIN' && !is_writable( session_save_path
 	ini_set( 'session.save_path', 'c:/temp' );
 }
 
+function ec_config_is_session_started( ){
+
+	if( php_sapi_name( ) !== 'cli' ){
+		
+		if( version_compare( phpversion( ), '5.4.0', '>=' ) ){
+			return session_status( ) === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+		
+		}else{
+			return session_id() === '' ? FALSE : TRUE;
+		}
+		
+	}
+	
+	return FALSE;
+
+}
+
 // Start the session
-session_start();
+if( ec_config_is_session_started( ) === FALSE )
+	session_start();
 
 // If register globals is on we need to do some custom work to fix session problems
 if( ini_get( 'register_globals' ) ){

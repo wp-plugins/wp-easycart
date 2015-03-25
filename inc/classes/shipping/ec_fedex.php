@@ -217,7 +217,11 @@ class ec_fedex{
 		try{
 			$response = $client->getRates($request);
 			
-			if( $response->HighestSeverity != 'FAILURE' && $response->HighestSeverity != 'ERROR' ){  	
+			if( $response->HighestSeverity != 'FAILURE' && $response->HighestSeverity != 'ERROR' ){ 	
+				
+				if( $response->HighestSeverity == 'WARNING' && $response->Notifications->Code == 556 ){
+					return "ERROR";
+				} 	
 				
 				$rates = array( );
 				

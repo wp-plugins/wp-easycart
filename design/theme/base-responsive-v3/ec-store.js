@@ -223,6 +223,7 @@ function ec_plus_quantity( model_number, track_quantity, max_quantity ){
 function ec_cartitem_delete( cartitem_id, model_number ){
 	var data = {
 		action: 'ec_ajax_cartitem_delete',
+		ec_v3_24: 'true',
 		cartitem_id: cartitem_id
 	}
 	
@@ -231,14 +232,42 @@ function ec_cartitem_delete( cartitem_id, model_number ){
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function(data){ 
 		jQuery( document.getElementById( 'ec_cartitem_row_' + cartitem_id ) ).remove( );
+		jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).remove( );
+		jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).remove( );
 		jQuery( document.getElementById( 'ec_cart_widget_row_' + cartitem_id ) ).remove( );
-		ec_update_cart( data, 0, "" );
+		
+		// Get Response Data
+		var response_obj = JSON.parse( data );
+		
+		if( response_obj.cart.length == 0 ){
+			ec_reload_cart( );
+			
+		}else{
+		
+			// Update Cart Data
+			for( var i=0; i<response_obj.cart.length; i++ ){
+				jQuery( document.getElementById( 'ec_quantity_' + response_obj.cart[i].id ) ).val( response_obj.cart[i].quantity );
+				jQuery( document.getElementById( 'ec_cartitem_price_' + response_obj.cart[i].id ) ).html( response_obj.cart[i].unit_price );
+				jQuery( document.getElementById( 'ec_cartitem_total_' + response_obj.cart[i].id ) ).html( response_obj.cart[i].total_price );
+			}
+			
+			// Update Cart Totals
+			jQuery( document.getElementById( 'ec_cart_subtotal' ) ).html( response_obj.order_totals.sub_total );
+			jQuery( document.getElementById( 'ec_cart_tax' ) ).html( response_obj.order_totals.tax_total );
+			jQuery( document.getElementById( 'ec_cart_shipping' ) ).html( response_obj.order_totals.shipping_total );
+			jQuery( document.getElementById( 'ec_cart_duty' ) ).html( response_obj.order_totals.duty_total );
+			jQuery( document.getElementById( 'ec_cart_vat' ) ).html( response_obj.order_totals.var_total );
+			jQuery( document.getElementById( 'ec_cart_discount' ) ).html( response_obj.order_totals.discount_total );
+			jQuery( document.getElementById( 'ec_cart_total' ) ).html( response_obj.order_totals.sub_total );
+		
+		}
 	} } );
 }
 
 function ec_cartitem_update( cartitem_id, model_number ){
 	var data = {
 		action: 'ec_ajax_cartitem_update',
+		ec_v3_24: 'true',
 		cartitem_id: cartitem_id,
 		quantity: jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( )
 	};
@@ -246,23 +275,52 @@ function ec_cartitem_update( cartitem_id, model_number ){
 	jQuery( document.getElementById( 'ec_cartitem_updating_' + cartitem_id ) ).show( );
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
+		
+		// Hide Loader
 		jQuery( document.getElementById( 'ec_cartitem_updating_' + cartitem_id ) ).hide( );
-		data_arr = data.split( '***' );
-		var updated_quantity = Number( jQuery( document.getElementById( 'ec_quantity_' + model_number ) ).val( ) );
-		var returned_quantity = Number( data_arr[2] );
-		if( updated_quantity > returned_quantity ){
-			//show max quantity error
-			jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).show( );
-			jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).hide( );
-		}else if( updated_quantity < returned_quantity ){
-			// show min quantity error
-			jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).hide( );
-			jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).show( );
+		
+		// Get Response Data
+		var response_obj = JSON.parse( data );
+		
+		if( response_obj.cart.length == 0 ){
+			ec_reload_cart( );
+			
 		}else{
-			jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).hide( );
-			jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).hide( );
+		
+			// Update Cart Data
+			for( var i=0; i<response_obj.cart.length; i++ ){
+				var updated_quantity = Number( jQuery( document.getElementById( 'ec_quantity_' + response_obj.cart[i].id ) ).val( ) );
+				var returned_quantity = Number( response_obj.cart[i].quantity );
+				if( updated_quantity > returned_quantity ){
+					//show max quantity error
+					jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).show( );
+					jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).hide( );
+				}else if( updated_quantity < returned_quantity ){
+					// show min quantity error
+					jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).hide( );
+					jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).show( );
+				}else{
+					jQuery( document.getElementById( 'ec_cartitem_max_error_' + cartitem_id ) ).hide( );
+					jQuery( document.getElementById( 'ec_cartitem_min_error_' + cartitem_id ) ).hide( );
+				}
+				jQuery( document.getElementById( 'ec_quantity_' + response_obj.cart[i].id ) ).val( response_obj.cart[i].quantity );
+				jQuery( document.getElementById( 'ec_cartitem_price_' + response_obj.cart[i].id ) ).html( response_obj.cart[i].unit_price );
+				jQuery( document.getElementById( 'ec_cartitem_total_' + response_obj.cart[i].id ) ).html( response_obj.cart[i].total_price );
+			}
+			
+			// Update Cart Totals
+			jQuery( document.getElementById( 'ec_cart_subtotal' ) ).html( response_obj.order_totals.sub_total );
+			jQuery( document.getElementById( 'ec_cart_tax' ) ).html( response_obj.order_totals.tax_total );
+			jQuery( document.getElementById( 'ec_cart_shipping' ) ).html( response_obj.order_totals.shipping_total );
+			jQuery( document.getElementById( 'ec_cart_duty' ) ).html( response_obj.order_totals.duty_total );
+			jQuery( document.getElementById( 'ec_cart_vat' ) ).html( response_obj.order_totals.var_total );
+			jQuery( document.getElementById( 'ec_cart_discount' ) ).html( response_obj.order_totals.discount_total );
+			jQuery( document.getElementById( 'ec_cart_total' ) ).html( response_obj.order_totals.grand_total );
+			jQuery( '.ec_cart_items_total' ).html( response_obj.items_total );
+			jQuery( '.ec_cart_price_total' ).html( response_obj.order_totals.sub_total );
+		
 		}
-		ec_update_cart( data, cartitem_id, model_number );
+		
 	} } );
 }
 

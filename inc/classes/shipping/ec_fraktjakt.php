@@ -15,7 +15,7 @@ class ec_fraktjakt{
 
 	function __construct( ){
 		$this->setting = new ec_setting( );
-		$this->cart = new ec_cart( session_id( ) );
+		$this->cart = new ec_cart( $_SESSION['ec_cart_id'] );
 		$this->user = new ec_user( "" );
 		$this->fraktjakt_customer_id = $this->setting->get_fraktjakt_customer_id( );
 		$this->fraktjakt_login_key = $this->setting->get_fraktjakt_login_key( );	

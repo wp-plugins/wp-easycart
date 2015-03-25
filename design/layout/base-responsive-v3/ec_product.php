@@ -70,7 +70,7 @@ if( $admin_access || $use_quickview ){ ?>
                     <div class="ec_flipbook_left">&#65513;</div>
                     <div class="ec_flipbook_right">&#65515;</div>
                     <?php }?>
-                    <img src="<?php echo $product->get_first_image_url( ); ?>" />
+                    <img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" />
                 </div>
                 <div class="ec_product_quickview_content_data">
                     <h1 class="ec_product_quickview_content_title"><a href="<?php echo $product->get_product_link( ); ?>"><?php echo $product->title; ?></a></h1>
@@ -209,8 +209,8 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
         	<?php if( ( $admin_access || $product->image_hover_type == 1 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_flip_container"<?php if( $product->image_hover_type != 1 ){ ?> style="display:none;"<?php }?>>
             	<div class="ec_flipper">
-					<div class="ec_image_front"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
-					<div class="ec_image_back"><img src="<?php echo $product->get_second_image_url( ); ?>" /></div>
+					<div class="ec_image_front"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
+					<div class="ec_image_back"><img src="<?php echo $product->get_second_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
         		</div>
             </div>
             <?php }
@@ -218,15 +218,15 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
 			if( ( $admin_access || $product->image_hover_type == 2 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_fade_container"<?php if( $product->image_hover_type != 2 ){ ?> style="display:none;"<?php }?>>
             	<div class="ec_fadder">
-					<div class="ec_image_front_2"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
-					<div class="ec_image_back_2"><img src="<?php echo $product->get_second_image_url( ); ?>" /></div>
+					<div class="ec_image_front_2"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
+					<div class="ec_image_back_2"><img src="<?php echo $product->get_second_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
         		</div>
             </div>
             <?php }
 			
 			if( ( $admin_access || $product->image_hover_type == 3 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_single_fade_container"<?php if( $product->image_hover_type != 3 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_fade"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
+            	<div class="ec_single_fade"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
             </div>
             <?php }
 			
@@ -238,32 +238,32 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
 			
 			if( ( $admin_access || $product->image_hover_type == 5 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_single_grow_container"<?php if( $product->image_hover_type != 5 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_grow"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
+            	<div class="ec_single_grow"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
             </div>
             <?php } 
 			
 			if( ( $admin_access || $product->image_hover_type == 6 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_single_shrink_container"<?php if( $product->image_hover_type != 6 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_shrink"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
+            	<div class="ec_single_shrink"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
             </div>
             <?php } 
 			
 			if( ( $admin_access || $product->image_hover_type == 7 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_single_btw_container"<?php if( $product->image_hover_type != 7 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_btw"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
+            	<div class="ec_single_btw"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
             </div>
             <?php }
 			
 			if( ( $admin_access || $product->image_hover_type == 8 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_single_brighten_container"<?php if( $product->image_hover_type != 8 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_brighten"><img src="<?php echo $product->get_first_image_url( ); ?>" /></div>
+            	<div class="ec_single_brighten"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
             </div>
             <?php }
 			
 			if( ( $admin_access || $product->image_hover_type == 9 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_slide_container"<?php if( $product->image_hover_type != 9 ){ ?> style="display:none;"<?php }?>>
-            	<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_front_3" />
-				<img src="<?php echo $product->get_second_image_url( ); ?>" class="ec_image_back_3" />
+            	<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_front_3" alt="<?php echo $product->title; ?>" />
+				<img src="<?php echo $product->get_second_image_url( ); ?>" class="ec_image_back_3" alt="<?php echo $product->title; ?>" />
             </div>
             <?php }
 			
@@ -272,7 +272,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
             <div class="ec_flipbook"<?php if( $product->image_hover_type != 10 ){ ?> style="display:none;"<?php }?> data-image-list="<?php if( $product->images->use_optionitem_images ){ for( $i=0; $i<count( $product->images->imageset ); $i++ ){ if( $i > 0 ){ echo ","; } echo plugins_url( "/wp-easycart-data/products/pics1/" . $product->images->imageset[$i]->image1 ); } }else{ echo $product->get_first_image_url( ); if( trim( $product->images->image2 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics2/" . $product->images->image2 ); } if( trim( $product->images->image3 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics3/" . $product->images->image3 ); } if( trim( $product->images->image4 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics4/" . $product->images->image4 ); } if( trim( $product->images->image5 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics5/" . $product->images->image5 ); } } ?>">
             	<div class="ec_flipbook_left">&#65513;</div>
                 <div style="" class="ec_flipbook_right">&#65515;</div>
-                <img src="<?php echo $product->get_first_image_url( ); ?>"/>
+                <img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" />
             </div>
 			<?php } ?>
             

@@ -314,6 +314,11 @@ class ec_cartitem{
 						$price_multiplier = $advanced_option->optionitem_price_multiplier;
 					}
 					
+					if( $advanced_option->optionitem_price_per_character > 0 ){
+						$num_chars = strlen( preg_replace('/\s+/', '', $advanced_option->optionitem_value ) );
+						$options_price = $options_price + ( $num_chars * $advanced_option->optionitem_price_per_character );
+					}
+					
 					if( $advanced_option->optionitem_weight != 0 ){
 						$options_weight = $options_weight + $advanced_option->optionitem_weight; 
 					}else if( $advanced_option->optionitem_weight_onetime != 0 ){ 
@@ -349,9 +354,10 @@ class ec_cartitem{
 		}else if( isset( $roleprice ) ){
 			$this->unit_price = $roleprice + $options_price;
 		}else if( count( $this->pricetiers ) > 0 ){
+			$total_items = $this->mysqli->get_total_cart_items_by_product_id( $this->product_id, $_SESSION['ec_cart_id'] );
 			$this->unit_price = $cartitem_data->price + $options_price;
 			for( $i=0; $i<count( $this->pricetiers ); $i++ ){
-				if( $this->quantity >= $this->pricetiers[$i][1] ){
+				if( $total_items >= $this->pricetiers[$i][1] ){
 					$this->unit_price = $this->pricetiers[$i][0] + $options_price;	
 				}
 			}

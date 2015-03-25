@@ -198,6 +198,8 @@
                     
                     <?php
 	
+					do_action( 'wpeasycart_subscription_email_receipt_line_item', $order_details[0]->model_number );
+	
 					if( $order_details[0]->use_advanced_optionset ){
 						$advanced_options = $this->mysqli->get_order_options( $order_details[0]->orderdetail_id );
 						

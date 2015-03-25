@@ -316,6 +316,9 @@
                     			<?php }?>
 	
 								<?php 
+	
+								do_action( 'wpeasycart_email_receipt_line_item', $this->cart->cart[$i]->model_number );
+								
 								$advanced_option_allow_download = true;
 								if( $this->cart->cart[$i]->use_advanced_optionset ){
 									$advanced_options = $this->mysqli->get_order_options( $this->cart->cart[$i]->orderdetail_id );

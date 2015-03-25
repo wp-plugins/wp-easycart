@@ -548,6 +548,10 @@
 				"cart_please_wait":{
 					"title":"Cart Please Wait",
 					"value":"Παρακαλώ περιμένετε"
+				},
+				"cart_item_adjustment_per_character":{
+					"title":"Cart Per Character Adjustment",
+					"value":"ανά χαρακτήρα"
 				}
 			}
 		},
@@ -832,6 +836,14 @@
 				"cart_estimate_shipping_hint":{
 					"title":"Cart, Estimate Shipping Hint",
 					"value":"Εισάγετε ΤΚ"
+				},
+				"delivery_in":{
+					"title":"Cart, Live Shipping Delivery In (Days)",
+					"value":"Παράδοση σε"
+				},
+				"delivery_days":{
+					"title":"Cart, Live Shipping (Delivery In) Days",
+					"value":"μέρες"
 				}
 			}
 		},

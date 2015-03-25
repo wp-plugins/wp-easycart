@@ -281,6 +281,7 @@ CREATE TABLE IF NOT EXISTS `ec_optionitem` (
   `optionitem_price_onetime` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Price change one-time addition to total price.',
   `optionitem_price_override` FLOAT(15,3) NOT NULL DEFAULT -1.000 COMMENT 'Price change to override product price.',
   `optionitem_price_multiplier` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 'This multiplies your unit price by the value here.',
+  `optionitem_price_per_character` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'When using text field or textbox input, you can add price per character.',
   `optionitem_weight` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Weight change value for an optionitem.',
   `optionitem_weight_onetime` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Weight change one-time addition to total weight.',
   `optionitem_weight_override` FLOAT(15,3) NOT NULL DEFAULT -1.000 COMMENT 'Weight change to override product weight.',

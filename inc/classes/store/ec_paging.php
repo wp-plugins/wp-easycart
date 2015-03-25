@@ -96,7 +96,7 @@ class ec_paging{
 	}
 	
 	public function get_limit_query( ){
-		if( is_numeric( $this->start_item ) && is_numeric( $this->num_per_page ) )
+		if( is_numeric( $this->start_item ) && is_numeric( $this->num_per_page ) && $this->num_per_page > 0 )
 			return sprintf( " LIMIT %d, %d", $this->start_item, $this->num_per_page );
 		else
 			return "";

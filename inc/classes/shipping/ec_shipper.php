@@ -53,6 +53,30 @@
 				$this->canadapost = new ec_canadapost( $this->ec_setting );
 		}
 		
+		public function get_service_days( $ship_company, $ship_code ){
+			
+			if( $ship_company == "ups" ){
+				
+				for( $i=0; $i<count( $this->ups_data ); $i++ ){
+					if( isset( $this->ups_data[$i]['rate_code'] ) && $this->ups_data[$i]['rate_code'] == $ship_code ){
+						return $this->ups_data[$i]['delivery_days'];
+					}
+				}
+			
+			}else if( $ship_company == "canadapost" ){
+				
+				for( $i=0; $i<count( $this->canadapost_data ); $i++ ){
+					if( isset( $this->canadapost_data[$i]['rate_code'] ) && $this->canadapost_data[$i]['rate_code'] == $ship_code ){
+						return $this->canadapost_data[$i]['delivery_days'];
+					}
+				}
+				
+			}
+				
+			return 0;
+		
+		}
+		
 		public function get_rate( $ship_company, $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10, $declared_value = 0 ){
 			if( $ship_company == "ups" ){
 				if( count( $this->ups_data ) <= 0 ){
@@ -166,7 +190,7 @@
 				return $this->dhl->validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country );
 				
 			else if( isset( $this->canadapost ) )
-				return true;
+				return $this->canadapost->validate_address( $destination_address, $destination_city, $destination_state, $destination_zip, $destination_country );
 				
 			else
 				return true;

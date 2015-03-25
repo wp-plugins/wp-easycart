@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 3.0.23
+Stable tag: 3.0.24
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,34 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.24 =
+* New Feature - Advanced options for text and text areas allow you to charge an additional price per character entered by the customer. This is great for custom printing or engraving!
+* Fix - Product details and cart page errors thrown because of wpautop in some themes. Corrections made to prevent the shortcodes from breaking in this instance.
+* Fix - Dwolla payments, added a loading screen when transferring you to Dwolla.
+* Fix - Shipping, made an adjustment to ensure global handling is not applied to free shipping options.
+* Fix - Added information on Dwolla setup to help customers setup this payment option.
+* Fix - Canada Post postal code formatting error corrected.
+* Fix - Canada Post now checks for valid postal codes within Canada.
+* Fix - Tiered pricing now works with multiple options and is based on number of the type of product purchased.
+* Fix - Fraktjakt error corrected.
+* Fix - Removing all per page options will remove any limit from your products page.
+* Fix - Alt tags added to many product images.
+* Fix - When updating tiered pricing products, entire cart updates values on update or delete, rather than a single product. Important when one product affects another in the cart.
+* Fix - Deleting a cart item that has the min or max exceeded error showing was not removing those rows on removal from the cart.
+* Improvement - Live shipping now shows estimated delivery date when possible for UPS and Canada Post. 
+* Improvement - New and vastly improved layout for the admin shipping label.
+* New Filter - To alter the email method, use the 'wpeasycart_email_method' filter and return the name of your email system.
+* New Action - When email method customized, you can use the action 'wpeasycart_custom_order_email' to send out the emailer.
+* New Action - When email method customized, you can use the action 'wpeasycart_custom_subscription_order_email' to send out the emailer.
+* New Action - When email method customized, you can use the action 'wpeasycart_custom_forgot_password_email' to send out the emailer.
+* New Action - When email method customized, you can use the action 'wpeasycart_custom_register_verification_email' to send out the emailer.
+* New Action - When email method customized, you can use the action 'wpeasycart_custom_gift_card_email' to send out the emailer.
+* New Action - Add more advanced options to the bottom of the form using the action 'wpeasycart_admin_advanced_options'.
+* New Action - Save new advanced options that may have been setup using the action 'wpeasycart_admin_process_advanced_options'.
+* New Action - Add more links to the account linking system above all other account links using the action 'wpeasycart_account_links'.
+* New Action - Add custom information to the order detail line item in the account order details using the action 'wpeasycart_order_detail_line_item' model number is an accepted argument.
+* New Action - Add custom information to the order detail line item in the email receipt using the action 'wpeasycart_email_receipt_line_item' model number is an accepted argument.
+* New Action - Add custom information to the order detail line item in the subscription email receipt using the action 'wpeasycart_subscription_email_receipt_line_item' model number is an accepted argument.
 = 3.0.23 =
 * New Feature - Turn on/off the magnification box on the product details page.
 * New Feature - Turn on/off the pop up view for large image view on the product details page.

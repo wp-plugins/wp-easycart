@@ -12,6 +12,8 @@
 
     <?php 
 	
+	do_action( 'wpeasycart_order_detail_line_item', $order_item->model_number );
+	
 	$advanced_optionitem_download_allowed = true;
 
 	if( $order_item->use_advanced_optionset ){

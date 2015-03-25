@@ -193,7 +193,7 @@ class ec_canadapost{
 		
 		if( isset( $xml->{'price-quote'} ) ){
 			for( $i=0; $i<count( $xml->{'price-quote'} ); $i++ ){
-				$rates[] = array( 'rate_code' => $xml->{'price-quote'}[$i]->{'service-code'}, 'rate' => $xml->{'price-quote'}[$i]->{'price-details'}->{'due'} );
+				$rates[] = array( 'rate_code' => $xml->{'price-quote'}[$i]->{'service-code'}, 'rate' => $xml->{'price-quote'}[$i]->{'price-details'}->{'due'}, 'delivery_days' => $xml->{'price-quote'}[$i]->{'service-standard'}->{'expected-transit-time'} );
 			}
 		}
 		return $rates;
@@ -213,44 +213,24 @@ class ec_canadapost{
 	
 	public function validate_address( $desination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
 		
-		if( !$destination_country )
-			$destination_country = "AU";
-			
-		if( $destination_country == "AU" )
-			$shipper_url = $this->domestic_getall_shipper_url;
-		else
-			$shipper_url = $this->international_getall_shipper_url;
-		
-		$shipper_url .= "?";
-		if( $destination_country == "AU" )
-			$shipper_url .= "from_postcode=" . $destination_zip . "&to_postcode=" . $this->auspost_ship_from_zip . "&length=10&width=10&height=10";
-		else
-			$shipper_url .= "country_code=" . $destination_country;
-		
-		$shipper_url .= "&weight=2";
-		
-		$request = new WP_Http;
-		$response = $request->request( $shipper_url, array( 'method' => 'GET', 'headers' => "AUTH-KEY:" . $this->auspost_api_key ) );
-		
-		
-		if( is_wp_error( $response ) ){
-			$error_message = $response->get_error_message();
-			error_log( "error in australian post get rate, " . $error_message );
+		if( $destination_country == "CA" && $this->is_valid_zip_code( $destination_zip ) ){
 			return true;
 		}else{
-			$xml = json_decode( $response['body'] );
-			
-			if( isset( $xml->error ) )
-				return false;
-			else
-				return true;
-				
+			return false;
 		}
 		
 	}
 	
+	private function is_valid_zip_code( $zip ){
+		if( preg_match( "/[A-Z]\d[A-Z]\d[A-Z]\d/", $this->format_zip_code( $zip ) ) ){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	private function format_zip_code( $zip ){
-		return( str_replace( ' ', '', strtoupper( $zip ) ) );
+		return preg_replace( "/[^a-zA-Z0-9]+/", "", strtoupper( $zip ) );
 	}
 }
 	

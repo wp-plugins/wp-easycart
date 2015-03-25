@@ -294,7 +294,8 @@ class ec_shipping{
 				$ret_string .= "<select name=\"ec_cart_shipping_method\" onchange=\"ec_cart_shipping_method_change();\">";
 			
 			for( $i=0; $i<count( $this->live_based ); $i++){
-				if( $this->live_based[$i][4] != NULL && $this->live_based[$i][4] > 0 ){
+				$service_days = 0;
+				if( $this->live_based[$i][4] != NULL ){
 					if( $this->live_based[$i][4] == 0 )
 						$rate = "FREE";
 					else
@@ -303,11 +304,13 @@ class ec_shipping{
 				}else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
 					$rate = "FREE";
 					
-				else
+				else{
 					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
+					$service_days = $this->shipper->get_service_days( $this->live_based[$i][3], $this->live_based[$i][0] );
+				}
 				
 				if( $this->display_type == "RADIO" )
-					$ret_string .= $this->get_live_based_radio( $i, $rate );
+					$ret_string .= $this->get_live_based_radio( $i, $rate, $service_days );
 				
 				else if( $this->display_type == "SELECT" )
 					$ret_string .= $this->get_live_based_select( $i, $rate );
@@ -401,13 +404,13 @@ class ec_shipping{
 		return $ret_string;
 	}
 	
-	private function get_live_based_radio( $i, $rate ){
+	private function get_live_based_radio( $i, $rate, $service_days = 0 ){
 		
 		if( $rate != "ERROR" ){
 			if( $rate == "FREE" )
 				$rate = 0;
-				
-			$rate = doubleval( $rate ) + doubleval( $this->handling );
+			else
+				$rate = doubleval( $rate ) + doubleval( $this->handling );
 		
 			$ret_string = "";
 			
@@ -420,7 +423,11 @@ class ec_shipping{
 				$ret_string .= " checked=\"checked\"";
 			}
 			
-			$ret_string .= " /><span class=\"label\">" . $this->live_based[$i][1] . "</span> <span class=\"price\">" . $GLOBALS['currency']->get_currency_display( $rate ) . "</span></div>";
+			$ret_string .= " /><span class=\"label\">" . $this->live_based[$i][1];
+			if( $service_days > 0 )
+				$ret_string .= " (" . $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'delivery_in' ) . " " . $service_days . "-" . ($service_days+1) . " " . $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'delivery_days' ) . ")";
+			
+			$ret_string .= "</span> <span class=\"price\">" . $GLOBALS['currency']->get_currency_display( $rate ) . "</span></div>";
 			
 			return $ret_string;
 			
@@ -434,8 +441,8 @@ class ec_shipping{
 			
 			if( $rate == "FREE" )
 				$rate = 0;
-				
-			$rate = doubleval( $rate ) + doubleval( $this->handling );
+			else
+				$rate = doubleval( $rate ) + doubleval( $this->handling );
 			
 			$ret_string = "";
 			$ret_string .= "<option value=\"" . $this->live_based[$i][0] . "\"";
@@ -456,8 +463,8 @@ class ec_shipping{
 			
 			if( $rate == "FREE" )
 				$rate = 0;
-			
-			$rate = doubleval( $rate ) + doubleval( $this->handling );
+			else
+				$rate = doubleval( $rate ) + doubleval( $this->handling );
 			
 			$ret_string = "<div id=\"" . $this->live_based[$i][0] . "\"> " . $this->live_based[$i][1] . " " . $GLOBALS['currency']->get_currency_display( $rate ) . "</div>";
 			return $ret_string;
@@ -494,8 +501,11 @@ class ec_shipping{
 		}else if( $this->shipping_method == "live" ){
 			for( $i=0; $i<count($this->live_based); $i++){
 				if( $this->live_based[$i][2] == $selected_shipping_method_id ){
-					if( $this->live_based[$i][4] != NULL && $this->live_based[$i][4] > 0 ){
-						$rate = $this->live_based[$i][4] + $this->handling;
+					if( $this->live_based[$i][4] ){
+						if( $this->live_based[$i][4] == 0 )
+							$rate = "FREE";
+						else
+							$rate = $this->live_based[$i][4];
 						return "<div id=\"" . $this->live_based[$i][0] . "\"> " . $this->live_based[$i][1] . " " . $GLOBALS['currency']->get_currency_display( $rate ) . "</div>";
 					}else
 						$rate = doubleval( $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal ) ) + doubleval( $this->handling );
@@ -626,7 +636,7 @@ class ec_shipping{
 			
 		}else if( $this->shipping_method == "live" ){
 			if( !isset( $_SESSION['ec_shipping_method'] ) && !isset( $_SESSION['ec_email'] ) )
-				return doubleval( "0.00" ) + doubleval( $this->handling );
+				return doubleval( "0.00" );
 				
 			$lowest = 100000.00;
 			$lowest_ship_method = "ERROR";
@@ -634,9 +644,12 @@ class ec_shipping{
 			for( $i=0; $i<count( $this->live_based ); $i++ ){
 				
 				if( isset( $_SESSION['ec_shipping_method'] ) && $_SESSION['ec_shipping_method'] == $this->live_based[$i][2] ){
-					if( $this->live_based[$i][4] != NULL && $this->live_based[$i][4] > 0 )
-						$rate = $this->live_based[$i][4];
-					else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
+					if( $this->live_based[$i][4] != NULL ){
+						if( $this->live_based[$i][4] == 0 )
+							$rate = "FREE";
+						else
+							$rate = $this->live_based[$i][4];
+					}else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
 						$rate = 0;
 					else
 						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
@@ -694,7 +707,7 @@ class ec_shipping{
 		$discount = $promotion->get_shipping_discounts( $this->subtotal, $rate, $this->shipping_promotion_text );
 		
 		if( $rate == "ERROR" ){
-			return doubleval( "0.00" ) + doubleval( $this->handling );
+			return doubleval( "0.00" );
 		}else{
 			// Add the Handling Rate
 			$rate = doubleval( $rate ) + doubleval( $this->handling );

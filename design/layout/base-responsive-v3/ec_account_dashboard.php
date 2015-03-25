@@ -214,17 +214,21 @@
 
 		<div class="ec_cart_header ec_top"><?php echo $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_title' )?></div>
 
+		<?php do_action( 'wpeasycart_account_links' ); ?>
+
 		<div class="ec_cart_input_row">
 
 			<?php $this->display_billing_information_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_billing_information' ) ); ?>
 
 		</div>
 
+        <?php if( get_option( 'ec_option_use_shipping' ) ){ ?>
         <div class="ec_cart_input_row">
 
 			<?php $this->display_shipping_information_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_shipping_information' ) ); ?>
 
 		</div>
+		<?php }?>
 
         <div class="ec_cart_input_row">
 
