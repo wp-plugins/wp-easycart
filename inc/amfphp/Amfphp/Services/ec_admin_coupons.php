@@ -39,7 +39,7 @@ class ec_admin_coupons{
 	
 	function getcoupons( $startrecord, $limit, $orderby, $ordertype, $filter ){
 		
-		$sql = "SELECT SQL_CALC_FOUND_ROWS ec_promocode.* FROM ec_promocode  WHERE ec_promocode.promocode_id != '' " . $filter . " ORDER BY " . $orderby . " " . $ordertype . " LIMIT " . $startrecord . ", " . $limit;
+		$sql = "SELECT SQL_CALC_FOUND_ROWS ec_promocode.*, ec_promocode.expiration_date AS original_expiration_date, UNIX_TIMESTAMP( ec_promocode.expiration_date ) AS expiration_date FROM ec_promocode  WHERE ec_promocode.promocode_id != '' " . $filter . " ORDER BY " . $orderby . " " . $ordertype . " LIMIT " . $startrecord . ", " . $limit;
 		$results = $this->db->get_results( $sql );
 		
 		$totalquery = $this->db->get_var( "SELECT FOUND_ROWS()" );
@@ -74,6 +74,13 @@ class ec_admin_coupons{
 		
 		$promocode = (array)$promocode;
 		
+		if( $promocode['expiration_date'] != '' ){
+			$unixexpirationdate = $promocode['expiration_date']->timeStamp / 1000;
+			$expirationdate = date("'Y-m-d H:i:s'", strtotime("midnight", $unixexpirationdate));
+		}else{
+			$expirationdate = 'NULL';
+		}
+		
 		$sql = "UPDATE ec_promocode SET 
 					ec_promocode.promo_dollar = %s, 
 					ec_promocode.is_dollar_based = %s, 
@@ -89,7 +96,8 @@ class ec_admin_coupons{
 					ec_promocode.by_manufacturer_id = %s, 
 					ec_promocode.by_product_id = %s, 
 					ec_promocode.by_all_products = %s,
-					ec_promocode.max_redemptions = %s
+					ec_promocode.max_redemptions = %s,
+					ec_promocode.expiration_date = $expirationdate
 					
 				WHERE ec_promocode.promocode_id = %s";
 				
@@ -135,7 +143,14 @@ class ec_admin_coupons{
 		
 		$promocode = (array)$promocode;
 		
-		$sql = "INSERT INTO ec_promocode( ec_promocode.promocode_id, ec_promocode.promo_dollar, ec_promocode.is_dollar_based, ec_promocode.promo_percentage, ec_promocode.is_percentage_based, ec_promocode.promo_shipping, ec_promocode.is_shipping_based, ec_promocode.promo_free_item, ec_promocode.is_free_item_based, ec_promocode.message, ec_promocode.manufacturer_id, ec_promocode.product_id, ec_promocode.by_manufacturer_id, ec_promocode.by_product_id, ec_promocode.by_all_products , ec_promocode.max_redemptions) VALUES( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+		if( $promocode['expiration_date'] != '' ){
+			$unixexpirationdate = $promocode['expiration_date']->timeStamp / 1000;
+			$expirationdate = date("'Y-m-d H:i:s'", strtotime("midnight", $unixexpirationdate));
+		}else{
+			$expirationdate = 'NULL';
+		}
+		
+		$sql = "INSERT INTO ec_promocode( ec_promocode.promocode_id, ec_promocode.promo_dollar, ec_promocode.is_dollar_based, ec_promocode.promo_percentage, ec_promocode.is_percentage_based, ec_promocode.promo_shipping, ec_promocode.is_shipping_based, ec_promocode.promo_free_item, ec_promocode.is_free_item_based, ec_promocode.message, ec_promocode.manufacturer_id, ec_promocode.product_id, ec_promocode.by_manufacturer_id, ec_promocode.by_product_id, ec_promocode.by_all_products , ec_promocode.max_redemptions, ec_promocode.expiration_date) VALUES( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, $expirationdate )";
 		$rows_affected = $this->db->query( $this->db->prepare( $sql, $promocode['promoid'], $promocode['dollaramount'], $promocode['usedollar'], $promocode['percentageamount'], $promocode['usepercentage'], $promocode['shippingamount'], $promocode['useshipping'], '0.00', $promocode['usefreeitem'], $promocode['promodescription'], $promocode['manufacturers'], $promocode['products'], $promocode['attachmanufacturer'], $promocode['attachproduct'], $promocode['attachall'], $promocode['max_redemptions'] ) );
 		
 		if( $rows_affected ){
