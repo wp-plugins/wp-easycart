@@ -212,7 +212,7 @@ class ec_admin_orders{
 		$sql = "UPDATE ec_order SET ec_order.orderstatus_id = %s WHERE ec_order.order_id = %d";
 		$rows_affected = $this->db->query( $this->db->prepare( $sql, $status, $orderid ) );
 		
-		if( $status == "1" || $status == "6" || $status == "15" )
+		if( $status == "3" || $status == "6" || $status == "10" || $status == "15" )
 			do_action( 'wpeasycart_order_paid', $orderid );
 		else if( $status == "2" )
 			do_action( 'wpeasycart_order_shipped', $orderid );
