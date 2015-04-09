@@ -139,7 +139,7 @@ jQuery( document ).bind( 'keydown', function( e ){
                 // these parameters are required for badge install:
                 so.addVariable("airversion", "3.7"); // version of AIR runtime required
                 so.addVariable("appname", "WP EasyCart Admin Console"); // application name to display to the user
-                so.addVariable("appurl", "http://www.wpeasycart.com/air/wpadmin.air"); // absolute URL (beginning with http or https) of the application ".air" file
+                so.addVariable("appurl", "https://www.wpeasycart.com/air/wpadmin.air"); // absolute URL (beginning with http or https) of the application ".air" file
                 
                 // these parameters are required to support launching apps from the badge (but optional for install):
                 so.addVariable("appid", "com.wpeasycart.admin"); // the qualified application ID (ex. com.gskinner.air.MyApplication)

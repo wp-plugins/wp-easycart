@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 3.0.24
+Stable tag: 3.0.25
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,27 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.25 =
+* New Feature - Add a one-time sign up fee to your subscription products.
+* New Feature - New basic option to enable/disable product paging on the store page.
+* New Feature - New basic option to show/hide the sorting combo box on the store page.
+* New Filter - use 'wpeasycart_validate_checkout_data' to add custom validation of the customer data prior to advancing to shipping or payment.
+* New Filter - use 'wpeasycart_validate_submit_order_data' to add custom validation of the customer data prior to processing the order.
+* New Action - 'wpeasycart_pre_description_tab' runs prior to displaying the description tab (inside the <ul> structure of the tabbing system).
+* New Action - 'wpeasycart_pre_specifications_tab' runs prior to displaying the specifications tab (inside the <ul> structure of the tabbing system).
+* New Action - 'wpeasycart_pre_customer_reviews_tab' runs prior to displaying the customer reviews tab (inside the <ul> structure of the tabbing system).
+* New Action - 'wpeasycart_addon_product_details_tab' runs right after displaying the customer reviews tab (inside the <ul> structure of the tabbing system).
+* New Action - 'wpeasycart_addon_product_details_tab_content' runs where you can add new tab content to connect to new tabs you may have created with other actions.
+* New Action - 'wpeasycart_custom_inquiry_email' runs when a customer asks to have a copy of the inquiry email sent to them.
+* Improvement - Inquiry mode now uses a pop up for, which improves usability for the customer.
+* Improvement - On order submission, the cart now ensures that the user has at least entered a first, last, address, city, and country for the billing method and an email address.
+* Improvement - Order export now includes the full country name for billing and shipping countries.
+* Fix - wpeasycart_cart_updated added for when the user updates their checkout details (billing and shipping) and when they select a shipping method.
+* Fix - The do action fix above in turn fixes the problem with Tax Cloud not always updating the value at the correct times.
+* Fix - Tax could sometimes be negative if the exact right conditions were met. This has been corrected to ensure 0 is the minimum possible value.
+* Fix - Added order status update hooks to the simple admin for the free version.
+* Fix - Live shipping estimate was not consistently working. Fix has been made.
+* Fix - Inquiry mode bugs resolved.
 = 3.0.24 =
 * New Feature - Advanced options for text and text areas allow you to charge an additional price per character entered by the customer. This is great for custom printing or engraving!
 * Fix - Product details and cart page errors thrown because of wpautop in some themes. Corrections made to prevent the shortcodes from breaking in this instance.

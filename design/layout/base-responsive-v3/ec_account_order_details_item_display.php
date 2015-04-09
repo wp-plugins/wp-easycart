@@ -223,4 +223,48 @@
 
 </tr>
 
+<?php if( $order_item->subscription_signup_fee > 0 ){ ?>
 
+<tr class="ec_account_orderitem_row" id="ec_account_order_details_item_display_<?php $order_item->display_order_item_id(); ?>">
+
+  <td class="ec_account_orderitem_image"><?php $order_item->display_image( "small" ); ?></td>
+
+  <td class="ec_account_orderitem_details">
+
+    <div class="ec_account_order_details_item_display_title"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_signup_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $order_item->subscription_signup_fee ); ?></div>
+    
+  </td>
+  
+  <td class="ec_account_orderitem_price">
+
+    <div class="ec_account_order_details_item_display_unit_price">
+
+      <?php echo $GLOBALS['currency']->get_currency_display( $order_item->subscription_signup_fee ); ?>
+
+    </div>
+
+  </td>
+
+  <td class="ec_account_orderitem_quantity">
+
+    <div class="ec_account_order_details_item_display_quantity">
+
+      <?php $order_item->display_quantity(); ?>
+
+    </div>
+
+  </td>
+
+  <td class="ec_account_orderitem_total">
+
+    <div class="ec_account_order_details_item_display_total_price">
+
+      <?php echo $GLOBALS['currency']->get_currency_display( $order_item->subscription_signup_fee ); ?>
+
+    </div>
+
+  </td>
+
+</tr>
+
+<?php }?>

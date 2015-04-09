@@ -2247,52 +2247,94 @@ class ec_cartpage{
 			header( "location: " . $this->cart_page );
 	}
 	
-	private function process_submit_order(){
-		if( isset( $_POST['ec_cart_payment_selection'] ) )
-			$payment_type = $_POST['ec_cart_payment_selection'];
-		else if( $this->is_affirm )
-			$payment_type = "affirm";
-		else
-			$payment_type = $GLOBALS['language']->get_text( "ec_success", "cart_account_free_order" );
-			
-		if( isset( $_POST['ec_order_notes'] ) )
-			$_SESSION['ec_order_notes'] = stripslashes( $_POST['ec_order_notes'] );
-			
-		$submit_return_val = $this->order->submit_order( $payment_type );
+	private function validate_submit_order_data( ){
 		
-		if( $this->order_totals->grand_total <= 0 ){
-			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );	
-			
-		}else if( $payment_type == "manual_bill" ){ // Show fail message or the success landing page (including the manual bill notice).
-			if( $submit_return_val == "1" )
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );
-			else
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&cart_error=manualbill_failed" );
-			
-		}else if( $payment_type == "affirm" ){
-			if( $submit_return_val == "1" )
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );
-			else
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=payment_failed" );
-			
-		}else if( $payment_type == "third_party" ){ // Show the third party landing page
-			if( $submit_return_val == "1" )
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=third_party&order_id=" . $this->order->order_id );
-			else
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=thirdparty_failed" );
-				
-		}else{ // Either show the success landing page
-			
-			if( $submit_return_val == "1" ){
-				if( $this->order->payment->is_3d_auth )
-					$this->auth_3d_form();
-				else
-					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );	
-					
-			}else
-				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=payment_failed&reason=" . $submit_return_val );
+		$data_validated = true;
+		
+		// Basic Validation
+		if( $this->user->billing->country == "0" || $this->user->billing->first_name == "" || $this->user->billing->last_name == "" || $this->user->billing->address_line_1 == "" || $this->user->billing->city == "" || $this->user->email == "" ){
+			$data_validated =  false;
 			
 		}
+		
+		$data_validated = apply_filters( 'wpeasycart_validate_submit_order_data', $data_validated, $user );
+		
+		return $data_validated;
+		
+	}
+	
+	private function validate_checkout_data( ){
+		
+		$data_validated = true;
+		
+		// Basic Validation
+		if( $this->user->billing->country == "0" || $this->user->billing->first_name == "" || $this->user->billing->last_name == "" || $this->user->billing->address_line_1 == "" || $this->user->billing->city == "" || $this->user->email == "" ){
+			$data_validated =  false;
+			
+		}
+		
+		$data_validated = apply_filters( 'wpeasycart_validate_checkout_data', $data_validated, $this->user );
+		
+		return $data_validated;
+		
+	}
+	
+	private function process_submit_order(){
+		
+		if( !$this->validate_submit_order_data( ) ){
+			
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=invalid_address" );
+			
+		}else{
+		
+			if( isset( $_POST['ec_cart_payment_selection'] ) )
+				$payment_type = $_POST['ec_cart_payment_selection'];
+			else if( $this->is_affirm )
+				$payment_type = "affirm";
+			else
+				$payment_type = $GLOBALS['language']->get_text( "ec_success", "cart_account_free_order" );
+				
+			if( isset( $_POST['ec_order_notes'] ) )
+				$_SESSION['ec_order_notes'] = stripslashes( $_POST['ec_order_notes'] );
+				
+			$submit_return_val = $this->order->submit_order( $payment_type );
+			
+			if( $this->order_totals->grand_total <= 0 ){
+				header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );	
+				
+			}else if( $payment_type == "manual_bill" ){ // Show fail message or the success landing page (including the manual bill notice).
+				if( $submit_return_val == "1" )
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );
+				else
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&cart_error=manualbill_failed" );
+				
+			}else if( $payment_type == "affirm" ){
+				if( $submit_return_val == "1" )
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );
+				else
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=payment_failed" );
+				
+			}else if( $payment_type == "third_party" ){ // Show the third party landing page
+				if( $submit_return_val == "1" )
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=third_party&order_id=" . $this->order->order_id );
+				else
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=thirdparty_failed" );
+					
+			}else{ // Either show the success landing page
+				
+				if( $submit_return_val == "1" ){
+					if( $this->order->payment->is_3d_auth )
+						$this->auth_3d_form();
+					else
+						header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order->order_id );	
+						
+				}else
+					header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment&ec_cart_error=payment_failed&reason=" . $submit_return_val );
+				
+			}
+			
+		}
+		
 	}
 	
 	public function auth_3d_form( ){
@@ -2369,6 +2411,9 @@ class ec_cartpage{
 		$password = md5( $_POST['ec_cart_login_password'] );
 		
 		$user = $this->mysqli->get_user( $email, $password );
+		
+		do_action( 'wpeasycart_cart_updated' );
+		
 		if( $user && $user->user_level == "pending" ){
 			header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=not_activated");
 		}else if( $email == "guest"){
@@ -2625,91 +2670,105 @@ class ec_cartpage{
 			$_SESSION['ec_is_guest'] = false;
 		}
 		
-		if( $create_account ){
-			$email = $_POST['ec_contact_email'];
-			$password = md5( $_POST['ec_contact_password'] );
+		$this->user = new ec_user( "" );
+		
+		if( !$this->validate_checkout_data( ) ){
 			
-			// INSERT USER
-			$billing_id = $this->mysqli->insert_address( $billing_first_name, $billing_last_name, $billing_address, $billing_address2, $billing_city, $billing_state, $billing_zip, $billing_country, $billing_phone, $billing_company_name );
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=invalid_address" );
 			
-			$shipping_id = $this->mysqli->insert_address( $shipping_first_name, $shipping_last_name, $shipping_address, $shipping_address2, $shipping_city, $shipping_state, $shipping_zip, $shipping_country, $shipping_phone, $shipping_company_name );
-			
-			$user_level = "shopper";
-			if( isset( $_POST['ec_contact_is_subscriber'] ) )
-				$is_subscriber = true;
-			else
-				$is_subscriber = false;
-			
-			$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, $shipping_id, $user_level, $is_subscriber );
-			$this->mysqli->update_address_user_id( $billing_id, $user_id );
-			$this->mysqli->update_address_user_id( $shipping_id, $user_id );
-			
-			// Quickbooks Hook
-			if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
-				$quickbooks = new ec_quickbooks( );
-				$quickbooks->add_user( $user_id );
-			}
-			
-			// MyMail Hook
-			if( function_exists( 'mymail' ) ){
-				$subscriber_id = mymail('subscribers')->add(array(
-					'firstname' => $first_name,
-					'lastname' => $last_name,
-					'email' => $email,
-					'status' => 1,
-				), false );
-			}
-			
-			// Send registration email if needed
-			if( get_option( 'ec_option_send_signup_email' ) ){
+		}else{
+		
+			if( $create_account ){
+				$email = $_POST['ec_contact_email'];
+				$password = md5( $_POST['ec_contact_password'] );
 				
-				$headers   = array();
-				$headers[] = "MIME-Version: 1.0";
-				$headers[] = "Content-Type: text/html; charset=utf-8";
-				$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
-				$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
-				$headers[] = "X-Mailer: PHP/".phpversion();
+				// INSERT USER
+				$billing_id = $this->mysqli->insert_address( $billing_first_name, $billing_last_name, $billing_address, $billing_address2, $billing_city, $billing_state, $billing_zip, $billing_country, $billing_phone, $billing_company_name );
 				
-				$message = $GLOBALS['language']->get_text( "account_register", "account_register_email_message" ) . " " . $email;
+				$shipping_id = $this->mysqli->insert_address( $shipping_first_name, $shipping_last_name, $shipping_address, $shipping_address2, $shipping_city, $shipping_state, $shipping_zip, $shipping_country, $shipping_phone, $shipping_company_name );
 				
-				if( get_option( 'ec_option_use_wp_mail' ) ){
-					wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "account_register", "account_register_email_title" ), $message, implode("\r\n", $headers) );
-				}else{
-					mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "account_register", "account_register_email_title" ), $message, implode("\r\n", $headers) );
+				$user_level = "shopper";
+				if( isset( $_POST['ec_contact_is_subscriber'] ) )
+					$is_subscriber = true;
+				else
+					$is_subscriber = false;
+				
+				$user_id = $this->mysqli->insert_user( $email, $password, $first_name, $last_name, $billing_id, $shipping_id, $user_level, $is_subscriber );
+				$this->mysqli->update_address_user_id( $billing_id, $user_id );
+				$this->mysqli->update_address_user_id( $shipping_id, $user_id );
+				
+				// Quickbooks Hook
+				if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+					$quickbooks = new ec_quickbooks( );
+					$quickbooks->add_user( $user_id );
 				}
 				
-			}
-			
-			if( $user_id != 0 ){
-			
-				$_SESSION['ec_user_id'] = $user_id;
-				$_SESSION['ec_email'] = $email;
-				$_SESSION['ec_username'] = $first_name . " " . $last_name;
-				$_SESSION['ec_first_name'] = $first_name;
-				$_SESSION['ec_last_name'] = $last_name;
-				$_SESSION['ec_password'] = $password;
+				// MyMail Hook
+				if( function_exists( 'mymail' ) ){
+					$subscriber_id = mymail('subscribers')->add(array(
+						'firstname' => $first_name,
+						'lastname' => $last_name,
+						'email' => $email,
+						'status' => 1,
+					), false );
+				}
 				
-				if( $this->shipping->validate_address( $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country ) ){
-					unset( $_SESSION['ec_is_guest'] );
-					unset( $_SESSION['ec_guest_key'] );
+				// Send registration email if needed
+				if( get_option( 'ec_option_send_signup_email' ) ){
 					
-					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page . "&ec_cart_success=account_created");
-				}else
-					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_success=account_created&ec_cart_error=invalid_address");
+					$headers   = array();
+					$headers[] = "MIME-Version: 1.0";
+					$headers[] = "Content-Type: text/html; charset=utf-8";
+					$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+					$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+					$headers[] = "X-Mailer: PHP/".phpversion();
+					
+					$message = $GLOBALS['language']->get_text( "account_register", "account_register_email_message" ) . " " . $email;
+					
+					if( get_option( 'ec_option_use_wp_mail' ) ){
+						wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "account_register", "account_register_email_title" ), $message, implode("\r\n", $headers) );
+					}else{
+						mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "account_register", "account_register_email_title" ), $message, implode("\r\n", $headers) );
+					}
+					
+				}
 				
+				do_action( 'wpeasycart_cart_updated' );
+				
+				if( $user_id != 0 ){
+				
+					$_SESSION['ec_user_id'] = $user_id;
+					$_SESSION['ec_email'] = $email;
+					$_SESSION['ec_username'] = $first_name . " " . $last_name;
+					$_SESSION['ec_first_name'] = $first_name;
+					$_SESSION['ec_last_name'] = $last_name;
+					$_SESSION['ec_password'] = $password;
+					
+					if( $this->shipping->validate_address( $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country ) ){
+						unset( $_SESSION['ec_is_guest'] );
+						unset( $_SESSION['ec_guest_key'] );
+						
+						header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page . "&ec_cart_success=account_created");
+					}else
+						header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_success=account_created&ec_cart_error=invalid_address");
+					
+				}else{
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=email_exists");
+				}
+			
 			}else{
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=email_exists");
-			}
-		
-		}else{
-			
-			if( $this->shipping->validate_address( $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country ) )
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page);
-			
-			else
-				header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=invalid_address");
 				
+				do_action( 'wpeasycart_cart_updated' );
+				if( $this->shipping->validate_address( $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country ) )
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page);
+				
+				else
+					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=invalid_address");
+					
+			}
+			
 		}
+		
 	}
 	
 	private function process_save_checkout_shipping( ){
@@ -2724,6 +2783,8 @@ class ec_cartpage{
 		
 		$_SESSION['ec_shipping_method'] = $shipping_method;
 		$_SESSION['ec_ship_express'] = $ship_express;
+		
+		do_action( 'wpeasycart_cart_updated' );
 		
 		header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_payment");
 	}
@@ -3035,6 +3096,7 @@ class ec_cartpage{
 					
 					
 					// Setup for processing
+					// Setup for processing
 					if( class_exists( "ec_stripe" ) ){
 						
 						// Payment Information
@@ -3054,8 +3116,10 @@ class ec_cartpage{
 						$customer_insert_test = false;
 						
 						if( $customer_id == "" ){
-							$customer_id = $stripe->insert_customer( $user );
+							$customer_id = $stripe->insert_customer( $user, NULL, $product->subscription_signup_fee );
 							$need_to_update_customer_id = true;
+						}else{
+							$stripe->update_customer( $user, $product->subscription_signup_fee );
 						}
 						
 						if( $need_to_update_customer_id && $customer_id ){ // Customer inserted to stripe successfully
@@ -3090,7 +3154,10 @@ class ec_cartpage{
 										
 										$subscription_id = $this->mysqli->insert_stripe_subscription( $stripe_response, $product, $user, $card );
 										$subscription_row = $this->mysqli->get_subscription_row( $subscription_id );
-										$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_row->promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
+										$coupon_promocode_id = "";
+										if( isset( $coupon_row ) )
+											$coupon_promocode_id = $coupon_row->promocode_id;
+										$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
 										$this->mysqli->update_user_default_card( $user, $card );
 										
 										// Affiliate Insert
@@ -3187,7 +3254,11 @@ class ec_cartpage{
 						
 					}else if( class_exists( 'ec_paypal' ) ){ // Close check for stripe
 						
-						$order_id = $this->mysqli->insert_paypal_subscription_order( $product, $user, $coupon_row->promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
+						$coupon_promocode_id = "";
+						if( isset( $coupon_row ) )
+							$coupon_promocode_id = $coupon_row->promocode_id;
+										
+						$order_id = $this->mysqli->insert_paypal_subscription_order( $product, $user, $coupon_promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
 						
 						$paypal = new ec_paypal( );
 						$paypal->display_subscription_form( $order_id, $user, $product );
@@ -3272,11 +3343,11 @@ class ec_cartpage{
 	
 	private function process_send_inquiry( ){
 		
-		$inquiry_email = stripslashes( $_POST['inquiry_email'] );
-		$inquiry_name = stripslashes( $_POST['inquiry_name'] );
-		$inquiry_message = stripslashes( $_POST['inquiry_message'] );
-		$model_number = $_POST['inquiry_model_number'];
-		if( isset( $_POST['inquiry_send_copy'] ) )
+		$inquiry_email = stripslashes( $_POST['ec_inquiry_email'] );
+		$inquiry_name = stripslashes( $_POST['ec_inquiry_name'] );
+		$inquiry_message = stripslashes( $_POST['ec_inquiry_message'] );
+		$model_number = $_POST['ec_inquiry_model_number'];
+		if( isset( $_POST['ec_inquiry_send_copy'] ) )
 			$send_copy = true;
 		else
 			$send_copy = false;
@@ -3295,6 +3366,8 @@ class ec_cartpage{
 			$headers[] = "Reply-To: " . get_option( 'ec_option_password_from_email' );
 			$headers[] = "X-Mailer: PHP/".phpversion();
 			
+			$has_product_options = false;
+			
 			ob_start();
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_inquiry_email.php' ) )	
 				include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_inquiry_email.php';	
@@ -3302,19 +3375,30 @@ class ec_cartpage{
 				include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_inquiry_email.php';
 			$message = ob_get_clean();
 			
-			if( get_option( 'ec_option_use_wp_mail' ) ){
+			$email_send_method = get_option( 'ec_option_use_wp_mail' );
+			$email_send_method = apply_filters( 'wpeasycart_email_method', $email_send_method );
+			
+			if( $email_send_method == "1" ){
 				if( $send_copy )
-					wp_mail( $inquiry_email, "New Product Inquiry", $message, implode("\r\n", $headers) );
+					wp_mail( $inquiry_email, $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
 				
-				wp_mail( get_option( 'ec_option_bcc_email_addresses' ), "New Product Inquiry", $message, implode("\r\n", $headers) );
+				wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
+			}else if( $email_send_method == "0" ){
+				if( $send_copy )
+					mail( $inquiry_email, $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
+				
+				mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
 			}else{
 				if( $send_copy )
-					mail( $inquiry_email, "New Product Inquiry", $message, implode("\r\n", $headers) );
-				
-				mail( get_option( 'ec_option_bcc_email_addresses' ), "New Product Inquiry", $message, implode("\r\n", $headers) );
+					do_action( 'wpeasycart_custom_inquiry_email', get_option( 'ec_option_order_from_email' ), $inquiry_email, get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message );
+				else
+					wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
 			}
 			
-			header( "location: " . $this->store_page . $this->permalink_divider . "ec_store_success=inquiry_sent" );
+			if( get_option( 'ec_option_use_old_linking_style' ) )
+				header( "location: " . $this->store_page . $this->permalink_divider . "model_number=" . $product->model_number . "&ec_store_success=inquiry_sent" );
+			else
+				header( "location: " . get_permalink( $product->post_id ) . $this->permalink_divider . "ec_store_success=inquiry_sent" );
 			
 		}
 		

@@ -49,10 +49,10 @@ function ec_install_admin_notice() {
 		<?php	
 		}
 		
-		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.14" ){
+		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.15" ){
 			?>
 			<div class="error">
-				<p>The latest WP EasyCart Store Admin version is 3.0.13, please update for best results!</p>
+				<p>The latest WP EasyCart Store Admin version is 3.0.15, please update for best results!</p>
 			</div>
 			<?php
 		}
@@ -60,7 +60,7 @@ function ec_install_admin_notice() {
 		if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){ ?>
 		
 		<div class="error">
-			<p>Your server appears to be missing the wp-easycart-data folder, which could cause data loss on upgrade. Please <a href="http://www.wpeasycart.com/plugin-update-help" target="_blank">click here</a> to learn how to correct this issue.</p>
+			<p>Your server appears to be missing the wp-easycart-data folder, which could cause data loss on upgrade. Please <a href="https://www.wpeasycart.com/plugin-update-help" target="_blank">click here</a> to learn how to correct this issue.</p>
 		</div>
 			
 		<?php
@@ -349,8 +349,8 @@ function ec_custom_downloads( ){
 		$file_contents .=  "<rss version=\"2.0\" xmlns:g=\"http://base.google.com/ns/1.0\">\r\n";
 			$file_contents .=  "<channel>\r\n";
 				$file_contents .=  "<title>WP EasyCart Data Feed</title>\r\n";
-				$file_contents .=  "<link>http://www.wpeasycartdev2.com</link>\r\n";
-				$file_contents .=  "<description>A description of your content</description>\r\n";
+				$file_contents .=  "<link>" . site_url( ) . "</link>\r\n";
+				$file_contents .=  "<description>My Site Products</description>\r\n";
 				foreach( $products as $product ){
 					
 					// Get Product Link

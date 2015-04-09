@@ -80,7 +80,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/charges/", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -93,7 +93,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/charges/" . $charge_id . "/refund", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -106,7 +106,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/charges/" . $charge_id . "/capture", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -119,7 +119,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/charges/", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -136,7 +136,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -148,7 +148,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers/" . $customer_id . "/subscriptions/" . $subscription_id, array( ) );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -161,7 +161,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions/" . $subscription_id, $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -173,7 +173,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions/" . $subscription_id );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -186,7 +186,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -197,13 +197,13 @@ class ec_stripe extends ec_gateway{
 	// PUBLIC CUSTOMER FUNCTIONS
 	////////////////////////////////////////////////
 	
-	public function insert_customer( $user, $card = NULL ){
+	public function insert_customer( $user, $card = NULL, $account_balance = 0 ){
 		
-		$data = $this->get_insert_customer_data( $user, $card );
+		$data = $this->get_insert_customer_data( $user, $card, $account_balance );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json->id;
 		else
 			return false;
@@ -215,18 +215,18 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id, $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
 	}
 	
-	public function update_customer( ){
-		$data = $this->get_update_customer_data( $user );
+	public function update_customer( $user, $account_balance = 0 ){
+		$data = $this->get_update_customer_data( $user, $account_balance );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id, $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -236,7 +236,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -247,7 +247,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -261,7 +261,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/plans", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -283,7 +283,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/plans/" . $product->product_id, $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -293,7 +293,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/plans/" . $product->product_id );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false; 
@@ -304,7 +304,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/plans", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -320,7 +320,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json->id;
 		else
 			return false;
@@ -333,7 +333,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards/" . $card_id, $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -346,7 +346,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards/" . $card_id, $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -358,7 +358,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/cards/" . $card_id );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -371,7 +371,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_get( "https://api.stripe.com/v1/customers/" . $customer_id . "/cards", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -388,7 +388,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/coupons", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json->id;
 		else
 			return false;
@@ -401,7 +401,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/coupons" . $card_id, $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -413,7 +413,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe_delete( "https://api.stripe.com/v1/coupons/" . $coupon_id );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return true;
 		else
 			return false;
@@ -426,7 +426,7 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/coupons", $data );
 		$json = json_decode( $response );
 		
-		if( !$json->error )
+		if( !isset( $json->error ) )
 			return $json;
 		else
 			return false;
@@ -560,6 +560,11 @@ class ec_stripe extends ec_gateway{
 	
 	private function get_insert_subscription_data( $product, $user, $card, $coupon, $prorate, $trial_end, $quantity ){
 		
+		if( isset( $product->subscription_unique_id ) && $product->subscription_unique_id )
+			$product_id = $product->subscription_unique_id;
+		else
+			$product_id = $product->product_id;
+		
 		$card_array = array( 	"number" 				=> $card->card_number,
 								"exp_month"				=> $card->expiration_month,
 								"exp_year"				=> $card->get_expiration_year( 2 ),
@@ -571,7 +576,7 @@ class ec_stripe extends ec_gateway{
 								"address_state"			=> $user->billing->state,
 								"address_country"		=> $user->billing->country );
 		
-		$gateway_data = array(	"plan"					=> $product->product_id,
+		$gateway_data = array(	"plan"					=> $product_id,
 								"coupon"				=> $coupon,
 								"trial_end"				=> $trial_end,
 								"card"					=> $card_array,
@@ -622,7 +627,7 @@ class ec_stripe extends ec_gateway{
 	// PRIVATE CUSTOMER DATA FUNCTIONS
 	////////////////////////////////////////////////
 	
-	private function get_insert_customer_data( $user, $card ){
+	private function get_insert_customer_data( $user, $card, $account_balance = 0 ){
 		
 		if( $card != NULL ){
 			$card_array = array("number" 				=> $card->card_number,
@@ -651,6 +656,7 @@ class ec_stripe extends ec_gateway{
 		$gateway_data = array(	"card"					=> $card_array,
 								"description"			=> $user->billing->first_name . " " . $user->billing_last_name,
 								"email"					=> $user->email,
+								"account_balance"		=> number_format( $account_balance * 100, 0, '', '' ),
 								"metadata"				=> $meta_data );
 								
 		return $gateway_data;
@@ -663,22 +669,9 @@ class ec_stripe extends ec_gateway{
 		
 	}
 	
-	private function get_update_customer_data( $user ){
+	private function get_update_customer_data( $user, $account_balance = 0 ){
 		
-		if( $card != NULL ){
-			$card_array = array("number" 				=> $card->card_number,
-								"exp_month"				=> $card->expiration_month,
-								"exp_year"				=> $card->get_expiration_year( 2 ),
-								"cvc"					=> $card->security_code,
-								"name"					=> $card->card_holder_name,
-								"address_line_1"		=> $user->billing->address_line_1,
-								"address_city"			=> $user->billing->city,
-								"address_zip"			=> $user->billing->zip,
-								"address_state"			=> $user->billing->state,
-								"address_country"		=> $user->billing->country );
-		}else{
-			$card_array = NULL;
-		}
+		$card_array = NULL;
 		
 		$meta_data = array(		"first_name"			=> $user->billing->first_name,
 								"last_name"				=> $user->billing->last_name,
@@ -690,8 +683,9 @@ class ec_stripe extends ec_gateway{
 								"phone"					=> $user->billing->phone );
 		
 		$gateway_data = array(	"card"					=> $card_array,
-								"description"			=> $user->billing->first_name . " " . $user->billing_last_name,
+								"description"			=> $user->billing->first_name . " " . $user->billing->last_name,
 								"email"					=> $user->email,
+								"account_balance"		=> number_format( $account_balance * 100, 0, '', '' ),
 								"metadata"				=> $meta_data );
 								
 		return $gateway_data;
@@ -710,8 +704,13 @@ class ec_stripe extends ec_gateway{
 	
 	private function get_insert_plan_data( $product ){
 		
+		if( isset( $product->subscription_unique_id ) && $product->subscription_unique_id )
+			$product_id = $product->subscription_unique_id;
+		else
+			$product_id = $product->product_id;
+		
 		$currency = get_option( 'ec_option_stripe_currency' );
-		$gateway_data = array(	"id"					=> $product->product_id,
+		$gateway_data = array(	"id"					=> $product_id,
 								"amount"				=> number_format( $product->price * 100, 0, "", "" ),
 								"currency"				=> $currency,
 								"interval"				=> $this->convert_period_to_name( $product->subscription_bill_period ), //week, month, or year

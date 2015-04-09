@@ -218,7 +218,7 @@ $GLOBALS['ec_live_editor_loaded'] = true;
                     <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( ); return false;">hide it forever</a></div>
     	        	
                     <video width="853" height="480" controls>
-						<source src="http://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
+						<source src="https://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     
@@ -516,7 +516,9 @@ if( $safari && $is_admin && !$ipad ){ ?>
         
         <?php $perpage = new ec_perpage( ); ?>
         
-        <?php if( count( $perpage->values ) > 1 ){ ?>
+        <?php if( get_option( 'ec_option_enable_product_paging' ) ){ ?>
+        
+		<?php if( count( $perpage->values ) > 1 ){ ?>
         <span class="ec_product_page_perpage">
         	<span><?php echo $GLOBALS['language']->get_text( "product_page", "product_product_view_per_page" ); ?> </span> 
             <?php for( $pp_index = 0; $pp_index < count( $perpage->values ); $pp_index++ ){ ?>
@@ -528,7 +530,11 @@ if( $safari && $is_admin && !$ipad ){ ?>
             <?php echo $GLOBALS['language']->get_text( "product_page", "product_showing" ); ?> <?php $num_shown = count( $this->product_list->products ); $num_total = $this->product_list->num_products; if( $num_shown < $num_total ){ echo $num_shown; ?> <?php echo $GLOBALS['language']->get_text( "product_page", "product_paging_of" ); ?> <?php echo $num_total; ?> <?php }else{ ?><?php echo $GLOBALS['language']->get_text( "product_page", "product_all" ); ?> <?php echo $num_total; } ?> <?php echo $GLOBALS['language']->get_text( "product_page", "product_results" ); ?>
         </span>
         
+        <?php } // close if for product paging ?>
+        
+        <?php if( get_option( 'ec_option_show_sort_box' ) ){ ?>
         <?php $this->product_filter_combo( ); ?>
+    	<?php }?>
     
     </div>
     
@@ -536,7 +542,7 @@ if( $safari && $is_admin && !$ipad ){ ?>
     	<div class="ec_product_added_icon"></div><a href="<?php echo $this->cart_page; ?>" title="View Cart"><?php echo $GLOBALS['language']->get_text( "product_page", "product_view_cart" ); ?></a> <?php echo $GLOBALS['language']->get_text( "product_page", "product_product_added_note" ); ?>
     </div>
     <ul id="ec_store_product_list"><?php $this->product_list(); ?></ul>
-    <?php if( $this->product_list->paging->total_pages > 1 ){ ?>
+    <?php if( get_option( 'ec_option_enable_product_paging' ) && $this->product_list->paging->total_pages > 1 ){ ?>
     <div class="ec_filter_bar_bottom">
     	<div class="ec_paging_button_container">
         	<?php if( $this->product_list->paging->current_page > 1 ){ ?>

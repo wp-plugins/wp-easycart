@@ -658,6 +658,12 @@ function ec_admin_save_cart_options( ){
 			<?php echo $product->get_price_formatted( ); ?>    
         </div>
         
+		<?php if( $product->subscription_signup_fee > 0 ){ ?>
+        <div class="ec_cart_input_row ec_details_handling_fee">
+			<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_signup_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $product->subscription_signup_fee ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_signup_fee_notice2' ); ?>
+        </div>
+		<?php }?>
+        
         <?php if( $this->subscription_option1 != 0 ){ ?>
         <div class="ec_cart_input_row">
 			<?php echo $this->subscription_option1_label; ?>: <?php echo $this->subscription_option1_name; ?>

@@ -1,4 +1,6 @@
 <?php
+$isupdate = false;
+
 if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save-google-merchant" ){
 	global $wpdb;
 	$i=1;
@@ -29,6 +31,8 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save-google-merchant" 
 		$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_google_attributes(product_id, attribute_value) VALUES( %d, %s )", $product->product_id, $attribute_json ) );
 		
 	}
+	
+	$isupdate = true;
 	
 }
 ?>
@@ -113,7 +117,7 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save-google-merchant" 
             <td><?php echo $product->price; ?></td>
             <td><?php echo $product->list_price; ?></td>
             <td><?php echo $product->manufacturer_name; ?></td>
-        	<td><input type="text" name="google_product_category_<?php echo $product->model_number; ?>" /></td>
+        	<td><input type="text" name="google_product_category_<?php echo $product->model_number; ?>" value="<?php echo $attributes["google_product_category"]; ?>" /></td>
             <td><input type="text" name="product_type_<?php echo $product->model_number; ?>" value="<?php echo $attributes["product_type"]; ?>" /></td>
             <td><select name="condition_<?php echo $product->model_number; ?>"><option value=""<?php if( $attributes["condition"] == "" ){ echo " selected=\"selected\""; }?>>None Selected</option><option value="new"<?php if( $attributes["condition"] == "new" ){ echo " selected=\"selected\""; }?>>New</option><option value="used"<?php if( $attributes["condition"] == "used" ){ echo " selected=\"selected\""; }?>>Used</option><option value="refurbished"<?php if( $attributes["condition"] == "refurbished" ){ echo " selected=\"selected\""; }?>>Refurbished</option></select></td>
             <td><input type="text" name="gtin_<?php echo $product->model_number; ?>" value="<?php echo $attributes["gtin"]; ?>" /></td>

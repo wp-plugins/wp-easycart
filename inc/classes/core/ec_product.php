@@ -66,6 +66,8 @@ class ec_product{
 	public $subscription_bill_period;			// VARCHAR(20)
 	public $trial_period_days;					// INT
 	public $stripe_plan_added;					// VARCHAR(128)
+	public $subscription_signup_fee;			// FLOAT 15,3
+	public $subscription_unique_id;				// INT
 	
 	public $rating;								// ec_rating structure
 	public $reviews = array();		 			// Array of ec_review structures
@@ -217,6 +219,8 @@ class ec_product{
 		$this->subscription_bill_period = $product_data['subscription_bill_period'];
 		$this->trial_period_days = $product_data['trial_period_days'];
 		$this->stripe_plan_added = $product_data['stripe_plan_added'];
+		$this->subscription_signup_fee = $product_data['subscription_signup_fee'];
+		$this->subscription_unique_id = $product_data['subscription_unique_id'];
 		
 		$this->rating = new ec_rating( $product_data['review_data'] );
 		

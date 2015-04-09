@@ -58,7 +58,7 @@ if( $is_preview_holder && $is_admin ){ ?>
                     <h5>Do you need help in designing your perfect store? Watch our short video and start on your way to success.</h5>
                     <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( ); return false;">hide it forever</a></div>
                     <video width="853" height="480" controls>
-						<source src="http://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
+						<source src="https://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
     	        	<div class="ec_admin_video_close"><input type="button" onclick="ec_admin_close_video_screen( );" value="x"></div>
@@ -150,6 +150,59 @@ if( $is_preview_holder && $is_admin ){ ?>
 }</script><?php }// Close editor content ?><?php 
 /* START PRODUCT DETAILS PAGE */ 
 ?>
+
+<?php /* INQUIRY OPTIONS */ ?>
+<?php if( $this->product->is_inquiry_mode && $this->product->inquiry_url == "" ){ ?>
+
+<div class="ec_details_inquiry_popup">
+<div class="ec_details_inquiry_popup_content">
+	<div class="ec_details_inquiry_popup_padding">
+		<div class="ec_details_inquiry_popup_holder">
+			<div class="ec_details_inquiry_popup_main">
+				<div style="display:none;" class="ec_store_loader" id="ec_inquiry_loader">Loading...</div>
+				<div class="ec_store_loader_bg" id="ec_inquiry_loader_bg"></div>
+				<form action="<?php echo $this->cart_page; ?>" method="POST" enctype="multipart/form-data" class="ec_add_to_cart_form">
+				<div class="ec_details_options">
+					<h3><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_title' ); ?></h3>
+					<strong><?php echo $this->product->title; ?></strong>
+					<div class="ec_details_option_row_error ec_inquiry_error" id="ec_details_inquiry_error"><?php echo $GLOBALS['language']->get_text( 'ec_errors', 'missing_inquiry_options' ); ?></div>
+					<div class="ec_details_option_row">
+						<div class="ec_details_option_label"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_name' ); ?></div>
+						<div class="ec_details_option_data"><input type="text" name="ec_inquiry_name" id="ec_inquiry_name" value="" /></div>
+					</div>
+					<div class="ec_details_option_row">
+						<div class="ec_details_option_label"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_email' ); ?></div>
+						<div class="ec_details_option_data"><input type="text" name="ec_inquiry_email" id="ec_inquiry_email" value="" /></div>
+					</div>
+					<div class="ec_details_option_row">
+						<div class="ec_details_option_label"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_message' ); ?></div>
+						<div class="ec_details_option_data"><textarea name="ec_inquiry_message" id="ec_inquiry_message"></textarea></div>
+					</div>
+					<div class="ec_details_option_row">
+						<div class="ec_details_option_label"></div>
+						<div class="ec_details_option_data"><input type="checkbox" name="ec_inquiry_send_copy" id="ec_inquiry_send_copy" /> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_send_copy' ); ?></div>
+					</div>
+				</div>
+				
+				<div class="ec_details_add_to_cart">
+					<input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquire' ); ?>" onclick="return ec_details_submit_inquiry( );" style="margin-left:0px !important;" />
+				</div>
+                <input type="hidden" name="ec_cart_form_action" value="send_inquiry" />
+                <input type="hidden" name="ec_inquiry_model_number" value="<?php echo $this->product->model_number; ?>" />
+				</form>
+			</div>
+			<div class="ec_details_large_popup_close"><input type="button" onclick="ec_details_hide_inquiry_popup( );" value="x"></div>
+		</div>
+	</div>
+</div>
+</div>
+<script>
+jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
+</script>
+
+<?php } ?>
+<?php /* END INQUIRY OPTIONS */ ?>
+
 <section class="ec_product_details_page"><?php if( $this->product->has_promotion_text( ) ){ ?>
 	<div class="ec_cart_success"><div><?php $this->product->display_promotion_text( ); ?></div></div><?php }?><?php 
 	/* START PRODUCT BREADCRUMBS */ 
@@ -388,31 +441,6 @@ if( $is_preview_holder && $is_admin ){ ?>
             </div>
             <?php } ?>
             <?php /* END DONATION OPTIONS */ ?>
-            
-            <?php /* INQUIRY OPTIONS */ ?>
-            <?php if( $this->product->is_inquiry_mode && $this->product->inquiry_url == "" ){ ?>
-            <div class="ec_details_options">
-            	<h3><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_title' ); ?></h3>
-                <div class="ec_details_option_row_error ec_inquiry_error" id="ec_details_inquiry_error"><?php echo $GLOBALS['language']->get_text( 'ec_errors', 'missing_inquiry_options' ); ?></div>
-                <div class="ec_details_option_row">
-                	<div class="ec_details_option_label"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_name' ); ?></div>
-                	<div class="ec_details_option_data"><input type="text" name="ec_inquiry_name" id="ec_inquiry_name" value="" /></div>
-                </div>
-                <div class="ec_details_option_row">
-                	<div class="ec_details_option_label"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_email' ); ?></div>
-                	<div class="ec_details_option_data"><input type="text" name="ec_inquiry_email" id="ec_inquiry_email" value="" /></div>
-                </div>
-                <div class="ec_details_option_row">
-                	<div class="ec_details_option_label"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_message' ); ?></div>
-                	<div class="ec_details_option_data"><textarea name="ec_inquiry_message" id="ec_inquiry_message"></textarea></div>
-                </div>
-                <div class="ec_details_option_row">
-                	<div class="ec_details_option_label"></div>
-                	<div class="ec_details_option_data"><input type="checkbox" name="ec_inquiry_send_copy" id="ec_inquiry_send_copy" /> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquiry_send_copy' ); ?></div>
-                </div>
-            </div>
-            <?php } ?>
-            <?php /* END INQUIRY OPTIONS */ ?>
             
 			<?php if( isset( $this->product->pricetiers[0] ) && count( $this->product->pricetiers[0] ) > 1 ){ ?>
             <ul class="ec_details_tiers">
@@ -678,7 +706,7 @@ if( $is_preview_holder && $is_admin ){ ?>
 				<?php /* INQUIRY BUTTON */ ?>
 				<?php }else if( $this->product->is_inquiry_mode ){ ?>
                 <div class="ec_details_add_to_cart">
-                	<input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquire' ); ?>" onclick="return ec_details_add_to_cart( );" style="margin-left:0px !important;" />
+                	<input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquire' ); ?>" onclick="return ec_details_show_inquiry_form( );" style="margin-left:0px !important;" />
                 </div>
                 
                 <?php /* DecoNetwork BUTTON */ ?>
@@ -727,6 +755,8 @@ if( $is_preview_holder && $is_admin ){ ?>
 			<?php if( $this->product->min_purchase_quantity > 1 ){ ?><div class="ec_details_min_purchase_quantity"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text1' ); ?> <?php echo $this->product->min_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text2' ); ?></div><?php }?>
             
 			<?php if( $this->product->handling_price > 0 ){ ?><div class="ec_details_handling_fee"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $this->product->handling_price ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice2' ); ?></div><?php }?>
+            
+            <?php if( $this->product->subscription_signup_fee > 0 ){ ?><div class="ec_details_handling_fee"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_signup_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $this->product->subscription_signup_fee ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_signup_fee_notice2' ); ?></div><?php }?>
             
 			<?php if( get_option( 'ec_option_show_categories' ) ){ ?>
 			<?php if( count( $this->product->categoryitems ) > 0 ){ ?><div class="ec_details_categories"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_categories' ); ?> <?php $categoryitems = array( ); foreach( $this->product->categoryitems as $categoryitem ){ $categoryitems[] = '<a href="' . $this->product->get_category_link( $categoryitem->post_id, $categoryitem->category_id ) . '">' . $categoryitem->category_name . '</a>'; } echo implode( ', ', $categoryitems ); ?></div><?php }?>
@@ -799,15 +829,20 @@ if( $is_preview_holder && $is_admin ){ ?>
     	
         <ul class="ec_details_tabs">
         
-        	<li class="ec_details_tab ec_active ec_description"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_description' ); ?></li>
+        	<?php do_action( 'wpeasycart_pre_description_tab', $this->product->product_id ); ?>
+        	<li class="ec_details_tab <?php echo apply_filters( 'wpeasycart_description_initally_active', 'ec_active', $this->product->product_id ); ?> ec_description"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_description' ); ?></li>
             
+            <?php do_action( 'wpeasycart_pre_specifications_tab', $this->product->product_id ); ?>
         	<?php if( $this->product->use_specifications ){ ?><li class="ec_details_tab ec_specifications"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_specifications' ); ?></li><?php } ?>
         	
+            <?php do_action( 'wpeasycart_pre_customer_reviews_tab', $this->product->product_id ); ?>
             <?php if( $this->product->use_customer_reviews ){ ?><li class="ec_details_tab ec_customer_reviews"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_customer_reviews' ); ?> (<?php echo count( $this->product->reviews ); ?>)</li><?php } ?>
+        	
+            <?php do_action( 'wpeasycart_addon_product_details_tab', $this->product->product_id ); ?>
         
         </ul>
         
-        <div class="ec_details_description_tab">
+        <div class="ec_details_description_tab" <?php echo apply_filters( 'wpeasycart_description_content_initally_active', '', $this->product->product_id ); ?>>
         	
 			<?php 
 			// START CONTENT EDITING SECTION
@@ -926,6 +961,8 @@ if( $is_preview_holder && $is_admin ){ ?>
             </div>
         </div>
         <?php }?>
+        
+        <?php do_action( 'wpeasycart_addon_product_details_tab_content', $this->product->product_id ); ?>
         
     </div>
     
@@ -1082,16 +1119,16 @@ function ec_volume_price_update( ){
 jQuery( '.ec_details_tab' ).click( function( ){
 	jQuery( '.ec_details_tab' ).removeClass( 'ec_active' );
 	jQuery( this ).addClass( 'ec_active' );
-	jQuery( '.ec_details_description_tab' ).hide( );
-	jQuery( '.ec_details_specifications_tab' ).hide( );
-	jQuery( '.ec_details_customer_reviews_tab' ).hide( );
-	if( jQuery( this ).hasClass( 'ec_description' ) ){
+	jQuery( '.ec_details_extra_area' ).children( 'div' ).each( function( ){ jQuery( this ).hide( ) } );
+	if( jQuery( this ).hasClass( 'ec_description' ) )
 		jQuery( '.ec_details_description_tab' ).show( );
-	}else if( jQuery( this ).hasClass( 'ec_specifications' ) ){
+	else if( jQuery( this ).hasClass( 'ec_specifications' ) )
 		jQuery( '.ec_details_specifications_tab' ).show( );
-	}else if( jQuery( this ).hasClass( 'ec_customer_reviews' ) ){
+	else if( jQuery( this ).hasClass( 'ec_customer_reviews' ) )
 		jQuery( '.ec_details_customer_reviews_tab' ).show( );
-	}
+	else
+		jQuery( '.ec_details_' + jQuery( this ).attr( 'data-tab-id' ) + '_tab' ).show( );
+	
 } );
 jQuery( '.ec_details_swatches > li.ec_option1' ).click( function( ){
 	if( jQuery( this ).hasClass( 'ec_active' ) ){
@@ -1638,6 +1675,24 @@ function ec_details_format_money( price, num_decimals, grouping_symbol, decimal_
         j = (j = i.length) > 3 ? j % 3 : 0;
     return (j ? i.substr(0, j) + grouping_symbol : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + grouping_symbol) + (num_decimals ? decimal_symbol + Math.abs(n - i).toFixed(num_decimals).slice(2) : "");
 };
+function ec_details_submit_inquiry( ){
+	var errors = 0;
+	if( document.getElementById( 'ec_inquiry_name' ) ){
+		if( jQuery( document.getElementById( 'ec_inquiry_name' ) ).val( ) == "" || jQuery( document.getElementById( 'ec_inquiry_email' ) ).val( ) == "" || jQuery( document.getElementById( 'ec_inquiry_message' ) ).val( ) == "" ){
+			jQuery( '#ec_details_inquiry_error' ).show( );
+			errors++;
+		}else{
+			jQuery( '#ec_details_inquiry_error' ).hide( );
+		}
+	}
+	if( errors > 0 )
+		return false;
+	else{
+		jQuery( document.getElementById( 'ec_inquiry_loader' ) ).show( );
+		jQuery( document.getElementById( 'ec_inquiry_loader_bg' ) ).show( );
+		return true;
+	}
+}
 function ec_details_add_to_cart( ){
 	var errors = 0; 
 	// Basic Option 1 Error Check

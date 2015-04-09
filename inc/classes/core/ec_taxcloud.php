@@ -275,7 +275,7 @@ final class ec_taxcloud{
 	private function get_tax_cloud_cartitems( $shipping_total ){
 		
 		global $wpdb;
-		$cart = $wpdb->get_results( $wpdb->prepare( "SELECT ec_tempcart.quantity, ec_product.price, ec_product.model_number, ec_product.TIC FROM ec_tempcart LEFT JOIN ec_product ON ec_product.product_id = ec_tempcart.product_id WHERE ec_tempcart.session_id = %s", $_SESSION['ec_cart_id'] ) );
+		$cart = $wpdb->get_results( $wpdb->prepare( "SELECT ec_tempcart.quantity, ec_product.price, ec_product.model_number, ec_product.TIC FROM ec_tempcart LEFT JOIN ec_product ON ec_product.product_id = ec_tempcart.product_id WHERE ec_tempcart.session_id = %s AND ec_product.is_taxable", $_SESSION['ec_cart_id'] ) );
 		$cartitems = array( );
 		for( $i=0; $i<count( $cart ); $i++ ){
 			$cartitems[] = array(	"Index"		=> $i,

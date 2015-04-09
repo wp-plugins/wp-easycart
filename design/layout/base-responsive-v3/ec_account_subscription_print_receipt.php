@@ -380,6 +380,32 @@
 
 
   </tr>
+  
+  <?php if( $order_details[$i]->subscription_signup_fee > 0 ){ ?>
+    
+    <tr>
+        
+        <td width='269' class='style22'>
+    
+            <table>
+    
+                <tr><td>
+                <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_signup_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $order_details[$i]->subscription_signup_fee ); ?>
+                </td></tr>
+            
+            </table>
+        
+        </td>
+    
+        <td width='80' align='center' class='style22'>1</td>
+    
+        <td width='91' align='center' class='style22'><?php echo $GLOBALS['currency']->get_currency_display( $order_details[$i]->subscription_signup_fee ); ?></td>
+    
+        <td align='center' class='style22'><?php echo $GLOBALS['currency']->get_currency_display( $order_details[$i]->subscription_signup_fee ); ?></td>
+    
+    </tr>		
+                
+    <?php }?>
 
 
   <?php }//end for loop ?>

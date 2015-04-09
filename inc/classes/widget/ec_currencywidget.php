@@ -56,7 +56,7 @@ class ec_currencywidget extends WP_Widget{
 		
 		// WIDGET CODE GOES HERE
 		echo "<form action=\"\" method=\"POST\" id=\"currency\">";
-		echo "<select name=\"ec_currency_conversion\" onchange=\"document.getElementById('currency').submit();\">";
+		echo "<select name=\"ec_currency_conversion\" id=\"ec_currency_conversion\" onchange=\"document.getElementById('currency').submit();\" class=\"ec_currency_select\">";
 		foreach( $currencies as $currency ){
 			echo "<option value=\"" . $currency . "\"";
 			if( $selected_currency == $currency )

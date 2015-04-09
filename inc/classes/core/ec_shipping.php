@@ -360,7 +360,7 @@ class ec_shipping{
 		$ret_string .= " checked=\"checked\"";
 		
 		if( $this->method_based[$i][3] > 0 && $this->subtotal >= $this->method_based[$i][3] )
-			$rate = $this->handling;
+			$rate = 0;
 			
 		else
 			$rate = $this->method_based[$i][0] + $this->handling;
@@ -379,7 +379,7 @@ class ec_shipping{
 		$ret_string .= " selected=\"selected\"";
 		
 		if( $this->method_based[$i][3] > 0 && $this->subtotal >= $this->method_based[$i][3] )
-			$rate = $this->handling;
+			$rate = 0;
 			
 		else
 			$rate = $this->method_based[$i][0] + $this->handling;
@@ -394,7 +394,7 @@ class ec_shipping{
 		$ret_string = "";
 		
 		if( $this->method_based[$i][3] > 0 && $this->subtotal >= $this->method_based[$i][3] )
-			$rate = $this->handling;
+			$rate = 0;
 			
 		else
 			$rate = $this->method_based[$i][0] + $this->handling;
@@ -635,7 +635,7 @@ class ec_shipping{
 				$rate = $rate + $this->express_price;
 			
 		}else if( $this->shipping_method == "live" ){
-			if( !isset( $_SESSION['ec_shipping_method'] ) && !isset( $_SESSION['ec_email'] ) )
+			if( !isset( $_SESSION['ec_temp_zipcode'] ) && !isset( $_SESSION['ec_shipping_method'] ) && !isset( $_SESSION['ec_email'] ) )
 				return doubleval( "0.00" );
 				
 			$lowest = 100000.00;
@@ -650,7 +650,7 @@ class ec_shipping{
 						else
 							$rate = $this->live_based[$i][4];
 					}else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
-						$rate = 0;
+						$rate = "FREE";
 					else
 						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
 					
@@ -708,6 +708,8 @@ class ec_shipping{
 		
 		if( $rate == "ERROR" ){
 			return doubleval( "0.00" );
+		}else if( $rate == "FREE" ){
+			return 0;
 		}else{
 			// Add the Handling Rate
 			$rate = doubleval( $rate ) + doubleval( $this->handling );

@@ -283,6 +283,14 @@
 					"title":"One Time Handling Fee Part 2",
 					"value":"will be added to your shipping total at checkout."
 				},
+				"product_details_signup_fee_notice1":{
+					"title":"One Time Sign-up Fee Part 1",
+					"value":"*A one-time sign-up fee of"
+				},
+				"product_details_signup_fee_notice2":{
+					"title":"One Time Sign-up Fee Part 2",
+					"value":"will be added to your first payment total."
+				},
 				"product_details_home_link":{
 					"title":"Home Breadcrumbs Link",
 					"value":"Home"
@@ -791,6 +799,10 @@
 				"cart_enter_gift_code":{
 					"title":"Cart, Enter Gift Card Hint",
 					"value":"Enter Gift Card"
+				},
+				"cart_coupon_expired":{
+					"title":"Cart, Coupon Code Expired",
+					"value":"Coupon Has Expired"
 				}
 			}
 		},

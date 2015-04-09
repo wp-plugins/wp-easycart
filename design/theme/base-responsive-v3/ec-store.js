@@ -350,7 +350,8 @@ function ec_apply_coupon( ){
 				jQuery( document.getElementById( 'ec_coupon_error' ) ).html( data_arr[8] ).show( );
 			}
 			
-			ec_update_cart( data, 0, "" ); 
+			jQuery( document.getElementById( 'ec_cart_discount' ) ).html( data_arr[4] );
+			jQuery( document.getElementById( 'ec_cart_total' ) ).html( data_arr[7] );
 			
 			// Hide/Show Discount
 			if( data[data.length-1] == '1' ){
@@ -1399,4 +1400,13 @@ function ec_check_update_subscription_info( ){
 
 function ec_cancel_subscription_check( confirm_text ){
 	return confirm( confirm_text );
+}
+
+function ec_details_show_inquiry_form( ){
+	jQuery( '.ec_details_inquiry_popup' ).fadeIn( 'fast' );
+	return false;
+}
+
+function ec_details_hide_inquiry_popup( ){
+	jQuery( '.ec_details_inquiry_popup' ).fadeOut( 'fast' );
 }

@@ -212,6 +212,25 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_label">Show "Most Viewed" Sort Option:</span>
     <span class="ec_setting_row_input"><select name="ec_option_product_filter_7" style="width:100px;"><option value="0"<?php if( get_option('ec_option_product_filter_7') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_product_filter_7') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Paged Product List</em>By turning this on/off you can enable/disable the ability to limit the products per page and show the paging information on the store.</span></a></span>
+    <span class="ec_setting_row_label">Paged Product List:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_enable_product_paging" id="select">
+                  <option value="1" <?php if (get_option('ec_option_enable_product_paging') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_enable_product_paging') == 0) echo ' selected'; ?>>No</option>
+              	</select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Sorting Box</em>By turning this on/off you can show/hide the sorting box on the products page.</span></a></span>
+    <span class="ec_setting_row_label">Show Sorting Box:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_sort_box" id="select">
+                  <option value="1" <?php if (get_option('ec_option_show_sort_box') == 1) echo ' selected'; ?>>Yes</option>
+                  <option value="0" <?php if (get_option('ec_option_show_sort_box') == 0) echo ' selected'; ?>>No</option>
+              	</select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Product Details Page Display Options</div></div>

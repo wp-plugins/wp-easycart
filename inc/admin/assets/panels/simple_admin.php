@@ -112,6 +112,15 @@
 			$order_id = $_POST['order_id'];
 			$status_id = $_POST['orderstatus_id'];
 			
+			if( $status_id == "3" || $status_id == "6" || $status_id == "10" || $status_id == "15" )
+				do_action( 'wpeasycart_order_paid', $order_id );
+			else if( $status_id == "2" )
+				do_action( 'wpeasycart_order_shipped', $order_id );
+			else if( $status_id == "16" )
+				do_action( 'wpeasycart_full_order_refund', $order_id );
+			else if( $status_id == "17" )
+				do_action( 'wpeasycart_partial_order_refund', $order_id );
+			
 			$sql = "UPDATE ec_order SET ec_order.orderstatus_id = %d WHERE ec_order.order_id = %d";
 			$wpdb->query( $wpdb->prepare( $sql, $status_id, $order_id ) );
 		}

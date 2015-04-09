@@ -42,6 +42,7 @@ class ec_orderdetail{
 	public $download_timelimit_seconds;      			// INT
 	public $is_amazon_download;							// BOOL
 	public $amazon_key;									// VARCHAR 255
+	public $subscription_signup_fee;					// FLOAT 15,3
 	
 	public $include_code;								// BOOL
 	
@@ -106,6 +107,7 @@ class ec_orderdetail{
 		$this->download_timelimit_seconds = $orderdetail_row->download_timelimit_seconds;
 		$this->is_amazon_download = $orderdetail_row->is_amazon_download;
 		$this->amazon_key = $orderdetail_row->amazon_key;
+		$this->subscription_signup_fee = $orderdetail_row->subscription_signup_fee;
 	
 		$this->is_deconetwork = $orderdetail_row->is_deconetwork;
 		$this->deconetwork_id = $orderdetail_row->deconetwork_id;

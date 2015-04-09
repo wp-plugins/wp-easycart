@@ -41,6 +41,7 @@ class ec_cartitem{
 	public $is_shippable;											// BOOL
 	public $is_amazon_download;										// BOOL
 	public $include_code;											// BOOL
+	public $subscription_signup_fee;								// FLOAT 15,3
 	
 	public $image1;													// VARCHAR 255
 	public $image1_optionitem;										// VARCHAR 255
@@ -140,6 +141,7 @@ class ec_cartitem{
 		$this->is_shippable = $cartitem_data->is_shippable;
 		$this->is_amazon_download = $cartitem_data->is_amazon_download;
 		$this->include_code = $cartitem_data->include_code;
+		$this->subscription_signup_fee = $cartitem_data->subscription_signup_fee;
 		
 		$this->image1 = $cartitem_data->image1;
 		$this->image1_optionitem = $cartitem_data->optionitemimage_image1;

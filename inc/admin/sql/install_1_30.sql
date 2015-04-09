@@ -491,6 +491,7 @@ CREATE TABLE IF NOT EXISTS `ec_orderdetail` (
   `deconetwork_image_link` varchar(512) NOT NULL DEFAULT '' COMMENT 'The link to the image on the DecoNetwork.',
   `gift_card_email` VARCHAR(512) NOT NULL DEFAULT '' COMMENT 'The gift card email is needed.',
   `include_code` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Should this product include a code on checkout.',
+  `subscription_signup_fee` FLOAT(15,3) NOT NULL DEFAULT '0.000' COMMENT 'Paid during signup with a subscription fee.',
   PRIMARY KEY (`orderdetail_id`)
 )ENGINE=MyISAM
 AUTO_INCREMENT=1349 AVG_ROW_LENGTH=130 CHARACTER SET 'utf8' COLLATE
@@ -665,6 +666,8 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
   `image_effect_type` VARCHAR(20) COLLATE utf8_general_ci NOT NULL DEFAULT 'none' COMMENT 'An optional border or shadow can be applied to a product.',
   `include_code` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Should this product include a code on checkout.',
   `TIC` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '00000' COMMENT 'TIC value used with Tax Cloud.',
+  `subscription_signup_fee` FLOAT(15,3) NOT NULL DEFAULT '0.000' COMMENT 'Charge a signup fee with a subscription item.',
+  `subscription_unique_id` int(11) NOT NULL DEFAULT '0' COMMENT 'Fixes duplicate ID problem when inserting subscriptions to stripe.',
   PRIMARY KEY (`product_id`),
   UNIQUE KEY `product_id` (`product_id`),
   UNIQUE KEY `model_number` (`model_number`),
@@ -685,47 +688,26 @@ CREATE TABLE IF NOT EXISTS `ec_product_google_attributes` (
 ) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_promocode` (
-  `promocode_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT ''
-   COMMENT 'The unique identifier for ec_promocode.',
-  `is_dollar_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
-   'If selected, this is a dollar based promotion.',
-  `is_percentage_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
-   'If selected, this is a percentage based promotion.',
-  `is_shipping_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
-   'If selected, this is a shipping based promotion.',
-  `is_free_item_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
-   'If selected, this is a free item based promotion.',
-  `is_for_me_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
-   'If selected, this is a for me based promotion.',
-  `by_manufacturer_id` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
-   'If selected, this promotion applies only to products with a cooresponding manufacturer id.'
-   ,
-  `by_product_id` TINYINT(1) NOT NULL DEFAULT 0 COMMENT
-   'If selected, this promotion applies only to products with the cooresponding id.'
-   ,
-  `by_all_products` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'If selected, this promotion applies to all products and orders.',
-  `promo_dollar` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT
-   'Discount used when dollar based selected.',
-  `promo_percentage` FLOAT(15,2) NOT NULL DEFAULT 0.00 COMMENT
-   'Percentage off when a percentage based promotion.',
-  `promo_shipping` FLOAT(15,2) NOT NULL DEFAULT 0.00 COMMENT
-   'Amount off shipping total when shipping based promotion is used.',
-  `promo_free_item` FLOAT(15,2) NOT NULL DEFAULT 0.00 COMMENT
-   'Amount off when free item promotion is used.',
-  `promo_for_me` FLOAT(15,2) NOT NULL DEFAULT 0.00 COMMENT
-   'Amount off when for me type promotion is used.',
-  `manufacturer_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'The manufacturer_id used if this promotion is a by_manufacturer_id type.',
-  `product_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT
-   'The product_id used if the promotion is a by_product_id type promotion.',
-  `message` BLOB NOT NULL COMMENT
-   'The message displayed when the promotion is used.',
-  `max_redemptions` INTEGER(11) NOT NULL DEFAULT '999' COMMENT 
-   'The maximum number of times you can use this promotion code.',
-  `times_redeemed` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 
-   'This is the number of times this coupon has been redeemed.',
-
+  `promocode_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'The unique identifier for ec_promocode.',
+  `is_dollar_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, this is a dollar based promotion.',
+  `is_percentage_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, this is a percentage based promotion.',
+  `is_shipping_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, this is a shipping based promotion.',
+  `is_free_item_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, this is a free item based promotion.',
+  `is_for_me_based` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, this is a for me based promotion.',
+  `by_manufacturer_id` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, this promotion applies only to products with a cooresponding manufacturer id.',
+  `by_product_id` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'If selected, this promotion applies only to products with the cooresponding id.',
+  `by_all_products` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'If selected, this promotion applies to all products and orders.',
+  `promo_dollar` FLOAT(15,3) NOT NULL DEFAULT 0.000 COMMENT 'Discount used when dollar based selected.',
+  `promo_percentage` FLOAT(15,2) NOT NULL DEFAULT 0.00 COMMENT 'Percentage off when a percentage based promotion.',
+  `promo_shipping` FLOAT(15,2) NOT NULL DEFAULT 0.00 COMMENT 'Amount off shipping total when shipping based promotion is used.',
+  `promo_free_item` FLOAT(15,2) NOT NULL DEFAULT 0.00 COMMENT 'Amount off when free item promotion is used.',
+  `promo_for_me` FLOAT(15,2) NOT NULL DEFAULT 0.00 COMMENT 'Amount off when for me type promotion is used.',
+  `manufacturer_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'The manufacturer_id used if this promotion is a by_manufacturer_id type.',
+  `product_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'The product_id used if the promotion is a by_product_id type promotion.',
+  `message` BLOB NOT NULL COMMENT 'The message displayed when the promotion is used.',
+  `max_redemptions` INTEGER(11) NOT NULL DEFAULT '999' COMMENT  'The maximum number of times you can use this promotion code.',
+  `times_redeemed` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 'This is the number of times this coupon has been redeemed.',
+  `expiration_date` DATETIME DEFAULT NULL COMMENT 'Gives the merchant the ability to set an expiration date.',
   PRIMARY KEY (`promocode_id`),
   UNIQUE KEY `promoID` (`promocode_id`)
 )ENGINE=MyISAM

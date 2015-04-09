@@ -66,7 +66,7 @@ $GLOBALS['ec_live_editor_loaded'] = true;
                     <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( ); return false;">hide it forever</a></div>
     	        	
                     <video width="853" height="480" controls>
-						<source src="http://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
+						<source src="https://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     

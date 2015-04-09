@@ -361,6 +361,13 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . htmlspecialchars( $user->email, ENT_QUOTES ) . "\" />";
 		
 		echo "<input name=\"item_name\" id=\"item_name\" type=\"hidden\" value=\"" . htmlspecialchars( $product->title, ENT_QUOTES ) . "\" />";
+		
+		if( $product->subscription_signup_fee > 0 ){
+			echo "<input name=\"a1\" id=\"a1\" type=\"hidden\" value=\"" . number_format( $product->subscription_signup_fee + $product->price, 2 ) . "\" />";
+			echo "<input name=\"p1\" id=\"p1\" type=\"hidden\" value=\"" . htmlspecialchars( $product->subscription_bill_length, ENT_QUOTES ) . "\" />";
+			echo "<input name=\"t1\" id=\"t1\" type=\"hidden\" value=\"" . htmlspecialchars( $product->subscription_bill_period, ENT_QUOTES ) . "\" />";
+		}
+		
 		echo "<input name=\"a3\" id=\"a3\" type=\"hidden\" value=\"" . number_format( $product->price, 2 ) . "\" />";
 		echo "<input name=\"p3\" id=\"p3\" type=\"hidden\" value=\"" . htmlspecialchars( $product->subscription_bill_length, ENT_QUOTES ) . "\" />";
 		echo "<input name=\"t3\" id=\"t3\" type=\"hidden\" value=\"" . htmlspecialchars( $product->subscription_bill_period, ENT_QUOTES ) . "\" />";

@@ -21,7 +21,12 @@ $has_shipping = ec_has_shipping( );
 $has_order = ec_has_order( );
 $has_demouser = ec_has_demouser( );
 
-$ec_url = "admin.php?page=" . htmlspecialchars ( $_GET['page'], ENT_QUOTES ) . "&ec_page=" . htmlspecialchars ( $_GET['ec_page'], ENT_QUOTES ) . "&ec_panel=" . htmlspecialchars ( $_GET['ec_panel'], ENT_QUOTES );
+$ec_url = "admin.php?page=" . htmlspecialchars ( $_GET['page'], ENT_QUOTES );
+if( isset( $_GET['ec_page'] ) )
+	$ec_url .= "&ec_page=" . htmlspecialchars ( $_GET['ec_page'], ENT_QUOTES );
+if( isset( $_GET['ec_panel'] ) )
+	$ec_url .= "&ec_panel=" . htmlspecialchars ( $_GET['ec_panel'], ENT_QUOTES );
+
 $store_id = get_option( 'ec_option_storepage' );
 $store_page = get_permalink( $store_id );
 ?>

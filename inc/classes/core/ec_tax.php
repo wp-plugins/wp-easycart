@@ -68,8 +68,16 @@ class ec_tax{
 		
 		// Save the Subtotals
 		$this->cart_subtotal 					= 			$cart_subtotal;
+		if( $this->cart_subtotal < 0 )
+			$this->cart_subtotal				=			0;
+			
 		$this->taxable_subtotal 				= 			$taxable_subtotal;
+		if( $this->taxable_subtotal < 0 )
+			$this->taxable_subtotal				=			0;
+		
 		$this->vatable_total 					= 			$vatable_total;
+		if( $this->vatable_total < 0 )
+			$this->vatable_total				=			0;
 		
 		// Save the User Entered Data
 		$this->shipping_state 					= 			strtoupper( $shipping_state );

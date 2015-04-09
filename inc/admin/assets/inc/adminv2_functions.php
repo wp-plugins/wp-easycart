@@ -1246,6 +1246,8 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_product_filter_5', $_POST['ec_option_product_filter_5'] );
 	update_option( 'ec_option_product_filter_6', $_POST['ec_option_product_filter_6'] );
 	update_option( 'ec_option_product_filter_7', $_POST['ec_option_product_filter_7'] );
+	update_option( 'ec_option_enable_product_paging', $_POST['ec_option_enable_product_paging'] );
+	update_option( 'ec_option_show_sort_box', $_POST['ec_option_show_sort_box'] );
 	
 	// Product Details Page Dispaly Options
 	update_option( 'ec_option_use_facebook_icon', $_POST['ec_option_use_facebook_icon'] );

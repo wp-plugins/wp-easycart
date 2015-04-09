@@ -3,7 +3,7 @@
 define( 'WP_USE_THEMES', false );
 require( '../../../../../wp-load.php' );
 
-$mysqli = new ec_db( );
+$mysqli = new ec_db_admin( );
 $listener = new ec_ipnlistener( );
 
 if( get_option( 'ec_option_paypal_use_sandbox' ) )
@@ -80,21 +80,24 @@ if( $verified ) {
 				$mysqli->cancel_paypal_subscription( $_POST['subscr_id'] );
 				
 			}else{
-				$mysqli->update_order_status( $order_id, "10" );
-				do_action( 'wpeasycart_order_paid', $orderid );
 				
-				// send email
-				$db_admin = new ec_db_admin( );
-				$order_row = $db_admin->get_order_row_admin( $order_id );
-				$order_display = new ec_orderdisplay( $order_row, true, true );
-				$order_display->send_email_receipt( );
-				$order_display->send_gift_cards( );
-	
-				// Quickbooks Hook
-				if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
-					$quickbooks = new ec_quickbooks( );
-					$quickbooks->add_order( $order_id );
+				$order_row = $mysqli->get_order_row_admin( $order_id );
+				if( $order_row ){
+					$mysqli->update_order_status( $order_id, "10" );
+					do_action( 'wpeasycart_order_paid', $orderid );
+					
+					// send email
+					$order_display = new ec_orderdisplay( $order_row, true, true );
+					$order_display->send_email_receipt( );
+					$order_display->send_gift_cards( );
+		
+					// Quickbooks Hook
+					if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+						$quickbooks = new ec_quickbooks( );
+						$quickbooks->add_order( $order_id );
+					}
 				}
+				
 			}
 			
 		} else if( $_POST['payment_status'] == 'Refunded' ){ 

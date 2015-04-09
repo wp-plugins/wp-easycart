@@ -53,6 +53,7 @@ class ec_db{
 				ec_download.amazon_key,
 				
 				ec_orderdetail.include_code,
+				ec_orderdetail.subscription_signup_fee,
 				
 				ec_orderdetail.is_deconetwork,
 				ec_orderdetail.deconetwork_id,
@@ -157,6 +158,7 @@ class ec_db{
 				ec_orderdetail.deconetwork_image_link,
 				
 				ec_orderdetail.include_code,
+				ec_orderdetail.subscription_signup_fee,
 				
 				";
 		
@@ -379,6 +381,8 @@ class ec_db{
 				product.subscription_bill_period,
 				product.trial_period_days,
 				product.stripe_plan_added,
+				product.subscription_signup_fee,
+				product.subscription_unique_id,
 				
 				product.use_advanced_optionset,
 				product.use_optionitem_images,
@@ -613,6 +617,8 @@ class ec_db{
 						"subscription_bill_period" => $row->subscription_bill_period,
 						"trial_period_days" => $row->trial_period_days,
 						"stripe_plan_added" => $row->stripe_plan_added,
+						"subscription_signup_fee" => $row->subscription_signup_fee,
+						"subscription_unique_id" => $row->subscription_unique_id,
 						
 						"option1" => $option1, 
 						"option2" => $option2, 
@@ -1032,6 +1038,7 @@ class ec_db{
 				product.amazon_key,
 				product.include_code,
 				product.min_purchase_quantity,
+				product.subscription_signup_fee,
 				
 				tempcart.tempcart_id as cartitem_id,
 				tempcart.quantity,
@@ -1588,7 +1595,8 @@ class ec_db{
 				ec_promocode.product_id, 
 				ec_promocode.message,
 				ec_promocode.max_redemptions,
-				ec_promocode.times_redeemed
+				ec_promocode.times_redeemed,
+				IF( ec_promocode.expiration_date < NOW( ), 1, 0 ) as coupon_expired
 				
 				FROM 
 				ec_promocode 
@@ -1950,7 +1958,8 @@ class ec_db{
 								'deconetwork_product_id'		=> $cart_item->deconetwork_product_id,
 								'deconetwork_image_link'		=> $cart_item->deconetwork_image_link,
 								
-								'include_code'					=> $cart_item->include_code );
+								'include_code'					=> $cart_item->include_code,
+								'subscription_signup_fee'		=> $cart_item->subscription_signup_fee );
 								
 										
 		$percent_array = array( '%d', '%d', '%s', '%s', '%s',
@@ -1963,7 +1972,7 @@ class ec_db{
 								'%d', '%d', '%s', '%s', '%d', '%d', 
 								'%d', '%s',
 								'%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
-								'%d' );
+								'%d', '%s' );
 								
 		if( isset( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ) ){
 			for( $i=0; $i<count( $GLOBALS['ec_hooks']['ec_extra_cartitem_vars'] ); $i++ ){
@@ -3012,13 +3021,13 @@ class ec_db{
 	
 	public function insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_code, $order_notes, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label ){
 		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, creditcard_digits, subscription_id, order_customer_notes, billing_company_name, shipping_company_name, billing_address_line_2, shipping_address_line_2) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s)";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price, $product->price, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, $card->payment_method, $card->get_last_four( ), $subscription_id, $order_notes, $user->billing->company_name, $user->shipping->company_name, $user->billing->address_line_2, $user->shipping->address_line_2 ) );
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price + $product->subscription_signup_fee, $product->price + $product->subscription_signup_fee, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, $card->payment_method, $card->get_last_four( ), $subscription_id, $order_notes, $user->billing->company_name, $user->shipping->company_name, $user->billing->address_line_2, $user->shipping->address_line_2 ) );
 		
 		$order_id = $this->mysqli->insert_id;
 		$image1 = $product->images->get_single_image( );
 		
-		$sql = "INSERT INTO ec_orderdetail( order_id, product_id, title, model_number, order_date, unit_price, total_price, quantity, image1, optionitem_name_1, optionitem_name_2, optionitem_name_3, optionitem_name_4, optionitem_name_5, optionitem_label_1, optionitem_label_2, optionitem_label_3, optionitem_label_4, optionitem_label_5, use_advanced_optionset ) VALUES( %d, %d, %s, %s, NOW( ), %s, %s, 1, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d )";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $order_id, $product->product_id, $product->title, $product->model_number, $product->price, $product->price, $image1, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label, $product->use_advanced_optionset ) );
+		$sql = "INSERT INTO ec_orderdetail( order_id, product_id, title, model_number, order_date, unit_price, total_price, quantity, image1, optionitem_name_1, optionitem_name_2, optionitem_name_3, optionitem_name_4, optionitem_name_5, optionitem_label_1, optionitem_label_2, optionitem_label_3, optionitem_label_4, optionitem_label_5, use_advanced_optionset, subscription_signup_fee ) VALUES( %d, %d, %s, %s, NOW( ), %s, %s, 1, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %s )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $order_id, $product->product_id, $product->title, $product->model_number, $product->price, $product->price, $image1, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label, $product->use_advanced_optionset, $product->subscription_signup_fee ) );
 		
 		$orderdetail_id = $this->mysqli->insert_id;
 		
@@ -3034,13 +3043,13 @@ class ec_db{
 	
 	public function insert_paypal_subscription_order( $product, $user, $coupon_code, $order_notes, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label ){
 		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, order_customer_notes, billing_company_name, shipping_company_name, billing_address_line_2, shipping_address_line_2) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 8, $product->price, $product->price, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, 'PayPal', $order_notes, $user->billing->company_name, $user->shipping->company_name, $user->billing->address_line_2, $user->shipping->address_line_2 ) );
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 8, $product->price + $product->subscription_signup_fee, $product->price + $product->subscription_signup_fee, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, 'PayPal', $order_notes, $user->billing->company_name, $user->shipping->company_name, $user->billing->address_line_2, $user->shipping->address_line_2 ) );
 		
 		$order_id = $this->mysqli->insert_id;
 		$image1 = $product->images->get_single_image( );
 		
-		$sql = "INSERT INTO ec_orderdetail( order_id, product_id, title, model_number, order_date, unit_price, total_price, quantity, image1, optionitem_name_1, optionitem_name_2, optionitem_name_3, optionitem_name_4, optionitem_name_5, optionitem_label_1, optionitem_label_2, optionitem_label_3, optionitem_label_4, optionitem_label_5, use_advanced_optionset ) VALUES( %d, %d, %s, %s, NOW( ), %s, %s, 1, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d )";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $order_id, $product->product_id, $product->title, $product->model_number, $product->price, $product->price, $image1, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label, $product->use_advanced_optionset ) );
+		$sql = "INSERT INTO ec_orderdetail( order_id, product_id, title, model_number, order_date, unit_price, total_price, quantity, image1, optionitem_name_1, optionitem_name_2, optionitem_name_3, optionitem_name_4, optionitem_name_5, optionitem_label_1, optionitem_label_2, optionitem_label_3, optionitem_label_4, optionitem_label_5, use_advanced_optionset, subscription_signup_fee ) VALUES( %d, %d, %s, %s, NOW( ), %s, %s, 1, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %s )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $order_id, $product->product_id, $product->title, $product->model_number, $product->price, $product->price, $image1, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label, $product->use_advanced_optionset, $product->subscription_signup_fee ) );
 		
 		$orderdetail_id = $this->mysqli->insert_id;
 		
@@ -3516,6 +3525,8 @@ class ec_db{
 				product.subscription_bill_period,
 				product.trial_period_days,
 				product.stripe_plan_added,
+				product.subscription_signup_fee,
+				product.subscription_unique_id,
 				
 				product.use_advanced_optionset,
 				product.use_optionitem_images,
