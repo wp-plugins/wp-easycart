@@ -252,7 +252,7 @@ class ec_admin_products{
 	
 	function getfeaturedproducts( ){
 		
-		$sql = "SELECT ec_product.product_id, ec_product.title, ec_product.model_number, ec_product.is_subscription_item FROM ec_product ORDER BY ec_product.title ASC";
+		$sql = "SELECT ec_product.product_id, ec_product.title, ec_product.model_number, ec_product.is_subscription_item FROM ec_product ORDER BY ec_product.title ASC  LIMIT 2500";
 		$results = $this->db->get_results( $sql );
 		
 		if( count( $results ) > 0 ){
@@ -265,7 +265,7 @@ class ec_admin_products{
 	
 	function getproductlist( ){
 
-		$sql = "SELECT ec_product.title, ec_product.product_id, ec_product.is_subscription_item FROM ec_product ORDER BY ec_product.title ASC";
+		$sql = "SELECT ec_product.title, ec_product.product_id, ec_product.is_subscription_item FROM ec_product ORDER BY ec_product.title ASC LIMIT 5000";
 		$results = $this->db->get_results( $sql );
 		
 		if( count( $results ) > 0 ){
