@@ -84,11 +84,26 @@ class ec_cartwidget extends WP_Widget{
 	function widget($args, $instance){
 	
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$link_text = apply_filters( 'widget_link_text', $instance['link_text'] );
-		$use_popup_minicart = apply_filters( 'widget_use_popup_minicart', $instance['use_popup_minicart'] );
-		$open_on_click = apply_filters( 'widget_open_on_click', $instance['open_on_click'] );
-		$open_on_mouseover = apply_filters( 'widget_open_on_mouseover', $instance['open_on_mouseover'] );
+		if( isset( $instance['title'] ) )
+			$title = apply_filters( 'widget_title', $instance['title'] );
+		else
+			$title = "";
+		if( isset( $instance['link_text'] ) )
+			$link_text = apply_filters( 'widget_link_text', $instance['link_text'] );
+		else
+			$link_text = "";
+		if( isset( $instance['use_popup_minicart'] ) )
+			$use_popup_minicart = apply_filters( 'widget_use_popup_minicart', $instance['use_popup_minicart'] );
+		else
+			$use_popup_minicart = "";
+		if( isset( $instance['open_on_click'] ) )
+			$open_on_click = apply_filters( 'widget_open_on_click', $instance['open_on_click'] );
+		else
+			$open_on_click = "";
+		if( isset( $instance['open_on_mouseover'] ) )
+			$open_on_mouseover = apply_filters( 'widget_open_on_mouseover', $instance['open_on_mouseover'] );
+		else
+			$open_on_mouseover = "";
 		
 		// Translate if Needed
 		$title = $GLOBALS['language']->convert_text( $title );

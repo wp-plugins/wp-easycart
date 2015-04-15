@@ -132,21 +132,21 @@ if( $is_preview_holder && $is_admin ){ ?>
 	jQuery( "#ec_admin_loader_bg" ).show( );
 	var data = {
 		action: 'ec_ajax_save_product_details_options',
-		ec_option_details_main_color: jQuery( '#ec_option_details_main_color' ).val( ),
-		ec_option_details_columns_desktop: jQuery( '#ec_option_details_columns_desktop' ).val( ),
-		ec_option_details_columns_laptop: jQuery( '#ec_option_details_columns_laptop' ).val( ),
-		ec_option_details_columns_tablet_wide: jQuery( '#ec_option_details_columns_tablet_wide' ).val( ),
-		ec_option_details_columns_tablet: jQuery( '#ec_option_details_columns_tablet' ).val( ),
-		ec_option_details_columns_smartphone: jQuery( '#ec_option_details_columns_smartphone' ).val( ),
-		ec_option_use_dark_bg: jQuery( '#ec_option_use_dark_bg' ).val( )
+		ec_option_details_main_color: jQuery( document.getElementById( 'ec_option_details_main_color' ) ).val( ),
+		ec_option_details_columns_desktop: jQuery( document.getElementById( 'ec_option_details_columns_desktop' ) ).val( ),
+		ec_option_details_columns_laptop: jQuery( document.getElementById( 'ec_option_details_columns_laptop' ) ).val( ),
+		ec_option_details_columns_tablet_wide: jQuery( document.getElementById( 'ec_option_details_columns_tablet_wide' ) ).val( ),
+		ec_option_details_columns_tablet: jQuery( document.getElementById( 'ec_option_details_columns_tablet' ) ).val( ),
+		ec_option_details_columns_smartphone: jQuery( document.getElementById( 'ec_option_details_columns_smartphone' ) ).val( ),
+		ec_option_use_dark_bg: jQuery( document.getElementById( 'ec_option_use_dark_bg' ) ).val( )
 	}
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function(data){ 
-		jQuery( "#ec_admin_page_updated_loader" ).hide( );
-		jQuery( "#ec_admin_page_updated" ).show( );
-		jQuery( "#ec_admin_loader_bg" ).fadeOut( 'slow' );
+		jQuery( document.getElementById( 'ec_admin_page_updated_loader' ) ).hide( );
+		jQuery( document.getElementById( 'ec_admin_page_updated' ) ).show( );
+		jQuery( document.getElementById( 'ec_admin_loader_bg' ) ).fadeOut( 'slow' );
 		location.reload( );
 	} } );
-	jQuery( '#ec_page_editor' ).animate( { left:'-290px' }, {queue:false, duration:220} ).removeClass( 'ec_display_editor_true' ).addClass( 'ec_display_editor_false' );
+	jQuery( document.getElementById( 'ec_page_editor' ) ).animate( { left:'-290px' }, {queue:false, duration:220} ).removeClass( 'ec_display_editor_true' ).addClass( 'ec_display_editor_false' );
 }</script><?php }// Close editor content ?><?php 
 /* START PRODUCT DETAILS PAGE */ 
 ?>
@@ -402,7 +402,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
             <?php if( get_option( 'ec_option_show_model_number' ) ){ ?>
             <div class="ec_details_model_number"><?php echo ucwords( $GLOBALS['language']->get_text( 'product_details', 'product_details_model_number' ) ); ?>: <?php echo $this->product->model_number; ?></div>
             <?php }?>
-            <div class="ec_details_description"><?php echo $this->product->short_description; ?></div>
+            <div class="ec_details_description"><?php echo nl2br( stripslashes( $this->product->short_description ) ); ?></div>
             <?php /* GIFT CARD OPTIONS */ ?>
             <?php if( $this->product->is_giftcard ){ ?>
 			<div class="ec_details_options">
@@ -442,7 +442,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
             <?php } ?>
             <?php /* END DONATION OPTIONS */ ?>
             
-			<?php if( isset( $this->product->pricetiers[0] ) && count( $this->product->pricetiers[0] ) > 1 ){ ?>
+			<?php if( !$this->product->using_role_price && isset( $this->product->pricetiers[0] ) && count( $this->product->pricetiers[0] ) > 1 ){ ?>
             <ul class="ec_details_tiers">
             	<?php 
 				foreach( $this->product->pricetiers as $pricetier ){
@@ -735,8 +735,9 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
                 
                 <?php /* PRICING AREA FOR OPTIONS */ ?>
 				<?php if( $this->product->has_options || $this->product->use_advanced_optionset ){ ?>
-                <div class="ec_details_final_price"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_your_price' ); ?> <?php echo $GLOBALS['currency']->get_symbol( ); ?><span id="ec_final_price"><?php if( $override_price_grid > -1 ){ echo $GLOBALS['currency']->get_number_only( $override_price_grid ); }else if( $add_price_grid > 0 ){ echo $GLOBALS['currency']->get_number_only( $this->product->price + $add_price_grid ); }else{ echo $GLOBALS['currency']->get_number_only( $this->product->price ); } ?></span><span class="ec_details_hidden_base_price" id="ec_base_price"><?php echo $this->product->price; ?></span></div>
+                <div class="ec_details_final_price"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_your_price' ); ?> <?php echo $GLOBALS['currency']->get_symbol( ); ?><span id="ec_final_price"><?php if( $override_price_grid > -1 ){ echo $GLOBALS['currency']->get_number_only( $override_price_grid ); }else if( $add_price_grid > 0 ){ echo $GLOBALS['currency']->get_number_only( $this->product->price + $add_price_grid ); }else{ echo $GLOBALS['currency']->get_number_only( $this->product->price ); } ?></span></div>
 				<?php } ?>
+                <span class="ec_details_hidden_base_price" id="ec_base_price"><?php echo $this->product->price; ?></span>
                 
                 <?php /* OUT OF STOCK INFO (NO ADD TO CART CASE) */ ?>
                 <?php }else{ ?>
@@ -1027,7 +1028,9 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
 <script>var img = new Image( );
 var img_width = 400;
 var img_height = 400;
-var img_ratio = 1;<?php if( !$ipad && !$iphone && get_option( 'ec_option_show_magnification' ) ){?>
+var img_ratio = 1;
+var tier_quantities = [<?php if( !$this->product->using_role_price ){ for( $tier_i = 0; $tier_i < count( $this->product->pricetiers ); $tier_i++ ){ if( $tier_i > 0 ){ echo ","; } echo $this->product->pricetiers[$tier_i][1]; } } ?>];
+var tier_prices = [<?php if( !$this->product->using_role_price ){ for( $tier_i = 0; $tier_i < count( $this->product->pricetiers ); $tier_i++ ){ if( $tier_i > 0 ){ echo ","; } echo $this->product->pricetiers[$tier_i][0]; } } ?>];<?php if( !$ipad && !$iphone && get_option( 'ec_option_show_magnification' ) ){?>
 jQuery( '.ec_details_main_image' ).mousemove( function( e ){
 	var parentOffset = jQuery( this ).parent( ).offset( ); 
 	var mouse_x = e.pageX - parentOffset.left;
@@ -1086,7 +1089,7 @@ jQuery( '.ec_minus' ).click( function( ){
 	){
 		jQuery( this ).parent( ).find( '.ec_quantity' ).val( Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) - 1 )
 	}
-	ec_volume_price_update( );
+	ec_details_advanced_adjust_price( );
 } );
 jQuery( '.ec_plus' ).click( function( ){
 	if( !jQuery( this ).parent( ).find( '.ec_quantity' ).attr( 'max' ) || 
@@ -1094,28 +1097,14 @@ jQuery( '.ec_plus' ).click( function( ){
 	){
 		jQuery( this ).parent( ).find( '.ec_quantity' ).val( Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) + 1 )
 	}
-	ec_volume_price_update( );
+	ec_details_advanced_adjust_price( );
 } );
-jQuery( '#ec_quantity' ).change( function( ){
-	ec_volume_price_update( );
+jQuery( document.getElementById( 'ec_quantity' ) ).change( function( ){
+	ec_details_advanced_adjust_price( );
 } );
-jQuery( '#ec_donation_amount' ).change( function( ){
+jQuery( document.getElementById( 'ec_donation_amount' ) ).change( function( ){
 	ec_details_base_adjust_price( );
 } );
-function ec_volume_price_update( ){
-	var quantity = Number( jQuery( '#ec_quantity' ).val( ) );
-	<?php if( isset( $this->product->pricetiers[0] ) && count( $this->product->pricetiers[0] ) > 1 ){
-		foreach( $this->product->pricetiers as $pricetier ){
-			$tier_price = $GLOBALS['currency']->get_number_only( $pricetier[0] );
-			$tier_quantity = $pricetier[1];
-			?>
-		if( quantity >= <?php echo $tier_quantity; ?> )
-			jQuery( '#ec_final_price' ).html( ec_details_format_money( <?php echo $tier_price; ?> ) );
-		<?php 
-		}
-	}
-	?>
-}
 jQuery( '.ec_details_tab' ).click( function( ){
 	jQuery( '.ec_details_tab' ).removeClass( 'ec_active' );
 	jQuery( this ).addClass( 'ec_active' );
@@ -1141,7 +1130,7 @@ jQuery( '.ec_details_swatches > li.ec_option1' ).click( function( ){
 		jQuery( '.ec_details_swatches > li.ec_option1' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
 		jQuery( '.ec_option1.ec_details_option_row_error' ).hide( );
-		jQuery( '#ec_option1' ).val( optionitem_id_1 );
+		jQuery( document.getElementById( 'ec_option1' ) ).val( optionitem_id_1 );
 		ec_details_base_adjust_price( );
 	}
 } );
@@ -1161,7 +1150,7 @@ jQuery( '.ec_details_swatches > li.ec_option2' ).click( function( ){
 		jQuery( '.ec_details_swatches > li.ec_option2' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
 		jQuery( '.ec_option2.ec_details_option_row_error' ).hide( );
-		jQuery( '#ec_option2' ).val( optionitem_id_2 );
+		jQuery( document.getElementById( 'ec_option2' ) ).val( optionitem_id_2 );
 		ec_details_base_adjust_price( );
 	}
 } );
@@ -1187,7 +1176,7 @@ jQuery( '.ec_details_swatches > li.ec_option3' ).click( function( ){
 		jQuery( '.ec_details_swatches > li.ec_option3' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
 		jQuery( '.ec_option3.ec_details_option_row_error' ).hide( );
-		jQuery( '#ec_option3' ).val( optionitem_id_3 );
+		jQuery( document.getElementById( 'ec_option3' ) ).val( optionitem_id_3 );
 		ec_details_base_adjust_price( );
 	}
 } );
@@ -1219,7 +1208,7 @@ jQuery( '.ec_details_swatches > li.ec_option4' ).click( function( ){
 		jQuery( '.ec_details_swatches > li.ec_option4' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
 		jQuery( '.ec_option4.ec_details_option_row_error' ).hide( );
-		jQuery( '#ec_option4' ).val( optionitem_id_4 );
+		jQuery( document.getElementById( 'ec_option4' ) ).val( optionitem_id_4 );
 		ec_details_base_adjust_price( );
 	}
 } );
@@ -1229,7 +1218,7 @@ jQuery( '.ec_details_swatches > li.ec_option5' ).click( function( ){
 		jQuery( '.ec_details_swatches > li.ec_option5' ).removeClass( 'ec_selected' );
 		jQuery( this ).addClass( 'ec_selected' );
 		jQuery( '.ec_option5.ec_details_option_row_error' ).hide( );
-		jQuery( '#ec_option5' ).val( optionitem_id_5 );
+		jQuery( document.getElementById( 'ec_option5' ) ).val( optionitem_id_5 );
 		ec_details_base_adjust_price( );
 	}
 } );
@@ -1240,7 +1229,7 @@ jQuery( '.ec_details_combo.ec_option1' ).change( function( ){
 	if( optionitem_id_1 != '0' ){
 		ec_option1_selected( optionitem_id_1, quantity );
 	}else{
-		jQuery( '#ec_details_stock_quantity' ).html( quantity );	
+		jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );	
 	}
 	<?php }?>
 	ec_option1_image_change( optionitem_id_1, quantity );
@@ -1260,7 +1249,7 @@ jQuery( '.ec_details_combo.ec_option2' ).change( function( ){
 	if( optionitem_id_2 != '0' ){
 		option2_selected( optionitem_id_1, optionitem_id_2, quantity );
 	}else{
-		jQuery( '#ec_details_stock_quantity' ).html( quantity );	
+		jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );	
 	}
 	<?php }?>
 	jQuery( '.ec_option2.ec_details_option_row_error' ).hide( );
@@ -1286,7 +1275,7 @@ jQuery( '.ec_details_combo.ec_option3' ).change( function( ){
 	if( optionitem_id_3 != '0' ){
 		option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, quantity );
 	}else{
-		jQuery( '#ec_details_stock_quantity' ).html( quantity );	
+		jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );	
 	}
 	<?php }?>
 	jQuery( '.ec_option3.ec_details_option_row_error' ).hide( );
@@ -1318,7 +1307,7 @@ jQuery( '.ec_details_combo.ec_option4' ).change( function( ){
 	if( optionitem_id_4 != '0' ){
 		option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, optionitem_id_4, quantity );
 	}else{
-		jQuery( '#ec_details_stock_quantity' ).html( quantity );	
+		jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );	
 	}
 	<?php }?>
 	jQuery( '.ec_option4.ec_details_option_row_error' ).hide( );
@@ -1327,7 +1316,7 @@ jQuery( '.ec_details_combo.ec_option4' ).change( function( ){
 jQuery( '.ec_details_combo.ec_option5' ).change( function( ){
 	<?php if( $this->product->use_optionitem_quantity_tracking ){ ?>
 	var quantity = jQuery( '.ec_details_combo.ec_option5 option:selected' ).attr( 'data-optionitem-quantity' );
-	jQuery( '#ec_details_stock_quantity' ).html( quantity );
+	jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );
 	<?php }?>
 	jQuery( '.ec_option5.ec_details_option_row_error' ).hide( );
 	ec_details_base_adjust_price( );
@@ -1356,14 +1345,14 @@ jQuery( '.ec_details_grid_row > input' ).change( function( ){
 jQuery( '.ec_details_swatches > li.ec_advanced' ).click( function( ){
 	var optionitem_id = jQuery( this ).attr( 'data-optionitem-id' );
 	var option_id = jQuery( this ).attr( 'data-option-id' );
-	jQuery( '#ec_option_' + option_id ).val( optionitem_id );
+	jQuery( document.getElementById( 'ec_option_' + option_id ) ).val( optionitem_id );
 	jQuery( '.ec_details_swatches > li.ec_option_' + option_id ).removeClass( 'ec_selected' );
 	jQuery( this ).addClass( 'ec_selected' );
-	jQuery( '#ec_details_option_row_error_' + option_id ).hide( );
+	jQuery( document.getElementById( 'ec_details_option_row_error_' + option_id ) ).hide( );
 	ec_details_advanced_adjust_price( );
 } );
 function ec_details_base_adjust_price( ){
-	var base_price = Number( jQuery( '#ec_base_price' ).html( ) );
+	var base_price = Number( jQuery( document.getElementById( 'ec_base_price' ) ).html( ) );
 	var option1_price_adj = 0;
 	var option2_price_adj = 0;
 	var option3_price_adj = 0;
@@ -1456,19 +1445,35 @@ function ec_details_base_adjust_price( ){
 	else if( option5_price_override > -1 )
 		override_price = option5_price_override; 
 	if( override_price > -1 ){
-		jQuery( '#ec_final_price' ).html( ec_details_format_money( override_price ) );
+		jQuery( document.getElementById( 'ec_final_price' ) ).html( ec_details_format_money( override_price ) );
 	}else{
-		jQuery( '#ec_final_price' ).html( new_price );
+		jQuery( document.getElementById( 'ec_final_price' ) ).html( new_price );
 	}
 	if( order_price != 0 ){
 		jQuery( '.ec_details_added_price' ).show( );
-		jQuery( '#ec_added_price' ).html( ec_details_format_money( order_price ) );
+		jQuery( document.getElementById( 'ec_added_price' ) ).html( ec_details_format_money( order_price ) );
 	}else{
 		jQuery( '.ec_details_added_price' ).hide( );
 	}
 }
 function ec_details_advanced_adjust_price( ){	
-	var base_price = Number( jQuery( '#ec_base_price' ).html( ) );
+	var base_price = Number( jQuery( document.getElementById( 'ec_base_price' ) ).html( ) );
+	// Get a quantity in case we need to use in calculating price
+	var current_quantity = 1;
+	if( jQuery( document.getElementById( 'ec_quantity' ) ).length > 0 ){
+		current_quantity = jQuery( document.getElementById( 'ec_quantity' ) ).val( );
+	}
+	
+	if( jQuery( '.ec_details_grid_row > input' ).length > 0 ){
+		current_quantity = 0;
+		jQuery( '.ec_details_grid_row > input' ).each( function( ){
+			current_quantity = current_quantity + Number( jQuery( this ).val( ) );
+		} );
+	}
+	for( var i=0; i<tier_quantities.length; i++ ){
+		if( tier_quantities[i] <= current_quantity )
+			base_price = Number( tier_prices[i] );
+	}
 	var override_price = -1;
 	var price_multiplier = 0;
 	// Checkbox Price Adjustments
@@ -1647,18 +1652,26 @@ function ec_details_advanced_adjust_price( ){
 	var new_price = ec_details_format_money( base_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) );
 	var order_price = Number( checkbox_add ) + Number( combo_add ) + Number( date_add ) + Number( file_add ) + Number( swatch_add ) + Number( grid_add ) + Number( radio_add ) + Number( text_add ) + Number( textarea_add );
 	if( override_price > -1 ){
-		jQuery( '#ec_final_price' ).html( ec_details_format_money( override_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) );
+		jQuery( document.getElementById( 'ec_final_price' ) ).html( ec_details_format_money( override_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) );
+		jQuery( '.ec_details_price > .ec_product_sale_price' ).each( function( ){ jQuery( this ).html( '<?php echo $GLOBALS['currency']->get_symbol( ); ?>' + ec_details_format_money( override_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) ); } );
+		jQuery( '.ec_details_price > .ec_product_price' ).each( function( ){ jQuery( this ).html( '<?php echo $GLOBALS['currency']->get_symbol( ); ?>' + ec_details_format_money( override_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) ); } );
 	}else{
-		jQuery( '#ec_final_price' ).html( new_price );
+		jQuery( document.getElementById( 'ec_final_price' ) ).html( new_price );
+		jQuery( '.ec_details_price > .ec_product_sale_price' ).each( function( ){ jQuery( this ).html( '<?php echo $GLOBALS['currency']->get_symbol( ); ?>' + new_price ); } );
+		jQuery( '.ec_details_price > .ec_product_price' ).each( function( ){ jQuery( this ).html( '<?php echo $GLOBALS['currency']->get_symbol( ); ?>' + new_price ); } );
 	}
 	if( price_multiplier > 1 && override_price > -1 ){
-		jQuery( '#ec_final_price' ).html( ec_details_format_money( ( Number( override_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
+		jQuery( document.getElementById( 'ec_final_price' ) ).html( ec_details_format_money( ( Number( override_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
+		jQuery( '.ec_details_price > .ec_product_sale_price' ).each( function( ){ jQuery( this ).html( '<?php echo $GLOBALS['currency']->get_symbol( ); ?>' + ( ec_details_format_money( ( Number( override_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) ) ); } );
+		jQuery( '.ec_details_price > .ec_product_price' ).each( function( ){ jQuery( this ).html( '<?php echo $GLOBALS['currency']->get_symbol( ); ?>' + ( ec_details_format_money( ( Number( override_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) ) ); } );
 	}else if( price_multiplier > 1 ){
-		jQuery( '#ec_final_price' ).html( ec_details_format_money( ( Number( base_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
+		jQuery( document.getElementById( 'ec_final_price' ) ).html( ec_details_format_money( ( Number( base_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) );
+		jQuery( '.ec_details_price > .ec_product_sale_price' ).each( function( ){ jQuery( this ).html( '<?php echo $GLOBALS['currency']->get_symbol( ); ?>' + ( ec_details_format_money( ( Number( base_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) ) ); } );
+		jQuery( '.ec_details_price > .ec_product_price' ).each( function( ){ jQuery( this ).html( '<?php echo $GLOBALS['currency']->get_symbol( ); ?>' + ( ec_details_format_money( ( Number( base_price ) + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * Number( price_multiplier ) ) ) ); } );
 	}
 	if( order_price != 0 ){
 		jQuery( '.ec_details_added_price' ).show( );
-		jQuery( '#ec_added_price' ).html( ec_details_format_money( order_price ) );
+		jQuery( document.getElementById( 'ec_added_price' ) ).html( ec_details_format_money( order_price ) );
 	}else{
 		jQuery( '.ec_details_added_price' ).hide( );
 	}
@@ -1667,6 +1680,8 @@ function ec_details_format_money( price, num_decimals, grouping_symbol, decimal_
 	var num_decimals = <?php echo $GLOBALS['currency']->decimal_length; ?>;
 	var decimal_symbol = '<?php echo $GLOBALS['currency']->decimal_symbol; ?>';
 	var grouping_symbol = '<?php echo $GLOBALS['currency']->grouping_symbol; ?>';
+	var conversion_rate = '<?php echo $GLOBALS['currency']->conversion_rate; ?>';
+	price = price * Number( conversion_rate );
     var n = price,
         num_decimals = isNaN(num_decimals = Math.abs(num_decimals)) ? 2 : num_decimals,
         decimal_symbol = decimal_symbol == undefined ? "." : decimal_symbol,
@@ -1679,10 +1694,10 @@ function ec_details_submit_inquiry( ){
 	var errors = 0;
 	if( document.getElementById( 'ec_inquiry_name' ) ){
 		if( jQuery( document.getElementById( 'ec_inquiry_name' ) ).val( ) == "" || jQuery( document.getElementById( 'ec_inquiry_email' ) ).val( ) == "" || jQuery( document.getElementById( 'ec_inquiry_message' ) ).val( ) == "" ){
-			jQuery( '#ec_details_inquiry_error' ).show( );
+			jQuery( document.getElementById( 'ec_details_inquiry_error' ) ).show( );
 			errors++;
 		}else{
-			jQuery( '#ec_details_inquiry_error' ).hide( );
+			jQuery( document.getElementById( 'ec_details_inquiry_error' ) ).hide( );
 		}
 	}
 	if( errors > 0 )
@@ -1750,11 +1765,11 @@ function ec_details_add_to_cart( ){
 	var advanced_select_rows = jQuery( '.ec_details_option_row.ec_option_type_combo' );
 	advanced_select_rows.each( function( ){
 		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
-			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) == '0' ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+			if( jQuery( document.getElementById( 'ec_option_' + jQuery( this ).attr( 'data-option-id' ) ) ).val( ) == '0' ){
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}
 		}
 	} );
@@ -1764,9 +1779,9 @@ function ec_details_add_to_cart( ){
 		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			var selected_checkboxes = jQuery( "input.ec_option_" + jQuery( this ).attr( 'data-option-id' ) + ":checked" );
 			if( selected_checkboxes.length ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}
 		}
@@ -1775,11 +1790,11 @@ function ec_details_add_to_cart( ){
 	var advanced_date_rows = jQuery( '.ec_details_option_row.ec_option_type_date' );
 	advanced_date_rows.each( function( ){
 		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
-			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) == "" ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+			if( jQuery( document.getElementById( 'ec_option_' + jQuery( this ).attr( 'data-option-id' ) ) ).val( ) == "" ){
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}
 		}
 	} );
@@ -1787,10 +1802,10 @@ function ec_details_add_to_cart( ){
 	var advanced_file_rows = jQuery( '.ec_details_option_row.ec_option_type_file' );
 	advanced_file_rows.each( function( ){
 		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required	
-			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+			if( jQuery( document.getElementById( 'ec_option_' + jQuery( this ).attr( 'data-option-id' ) ) ).val( ) ){
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}
 		}
@@ -1801,9 +1816,9 @@ function ec_details_add_to_cart( ){
 		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			var advanced_selected_swatches = jQuery( ".ec_details_swatch.ec_option_" + jQuery( this ).attr( 'data-option-id' ) + ".ec_selected" );
 			if( advanced_selected_swatches.length ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}
 		}
@@ -1814,9 +1829,9 @@ function ec_details_add_to_cart( ){
 		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required
 			var selected_radios = jQuery( "input[name='ec_option_" + jQuery( this ).attr( 'data-option-id' ) + "']:checked" );
 			if( selected_radios.length ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}
 		}
@@ -1825,10 +1840,10 @@ function ec_details_add_to_cart( ){
 	var advanced_text_rows = jQuery( '.ec_details_option_row.ec_option_type_text' );
 	advanced_text_rows.each( function( ){
 		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required	
-			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) != "" ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+			if( jQuery( document.getElementById( 'ec_option_' + jQuery( this ).attr( 'data-option-id' ) ) ).val( ) != "" ){
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}
 		}
@@ -1837,10 +1852,10 @@ function ec_details_add_to_cart( ){
 	var advanced_textarea_rows = jQuery( '.ec_details_option_row.ec_option_type_textarea' );
 	advanced_textarea_rows.each( function( ){
 		if( jQuery( this ).attr( 'data-option-required' ) == '1' ){ // Option is Required	
-			if( jQuery( '#ec_option_' + jQuery( this ).attr( 'data-option-id' ) ).val( ) != "" ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+			if( jQuery( document.getElementById( 'ec_option_' + jQuery( this ).attr( 'data-option-id' ) ) ).val( ) != "" ){
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}
 		}
@@ -1857,9 +1872,9 @@ function ec_details_add_to_cart( ){
 				} 
 			);
 			if( total_grid_quantity > 0 ){
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).hide( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).hide( );
 			}else{
-				jQuery( '#ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ).show( );
+				jQuery( document.getElementById( 'ec_details_option_row_error_' + jQuery( this ).attr( 'data-option-id' ) ) ).show( );
 				errors++;
 			}
 		}
@@ -1867,67 +1882,67 @@ function ec_details_add_to_cart( ){
 	// -------END Advanced Option Checks------- //
 	// -------START GIFT CARD CHECK ----------- //
 	var gift_card_errors = 0;
-	if( document.getElementById( 'ec_giftcard_to_name' ) && jQuery( '#ec_giftcard_to_name' ).val( ) == "" ){
+	if( document.getElementById( 'ec_giftcard_to_name' ) && jQuery( document.getElementById( 'ec_giftcard_to_name' ) ).val( ) == "" ){
 		errors++;
 		gift_card_errors++;
 	}
-	if( document.getElementById( 'ec_giftcard_to_email' ) && jQuery( '#ec_giftcard_to_email' ).val( ) == "" ){
+	if( document.getElementById( 'ec_giftcard_to_email' ) && jQuery( document.getElementById( 'ec_giftcard_to_email' ) ).val( ) == "" ){
 		errors++;
 		gift_card_errors++;
 	}
-	if( document.getElementById( 'ec_giftcard_from_name' ) && jQuery( '#ec_giftcard_from_name' ).val( ) == "" ){
+	if( document.getElementById( 'ec_giftcard_from_name' ) && jQuery( document.getElementById( 'ec_giftcard_from_name' ) ).val( ) == "" ){
 		errors++;
 		gift_card_errors++;
 	}
-	if( document.getElementById( 'ec_giftcard_message' ) && jQuery( '#ec_giftcard_message' ).val( ) == "" ){
+	if( document.getElementById( 'ec_giftcard_message' ) && jQuery( document.getElementById( 'ec_giftcard_message' ) ).val( ) == "" ){
 		errors++;
 		gift_card_errors++;
 	}
 	if( gift_card_errors ){
-		jQuery( '#ec_details_giftcard_error' ).show( );
+		jQuery( document.getElementById( 'ec_details_giftcard_error' ) ).show( );
 	}else{
-		jQuery( '#ec_details_giftcard_error' ).hide( );
+		jQuery( document.getElementById( 'ec_details_giftcard_error' ) ).hide( );
 	}
 	// -------END GIFT CARD CHECK   ----------- //
 	// -------START DONATION CHECK  ----------- //
 	if( document.getElementById( 'ec_donation_amount' ) ){
-		if( isNaN( jQuery( '#ec_donation_amount' ).val( ) ) || Number( jQuery( '#ec_donation_amount' ).val( ) ) < <?php echo $GLOBALS['currency']->get_number_only( $this->product->price ); ?> ){
-			jQuery( '#ec_details_donation_error' ).show( );
+		if( isNaN( jQuery( document.getElementById( 'ec_donation_amount' ) ).val( ) ) || Number( jQuery( document.getElementById( 'ec_donation_amount' ) ).val( ) ) < <?php echo $GLOBALS['currency']->get_number_only( $this->product->price ); ?> ){
+			jQuery( document.getElementById( 'ec_details_donation_error' ) ).show( );
 			errors++;
 		}else{
-			jQuery( '#ec_details_donation_error' ).hide( );
+			jQuery( document.getElementById( 'ec_details_donation_error' ) ).hide( );
 		}
 	}
 	// -------END DONATION CHECK    ----------- //
 	// -------START INQUIRY CHECK  ----------- //
 	if( document.getElementById( 'ec_inquiry_name' ) ){
-		if( jQuery( '#ec_inquiry_name' ).val( ) == "" || jQuery( '#ec_inquiry_email' ).val( ) == "" || jQuery( '#ec_inquiry_message' ).val( ) == "" ){
-			jQuery( '#ec_details_inquiry_error' ).show( );
+		if( jQuery( document.getElementById( 'ec_inquiry_name' ) ).val( ) == "" || jQuery( document.getElementById( 'ec_inquiry_email' ) ).val( ) == "" || jQuery( document.getElementById( 'ec_inquiry_message' ) ).val( ) == "" ){
+			jQuery( document.getElementById( 'ec_details_inquiry_error' ) ).show( );
 			errors++;
 		}else{
-			jQuery( '#ec_details_inquiry_error' ).hide( );
+			jQuery( document.getElementById( 'ec_details_inquiry_error' ) ).hide( );
 		}
 	}
 	// -------END INQUIRY CHECK    ----------- //
 	// Maximum Quantity Check
-	var entered_quantity = Number( jQuery( '#ec_quantity' ).val( ) );
+	var entered_quantity = Number( jQuery( document.getElementById( 'ec_quantity' ) ).val( ) );
 	var allowed_quantity = 9999999999999;
-	if( jQuery( '#ec_details_stock_quantity' ).length ){
-		allowed_quantity = Number( jQuery( '#ec_details_stock_quantity' ).html( ) );
+	if( jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).length ){
+		allowed_quantity = Number( jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( ) );
 	}
 	if( entered_quantity > allowed_quantity ){
-		jQuery( '#ec_addtocart_quantity_exceeded_error' ).show( );
+		jQuery( document.getElementById( 'ec_addtocart_quantity_exceeded_error' ) ).show( );
 		errors++;
 	}else{
-		jQuery( '#ec_addtocart_quantity_exceeded_error' ).hide( );
+		jQuery( document.getElementById( 'ec_addtocart_quantity_exceeded_error' ) ).hide( );
 	}
 	// Minimum Quantity Check
 	var min_quantity = <?php echo $this->product->min_purchase_quantity; ?>;
 	if( entered_quantity < min_quantity ){
-		jQuery( '#ec_addtocart_quantity_minimum_error' ).show( );
+		jQuery( document.getElementById( 'ec_addtocart_quantity_minimum_error' ) ).show( );
 		errors++;
 	}else{
-		jQuery( '#ec_addtocart_quantity_minimum_error' ).hide( );
+		jQuery( document.getElementById( 'ec_addtocart_quantity_minimum_error' ) ).hide( );
 	}
 	if( errors > 0 )
 		return false;
@@ -1938,26 +1953,26 @@ jQuery( '.ec_details_review_input' ).hover( function( ){
 	var score = jQuery( this ).attr( 'data-review-score' );
 	jQuery( '.ec_details_review_input' ).removeClass( 'ec_product_details_star_on' ).addClass( 'ec_product_details_star_off' );
 	for( var i=0; i<score; i++ ){
-		jQuery( '#ec_details_review_star' + (i+1) ).removeClass( 'ec_product_details_star_off' ).addClass( 'ec_product_details_star_on' );
+		jQuery( document.getElementById( 'ec_details_review_star' + (i+1) ) ).removeClass( 'ec_product_details_star_off' ).addClass( 'ec_product_details_star_on' );
 	}
 } );
 jQuery( '.ec_product_openclose' ).hide( );
 function ec_option1_image_change( optionitem_id_1, quantity ){<?php if( $this->product->use_optionitem_images ){ ?>
 		jQuery( '.ec_details_thumbnails' ).hide( );
 		jQuery( '.ec_details_large_popup_thumbnails' ).hide( );
-		jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).find( '.ec_details_thumbnail' ).first( ).trigger( 'click' );
-		if( !jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).hasClass( 'ec_no_thumbnails' ) ){
-			jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).show( );
-			jQuery( '#ec_details_large_popup_thumbnails_' + optionitem_id_1 ).show( );
+		jQuery( document.getElementById( 'ec_details_thumbnails_' + optionitem_id_1 ) ).find( '.ec_details_thumbnail' ).first( ).trigger( 'click' );
+		if( !jQuery( document.getElementById( 'ec_details_thumbnails_' + optionitem_id_1 ) ).hasClass( 'ec_no_thumbnails' ) ){
+			jQuery( document.getElementById( 'ec_details_thumbnails_' + optionitem_id_1 ) ).show( );
+			jQuery( document.getElementById( 'ec_details_large_popup_thumbnails_' + optionitem_id_1 ) ).show( );
 		}<?php }?>
 }
 function ec_option1_selected( optionitem_id_1, quantity ){<?php if( $this->product->use_optionitem_images ){ ?>
 		jQuery( '.ec_details_thumbnails' ).hide( );
 		jQuery( '.ec_details_large_popup_thumbnails' ).hide( );
-		jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).find( '.ec_details_thumbnail' ).first( ).trigger( 'click' );
-		if( !jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).hasClass( 'ec_no_thumbnails' ) ){
-			jQuery( '#ec_details_thumbnails_' + optionitem_id_1 ).show( );
-			jQuery( '#ec_details_large_popup_thumbnails_' + optionitem_id_1 ).show( );
+		jQuery( document.getElementById( 'ec_details_thumbnails_' + optionitem_id_1 ) ).find( '.ec_details_thumbnail' ).first( ).trigger( 'click' );
+		if( !jQuery( document.getElementById( 'ec_details_thumbnails_' + optionitem_id_1 ) ).hasClass( 'ec_no_thumbnails' ) ){
+			jQuery( document.getElementById( 'ec_details_thumbnails_' + optionitem_id_1 ) ).show( );
+			jQuery( document.getElementById( 'ec_details_large_popup_thumbnails_' + optionitem_id_1 ) ).show( );
 		}<?php }?>
 	jQuery( '.ec_details_swatches > li.ec_option2' ).removeClass( 'ec_selected' );
 	jQuery( '.ec_details_swatches > li.ec_option3' ).removeClass( 'ec_selected' );
@@ -1967,8 +1982,8 @@ function ec_option1_selected( optionitem_id_1, quantity ){<?php if( $this->produ
 	jQuery( '.ec_details_combo.ec_option3' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option4' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option5' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
-	jQuery( '#ec_details_stock_quantity' ).html( quantity );
-	jQuery( '#ec_option_loading_2' ).show( );
+	jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );
+	jQuery( document.getElementById( 'ec_option_loading_2' ) ).show( );
 	var next_options = jQuery( '.ec_details_swatches > li.ec_option2' );
 	if( next_options.length ){
 		next_options.each( function( ){
@@ -1981,7 +1996,7 @@ function ec_option1_selected( optionitem_id_1, quantity ){<?php if( $this->produ
 		};
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-			jQuery( '#ec_option_loading_2' ).hide( );
+			jQuery( document.getElementById( 'ec_option_loading_2' ) ).hide( );
 			var i=0;
 			next_options.each( function( ){
 				jQuery( this ).attr( 'data-optionitem-quantity', json_data[i].quantity );
@@ -2004,7 +2019,7 @@ function ec_option1_selected( optionitem_id_1, quantity ){<?php if( $this->produ
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			jQuery( '.ec_details_combo.ec_option2' ).prop( 'disabled', false ).removeClass( 'ec_inactive' );
 			var json_data = JSON.parse( data );
-			jQuery( '#ec_option_loading_2' ).hide( );
+			jQuery( document.getElementById( 'ec_option_loading_2' ) ).hide( );
 			var i=0;
 			next_options.each( function( ){
 				if( i > 0 ){
@@ -2030,9 +2045,9 @@ function option2_selected( optionitem_id_1, optionitem_id_2, quantity ){
 	jQuery( '.ec_details_combo.ec_option4' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option5' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_option2.ec_details_option_row_error' ).hide( );
-	jQuery( '#ec_details_stock_quantity' ).html( quantity );
+	jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );
 	var next_options = jQuery( '.ec_details_swatches > li.ec_option3' );
-	jQuery( '#ec_option_loading_3' ).show( );
+	jQuery( document.getElementById( 'ec_option_loading_3' ) ).show( );
 	if( next_options.length ){
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
@@ -2045,7 +2060,7 @@ function option2_selected( optionitem_id_1, optionitem_id_2, quantity ){
 		};
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-			jQuery( '#ec_option_loading_3' ).show( );
+			jQuery( document.getElementById( 'ec_option_loading_3' ) ).show( );
 			var i=0;
 			next_options.each( function( ){
 				jQuery( this ).attr( 'data-optionitem-quantity', json_data[i].quantity );
@@ -2069,7 +2084,7 @@ function option2_selected( optionitem_id_1, optionitem_id_2, quantity ){
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			jQuery( '.ec_details_combo.ec_option3' ).prop( 'disabled', false ).removeClass( 'ec_inactive' );
 			var json_data = JSON.parse( data );
-			jQuery( '#ec_option_loading_3' ).show( );
+			jQuery( document.getElementById( 'ec_option_loading_3' ) ).show( );
 			var i=0;
 			next_options.each( function( ){
 				if( i > 0 ){
@@ -2093,9 +2108,9 @@ function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, qu
 	jQuery( '.ec_details_combo.ec_option4' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_details_combo.ec_option5' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_option3.ec_details_option_row_error' ).hide( );
-	jQuery( '#ec_details_stock_quantity' ).html( quantity );
+	jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );
 	var next_options = jQuery( '.ec_details_swatches > li.ec_option4' );
-	jQuery( '#ec_option_loading_4' ).show( );
+	jQuery( document.getElementById( 'ec_option_loading_4' ) ).show( );
 	if( next_options.length ){
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
@@ -2109,7 +2124,7 @@ function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, qu
 		};
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-			jQuery( '#ec_option_loading_4' ).show( );
+			jQuery( document.getElementById( 'ec_option_loading_4' ) ).show( );
 			var i=0;
 			next_options.each( function( ){
 				jQuery( this ).attr( 'data-optionitem-quantity', json_data[i].quantity );
@@ -2134,7 +2149,7 @@ function option3_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, qu
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			jQuery( '.ec_details_combo.ec_option4' ).prop( 'disabled', false ).removeClass( 'ec_inactive' );
 			var json_data = JSON.parse( data );
-			jQuery( '#ec_option_loading_4' ).show( );
+			jQuery( document.getElementById( 'ec_option_loading_4' ) ).show( );
 			var i=0;
 			next_options.each( function( ){
 				if( i > 0 ){
@@ -2156,9 +2171,9 @@ function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, op
 	jQuery( '.ec_details_swatches > li.ec_option5' ).removeClass( 'ec_selected' );
 	jQuery( '.ec_details_combo.ec_option5' ).val( '0' ).prop( 'disabled', true ).addClass( 'ec_inactive' );
 	jQuery( '.ec_option4.ec_details_option_row_error' ).hide( );
-	jQuery( '#ec_details_stock_quantity' ).html( quantity );
+	jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).html( quantity );
 	var next_options = jQuery( '.ec_details_swatches > li.ec_option5' );
-	jQuery( '#ec_option_loading_5' ).show( );
+	jQuery( document.getElementById( 'ec_option_loading_5' ) ).show( );
 	if( next_options.length ){
 		next_options.each( function( ){
 			jQuery( this ).removeClass( 'ec_active' );
@@ -2173,7 +2188,7 @@ function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, op
 		};
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			var json_data = JSON.parse( data );
-			jQuery( '#ec_option_loading_5' ).show( );
+			jQuery( document.getElementById( 'ec_option_loading_5' ) ).show( );
 			var i=0;
 			next_options.each( function( ){
 				jQuery( this ).attr( 'data-optionitem-quantity', json_data[i-1].quantity );
@@ -2199,7 +2214,7 @@ function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, op
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
 			jQuery( '.ec_details_combo.ec_option5' ).prop( 'disabled', false ).removeClass( 'ec_inactive' );
 			var json_data = JSON.parse( data );
-			jQuery( '#ec_option_loading_5' ).show( );
+			jQuery( document.getElementById( 'ec_option_loading_5' ) ).show( );
 			var i=0;
 			next_options.each( function( ){
 				if( i > 0 ){
@@ -2218,18 +2233,18 @@ function option4_selected( optionitem_id_1, optionitem_id_2, optionitem_id_3, op
 	}
 }
 function ec_submit_product_review( ){	
-	var review_title = jQuery( '#ec_review_title' ).val( );
+	var review_title = jQuery( document.getElementById( 'ec_review_title' ) ).val( );
 	var review_score = 0;
 	for( var i=1; i<=5; i++ ){
-		if( jQuery( '#ec_details_review_star' + i ).hasClass( 'ec_product_details_star_on' ) ){
+		if( jQuery( document.getElementById( 'ec_details_review_star' + i ) ).hasClass( 'ec_product_details_star_on' ) ){
 			review_score++;
 		}
 	}
-	var review_message = jQuery( '#ec_review_message' ).val( );
+	var review_message = jQuery( document.getElementById( 'ec_review_message' ) ).val( );
 	if( review_title != "" && review_score != 0 && review_message != "" ){
 		// Submit a filled out review
-		jQuery( '#ec_details_customer_review_loader' ).show( );
-		jQuery( '#ec_details_review_error' ).hide( );
+		jQuery( document.getElementById( 'ec_details_customer_review_loader' ) ).show( );
+		jQuery( document.getElementById( 'ec_details_review_error' ) ).hide( );
 		var data = {
 			action: 'ec_ajax_insert_customer_review',
 			review_title: review_title,
@@ -2238,17 +2253,21 @@ function ec_submit_product_review( ){
 			product_id: '<?php echo $this->product->product_id; ?>'
 		};
 		jQuery.ajax( { url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
-			jQuery( '#ec_details_customer_review_loader' ).hide( ); 
-			jQuery( '#ec_review_title' ).val( "" );
-			jQuery( '#ec_review_message' ).val( "" );
-			jQuery( '#ec_details_review_star1, #ec_details_review_star2, #ec_details_review_star3, #ec_details_review_star4, #ec_details_review_star5' ).removeClass( 'ec_product_details_star_on' ).addClass( 'ec_product_details_star_off' ); 
-			jQuery( '#ec_details_submit_review_button_row' ).hide( );
-			jQuery( '#ec_details_review_submitted_button_row' ).show( );
-			jQuery( '#ec_details_customer_review_success' ).show( ).delay( 1500 ).fadeOut( 'slow' ); 
+			jQuery( document.getElementById( 'ec_details_customer_review_loader' ) ).hide( ); 
+			jQuery( document.getElementById( 'ec_review_title' ) ).val( "" );
+			jQuery( document.getElementById( 'ec_review_message' ) ).val( "" );
+			jQuery( document.getElementById( 'ec_details_review_star1' ) ).removeClass( 'ec_product_details_star_on' ).addClass( 'ec_product_details_star_off' ); 
+			jQuery( document.getElementById( 'ec_details_review_star2' ) ).removeClass( 'ec_product_details_star_on' ).addClass( 'ec_product_details_star_off' ); 
+			jQuery( document.getElementById( 'ec_details_review_star3' ) ).removeClass( 'ec_product_details_star_on' ).addClass( 'ec_product_details_star_off' ); 
+			jQuery( document.getElementById( 'ec_details_review_star4' ) ).removeClass( 'ec_product_details_star_on' ).addClass( 'ec_product_details_star_off' ); 
+			jQuery( document.getElementById( 'ec_details_review_star5' ) ).removeClass( 'ec_product_details_star_on' ).addClass( 'ec_product_details_star_off' ); 
+			jQuery( document.getElementById( 'ec_details_submit_review_button_row' ) ).hide( );
+			jQuery( document.getElementById( 'ec_details_review_submitted_button_row' ) ).show( );
+			jQuery( document.getElementById( 'ec_details_customer_review_success' ) ).show( ).delay( 1500 ).fadeOut( 'slow' ); 
 		} } );
 	}else{
 		// Something is missing, display error.
-		jQuery( '#ec_details_review_error' ).show( );
+		jQuery( document.getElementById( 'ec_details_review_error' ) ).show( );
 	}
 }
 </script><?php if( $is_admin && !$safari && !$is_preview ){ ?>

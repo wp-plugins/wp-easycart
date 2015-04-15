@@ -10,7 +10,7 @@ class ec_currency{
 	public $decimal_length;
 	public $grouping_symbol;
 	
-	private $conversion_rate;
+	public $conversion_rate;
 	
 	function __construct( ){
 		$this->symbol = get_option( 'ec_option_currency' );

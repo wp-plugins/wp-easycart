@@ -660,7 +660,7 @@ class ec_shipping{
 					if( $this->live_based[$i][4] != NULL && $this->live_based[$i][4] > 0 )
 						$subrate = $this->live_based[$i][4];
 					else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
-						$subrate = 0;
+						return 0; // If user is over free shipping limit, return 0 all the time!
 					else
 						$subrate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
 					

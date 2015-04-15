@@ -1958,7 +1958,7 @@ class ec_cartpage{
 		$has_product_options = false;
 		
 		if( isset( $_POST['ec_inquiry_name'] ) )			$inquiry_name = stripslashes( $_POST['ec_inquiry_name'] );
-		if( isset( $_POST['ec_inquiry_email'] ) )			$inquiry_email = stripslashes( $_POST['ec_inquiry_email'] );
+		if( isset( $_POST['ec_inquiry_email'] ) )			$inquiry_email = filter_var( stripslashes( $_POST['ec_inquiry_email'] ), FILTER_SANITIZE_EMAIL );
 		if( isset( $_POST['ec_inquiry_message'] ) )			$inquiry_message = stripslashes( $_POST['ec_inquiry_message'] );
 		if( isset( $_POST['ec_inquiry_send_copy'] ) )		$send_copy = true;
 		
@@ -2007,7 +2007,7 @@ class ec_cartpage{
 		$headers[] = "MIME-Version: 1.0";
 		$headers[] = "Content-Type: text/html; charset=utf-8";
 		$headers[] = "From: " . get_option( 'ec_option_password_from_email' );
-		$headers[] = "Reply-To: " . get_option( 'ec_option_password_from_email' );
+		$headers[] = "Reply-To: " . $inquiry_email;
 		$headers[] = "X-Mailer: PHP/".phpversion();
 		
 		ob_start();
@@ -3343,7 +3343,7 @@ class ec_cartpage{
 	
 	private function process_send_inquiry( ){
 		
-		$inquiry_email = stripslashes( $_POST['ec_inquiry_email'] );
+		$inquiry_email = filter_var( stripslashes( $_POST['ec_inquiry_email'] ), FILTER_SANITIZE_EMAIL );
 		$inquiry_name = stripslashes( $_POST['ec_inquiry_name'] );
 		$inquiry_message = stripslashes( $_POST['ec_inquiry_message'] );
 		$model_number = $_POST['ec_inquiry_model_number'];
@@ -3366,6 +3366,13 @@ class ec_cartpage{
 			$headers[] = "Reply-To: " . get_option( 'ec_option_password_from_email' );
 			$headers[] = "X-Mailer: PHP/".phpversion();
 			
+			$headers2   = array();
+			$headers2[] = "MIME-Version: 1.0";
+			$headers2[] = "Content-Type: text/html; charset=utf-8";
+			$headers2[] = "From: " . $inquiry_email;
+			$headers2[] = "Reply-To: " . $inquiry_email;
+			$headers2[] = "X-Mailer: PHP/".phpversion();
+			
 			$has_product_options = false;
 			
 			ob_start();
@@ -3380,19 +3387,19 @@ class ec_cartpage{
 			
 			if( $email_send_method == "1" ){
 				if( $send_copy )
-					wp_mail( $inquiry_email, $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
+					wp_mail( $inquiry_email, $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers ) );
 				
-				wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
+				wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode( "\r\n", $headers2 ) );
 			}else if( $email_send_method == "0" ){
 				if( $send_copy )
-					mail( $inquiry_email, $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
+					mail( $inquiry_email, $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode( "\r\n", $headers ) );
 				
-				mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
+				mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode( "\r\n", $headers2 ) );
 			}else{
 				if( $send_copy )
 					do_action( 'wpeasycart_custom_inquiry_email', get_option( 'ec_option_order_from_email' ), $inquiry_email, get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message );
 				else
-					wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers) );
+					wp_mail( get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "product_details", "product_details_inquiry_title" ), $message, implode("\r\n", $headers2 ) );
 			}
 			
 			if( get_option( 'ec_option_use_old_linking_style' ) )

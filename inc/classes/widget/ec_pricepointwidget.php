@@ -30,7 +30,10 @@ class ec_pricepointwidget extends WP_Widget{
 	function widget($args, $instance){
 	
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		if( isset( $instance['title'] ) )
+			$title = apply_filters( 'widget_title', $instance['title'] );
+		else
+			$title = "";
 		
 		// Translate if Needed
 		$title = $GLOBALS['language']->convert_text( $title );

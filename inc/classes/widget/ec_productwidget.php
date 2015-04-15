@@ -50,9 +50,15 @@ class ec_productwidget extends WP_Widget{
 	function widget($args, $instance){
 	
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$model_number = apply_filters( 'widget_model_number', $instance['model_number'] );
-		
+		if( isset( $instance['title'] ) )
+			$title = apply_filters( 'widget_title', $instance['title'] );
+		else
+			$title = "";
+		if( isset( $instance['model_number'] ) )
+			$model_number = apply_filters( 'widget_model_number', $instance['model_number'] );
+		else
+			$model_number = "";
+			
 		// Translate if Needed
 		$title = $GLOBALS['language']->convert_text( $title );
 	

@@ -39,9 +39,18 @@ class ec_currencywidget extends WP_Widget{
 	function widget($args, $instance){
 	
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$allowed_currencies = apply_filters( 'widget_allowed_currencies', $instance['allowed_currencies'] );
-		$currencies = explode( ",", $allowed_currencies );
+		if( isset( $instance['title'] ) )
+			$title = apply_filters( 'widget_title', $instance['title'] );
+		else
+			$title = "";
+		if( isset( $instance['allowed_currencies'] ) )
+			$allowed_currencies = apply_filters( 'widget_allowed_currencies', $instance['allowed_currencies'] );
+		else
+			$allowed_currencies = "";
+		if( isset( $instance['allowed_currencies'] ) )
+			$currencies = explode( ",", $allowed_currencies );
+		else
+			$currencies = "";
 		
 		$title = $GLOBALS['language']->convert_text( $title );
 		

@@ -40,7 +40,10 @@ class ec_donationwidget extends WP_Widget{
 		
 		if( count( $products ) > 0 && $products[0]["is_donation"]  ){
 			extract( $args );
-			$title = apply_filters( 'widget_title', $instance['title'] );
+			if( isset( $instance['title'] ) )
+				$title = apply_filters( 'widget_title', $instance['title'] );
+			else
+				$title = "";
 			
 			//Translate if Needed
 			$title = $GLOBALS['language']->convert_text( $title );

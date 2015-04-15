@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.1.1
-Stable tag: 3.0.25
+Stable tag: 3.0.26
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,19 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.26 =
+* Fix - Coupon codes showing times redeemed + 1 for all whenever a single coupon used.
+* Fix - Tiered pricing updates price of product on screen when quantity changes.
+* Fix - Quantity grid initial values used to calculate pricing if dependent on quantity.
+* Fix - Tiered pricing + quantity grid option set now work together as one would expect.
+* Fix - Product details display with conversion rate and price adjustments was not showing converted pricing.
+* Fix - Canada Post was incorrectly validating non-Canada postal codes.
+* Fix - Canada Post was failing when zero values entered for any product dimension, this has been set to 1 as a minimum value.
+* Fix - Removal of jQuery selectors of ids and replaced with getElementById Javascript in the product details page to correct for compatibility issues.
+* Fix - Live display of coupon code discount amounts was not consistently displaying discount total immediately.
+* Fix - Free shipping threshold, if met, now displays to the user a 0 price if no shipping has yet been selected. Example being, 100 spent for free shipping and the user has a subtotal of 100 will see a 0 price for shipping to start.
+* Fix - Using role based pricing overrides tier based pricing, but was still showing tiered based pricing to the user when role based applied.
+* Fix - Using role based pricing, without a previous list price, will convert the regular price to the list price to display the discount the user is getting.
 = 3.0.25 =
 * New Feature - Add a one-time sign up fee to your subscription products.
 * New Feature - New basic option to enable/disable product paging on the store page.

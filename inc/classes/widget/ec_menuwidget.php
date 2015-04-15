@@ -54,7 +54,10 @@ class ec_menuwidget extends WP_Widget{
 	
 		echo $before_widget;
 		$menutype = empty($instance['menutype']) ? ' ' : apply_filters('widget_menutype', $instance['menutype']);
-		$title = apply_filters( 'widget_title', $instance['title'] );
+		if( isset( $instance['title'] ) )
+			$title = apply_filters( 'widget_title', $instance['title'] );
+		else
+			$title = "";
 		
 		// Translate if needed
 		$title = $GLOBALS['language']->convert_text( $title );

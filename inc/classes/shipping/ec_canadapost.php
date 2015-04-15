@@ -30,6 +30,15 @@ class ec_canadapost{
 		
 		if( $weight == 0 )
 			return "0.00";
+
+		if( $length <= 0 )
+			$length = 1;
+		
+		if( $width <= 0 )
+			$width = 1;
+
+		if( $height <= 0 )
+			$height = 1;
 		
 		if( !$destination_country )
 			$destination_country = "CA";
@@ -101,6 +110,15 @@ class ec_canadapost{
 		
 		if( $weight == 0 )
 			return "0.00";
+
+		if( $length <= 0 )
+			$length = 1;
+		
+		if( $width <= 0 )
+			$width = 1;
+
+		if( $height <= 0 )
+			$height = 1;
 		
 		if( !$destination_country )
 			$destination_country = "CA";
@@ -213,10 +231,10 @@ class ec_canadapost{
 	
 	public function validate_address( $desination_address, $destination_city, $destination_state, $destination_zip, $destination_country ){
 		
-		if( $destination_country == "CA" && $this->is_valid_zip_code( $destination_zip ) ){
-			return true;
+		if( $destination_country == "CA" ){
+			return $this->is_valid_zip_code( $destination_zip );
 		}else{
-			return false;
+			return true;
 		}
 		
 	}

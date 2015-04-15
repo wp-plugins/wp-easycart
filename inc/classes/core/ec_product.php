@@ -105,6 +105,8 @@ class ec_product{
 	public $option1quantity;					// Array of Option Quantity Values
 	public $advanced_optionsets;				// Array of advanced option sets
 	
+	public $using_role_price;					// BOOL
+	
 	// DISPLAY VARS
 	public $display_type;						// INT
 	public $image_hover_type;					// INT
@@ -236,7 +238,9 @@ class ec_product{
 		$this->views = $product_data['views'];
 		
 		if( isset( $product_data['pricetier_data'] ) )
-		$this->pricetiers = $product_data['pricetier_data'];
+			$this->pricetiers = $product_data['pricetier_data'];
+		else
+			$this->pricetiers = array( );
 		
 		if( isset( $product_data['customfield_data'] ) )
 		$this->customfields = $product_data['customfield_data'];
@@ -252,11 +256,31 @@ class ec_product{
 		
 		$this->first_selection = $this->get_first_selection();
 		
+		$this->advanced_optionsets = $this->mysqli->get_advanced_optionsets( $this->product_id );
+		
+		// Check for Tiered Pricing that may initially apply
+		// Quantity could be total of initial grid, minimum quantity, or 1.
+		$init_tier_quantity = 1;
+		if( $this->min_purchase_quantity > 1 )
+			$init_tier_quantity = $this->min_purchase_quantity;
+		else if( $this->get_starting_grid_quantity( ) > 0 )
+			$init_tier_quantity = $this->get_starting_grid_quantity( );
+		
+		for( $i=0; $i<count( $this->pricetiers ); $i++ ){
+			if( $this->pricetiers[$i][1] <= $init_tier_quantity )
+				$this->price = $this->pricetiers[$i][0];
+		}
+		
 		// First we should check if there is a special price for this user
+		$this->using_role_price = false;
 		if( isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
 			$roleprice = $this->mysqli->get_roleprice( $_SESSION['ec_email'], $_SESSION['ec_password'], $this->product_id );
-			if( isset( $roleprice ) )
+			if( isset( $roleprice ) ){
+				if( $this->list_price <= 0 )
+					$this->list_price = $this->price;
 				$this->price = $roleprice;
+				$this->using_role_price = true;
+			}
 		}
 		
 		// Now check promotions, even if special price based on user role, use the promo price!
@@ -270,8 +294,6 @@ class ec_product{
 		}else{
 			$this->promotion_text = 0;	
 		}
-		
-		$this->advanced_optionsets = $this->mysqli->get_advanced_optionsets( $this->product_id );
 		
 		if( $this->is_product_details ){
 			// Get menu and category connections
@@ -324,6 +346,22 @@ class ec_product{
 			return 0;
 		}
 		
+	}
+	
+	private function get_starting_grid_quantity( ){
+		$quantity = 0;
+		$quantity_grid_i = -1;
+		for( $i=0; $i<count( $this->advanced_optionsets ); $i++ ){
+			if( $this->advanced_optionsets[$i]->option_type == "grid" )
+				$quantity_grid_i = $i;
+		}
+		if( $quantity_grid_i >= 0 ){
+			$optionitems = $this->mysqli->get_advanced_optionitems( $this->advanced_optionsets[$quantity_grid_i]->option_id );
+			for( $i=0; $i<count( $optionitems ); $i++ ){
+				$quantity = $quantity + $optionitems[$i]->optionitem_initial_value;
+			}
+		}
+		return $quantity;
 	}
 	
 	public function update_stock_quantity( $session_id ){

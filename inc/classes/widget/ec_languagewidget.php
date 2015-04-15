@@ -40,9 +40,15 @@ class ec_languagewidget extends WP_Widget{
 	
 		// Get the Widget Vars
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$available_languages = apply_filters( 'widget_available_languages', $instance['available_languages'] );
-		
+		if( isset( $instance['title'] ) )
+			$title = apply_filters( 'widget_title', $instance['title'] );
+		else
+			$title = "";
+		if( isset( $instance['available_languages'] ) )
+			$available_languages = apply_filters( 'widget_available_languages', $instance['available_languages'] );
+		else
+			$available_languages = "";
+			
 		// Process the language string
 		$language_arrs = explode( ",", $available_languages );
 		$languages = array( );

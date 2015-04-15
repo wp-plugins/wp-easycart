@@ -1795,7 +1795,7 @@ class ec_db{
 		
 		// If coupon used, update usage numbers
 		if( $coupon_code != "" ){
-			$this->mysqli->query( "UPDATE ec_promocode SET times_redeemed = times_redeemed + 1" );
+			$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_promocode SET times_redeemed = times_redeemed + 1 WHERE ec_promocode.promocode_id = %s", $coupon_code ) );
 		}
 		
 		return $order_id;

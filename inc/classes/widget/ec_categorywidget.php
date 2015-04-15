@@ -39,8 +39,14 @@ class ec_categorywidget extends WP_Widget{
 	function widget($args, $instance){
 	
 		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$up_level_text = apply_filters( 'widget_up_level_text', $instance['up_level_text'] );
+		if( isset( $instance['title'] ) )
+			$title = apply_filters( 'widget_title', $instance['title'] );
+		else
+			$title = "";
+		if( isset( $instance['up_level_text'] ) )
+			$up_level_text = apply_filters( 'widget_up_level_text', $instance['up_level_text'] );
+		else
+			$up_level_text = "";
 		
 		// Translate if Needed
 		$title = $GLOBALS['language']->convert_text( $title );
