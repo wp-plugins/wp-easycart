@@ -2,7 +2,7 @@
 Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
-Tested up to: 4.1.1
+Tested up to: 4.1.2
 Stable tag: 3.0.26
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
