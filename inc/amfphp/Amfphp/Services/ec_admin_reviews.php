@@ -37,7 +37,7 @@ class ec_admin_reviews{
 
 	function getreviews( $startrecord, $limit, $orderby, $ordertype, $filter ){
 		//Create SQL Query
-		$sql = "SELECT SQL_CALC_FOUND_ROWS  ec_review.*, UNIX_TIMESTAMP(ec_review.date_submitted) AS date_submitted, ec_product.model_number, ec_product.title as product_title, ec_product.activate_in_store, ec_product.image1, ec_product.price  FROM ec_review LEFT JOIN ec_product ON ec_product.product_id = ec_review.product_id WHERE ec_review.review_id != '' ".$filter." ORDER BY ".  $orderby ." ".  $ordertype . " LIMIT ".  $startrecord .", ".  $limit."";
+		$sql = "SELECT SQL_CALC_FOUND_ROWS  ec_review.*, UNIX_TIMESTAMP(ec_review.date_submitted) AS date_submitted, ec_product.model_number, ec_product.title as product_title, ec_product.activate_in_store, ec_product.image1, ec_product.price, ec_user.first_name, ec_user.last_name, ec_user.email  FROM ec_review LEFT JOIN ec_product ON ec_product.product_id = ec_review.product_id LEFT JOIN ec_user ON ec_review.user_id = ec_user.user_id WHERE ec_review.review_id != '' ".$filter." ORDER BY ".  $orderby ." ".  $ordertype . " LIMIT ".  $startrecord .", ".  $limit."";
 		$results = $this->db->get_results( $sql );
 		$totalquery = $this->db->get_var( "SELECT FOUND_ROWS( )" );
 		

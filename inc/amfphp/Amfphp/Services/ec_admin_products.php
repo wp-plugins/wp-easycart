@@ -47,6 +47,7 @@ class ec_admin_products{
 		else if($methodName == 'getproductlist') return array('admin');
 		else if($methodName == 'getproducts') return array('admin');
 		else if($methodName == 'duplicateproduct') return array('admin');
+		else if($methodName == 'massdeleteproduct') return array('admin');
 		else if($methodName == 'deleteproduct') return array('admin');
 		else if($methodName == 'updateproduct') return array('admin');
 		else if($methodName == 'addproduct') return array('admin');
@@ -424,6 +425,72 @@ class ec_admin_products{
 		
 	}
 	
+	function massdeleteproduct( $products ){
+		
+		for( $i=0; $i<count( $products ); $i++ ){
+			   
+			//return $products[$i]['product_id'] ;
+			
+			// First get post id and remove from WordPress system
+			$sql = "SELECT ec_product.post_id FROM ec_product WHERE ec_product.product_id = %d";
+			$this_post_id = $this->db->get_var( $this->db->prepare( $sql, $products[$i]['product_id'] ) );
+			wp_delete_post( $this_post_id, true );
+			
+			// Remove From Stripe Possibly
+			if( get_option( 'ec_option_payment_process_method' ) == 'stripe' ){
+				//create an object for call to stripe
+				$stripe_plan = ( object ) array( "product_id" => $products[$i]['product_id'] );
+				$stripe = new ec_stripe;
+				$response = $stripe->delete_plan( $stripe_plan );
+			}
+			
+
+			// Remove Product
+			$sql = "DELETE FROM ec_product WHERE ec_product.product_id = %d";
+			$this->db->query( $this->db->prepare( $sql, $products[$i]['product_id'] ) );
+			
+			// Remove Option Item Images
+			$sql = "DELETE FROM ec_optionitemimage WHERE ec_optionitemimage.product_id = %d";
+			$this->db->query( $this->db->prepare( $sql, $products[$i]['product_id'] ) );
+			
+			// Remove Price Tiers
+			$sql = "DELETE FROM ec_pricetier WHERE ec_pricetier.product_id = %d";
+			$this->db->query( $this->db->prepare( $sql, $products[$i]['product_id'] ) );
+			
+			// Remove Role Pricing
+			$sql = "DELETE FROM ec_roleprice WHERE ec_roleprice.product_id = %d";
+			$this->db->query( $this->db->prepare( $sql, $products[$i]['product_id'] ) );
+			
+			// Remove Option Item Quantity
+			$sql = "DELETE FROM ec_optionitemquantity WHERE ec_optionitemquantity.product_id = %d";
+			$this->db->query( $this->db->prepare( $sql, $products[$i]['product_id'] ) );
+			
+			// Remove Reviews
+			$sql = "DELETE FROM ec_review WHERE ec_review.product_id = %d";
+			$this->db->query( $this->db->prepare( $sql, $products[$i]['product_id'] ) );
+			
+			// Remove affiliate
+			$sql = "DELETE FROM ec_affiliate_rule_to_product WHERE ec_affiliate_rule_to_product.product_id = %d";
+			$this->db->query( $this->db->prepare( $sql, $products[$i]['product_id'] ) );
+			
+			// Remove Item from Product Groupings
+			$sql = "DELETE FROM ec_categoryitem WHERE ec_categoryitem.product_id = %d";
+			$this->db->query( $this->db->prepare( $sql, $products[$i]['product_id'] ) );	
+			
+			//delete images and downloaded files from system
+			$this->deleteimage( $products[$i]['productid'], 1, $products[$i]['image1'] );
+			$this->deleteimage( $products[$i]['productid'], 2, $products[$i]['image2'] );
+			$this->deleteimage( $products[$i]['productid'], 3, $products[$i]['image3'] );
+			$this->deleteimage( $products[$i]['productid'], 4, $products[$i]['image4'] );
+			$this->deleteimage( $products[$i]['productid'], 5, $products[$i]['image5'] );
+			$this->deletefiledownload($products[$i]['product_id'], $products[$i]['downloadid']);
+		
+		} 
+		
+		return array( "success" ); // would need to check each query to return failed...
+	
+	}
+	
 	function deleteproduct( $productid ){
 		
 		// First get post id and remove from WordPress system
@@ -527,12 +594,12 @@ class ec_admin_products{
 				
 				vat_rate= %s, use_advanced_optionset = %s, is_subscription_item = %s, subscription_bill_length = %s, subscription_bill_period = %s, 
 				height = %s, width = %s, length = %s, trial_period_days = %s, allow_multiple_subscription_purchases = %s, 
-				subscription_plan_id = %s, membership_page = %s, min_purchase_quantity = %s, is_amazon_download = %s, amazon_key = %s, 
+				subscription_plan_id = %s, membership_page = %s, min_purchase_quantity = %s, max_purchase_quantity = %s, is_amazon_download = %s, amazon_key = %s, 
 				catalog_mode = %s, catalog_mode_phrase = %s, inquiry_mode = %s, inquiry_url = %s, is_deconetwork = %s, 
 				deconetwork_mode = %s, deconetwork_product_id = %s, deconetwork_size_id = %s, deconetwork_color_id = %s, deconetwork_design_id = %s, 
 				
 				short_description = %s, tag_type = %s, tag_bg_color = %s, tag_text = %s, tag_text_color = %s, 
-				is_shippable = %d, TIC = %s, subscription_signup_fee = %s 
+				is_shippable = %d, TIC = %s, subscription_signup_fee = %s, subscription_bill_duration = %s , handling_price_each = %s 
 				WHERE product_id = %d";
 		
 		$this->db->query( $this->db->prepare( $sql, 
@@ -548,11 +615,11 @@ class ec_admin_products{
 				$product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $product->handling_price, 
 				$product->vatrate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, 
 				$product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, 
-				$product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $product->is_amazon_download, $product->amazon_key, 
+				$product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $product->max_purchase_quantity, $product->is_amazon_download, $product->amazon_key, 
 				$product->catalog_mode, $product->catalog_mode_phrase, $product->inquiry_mode, $product->inquiry_url, $product->isdeconetwork, 
 				$product->deconetwork_mode,$product->deconetwork_product_id,$product->deconetwork_size_id, $product->deconetwork_color_id, $product->deconetwork_design_id, 
 				$product->shortdescription, $product->tag_type, $product->tag_bg_color, $product->tag_text, $product->tag_text_color, 
-				$product->is_shippable,  $product->TIC, $product->subscription_signup_fee,
+				$product->is_shippable,  $product->TIC, $product->subscription_signup_fee, $product->subscription_bill_duration, $product->handling_price_each,
 				
 				$productid ) );
 		
@@ -621,10 +688,10 @@ class ec_admin_products{
 		// Create unique id for subscription (Stripe required)
 		$subscription_id = rand(10000, 10000000);
 		
-		$sql = "INSERT INTO ec_product( ec_product.price, ec_product.title, ec_product.description, ec_product.model_number, ec_product.activate_in_store, ec_product.manufacturer_id, ec_product.image1, ec_product.image2, ec_product.image3, ec_product.image4, ec_product.image5, ec_product.is_giftcard, ec_product.download_file_name, ec_product.is_taxable, ec_product.is_download, ec_product.weight, ec_product.stock_quantity, ec_product.show_on_startup, ec_product.menulevel1_id_1, ec_product.menulevel1_id_2, ec_product.menulevel1_id_3, ec_product.menulevel2_id_1, ec_product.menulevel2_id_2, ec_product.menulevel2_id_3, ec_product.menulevel3_id_1, ec_product.menulevel3_id_2, ec_product.menulevel3_id_3, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_product.featured_product_id_1, ec_product.featured_product_id_2, ec_product.featured_product_id_3, ec_product.featured_product_id_4, ec_product.seo_description, ec_product.use_specifications, ec_product.use_customer_reviews, ec_product.specifications, ec_product.list_price, ec_product.seo_keywords, ec_product.is_special, ec_product.use_optionitem_images, ec_product.use_optionitem_quantity_tracking, ec_product.is_donation, ec_product.show_stock_quantity, ec_product.maximum_downloads_allowed, ec_product.download_timelimit_seconds, ec_product.handling_price, ec_product.vat_rate, ec_product.use_advanced_optionset, ec_product.is_subscription_item, ec_product.subscription_bill_length, ec_product.subscription_bill_period, ec_product.height, ec_product.width, ec_product.length, ec_product.trial_period_days, ec_product.allow_multiple_subscription_purchases, ec_product.subscription_plan_id, ec_product.membership_page, ec_product.min_purchase_quantity, ec_product.is_amazon_download , ec_product.amazon_key, ec_product.catalog_mode, ec_product.catalog_mode_phrase, ec_product.inquiry_mode, ec_product.inquiry_url, ec_product.is_deconetwork, ec_product.deconetwork_mode, ec_product.deconetwork_product_id, ec_product.deconetwork_size_id, ec_product.deconetwork_color_id, ec_product.deconetwork_design_id, ec_product.short_description, ec_product.tag_type, ec_product.tag_bg_color, ec_product.tag_text, ec_product.tag_text_color, ec_product.is_shippable, ec_product.TIC,  ec_product.subscription_signup_fee, ec_product.subscription_unique_id )
-		VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d)";
+		$sql = "INSERT INTO ec_product( ec_product.price, ec_product.title, ec_product.description, ec_product.model_number, ec_product.activate_in_store, ec_product.manufacturer_id, ec_product.image1, ec_product.image2, ec_product.image3, ec_product.image4, ec_product.image5, ec_product.is_giftcard, ec_product.download_file_name, ec_product.is_taxable, ec_product.is_download, ec_product.weight, ec_product.stock_quantity, ec_product.show_on_startup, ec_product.menulevel1_id_1, ec_product.menulevel1_id_2, ec_product.menulevel1_id_3, ec_product.menulevel2_id_1, ec_product.menulevel2_id_2, ec_product.menulevel2_id_3, ec_product.menulevel3_id_1, ec_product.menulevel3_id_2, ec_product.menulevel3_id_3, ec_product.option_id_1, ec_product.option_id_2, ec_product.option_id_3, ec_product.option_id_4, ec_product.option_id_5, ec_product.featured_product_id_1, ec_product.featured_product_id_2, ec_product.featured_product_id_3, ec_product.featured_product_id_4, ec_product.seo_description, ec_product.use_specifications, ec_product.use_customer_reviews, ec_product.specifications, ec_product.list_price, ec_product.seo_keywords, ec_product.is_special, ec_product.use_optionitem_images, ec_product.use_optionitem_quantity_tracking, ec_product.is_donation, ec_product.show_stock_quantity, ec_product.maximum_downloads_allowed, ec_product.download_timelimit_seconds, ec_product.handling_price, ec_product.vat_rate, ec_product.use_advanced_optionset, ec_product.is_subscription_item, ec_product.subscription_bill_length, ec_product.subscription_bill_period, ec_product.height, ec_product.width, ec_product.length, ec_product.trial_period_days, ec_product.allow_multiple_subscription_purchases, ec_product.subscription_plan_id, ec_product.membership_page, ec_product.min_purchase_quantity, ec_product.max_purchase_quantity, ec_product.is_amazon_download , ec_product.amazon_key, ec_product.catalog_mode, ec_product.catalog_mode_phrase, ec_product.inquiry_mode, ec_product.inquiry_url, ec_product.is_deconetwork, ec_product.deconetwork_mode, ec_product.deconetwork_product_id, ec_product.deconetwork_size_id, ec_product.deconetwork_color_id, ec_product.deconetwork_design_id, ec_product.short_description, ec_product.tag_type, ec_product.tag_bg_color, ec_product.tag_text, ec_product.tag_text_color, ec_product.is_shippable, ec_product.TIC,  ec_product.subscription_signup_fee,  ec_product.subscription_bill_duration, ec_product.handling_price_each, ec_product.subscription_unique_id )
+		VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d)";
 		
-		$success = $this->db->query( $this->db->prepare( $sql, $product->listprice, $product->producttitle, $product->productdescription, $product->modelnumber, $product->listproduct, $product->productmanufacturer, $product->Image1, $product->Image2, $product->Image3, $product->Image4, $product->Image5, $product->isgiftcard, $product->downloadid, $product->taxableproduct, $product->isdownload, $product->productweight, $product->quantity, $product->featuredproduct, $product->Cat1Name, $product->Cat2Name, $product->Cat3Name, $product->Cat1bName, $product->Cat2bName, $product->Cat3bName, $product->Cat1cName, $product->Cat2cName, $product->Cat3cName, $product->option1, $product->option2, $product->option3, $product->option4, $product->option5, $product->featureproduct1, $product->featureproduct2, $product->featureproduct3, $product->featureproduct4, $product->seoshortdescription, $product->usespecs, $product->allowreviews, $product->specifications, $product->previousprice, $product->seokeywords, $product->isspecial, $product->useoptionitemimages, $product->usequantitytracking, $product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $handling_price, $vat_rate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, $product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, $product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $product->is_amazon_download , $product->amazon_key, $product->catalog_mode, $product->catalog_mode_phrase, $product->inquiry_mode, $product->inquiry_url,$product->isdeconetwork, $product->deconetwork_mode, $product->deconetwork_product_id, $product->deconetwork_size_id, $product->deconetwork_color_id, $product->deconetwork_design_id, $product->shortdescription, $product->tag_type, $product->tag_bg_color, $product->tag_text, $product->tag_text_color, $product->is_shippable, $product->TIC, $product->subscription_signup_fee, $subscription_id ) );
+		$success = $this->db->query( $this->db->prepare( $sql, $product->listprice, $product->producttitle, $product->productdescription, $product->modelnumber, $product->listproduct, $product->productmanufacturer, $product->Image1, $product->Image2, $product->Image3, $product->Image4, $product->Image5, $product->isgiftcard, $product->downloadid, $product->taxableproduct, $product->isdownload, $product->productweight, $product->quantity, $product->featuredproduct, $product->Cat1Name, $product->Cat2Name, $product->Cat3Name, $product->Cat1bName, $product->Cat2bName, $product->Cat3bName, $product->Cat1cName, $product->Cat2cName, $product->Cat3cName, $product->option1, $product->option2, $product->option3, $product->option4, $product->option5, $product->featureproduct1, $product->featureproduct2, $product->featureproduct3, $product->featureproduct4, $product->seoshortdescription, $product->usespecs, $product->allowreviews, $product->specifications, $product->previousprice, $product->seokeywords, $product->isspecial, $product->useoptionitemimages, $product->usequantitytracking, $product->isdonation, $product->show_stock_quantity, $product->maximum_downloads_allowed, $product->download_timelimit_seconds, $handling_price, $vat_rate, $product->use_advanced_optionset, $product->issubscription, $product->subscriptioninterval, $product->subscriptionperiod, $product->productheight, $product->productwidth, $product->productlength, $product->trialdays, $product->allowmultisubscriptions, $product->subscriptionstripeplanid, $product->membershippage, $product->min_purchase_quantity, $product->max_purchase_quantity, $product->is_amazon_download , $product->amazon_key, $product->catalog_mode, $product->catalog_mode_phrase, $product->inquiry_mode, $product->inquiry_url,$product->isdeconetwork, $product->deconetwork_mode, $product->deconetwork_product_id, $product->deconetwork_size_id, $product->deconetwork_color_id, $product->deconetwork_design_id, $product->shortdescription, $product->tag_type, $product->tag_bg_color, $product->tag_text, $product->tag_text_color, $product->is_shippable, $product->TIC, $product->subscription_signup_fee, $product->subscription_bill_duration, $product->handling_price_each, $subscription_id ) );
 		
 		if( $success === FALSE) {
 			//return $success;
