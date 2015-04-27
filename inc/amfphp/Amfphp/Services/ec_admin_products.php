@@ -648,7 +648,7 @@ class ec_admin_products{
 		if( get_option( 'ec_option_payment_process_method' ) == 'stripe' && $product->issubscription == '1' ){
 			$stripe_plan = ( object ) array(
 					"price" 						=> $product->listprice,
-					"product_id" 					=> $newproductid,
+					"product_id" 					=> $subscription_id,
 					"title"							=> $product->producttitle,
 					"subscription_bill_period" 		=> $product->subscriptionperiod,
 					"subscription_bill_length" 		=> $product->subscriptioninterval,
