@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.2.1
-Stable tag: 3.0.28
+Stable tag: 3.0.29
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,14 +119,17 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
-= 3.0.28 =
+= 3.0.29 =
+* Fix - 3.0.28 caused users to not be able to update their payment information.
 * Fix - Some WordPress sites were clearing page options after loading as well as refreshing was clearing options upon loading.
+* Fix - Changing Stripe subscription was not always updating.
 * New Feature - You can now require the user to log into their EasyCart account before submitting a customer review.
 * New Feature - You can now turn on to show custom review user name in the product review area.
 * New Feature - Mastercard Internet Gateway Service (MIGS) is now available for the EasyCart as a live payment gateway.
 * New Feature - You can now limit the number of items per purchase for a product.
 * New Feature - You can now add a handling fee per product added to cart.
 * New Feature - You can now add a duration to your Stripe and PayPal subscriptions, allowing you to create payment plans for customers. e.g. $19.99/month for 3 months.
+* Improvement - Vastly improved error checking and response for product importer.
 * Improvement - Newsletter popup now collects the user name.
 * Improvement - Newsletter widget now allows you to collect the user name.
 * Fix - For servers not running memcached, an error is prevented on activation.

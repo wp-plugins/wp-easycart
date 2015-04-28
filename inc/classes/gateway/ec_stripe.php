@@ -161,6 +161,8 @@ class ec_stripe extends ec_gateway{
 		$response = $this->call_stripe( "https://api.stripe.com/v1/customers/" . $user->stripe_customer_id . "/subscriptions/" . $subscription_id, $data );
 		$json = json_decode( $response );
 		
+		$this->mysqli->insert_response( 0, 0, "Stripe Update Subscription " . $subscription_id, print_r( $response, true ) );
+		
 		if( !isset( $json->error ) )
 			return $json;
 		else
@@ -609,7 +611,12 @@ class ec_stripe extends ec_gateway{
 			$card_array = NULL;
 		}
 		
-		$gateway_data = array(	"plan"					=> $product->product_id,
+		if( isset( $product->subscription_unique_id ) && $product->subscription_unique_id )
+			$product_id = $product->subscription_unique_id;
+		else
+			$product_id = $product->product_id;
+		
+		$gateway_data = array(	"plan"					=> $product_id,
 								"coupon"				=> $coupon,
 								"prorate"				=> $prorate,
 								"trial_end"				=> $trial_end,

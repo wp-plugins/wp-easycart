@@ -20,70 +20,129 @@
 class ec_admin_productimporter{
 	
 	private $db;
+	private $error_list;
+	private $product_id_index;
+	private $post_id_index;
+	private $model_number_index;
+	private $title_index;
+	private $activate_in_store_index;
+	private $headers;
+	private $limit;
 	
 	function ec_admin_productimporter( ){
 		
 		global $wpdb;
 		$this->db = $wpdb;
+		$this->error_list = "";
+		$this->product_id_index = -1;
+		$this->post_id_index = -1;
+		$this->model_number_index = -1;
+		$this->title_index = -1;
+		$this->activate_in_store_index = -1;
+		$this->limit = 20;
+		
+		ini_set("log_errors", 1);
+		ini_set("error_log", "export-error.log");
 
 	}	
 		
 	public function _getMethodRoles($methodName){
 	   if ($methodName == 'productimport') return array('admin');
-	   else  return null;
+	   else return null;
 	}
 	
 	public function productimport( ){
 		
+		set_time_limit( 500 );
+		
 		if( !file_exists( "../administration/productimportfile.csv" ) ){
 			return "Import file not found on server or did not upload successfully.";
 		}
+		
 		$file = fopen( "../administration/productimportfile.csv", "r" );
-	
-		$rows = array( );
 		
-		while( !feof( $file ) ){
+		/** Setup valid value check arrays */
+		$valid_product_ids = $this->db->get_results( "SELECT product_id FROM ec_product", ARRAY_N );
+		$existing_model_numbers = $this->db->get_results( "SELECT model_number FROM ec_product", ARRAY_N );
 		
-			$rows[] = fgetcsv( $file );
+		/* Setup and test headers */
+		$valid_headers_result = $this->db->get_results( "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`='ec_product'", ARRAY_N );
+		$valid_headers = array( );
+		foreach( $valid_headers_result as $header ){
+			$valid_headers[] = $header[0];
+		}
+		$this->headers = fgetcsv( $file );
 		
+		for( $i=0; $i<count( $this->headers ); $i++ ){
+			
+			if( $this->headers[$i] == "product_id" ){ // do not add product id to list
+				$this->product_id_index = $i;
+				
+			}else if($this->headers[$i] == "post_id" ){ // do not add post id to list
+				$this->post_id_index = $i;
+				
+			}else if($this->headers[$i] == "activate_in_store" ){ // do not add post id to list
+				$this->activate_in_store_index = $i;
+				
+			}else if($this->headers[$i] == "model_number" ){ // use to check for errors
+				$this->model_number_index = $i;
+			
+			}else if($this->headers[$i] == "title" ){ // use to check for errors
+				$this->title_index = $i;
+			
+			}else if( !in_array( $this->headers[$i], $valid_headers ) ){ // error, invalid column
+				return "You have an invalid column header at column " . $i . " (value " . $this->headers[$i] . "), please remove or correct the label of that column to continue.";
+				
+			}
+			
 		}
 		
-		fclose( $file );
+		if( $this->product_id_index == -1 ){
+			return "Missing `product_id` Key field! Values for additions should be 0, updates should be the exported product_id value.";
+		}
 		
+		if( $this->product_id_index == -1 ){
+			return "Missing `post_id` Key field! Values for additions should be 0, updates should be the exported post_id value.";
+		}
+		
+		if( $this->model_number_index == -1 ){
+			return "Missing `model_number` Key field! Values must be unique from other imported products and those products already in your store.";
+		}
+		
+		if( $this->activate_in_store_index == -1 ){
+			return "Missing `activate_in_storck` Key field! Value of 0 or 1 is required.";
+		}
+		
+		if( $this->title_index == -1 ){
+			return "Missing `title` Key field! No value is required, but you must have the key field present.";
+		}
+		
+		/* SETUP basic SQL calls */
 		$insert_sql = "INSERT INTO ec_product(";
 		$update_sql = "UPDATE ec_product SET ";
 		
 		$first = true;
-		$product_id_index = -1;
-		$product_post_id_index = -1;
 		
-		for( $i=0; $i<count( $rows[0] ); $i++ ){
-			if( $rows[0][$i] == "product_id" ){
-				$product_id_index = $i; // do not add product id to list
-				
-			}else if( $rows[0][$i] == "post_id" ){
-				$product_post_id_index = $i; // do not add post id to list
+		for( $i=0; $i<count( $this->headers ); $i++ ){
 			
-			}else{
-			
+			if( $i != $this->product_id_index && $i != $this->post_id_index ){ // Skip rows with product id and post id
 				if( !$first ){
 					$insert_sql .= ",";
 					$update_sql .= ",";
 				}
 				
-				$insert_sql .= "`" . $rows[0][$i] . "`";
-				$update_sql .= "`" . $rows[0][$i] . "`=%s";
+				$insert_sql .= "`" . $this->headers[$i] . "`";
+				$update_sql .= "`" . $this->headers[$i] . "`=%s";
 				$first = false;
-				
 			}
 		}
 		
-		$insert_sql .= ") VALUES(";
+		$insert_sql .= ", `post_id`) VALUES(";
 		
 		$first = true;
 		
-		for( $i=0; $i<count( $rows[0] ); $i++ ){
-			if( $i != $product_id_index && $i != $product_post_id_index ){ // Skip rows with product id and post id
+		for( $i=0; $i<count( $this->headers ); $i++ ){
+			if( $i != $this->product_id_index && $i != $this->post_id_index ){ // Skip rows with product id and post id
 				if( !$first )
 					$insert_sql .= ",";
 					
@@ -92,107 +151,136 @@ class ec_admin_productimporter{
 			}
 		}
 		
-		$insert_sql .= ")";
+		$insert_sql .= ",%d)";
 		$update_sql .= " WHERE ec_product.product_id = %s";
 		
-		if( $product_id_index == -1 ){
-			return "Missing `product_id` Key field! Values for additions should be 0, updates should be the exported product_id value.";
-		}
+		/* Start through the rows */
+		$current_iteration = 0;
+		$eof_reached = false;
 		
-		$error_list = "";
-		
-		for( $i=1; $i<count( $rows )-1; $i++ ){
+		while( !feof( $file ) && !$eof_reached ){ // each time through, run up to the limit of items until eof hit.
 			
-			if( $rows[$i][$product_id_index] != 0 && $rows[$i][$product_id_index] != "" ){
-				$product_id = $rows[$i][$product_id_index];
-				$post_id = $rows[$i][$product_post_id_index];
+			$rows = array( );
+		
+			for( $current_row = 0; !feof( $file ) && !$eof_reached && $current_row < $this->limit; $current_row++ ){
+		
+				$this_row = fgetcsv( $file );
+			
+				if( strlen( trim( $this_row[$this->model_number_index] ) ) <= 0 ){ // checking for file with extra rows that are empty
+					$eof_reached = true;
 				
-				// Try and get the product
-				$sql = "SELECT ec_product.model_number, ec_product.title, ec_product.activate_in_store FROM ec_product WHERE ec_product.product_id = %d";
-				$product = $this->db->get_row( $this->db->prepare( $sql, $product_id ) );
-				
-				if( $product ){
-						
-					$update_vals = array( );
-					for( $j=0; $j<count( $rows[$i] ); $j++ ){
-						if( $j != $product_id_index && $j != $product_post_id_index ){
-							$update_vals[] = $rows[$i][$j];
-						}
-					}
-					$update_vals[] = $product_id; // Add product id last for the update
-					$this->db->query( $this->db->prepare( $update_sql, $update_vals ) );
-				
-					// Update the WordPress Post
-					if( $product->activate_in_store )
-						$status = "publish";
-					else
-						$status = "private";
-					$post = array(	'ID'			=> $post_id,
-									'post_content'	=> "[ec_store modelnumber=\"" . $product->model_number . "\"]",
-									'post_status'	=> $status,
-									'post_title'	=> $GLOBALS['language']->convert_text( $product->title ),
-									'post_type'		=> "ec_store",
-									'post_name'		=> str_replace(' ', '-', $GLOBALS['language']->convert_text( $product->title ) ),
-								  );
-					wp_update_post( $post );
-					
 				}else{
-					// Save error
-					if( $error_list != "" )
-						$error_list .= ", ";
-					$error_list .= "Product " . $product_id . " on line " . ($i+1) . " failed to update, invalid product_id (if you are trying to add a new product use 0 for the product_id)";
+					$rows[] = $this_row;
+				
 				}
 				
-				
-			}else{
-				
-				// Insert the product to ec_product table
-				$insert_vals = array( );
-				for( $j=0; $j<count( $rows[$i] ); $j++ ){
-					if( $j != $product_id_index && $j != $product_post_id_index ){
-						$insert_vals[] = $rows[$i][$j];
-					}
-				}
-				$this->db->query( $this->db->prepare( $insert_sql, $insert_vals ) );
-				$product_id = $this->db->insert_id;
-				
-				// Try and get the product
-				$sql = "SELECT ec_product.model_number, ec_product.title, ec_product.activate_in_store FROM ec_product WHERE ec_product.product_id = %d";
-				$product = $this->db->get_row( $this->db->prepare( $sql, $product_id ) );
-					
-				if( $product ){
-						
-					// Insert WordPress Post
-					if( $product->activate_in_store )
-						$status = "publish";
-					else
-						$status = "private";
-					
-					$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $product->model_number . "\"]",
-									'post_status'	=> $status,
-									'post_title'	=> $GLOBALS['language']->convert_text( $product->title ),
-									'post_type'		=> "ec_store"
-								  );
-					$post_id = wp_insert_post( $post, $wp_error );
-					
-					// Update the product in ec_product table
-					$sql = "UPDATE ec_product SET ec_product.post_id = %s WHERE ec_product.product_id = %d";
-					$this->db->query( $this->db->prepare( $sql, $post_id, $product_id ) );
-					
-				}else{
-					// Save error
-					if( $error_list != "" )
-						$error_list .= ", ";
-					$error_list .= "Product on line " . ($i+1) . " failed to insert(common errors are invalid data, invalid column header, missing required field)";
-				}
 			}
 			
+			/* Start processing of rows collected in this interation */
+			for( $i=0; $i<count( $rows ); $i++ ){
+					
+				$product_id = $rows[$i][$this->product_id_index];
+				$post_id = $rows[$i][$this->post_id_index];
+				$model_number = $rows[$i][$this->model_number_index];
+				
+				if( $rows[$i][$this->product_id_index] != 0 && $rows[$i][$this->product_id_index] != "" ){ // product_id is available
+					
+					if( !in_array( $product_id, $valid_product_ids ) ){
+						
+						$this->error_list .= "Product " . $product_id . " on line " . ( ( $current_iteration * $this->limit ) + ($i+1) ) . " failed to update, invalid product_id (if you are trying to add a new product use 0 for the product_id)\r";
+						
+					}else{ // Valid ID, lets update
+						
+						$existing_model_numbers[] = $model_number;
+						
+						$update_vals = array( );
+						for( $j=0; $j<count( $rows[$i] ); $j++ ){
+							if( $j != $this->product_id_index && $j != $this->post_id_index ){
+								$update_vals[] = $rows[$i][$j];
+							}
+						}
+						$update_vals[] = $product_id; // Add product id last for the update
+						$this->db->query( $this->db->prepare( $update_sql, $update_vals ) );
+					
+						// Update the WordPress Post
+						if( $rows[$i][$this->activate_in_store_index] )
+							$status = "publish";
+						else
+							$status = "private";
+						$post = array(	'ID'			=> $post_id,
+										'post_content'	=> "[ec_store modelnumber=\"" . $rows[$i][$this->model_number_index] . "\"]",
+										'post_status'	=> $status,
+										'post_title'	=> $GLOBALS['language']->convert_text( $rows[$i][$this->title_index] ),
+										'post_type'		=> "ec_store",
+										'post_name'		=> str_replace(' ', '-', $GLOBALS['language']->convert_text( $rows[$i][$this->title_index] ) ),
+									  );
+						wp_update_post( $post );
+							
+					}// Check for valid product_id
+					
+				}else{
+					
+					if( in_array( $model_number, $existing_model_numbers ) ){
+						
+						$this->error_list .= "Product on line " . ( ( $current_iteration * $this->limit ) + ($i+1) ) . " failed to update, duplicate model number listed for this product.\r";
+						
+					}else{ // model number is new, we can insert
+						
+						$existing_model_numbers[] = $model_number;
+						$insert_vals = array( );
+						for( $j=0; $j<count( $rows[$i] ); $j++ ){
+							if( $j != $this->product_id_index && $j != $this->post_id_index ){
+								$insert_vals[] = $rows[$i][$j];
+							}
+						}
+						
+						// Insert WordPress Post
+						if( $rows[$i][$this->activate_in_store_index] )
+							$status = "publish";
+						else
+							$status = "private";
+						
+						$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $rows[$i][$this->model_number_index] . "\"]",
+										'post_status'	=> $status,
+										'post_title'	=> $GLOBALS['language']->convert_text( $rows[$i][$this->title_index] ),
+										'post_type'		=> "ec_store"
+									  );
+						$post_id = wp_insert_post( $post );
+						
+						$insert_vals[] = $post_id;
+						
+						$this->db->query( $this->db->prepare( $insert_sql, $insert_vals ) );
+						$product_id = $this->db->insert_id;
+						
+						if( !$product_id ){ // never inserted
+							
+							wp_delete_post( $post_id, true );
+							$this->error_list .= "Product on line " . ( ( $current_iteration * $this->limit ) + ($i+1) ) . " never inserted\r";
+							
+						}
+						
+					}// model number duplicate check
+					
+				}// close check for insert or update
+				
+			} // Close iteration for loop
+			
+			unset( $rows );
+			
+			$current_iteration++;
+			
 		}
 		
-		if( $error_list == "" ){
+		unset( $this->headers );
+		
+		fclose( $file );
+		
+		if( $this->error_list == "" ){
 			return array( "success" );
+		
 		}else{
-			return $error_list;
+			return $this->error_list;
+		
 		}
 		
 	} // Close Import Function

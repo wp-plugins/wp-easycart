@@ -1,6 +1,6 @@
 <?php
 $isupdate = false;
-if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_options" && isset( $_POST['ec_option_payment_process_method'] ) ){
+if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_options" && isset( $_POST['ec_option_use_direct_deposit'] ) ){
 	ec_update_payment_info( );
 	$isupdate = true;
 }

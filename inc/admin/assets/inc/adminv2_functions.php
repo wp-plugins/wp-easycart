@@ -1491,159 +1491,156 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_affirm_private_key', $_POST['ec_option_affirm_private_key'] );
 	update_option( 'ec_option_affirm_financial_product', $_POST['ec_option_affirm_financial_product'] );
 	update_option( 'ec_option_affirm_sandbox_account', $_POST['ec_option_affirm_sandbox_account'] );
-	
-	//payment choices
-	update_option( 'ec_option_use_visa', $_POST['ec_option_use_visa'] );
-	update_option( 'ec_option_use_delta', $_POST['ec_option_use_delta'] );
-	update_option( 'ec_option_use_uke', $_POST['ec_option_use_uke'] );
-	update_option( 'ec_option_use_discover', $_POST['ec_option_use_discover'] );
-	update_option( 'ec_option_use_mastercard', $_POST['ec_option_use_mastercard'] );
-	update_option( 'ec_option_use_mcdebit', $_POST['ec_option_use_mcdebit'] );
-	update_option( 'ec_option_use_amex', $_POST['ec_option_use_amex'] );
-	update_option( 'ec_option_use_jcb', $_POST['ec_option_use_jcb'] );
-	update_option( 'ec_option_use_diners', $_POST['ec_option_use_diners'] );
-	update_option( 'ec_option_use_laser', $_POST['ec_option_use_laser'] );
-	update_option( 'ec_option_use_maestro', $_POST['ec_option_use_maestro'] );
-	
-	//payment method
-	update_option( 'ec_option_payment_process_method', $_POST['ec_option_payment_process_method'] );
-	update_option( 'ec_option_payment_third_party', $_POST['ec_option_payment_third_party'] );
-	//authorize.net
-	update_option( 'ec_option_authorize_login_id', $_POST['ec_option_authorize_login_id'] );
-	update_option( 'ec_option_authorize_trans_key', $_POST['ec_option_authorize_trans_key'] );
-	update_option( 'ec_option_authorize_test_mode', $_POST['ec_option_authorize_test_mode'] );
-	update_option( 'ec_option_authorize_developer_account', $_POST['ec_option_authorize_developer_account'] );
-	update_option( 'ec_option_authorize_currency_code', $_POST['ec_option_authorize_currency_code'] );
-	//Braintree
-	update_option( 'ec_option_braintree_merchant_id', $_POST['ec_option_braintree_merchant_id'] );
-	update_option( 'ec_option_braintree_public_key', $_POST['ec_option_braintree_public_key'] );
-	update_option( 'ec_option_braintree_private_key', $_POST['ec_option_braintree_private_key'] );
-	update_option( 'ec_option_braintree_currency', $_POST['ec_option_braintree_currency'] );
-	update_option( 'ec_option_braintree_environment', $_POST['ec_option_braintree_environment'] );
-	//paypoint
-	update_option( 'ec_option_paypoint_merchant_id', $_POST['ec_option_paypoint_merchant_id'] );
-	update_option( 'ec_option_paypoint_vpn_password', $_POST['ec_option_paypoint_vpn_password'] );
-	update_option( 'ec_option_paypoint_test_mode', $_POST['ec_option_paypoint_test_mode'] );
-    //chronopay
-	update_option( 'ec_option_chronopay_currency', $_POST['ec_option_chronopay_currency'] );
-	update_option( 'ec_option_chronopay_product_id', $_POST['ec_option_chronopay_product_id'] );
-	update_option( 'ec_option_chronopay_shared_secret', $_POST['ec_option_chronopay_shared_secret'] );          
-    //dwolla third party
-	update_option( 'ec_option_dwolla_thirdparty_account_id', $_POST['ec_option_dwolla_thirdparty_account_id'] );
-	update_option( 'ec_option_dwolla_thirdparty_key', $_POST['ec_option_dwolla_thirdparty_key'] );
-	update_option( 'ec_option_dwolla_thirdparty_secret', $_POST['ec_option_dwolla_thirdparty_secret'] ); 
-	update_option( 'ec_option_dwolla_thirdparty_test_mode', $_POST['ec_option_dwolla_thirdparty_test_mode'] );            
-    //eway
-	update_option( 'ec_option_eway_customer_id', $_POST['ec_option_eway_customer_id'] );
-	update_option( 'ec_option_eway_test_mode', $_POST['ec_option_eway_test_mode'] );  
-	update_option( 'ec_option_eway_test_mode_success', $_POST['ec_option_eway_test_mode_success'] );          
-    //firstdatae4
-	update_option( 'ec_option_firstdatae4_exact_id', $_POST['ec_option_firstdatae4_exact_id'] );
-	update_option( 'ec_option_firstdatae4_password', $_POST['ec_option_firstdatae4_password'] );
-	update_option( 'ec_option_firstdatae4_language', $_POST['ec_option_firstdatae4_language'] );
-	update_option( 'ec_option_firstdatae4_currency', $_POST['ec_option_firstdatae4_currency'] ); 
-	update_option( 'ec_option_firstdatae4_test_mode', $_POST['ec_option_firstdatae4_test_mode'] ); 
-	//goEmerchant
-	update_option( 'ec_option_goemerchant_gateway_id', $_POST['ec_option_goemerchant_gateway_id'] ); 
-	update_option( 'ec_option_goemerchant_processor_id', $_POST['ec_option_goemerchant_processor_id'] ); 
-	update_option( 'ec_option_goemerchant_trans_center_id', $_POST['ec_option_goemerchant_trans_center_id'] );          
-	//Nets
-	update_option( 'ec_option_nets_merchant_id', $_POST['ec_option_nets_merchant_id'] );
-	update_option( 'ec_option_nets_token', $_POST['ec_option_nets_token'] );
-	update_option( 'ec_option_nets_currency', $_POST['ec_option_nets_currency'] );
-	update_option( 'ec_option_nets_test_mode', $_POST['ec_option_nets_test_mode'] );
-	//MIGS
-	update_option( 'ec_option_migs_signature', $_POST['ec_option_migs_signature'] );
-	update_option( 'ec_option_migs_access_code', $_POST['ec_option_migs_access_code'] );
-	update_option( 'ec_option_migs_merchant_id', $_POST['ec_option_migs_merchant_id'] );
-	//Moneris CA
-	update_option( 'ec_option_moneris_ca_store_id', $_POST['ec_option_moneris_ca_store_id'] );
-	update_option( 'ec_option_moneris_ca_api_token', $_POST['ec_option_moneris_ca_api_token'] );
-	update_option( 'ec_option_moneris_ca_test_mode', $_POST['ec_option_moneris_ca_test_mode'] );
-	//Moneris US
-	update_option( 'ec_option_moneris_us_store_id', $_POST['ec_option_moneris_us_store_id'] );
-	update_option( 'ec_option_moneris_us_api_token', $_POST['ec_option_moneris_us_api_token'] );
-	update_option( 'ec_option_moneris_us_test_mode', $_POST['ec_option_moneris_us_test_mode'] );
-	//PaymentExpress
-	update_option( 'ec_option_payment_express_username', $_POST['ec_option_payment_express_username'] );
-	update_option( 'ec_option_payment_express_password', $_POST['ec_option_payment_express_password'] );
-	update_option( 'ec_option_payment_express_currency', $_POST['ec_option_payment_express_currency'] );
-	//PaymentExpress Third Party
-	update_option( 'ec_option_payment_express_thirdparty_username', $_POST['ec_option_payment_express_thirdparty_username'] );
-	update_option( 'ec_option_payment_express_thirdparty_key', $_POST['ec_option_payment_express_thirdparty_key'] );
-	update_option( 'ec_option_payment_express_thirdparty_currency', $_POST['ec_option_payment_express_thirdparty_currency'] );
-	//PayPal Standard
-	update_option( 'ec_option_paypal_email', $_POST['ec_option_paypal_email'] );
-	update_option( 'ec_option_paypal_currency_code', $_POST['ec_option_paypal_currency_code'] );
-	update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
-	update_option( 'ec_option_paypal_use_sandbox', $_POST['ec_option_paypal_use_sandbox'] );
-	update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );
-	update_option( 'ec_option_paypal_collect_shipping', $_POST['ec_option_paypal_collect_shipping'] );		
-	//PayPal Advanced
-	//update_option( 'ec_option_paypal_advanced_test_mode', $_POST['ec_option_paypal_advanced_test_mode'] );
-	//update_option( 'ec_option_paypal_advanced_currency', $_POST['ec_option_paypal_advanced_currency'] );
-	//update_option( 'ec_option_paypal_advanced_vendor', $_POST['ec_option_paypal_advanced_vendor'] );
-	//update_option( 'ec_option_paypal_advanced_partner', $_POST['ec_option_paypal_advanced_partner'] );
-	//update_option( 'ec_option_paypal_advanced_user', $_POST['ec_option_paypal_advanced_user'] );
-	//update_option( 'ec_option_paypal_advanced_password', $_POST['ec_option_paypal_advanced_password'] );
-	//PayPal PayFlow Pro
-	update_option( 'ec_option_paypal_pro_test_mode', $_POST['ec_option_paypal_pro_test_mode'] );
-	update_option( 'ec_option_paypal_pro_vendor', $_POST['ec_option_paypal_pro_vendor'] );
-	update_option( 'ec_option_paypal_pro_partner', $_POST['ec_option_paypal_pro_partner'] );
-	update_option( 'ec_option_paypal_pro_user', $_POST['ec_option_paypal_pro_user'] );
-	update_option( 'ec_option_paypal_pro_password', $_POST['ec_option_paypal_pro_password'] );
-	update_option( 'ec_option_paypal_pro_currency', $_POST['ec_option_paypal_pro_currency'] );
-	//PayPal Payments Pro
-	update_option( 'ec_option_paypal_payments_pro_test_mode', $_POST['ec_option_paypal_payments_pro_test_mode'] );
-	update_option( 'ec_option_paypal_payments_pro_user', $_POST['ec_option_paypal_payments_pro_user'] );
-	update_option( 'ec_option_paypal_payments_pro_password', $_POST['ec_option_paypal_payments_pro_password'] );
-	update_option( 'ec_option_paypal_payments_pro_signature', $_POST['ec_option_paypal_payments_pro_signature'] );
-	update_option( 'ec_option_paypal_payments_pro_currency', $_POST['ec_option_paypal_payments_pro_currency'] );
-	//Skrill
-	update_option( 'ec_option_skrill_merchant_id', $_POST['ec_option_skrill_merchant_id'] );
-	update_option( 'ec_option_skrill_company_name', $_POST['ec_option_skrill_company_name'] );
-	update_option( 'ec_option_skrill_email', $_POST['ec_option_skrill_email'] );
-	update_option( 'ec_option_skrill_language', $_POST['ec_option_skrill_language'] );
-	update_option( 'ec_option_skrill_currency_code', $_POST['ec_option_skrill_currency_code'] );
-	//Realex Third Party
-	update_option( 'ec_option_realex_thirdparty_merchant_id', $_POST['ec_option_realex_thirdparty_merchant_id'] );
-	update_option( 'ec_option_realex_thirdparty_secret', $_POST['ec_option_realex_thirdparty_secret'] );
-	update_option( 'ec_option_realex_thirdparty_currency', $_POST['ec_option_realex_thirdparty_currency'] );
-	//Realex
-	update_option( 'ec_option_realex_merchant_id', $_POST['ec_option_realex_merchant_id'] );
-	update_option( 'ec_option_realex_secret', $_POST['ec_option_realex_secret'] );
-	update_option( 'ec_option_realex_currency', $_POST['ec_option_realex_currency'] );
-	update_option( 'ec_option_realex_3dsecure', $_POST['ec_option_realex_3dsecure'] );
-	update_option( 'ec_option_realex_minimum_tss_score', $_POST['ec_option_realex_minimum_tss_score'] );
-	//Sagepay
-	update_option( 'ec_option_sagepay_vendor', $_POST['ec_option_sagepay_vendor'] );
-	update_option( 'ec_option_sagepay_currency', $_POST['ec_option_sagepay_currency'] );
-	update_option( 'ec_option_sagepay_testmode', $_POST['ec_option_sagepay_testmode'] );
-	//Sagepay US
-	update_option( 'ec_option_sagepayus_mid', $_POST['ec_option_sagepayus_mid'] );
-	update_option( 'ec_option_sagepayus_mkey', $_POST['ec_option_sagepayus_mkey'] );
-	update_option( 'ec_option_sagepayus_application_id', $_POST['ec_option_sagepayus_application_id'] );
-	//SecureNet
-	update_option( 'ec_option_securenet_id', $_POST['ec_option_securenet_id'] );
-	update_option( 'ec_option_securenet_secure_key', $_POST['ec_option_securenet_secure_key'] );
-	update_option( 'ec_option_securenet_use_sandbox', $_POST['ec_option_securenet_use_sandbox'] );
-	//Securepay
-	update_option( 'ec_option_securepay_merchant_id', $_POST['ec_option_securepay_merchant_id'] );
-	update_option( 'ec_option_securepay_password', $_POST['ec_option_securepay_password'] );
-	update_option( 'ec_option_securepay_currency', $_POST['ec_option_securepay_currency'] );
-	update_option( 'ec_option_securepay_test_mode', $_POST['ec_option_securepay_test_mode'] );
-	//Stripe
-	update_option( 'ec_option_stripe_api_key', $_POST['ec_option_stripe_api_key'] );
-	update_option( 'ec_option_stripe_currency', $_POST['ec_option_stripe_currency'] );
-	//Virtual Merchant
-	update_option( 'ec_option_virtualmerchant_ssl_merchant_id', $_POST['ec_option_virtualmerchant_ssl_merchant_id'] );
-	update_option( 'ec_option_virtualmerchant_ssl_user_id', $_POST['ec_option_virtualmerchant_ssl_user_id'] );
-	update_option( 'ec_option_virtualmerchant_ssl_pin', $_POST['ec_option_virtualmerchant_ssl_pin'] );
-	//update_option( 'ec_option_virtualmerchant_currency', $_POST['ec_option_virtualmerchant_currency'] );
-	update_option( 'ec_option_virtualmerchant_demo_account', $_POST['ec_option_virtualmerchant_demo_account'] );
+		
 	//proxy settings
 	update_option( 'ec_option_use_proxy', $_POST['ec_option_use_proxy'] );
 	update_option( 'ec_option_proxy_address', $_POST['ec_option_proxy_address'] );
+	
+	if( isset( $_POST['ec_option_payment_third_party'] ) ){
+		update_option( 'ec_option_payment_third_party', $_POST['ec_option_payment_third_party'] );
+		//dwolla third party
+		update_option( 'ec_option_dwolla_thirdparty_account_id', $_POST['ec_option_dwolla_thirdparty_account_id'] );
+		update_option( 'ec_option_dwolla_thirdparty_key', $_POST['ec_option_dwolla_thirdparty_key'] );
+		update_option( 'ec_option_dwolla_thirdparty_secret', $_POST['ec_option_dwolla_thirdparty_secret'] ); 
+		update_option( 'ec_option_dwolla_thirdparty_test_mode', $_POST['ec_option_dwolla_thirdparty_test_mode'] );            
+		//Nets
+		update_option( 'ec_option_nets_merchant_id', $_POST['ec_option_nets_merchant_id'] );
+		update_option( 'ec_option_nets_token', $_POST['ec_option_nets_token'] );
+		update_option( 'ec_option_nets_currency', $_POST['ec_option_nets_currency'] );
+		update_option( 'ec_option_nets_test_mode', $_POST['ec_option_nets_test_mode'] );
+		//PayPal Standard
+		update_option( 'ec_option_paypal_email', $_POST['ec_option_paypal_email'] );
+		update_option( 'ec_option_paypal_currency_code', $_POST['ec_option_paypal_currency_code'] );
+		update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
+		update_option( 'ec_option_paypal_use_sandbox', $_POST['ec_option_paypal_use_sandbox'] );
+		update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );
+		update_option( 'ec_option_paypal_collect_shipping', $_POST['ec_option_paypal_collect_shipping'] );	
+		//PaymentExpress Third Party
+		update_option( 'ec_option_payment_express_thirdparty_username', $_POST['ec_option_payment_express_thirdparty_username'] );
+		update_option( 'ec_option_payment_express_thirdparty_key', $_POST['ec_option_payment_express_thirdparty_key'] );
+		update_option( 'ec_option_payment_express_thirdparty_currency', $_POST['ec_option_payment_express_thirdparty_currency'] );
+		//Realex Third Party
+		update_option( 'ec_option_realex_thirdparty_merchant_id', $_POST['ec_option_realex_thirdparty_merchant_id'] );
+		update_option( 'ec_option_realex_thirdparty_secret', $_POST['ec_option_realex_thirdparty_secret'] );
+		update_option( 'ec_option_realex_thirdparty_currency', $_POST['ec_option_realex_thirdparty_currency'] );
+		//Skrill
+		update_option( 'ec_option_skrill_merchant_id', $_POST['ec_option_skrill_merchant_id'] );
+		update_option( 'ec_option_skrill_company_name', $_POST['ec_option_skrill_company_name'] );
+		update_option( 'ec_option_skrill_email', $_POST['ec_option_skrill_email'] );
+		update_option( 'ec_option_skrill_language', $_POST['ec_option_skrill_language'] );
+		update_option( 'ec_option_skrill_currency_code', $_POST['ec_option_skrill_currency_code'] );
+	}
+	
+	if( isset( $_POST['ec_option_payment_process_method'] ) ){
+		//payment choices
+		update_option( 'ec_option_use_visa', $_POST['ec_option_use_visa'] );
+		update_option( 'ec_option_use_delta', $_POST['ec_option_use_delta'] );
+		update_option( 'ec_option_use_uke', $_POST['ec_option_use_uke'] );
+		update_option( 'ec_option_use_discover', $_POST['ec_option_use_discover'] );
+		update_option( 'ec_option_use_mastercard', $_POST['ec_option_use_mastercard'] );
+		update_option( 'ec_option_use_mcdebit', $_POST['ec_option_use_mcdebit'] );
+		update_option( 'ec_option_use_amex', $_POST['ec_option_use_amex'] );
+		update_option( 'ec_option_use_jcb', $_POST['ec_option_use_jcb'] );
+		update_option( 'ec_option_use_diners', $_POST['ec_option_use_diners'] );
+		update_option( 'ec_option_use_laser', $_POST['ec_option_use_laser'] );
+		update_option( 'ec_option_use_maestro', $_POST['ec_option_use_maestro'] );
+		//payment method
+		update_option( 'ec_option_payment_process_method', $_POST['ec_option_payment_process_method'] );
+		//authorize.net
+		update_option( 'ec_option_authorize_login_id', $_POST['ec_option_authorize_login_id'] );
+		update_option( 'ec_option_authorize_trans_key', $_POST['ec_option_authorize_trans_key'] );
+		update_option( 'ec_option_authorize_test_mode', $_POST['ec_option_authorize_test_mode'] );
+		update_option( 'ec_option_authorize_developer_account', $_POST['ec_option_authorize_developer_account'] );
+		update_option( 'ec_option_authorize_currency_code', $_POST['ec_option_authorize_currency_code'] );
+		//Braintree
+		update_option( 'ec_option_braintree_merchant_id', $_POST['ec_option_braintree_merchant_id'] );
+		update_option( 'ec_option_braintree_public_key', $_POST['ec_option_braintree_public_key'] );
+		update_option( 'ec_option_braintree_private_key', $_POST['ec_option_braintree_private_key'] );
+		update_option( 'ec_option_braintree_currency', $_POST['ec_option_braintree_currency'] );
+		update_option( 'ec_option_braintree_environment', $_POST['ec_option_braintree_environment'] );
+		//paypoint
+		update_option( 'ec_option_paypoint_merchant_id', $_POST['ec_option_paypoint_merchant_id'] );
+		update_option( 'ec_option_paypoint_vpn_password', $_POST['ec_option_paypoint_vpn_password'] );
+		update_option( 'ec_option_paypoint_test_mode', $_POST['ec_option_paypoint_test_mode'] );
+		//chronopay
+		update_option( 'ec_option_chronopay_currency', $_POST['ec_option_chronopay_currency'] );
+		update_option( 'ec_option_chronopay_product_id', $_POST['ec_option_chronopay_product_id'] );
+		update_option( 'ec_option_chronopay_shared_secret', $_POST['ec_option_chronopay_shared_secret'] );          
+		//eway
+		update_option( 'ec_option_eway_customer_id', $_POST['ec_option_eway_customer_id'] );
+		update_option( 'ec_option_eway_test_mode', $_POST['ec_option_eway_test_mode'] );  
+		update_option( 'ec_option_eway_test_mode_success', $_POST['ec_option_eway_test_mode_success'] );          
+		//firstdatae4
+		update_option( 'ec_option_firstdatae4_exact_id', $_POST['ec_option_firstdatae4_exact_id'] );
+		update_option( 'ec_option_firstdatae4_password', $_POST['ec_option_firstdatae4_password'] );
+		update_option( 'ec_option_firstdatae4_language', $_POST['ec_option_firstdatae4_language'] );
+		update_option( 'ec_option_firstdatae4_currency', $_POST['ec_option_firstdatae4_currency'] ); 
+		update_option( 'ec_option_firstdatae4_test_mode', $_POST['ec_option_firstdatae4_test_mode'] ); 
+		//goEmerchant
+		update_option( 'ec_option_goemerchant_gateway_id', $_POST['ec_option_goemerchant_gateway_id'] ); 
+		update_option( 'ec_option_goemerchant_processor_id', $_POST['ec_option_goemerchant_processor_id'] ); 
+		update_option( 'ec_option_goemerchant_trans_center_id', $_POST['ec_option_goemerchant_trans_center_id'] );          
+		//MIGS
+		update_option( 'ec_option_migs_signature', $_POST['ec_option_migs_signature'] );
+		update_option( 'ec_option_migs_access_code', $_POST['ec_option_migs_access_code'] );
+		update_option( 'ec_option_migs_merchant_id', $_POST['ec_option_migs_merchant_id'] );
+		//Moneris CA
+		update_option( 'ec_option_moneris_ca_store_id', $_POST['ec_option_moneris_ca_store_id'] );
+		update_option( 'ec_option_moneris_ca_api_token', $_POST['ec_option_moneris_ca_api_token'] );
+		update_option( 'ec_option_moneris_ca_test_mode', $_POST['ec_option_moneris_ca_test_mode'] );
+		//Moneris US
+		update_option( 'ec_option_moneris_us_store_id', $_POST['ec_option_moneris_us_store_id'] );
+		update_option( 'ec_option_moneris_us_api_token', $_POST['ec_option_moneris_us_api_token'] );
+		update_option( 'ec_option_moneris_us_test_mode', $_POST['ec_option_moneris_us_test_mode'] );
+		//PaymentExpress
+		update_option( 'ec_option_payment_express_username', $_POST['ec_option_payment_express_username'] );
+		update_option( 'ec_option_payment_express_password', $_POST['ec_option_payment_express_password'] );
+		update_option( 'ec_option_payment_express_currency', $_POST['ec_option_payment_express_currency'] );
+		//PayPal PayFlow Pro
+		update_option( 'ec_option_paypal_pro_test_mode', $_POST['ec_option_paypal_pro_test_mode'] );
+		update_option( 'ec_option_paypal_pro_vendor', $_POST['ec_option_paypal_pro_vendor'] );
+		update_option( 'ec_option_paypal_pro_partner', $_POST['ec_option_paypal_pro_partner'] );
+		update_option( 'ec_option_paypal_pro_user', $_POST['ec_option_paypal_pro_user'] );
+		update_option( 'ec_option_paypal_pro_password', $_POST['ec_option_paypal_pro_password'] );
+		update_option( 'ec_option_paypal_pro_currency', $_POST['ec_option_paypal_pro_currency'] );
+		//PayPal Payments Pro
+		update_option( 'ec_option_paypal_payments_pro_test_mode', $_POST['ec_option_paypal_payments_pro_test_mode'] );
+		update_option( 'ec_option_paypal_payments_pro_user', $_POST['ec_option_paypal_payments_pro_user'] );
+		update_option( 'ec_option_paypal_payments_pro_password', $_POST['ec_option_paypal_payments_pro_password'] );
+		update_option( 'ec_option_paypal_payments_pro_signature', $_POST['ec_option_paypal_payments_pro_signature'] );
+		update_option( 'ec_option_paypal_payments_pro_currency', $_POST['ec_option_paypal_payments_pro_currency'] );	
+		//Realex
+		update_option( 'ec_option_realex_merchant_id', $_POST['ec_option_realex_merchant_id'] );
+		update_option( 'ec_option_realex_secret', $_POST['ec_option_realex_secret'] );
+		update_option( 'ec_option_realex_currency', $_POST['ec_option_realex_currency'] );
+		update_option( 'ec_option_realex_3dsecure', $_POST['ec_option_realex_3dsecure'] );
+		update_option( 'ec_option_realex_minimum_tss_score', $_POST['ec_option_realex_minimum_tss_score'] );
+		//Sagepay
+		update_option( 'ec_option_sagepay_vendor', $_POST['ec_option_sagepay_vendor'] );
+		update_option( 'ec_option_sagepay_currency', $_POST['ec_option_sagepay_currency'] );
+		update_option( 'ec_option_sagepay_testmode', $_POST['ec_option_sagepay_testmode'] );
+		//Sagepay US
+		update_option( 'ec_option_sagepayus_mid', $_POST['ec_option_sagepayus_mid'] );
+		update_option( 'ec_option_sagepayus_mkey', $_POST['ec_option_sagepayus_mkey'] );
+		update_option( 'ec_option_sagepayus_application_id', $_POST['ec_option_sagepayus_application_id'] );
+		//SecureNet
+		update_option( 'ec_option_securenet_id', $_POST['ec_option_securenet_id'] );
+		update_option( 'ec_option_securenet_secure_key', $_POST['ec_option_securenet_secure_key'] );
+		update_option( 'ec_option_securenet_use_sandbox', $_POST['ec_option_securenet_use_sandbox'] );
+		//Securepay
+		update_option( 'ec_option_securepay_merchant_id', $_POST['ec_option_securepay_merchant_id'] );
+		update_option( 'ec_option_securepay_password', $_POST['ec_option_securepay_password'] );
+		update_option( 'ec_option_securepay_currency', $_POST['ec_option_securepay_currency'] );
+		update_option( 'ec_option_securepay_test_mode', $_POST['ec_option_securepay_test_mode'] );
+		//Stripe
+		update_option( 'ec_option_stripe_api_key', $_POST['ec_option_stripe_api_key'] );
+		update_option( 'ec_option_stripe_currency', $_POST['ec_option_stripe_currency'] );
+		//Virtual Merchant
+		update_option( 'ec_option_virtualmerchant_ssl_merchant_id', $_POST['ec_option_virtualmerchant_ssl_merchant_id'] );
+		update_option( 'ec_option_virtualmerchant_ssl_user_id', $_POST['ec_option_virtualmerchant_ssl_user_id'] );
+		update_option( 'ec_option_virtualmerchant_ssl_pin', $_POST['ec_option_virtualmerchant_ssl_pin'] );
+		update_option( 'ec_option_virtualmerchant_demo_account', $_POST['ec_option_virtualmerchant_demo_account'] );
+	}
 }
 
 function ec_update_language_file( $language ){
