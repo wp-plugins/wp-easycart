@@ -9,6 +9,7 @@ class ec_review{
 	public $description;									// MEDIUM BLOB
 	public $rating;											// INT
 	public $review_date;									// TIMESTAMP
+	public $reviewer_name;									// VARCHAR
 	
 	function __construct( $review_row ){
 		
@@ -18,6 +19,9 @@ class ec_review{
 		$this->description = $review_row->description;
 		$this->rating = $review_row->rating;
 		$this->review_date = $review_row->review_date;
+		$this->reviewer_name = $GLOBALS['language']->get_text( 'customer_review', 'product_details_review_anonymous_reviewer' );
+		if( isset( $review_row->first_name ) && isset( $review_row->last_name ) )
+			$this->reviewer_name = $review_row->first_name . " " . $review_row->last_name;
 		
 	}
 	

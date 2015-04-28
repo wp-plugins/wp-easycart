@@ -104,6 +104,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
             	<li>Data Global Gateway e4</li>
             	<li>Eway</li>
             	<li>GoeMerchant</li>
+            	<li>MasterCard Internet Gateway Service (MIGS)</li>
             	<li>Moneris Canada</li>
             	<li>Moneris USA</li>
             	<li>Payment Express PxPost</li>
@@ -133,6 +134,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "eway" ){ echo '_inactive'; } ?>" id="eway_title">Eway</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "firstdata" ){ echo '_inactive'; } ?>" id="firstdata_title">First Data Global Gateway e4</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "goemerchant" ){ echo '_inactive'; } ?>" id="goemerchant_title">GoeMerchant</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "migs" ){ echo '_inactive'; } ?>" id="migs_title">MasterCard Internet Gateway Service (MIGS)</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "moneris_ca" ){ echo '_inactive'; } ?>" id="moneris_ca_title">Moneris Canada</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "moneris_us" ){ echo '_inactive'; } ?>" id="moneris_us_title">Moneris USA</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "paymentexpress" ){ echo '_inactive'; } ?>" id="paymentexpress_title">Payment Express PxPost</div>
@@ -156,6 +158,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
                 <option value="eway" <?php if( get_option('ec_option_payment_process_method') == "eway" ){ echo " selected"; } ?>>Eway</option>
                 <option value="firstdata" <?php if( get_option('ec_option_payment_process_method') == "firstdata" ){ echo " selected"; } ?>>First Data Global Gateway e4</option>
                 <option value="goemerchant" <?php if( get_option('ec_option_payment_process_method') == "goemerchant" ){ echo " selected"; } ?>>GoeMerchant</option>
+                <option value="migs" <?php if( get_option('ec_option_payment_process_method') == "migs" ){ echo " selected"; } ?>>MIGS</option>
                 <option value="moneris_ca" <?php if( get_option('ec_option_payment_process_method') == "moneris_ca" ){ echo " selected"; } ?>>Moneris Canada</option>
                 <option value="moneris_us" <?php if( get_option('ec_option_payment_process_method') == "moneris_us" ){ echo " selected"; } ?>>Moneris USA</option>
                 <option value="paymentexpress" <?php if( get_option('ec_option_payment_process_method') == "paymentexpress" ){ echo " selected"; } ?>>Payment Express PxPost</option>
@@ -178,6 +181,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/eway.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/firstdata.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/goemerchant.php" ); ?>
+        <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/migs.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/moneris_ca.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/moneris_us.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/paymentexpress.php" ); ?>

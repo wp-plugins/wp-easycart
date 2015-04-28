@@ -49,10 +49,10 @@ function ec_install_admin_notice() {
 		<?php	
 		}
 		
-		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.16" ){
+		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.17" ){
 			?>
 			<div class="error">
-				<p>The latest WP EasyCart Store Admin version is 3.0.16, please update for best results!</p>
+				<p>The latest WP EasyCart Store Admin version is 3.0.17, please update for best results!</p>
 			</div>
 			<?php
 		}
@@ -939,14 +939,19 @@ function ec_databasedump_table_data( $table ){
 	if( !empty( $results ) ){
 		$return_string .= "/* dumping data for table `$table` */\n";
 		$return_string .= "TRUNCATE `$table`;\n";
+		$insert_query = "INSERT INTO `$table`(";
 		$return_string .= "INSERT INTO `$table`(";
 		$index_keys = 0;
 		foreach( $keys as $key ){
+			$insert_query .= "`" . $key[0] . "`";
 			$return_string .= "`" . $key[0] . "`";
-			if( $index_keys < count( $keys ) - 1 )
+			if( $index_keys < count( $keys ) - 1 ){
+				$insert_query .= ",";
 				$return_string .= ",";
+			}
 			$index_keys++;
 		}
+		$insert_query .= ") VALUES\n";
 		$return_string .= ") VALUES\n";
 		$index = 0;
 		
@@ -956,7 +961,7 @@ function ec_databasedump_table_data( $table ){
 				if( is_null( $row[$i] ) )
 					$return_string .= "null";
 				else{
-					$return_string .= "'".str_replace( "'", "\'", $row[$i])."'";
+					$return_string .= "'" . str_replace( "'", "\\'", str_replace( '\\', '\\\\', stripslashes( $row[$i] ) ) ) . "'";
 				}
 
 				if( $i < count( $row ) - 1 )
@@ -964,11 +969,12 @@ function ec_databasedump_table_data( $table ){
 			}
 			$return_string .= ")";
 			
-			if( $index < count( $results ) - 1 )
-				$return_string .= ",";
+			if( $index != 0 && $index%100 == 0 && $index < ( count( $results ) - 1 ) )
+				$return_string .= ";\n" . $insert_query;
+			else if( $index < count( $results ) - 1 )
+				$return_string .= ",\n";
 			else
-				$return_string .= ";";
-			$return_string .= "\n";
+				$return_string .= ";\n";
 
 			$index++;
 		}

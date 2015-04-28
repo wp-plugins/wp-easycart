@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
-Tested up to: 4.1.2
-Stable tag: 3.0.26
+Tested up to: 4.2.1
+Stable tag: 3.0.27
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,26 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.0.27 =
+* New Feature - You can now require the user to log into their EasyCart account before submitting a customer review.
+* New Feature - You can now turn on to show custom review user name in the product review area.
+* New Feature - Mastercard Internet Gateway Service (MIGS) is now available for the EasyCart as a live payment gateway.
+* New Feature - You can now limit the number of items per purchase for a product.
+* New Feature - You can now add a handling fee per product added to cart.
+* New Feature - You can now add a duration to your Stripe and PayPal subscriptions, allowing you to create payment plans for customers. e.g. $19.99/month for 3 months.
+* Improvement - Newsletter popup now collects the user name.
+* Improvement - Newsletter widget now allows you to collect the user name.
+* Fix - For servers not running memcached, an error is prevented on activation.
+* Fix - Adding a shortcode to a custom page now works with widget filters.
+* Fix - When using popup newsletter and widget newsletter, conflicting IDs in javascript now resolved.
+* Fix - PayPal IPN now passes fraud check that were failing when using business email address instead of the account email address.
+* Fix - Adjustment to PayPal IPN to work better with PayPal standard subscriptions.
+* Fix - PayPal Standard subscriptions now work with AffiliateWP.
+* Fix - Stripe subscriptions were not adding with the unique id, this has been fixed.
+* Fix - Stripe customers that were added in test mode were not resetting when moving live or if test data was removed from Stripe, errors were occurring.
+* Fix - Stripe WebConnector with subscriptions was not collecting and sending all the information it should have. Values now updating successfully.
+* Fix - Subscription payment page in Firefox would throw a Firefox enter email error, this has been corrected.
+* Fix - JCB was not validating correctly for specific cards.
 = 3.0.26 =
 * Fix - Coupon codes showing times redeemed + 1 for all whenever a single coupon used.
 * Fix - Tiered pricing updates price of product on screen when quantity changes.

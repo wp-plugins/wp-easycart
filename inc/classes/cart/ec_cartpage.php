@@ -278,7 +278,7 @@ class ec_cartpage{
 				echo "
 				ga( 'ec:addProduct', {
 				  'id': '" . $this->cart->cart[$i]->model_number . "',
-				  'name': '" . $this->cart->cart[$i]->title . "',
+				  'name': '" . str_replace( "'", "\'", $this->cart->cart[$i]->title ) . "',
 				  'price': '" . $this->cart->cart[$i]->unit_price . "',
 				  'quantity': '" . $this->cart->cart[$i]->quantity . "'
 				});";
@@ -2257,7 +2257,7 @@ class ec_cartpage{
 			
 		}
 		
-		$data_validated = apply_filters( 'wpeasycart_validate_submit_order_data', $data_validated, $user );
+		$data_validated = apply_filters( 'wpeasycart_validate_submit_order_data', $data_validated, $this->user );
 		
 		return $data_validated;
 		
@@ -3119,7 +3119,11 @@ class ec_cartpage{
 							$customer_id = $stripe->insert_customer( $user, NULL, $product->subscription_signup_fee );
 							$need_to_update_customer_id = true;
 						}else{
-							$stripe->update_customer( $user, $product->subscription_signup_fee );
+							$found_customer = $stripe->update_customer( $user, $product->subscription_signup_fee );
+							if( !$found_customer ){ // Likely switched from test to live or to a new account, so customer id was wrong
+								$customer_id = $stripe->insert_customer( $user, NULL, $product->subscription_signup_fee );
+								$need_to_update_customer_id = true;
+							}
 						}
 						
 						if( $need_to_update_customer_id && $customer_id ){ // Customer inserted to stripe successfully
@@ -3164,10 +3168,6 @@ class ec_cartpage{
 										$referral_id = "";
 										if( class_exists( "Affiliate_WP" ) )
 											$referral_id = $this->add_affiliatewp_subscription_order( $order_id, $user, $product );
-											
-										if( $referral_id != "" ){
-											$this->mysqli->update_affiliate_referral_id( $order_id, $referral_id );
-										}
 										
 										$subscription = new ec_subscription( $subscription_row );
 										$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
@@ -3259,6 +3259,11 @@ class ec_cartpage{
 							$coupon_promocode_id = $coupon_row->promocode_id;
 										
 						$order_id = $this->mysqli->insert_paypal_subscription_order( $product, $user, $coupon_promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
+						
+						// Affiliate Insert
+						$referral_id = "";
+						if( class_exists( "Affiliate_WP" ) )
+							$referral_id = $this->add_affiliatewp_subscription_order( $order_id, $user, $product );
 						
 						$paypal = new ec_paypal( );
 						$paypal->display_subscription_form( $order_id, $user, $product );
@@ -3516,22 +3521,22 @@ class ec_cartpage{
 	
 	private function get_payment_type( $card_number ){
 		
-		if( preg_match("/^5[1-5][0-9]{14}$/", $card_number ) )
+		if( preg_match("/^5[1-5]\d{14}$/", $card_number ) )
                 return "mastercard";
  
-        else if( preg_match( "/^4[0-9]{12}([0-9]{3})?$/", $card_number))
+        else if( preg_match( "/^4[0-9]{12}(?:[0-9]{3}|[0-9]{6})?$/", $card_number))
                 return "visa";
  
         else if( preg_match( "/^3[47][0-9]{13}$/", $card_number ) )
                 return "amex";
  
-        else if( preg_match( "/^3(0[0-5]|[68][0-9])[0-9]{11}$/", $card_number ) )
+        else if( preg_match( "/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/", $card_number ) )
                 return "diners";
  
-        else if( preg_match( "/^6011[0-9]{12}$/", $card_number ) )
+        else if( preg_match( "/^6(?:011\d{12}|5\d{14}|4[4-9]\d{13}|22(?:1(?:2[6-9]|[3-9]\d)|[2-8]\d{2}|9(?:[01]\d|2[0-5]))\d{10})$/", $card_number ) )
                 return "discover";
  
-        else if( preg_match( "/^(3[0-9]{4}|2131|1800)[0-9]{11}$/", $card_number ) )
+        else if( preg_match( "/^(?:2131|1800|35\d{3})\d{11}$/", $card_number ) )
                 return "jcb";
 				
 		else

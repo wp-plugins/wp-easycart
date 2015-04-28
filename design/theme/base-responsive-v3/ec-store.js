@@ -1018,7 +1018,7 @@ function ec_validate_credit_card( card_number ){
 		else																						return false;
 	
 	}else if( card_type == "jcb" ){
-		if( /^1800\d{11}$|^3\d{15}$/.test( card_number ) )											return true;
+		if( /^(?:2131|1800|35\d{3})\d{11}$/.test( card_number ) )											return true;
 		else																						return false;
 	
 	}else if( card_type == "maestro" ){
@@ -1330,14 +1330,18 @@ function ec_close_popup_newsletter( ){
 
 function ec_submit_newsletter_signup( ){
 	
-	jQuery( document.getElementById( 'ec_newsletter_pre_submit' ) ).hide( );
-	jQuery( document.getElementById( 'ec_newsletter_post_submit' ) ).show( );
+	jQuery( '.ec_newsletter_pre_submit' ).hide( );
+	jQuery( '.ec_newsletter_post_submit' ).show( );
 		
 	var email_address = jQuery( document.getElementById( 'ec_newsletter_email' ) ).val( );
+	var newsletter_name = "";
+	if( document.getElementById( 'ec_newsletter_name' ) )
+		newsletter_name = jQuery( document.getElementById( 'ec_newsletter_name' ) ).val( );
 	
 	var data = {
 		action: 'ec_ajax_submit_newsletter_signup',
-		email_address: email_address
+		email_address: email_address,
+		newsletter_name: newsletter_name
 	};
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
@@ -1347,14 +1351,18 @@ function ec_submit_newsletter_signup( ){
 
 function ec_submit_newsletter_signup_widget( ){
 	
-	jQuery( '#ec_newsletter_pre_submit' ).hide( );
-	jQuery( '#ec_newsletter_post_submit' ).show( );
+	jQuery( '.ec_newsletter_pre_submit' ).hide( );
+	jQuery( '.ec_newsletter_post_submit' ).show( );
 		
 	var email_address = jQuery( '#ec_newsletter_email_widget' ).val( );
+	var newsletter_name = "";
+	if( document.getElementById( 'ec_newsletter_name_widget' ) )
+		newsletter_name = jQuery( document.getElementById( 'ec_newsletter_name_widget' ) ).val( );
 	
 	var data = {
 		action: 'ec_ajax_submit_newsletter_signup',
-		email_address: email_address
+		email_address: email_address,
+		newsletter_name: newsletter_name
 	};
 	
 	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 

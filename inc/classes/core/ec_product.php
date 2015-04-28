@@ -11,12 +11,14 @@ class ec_product{
 	public $description;						// Text
 	public $short_description;					// VARCHAR 2048
 	public $specifications;						// Text
-	public $price;								// Float 7,2
-	public $list_price;							// Float 7,2
-	public $vat_rate;							// FLOAT 11,2
-	public $handling_price;						// FLOAT 11,2
+	public $price;								// Float 15,3
+	public $list_price;							// Float 15,3
+	public $vat_rate;							// FLOAT 15,3
+	public $handling_price;						// FLOAT 15,3
+	public $handling_price_each;				// FLOAT 15,3
 	public $stock_quantity;						// INT
 	public $min_purchase_quantity;				// INT
+	public $max_purchase_quantity;				// INT
 	public $weight;								// Float 9,2
 	public $width;								// DOUBLE 15,3
 	public $height;								// DOUBLE 15,3
@@ -64,6 +66,7 @@ class ec_product{
 	
 	public $subscription_bill_length;			// INT
 	public $subscription_bill_period;			// VARCHAR(20)
+	public $subscription_bill_duration;			// INT
 	public $trial_period_days;					// INT
 	public $stripe_plan_added;					// VARCHAR(128)
 	public $subscription_signup_fee;			// FLOAT 15,3
@@ -163,8 +166,10 @@ class ec_product{
 		$this->list_price = $product_data['list_price'];
 		$this->vat_rate = $product_data['vat_rate'];
 		$this->handling_price = $product_data['handling_price'];
+		$this->handling_price_each = $product_data['handling_price_each'];
 		$this->stock_quantity = $product_data['stock_quantity'];
 		$this->min_purchase_quantity = $product_data['min_purchase_quantity'];
+		$this->max_purchase_quantity = $product_data['max_purchase_quantity'];
 		$this->weight = $product_data['weight'];
 		$this->width = $product_data['width'];
 		$this->height = $product_data['height'];
@@ -219,6 +224,7 @@ class ec_product{
 		
 		$this->subscription_bill_length = $product_data['subscription_bill_length'];
 		$this->subscription_bill_period = $product_data['subscription_bill_period'];
+		$this->subscription_bill_duration = $product_data['subscription_bill_duration'];
 		$this->trial_period_days = $product_data['trial_period_days'];
 		$this->stripe_plan_added = $product_data['stripe_plan_added'];
 		$this->subscription_signup_fee = $product_data['subscription_signup_fee'];

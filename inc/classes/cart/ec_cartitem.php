@@ -29,6 +29,7 @@ class ec_cartitem{
 	public $total_price;											// FLOAT 15,3
 	public $prev_price;												// FLOAT 15,3
 	public $handling_price;											// FLOAT 15,3
+	public $handling_price_each;									// FLOAT 15,3
 	public $discount_price;											// FLOAT 15,3
 	public $pricetiers = array();									// Array of rows of ec_pricetier
 	
@@ -378,6 +379,7 @@ class ec_cartitem{
 		$this->total_price = ( $this->unit_price * $this->quantity ) + $options_price_onetime + $grid_price_change;
 		$this->total_weight = ( $this->weight * $this->quantity ) + $options_weight_onetime;
 		$this->handling_price = $cartitem_data->handling_price;
+		$this->handling_price_each = $cartitem_data->handling_price_each;
 		
 		if( $cartitem_data->vat_rate > 0 )
 			$this->vat_enabled = true;

@@ -77,8 +77,29 @@ class ec_manufacturerwidget extends WP_Widget{
 				$level = 0;
 				$menu_id = 0;
 			}
+		}else if( isset( $GLOBALS['ec_store_shortcode_options'] ) ){
+			
+			// If content loads first, we can grab the shortcode option
+			$menulevel1 = $GLOBALS['ec_store_shortcode_options'][0];
+			$menulevel2 = $GLOBALS['ec_store_shortcode_options'][1];
+			$menulevel3 = $GLOBALS['ec_store_shortcode_options'][2];
+			
+			if( $menulevel1 != "NOMENU" ){
+				$level = 1;
+				$menu_id = $menulevel1;
+			}else if( $menulevel2 != "NOSUBMENU" ){
+				$level = 2;
+				$menu_id = $menulevel2;
+			}else if( $menulevel3 != "NOSUBSUBMENU" ){
+				$level = 3;
+				$menu_id = $menulevel3;
+			}else{
+				$level = 0;
+				$menu_id = 0;
+			}
+			
 		}else{
-			//New Linking Format Code
+			// Otherwise hope that someone didn't manually add shortcode to page and pull based on post id
 			global $wp_query;
 			$post_obj = $wp_query->get_queried_object();
 			if( isset( $post_obj ) && isset( $post_obj->ID ) ){
@@ -113,15 +134,21 @@ class ec_manufacturerwidget extends WP_Widget{
 			$manufacturer = $mysqli->get_manufacturer_id_from_post_id( $post_id );
 			$group = $mysqli->get_category_id_from_post_id( $post_id );
 			
-			if( isset( $manufacturer ) )
+			if( isset( $_GET['manufacturer'] ) )
+				$man_id = $_GET['manufacturer'];
+			else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && $GLOBALS['ec_store_shortcode_options'][3] != "NOMANUFACTURER" )
+				$man_id = $GLOBALS['ec_store_shortcode_options'][3];
+			else if( isset( $manufacturer ) )
 				$man_id = $manufacturer->manufacturer_id;
 			else
 				$man_id = 0;
-			
-			if( isset( $group ) )
-				$group_id = $group->category_id;
-			else if( isset( $_GET['group_id'] ) )
+				
+			if( isset( $_GET['group_id'] ) )
 				$group_id = $_GET['group_id'];
+			else if( isset( $GLOBALS['ec_store_shortcode_options'] ) && $GLOBALS['ec_store_shortcode_options'][4] != "NOGROUP" )
+				$group_id = $GLOBALS['ec_store_shortcode_options'][4];
+			else if( isset( $group ) )
+				$group_id = $group->category_id;
 			else
 				$group_id = 0;
 		}else{

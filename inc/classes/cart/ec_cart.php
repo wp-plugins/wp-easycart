@@ -215,6 +215,7 @@ class ec_cart{
 		$handling_total = 0;
 		for( $i=0; $i<count( $this->cart ); $i++ ){
 			$handling_total = $handling_total + $this->cart[$i]->handling_price;
+			$handling_total = $handling_total + ( $this->cart[$i]->handling_price_each * $this->cart[$i]->quantity );
 		}
 		return $handling_total;
 	}

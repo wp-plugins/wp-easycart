@@ -23,7 +23,7 @@ class ec_goemerchant extends ec_gateway{
 		else if( $this->credit_card->payment_method == "discover" )
 			$goemerchant_payment_method = "discover";
 		else
-			$goemerchant_payment_method = "visa";
+			$goemerchant_payment_method = "no";
 		
 		$goemerchant_xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
 <TRANSACTION> 
@@ -68,8 +68,6 @@ class ec_goemerchant extends ec_gateway{
 	}
 	
 	function handle_gateway_response( $response ){
-		
-		print_r( $response );
 		
 		$response_body = $response;
 		$xml = new SimpleXMLElement($response_body);

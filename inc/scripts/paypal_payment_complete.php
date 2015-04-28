@@ -22,7 +22,7 @@ if( $verified ) {
     $errmsg = '';
     
 
-    if( strtolower( $_POST['receiver_email'] ) != strtolower( get_option( 'ec_option_paypal_email' ) ) ) {
+    if( strtolower( $_POST['receiver_email'] ) != strtolower( get_option( 'ec_option_paypal_email' ) ) && strtolower( $_POST['business'] ) != strtolower( get_option( 'ec_option_paypal_email' ) ) ) {
         $errmsg .= "'receiver_email' does not match: ";
         $errmsg .= $_POST['receiver_email']."\n";
     }
@@ -66,8 +66,25 @@ if( $verified ) {
 				}else{
 					
 					// Add a subscription item
+					$order_row = $mysqli->get_order_row_admin( $order_id );
+					
+					$mysqli->insert_response( $order_id, 1, "PayPal Subscription", print_r( $order_row, true ) );
+				
 					$mysqli->insert_paypal_subscription( $_POST['item_name'], $_POST['payer_email'], $_POST['first_name'], $_POST['last_name'], $_POST['residence_country'], $_POST['mc_gross'], $_POST['payment_date'], $_POST['txn_id'], $_POST['txn_type'], $_POST['subscr_id'], $_POST['username'], $_POST['password'] );
 				
+					$mysqli->update_order_status( $order_id, "10" );
+					do_action( 'wpeasycart_order_paid', $orderid );
+					
+					// send email
+					$order_display = new ec_orderdisplay( $order_row, true, true );
+					$order_display->send_email_receipt( );
+		
+					// Quickbooks Hook
+					if( file_exists( WP_PLUGIN_DIR . "/" . EC_QB_PLUGIN_DIRECTORY . "/ec_quickbooks.php" ) ){
+						$quickbooks = new ec_quickbooks( );
+						$quickbooks->add_order( $order_id );
+					}
+					
 				}
 				
 			}else if(  $_POST['txn_type'] == "subscr_signup" ){

@@ -372,6 +372,9 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"p3\" id=\"p3\" type=\"hidden\" value=\"" . htmlspecialchars( $product->subscription_bill_length, ENT_QUOTES ) . "\" />";
 		echo "<input name=\"t3\" id=\"t3\" type=\"hidden\" value=\"" . htmlspecialchars( $product->subscription_bill_period, ENT_QUOTES ) . "\" />";
 		echo "<input name=\"src\" id=\"src\" type=\"hidden\" value=\"1\" />";
+		if( $product->subscription_bill_duration > 1 )
+			echo "<input name=\"srt\" id=\"srt\" type=\"hidden\" value=\"" . $product->subscription_bill_duration . "\" />";
+		
 		echo "<input name=\"no_note\" id=\"no_note\" type=\"hidden\" value=\"1\" />";
 		
 		echo "<input name=\"custom\" id=\"custom\" type=\"hidden\" value=\"" . $order_id . "\" />";

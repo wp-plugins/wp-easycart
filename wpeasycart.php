@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple ecommerce solution that installs into new or existing WordPress blogs. Customers purchase directly from your store! Get a full ecommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/3.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.26
+ * Version: 3.0.27
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.26
+ * @version 3.0.27
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,9 +20,9 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_26' );
+define( 'EC_CURRENT_VERSION', '3_0_27' );
 define( 'EC_CURRENT_DB', '1_30' );
-define( 'EC_UPGRADE_DB', '33' );
+define( 'EC_UPGRADE_DB', '34' );
 
 if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
 	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
@@ -562,8 +562,14 @@ function load_ec_pre(){
 	
 	/* Newsletter Form Actions */
 	if( isset( $_POST['ec_newsletter_email'] ) ){
+		
+		if( isset( $_POST['ec_newsletter_name'] ) )
+			$newsletter_name = $_POST['ec_newsletter_name'];
+		else
+			$newsletter_name = "";
+		
 		$ec_db = new ec_db();
-		$ec_db->insert_subscriber( $_POST['ec_newsletter_email'], "", "" );
+		$ec_db->insert_subscriber( $_POST['ec_newsletter_email'], $newsletter_name, "" );
 			
 		// MyMail Hook
 		if( function_exists( 'mymail' ) ){
@@ -1925,6 +1931,7 @@ add_action( 'wp_ajax_nopriv_ec_ajax_insert_customer_review', 'ec_ajax_insert_cus
 function ec_ajax_insert_customer_review( ){
 	
 	//Get the variables from the AJAX call
+	$user = new ec_user( "" );
 	$product_id = $_POST['product_id'];
 	$rating = $_POST['review_score'];
 	$title = $_POST['review_title'];
@@ -1932,7 +1939,7 @@ function ec_ajax_insert_customer_review( ){
 	
 	//Create a new db and submit review
 	$db = new ec_db();
-	echo $db->submit_customer_review( $product_id, $rating, $title, $description );
+	echo $db->submit_customer_review( $product_id, $rating, $title, $description, $user->user_id );
 	
 	die(); // this is required to return a proper result
 	
@@ -1970,7 +1977,7 @@ add_action( 'wp_ajax_nopriv_ec_ajax_submit_newsletter_signup', 'ec_ajax_submit_n
 function ec_ajax_submit_newsletter_signup( ){
 	
 	$ec_db = new ec_db();
-	$ec_db->insert_subscriber( $_POST['email_address'], "", "" );
+	$ec_db->insert_subscriber( $_POST['email_address'], $_POST['newsletter_name'], "" );
 			
 	// MyMail Hook
 	if( function_exists( 'mymail' ) ){

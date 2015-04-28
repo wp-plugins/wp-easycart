@@ -450,6 +450,8 @@ class ec_stripe extends ec_gateway{
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query( $gateway_data ) );
 		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30);
 		$response = curl_exec($ch);
+		if( $response === false )
+			$this->mysqli->insert_response( 0, 1, "STRIPE CURL ERROR", curl_error( $ch ) );
 		curl_close ($ch);
 		
 		return $response;
@@ -470,6 +472,8 @@ class ec_stripe extends ec_gateway{
 		curl_setopt($ch, CURLOPT_HTTPGET, true );
 		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30);
 		$response = curl_exec($ch);
+		if( $response === false )
+			$this->mysqli->insert_response( 0, 1, "STRIPE GET CURL ERROR", curl_error( $ch ) );
 		curl_close ($ch);
 		
 		return $response;
@@ -489,6 +493,8 @@ class ec_stripe extends ec_gateway{
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headr );
 		curl_setopt($ch, CURLOPT_TIMEOUT, (int)30);
 		$response = curl_exec($ch);
+		if( $response === false )
+			$this->mysqli->insert_response( 0, 1, "STRIPE DELETE CURL ERROR", curl_error( $ch ) );
 		curl_close ($ch);
 		
 		return $response;

@@ -110,12 +110,20 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			if( $subscription && $subscription->last_payment_date == $payment_timestamp ){
 				$mysqli->update_stripe_order( $subscription->subscription_id, $stripe_charge_id );
 			}else if( $subscription ){
-				$order_id = $mysqli->insert_stripe_order( $subscription, $webhook_data );
-				$mysqli->update_stripe_subscription( $subscription_id, $webhook_data );
+				$user = $mysqli->get_stripe_user( $webhook_data->customer );
+				$order_id = $mysqli->insert_stripe_order( $subscription, $webhook_data, $user );
+				$mysqli->update_stripe_subscription( $stripe_subscription_id, $webhook_data );
 				$db_admin = new ec_db_admin( );
 				$order_row = $db_admin->get_order_row_admin( $order_id );
 				$order = new ec_orderdisplay( $order_row, true, true );
 				$order->send_email_receipt( );
+				
+				if( $subscription->payment_duration > 0 && $subscription->payment_duration <= $subscription->number_payments_completed + 1 ){
+					// Used to cancel when payment duration reached
+					$stripe = new ec_stripe( );
+					$stripe->cancel_subscription( $user, $stripe_subscription_id );
+					$mysqli->cancel_stripe_subscription( $stripe_subscription_id );
+				}
 				
 				if( class_exists( "Affiliate_WP" ) && affiliate_wp( )->tracking->was_referred( ) ){
 			

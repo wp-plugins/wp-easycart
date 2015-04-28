@@ -59,9 +59,12 @@ if( $is_preview_holder && $is_admin ){ ?>
     	    	<div class="ec_admin_video">
                 	<h3>WP EasyCart Design Help</h3>
                     <h5>Do you need help in designing your perfect store? Watch our short video and start on your way to success.</h5>
-                    <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( );">hide it forever</a></div>
+                    <div class="ec_admin_video_hide_div"><a href="" onclick="ec_admin_hide_video_from_page( '<?php global $post; echo $post->ID; ?>' ); return false;">Hide the help video for this page?</a> OR if you no longer need design help, <a href="" onclick="ec_admin_hide_video_forever( ); return false;">hide it forever</a></div>
     	        	
-                    <embed id="ec_admin_youtube_video" height="480" width="853" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen allowfullscreen="true" allowscriptaccess="always" quality="high" bgcolor="#000000" name="ec_admin_youtube_video" style="margin-bottom:-6px;" src="http://www.youtube.com/v/8Vc-69M-UWk?enablejsapi=1&version=3&playerapiid=ytplayer" type="application/x-shockwave-flash">
+                    <video width="853" height="480" controls>
+						<source src="https://wpeasycart.com/videos/v3_feature_demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                     
     	        	<div class="ec_admin_video_close"><input type="button" onclick="ec_admin_close_video_screen( );" value="x"></div>
                 </div>
@@ -181,7 +184,7 @@ function ec_admin_save_cart_options( ){
             
             <div class="ec_cart_input_row">
                 <label for="ec_cart_login_email"><?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_email_label' ); ?>*</label>
-                <input type="email" id="ec_cart_login_email" name="ec_cart_login_email" />
+                <input type="text" id="ec_cart_login_email" name="ec_cart_login_email" />
             </div>
             <div class="ec_cart_error_row" id="ec_cart_login_email_error">
                 <?php echo $GLOBALS['language']->get_text( 'cart_form_notices', 'cart_notice_please_enter_your' ); ?> <?php echo $GLOBALS['language']->get_text( 'cart_login', 'cart_login_email_label' ); ?>

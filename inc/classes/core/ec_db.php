@@ -225,9 +225,13 @@ class ec_db{
 				ec_review.rating, 
 				ec_review.title,
 				ec_review.description,
-				ec_review.date_submitted
+				ec_review.date_submitted,
+				ec_user.first_name,
+				ec_user.last_name
 				
 				FROM ec_review
+				
+				LEFT JOIN ec_user ON ec_review.user_id = ec_user.user_id
 				
 				WHERE ec_review.approved = 1
 				
@@ -320,6 +324,8 @@ class ec_db{
 	
 	public function get_product_list( $where_query, $order_query, $limit_query, $session_id ){
 		
+		$this->mysqli->query( "SET SQL_BIG_SELECTS=1" );
+		
 		$sql1 = "SELECT product.product_id
 				
 				FROM ec_product as product 
@@ -352,8 +358,10 @@ class ec_db{
 				product.list_price,
 				product.vat_rate,
 				product.handling_price,
+				product.handling_price_each,
 				product.stock_quantity,
 				product.min_purchase_quantity,
+				product.max_purchase_quantity,
 				product.weight,
 				product.width,
 				product.height,
@@ -379,6 +387,7 @@ class ec_db{
 				
 				product.subscription_bill_length,
 				product.subscription_bill_period,
+				product.subscription_bill_duration,
 				product.trial_period_days,
 				product.stripe_plan_added,
 				product.subscription_signup_fee,
@@ -588,8 +597,10 @@ class ec_db{
 						"list_price" => $row->list_price, 
 						"vat_rate" => $row->vat_rate,
 						"handling_price" => $row->handling_price,
+						"handling_price_each" => $row->handling_price_each,
 						"stock_quantity" => $row->stock_quantity,
 						"min_purchase_quantity" => $row->min_purchase_quantity,
+						"max_purchase_quantity" => $row->max_purchase_quantity,
 						"weight" => $row->weight,  
 						"width" => $row->width,  
 						"height" => $row->height,  
@@ -615,6 +626,7 @@ class ec_db{
 						
 						"subscription_bill_length" => $row->subscription_bill_length,
 						"subscription_bill_period" => $row->subscription_bill_period,
+						"subscription_bill_duration" => $row->subscription_bill_duration,
 						"trial_period_days" => $row->trial_period_days,
 						"stripe_plan_added" => $row->stripe_plan_added,
 						"subscription_signup_fee" => $row->subscription_signup_fee,
@@ -1004,7 +1016,7 @@ class ec_db{
 	}
 	
 	public function get_customer_reviews( $product_id ){
-		return $this->mysqli->get_results( "SELECT review_id, rating, title, description, approved, DATE_FORMAT(date_submitted, '%W, %M %e, %Y') as review_date " . $this->mysqli->prepare( "FROM ec_review WHERE product_id = '%s' AND approved = 1 ORDER BY date_submitted DESC", $product_id ) );
+		return $this->mysqli->get_results( "SELECT ec_review.review_id, ec_review.rating, ec_review.title, ec_review.description, ec_review.approved, DATE_FORMAT(ec_review.date_submitted, '%W, %M %e, %Y') as review_date, ec_user.first_name, ec_user.last_name " . $this->mysqli->prepare( "FROM ec_review LEFT JOIN ec_user ON ec_user.user_id = ec_review.user_id WHERE product_id = %d AND approved = 1 ORDER BY date_submitted DESC", $product_id ) );
 	}
 	
 	public function get_temp_cart( $session_id ){
@@ -1015,6 +1027,7 @@ class ec_db{
 				product.manufacturer_id,
 				product.price,
 				product.handling_price,
+				product.handling_price_each,
 				product.vat_rate,
 				product.title,
 				product.description,
@@ -1038,6 +1051,7 @@ class ec_db{
 				product.amazon_key,
 				product.include_code,
 				product.min_purchase_quantity,
+				product.max_purchase_quantity,
 				product.subscription_signup_fee,
 				
 				tempcart.tempcart_id as cartitem_id,
@@ -1171,14 +1185,15 @@ class ec_db{
 		return $this->mysqli->get_results($sql);
 	}
 	
-	public function submit_customer_review( $product_id, $rating, $title, $description ){
+	public function submit_customer_review( $product_id, $rating, $title, $description, $user_id = 0 ){
 		return $this->mysqli->insert( 	'ec_review', 
 										array( 	'product_id' => $product_id, 
+												'user_id' => $user_id, 
 												'rating' => $rating, 
 												'title' => $title, 
 												'description' => $description 
 										), 
-										array( '%d', '%d', '%s', '%s' )
+										array( '%d', '%d', '%d', '%s', '%s' )
 									);
 	}
 	
@@ -1473,7 +1488,7 @@ class ec_db{
 		$optionitem_id_5 = $tempcart_item->optionitem_id_5;
 		
 		// Get the limit on this product
-		$product_sql = "SELECT show_stock_quantity, stock_quantity, use_optionitem_quantity_tracking, min_purchase_quantity FROM ec_product WHERE product_id = %d";
+		$product_sql = "SELECT show_stock_quantity, stock_quantity, use_optionitem_quantity_tracking, min_purchase_quantity, max_purchase_quantity FROM ec_product WHERE product_id = %d";
 		$optionitem_sql = "SELECT quantity FROM ec_optionitemquantity WHERE product_id = %d AND optionitem_id_1 = %d AND optionitem_id_2 = %d AND optionitem_id_3 = %d AND optionitem_id_4 = %d AND optionitem_id_5 = %d";
 		$tempcart_optionitem_sql = "SELECT quantity FROM ec_tempcart WHERE tempcart_id = %d";
 		$tempcart_sql = "SELECT SUM(quantity) as quantity FROM ec_tempcart WHERE session_id = '%s' AND product_id = %d";
@@ -1514,6 +1529,11 @@ class ec_db{
 		// Don't allow less than the minimum
 		if( $product->min_purchase_quantity > 0 && $quantity < $product->min_purchase_quantity ){
 			$quantity = $product->min_purchase_quantity;
+		}
+		
+		// Don't allow more than the maximum
+		if( $product->max_purchase_quantity > 0 && $quantity > $product->max_purchase_quantity ){
+			$quantity = $product->max_purchase_quantity;
 		}
 		
 		// Don't allow negative quantities!
@@ -2963,7 +2983,7 @@ class ec_db{
 	
 	public function insert_paypal_subscription( $item_name, $payer_email, $first_name, $last_name, $residence_country, $mc_gross, $payment_date, $txn_id, $txn_type, $subscr_id, $username, $password ){
 		
-		$sql = "SELECT ec_product.model_number, ec_product.subscription_bill_length, ec_product.subscription_bill_period FROM ec_product WHERE ec_product.title LIKE %s";
+		$sql = "SELECT ec_product.model_number, ec_product.subscription_bill_length, ec_product.subscription_bill_period, ec_product.subscription_bill_duration FROM ec_product WHERE ec_product.title LIKE %s";
 		$result = $this->mysqli->get_results( $this->mysqli->prepare( $sql, $item_name ) );
 		
 		$model_number = "";
@@ -2973,10 +2993,11 @@ class ec_db{
 			$model_number = $result[0]->model_number;
 			$bill_length = $result[0]->subscription_bill_length;
 			$bill_period = $result[0]->subscription_bill_period;
+			$bill_duration = $result[0]->subscription_bill_duration;
 		}
 		
-		$sql = "INSERT INTO ec_subscription( subscription_type, title, email, first_name, last_name, user_country, model_number, price, payment_length, payment_period, last_payment_date, paypal_txn_id, paypal_txn_type, paypal_subscr_id, paypal_username, paypal_password) VALUES( 'paypal', %s, %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s )";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $item_name, $payer_email, $first_name, $last_name, $residence_country, $model_number, $mc_gross, $bill_length, $bill_period, $payment_date, $txn_id, $txn_type, $subscr_id, $username, $password ) );
+		$sql = "INSERT INTO ec_subscription( subscription_type, title, email, first_name, last_name, user_country, model_number, price, payment_length, payment_period, payment_duration, last_payment_date, paypal_txn_id, paypal_txn_type, paypal_subscr_id, paypal_username, paypal_password) VALUES( 'paypal', %s, %s, %s, %s, %s, %s, %s, %d, %s, %d. %s, %s, %s, %s, %s, %s )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $item_name, $payer_email, $first_name, $last_name, $residence_country, $model_number, $mc_gross, $bill_length, $bill_period, $bill_duration, $payment_date, $txn_id, $txn_type, $subscr_id, $username, $password ) );
 	
 	}
 	
@@ -3013,8 +3034,8 @@ class ec_db{
 	}
 	
 	public function insert_stripe_subscription( $subscription, $product, $user, $card ){
-		$sql = "INSERT INTO ec_subscription( subscription_type, title, user_id, email, first_name, last_name, product_id, price, payment_length, payment_period, stripe_subscription_id, last_payment_date, next_payment_date ) VALUES( 'stripe', %s, %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s )";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $product->title, $user->user_id, $user->email, $user->billing->first_name, $user->billing->last_name, $product->product_id, $product->price, $product->subscription_bill_length, $product->subscription_bill_period, $subscription->id, $subscription->current_period_start, $subscription->current_period_end ) );
+		$sql = "INSERT INTO ec_subscription( subscription_type, title, user_id, email, first_name, last_name, product_id, price, payment_length, payment_period, payment_duration, stripe_subscription_id, last_payment_date, next_payment_date ) VALUES( 'stripe', %s, %s, %s, %s, %s, %s, %s, %d, %s, %d, %s, %s, %s )";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $product->title, $user->user_id, $user->email, $user->billing->first_name, $user->billing->last_name, $product->product_id, $product->price, $product->subscription_bill_length, $product->subscription_bill_period, $product->subscription_bill_duration, $subscription->id, $subscription->current_period_start, $subscription->current_period_end ) );
 		
 		return $this->mysqli->insert_id;
 	}
@@ -3113,7 +3134,7 @@ class ec_db{
 		$sql = "SELECT ec_product.subscription_plan_id FROM ec_subscription, ec_product WHERE ec_subscription.subscription_id = %d AND ec_product.product_id = ec_subscription.product_id";
 		$plan_id = $this->mysqli->get_var( $this->mysqli->prepare( $sql, $subscription_id ) );
 		if( $plan_id != 0 ){
-			$sql = "SELECT ec_product.title, ec_product.product_id, ec_product.price, ec_product.subscription_bill_length, ec_product.subscription_bill_period,  ec_subscription_plan.can_downgrade FROM ec_product, ec_subscription_plan WHERE ec_product.subscription_plan_id = %d AND ec_subscription_plan.subscription_plan_id = ec_product.subscription_plan_id ORDER BY ec_product.price ASC";
+			$sql = "SELECT ec_product.title, ec_product.product_id, ec_product.price, ec_product.subscription_bill_length, ec_product.subscription_bill_period, ec_product.subscription_bill_duration,  ec_subscription_plan.can_downgrade FROM ec_product, ec_subscription_plan WHERE ec_product.subscription_plan_id = %d AND ec_subscription_plan.subscription_plan_id = ec_product.subscription_plan_id ORDER BY ec_product.price ASC";
 			return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $plan_id ) );
 		}else{
 			return array( );
@@ -3121,13 +3142,13 @@ class ec_db{
 	}
 	
 	public function upgrade_subscription( $subscription_id, $product ){
-		$sql = "UPDATE ec_subscription SET title = %s, product_id = %d, price = %s, payment_length = %d, payment_period = %s WHERE subscription_id = %d";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $product->title, $product->product_id, $product->price, $product->subscription_bill_length, $product->subscription_bill_period, $subscription_id ) );
+		$sql = "UPDATE ec_subscription SET title = %s, product_id = %d, price = %s, payment_length = %d, payment_period = %s, payment_duration = %s WHERE subscription_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $product->title, $product->product_id, $product->price, $product->subscription_bill_length, $product->subscription_bill_period, $product->subscription_bill_duration, $subscription_id ) );
 	}
 	
 	public function update_subscription( $subscription_id, $user, $product, $card ){
-		$sql = "UPDATE ec_subscription SET title = %s, email = %s, first_name = %s, last_name = %s, product_id = %d, price = %s, payment_length = %d, payment_period = %s WHERE subscription_id = %d";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $product->title, $user->email, $user->billing->first_name, $user->billing->last_name, $product->product_id, $product->price, $product->subscription_bill_length, $product->subscription_bill_period, $subscription_id ) );
+		$sql = "UPDATE ec_subscription SET title = %s, email = %s, first_name = %s, last_name = %s, product_id = %d, price = %s, payment_length = %d, payment_period = %s, payment_duration = %s WHERE subscription_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $product->title, $user->email, $user->billing->first_name, $user->billing->last_name, $product->product_id, $product->price, $product->subscription_bill_length, $product->subscription_bill_period, $product->subscription_bill_duration, $subscription_id ) );
 	}
 	
 	public function get_webhook( $webhook_id ){
@@ -3141,7 +3162,7 @@ class ec_db{
 	}
 	
 	public function get_stripe_subscription( $stripe_subscription_id ){
-		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.user_id, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id, ec_product.image1 FROM ec_subscription LEFT JOIN ec_product ON ec_product.product_id = ec_subscription.product_id WHERE ec_subscription.stripe_subscription_id = %s";
+		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.user_id, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.payment_duration, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id, ec_product.image1 FROM ec_subscription LEFT JOIN ec_product ON ec_product.product_id = ec_subscription.product_id WHERE ec_subscription.stripe_subscription_id = %s";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $stripe_subscription_id ) );
 	}
 			
@@ -3150,9 +3171,7 @@ class ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $stripe_charge_id, $subscription_id ) );
 	}
 	
-	public function insert_stripe_order( $subscription, $webhook_data ){
-		
-		$user = $this->get_stripe_user( $webhook_data->customer );
+	public function insert_stripe_order( $subscription, $webhook_data, $user ){
 		
 		$this->mysqli->insert( 	'ec_order',
 						array( 	'user_id'					=> $user->user_id,
@@ -3175,7 +3194,7 @@ class ec_db{
 								'creditcard_digits'			=> $user->default_card_last4,
 								'stripe_charge_id'			=> $webhook_data->charge,
 								'subscription_id'			=> $subscription->subscription_id ),
-						array( '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ) );
+						array( '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d' ) );
 		
 		$order_id = $this->mysqli->insert_id;
 		
@@ -3239,8 +3258,9 @@ class ec_db{
 	}
 	
 	public function update_stripe_subscription( $subscription_id, $webhook_data ){
-		$sql = "UPDATE ec_subscription SET title = %s, product_id = %d, price = %s, payment_length = %d, payment_period = %s, last_payment_data = %s, next_payment_data = %s, number_payments_completed = number_paymentes_completed + 1 WHERE subscription_id = %d";
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $webhook_data->data[0]->plan->name, $webhook_data->data[0]->plan->id, ( $webhook_data->data[0]->plan->amount /100 ), $webhook_data->data[0]->plan->interval_count, $this->get_stripe_subscription_period( $webhook_data->data[0]->plan->interval ), $webhook_data->period_start, $webhook_data->period_end, $subscription_id ) );
+		$sql = "UPDATE ec_subscription SET title = %s, price = %s, payment_length = %d, payment_period = %s, last_payment_date = %s, next_payment_date = %s, number_payments_completed = number_payments_completed + 1 WHERE stripe_subscription_id = %s";
+		
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $webhook_data->lines->data[0]->plan->name, ( $webhook_data->lines->data[0]->plan->amount /100 ), $webhook_data->lines->data[0]->plan->interval_count, $this->get_stripe_subscription_period( $webhook_data->lines->data[0]->plan->interval ), $webhook_data->period_start, $webhook_data->period_end, $subscription_id ) );
 	}
 	
 	public function update_stripe_subscription_failed( $subscription_id, $webhook_data ){
@@ -3250,7 +3270,7 @@ class ec_db{
 	
 	public function get_stripe_user( $stripe_customer_id ){
 		
-		$sql = "SELECT ec_user.user_id, ec_user.first_name, ec_user.last_name, ec_user.user_level, ec_user.default_billing_address_id, ec_user.default_shipping_address_id, ec_user.is_subscriber, ec_user.realauth_registered, ec_user.stripe_customer_id, ec_user.default_card_type, ec_user.default_card_last4,
+		$sql = "SELECT ec_user.user_id, ec_user.first_name, ec_user.last_name, ec_user.user_level, ec_user.default_billing_address_id, ec_user.default_shipping_address_id, ec_user.is_subscriber, ec_user.realauth_registered, ec_user.stripe_customer_id, ec_user.default_card_type, ec_user.default_card_last4, ec_user.email,
 				
 				billing.first_name as billing_first_name, billing.last_name as billing_last_name, billing.address_line_1 as billing_address_line_1, billing.address_line_2 as billing_address_line_2, billing.city as billing_city, billing.state as billing_state, billing.zip as billing_zip, billing.country as billing_country, billing.phone as billing_phone, billing.company_name as billing_company_name
 				
@@ -3496,8 +3516,10 @@ class ec_db{
 				product.list_price,
 				product.vat_rate,
 				product.handling_price,
+				product.handling_price_each,
 				product.stock_quantity,
 				product.min_purchase_quantity,
+				product.max_purchase_quantity,
 				product.weight,
 				product.width,
 				product.height,
@@ -3523,6 +3545,7 @@ class ec_db{
 				
 				product.subscription_bill_length,
 				product.subscription_bill_period,
+				product.subscription_bill_duration,
 				product.trial_period_days,
 				product.stripe_plan_added,
 				product.subscription_signup_fee,

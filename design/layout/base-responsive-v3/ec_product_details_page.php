@@ -693,6 +693,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
             <?php /* PRODUCT ADD TO CART */ ?>
             <div class="ec_details_option_row_error" id="ec_addtocart_quantity_exceeded_error"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_maximum_quantity' ); ?></div>
             <div class="ec_details_option_row_error" id="ec_addtocart_quantity_minimum_error"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text1' ); ?> <?php echo $this->product->min_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text2' ); ?></div>
+            <div class="ec_details_option_row_error" id="ec_addtocart_quantity_maximum_error"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_maximum_quantity_text1' ); ?> <?php echo $this->product->max_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_maximum_quantity_text2' ); ?></div>
             
             <div class="ec_details_add_to_cart_area">
 				
@@ -728,7 +729,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
                 
                 <?php /* REGULAR BUTTON + QUANTITY */ ?>
                 <?php }else if( $this->product->in_stock( ) ){ ?>
-                <div class="ec_details_quantity"<?php if( $has_quantity_grid ){ ?> style="display:none;"<?php }?>><input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->min_purchase_quantity; ?> );" /><input type="number" value="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" name="ec_quantity" id="ec_quantity" autocomplete="off" step="1" min="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" class="ec_quantity"<?php if( $this->product->show_stock_quantity ){ ?> max="<?php echo $this->product->stock_quantity; ?>"<?php }?> /><input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->show_stock_quantity; ?>, <?php echo $this->product->min_purchase_quantity; ?>, <?php echo $this->product->stock_quantity; ?> );" /></div>
+                <div class="ec_details_quantity"<?php if( $has_quantity_grid ){ ?> style="display:none;"<?php }?>><input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->min_purchase_quantity; ?> );" /><input type="number" value="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" name="ec_quantity" id="ec_quantity" autocomplete="off" step="1" min="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" class="ec_quantity"<?php if( $this->product->show_stock_quantity || $this->product->max_purchase_quantity > 0 ){ ?> max="<?php if( $this->product->max_purchase_quantity > 0 ){ echo $this->product->max_purchase_quantity; }else{ echo $this->product->stock_quantity; } ?>"<?php }?> /><input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->show_stock_quantity; ?>, <?php echo $this->product->min_purchase_quantity; ?>, <?php if( $this->product->max_purchase_quantity > 0 ){ echo $this->product->max_purchase_quantity; }else{ echo $this->product->stock_quantity; } ?> );" /></div>
                 <div class="ec_details_add_to_cart">
                 	<input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="return ec_details_add_to_cart( );"<?php if( $has_quantity_grid ){ ?> style="margin-left:0px !important;"<?php }?> />
                 </div>
@@ -754,8 +755,12 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
             <?php if( $this->product->show_stock_quantity || $this->product->use_optionitem_quantity_tracking ){ ?><div class="ec_details_stock_total"><span id="ec_details_stock_quantity"><?php echo $this->product->stock_quantity; ?></span> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_left_in_stock' ); ?></div><?php }?>
 			
 			<?php if( $this->product->min_purchase_quantity > 1 ){ ?><div class="ec_details_min_purchase_quantity"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text1' ); ?> <?php echo $this->product->min_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text2' ); ?></div><?php }?>
+			
+			<?php if( $this->product->max_purchase_quantity > 0 ){ ?><div class="ec_details_min_purchase_quantity"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_maximum_quantity_text1' ); ?> <?php echo $this->product->max_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_maximum_quantity_text2' ); ?></div><?php }?>
             
 			<?php if( $this->product->handling_price > 0 ){ ?><div class="ec_details_handling_fee"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $this->product->handling_price ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice2' ); ?></div><?php }?>
+            
+			<?php if( $this->product->handling_price_each > 0 ){ ?><div class="ec_details_handling_fee"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_each_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $this->product->handling_price_each ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_each_notice2' ); ?></div><?php }?>
             
             <?php if( $this->product->subscription_signup_fee > 0 ){ ?><div class="ec_details_handling_fee"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_signup_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $this->product->subscription_signup_fee ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_signup_fee_notice2' ); ?></div><?php }?>
             
@@ -925,7 +930,11 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
 					$review = new ec_review( $review_row );
 					?>
                     <li>
-            	    	<div><span class="ec_details_customer_review_date"><strong><?php echo $review->title; ?></strong> - <?php echo $review->review_date; ?></span><span class="ec_details_customer_review_stars" title="Rated <?php echo $review->rating; ?> of 5"><?php echo $review->display_review_stars( ); ?></span></div>
+            	    	<div>
+                        	<span class="ec_details_customer_review_date"><strong><?php echo $review->title; ?></strong> - <?php echo $review->review_date; ?></span>
+                            <?php if( get_option( 'ec_option_customer_review_show_user_name' ) ){ ?><span class="ec_details_customer_review_name"><?php echo $review->reviewer_name; ?></span><?php }?>
+                        	<span class="ec_details_customer_review_stars" title="Rated <?php echo $review->rating; ?> of 5"><?php echo $review->display_review_stars( ); ?></span>
+                        </div>
             	        <div class="ec_details_customer_review_data"><?php echo nl2br( stripslashes( $review->description ) ); ?></div>
             	    </li>
                     <?php } ?>
@@ -934,6 +943,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
             <?php }else{ ?>
             <div class="ec_details_customer_reviews_left"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_review_no_reviews' ); ?></div>
             <?php } ?>
+            <?php if( !get_option( 'ec_option_customer_review_require_login' ) || ( isset( $_SESSION['ec_user_id'] ) && $_SESSION['ec_user_id'] > 0 ) ){ ?>
             <div class="ec_details_customer_reviews_form">
             	<div class="ec_details_customer_reviews_form_holder">
                     <div class="ec_details_customer_review_loader_holder" id="ec_details_customer_review_loader">
@@ -960,6 +970,13 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
                     <div class="ec_details_customer_reviews_row" id="ec_details_review_submitted_button_row"><input type="button" disabled="disabled" value="<?php echo $GLOBALS['language']->get_text( 'customer_review', 'product_details_review_submitted_button' ); ?>" /></div>
                 </div>
             </div>
+            <?php }else{ ?>
+            <div class="ec_details_customer_reviews_form">
+            	<div class="ec_details_customer_reviews_form_holder">
+                	<?php echo $GLOBALS['language']->get_text( 'customer_review', 'product_details_review_log_in_first' ); ?>
+                </div> 
+            </div>
+            <?php }?>
         </div>
         <?php }?>
         
@@ -1924,7 +1941,7 @@ function ec_details_add_to_cart( ){
 		}
 	}
 	// -------END INQUIRY CHECK    ----------- //
-	// Maximum Quantity Check
+	// Stock Quantity Check
 	var entered_quantity = Number( jQuery( document.getElementById( 'ec_quantity' ) ).val( ) );
 	var allowed_quantity = 9999999999999;
 	if( jQuery( document.getElementById( 'ec_details_stock_quantity' ) ).length ){
@@ -1940,6 +1957,14 @@ function ec_details_add_to_cart( ){
 	var min_quantity = <?php echo $this->product->min_purchase_quantity; ?>;
 	if( entered_quantity < min_quantity ){
 		jQuery( document.getElementById( 'ec_addtocart_quantity_minimum_error' ) ).show( );
+		errors++;
+	}else{
+		jQuery( document.getElementById( 'ec_addtocart_quantity_minimum_error' ) ).hide( );
+	}
+	// Maximum Quantity Check
+	var max_quantity = <?php echo $this->product->max_purchase_quantity; ?>;
+	if( max_quantity > 0 && entered_quantity > max_quantity ){
+		jQuery( document.getElementById( 'ec_addtocart_quantity_maximum_error' ) ).show( );
 		errors++;
 	}else{
 		jQuery( document.getElementById( 'ec_addtocart_quantity_minimum_error' ) ).hide( );

@@ -79,6 +79,7 @@ class ec_payment{
 		else if($this->proccess_method == "eway"			)			$gateway = new ec_eway();
 		else if($this->proccess_method == "firstdata"		)			$gateway = new ec_firstdata();
 		else if($this->proccess_method == "goemerchant"		)			$gateway = new ec_goemerchant();
+		else if($this->proccess_method == "migs"			)			$gateway = new ec_migs();
 		else if($this->proccess_method == "moneris_ca"		)			$gateway = new ec_moneris_ca();
 		else if($this->proccess_method == "moneris_us"		)			$gateway = new ec_moneris_us();
 		else if($this->proccess_method == "paymentexpress"	)			$gateway = new ec_paymentexpress();

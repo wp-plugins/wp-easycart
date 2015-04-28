@@ -38,6 +38,8 @@ if( !empty( $users ) ){
 		
 		$keys = array_keys( $results[0] );
 		
+		$data .= "\xEF\xBB\xBF";
+		
 		foreach( $keys as $key ){
 			
 			$data .= '"' . $key . '",';
@@ -63,7 +65,7 @@ if( !empty( $users ) ){
 		}
 	}
 	
-	header("Content-type: text/csv");
+	header("Content-type: text/csv; charset=UTF-8");
 	header("Content-Transfer-Encoding: binary"); 
 	header("Content-Disposition: attachment; filename=products.csv");
 	header("Pragma: no-cache");

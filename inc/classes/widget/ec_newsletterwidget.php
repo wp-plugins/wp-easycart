@@ -19,6 +19,12 @@ class ec_newsletterwidget extends WP_Widget{
 			$widget_label = __( 'Email', 'text_domain' );
 		}
 		
+		if( isset( $instance[ 'widget_name_label' ] ) ) {
+			$widget_name_label = $instance[ 'widget_name_label' ];
+		}else {
+			$widget_name_label = __( 'Name', 'text_domain' );
+		}
+		
 		if( isset( $instance[ 'widget_submit' ] ) ) {
 			$widget_submit = $instance[ 'widget_submit' ];
 		}else {
@@ -27,9 +33,11 @@ class ec_newsletterwidget extends WP_Widget{
 		
 		echo "<p><label for=\"" . $this->get_field_name( 'title' ) . "\">" . _e( 'Title:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'title' ) . "\" name=\"" . $this->get_field_name( 'title' ) . "\" type=\"text\" value=\"" . esc_attr( $title ) . "\" /></p>";
 		
-		echo "<p><label for=\"" . $this->get_field_name( 'widget_label' ) . "\">" . _e( 'Field Label:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'widget_label' ) . "\" name=\"" . $this->get_field_name( 'widget_label' ) . "\" type=\"text\" value=\"" . esc_attr( $widget_label ) . "\" /></p>";
+		echo "<p><label for=\"" . $this->get_field_name( 'widget_name_label' ) . "\">" . _e( 'Name Label (Leave blank to leave out name):' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'widget_name_label' ) . "\" name=\"" . $this->get_field_name( 'widget_name_label' ) . "\" type=\"text\" value=\"" . esc_attr( $widget_name_label ) . "\" /></p>";
 		
-		echo "<p><label for=\"" . $this->get_field_name( 'widget_submit' ) . "\">" . _e( 'Field Label:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'widget_submit' ) . "\" name=\"" . $this->get_field_name( 'widget_submit' ) . "\" type=\"text\" value=\"" . esc_attr( $widget_submit ) . "\" /></p>";
+		echo "<p><label for=\"" . $this->get_field_name( 'widget_label' ) . "\">" . _e( 'Email Label:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'widget_label' ) . "\" name=\"" . $this->get_field_name( 'widget_label' ) . "\" type=\"text\" value=\"" . esc_attr( $widget_label ) . "\" /></p>";
+		
+		echo "<p><label for=\"" . $this->get_field_name( 'widget_submit' ) . "\">" . _e( 'Button Label:' ) . "</label><input class=\"widefat\" id=\"" . $this->get_field_id( 'widget_submit' ) . "\" name=\"" . $this->get_field_name( 'widget_submit' ) . "\" type=\"text\" value=\"" . esc_attr( $widget_submit ) . "\" /></p>";
 		
 		$defaults = array();
 		$instance = wp_parse_args( (array) $instance, $defaults);
@@ -39,6 +47,7 @@ class ec_newsletterwidget extends WP_Widget{
 		$instance = array();
 		$instance['title'] = ( !empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 		$instance['widget_label'] = ( !empty( $new_instance['widget_label'] ) ) ? strip_tags( $new_instance['widget_label'] ) : '';
+		$instance['widget_name_label'] = ( !empty( $new_instance['widget_name_label'] ) ) ? strip_tags( $new_instance['widget_name_label'] ) : '';
 		$instance['widget_submit'] = ( !empty( $new_instance['widget_submit'] ) ) ? strip_tags( $new_instance['widget_submit'] ) : '';
 
 		return $instance;
@@ -57,6 +66,9 @@ class ec_newsletterwidget extends WP_Widget{
 			$widget_label = apply_filters( 'widget_label', $instance['widget_label'] );
 		else
 			$widget_label = "";
+		
+		if( isset( $instance['widget_name_label'] ) )
+			$widget_name_label = apply_filters( 'widget_name_label', $instance['widget_name_label'] );
 		
 		if( isset( $instance['widget_submit'] ) )
 			$widget_submit = apply_filters( 'widget_submit', $instance['widget_submit'] );

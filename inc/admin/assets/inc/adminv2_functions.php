@@ -888,6 +888,11 @@ function ec_live_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $live_payment == "migs" ){
+		if( get_option( 'ec_option_migs_signature' ) != "" && get_option( 'ec_option_migs_access_code' ) != "" && get_option( 'ec_option_migs_merchant_id' ) != "" )
+			return true;
+		else
+			return false;
 	}else if( $live_payment == "moneris_ca" ){
 		if( get_option( 'ec_option_moneris_ca_store_id' ) != "" && get_option( 'ec_option_moneris_ca_api_token' ) != "" )
 			return true;
@@ -975,6 +980,8 @@ function ec_get_live_payment_method( ){
 		return "First Data Global Gateway e4";
 	else if( $live_payment == "goemerchant" )
 		return "GoeMerchant";
+	else if( $live_payment == "migs" )
+		return "MasterCard Internet Gateway Service (MIGS)";
 	else if( $live_payment == "moneris_ca" )
 		return "Moneris Canada";
 	else if( $live_payment == "moneris_us" )
@@ -1285,6 +1292,8 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_show_manufacturer', $_POST['ec_option_show_manufacturer'] );
 	update_option( 'ec_option_show_magnification', $_POST['ec_option_show_magnification'] );
 	update_option( 'ec_option_show_large_popup', $_POST['ec_option_show_large_popup'] );
+	update_option( 'ec_option_customer_review_require_login', $_POST['ec_option_customer_review_require_login'] );
+	update_option( 'ec_option_customer_review_show_user_name', $_POST['ec_option_customer_review_show_user_name'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
@@ -1543,6 +1552,10 @@ function ec_update_payment_info( ){
 	update_option( 'ec_option_nets_token', $_POST['ec_option_nets_token'] );
 	update_option( 'ec_option_nets_currency', $_POST['ec_option_nets_currency'] );
 	update_option( 'ec_option_nets_test_mode', $_POST['ec_option_nets_test_mode'] );
+	//MIGS
+	update_option( 'ec_option_migs_signature', $_POST['ec_option_migs_signature'] );
+	update_option( 'ec_option_migs_access_code', $_POST['ec_option_migs_access_code'] );
+	update_option( 'ec_option_migs_merchant_id', $_POST['ec_option_migs_merchant_id'] );
 	//Moneris CA
 	update_option( 'ec_option_moneris_ca_store_id', $_POST['ec_option_moneris_ca_store_id'] );
 	update_option( 'ec_option_moneris_ca_api_token', $_POST['ec_option_moneris_ca_api_token'] );
@@ -1677,9 +1690,9 @@ function ec_design_management_update( ){
 		$targetzip = $path . $filename; // target zip file
 		
 		if( is_writable( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/theme/" ) ){ // If we can create the dir, do it, otherwise ftp it.
-			if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
+			if (is_dir($targetdir))  wpeasycart_rmdir_recursive ( $targetdir);
 			mkdir($targetdir, 0777);
-			if (is_dir($targetdir2))  rmdir_recursive ( $targetdir2);
+			if (is_dir($targetdir2))  wpeasycart_rmdir_recursive ( $targetdir2);
 			mkdir($targetdir2, 0777);
 			
 			if( is_dir( $targetdir2 ) )
@@ -1765,9 +1778,9 @@ function ec_design_management_update( ){
 		$targetzip = $path . $filename; // target zip file
 		
 		if( is_writable(  WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" ) ){ // If we can create the dir, do it, otherwise ftp it.
-			if (is_dir($targetdir))  rmdir_recursive ( $targetdir);
+			if (is_dir($targetdir))  wpeasycart_rmdir_recursive ( $targetdir);
 			mkdir($targetdir, 0777);
-			if (is_dir($targetdir2))  rmdir_recursive ( $targetdir2 );
+			if (is_dir($targetdir2))  wpeasycart_rmdir_recursive ( $targetdir2 );
 			mkdir($targetdir2, 0777);
 			if( is_dir( $targetdir ) )
 				$layout_message .= " The layout directory was created successfully.<br>";
@@ -1863,7 +1876,7 @@ function ec_update_cache_rules( ){
 	update_option( 'ec_option_cache_update_period', $_POST['ec_option_cache_update_period'] );
 }
 
-function rmdir_recursive( $path ){ 
+function wpeasycart_rmdir_recursive( $path ){ 
 	if( is_dir( $path ) ){
 		if( $handle = opendir( $path ) ){
 			while( false !== ( $file = readdir( $handle ) ) ){

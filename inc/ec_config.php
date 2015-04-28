@@ -5,11 +5,13 @@ if( get_option( 'ec_option_amazon_bucket' ) != "" ){
 }
 
 // Some servers do not set session path to a writable location. Fix this sometimes.
-if( strtoupper(substr(PHP_OS, 0, 3)) != 'WIN' && !is_writable( session_save_path( ) ) ){ // Linux
-	ini_set( 'session.save_path', '/tmp' );
-
-}else if( !is_writable( session_save_path( ) ) ){ // Windows
-	ini_set( 'session.save_path', 'c:/temp' );
+if( class_exists('memcached') ){ // Prevents activation error on servers without memcached available
+	if( strtoupper(substr(PHP_OS, 0, 3)) != 'WIN' && !is_writable( session_save_path( ) ) ){ // Linux
+		ini_set( 'session.save_path', '/tmp' );
+	
+	}else if( !is_writable( session_save_path( ) ) ){ // Windows
+		ini_set( 'session.save_path', 'c:/temp' );
+	}
 }
 
 function ec_config_is_session_started( ){
@@ -89,6 +91,8 @@ if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_firstdata.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'goemerchant' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_goemerchant.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'migs' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_migs.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'moneris_ca' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_moneris_ca.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'moneris_us' ){
@@ -267,9 +271,9 @@ include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/widget/ec_spe
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/admin_init.php' );
 include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/admin/admin_ajax_functions.php' );
 
-$GLOBALS['language'] = new ec_language( );
-$GLOBALS['currency'] = new ec_currency( );
-if( get_option( 'ec_option_is_installed' ) )
-$GLOBALS['setting'] = new ec_setting( );
-
+if( get_option( 'ec_option_is_installed' ) ){
+	$GLOBALS['language'] = new ec_language( );
+	$GLOBALS['currency'] = new ec_currency( );
+	$GLOBALS['setting'] = new ec_setting( );
+}
 ?>
