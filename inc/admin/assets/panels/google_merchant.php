@@ -7,28 +7,32 @@ if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save-google-merchant" 
 	$products = $wpdb->get_results( "SELECT ec_product.product_id, ec_product.model_number FROM ec_product" );
 	foreach( $products as $product ){ 
 		
-		// Save your Google Merchant Product Options
-		$attribute_array = array( 	"google_product_category" => $_POST['google_product_category_' . $product->model_number],
-									"product_type" => $_POST['product_type_' . $product->model_number],
-									"condition" => $_POST['condition_' . $product->model_number],
-									"gtin" => $_POST['gtin_' . $product->model_number],
-									"mpn" => $_POST['mpn_' . $product->model_number],
-									"identifier_exists" => $_POST['identifier_exists_' . $product->model_number],
-									"gender" => $_POST['gender_' . $product->model_number],
-									"age_group" => $_POST['age_group_' . $product->model_number],
-									"size_type" => $_POST['size_type_' . $product->model_number],
-									"size_system" => $_POST['size_system_' . $product->model_number],
-									"item_group_id" => $_POST['item_group_id_' . $product->model_number],
-									"color" => $_POST['color_' . $product->model_number],
-									"material" => $_POST['material_' . $product->model_number],
-									"pattern" => $_POST['pattern_' . $product->model_number],
-									"size" => $_POST['size_' . $product->model_number],
-									"weight_type" => $_POST['weight_type_' . $product->model_number],
-									"shipping_label" => $_POST['shipping_label_' . $product->model_number] );
-									
-		$attribute_json = json_encode( $attribute_array );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM ec_product_google_attributes WHERE product_id = %d", $product->product_id ) );
-		$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_google_attributes(product_id, attribute_value) VALUES( %d, %s )", $product->product_id, $attribute_json ) );
+		if( isset( $_POST['product_type_' . $product->model_number] ) ){
+			
+			// Save your Google Merchant Product Options
+			$attribute_array = array( 	"google_product_category" => $_POST['google_product_category_' . $product->model_number],
+										"product_type" => $_POST['product_type_' . $product->model_number],
+										"condition" => $_POST['condition_' . $product->model_number],
+										"gtin" => $_POST['gtin_' . $product->model_number],
+										"mpn" => $_POST['mpn_' . $product->model_number],
+										"identifier_exists" => $_POST['identifier_exists_' . $product->model_number],
+										"gender" => $_POST['gender_' . $product->model_number],
+										"age_group" => $_POST['age_group_' . $product->model_number],
+										"size_type" => $_POST['size_type_' . $product->model_number],
+										"size_system" => $_POST['size_system_' . $product->model_number],
+										"item_group_id" => $_POST['item_group_id_' . $product->model_number],
+										"color" => $_POST['color_' . $product->model_number],
+										"material" => $_POST['material_' . $product->model_number],
+										"pattern" => $_POST['pattern_' . $product->model_number],
+										"size" => $_POST['size_' . $product->model_number],
+										"weight_type" => $_POST['weight_type_' . $product->model_number],
+										"shipping_label" => $_POST['shipping_label_' . $product->model_number] );
+										
+			$attribute_json = json_encode( $attribute_array );
+			$wpdb->query( $wpdb->prepare( "DELETE FROM ec_product_google_attributes WHERE product_id = %d", $product->product_id ) );
+			$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_google_attributes(product_id, attribute_value) VALUES( %d, %s )", $product->product_id, $attribute_json ) );
+			
+		}
 		
 	}
 	

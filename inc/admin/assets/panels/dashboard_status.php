@@ -325,6 +325,15 @@ if( ec_live_payment_selected( ) && ec_live_payment_setup( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have selected to use <?php echo ec_get_live_payment_method( ); ?> as a live payment method and you have entered all necessary info.</span></div>
 <?php }else if( ec_live_payment_selected( ) ){ ?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have selected <?php echo ec_get_live_payment_method( ); ?> , but have missed some necessary info. Go to Store Setup -> Payment Setup to resolve this.</span></div>
+<?php } 
+
+////////////////////////////
+// Check for session path set
+////////////////////////////
+if( session_save_path( ) ){ ?>
+<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">Your session save path is set.</span></div>
+<?php }else{ ?>
+<div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">No session save path has been set, this is necessary for the EasyCart.</span></div>
 <?php } ?>
 
 <form action="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=store-status&ec_action=send_test_email" method="POST">

@@ -1,6 +1,6 @@
 <?php
 $isupdate = false;
-if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_options" ){
+if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_options" && isset( $_POST['ec_option_use_smart_states'] ) ){
 	ec_update_advanced_setup( );
 	$isupdate = true;
 }

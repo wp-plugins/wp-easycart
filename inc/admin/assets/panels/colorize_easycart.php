@@ -1,6 +1,6 @@
 <?php
 $isupdate = false;
-if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "colorize-easycart" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_colors" ){
+if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "colorize-easycart" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_colors" && isset( $_POST['ec_option_details_main_color'] ) ){
 	ec_update_colors( );
 	$isupdate = true;
 }

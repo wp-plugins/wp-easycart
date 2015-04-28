@@ -1,6 +1,6 @@
 <?php
 $isupdate = false;
-if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_options" ){
+if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_options" && isset( $_POST['ec_option_order_from_email'] ) ){
 	ec_save_basic_settings( );
 	$isupdate = true;
 }

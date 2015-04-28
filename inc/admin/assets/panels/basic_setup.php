@@ -1,7 +1,7 @@
 <?php 
 $isupdate = false;
 
-if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_selected_pages" ){
+if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_selected_pages" && isset( $_POST['ec_option_storepage'] ) ){
 	ec_update_pages( $_POST['ec_option_storepage'], $_POST['ec_option_accountpage'], $_POST['ec_option_cartpage'] );
 	$isupdate = true;
 	$message = "Settings saved.";

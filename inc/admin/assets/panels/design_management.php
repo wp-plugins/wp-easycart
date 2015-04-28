@@ -1,13 +1,10 @@
 <?php
 $isupdate = false;
-if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_design_options" ){
+if( isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "save_design_options" && isset( $_POST['ec_option_base_theme'] ) ){
 	ec_update_selected_design( );
 	$isupdate = true;
-}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "upload_design" ){
+}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "upload_design" && isset( $_FILES["theme_file"] ) ){
 	ec_design_management_update( );
-	$isupdate = true;
-}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "upload_design" ){
-	ec_option_copy_layout( );
 	$isupdate = true;
 }else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "design-management" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "update_cache_rules" ){
 	ec_update_cache_rules( );

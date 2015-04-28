@@ -4,15 +4,17 @@ $license = new ec_license;
 $language = new ec_language( );
 $language->update_language_data( ); //Do this to update the database if a new language is added
 
-if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-language" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "update_language" ){
+if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-language" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "update_language" && isset( $_POST['ec_option_language '] ) ){
 	ec_update_language_file( $language );
-}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-language" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "change-form-format" ){
+
+}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-language" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "change-form-format" && isset( $_POST['ec_option_use_seperate_language_forms'] ) ){
 	if( isset( $_POST['ec_option_use_seperate_language_forms'] ) ){
 		update_option( 'ec_option_use_seperate_language_forms', 1 );
 	}else{
 		update_option( 'ec_option_use_seperate_language_forms', 0 );
 	}
-}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-language" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "update-selected-language" ){
+
+}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-language" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "update-selected-language" && isset( $_POST['ec_option_language'] ) ){
 	update_option( 'ec_option_language', $_POST['ec_option_language'] );
 }
 
