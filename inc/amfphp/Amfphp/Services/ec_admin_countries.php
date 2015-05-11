@@ -63,6 +63,10 @@ class ec_admin_countries{
 		$sql = "DELETE FROM ec_country WHERE ec_country.id_cnt = %d";
 		$rows_affected = $this->db->query( $this->db->prepare( $sql, $id ) );
 		
+		//also delete any states associated with country id
+		$statesql = "DELETE FROM ec_state WHERE ec_state.idcnt_sta = %d";
+		$this->db->query( $this->db->prepare( $statesql, $id ) );
+		
 		if( $rows_affected ){
 			return array( "success" );
 		}else{
