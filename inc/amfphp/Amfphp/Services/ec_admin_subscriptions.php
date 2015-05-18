@@ -103,13 +103,13 @@ class ec_admin_subscriptions{
 		  
 	}
 	
-	function updatestripesubscription( $user, $subscription_id, $product_id ){
+	function updatestripesubscription( $user, $subscription_id, $product_id, $prorate ){
 		
 		$stripe_user = (object)array( "stripe_customer_id" => $user);
 		$stripe_product = (object)array( "product_id" => $product_id);
 		
 		$stripe = new ec_stripe;
-		$response = $stripe->update_subscription( $stripe_product, $stripe_user, NULL, $subscription_id);
+		$response = $stripe->update_subscription( $stripe_product, $stripe_user, NULL, $subscription_id, NULL, $prorate );
 		
 		if( $response ){
 			

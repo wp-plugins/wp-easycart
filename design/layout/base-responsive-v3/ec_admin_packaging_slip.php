@@ -38,9 +38,8 @@
     <td colspan='4' align='left' class='style22'><img src='<?php echo $email_logo_url; ?>'></td>
   </tr>
   <tr>
-    <td align='left' class='style22'><strong><br><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_success_order_number_is" ) . ' ' .  $order->order_id; ?></strong><br><br>
+    <td colspan='4' align='left' class='style22'><strong><br><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_success_order_number_is" ) . ' ' .  $order->order_id; ?></strong><br><br>
       </td>
-    <td colspan="3" align='right' class='style22'><strong><?php $date = date_create($order->order_date); echo date_format($date , 'l - F jS,  Y'); ?></strong></td>
   </tr>
   <tr>
     <td colspan='4' align='left' class='style20'><table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'>
@@ -420,6 +419,30 @@
     <td width='80' align='center' class='style22'>&nbsp;</td>
     <td width='91' align='center' class='style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_vat" ); ?><?php echo $vat_rate; ?>%</td>
     <td align='center' class='style22'><?php echo $vat; ?></td>
+  </tr>
+  <?php }?>
+  <?php if( $gst_rate != 0 ){ ?>
+  <tr>
+    <td width='269'>&nbsp;</td>
+    <td width='80' align='center' class='style22'>&nbsp;</td>
+    <td width='91' align='center' class='style22'>GST (<?php echo $gst_rate; ?>%)</td>
+    <td align='center' class='style22'><?php echo $gst_total; ?></td>
+  </tr>
+  <?php }?>
+  <?php if( $pst_rate != 0 ){ ?>
+  <tr>
+    <td width='269'>&nbsp;</td>
+    <td width='80' align='center' class='style22'>&nbsp;</td>
+    <td width='91' align='center' class='style22'>PST (<?php echo $pst_rate; ?>%)</td>
+    <td align='center' class='style22'><?php echo $pst_total; ?></td>
+  </tr>
+  <?php }?>
+  <?php if( $hst_rate != 0 ){ ?>
+  <tr>
+    <td width='269'>&nbsp;</td>
+    <td width='80' align='center' class='style22'>&nbsp;</td>
+    <td width='91' align='center' class='style22'>HST (<?php echo $hst_rate; ?>%)</td>
+    <td align='center' class='style22'><?php echo $hst_total; ?></td>
   </tr>
   <?php }?>
   <tr>

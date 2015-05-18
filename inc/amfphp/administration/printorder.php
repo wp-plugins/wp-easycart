@@ -49,6 +49,13 @@ if( !empty( $users ) ){
 	$vat = $GLOBALS['currency']->get_currency_display( $order->vat_total );
 	$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
 	$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
+	$gst_total = $GLOBALS['currency']->get_currency_display( $order->gst_total );
+	$pst_total = $GLOBALS['currency']->get_currency_display( $order->pst_total );
+	$hst_total = $GLOBALS['currency']->get_currency_display( $order->hst_total );
+	$gst_rate = $order->gst_rate ;
+	$pst_rate = $order->pst_rate ;
+	$hst_rate = $order->hst_rate ;
+	
 	
 	$vat_rate = 0;
 	for( $i=0; $i<count($country_list); $i++ ){
