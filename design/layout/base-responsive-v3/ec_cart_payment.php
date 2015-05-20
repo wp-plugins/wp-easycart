@@ -327,7 +327,7 @@
         <div class="ec_cart_price_row_label"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_subtotal' )?></div>
         <div class="ec_cart_price_row_total" id="ec_cart_subtotal"><?php echo $this->get_subtotal( ); ?></div>
     </div>
-    <?php if( $this->tax->is_tax_enabled( ) ){ ?>
+    <?php if( $this->order_totals->tax_total > 0 ){ ?>
     <div class="ec_cart_price_row">
         <div class="ec_cart_price_row_label"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_tax' )?></div>
         <div class="ec_cart_price_row_total" id="ec_cart_tax"><?php echo $this->get_tax_total( ); ?></div>
@@ -353,6 +353,24 @@
     <div class="ec_cart_price_row">
         <div class="ec_cart_price_row_label"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_vat' )?></div>
         <div class="ec_cart_price_row_total" id="ec_cart_vat"><?php echo $this->get_vat_total_formatted( ); ?></div>
+    </div>
+    <?php }?>
+	<?php if( get_option( 'ec_option_enable_easy_canada_tax' ) && $this->order_totals->gst_total > 0 ){ ?>
+    <div class="ec_cart_price_row">
+        <div class="ec_cart_price_row_label">GST (<?php echo $this->tax->gst_rate; ?>%)</div>
+        <div class="ec_cart_price_row_total" id="ec_cart_tax"><?php echo $this->get_gst_total( ); ?></div>
+    </div>
+    <?php }?>
+    <?php if( get_option( 'ec_option_enable_easy_canada_tax' ) && $this->order_totals->pst_total > 0 ){ ?>
+    <div class="ec_cart_price_row">
+        <div class="ec_cart_price_row_label">PST (<?php echo $this->tax->pst_rate; ?>%)</div>
+        <div class="ec_cart_price_row_total" id="ec_cart_tax"><?php echo $this->get_pst_total( ); ?></div>
+    </div>
+    <?php }?>
+    <?php if( get_option( 'ec_option_enable_easy_canada_tax' ) && $this->order_totals->hst_total > 0 ){ ?>
+    <div class="ec_cart_price_row">
+        <div class="ec_cart_price_row_label">HST (<?php echo $this->tax->hst_rate; ?>%)</div>
+        <div class="ec_cart_price_row_total" id="ec_cart_tax"><?php echo $this->get_hst_total( ); ?></div>
     </div>
     <?php }?>
     <div class="ec_cart_price_row ec_order_total">
@@ -384,8 +402,8 @@
     </div>
                     
     <div class="ec_cart_button_row">
-        <input type="submit" value="SUBMIT ORDER" class="ec_cart_button" id="ec_cart_submit_order" onclick="return ec_validate_submit_order( );" />
-        <input type="submit" value="PLEASE WAIT" class="ec_cart_button_working" id="ec_cart_submit_order_working" />
+        <input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_submit_order_button' )?>" class="ec_cart_button" id="ec_cart_submit_order" onclick="return ec_validate_submit_order( );" />
+        <input type="submit" value="<?php echo strtoupper( $GLOBALS['language']->get_text( 'cart', 'cart_please_wait' ) ); ?>" class="ec_cart_button_working" id="ec_cart_submit_order_working" />
     </div>
 </div>
 

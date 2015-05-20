@@ -41,8 +41,7 @@ class ec_admin_productimporter{
 		$this->activate_in_store_index = -1;
 		$this->limit = 20;
 		
-		ini_set("log_errors", 1);
-		ini_set("error_log", "export-error.log");
+		ini_set("auto_detect_line_endings", "1");
 
 	}	
 		
@@ -62,8 +61,18 @@ class ec_admin_productimporter{
 		$file = fopen( "../administration/productimportfile.csv", "r" );
 		
 		/** Setup valid value check arrays */
-		$valid_product_ids = $this->db->get_results( "SELECT product_id FROM ec_product", ARRAY_N );
-		$existing_model_numbers = $this->db->get_results( "SELECT model_number FROM ec_product", ARRAY_N );
+		$valid_product_ids = array( );
+		$existing_model_numbers = array( );
+		$valid_product_ids_result = $this->db->get_results( "SELECT product_id FROM ec_product", ARRAY_N );
+		$existing_model_numbers_result = $this->db->get_results( "SELECT model_number FROM ec_product", ARRAY_N );
+		
+		foreach( $valid_product_ids_result as $product_id ){
+			$valid_product_ids[] = $product_id[0];
+		}
+		
+		foreach( $existing_model_numbers_result as $model_number ){
+			$existing_model_numbers[] = $model_number[0];
+		}
 		
 		/* Setup and test headers */
 		$valid_headers_result = $this->db->get_results( "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`='ec_product'", ARRAY_N );
@@ -73,7 +82,7 @@ class ec_admin_productimporter{
 		}
 		$this->headers = fgetcsv( $file );
 		
-		for( $i=0; $i<count( $this->headers ); $i++ ){
+		for( $i=0; $i<count( $this->headers ) && $i<count($valid_headers); $i++ ){
 			
 			if( $this->headers[$i] == "product_id" ){ // do not add product id to list
 				$this->product_id_index = $i;
@@ -123,7 +132,7 @@ class ec_admin_productimporter{
 		
 		$first = true;
 		
-		for( $i=0; $i<count( $this->headers ); $i++ ){
+		for( $i=0; $i<count( $this->headers ) && $i<count($valid_headers); $i++ ){
 			
 			if( $i != $this->product_id_index && $i != $this->post_id_index ){ // Skip rows with product id and post id
 				if( !$first ){
@@ -141,7 +150,7 @@ class ec_admin_productimporter{
 		
 		$first = true;
 		
-		for( $i=0; $i<count( $this->headers ); $i++ ){
+		for( $i=0; $i<count( $this->headers ) && $i<count($valid_headers); $i++ ){
 			if( $i != $this->product_id_index && $i != $this->post_id_index ){ // Skip rows with product id and post id
 				if( !$first )
 					$insert_sql .= ",";
@@ -196,7 +205,7 @@ class ec_admin_productimporter{
 						$update_vals = array( );
 						for( $j=0; $j<count( $rows[$i] ); $j++ ){
 							if( $j != $this->product_id_index && $j != $this->post_id_index ){
-								$update_vals[] = $rows[$i][$j];
+								$update_vals[] = utf8_encode( $rows[$i][$j] );
 							}
 						}
 						$update_vals[] = $product_id; // Add product id last for the update
@@ -230,7 +239,7 @@ class ec_admin_productimporter{
 						$insert_vals = array( );
 						for( $j=0; $j<count( $rows[$i] ); $j++ ){
 							if( $j != $this->product_id_index && $j != $this->post_id_index ){
-								$insert_vals[] = $rows[$i][$j];
+								$insert_vals[] = utf8_encode( $rows[$i][$j] );
 							}
 						}
 						

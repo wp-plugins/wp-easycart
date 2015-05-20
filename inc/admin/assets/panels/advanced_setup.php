@@ -198,6 +198,165 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
+<div class="ec_admin_page_title">Canada Taxation Options</div>
+<div class="ec_adin_page_intro">In order to make setup for taxation in Canada easier, we have added a few options here to make setup quick and easy. Please select the options below to collect appropriate taxes for Candian purchases. Please be sure to enable the advanced state display on this page for best results.</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Enable Easy Canada Tax</em>This option allows you to collect Canadian tax at the standard rates and display them properly during checkout.</span></a></span>
+    <span class="ec_setting_row_label">Enable Easy Canada Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_enable_easy_canada_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_enable_easy_canada_tax') == "0" ){ echo " selected=\"selected\""; }?>>Disabled</option>
+            <option value="1"<?php if( get_option('ec_option_enable_easy_canada_tax') == "1" ){ echo " selected=\"selected\""; }?>>Enabled</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Alberta Tax</em>This option allows you to collect the 5% GST when shipping to Alberta customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Alberta Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_alberta_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_alberta_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_alberta_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect British Columbia Tax</em>This option allows you to collect the 5% GST + 7% PST when shipping to British Columbia customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect British Columbia Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_british_columbia_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_british_columbia_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_british_columbia_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Manitoba Tax</em>This option allows you to collect the 5% GST + 8% PST when shipping to Manitoba customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Manitoba Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_manitoba_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_manitoba_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_manitoba_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect New Brunswick Tax</em>This option allows you to collect the 13% HST when shipping to New Brunswick customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect New Brunswick Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_new_brunswick_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_new_brunswick_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_new_brunswick_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Newfoundland and Labrador Tax</em>This option allows you to collect the 13% HST when shipping to Newfoundland and Labrador customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Newfoundland and Labrador Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_newfoundland_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_newfoundland_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_newfoundland_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Northwest Territories Tax</em>This option allows you to collect the 5% GST when shipping to Northwest Territories customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Northwest Territories Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_northwest_territories_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_northwest_territories_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_northwest_territories_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Nova Scotia Tax</em>This option allows you to collect the 15% HST when shipping to Nova Scotia customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Nova Scotia Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_nova_scotia_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_nova_scotia_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_nova_scotia_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Nunavut Tax</em>This option allows you to collect the 5% GST when shipping to Nunavut customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Nunavut Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_nunavut_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_nunavut_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_nunavut_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Ontario Tax</em>This option allows you to collect the 13% HST when shipping to Ontario customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Ontario Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_ontario_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_ontario_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_ontario_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Prince Edward Island Tax</em>This option allows you to collect the 14% HST when shipping to Prince Edward Island customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Prince Edward Island Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_prince_edward_island_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_prince_edward_island_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_prince_edward_island_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Quebec Tax</em>This option allows you to collect the 5% GST + 5% PST when shipping to Quebec customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Quebec Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_quebec_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_quebec_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_quebec_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Saskatchewan Tax</em>This option allows you to collect the 5% GST + 5% PST when shipping to Saskatchewan customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Saskatchewan Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_saskatchewan_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_saskatchewan_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_saskatchewan_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Yukon Tax</em>This option allows you to collect the 5% GST when shipping to Yukon customers.</span></a></span>
+    <span class="ec_setting_row_label">Collect Yukon Tax:</span>
+    <span class="ec_setting_row_input">
+    	<select name="ec_option_collect_yukon_tax" style="width:200px;">
+        	<option value="0"<?php if( get_option('ec_option_collect_yukon_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
+            <option value="1"<?php if( get_option('ec_option_collect_yukon_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
+        </select>
+    </span>
+</div>
+
+<div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
+
 <div class="ec_admin_page_title">Tax Cloud Setup</div>
 <div class="ec_adin_page_intro">If you want to get the best possible tax rates, Tax Cloud is your solution! If you enter API credentials here, the tax rates entered will be ignored and the Tax Cloud provided rate will be used at all times.</div>
 

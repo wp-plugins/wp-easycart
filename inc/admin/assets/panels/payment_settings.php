@@ -99,9 +99,10 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <p>WP EasyCart offers the following live payment gateway options:
         	<ul>
             	<li>Authorize.Net</li>
+            	<li>Beanstream</li>
             	<li>Braintree S2S</li>
             	<li>Chronopay</li>
-            	<li>Data Global Gateway e4</li>
+            	<li>First Data Payeezy (e4)</li>
             	<li>Eway</li>
             	<li>GoeMerchant</li>
             	<li>MasterCard Internet Gateway Service (MIGS)</li>
@@ -129,10 +130,11 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         <? }else{ ?><?php } ?><?php if( $license->is_registered( ) && !$license->is_lite_version( ) ){ ?>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "0" ){ echo '_inactive'; } ?>" id="none_live_title">No Live Gateway Selected</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "authorize" ){ echo '_inactive'; } ?>" id="authorize_title">Authorize.Net</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "beanstream" ){ echo '_inactive'; } ?>" id="beanstream_title">Beanstream</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "braintree" ){ echo '_inactive'; } ?>" id="braintree_title">Braintree S2S</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "chronopay" ){ echo '_inactive'; } ?>" id="chronopay_title">Chronopay</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "eway" ){ echo '_inactive'; } ?>" id="eway_title">Eway</div>
-        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "firstdata" ){ echo '_inactive'; } ?>" id="firstdata_title">First Data Global Gateway e4</div>
+        <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "firstdata" ){ echo '_inactive'; } ?>" id="firstdata_title">First Data Payeezy (e4)</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "goemerchant" ){ echo '_inactive'; } ?>" id="goemerchant_title">GoeMerchant</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "migs" ){ echo '_inactive'; } ?>" id="migs_title">MasterCard Internet Gateway Service (MIGS)</div>
         <div class="ec_selected_payment_title<?php if( get_option( 'ec_option_payment_process_method' ) != "moneris_ca" ){ echo '_inactive'; } ?>" id="moneris_ca_title">Moneris Canada</div>
@@ -153,10 +155,11 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
         	<select id="paymentmethod" name="ec_option_payment_process_method" onchange="toggle_live_gateways();" value="<?php echo get_option('ec_option_payment_process_method'); ?>" style="width:250px;">
                 <option value="0" <?php if( get_option('ec_option_payment_process_method') == "0" ){ echo " selected"; } ?>>No Live Payment Processor</option>
                 <option value="authorize" <?php if( get_option('ec_option_payment_process_method') == "authorize" ){ echo " selected"; } ?>>Authorize.net</option>
+                <option value="beanstream" <?php if( get_option('ec_option_payment_process_method') == "beanstream" ){ echo " selected"; } ?>>Beanstream</option>
                 <option value="braintree" <?php if( get_option('ec_option_payment_process_method') == "braintree" ){ echo " selected"; } ?>>Braintree S2S</option>
                 <option value="chronopay" <?php if( get_option('ec_option_payment_process_method') == "chronopay" ){ echo " selected"; } ?>>Chronopay</option>
                 <option value="eway" <?php if( get_option('ec_option_payment_process_method') == "eway" ){ echo " selected"; } ?>>Eway</option>
-                <option value="firstdata" <?php if( get_option('ec_option_payment_process_method') == "firstdata" ){ echo " selected"; } ?>>First Data Global Gateway e4</option>
+                <option value="firstdata" <?php if( get_option('ec_option_payment_process_method') == "firstdata" ){ echo " selected"; } ?>>First Data Payeezy (e4)</option>
                 <option value="goemerchant" <?php if( get_option('ec_option_payment_process_method') == "goemerchant" ){ echo " selected"; } ?>>GoeMerchant</option>
                 <option value="migs" <?php if( get_option('ec_option_payment_process_method') == "migs" ){ echo " selected"; } ?>>MIGS</option>
                 <option value="moneris_ca" <?php if( get_option('ec_option_payment_process_method') == "moneris_ca" ){ echo " selected"; } ?>>Moneris Canada</option>
@@ -176,6 +179,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "payment-settings" && iss
             </select>
         </div>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/authorize.php" ); ?>
+        <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/beanstream.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/braintree.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/chronopay.php" ); ?>
         <?php include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/inc/admin/assets/elements/eway.php" ); ?>

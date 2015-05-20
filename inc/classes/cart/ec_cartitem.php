@@ -43,6 +43,11 @@ class ec_cartitem{
 	public $is_amazon_download;										// BOOL
 	public $include_code;											// BOOL
 	public $subscription_signup_fee;								// FLOAT 15,3
+	public $TIC;													// VARCHAR(5)
+	
+	public $allow_backorders;										// BOOL
+	public $backorder_fill_date;									// VARCHAR 512
+	public $stock_quantity;											// INT
 	
 	public $image1;													// VARCHAR 255
 	public $image1_optionitem;										// VARCHAR 255
@@ -143,6 +148,11 @@ class ec_cartitem{
 		$this->is_amazon_download = $cartitem_data->is_amazon_download;
 		$this->include_code = $cartitem_data->include_code;
 		$this->subscription_signup_fee = $cartitem_data->subscription_signup_fee;
+		$this->TIC = $cartitem_data->TIC;
+		
+		$this->allow_backorders = $cartitem_data->allow_backorders;
+		$this->backorder_fill_date = $cartitem_data->backorder_fill_date;
+		$this->stock_quantity = $cartitem_data->stock_quantity;
 		
 		$this->image1 = $cartitem_data->image1;
 		$this->image1_optionitem = $cartitem_data->optionitemimage_image1;
@@ -304,6 +314,17 @@ class ec_cartitem{
 						$grid_weight_change = $cartitem_data->weight * ( $advanced_option->optionitem_weight_multiplier - 1 );
 					}
 					
+				}else if( $advanced_option->option_type == "dimensions1" || $advanced_option->option_type == "dimensions2" ){
+					$dimensions = json_decode( $advanced_option->optionitem_value ); 
+					
+					if( count( $dimensions ) == 2 ){ 
+						$cartitem_data->price = $cartitem_data->price * ( ( $dimensions[0] / 12 ) * ( $dimensions[1] / 12 ) );
+						$cartitem_data->weight = $cartitem_data->weight * ( ( $dimensions[0] / 12 ) * ( $dimensions[1] / 12 ) );
+					}else if( count( $dimensions ) == 4 ){ 
+						$cartitem_data->price = $cartitem_data->price * ( ( ( intval( $dimensions[0] ) + $this->get_dimension_decimal( $dimensions[1] ) ) / 12 ) * ( ( intval( $dimensions[2] ) + $this->get_dimension_decimal( $dimensions[3] ) ) / 12 ) );
+						$cartitem_data->weight = $cartitem_data->weight * ( ( ( intval( $dimensions[0] ) + $this->get_dimension_decimal( $dimensions[1] ) ) / 12 ) * ( ( intval( $dimensions[2] ) + $this->get_dimension_decimal( $dimensions[3] ) ) / 12 ) );
+					}
+					
 				}else{
 					if( $advanced_option->optionitem_price != 0 ){
 						$options_price = $options_price + $advanced_option->optionitem_price; 
@@ -419,6 +440,44 @@ class ec_cartitem{
 		
 		if( substr_count( $this->cart_page, '?' ) )					$this->permalink_divider = "&";
 		else														$this->permalink_divider = "?";
+	}
+	
+	private function get_dimension_decimal( $value ){
+		
+		if( $value == "1/16" ){
+			return .0625;
+		}else if( $value == "1/8" ){
+			return .1250;
+		}else if( $value == "3/16" ){
+			return .1875;
+		}else if( $value == "1/4" ){
+			return .2500;
+		}else if( $value == "5/16" ){
+			return .3125;
+		}else if( $value == "3/8" ){
+			return .3750;
+		}else if( $value == "7/16" ){
+			return .4375;
+		}else if( $value == "1/2" ){
+			return .5000;
+		}else if( $value == "9/16" ){
+			return .5625;
+		}else if( $value == "5/8" ){
+			return .6250;
+		}else if( $value == "11/16" ){
+			return .6875;
+		}else if( $value == "3/4" ){
+			return .7500;
+		}else if( $value == "13/16" ){
+			return .8125;
+		}else if( $value == "7/8" ){
+			return .8750;
+		}else if( $value == "15/16" ){
+			return .9375;
+		}else{
+			return 0;
+		}
+		
 	}
 	
 	public function display_cartitem_id(){

@@ -38,11 +38,9 @@ if( !empty( $users ) ){
 		
 		$keys = array_keys( $results[0] );
 		
-		$data .= "\xEF\xBB\xBF";
-		
 		foreach( $keys as $key ){
 			
-			$data .= '"' . $key . '",';
+			$data .= $key . ',';
 		
 		}
 		
@@ -52,7 +50,7 @@ if( !empty( $users ) ){
 			
 			foreach( $result as $value ){
 			
-				$data .= '"' . str_replace( '"', '""', $value ) . '"' . ",";
+				$data .= str_replace( '"', '""', $value ) . ",";
 			
 			}
 			

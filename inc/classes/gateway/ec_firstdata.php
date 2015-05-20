@@ -14,6 +14,10 @@ class ec_firstdata extends ec_gateway{
 		$firstdatae4_password = get_option( 'ec_option_firstdatae4_password' );
 		$firstdatae4_language = get_option( 'ec_option_firstdatae4_language' );
 		$firstdatae4_currency = get_option( 'ec_option_firstdatae4_currency' );
+			
+		$tax_total = number_format( $this->order_totals->tax_total + $this->order_totals->gst_total + $this->order_totals->pst_total + $this->order_totals->hst_total, 2, '.', '' );
+		if( !$this->tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order_totals->vat_total, 2, '.', '' );
 		
 		//build cart array
 		$firstdatae4_cart = array();	  
@@ -50,7 +54,7 @@ class ec_firstdata extends ec_gateway{
 									"client_email"		=>	$this->user->email,
 									"currency_code"		=>	$firstdatae4_currency,
 									"level3"			=>	array(	"duty_amount"		=>	"0.00",
-																	"tax_amount"		=>	$this->order_totals->tax_total,
+																	"tax_amount"		=>	$tax_total,
 																	"discount_amount"	=>	$this->order_totals->discount_total,
 																	"freight_amount"	=>	$this->order_totals->shipping_total,
 																	"line_items"		=>	$firstdatae4_cart,

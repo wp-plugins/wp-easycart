@@ -82,7 +82,7 @@ class ec_sagepay extends ec_gateway{
 								"DeliveryCountry" => $this->user->shipping->country,
 								"DeliveryPhone" => substr( $this->user->shipping->phone, 0, 20 ),
 								"ClientIPAddress" => $_SERVER['REMOTE_ADDR'],
-								//"ReferrerID" => "wpeasycart here"
+								"ReferrerID" => "CF6785FC-6E02-40C4-9E9E-00B80CCA6376",
 								"NotificationURL" => $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $this->order_id,
 								
 					 );

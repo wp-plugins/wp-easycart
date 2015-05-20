@@ -49,10 +49,10 @@ function ec_install_admin_notice() {
 		<?php	
 		}
 		
-		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.17" ){
+		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && EC_AD_CURRENT_VERSION != "3.0.18" ){
 			?>
 			<div class="error">
-				<p>The latest WP EasyCart Store Admin version is 3.0.17, please update for best results!</p>
+				<p>The latest WP EasyCart Store Admin version is 3.0.18, please update for best results!</p>
 			</div>
 			<?php
 		}

@@ -38,6 +38,7 @@ class ec_product{
 	
 	public $has_options;						// BOOL
 	public $options;							// ec_prodoptions structure
+	public $pricing_per_sq_foot;				// BOOL
 	
 	public $images;								// ec_prodimages structure
 	
@@ -54,6 +55,8 @@ class ec_product{
 	public $is_inquiry_mode;					// Bool
 	public $is_deconetwork;						// Bool
 	public $include_code;						// Bool
+	public $allow_backorders;					// Bool
+	public $backorder_fill_date;				// DATETIME
 	
 	public $catalog_mode_phrase;				// VARCHAR 1024
 	public $inquiry_url;						// VARCHAR 1024
@@ -71,6 +74,7 @@ class ec_product{
 	public $stripe_plan_added;					// VARCHAR(128)
 	public $subscription_signup_fee;			// FLOAT 15,3
 	public $subscription_unique_id;				// INT
+	public $subscription_prorate;				// BOOL
 	
 	public $rating;								// ec_rating structure
 	public $reviews = array();		 			// Array of ec_review structures
@@ -175,6 +179,7 @@ class ec_product{
 		$this->height = $product_data['height'];
 		$this->length = $product_data['length'];
 		$this->show_stock_quantity = $product_data['show_stock_quantity'];
+		$this->pricing_per_sq_foot = false; // check later to see if true
 		
 		$this->seo_description = $GLOBALS['language']->convert_text( $product_data['seo_description'] );
 		$this->seo_keywords = $GLOBALS['language']->convert_text( $product_data['seo_keywords'] );
@@ -212,6 +217,8 @@ class ec_product{
 		$this->is_inquiry_mode = $product_data['inquiry_mode'];
 		$this->is_deconetwork = $product_data['is_deconetwork'];
 		$this->include_code = $product_data['include_code'];
+		$this->allow_backorders = $product_data['allow_backorders'];
+		$this->backorder_fill_date = $product_data['backorder_fill_date'];
 		
 		$this->catalog_mode_phrase = $product_data['catalog_mode_phrase'];
 		$this->inquiry_url = $product_data['inquiry_url'];
@@ -229,6 +236,7 @@ class ec_product{
 		$this->stripe_plan_added = $product_data['stripe_plan_added'];
 		$this->subscription_signup_fee = $product_data['subscription_signup_fee'];
 		$this->subscription_unique_id = $product_data['subscription_unique_id'];
+		$this->subscription_prorate = $product_data['subscription_prorate'];
 		
 		$this->rating = new ec_rating( $product_data['review_data'] );
 		
@@ -314,6 +322,12 @@ class ec_product{
 				$this->advanced_optionsets[$adv_index]->option_label = $GLOBALS['language']->convert_text( $this->advanced_optionsets[$adv_index]->option_label );
 				$this->advanced_optionsets[$adv_index]->option_error_text = $GLOBALS['language']->convert_text( $this->advanced_optionsets[$adv_index]->option_error_text );
 			}
+		}
+		
+		// Loop through options, see if sq. footage used
+		for( $adv_index = 0; $adv_index < count( $this->advanced_optionsets ); $adv_index++ ){
+			if( $this->advanced_optionsets[$adv_index]->option_type == "dimensions1" || $this->advanced_optionsets[$adv_index]->option_type == "dimensions2" )
+				$this->pricing_per_sq_foot = true;
 		}
 		
 		// DISPLAY VARS
@@ -627,6 +641,8 @@ class ec_product{
 				}
 				
 			}
+			
+			if( $this->pricing_per_sq_foot ){ echo "/sq ft"; }
 			
 			echo "</span>";
 	}

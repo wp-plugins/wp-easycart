@@ -74,6 +74,10 @@ class ec_order{
 			$order_gateway = "affirm";
 		else if( $payment_type == "credit_card" && get_option( 'ec_option_payment_process_method' ) == "stripe" )
 			$order_gateway = "stripe";
+		else if( $payment_type == "credit_card" && get_option( 'ec_option_payment_process_method' ) == "authorize" )
+			$order_gateway = "authorize";
+		else if( $payment_type == "credit_card" && get_option( 'ec_option_payment_process_method' ) == "beanstream" )
+			$order_gateway = "beanstream";
 		// End order gateway section
 		
 		if( $payment_type == "credit_card" || $payment_type == "affirm" )

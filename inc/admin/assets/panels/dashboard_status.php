@@ -6,6 +6,9 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "store-status" && isset( 
 		$isupdate = "1";
 	else
 		$isupdate = "2";
+}else if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "store-status" && isset( $_GET['ec_action'] ) && $_GET['ec_action'] == "reset_store_permalinks" ){
+	ec_reset_store_permalinks( );
+	$isupdate = "3";
 }
 ?>
 
@@ -13,6 +16,9 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "store-status" && isset( 
 	<div id='setting-error-settings_updated' class='updated settings-success'><p><strong>The receipt has been sent to the customer's email address and the admin.</strong></p></div>
 <?php }else if( $isupdate && $isupdate == "2" ){ ?>
 	<div id='setting-error-settings_updated' class='updated settings-success'><p><strong>The order row was not found from the entered order id.</strong></p></div> 
+<?php
+}else if( $isupdate && $isupdate == "3" ){ ?>
+	<div id='setting-error-settings_updated' class='updated settings-success'><p><strong>Your store permalinks have been reset.</strong></p></div> 
 <?php
 }
 ///////////////////////////////////////////////
@@ -325,8 +331,11 @@ if( ec_live_payment_selected( ) && ec_live_payment_setup( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">You have selected to use <?php echo ec_get_live_payment_method( ); ?> as a live payment method and you have entered all necessary info.</span></div>
 <?php }else if( ec_live_payment_selected( ) ){ ?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">You have selected <?php echo ec_get_live_payment_method( ); ?> , but have missed some necessary info. Go to Store Setup -> Payment Setup to resolve this.</span></div>
-<?php } 
+<?php } ?>
 
+<div class="ec_status_header"><div class="ec_status_header_text">Miscellaneous</div></div>
+
+<?php
 ////////////////////////////
 // Check for session path set
 ////////////////////////////
@@ -334,7 +343,14 @@ if( session_save_path( ) ){ ?>
 <div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">Your session save path is set.</span></div>
 <?php }else{ ?>
 <div class="ec_status_error"><span class="ec_status_error_light"></span><span class="ec_status_label">No session save path has been set, this is necessary for the EasyCart.</span></div>
-<?php } ?>
+<?php } 
+
+////////////////////////////
+// Provide fix for custom post type links
+////////////////////////////
+?>
+
+<div class="ec_status_success"><span class="ec_status_success_light"></span><span class="ec_status_label">If you are having problems with store links, <a href="admin.php?page=ec_adminv2&amp;ec_page=dashboard&amp;ec_panel=store-status&amp;ec_action=reset_store_permalinks">reset permalinks here</a></span></div>
 
 <form action="admin.php?page=ec_adminv2&ec_page=dashboard&ec_panel=store-status&ec_action=send_test_email" method="POST">
 <div class="ec_status_header"><div class="ec_status_header_text">Receipt Email Test</div></div>

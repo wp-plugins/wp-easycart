@@ -149,6 +149,13 @@ class ec_db_admin extends ec_db{
 			ec_order.discount_total,
 			ec_order.grand_total, 
 			ec_order.refund_total,
+				
+			ec_order.gst_total,
+			ec_order.gst_rate,
+			ec_order.pst_total,
+			ec_order.pst_rate,
+			ec_order.hst_total,
+			ec_order.hst_rate,
 			
 			ec_order.promo_code, 
 			ec_order.giftcard_id, 
@@ -283,6 +290,7 @@ class ec_db_admin extends ec_db{
 				ec_orderdetail.deconetwork_image_link,
 				
 				ec_orderdetail.include_code,
+				ec_orderdetail.subscription_signup_fee,
 				
 				GROUP_CONCAT(DISTINCT CONCAT_WS('***', ec_customfield.field_name, ec_customfield.field_label, ec_customfielddata.data) ORDER BY ec_customfield.field_name ASC SEPARATOR '---') as customfield_data
 				

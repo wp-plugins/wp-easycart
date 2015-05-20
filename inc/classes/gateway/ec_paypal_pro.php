@@ -23,6 +23,8 @@ class ec_paypal_pro extends ec_gateway{
 		$paypal_pro_currency = get_option( 'ec_option_paypal_pro_currency' );
 		$paypal_pro_user = get_option( 'ec_option_paypal_pro_user' );
 		$paypal_pro_password = get_option( 'ec_option_paypal_pro_password' );
+			
+		$tax_total = number_format( $this->order_totals->tax_total + $this->order_totals->gst_total + $this->order_totals->pst_total + $this->order_totals->hst_total, 2, '.', '' );
 		
 		$paypal_pro_data = array(	"HOSTADDRESS"		=> $paypal_pro_hostaddress,
 									"HOSTPORT"			=> $paypal_pro_port,
@@ -40,7 +42,7 @@ class ec_paypal_pro extends ec_gateway{
 									"CVV2" 				=> $this->credit_card->security_code,
 									"CURRENCY" 			=> $paypal_pro_currency,
 									"AMT" 				=> number_format( $this->order_totals->grand_total, 2, '.', '' ),
-									"TAXAMT"			=> $this->order_totals->tax_total,
+									"TAXAMT"			=> $tax_total,
 									"FREIGHTAMT" 		=> $this->order_totals->shipping_total,
 									"DUTYAMT"			=> $this->order_totals->duty_total,
 									"DISCOUNT" 			=> $this->order_totals->discount_total,

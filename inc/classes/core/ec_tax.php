@@ -9,6 +9,7 @@ class ec_tax{
 	public $all_tax;										// FLOAT 15,3
 	
 	public $tax_total;										// FLOAT 15,3
+	public $tax_shipping;									// BOOL
 	
 	public $duty_total;										// FLOAT 15,3
 	public $vat_total;										// FLOAT 15,3
@@ -40,6 +41,28 @@ class ec_tax{
 	public $vat_rate;										// FLOAT 11,2
 	public $vat_added;										// BOOL
 	public $vat_included;									// BOOL
+	
+	// Canada Tax
+	public $easy_canada_tax_enabled;						// BOOL
+	public $collect_alberta;								// BOOL
+	public $collect_british_columbia;						// BOOL
+	public $collect_manitoba;								// BOOL
+	public $collect_new_brunswick;							// BOOL
+	public $collect_newfoundland;							// BOOL
+	public $collect_northwest_territories;					// BOOL
+	public $collect_nova_scotia;							// BOOL
+	public $collect_nunavut;								// BOOL
+	public $collect_ontario;								// BOOL
+	public $collect_prince_edward_island;					// BOOL
+	public $collect_quebec;									// BOOL
+	public $collect_saskatchewan;							// BOOL
+	public $collect_yukon;									// BOOL
+	public $gst;											// FLOAT 15,3
+	public $gst_rate;										// FLOAT 15,3
+	public $pst;											// FLOAT 15,3
+	public $pst_rate;										// FLOAT 15,3
+	public $hst;											// FLOAT 15,3
+	public $hst_rate;										// FLOAT 15,3
 	
 	// Tax Cloud
 	public $tax_cloud_enabled;								// BOOL
@@ -78,6 +101,8 @@ class ec_tax{
 		$this->vatable_total 					= 			$vatable_total;
 		if( $this->vatable_total < 0 )
 			$this->vatable_total				=			0;
+			
+		$this->shipping_total					=			$shipping_total;
 		
 		// Save the User Entered Data
 		$this->shipping_state 					= 			strtoupper( $shipping_state );
@@ -96,6 +121,9 @@ class ec_tax{
 	}
 	
 	private function initialize_tax_values( ){
+		// Overall Options
+		$this->tax_shipping = get_option( 'ec_option_collect_tax_on_shipping' );
+		
 		// State Tax
 		$this->state_tax_enabled 		= false;
 		$this->state_tax_match 			= false;
@@ -120,6 +148,22 @@ class ec_tax{
 		$this->vat_country_match		= false;
 		$this->vat_rate_default			= 0;
 		$this->vat_rate					= 0;
+		
+		// Canada Tax
+		$this->easy_canada_tax_enabled = get_option( 'ec_option_enable_easy_canada_tax' );
+		$this->collect_alberta = get_option( 'ec_option_collect_alberta_tax' );
+		$this->collect_british_columbia = get_option( 'ec_option_collect_british_columbia_tax' );
+		$this->collect_manitoba = get_option( 'ec_option_collect_manitoba_tax' );
+		$this->collect_new_brunswick = get_option( 'ec_option_collect_new_brunswick_tax' );
+		$this->collect_newfoundland = get_option( 'ec_option_collect_newfoundland_tax' );
+		$this->collect_northwest_territories = get_option( 'ec_option_collect_northwest_territories_tax' );
+		$this->collect_nova_scotia = get_option( 'ec_option_collect_nova_scotia_tax' );
+		$this->collect_nunavut = get_option( 'ec_option_collect_nunavut_tax' );
+		$this->collect_ontario = get_option( 'ec_option_collect_ontario_tax' );
+		$this->collect_prince_edward_island = get_option( 'ec_option_collect_prince_edward_island_tax' );
+		$this->collect_quebec = get_option( 'ec_option_collect_quebec_tax' );
+		$this->collect_saskatchewan = get_option( 'ec_option_collect_saskatchewan_tax' );
+		$this->collect_yukon = get_option( 'ec_option_collect_yukon_tax' );
 		
 		// Tax Cloud
 		if( get_option( 'ec_option_tax_cloud_api_id' ) != "" && get_option( 'ec_option_tax_cloud_api_key' ) != "" )
@@ -191,10 +235,16 @@ class ec_tax{
 			// Tax free order, lets not charge the customer
 			$this->tax_total = 0;
 			
-		}else if( $this->tax_cloud_enabled ){
+		}else if( $this->tax_cloud_enabled && $this->shipping_country == 'US' ){
 			$this->tax_total = wpeasycart_taxcloud( )->tax_amount;
 			
 		}else{
+			// Add Shipping to Taxable Total
+			if( $this->tax_shipping ){
+				$this->taxable_subtotal = $this->taxable_subtotal + $this->shipping_total;
+				$this->vatable_total = $this->vatable_total + $this->shipping_total;
+			}
+			
 			// Calculate State Tax
 			if( $this->state_tax_enabled && $this->state_tax_match )
 				$this->state_tax = $this->taxable_subtotal * $this->state_tax_rate / 100;
@@ -223,7 +273,76 @@ class ec_tax{
 					$this->vat_total = $this->vatable_total * $this->vat_rate / 100;
 				}
 			}
+			
+			// Calculate Canada Tax
+			if( $this->easy_canada_tax_enabled && $this->shipping_country == "CA" ){
+				
+				if( $this->collect_alberta && $this->shipping_state == "AB" ){
+					$this->gst = $this->taxable_subtotal * .05;
+					$this->gst_rate = 5;
+					
+				}else if( $this->collect_british_columbia && $this->shipping_state == "BC" ){
+					$this->gst = $this->taxable_subtotal * .05;
+					$this->gst_rate = 5;
+					$this->pst = $this->taxable_subtotal * .07;
+					$this->pst_rate = 7;
+					
+				}else if( $this->collect_manitoba && $this->shipping_state == "MB" ){
+					$this->gst = $this->taxable_subtotal * .05;
+					$this->gst_rate = 5;
+					$this->pst = $this->taxable_subtotal * .08;
+					$this->pst_rate = 8;
+					
+				}else if( $this->collect_newfoundland && $this->shipping_state == "NF" ){
+					$this->hst = $this->taxable_subtotal * .13;
+					$this->hst_rate = 13;
+					
+				}else if( $this->collect_new_brunswick && $this->shipping_state == "NB" ){
+					$this->hst = $this->taxable_subtotal * .13;
+					$this->hst_rate = 13;
+					
+				}else if( $this->collect_nova_scotia && $this->shipping_state == "NS" ){
+					$this->hst = $this->taxable_subtotal * .15;
+					$this->hst_rate = 15;
+					
+				}else if( $this->collect_northwest_territories && $this->shipping_state == "NT" ){
+					$this->gst = $this->taxable_subtotal * .05;
+					$this->gst_rate = 5;
+					
+				}else if( $this->collect_nunavut && $this->shipping_state == "NU" ){
+					$this->gst = $this->taxable_subtotal * .05;
+					$this->gst_rate = 5;
+					
+				}else if( $this->collect_ontario && $this->shipping_state == "ON" ){
+					$this->hst = $this->taxable_subtotal * .13;
+					$this->hst_rate = 13;
+					
+				}else if( $this->collect_prince_edward_island && $this->shipping_state == "PE" ){
+					$this->hst = $this->taxable_subtotal * .14;
+					$this->hst_rate = 14;
+					
+				}else if( $this->collect_quebec && $this->shipping_state == "QC" ){
+					$this->gst = $this->taxable_subtotal * .05;
+					$this->gst_rate = 5;
+					$this->pst = $this->taxable_subtotal * .09975;
+					$this->pst_rate = 9.975;
+					
+				}else if( $this->collect_saskatchewan && $this->shipping_state == "SK" ){
+					$this->gst = $this->taxable_subtotal * .05;
+					$this->gst_rate = 5;
+					$this->pst = $this->taxable_subtotal * .05;
+					$this->pst_rate = 5;
+					
+				}else if( $this->collect_yukon && $this->shipping_state == "YT" ){
+					$this->gst = $this->taxable_subtotal * .05;
+					$this->gst_rate = 5;
+					
+				}
+				
+			} // Close Canada Taxation Check
+			
 		}
+		
 	}
 	
 	public function is_tax_enabled( ){

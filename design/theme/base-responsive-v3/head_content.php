@@ -98,37 +98,37 @@ else
 
 // Image Height Setup
 if( isset( $page_options->image_height_smartphone ) )
-	$image_height_smartphone = $page_options->image_height_smartphone;
+	$image_height_smartphone = str_replace( "px", "", $page_options->image_height_smartphone ) . "px";
 else if( get_option( 'ec_option_default_smartphone_image_height' ) )
-	$image_height_smartphone = get_option( 'ec_option_default_smartphone_image_height' );
+	$image_height_smartphone = str_replace( "px", "", get_option( 'ec_option_default_smartphone_image_height' ) ) . "px";
 else
 	$image_height_smartphone = '370px';
 	
 if( isset( $page_options->image_height_tablet ) )
-	$image_height_tablet = $page_options->image_height_tablet;
+	$image_height_tablet = str_replace( "px", "", $page_options->image_height_tablet ) . "px";
 else if( get_option( 'ec_option_default_tablet_image_height' ) )
-	$image_height_tablet = get_option( 'ec_option_default_tablet_image_height' );
+	$image_height_tablet = str_replace( "px", "", get_option( 'ec_option_default_tablet_image_height' ) ) . "px";
 else
 	$image_height_tablet = '380px';
 	
 if( isset( $page_options->image_height_tablet_wide ) )
-	$image_height_tablet_wide = $page_options->image_height_tablet_wide;
+	$image_height_tablet_wide = str_replace( "px", "", $page_options->image_height_tablet_wide ) . "px";
 else if( get_option( 'ec_option_default_tablet_wide_image_height' ) )
-	$image_height_tablet_wide = get_option( 'ec_option_default_tablet_wide_image_height' );
+	$image_height_tablet_wide = str_replace( "px", "", get_option( 'ec_option_default_tablet_wide_image_height' ) ) . "px";
 else
 	$image_height_tablet_wide = '310px';
 	
 if( isset( $page_options->image_height_laptop ) )
-	$image_height_laptop = $page_options->image_height_laptop;
+	$image_height_laptop = str_replace( "px", "", $page_options->image_height_laptop ) . "px";
 else if( get_option( 'ec_option_default_laptop_image_height' ) )
-	$image_height_laptop = get_option( 'ec_option_default_laptop_image_height' );
+	$image_height_laptop = str_replace( "px", "", get_option( 'ec_option_default_laptop_image_height' ) ) . "px";
 else
 	$image_height_laptop = '310px';
 	
 if( isset( $page_options->image_height_desktop ) )
-	$image_height_desktop = $page_options->image_height_desktop;
+	$image_height_desktop = str_replace( "px", "", $page_options->image_height_desktop ) . "px";
 else if( get_option( 'ec_option_default_desktop_image_height' ) )
-	$image_height_desktop = get_option( 'ec_option_default_desktop_image_height' );
+	$image_height_desktop = str_replace( "px", "", get_option( 'ec_option_default_desktop_image_height' ) ) . "px";
 else
 	$image_height_desktop = '310px';
 

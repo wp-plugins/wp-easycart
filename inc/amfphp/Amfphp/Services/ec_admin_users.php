@@ -128,8 +128,8 @@ class ec_admin_users{
 	
 	function updateclient($clientid, $client) {
 		 
-		$results = $this->db->get_results( "SELECT SQL_CALC_FOUND_ROWS ec_user.* FROM ec_user WHERE ec_user.user_level = 'admin'" );
-		$totalrows = $this->db->get_var( "SELECT FOUND_ROWS( )" );
+		$results = $this->db->get_results( "SELECT ec_user.* FROM ec_user WHERE ec_user.user_level = 'admin'" );
+		$totalrows = count( $results );
 		
 		// Prevent changing user level of last admin to a non admin!!
 		$matchlastadmin = false;
@@ -143,29 +143,65 @@ class ec_admin_users{
 		
 		}else{
 			
-			if($client->billing_id == 0) {
+			if( $client->billing_id == 0 ){
+				
 				// Insert Billing Address
 				$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
 				$success1 = $this->db->query( $this->db->prepare( $sql, $clientid, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone ) );
 				$billing_id = $this->db->insert_id;
-			} else {
-				// Update Addresses
-				$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.company_name = %s,  ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
+			
+			}else{
 				
-				$success1 = $this->db->query( $this->db->prepare( $sql, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone, $client->billing_id) );
-				$billing_id = $client->billing_id;
+				// Get existings address with ID, data validation check
+				$address_exists = $this->db->get_results( $this->db->prepare( "SELECT ec_address.address_id FROM ec_address WHERE ec_address.address_id = %d", $client->billing_id ) );
+				
+				if( count( $address_exists ) <= 0 ){
+					
+					// Insert New Address
+					$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+					$success1 = $this->db->query( $this->db->prepare( $sql, $clientid, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone ) );
+					$billing_id = $this->db->insert_id;
+				
+				}else{
+					
+					// Update Addresses
+					$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.company_name = %s,  ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
+				
+					$success1 = $this->db->query( $this->db->prepare( $sql, $client->billname, $client->billlastname, $client->billcompany, $client->billaddress, $client->billaddress2, $client->billcity, $client->billstate, $client->billzip, $client->billcountry, $client->billphone, $client->billing_id) );
+					$billing_id = $client->billing_id;
+				
+				}
+			
 			}
 			
-			if ($client->shipping_id  == 0) {
+			if( $client->shipping_id  == 0 ){
+				
 				// Insert Shipping Address
 				$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
 				$success2 = $this->db->query( $this->db->prepare( $sql, $clientid, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone ) );
 				$shipping_id = $this->db->insert_id;
-			} else {
-			// Update Addresses
-				$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.company_name = %s,  ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
-				$success2 = $this->db->query( $this->db->prepare( $sql, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone, $client->shipping_id ) );
-				$shipping_id = $client->shipping_id;
+			
+			}else{
+				
+				// Get existings address with ID, data validation check
+				$address_exists = $this->db->get_results( $this->db->prepare( "SELECT ec_address.address_id FROM ec_address WHERE ec_address.address_id = %d", $client->shipping_id ) );
+				
+				if( count( $address_exists ) <= 0 ){
+					
+					// Insert Shipping Address
+					$sql = "INSERT INTO ec_address( user_id, first_name, last_name,  company_name, address_line_1, address_line_2, city, state, zip, country, phone ) VALUES( %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )";
+					$success2 = $this->db->query( $this->db->prepare( $sql, $clientid, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone ) );
+					$shipping_id = $this->db->insert_id;
+				
+				}else{
+					
+					// Update Addresses
+					$sql = "UPDATE ec_address SET ec_address.first_name = %s, ec_address.last_name = %s, ec_address.company_name = %s,  ec_address.address_line_1 = %s, ec_address.address_line_2 = %s, ec_address.city = %s, ec_address.state = %s, ec_address.zip = %s, ec_address.country = %s, ec_address.phone = %s WHERE ec_address.address_id = %d";
+					$success2 = $this->db->query( $this->db->prepare( $sql, $client->shipname, $client->shiplastname, $client->shipcompany, $client->shipaddress, $client->shipaddress2, $client->shipcity, $client->shipstate, $client->shipzip, $client->shipcountry, $client->shipphone, $client->shipping_id ) );
+					$shipping_id = $client->shipping_id;
+				
+				}
+			
 			}
 			
 			// Update User

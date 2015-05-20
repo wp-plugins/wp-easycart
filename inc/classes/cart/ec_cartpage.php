@@ -750,6 +750,18 @@ class ec_cartpage{
 		return $GLOBALS['currency']->get_currency_display( (-1) * $this->order_totals->discount_total );
 	}
 	
+	public function get_gst_total( ){
+		return $GLOBALS['currency']->get_currency_display( $this->order_totals->gst_total );	
+	}
+	
+	public function get_pst_total( ){
+		return $GLOBALS['currency']->get_currency_display( $this->order_totals->pst_total );	
+	}
+	
+	public function get_hst_total( ){
+		return $GLOBALS['currency']->get_currency_display( $this->order_totals->hst_total );	
+	}
+	
 	public function display_grand_total( ){
 		echo "<span id=\"ec_cart_grandtotal\">" . $GLOBALS['currency']->get_currency_display( $this->order_totals->grand_total ) . "</span>"; 	
 	}
@@ -2073,6 +2085,29 @@ class ec_cartpage{
 					$option_vals[] = array( "option_id" => $optionset->option_id, "option_label" => $optionset->option_label, "option_name" => $optionitem->option_name, "optionitem_name" => $optionitem->optionitem_name, "option_type" => $optionitem->option_type, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => $_FILES['ec_option_' . $optionset->option_id]['name'], "optionitem_model_number" => $optionitem->optionitem_model_number );
 				}
 			
+			}else if( $optionset->option_type == "dimensions1" || $optionset->option_type == "dimensions2" ){
+				$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
+				foreach( $optionitems as $optionitem ){
+					
+					$vals = array( );
+					$vals[] = $_POST['ec_option_' . $optionset->option_id . '_width'];
+					
+					if( isset( $_POST['ec_option_' . $optionset->option_id . '_sub_width'] ) ){
+						$vals[] = $_POST['ec_option_' . $optionset->option_id . '_sub_width'];
+						
+					}
+					
+					$vals[] = $_POST['ec_option_' . $optionset->option_id . '_height'];
+					
+					if( isset( $_POST['ec_option_' . $optionset->option_id . '_sub_height'] ) ){
+						$vals[] = $_POST['ec_option_' . $optionset->option_id . '_sub_height'];
+						
+					}
+					
+					$option_vals[] = array( "option_id" => $optionset->option_id, "option_label" => $optionset->option_label, "option_name" => $optionitem->option_name, "optionitem_name" => $optionitem->optionitem_name, "option_type" => $optionitem->option_type, "optionitem_id" => $optionitem->optionitem_id, "optionitem_value" => json_encode( $vals ), "optionitem_model_number" => $optionitem->optionitem_model_number );
+					
+				}
+				
 			}else{
 				$optionitems = $this->mysqli->get_advanced_optionitems( $optionset->option_id );
 				foreach( $optionitems as $optionitem ){
@@ -2759,10 +2794,16 @@ class ec_cartpage{
 			}else{
 				
 				do_action( 'wpeasycart_cart_updated' );
-				if( $this->shipping->validate_address( $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country ) )
+				
+				if( $this->shipping->validate_address( $shipping_address, $shipping_city, $shipping_state, $shipping_zip, $shipping_country ) ){
+					
+					$this->mysqli->update_address( $this->user->billing_id, $billing_first_name, $billing_last_name, $billing_address, $billing_address2, $billing_city, $billing_state, $billing_zip, $billing_country, $billing_phone, $billing_company_name );
+				
+					$this->mysqli->update_address( $this->user->shipping_id, $shipping_first_name, $shipping_last_name, $shipping_address, $shipping_address2, $shipping_city, $shipping_state, $shipping_zip, $shipping_country, $shipping_phone, $shipping_company_name );
+				
 					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page);
 				
-				else
+				}else
 					header("location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=invalid_address");
 					
 			}

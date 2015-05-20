@@ -394,6 +394,18 @@
 				"product_details_your_price":{
 					"title":"Your Price:",
 					"value":"Ihr Preis:"
+				},
+				"product_details_backorder_until":{
+					"title":"Backorder UNTIL date, until",
+					"value":"bis"
+				},
+				"product_details_backordered":{
+					"title":"BACKORDERED until date",
+					"value":"nachbestellen"
+				},
+				"product_details_backordered_message":{
+					"title":"Backordered message in cart",
+					"value":"Manche Artikel im Warenkorb sind zur Zeit auf Bestellung und wird nachgeliefert."
 				}
 			}
 		},
@@ -2168,6 +2180,70 @@
 				"account_orders_details_your_codes":{
 					"title":"Account, Orders Details, Your Codes",
 					"value":"Ihre Codes:"
+				},
+				"complete_payment":{
+					"title":"Account, Orders Details, Complete Payment",
+					"value":"Komplette Bestellung Zahlung:"
+				},
+				"order_status_status_not_found":{
+					"title":"Account, Orders Status, Status Not Found",
+					"value":"Status der Bestellung nicht gefunden"
+				},
+				"order_status_order_shipped":{
+					"title":"Account, Orders Status, Order Shipped",
+					"value":"Bestellen Sie"
+				},
+				"order_status_order_confirmed":{
+					"title":"Account, Orders Status, Order Confirmed",
+					"value":"Auftrag bestätigt"
+				},
+				"order_status_order_on_hold":{
+					"title":"Account, Orders Status, Order on Hold",
+					"value":"Sortieren Warte"
+				},
+				"order_status_order_started":{
+					"title":"Account, Orders Status, Order Started",
+					"value":"Bestellen Schritte"
+				},
+				"order_status_card_approved":{
+					"title":"Account, Orders Status, Card Approved",
+					"value":"Karte Genehmigt"
+				},
+				"order_status_card_denied":{
+					"title":"Account, Orders Status, Card Denied",
+					"value":"Karte verweigert"
+				},
+				"order_status_third_party_pending":{
+					"title":"Account, Orders Status, Third Party Pending",
+					"value":"Third Party Pending"
+				},
+				"order_status_third_party_error":{
+					"title":"Account, Orders Status, Third Party Error",
+					"value":"Third Party Fehler"
+				},
+				"order_status_third_party_approved":{
+					"title":"Account, Orders Status, Third Party Approved",
+					"value":"Third Party Genehmigt"
+				},
+				"order_status_ready_for_pickup":{
+					"title":"Account, Orders Status, Ready for Pickup",
+					"value":"Bereit zur Abholung"
+				},
+				"order_status_pending_approval":{
+					"title":"Account, Orders Status, Pending Approval",
+					"value":"ausstehende Genehmigung"
+				},
+				"order_status_direct_deposit_pending":{
+					"title":"Account, Orders Status, Direct Deposit Pending",
+					"value":"Direct Deposit Pending"
+				},
+				"order_status_direct_deposit_received":{
+					"title":"Account, Orders Status, Direct Deposit Received",
+					"value":"Direct Deposit Received"
+				},
+				"order_status_refunded_order":{
+					"title":"Account, Orders Status, Refunded Order",
+					"value":"erstattet Sortieren"
 				}
 			}
 		},

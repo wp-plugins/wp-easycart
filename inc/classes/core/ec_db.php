@@ -333,7 +333,7 @@ class ec_db{
 				LEFT JOIN ec_manufacturer as manufacturer ON manufacturer.manufacturer_id = product.manufacturer_id
 				
 				LEFT JOIN ec_categoryitem ON ec_categoryitem.product_id = product.product_id 
-				
+
 				LEFT JOIN ec_menulevel1 ON ( ec_menulevel1.menulevel1_id = product.menulevel1_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel2_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel3_id_1 )
 				
 				LEFT JOIN ec_menulevel2 ON ( ec_menulevel2.menulevel2_id = product.menulevel1_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel2_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel3_id_2 )
@@ -343,113 +343,26 @@ class ec_db{
 				";
 		
 		$sql2 = "SELECT
-				product.product_id,
-				product.model_number,
-				product.post_id,
-				product.activate_in_store,
-				manufacturer.manufacturer_id,
-				manufacturer.name as manufacturer_name,
-				product.title,
-				product.description,
-				product.short_description,
-				product.seo_description,
-				product.seo_keywords,
-				product.price,
-				product.list_price,
-				product.vat_rate,
-				product.handling_price,
-				product.handling_price_each,
-				product.stock_quantity,
-				product.min_purchase_quantity,
-				product.max_purchase_quantity,
-				product.weight,
-				product.width,
-				product.height,
-				product.length,
-				product.use_optionitem_quantity_tracking,
-				product.use_specifications,
-				product.specifications,
-				product.use_customer_reviews,
-				product.show_on_startup,
-				product.show_stock_quantity,
-				product.is_special,
-				product.is_taxable,
-				product.is_shippable,
-				product.is_giftcard,
-				product.is_download,
-				product.is_donation,
-				product.is_subscription_item,
-				product.is_deconetwork,
-				
-				product.include_code,
-				
-				product.download_file_name,
-				
-				product.subscription_bill_length,
-				product.subscription_bill_period,
-				product.subscription_bill_duration,
-				product.trial_period_days,
-				product.stripe_plan_added,
-				product.subscription_signup_fee,
-				product.subscription_unique_id,
-				
-				product.use_advanced_optionset,
-				product.use_optionitem_images,
-				
-				product.image1,
-				product.image2,
-				product.image3,
-				product.image4,
-				product.image5,
-				
-				product.featured_product_id_1,
-				product.featured_product_id_2,
-				product.featured_product_id_3,
-				product.featured_product_id_4,
-				
-				product.catalog_mode,
-				product.catalog_mode_phrase,
-				
-				product.inquiry_mode,
-				product.inquiry_url,
-				
-				product.deconetwork_mode,
-				product.deconetwork_product_id,
-				product.deconetwork_size_id,
-				product.deconetwork_color_id,
-				product.deconetwork_design_id,
-				
-				product.display_type,
-				product.image_hover_type,
-				product.image_effect_type,
-				product.tag_type,
-				product.tag_bg_color,
-				product.tag_text_color,
-				product.tag_text,
-				
-				product.option_id_1,
-				product.option_id_2,
-				product.option_id_3,
-				product.option_id_4,
-				product.option_id_5,
-				
-				product.views,
-				
-				AVG( ec_review.rating ) as review_average
-				
-				FROM ec_product as product 
-				
-				LEFT JOIN ec_manufacturer as manufacturer ON manufacturer.manufacturer_id = product.manufacturer_id
-				
-				LEFT JOIN ec_categoryitem ON ec_categoryitem.product_id = product.product_id 
-				
-				LEFT JOIN ec_menulevel1 ON ( ec_menulevel1.menulevel1_id = product.menulevel1_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel2_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel3_id_1 )
-				
-				LEFT JOIN ec_menulevel2 ON ( ec_menulevel2.menulevel2_id = product.menulevel1_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel2_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel3_id_2 )
-				
-				LEFT JOIN ec_menulevel3 ON ( ec_menulevel3.menulevel3_id = product.menulevel1_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel2_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel3_id_3 )
-				
-				LEFT JOIN ec_review ON ( ec_review.product_id = product.product_id AND ec_review.approved = 1 )
+		
+					product.*,
+					
+					manufacturer.name as manufacturer_name,
+					
+					AVG( ec_review.rating ) as review_average
+					
+					FROM ec_product AS product 
+					
+					LEFT JOIN ec_manufacturer AS manufacturer ON manufacturer.manufacturer_id = product.manufacturer_id
+					
+					LEFT JOIN ec_categoryitem ON ec_categoryitem.product_id = product.product_id 
+					
+					LEFT JOIN ec_menulevel1 ON ( ec_menulevel1.menulevel1_id = product.menulevel1_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel2_id_1 OR ec_menulevel1.menulevel1_id = product.menulevel3_id_1 )
+					
+					LEFT JOIN ec_menulevel2 ON ( ec_menulevel2.menulevel2_id = product.menulevel1_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel2_id_2 OR ec_menulevel2.menulevel2_id = product.menulevel3_id_2 )
+					
+					LEFT JOIN ec_menulevel3 ON ( ec_menulevel3.menulevel3_id = product.menulevel1_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel2_id_3 OR ec_menulevel3.menulevel3_id = product.menulevel3_id_3 )
+					
+					LEFT JOIN ec_review ON ( ec_review.product_id = product.product_id AND ec_review.approved = 1 )
 				
 				";
 				
@@ -619,6 +532,8 @@ class ec_db{
 						"is_donation" => $row->is_donation,
 						"is_subscription_item" => $row->is_subscription_item,
 						"is_deconetwork" => $row->is_deconetwork,
+						"allow_backorders" => $row->allow_backorders,
+						"backorder_fill_date" => $row->backorder_fill_date,
 						
 						"include_code" => $row->include_code,
 						
@@ -631,6 +546,7 @@ class ec_db{
 						"stripe_plan_added" => $row->stripe_plan_added,
 						"subscription_signup_fee" => $row->subscription_signup_fee,
 						"subscription_unique_id" => $row->subscription_unique_id,
+						"subscription_prorate" => $row->subscription_prorate,
 						
 						"option1" => $option1, 
 						"option2" => $option2, 
@@ -1053,6 +969,12 @@ class ec_db{
 				product.min_purchase_quantity,
 				product.max_purchase_quantity,
 				product.subscription_signup_fee,
+				product.subscription_prorate,
+				product.TIC,
+				
+				product.allow_backorders,
+				product.backorder_fill_date,
+				product.stock_quantity,
 				
 				tempcart.tempcart_id as cartitem_id,
 				tempcart.quantity,
@@ -1329,7 +1251,7 @@ class ec_db{
 	public function add_to_cart( $product_id, $session_id, $quantity, $optionitem_id_1, $optionitem_id_2, $optionitem_id_3, $optionitem_id_4, $optionitem_id_5, $gift_card_message="", $gift_card_to_name="", $gift_card_from_name="", $donation_price=0.00, $use_advanced_optionset=false, $return_tempcart=1, $gift_card_email="" ){
 		
 		// Get the limit on this product
-		$product_sql = "SELECT stock_quantity, use_optionitem_quantity_tracking, show_stock_quantity FROM ec_product WHERE product_id = %d";
+		$product_sql = "SELECT stock_quantity, use_optionitem_quantity_tracking, show_stock_quantity, allow_backorders FROM ec_product WHERE product_id = %d";
 		$optionitem_sql = "SELECT quantity FROM ec_optionitemquantity WHERE product_id = %d AND optionitem_id_1 = %d AND optionitem_id_2 = %d AND optionitem_id_3 = %d AND optionitem_id_4 = %d AND optionitem_id_5 = %d";
 		$tempcart_optionitem_sql = "SELECT quantity FROM ec_tempcart WHERE session_id = '%s' AND product_id = %d AND optionitem_id_1 = %d AND optionitem_id_2 = %d AND optionitem_id_3 = %d AND optionitem_id_4 = %d AND optionitem_id_5 = %d";
 		
@@ -1353,6 +1275,9 @@ class ec_db{
 		}else{
 			$stock_quantity = 1000000;
 		}
+		
+		if( $stock_quantity <= 0 && $product->allow_backorders )
+			$stock_quantity = 1000000;
 		
 		if( $gift_card_message != "" || $gift_card_from_name != "" || $gift_card_from_name != "" || $gift_card_email != "" ){
 			// Do nothing, use quantity entered.
@@ -1757,6 +1682,14 @@ class ec_db{
 										'duty_total'					=> $order_totals->duty_total,
 										'discount_total'				=> $order_totals->discount_total,
 										'vat_total'						=> $order_totals->vat_total,
+										'vat_total'						=> $order_totals->vat_total,
+										'gst_total'						=> $order_totals->gst_total,
+										'pst_total'						=> $order_totals->pst_total,
+										'hst_total'						=> $order_totals->hst_total,
+										
+										'gst_rate'						=> $tax->gst_rate,
+										'pst_rate'						=> $tax->pst_rate,
+										'hst_rate'						=> $tax->hst_rate,
 										
 										'grand_total' 					=> $order_totals->grand_total,
 										'promo_code'					=> $coupon_code,
@@ -1800,7 +1733,8 @@ class ec_db{
 										'order_ip_address'				=> $_SERVER['REMOTE_ADDR']
 								), 
 								array( 	'%d', '%s', '%d', '%s', '%s', 
-										'%s', '%s', '%s', '%s', '%s', 
+										'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', 
+										'%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', '%s', 
 										'%s', '%s', '%s', '%s', '%s', 
@@ -1870,6 +1804,12 @@ class ec_db{
 							  );
 		
 		return $this->mysqli->insert_id;	
+	}
+	
+	public function update_address( $address_id, $first_name, $last_name, $address_line_1, $address_line_2, $city, $state, $zip, $country, $phone, $company_name ){
+		
+		$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_address SET first_name = %s, last_name = %s, address_line_1 = %s, address_line_2 = %s, city = %s, state = %s, zip = %s, country = %s, phone = %s, company_name = %s WHERE address_id = %d", $first_name, $last_name, $address_line_1, $address_line_2, $city, $state, $zip, $country, $phone, $company_name, $address_id ) );	
+	
 	}
 	
 	public function insert_user( $email, $password, $first_name, $last_name, $billing_id, $shipping_id, $user_level, $is_subscriber, $user_notes = "" ){
@@ -2048,6 +1988,14 @@ class ec_db{
 		$option_value = $advanced_option->optionitem_value;
 		if( $advanced_option->option_type == "file" )
 			$option_value = $tempcart_id . "/" . $option_value;
+		else if( $advanced_option->option_type == "dimensions1" || $advanced_option->option_type == "dimensions2" ){
+			$dimensions = json_decode( $advanced_option->optionitem_value ); 
+			if( count( $dimensions ) == 2 ){ 
+				$option_value = $dimensions[0] . "\" x " . $dimensions[1] . "\""; 
+			}else if( count( $dimensions ) == 4 ){ 
+				$option_value = $dimensions[0] . " " . $dimensions[1] . "\" x " . $dimensions[2] . " " . $dimensions[3] . "\""; 
+			}
+		}
 		
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $orderdetail_id, $advanced_option->option_name, $advanced_option->optionitem_name, $advanced_option->option_type, $option_value, $optionitem_price, $advanced_option->optionitem_allow_download ) );
 	}
@@ -2142,6 +2090,13 @@ class ec_db{
 				ec_order.grand_total,  
 				ec_order.refund_total,
 				
+				ec_order.gst_total,
+				ec_order.gst_rate,
+				ec_order.pst_total,
+				ec_order.pst_rate,
+				ec_order.hst_total,
+				ec_order.hst_rate,
+				
 				ec_order.promo_code, 
 				ec_order.giftcard_id, 
 				
@@ -2230,6 +2185,13 @@ class ec_db{
 				ec_order.discount_total,
 				ec_order.grand_total, 
 				ec_order.refund_total,
+				
+				ec_order.gst_total,
+				ec_order.gst_rate,
+				ec_order.pst_total,
+				ec_order.pst_rate,
+				ec_order.hst_total,
+				ec_order.hst_rate,
 				
 				ec_order.promo_code, 
 				ec_order.giftcard_id, 
@@ -2336,6 +2298,13 @@ class ec_db{
 			ec_order.discount_total,
 			ec_order.grand_total, 
 			ec_order.refund_total,
+				
+			ec_order.gst_total,
+			ec_order.gst_rate,
+			ec_order.pst_total,
+			ec_order.pst_rate,
+			ec_order.hst_total,
+			ec_order.hst_rate,
 			
 			ec_order.promo_code, 
 			ec_order.giftcard_id, 
@@ -3023,6 +2992,11 @@ class ec_db{
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $charge_id, $order_id ) );
 	}
 	
+	public function update_order_transaction_id( $order_id, $transaction_id ){
+		$sql = "UPDATE ec_order SET ec_order.gateway_transaction_id = %s WHERE ec_order.order_id = %d";
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $transaction_id, $order_id ) );
+	}
+	
 	public function update_user_stripe_id( $user_id, $customer_id ){
 		$sql = "UPDATE ec_user SET ec_user.stripe_customer_id = %s WHERE ec_user.user_id = %d";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $customer_id, $user_id ) );
@@ -3538,6 +3512,8 @@ class ec_db{
 				product.is_donation,
 				product.is_subscription_item,
 				product.is_deconetwork,
+				product.allow_backorders,
+				product.backorder_fill_date,
 				
 				product.include_code,
 				
@@ -3550,6 +3526,7 @@ class ec_db{
 				product.stripe_plan_added,
 				product.subscription_signup_fee,
 				product.subscription_unique_id,
+				product.subscription_prorate,
 				
 				product.use_advanced_optionset,
 				product.use_optionitem_images,

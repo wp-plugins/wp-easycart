@@ -116,11 +116,14 @@ class ec_auspost{
 		
 		if( is_wp_error( $response ) ){
 			$error_message = $response->get_error_message();
-			error_log( "error in australian post get rate, " . $error_message );
 			return false;
-		}else
-			return $response['body'];
-		
+		}else{
+			$json = json_decode( $response['body'] );
+			if( isset( $json->error ) )
+				return false;
+			else
+				return $response['body'];
+		}
 	}
 	
 	public function get_domestic_list( $zipcode, $length, $height, $width, $weight ){

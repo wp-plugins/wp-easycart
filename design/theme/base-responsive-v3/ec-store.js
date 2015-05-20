@@ -350,6 +350,7 @@ function ec_apply_coupon( ){
 				jQuery( document.getElementById( 'ec_coupon_error' ) ).html( data_arr[8] ).show( );
 			}
 			
+			jQuery( document.getElementById( 'ec_cart_tax' ) ).html( data_arr[2] );
 			jQuery( document.getElementById( 'ec_cart_discount' ) ).html( data_arr[4] );
 			jQuery( document.getElementById( 'ec_cart_total' ) ).html( data_arr[7] );
 			

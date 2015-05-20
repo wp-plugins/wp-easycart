@@ -394,6 +394,18 @@
 				"product_details_your_price":{
 					"title":"Your Price:",
 					"value":"uw Prijs:"
+				},
+				"product_details_backorder_until":{
+					"title":"Backorder UNTIL date, until",
+					"value":"totdat"
+				},
+				"product_details_backordered":{
+					"title":"BACKORDERED until date",
+					"value":"nabesteld"
+				},
+				"product_details_backordered_message":{
+					"title":"Backordered message in cart",
+					"value":"Sommige items in uw winkelwagen zijn momenteel uit voorraad leverbaar en op bestelling."
 				}
 			}
 		},
@@ -2168,6 +2180,70 @@
 				"account_orders_details_your_codes":{
 					"title":"Account, Orders Details, Your Codes",
 					"value":"uw Codes:"
+				},
+				"complete_payment":{
+					"title":"Account, Orders Details, Complete Payment",
+					"value":"Compleet Bestellen Betalen:"
+				},
+				"order_status_status_not_found":{
+					"title":"Account, Orders Status, Status Not Found",
+					"value":"Status Not Found"
+				},
+				"order_status_order_shipped":{
+					"title":"Account, Orders Status, Order Shipped",
+					"value":"bestelling verzonden"
+				},
+				"order_status_order_confirmed":{
+					"title":"Account, Orders Status, Order Confirmed",
+					"value":"Bestel Bevestigde"
+				},
+				"order_status_order_on_hold":{
+					"title":"Account, Orders Status, Order on Hold",
+					"value":"Bestel on Hold"
+				},
+				"order_status_order_started":{
+					"title":"Account, Orders Status, Order Started",
+					"value":"Bestel de slag"
+				},
+				"order_status_card_approved":{
+					"title":"Account, Orders Status, Card Approved",
+					"value":"card Goedgekeurd"
+				},
+				"order_status_card_denied":{
+					"title":"Account, Orders Status, Card Denied",
+					"value":"card Denied"
+				},
+				"order_status_third_party_pending":{
+					"title":"Account, Orders Status, Third Party Pending",
+					"value":"Third Party afwachting"
+				},
+				"order_status_third_party_error":{
+					"title":"Account, Orders Status, Third Party Error",
+					"value":"Third Party Error"
+				},
+				"order_status_third_party_approved":{
+					"title":"Account, Orders Status, Third Party Approved",
+					"value":"Third Party Goedgekeurd"
+				},
+				"order_status_ready_for_pickup":{
+					"title":"Account, Orders Status, Ready for Pickup",
+					"value":"Klaar voor Pickup"
+				},
+				"order_status_pending_approval":{
+					"title":"Account, Orders Status, Pending Approval",
+					"value":"afwachting van goedkeuring"
+				},
+				"order_status_direct_deposit_pending":{
+					"title":"Account, Orders Status, Direct Deposit Pending",
+					"value":"Direct Deposit afwachting"
+				},
+				"order_status_direct_deposit_received":{
+					"title":"Account, Orders Status, Direct Deposit Received",
+					"value":"Direct Deposit Ontvangen"
+				},
+				"order_status_refunded_order":{
+					"title":"Account, Orders Status, Refunded Order",
+					"value":"terugbetaald Bestel"
 				}
 			}
 		},

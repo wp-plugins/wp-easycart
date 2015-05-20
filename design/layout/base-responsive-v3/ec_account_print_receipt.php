@@ -555,7 +555,7 @@
   </tr>
 
 
-  <?php if( $vat_rate == 0 ){ ?>
+  <?php if( $order->tax_total > 0 ){ ?>
 
 
   <tr>
@@ -661,6 +661,78 @@
 
 
     <td align='center' class='style22'><?php echo $vat; ?></td>
+
+
+  </tr>
+
+
+  <?php }?>
+
+
+  <?php if( $gst > 0 ){ ?>
+
+
+  <tr>
+
+
+    <td width='269'>&nbsp;</td>
+
+
+    <td width='80' align='center' class='style22'>&nbsp;</td>
+
+
+    <td width='91' align='center' class='style22'>GST (<?php echo $gst_rate; ?>%)</td>
+
+
+    <td align='center' class='style22'><?php echo $GLOBALS['currency']->get_currency_display( $gst ); ?></td>
+
+
+  </tr>
+
+
+  <?php }?>
+
+
+  <?php if( $pst > 0 ){ ?>
+
+
+  <tr>
+
+
+    <td width='269'>&nbsp;</td>
+
+
+    <td width='80' align='center' class='style22'>&nbsp;</td>
+
+
+    <td width='91' align='center' class='style22'>PST (<?php echo $pst_rate; ?>%)</td>
+
+
+    <td align='center' class='style22'><?php echo $GLOBALS['currency']->get_currency_display( $pst ); ?></td>
+
+
+  </tr>
+
+
+  <?php }?>
+
+
+  <?php if( $hst > 0 ){ ?>
+
+
+  <tr>
+
+
+    <td width='269'>&nbsp;</td>
+
+
+    <td width='80' align='center' class='style22'>&nbsp;</td>
+
+
+    <td width='91' align='center' class='style22'>HST (<?php echo $hst_rate; ?>%)</td>
+
+
+    <td align='center' class='style22'><?php echo $GLOBALS['currency']->get_currency_display( $hst ); ?></td>
 
 
   </tr>

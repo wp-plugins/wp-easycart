@@ -10,10 +10,9 @@ class ec_dwolla_thirdparty extends ec_third_party{
 		$signature 	= hash_hmac('sha1', "{$dwolla_key}&{$timestamp}&{$this->order_id}", $dwolla_sec );
 		
 		$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
-		if( $tax->vat_included )
-			$tax_total = number_format( $this->order->tax_total + $this->order->duty_total, 2 );
-		else
-			$tax_total = number_format( $this->order->tax_total + $this->order->vat_total + $this->order->duty_total, 2 );
+		$tax_total = number_format( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total, 2 );
+		if( !$tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order->vat_total, 2 );
 		
 		if( $test_mode )
 			$test_mode = "true";
@@ -29,7 +28,7 @@ class ec_dwolla_thirdparty extends ec_third_party{
 		echo "<input id=\"name\" name=\"name\" type=\"hidden\" value=\"Order #" . $this->order_id . "\" />";
 		echo "<input id=\"description\" name=\"description\" type=\"hidden\" value=\"Description\" />";
 		echo "<input id=\"destinationid\" name=\"destinationid\" type=\"hidden\" value=\"" . $dwolla_account_id . "\" />";
-		echo "<input id=\"amount\" name=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->grand_total, 2) . "\" />";
+		echo "<input id=\"amount\" name=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
 		echo "<input id=\"shipping\" name=\"shipping\" type=\"hidden\" value=\"" . number_format( $this->order->shipping_total, 2 ) . "\" />";
 		echo "<input id=\"tax\" name=\"tax\" type=\"hidden\" value=\"" . $tax_total . "\" />";
 		echo "<input id=\"orderid\" name=\"orderid\" type=\"hidden\" value=\"" . $this->order_id . "\" />";
@@ -47,10 +46,9 @@ class ec_dwolla_thirdparty extends ec_third_party{
 		$signature 	= hash_hmac('sha1', "{$dwolla_key}&{$timestamp}&{$this->order_id}", $dwolla_sec );
 		
 		$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
-		if( $tax->vat_included )
-			$tax_total = number_format( $this->order->tax_total + $this->order->duty_total, 2 );
-		else
-			$tax_total = number_format( $this->order->tax_total + $this->order->vat_total + $this->order->duty_total, 2 );
+		$tax_total = number_format( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total, 2 );
+		if( !$tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order->vat_total, 2 );
 			
 		if( $test_mode )
 			$test_mode = "true";
@@ -168,7 +166,7 @@ class ec_dwolla_thirdparty extends ec_third_party{
 		echo "<input id=\"name\" name=\"name\" type=\"hidden\" value=\"Order #" . $this->order_id . "\" />";
 		echo "<input id=\"description\" name=\"description\" type=\"hidden\" value=\"Description\" />";
 		echo "<input id=\"destinationid\" name=\"destinationid\" type=\"hidden\" value=\"" . $dwolla_account_id . "\" />";
-		echo "<input id=\"amount\" name=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->grand_total, 2) . "\" />";
+		echo "<input id=\"amount\" name=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
 		echo "<input id=\"shipping\" name=\"shipping\" type=\"hidden\" value=\"" . number_format( $this->order->shipping_total, 2 ) . "\" />";
 		echo "<input id=\"tax\" name=\"tax\" type=\"hidden\" value=\"" . $tax_total . "\" />";
 		echo "<input id=\"orderid\" name=\"orderid\" type=\"hidden\" value=\"" . $this->order_id . "\" />";

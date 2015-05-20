@@ -20,6 +20,13 @@ class ec_orderdisplay{
 	public $grand_total;  						// FLOAT 15,3
 	public $refund_total;						// FLOAT 15,3
 	
+	public $gst_total;							// FLOAT 15,3
+	public $gst_rate;							// FLOAT 15,3
+	public $pst_total;							// FLOAT 15,3
+	public $pst_rate;							// FLOAT 15,3
+	public $hst_total;							// FLOAT 15,3
+	public $hst_rate;							// FLOAT 15,3
+	
 	public $promo_code;  						// VARCHAR 255
 	public $giftcard_id;  						// VARCHAR 20
 		
@@ -97,6 +104,19 @@ class ec_orderdisplay{
 		$this->vat_total = $order_row->vat_total;
 		$this->grand_total = $order_row->grand_total; 
 		$this->refund_total = $order_row->refund_total; 
+		
+		$this->gst_total = $order_row->gst_total;
+		$this->gst_rate = $order_row->gst_rate;
+		if( floor( $this->gst_rate ) == $this->gst_rate )
+			$this->gst_rate = number_format( $this->gst_rate, 0, '', '' );
+		$this->pst_total = $order_row->pst_total;
+		$this->pst_rate = $order_row->pst_rate;
+		if( floor( $this->pst_rate ) == $this->pst_rate )
+			$this->pst_rate = number_format( $this->pst_rate, 0, '', '' );
+		$this->hst_total = $order_row->hst_total;
+		$this->hst_rate = $order_row->hst_rate;
+		if( floor( $this->hst_rate ) == $this->hst_rate )
+			$this->hst_rate = number_format( $this->hst_rate, 0, '', '' );
 		
 		$this->promo_code = $order_row->promo_code; 
 		$this->giftcard_id = $order_row->giftcard_id; 
@@ -238,6 +258,18 @@ class ec_orderdisplay{
 		echo $this->currency->get_currency_display( $this->vat_total );
 	}
 	
+	public function display_gst_total( ){
+		echo $this->currency->get_currency_display( $this->gst_total );
+	}
+	
+	public function display_pst_total( ){
+		echo $this->currency->get_currency_display( $this->pst_total );
+	}
+	
+	public function display_hst_total( ){
+		echo $this->currency->get_currency_display( $this->hst_total );
+	}
+	
 	public function has_refund( ){
 		if( $this->refund_total != 0 )
 			return true;
@@ -266,7 +298,7 @@ class ec_orderdisplay{
 	}
 	
 	public function display_order_status( ){
-		echo ucwords( strtolower( $this->order_status ) );	
+		echo $GLOBALS['language']->get_text( 'account_order_details', 'order_status_' . str_replace( " ", "_", strtolower( $this->order_status ) ) );	
 	}
 	
 	public function display_order_shipping_method( ){
@@ -389,6 +421,12 @@ class ec_orderdisplay{
 			$vat_rate = number_format( ( $this->vat_total / ( $this->grand_total - $this->vat_total ) ) * 100, 0, '', '' );
 		else
 			$vat_rate = number_format( 0, 0, '', '' );
+		$gst = $this->gst_total;
+		$gst_rate = $this->gst_rate;
+		$pst = $this->pst_total;
+		$pst_rate = $this->pst_rate;
+		$hst = $this->hst_total;
+		$hst_rate = $this->hst_rate;
 			
 		$discount = $GLOBALS['currency']->get_currency_display( $this->discount_total );
 		

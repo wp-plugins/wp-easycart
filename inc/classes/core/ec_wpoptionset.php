@@ -42,6 +42,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		array_push($this->wp_option_names, 'ec_option_hide_design_help_video');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-db-group');
+		array_push($this->wp_option_names, 'ec_option_design_saved');						array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-db-group');
 		
 		//store basic setup settings
 		array_push($this->wp_option_names, 'ec_option_weight');								array_push($this->wp_option_defaults, 'lbs' );
@@ -226,6 +228,42 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_customer_review_show_user_name');		array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_hide_live_editor');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_hide_price_seasonal');				array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_hide_price_inquiry');					array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_enable_easy_canada_tax');				array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_alberta_tax');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_british_columbia_tax');		array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_manitoba_tax');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_new_brunswick_tax');			array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_newfoundland_tax');			array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_northwest_territories_tax');	array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_nova_scotia_tax');			array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_nunavut_tax');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_ontario_tax');				array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_prince_edward_island_tax');	array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_quebec_tax');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_saskatchewan_tax');			array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_yukon_tax');					array_push($this->wp_option_defaults, '1' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_collect_tax_on_shipping');			array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
 		array_push($this->wp_option_names, 'ec_option_use_direct_deposit');					array_push($this->wp_option_defaults, '1' );
@@ -277,6 +315,10 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_authorize_developer_account');		array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_authorize_currency_code');			array_push($this->wp_option_defaults, 'USD' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_beanstream_merchant_id');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_beanstream_api_passcode');			array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_braintree_merchant_id');				array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');

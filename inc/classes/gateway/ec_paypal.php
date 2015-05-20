@@ -22,11 +22,10 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
 		echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . number_format($this->order->discount_total, 2) . "\" />";
 		$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
-		if( $tax->vat_included ){
-			echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . number_format($this->order->tax_total + $this->order->duty_total, 2) . "\" />";
-		}else{
-			echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . number_format($this->order->tax_total + $this->order->vat_total + $this->order->duty_total, 2) . "\" />";
-		}
+		$tax_total = number_format( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total, 2 );
+		if( !$tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order->vat_total, 2 );
+		echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . $tax_total . "\" />";
 		echo "<input name=\"weight_cart\" id=\"weight_cart\" type=\"hidden\" value=\"" . $this->order->order_weight . "\" />";
 		echo "<input name=\"weight_unit\" id=\"weight_unit\" type=\"hidden\" value=\"" . $paypal_weight_unit . "\" />";
 		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
@@ -185,11 +184,10 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
 		echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . number_format($this->order->discount_total, 2) . "\" />";
 		$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
-		if( $tax->vat_included ){
-			echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . number_format($this->order->tax_total + $this->order->duty_total, 2) . "\" />";
-		}else{
-			echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . number_format($this->order->tax_total + $this->order->vat_total + $this->order->duty_total, 2) . "\" />";
-		}
+		$tax_total = number_format( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total, 2 );
+		if( !$tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order->vat_total, 2 );
+		echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . $tax_total . "\" />";
 		echo "<input name=\"weight_cart\" id=\"weight_cart\" type=\"hidden\" value=\"" . $this->order->order_weight . "\" />";
 		echo "<input name=\"weight_unit\" id=\"weight_unit\" type=\"hidden\" value=\"" . $paypal_weight_unit . "\" />";
 		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";

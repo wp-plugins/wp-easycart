@@ -105,16 +105,16 @@ class ec_admin_subscriptions{
 	
 	function updatestripesubscription( $user, $subscription_id, $product_id){
 		
-		$stripe_user = (object)array( "stripe_customer_id" => $user);
-		$stripe_product = (object)array( "product_id" => $product_id);
+		$sql = "SELECT ec_product.title, ec_product.model_number, ec_product.price, ec_product.subscription_bill_length, ec_product.subscription_bill_period, ec_product.subscription_prorate, ec_product.subscription_unique_id FROM ec_product WHERE ec_product.product_id = %d";
+		$plan_product = $this->db->get_row( $this->db->prepare( $sql, $product_id ) );
+		
+		$stripe_user = (object)array( "stripe_customer_id" => $user );
+		$stripe_product = (object)array( "product_id" => $product_id, "subscription_unique_id" => $plan_product->subscription_unique_id );
 		
 		$stripe = new ec_stripe;
-		$response = $stripe->update_subscription( $stripe_product, $stripe_user, NULL, $subscription_id, NULL);
+		$response = $stripe->update_subscription( $stripe_product, $stripe_user, NULL, $subscription_id, NULL, $plan_product->subscription_prorate );
 		
 		if( $response ){
-			
-			$sql = "SELECT ec_product.title, ec_product.model_number, ec_product.price, ec_product.subscription_bill_length, ec_product.subscription_bill_period FROM ec_product WHERE ec_product.product_id = %d";
-			$plan_product = $this->db->get_row( $this->db->prepare( $sql, $product_id ) );
 			
 			$sql = "UPDATE ec_subscription SET ec_subscription.title = %s, ec_subscription.product_id = %d, ec_subscription.model_number = %s, ec_subscription.price = %s,  ec_subscription.payment_length = %s, ec_subscription.payment_period = %s WHERE ec_subscription.stripe_subscription_id = %s";
 			$success = $this->db->query( $this->db->prepare( $sql, $plan_product->title, $product_id, $plan_product->model_number, $plan_product->price, $plan_product->subscription_bill_length, $plan_product->subscription_bill_period, $subscription_id ) );

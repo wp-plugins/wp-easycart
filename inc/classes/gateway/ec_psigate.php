@@ -12,11 +12,15 @@ class ec_psigate extends ec_gateway{
 		
 		$psigate_store_id = get_option( 'ec_option_psigate_store_id' ); //teststore
 		$psigate_passphrase = get_option( 'ec_option_psigate_passphrase' ); //psigate1234
+			
+		$tax_total = number_format( $this->order_totals->tax_total + $this->order_totals->duty_total + $this->order_totals->gst_total + $this->order_totals->pst_total + $this->order_totals->hst_total, 2, '.', '' );
+		if( !$this->tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order_totals->vat_total, 2, '.', '' );
 		
 		$psigate_xml = "<Order>".
 							"<StoreID>".htmlentities( $psigate_store_id )."</StoreID>".
 							"<Passphrase>".htmlentities( $psigate_passphrase )."</Passphrase>".
-							"<TaxTotal>".htmlentities( $this->order_totals->tax_total )."</TaxTotal>".
+							"<TaxTotal>".htmlentities( $tax_total )."</TaxTotal>".
 							"<ShippingTotal>".htmlentities( $this->order_totals->shipping_total )."</ShippingTotal>".
 							"<Subtotal>".htmlentities( $this->order_totals->sub_total )."</Subtotal>".
 							"<PaymentType>".htmlentities( "CC" )."</PaymentType>".

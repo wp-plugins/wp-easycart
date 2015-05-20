@@ -8,6 +8,10 @@ class ec_virtualmerchant extends ec_gateway{
 		$ssl_user_id 					= 		get_option( 'ec_option_virtualmerchant_ssl_user_id' );
 		$ssl_pin 						= 		get_option( 'ec_option_virtualmerchant_ssl_pin' );
 		
+		$tax_total = number_format( $this->order_totals->tax_total + $this->order_totals->duty_total + $this->order_totals->gst_total + $this->order_totals->pst_total + $this->order_totals->hst_total, 2, '.', '' );
+		if( !$this->tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order_totals->vat_total, 2, '.', '' );
+		
 		$ssl_transaction_type 			= 		"ccsale";
 		$ssl_show_form					=		"false";
 		$ssl_result_format				=		"ASCII";
@@ -20,7 +24,7 @@ class ec_virtualmerchant extends ec_gateway{
 		$ssl_cvv2cvc2					=		$this->credit_card->security_code;
 		$ssl_cvv2cvc2_indicator			=		"1";
 		$ssl_invoice_number				=		$this->order_id;
-		$ssl_salestax					=		number_format( $this->order_totals->tax_total, 2, '.', '' );
+		$ssl_salestax					=		$tax_total;
 		$ssl_transaction_currency 		= 		get_option( 'ec_option_virtualmerchant_currency' );
 		
 		$data = array(

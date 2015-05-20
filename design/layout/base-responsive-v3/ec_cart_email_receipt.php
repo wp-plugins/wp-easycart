@@ -517,7 +517,7 @@
 
         </tr>
 
-        <?php if( $tax_struct->is_tax_enabled( ) ){ ?>
+       <?php if( ( $tax_struct->is_tax_enabled( ) && !get_option( 'ec_option_enable_easy_canada_tax' ) ) || ( get_option( 'ec_option_enable_easy_canada_tax' ) && $tax > 0 ) ){ ?>
 
         <tr>
 
@@ -588,6 +588,54 @@
             <td width='91' align='center' class='style22'><?php echo $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_order_totals_vat" ); ?><?php echo $vat_rate; ?>%</td>
 
             <td align='center' class='style22'><?php echo $vat; ?></td>
+
+        </tr>
+
+        <?php }?>
+
+        <?php if( $gst > 0 ){ ?>
+
+        <tr>
+
+        	<td width='269'>&nbsp;</td>
+
+            <td width='80' align='center' class='style22'>&nbsp;</td>
+
+            <td width='91' align='center' class='style22'>GST (<?php echo $gst_rate; ?>%)</td>
+
+            <td align='center' class='style22'><?php echo $GLOBALS['currency']->get_currency_display( $gst ); ?></td>
+
+        </tr>
+
+        <?php }?>
+
+        <?php if( $pst > 0 ){ ?>
+
+        <tr>
+
+        	<td width='269'>&nbsp;</td>
+
+            <td width='80' align='center' class='style22'>&nbsp;</td>
+
+            <td width='91' align='center' class='style22'>PST (<?php echo $pst_rate; ?>%)</td>
+
+            <td align='center' class='style22'><?php echo $GLOBALS['currency']->get_currency_display( $pst ); ?></td>
+
+        </tr>
+
+        <?php }?>
+
+        <?php if( $hst > 0 ){ ?>
+
+        <tr>
+
+        	<td width='269'>&nbsp;</td>
+
+            <td width='80' align='center' class='style22'>&nbsp;</td>
+
+            <td width='91' align='center' class='style22'>HST (<?php echo $hst_rate; ?>%)</td>
+
+            <td align='center' class='style22'><?php echo $GLOBALS['currency']->get_currency_display( $hst ); ?></td>
 
         </tr>
 

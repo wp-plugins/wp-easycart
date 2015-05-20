@@ -369,7 +369,7 @@ class ec_accountpage{
 	
 	public function display_complete_payment_link( ){
 		if( $this->order && $this->order->orderstatus_id == 8 ){
-			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_page=third_party&order_id=" . $this->order->order_id . "\" class=\"ec_account_complete_order_link\">Complete Order Payment</a> ";
+			echo "<a href=\"" . $this->cart_page . $this->permalink_divider . "ec_page=third_party&order_id=" . $this->order->order_id . "\" class=\"ec_account_complete_order_link\">" . $GLOBALS['language']->get_text( 'account_order_details', 'complete_payment' ) . "</a> ";
 		}
 	}
 	/* END ORDER DETAILS FUNCTIONS*/
@@ -1317,7 +1317,7 @@ class ec_accountpage{
 				}
 				
 				if( $plan_added ){
-					$success = $stripe->update_subscription( $product, $this->user, $card, $_POST['stripe_subscription_id'] );
+					$success = $stripe->update_subscription( $product, $this->user, $card, $_POST['stripe_subscription_id'], NULL, $product->subscription_prorate );
 				}else{
 					header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $_POST['subscription_id'] . "&account_error=subscription_update_failed&errcode=01" );
 				}
@@ -1349,7 +1349,7 @@ class ec_accountpage{
 				
 				if( $payment_method == "stripe" ){
 					$stripe = new ec_stripe( );
-					$success = $stripe->update_subscription( $product, $this->user, $card, $_POST['stripe_subscription_id'] );
+					$success = $stripe->update_subscription( $product, $this->user, $card, $_POST['stripe_subscription_id'], NULL, $product->subscription_prorate );
 				}
 					
 				// Update our DB if the subscription was successfully updated
@@ -1369,7 +1369,7 @@ class ec_accountpage{
 				
 				if( $payment_method == "stripe" ){
 					$stripe = new ec_stripe( );
-					$success = $stripe->update_subscription( $product, $this->user, NULL, $_POST['stripe_subscription_id'] );
+					$success = $stripe->update_subscription( $product, $this->user, NULL, $_POST['stripe_subscription_id'], NULL, $product->subscription_prorate );
 				}
 				
 				if( $success ){

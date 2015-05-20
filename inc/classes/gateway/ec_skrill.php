@@ -40,8 +40,10 @@ class ec_skrill extends ec_third_party{
 			echo "<input type=\"hidden\" name=\"amount2_description\" value=\"VAT (" . number_format( ( $this->order->vat_total / ( $this->order->grand_total - $this->order->vat_total ) ) * 100, 0, '', '' ) . "%)\" />";
 			echo "<input type=\"hidden\" name=\"amount2\" value=\"" . $this->order->vat_total . "\" />";
 		}else{
+			$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
+			$tax_total = number_format( ( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total * 100 ), 0, '', '' );
 			echo "<input type=\"hidden\" name=\"amount2_description\" value=\"tax\" />";
-			echo "<input type=\"hidden\" name=\"amount2\" value=\"" . $this->order->tax_total . "\" />";
+			echo "<input type=\"hidden\" name=\"amount2\" value=\"" . $tax_total . "\" />";
 		}
 		echo "<input type=\"hidden\" name=\"amount3_description\" value=\"shipping\" />";
 		echo "<input type=\"hidden\" name=\"amount3\" value=\"" . $this->order->shipping_total . "\" />";

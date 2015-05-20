@@ -18,7 +18,7 @@ else
 $ipad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
 $iphone = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
 
-$is_admin = current_user_can( 'manage_options' );
+$is_admin = ( current_user_can( 'manage_options' ) && !get_option( 'ec_option_hide_live_editor' ) );
 
 if( isset( $_GET['preview'] ) ){
 	$is_preview = true;

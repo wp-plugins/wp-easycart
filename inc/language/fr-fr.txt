@@ -394,6 +394,18 @@
 				"product_details_your_price":{
 					"title":"Your Price:",
 					"value":"votre prix:"
+				},
+				"product_details_backorder_until":{
+					"title":"Backorder UNTIL date, until",
+					"value":"jusqu'à"
+				},
+				"product_details_backordered":{
+					"title":"BACKORDERED until date",
+					"value":"Backordered"
+				},
+				"product_details_backordered_message":{
+					"title":"Backordered message in cart",
+					"value":"Quelques articles dans votre panier sont actuellement en rupture de stock et en rupture de stock."
 				}
 			}
 		},
@@ -2168,6 +2180,70 @@
 				"account_orders_details_your_codes":{
 					"title":"Account, Orders Details, Your Codes",
 					"value":"vos codes:"
+				},
+				"complete_payment":{
+					"title":"Account, Orders Details, Complete Payment",
+					"value":"Classement complet paiement:"
+				},
+				"order_status_status_not_found":{
+					"title":"Account, Orders Status, Status Not Found",
+					"value":"Suivi de commande introuvable"
+				},
+				"order_status_order_shipped":{
+					"title":"Account, Orders Status, Order Shipped",
+					"value":"commande expédiée"
+				},
+				"order_status_order_confirmed":{
+					"title":"Account, Orders Status, Order Confirmed",
+					"value":"Commande confirmée"
+				},
+				"order_status_order_on_hold":{
+					"title":"Account, Orders Status, Order on Hold",
+					"value":"Commande en attente"
+				},
+				"order_status_order_started":{
+					"title":"Account, Orders Status, Order Started",
+					"value":"afin route"
+				},
+				"order_status_card_approved":{
+					"title":"Account, Orders Status, Card Approved",
+					"value":"Carte Approuvé"
+				},
+				"order_status_card_denied":{
+					"title":"Account, Orders Status, Card Denied",
+					"value":"Carte Denied"
+				},
+				"order_status_third_party_pending":{
+					"title":"Account, Orders Status, Third Party Pending",
+					"value":"Tiers attente"
+				},
+				"order_status_third_party_error":{
+					"title":"Account, Orders Status, Third Party Error",
+					"value":"Erreur tiers"
+				},
+				"order_status_third_party_approved":{
+					"title":"Account, Orders Status, Third Party Approved",
+					"value":"Tiers agréé"
+				},
+				"order_status_ready_for_pickup":{
+					"title":"Account, Orders Status, Ready for Pickup",
+					"value":"Prêt pour le ramassage"
+				},
+				"order_status_pending_approval":{
+					"title":"Account, Orders Status, Pending Approval",
+					"value":"Validation En Attente"
+				},
+				"order_status_direct_deposit_pending":{
+					"title":"Account, Orders Status, Direct Deposit Pending",
+					"value":"Dépôt direct en attente"
+				},
+				"order_status_direct_deposit_received":{
+					"title":"Account, Orders Status, Direct Deposit Received",
+					"value":"Dépôt direct Reçues"
+				},
+				"order_status_refunded_order":{
+					"title":"Account, Orders Status, Refunded Order",
+					"value":"remboursé Ordre"
 				}
 			}
 		},

@@ -50,6 +50,23 @@
 		$shipping = $GLOBALS['currency']->get_currency_display( $order->shipping_total );
 		$discount = $GLOBALS['currency']->get_currency_display( $order->discount_total );
 		
+		$gst = $order->gst_total;
+		$pst = $order->pst_total;
+		$hst = $order->hst_total;
+		
+		$gst_rate = $order->gst_rate;
+		$pst_rate = $order->pst_rate;
+		$hst_rate = $order->hst_rate;
+		
+		if( floor( $gst_rate ) == $gst_rate )
+			$gst_rate = number_format( $gst_rate, 0, '', '' );
+		
+		if( floor( $pst_rate ) == $pst_rate )
+			$pst_rate = number_format( $pst_rate, 0, '', '' );
+		
+		if( floor( $hst_rate ) == $hst_rate )
+			$hst_rate = number_format( $hst_rate, 0, '', '' );
+		
 		$vat_rate = 0;
 		for( $i=0; $i<count($country_list); $i++ ){
 			if( $order->shipping_country == $country_list[$i]->iso2_cnt )

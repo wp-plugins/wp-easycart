@@ -863,6 +863,11 @@ function ec_live_payment_setup( ){
 			return true;
 		else
 			return false;
+	}else if( $live_payment == "beanstream" ){
+		if( get_option( 'ec_option_beanstream_merchant_id' ) != "" && get_option( 'ec_option_beanstream_api_passcode' ) != "" )
+			return true;
+		else
+			return false;
 	}else if( $live_payment == "braintree" ){
 		if( get_option( 'ec_option_braintree_merchant_id' ) != "" && get_option( 'ec_option_braintree_public_key' ) != "" &&  get_option( 'ec_option_braintree_private_key' ) != "" )
 			return true;
@@ -970,6 +975,8 @@ function ec_get_live_payment_method( ){
 	$live_payment = get_option( 'ec_option_payment_process_method' );
 	if( $live_payment == "authorize" )
 		return "Authorize.Net";
+	else if( $live_payment == "beanstream" )
+		return "Beanstream";
 	else if( $live_payment == "braintree" )
 		return "Braintree S2S";
 	else if( $live_payment == "chronopay" )
@@ -1233,6 +1240,7 @@ function ec_save_basic_settings( ){
 	if( isset( $_POST['ec_option_cart_menu_id'] ) )
 	update_option( 'ec_option_cart_menu_id', implode( '***', $_POST['ec_option_cart_menu_id'] ) );
 	update_option( 'ec_option_enable_newsletter_popup', $_POST['ec_option_enable_newsletter_popup'] );
+	update_option( 'ec_option_hide_live_editor', $_POST['ec_option_hide_live_editor'] );
 	
 	// Currency Display
 	update_option( 'ec_option_base_currency', $_POST['ec_option_base_currency'] );
@@ -1286,6 +1294,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_skip_reivew_screen', $_POST['ec_option_skip_reivew_screen'] );
 	update_option( 'ec_option_require_terms_agreement', $_POST['ec_option_require_terms_agreement'] );
 	update_option( 'ec_option_show_email_on_receipt', $_POST['ec_option_show_email_on_receipt'] );
+	update_option( 'ec_option_collect_tax_on_shipping', $_POST['ec_option_collect_tax_on_shipping'] );
 	update_option( 'ec_option_show_breadcrumbs', $_POST['ec_option_show_breadcrumbs'] );
 	update_option( 'ec_option_show_model_number', $_POST['ec_option_show_model_number'] );
 	update_option( 'ec_option_show_categories', $_POST['ec_option_show_categories'] );
@@ -1294,6 +1303,8 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_show_large_popup', $_POST['ec_option_show_large_popup'] );
 	update_option( 'ec_option_customer_review_require_login', $_POST['ec_option_customer_review_require_login'] );
 	update_option( 'ec_option_customer_review_show_user_name', $_POST['ec_option_customer_review_show_user_name'] );
+	update_option( 'ec_option_hide_price_seasonal', $_POST['ec_option_hide_price_seasonal'] );
+	update_option( 'ec_option_hide_price_inquiry', $_POST['ec_option_hide_price_inquiry'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
@@ -1335,6 +1346,21 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_tax_cloud_state', $_POST['ec_option_tax_cloud_state'] );
 	update_option( 'ec_option_tax_cloud_zip', $_POST['ec_option_tax_cloud_zip'] );
 	update_option( 'ec_option_tax_cloud_usps_id', $_POST['ec_option_tax_cloud_usps_id'] );
+	
+	update_option( 'ec_option_enable_easy_canada_tax', $_POST['ec_option_enable_easy_canada_tax'] );
+	update_option( 'ec_option_collect_alberta_tax', $_POST['ec_option_collect_alberta_tax'] );
+	update_option( 'ec_option_collect_british_columbia_tax', $_POST['ec_option_collect_british_columbia_tax'] );
+	update_option( 'ec_option_collect_manitoba_tax', $_POST['ec_option_collect_manitoba_tax'] );
+	update_option( 'ec_option_collect_new_brunswick_tax', $_POST['ec_option_collect_new_brunswick_tax'] );
+	update_option( 'ec_option_collect_newfoundland_tax', $_POST['ec_option_collect_newfoundland_tax'] );
+	update_option( 'ec_option_collect_northwest_territories_tax', $_POST['ec_option_collect_northwest_territories_tax'] );
+	update_option( 'ec_option_collect_nova_scotia_tax', $_POST['ec_option_collect_nova_scotia_tax'] );
+	update_option( 'ec_option_collect_nunavut_tax', $_POST['ec_option_collect_nunavut_tax'] );
+	update_option( 'ec_option_collect_ontario_tax', $_POST['ec_option_collect_ontario_tax'] );
+	update_option( 'ec_option_collect_prince_edward_island_tax', $_POST['ec_option_collect_prince_edward_island_tax'] );
+	update_option( 'ec_option_collect_quebec_tax', $_POST['ec_option_collect_quebec_tax'] );
+	update_option( 'ec_option_collect_saskatchewan_tax', $_POST['ec_option_collect_saskatchewan_tax'] );
+	update_option( 'ec_option_collect_yukon_tax', $_POST['ec_option_collect_yukon_tax'] );
 	
 	do_action( 'wpeasycart_admin_process_advanced_options' );
 	
@@ -1552,6 +1578,9 @@ function ec_update_payment_info( ){
 		update_option( 'ec_option_authorize_test_mode', $_POST['ec_option_authorize_test_mode'] );
 		update_option( 'ec_option_authorize_developer_account', $_POST['ec_option_authorize_developer_account'] );
 		update_option( 'ec_option_authorize_currency_code', $_POST['ec_option_authorize_currency_code'] );
+		//Beanstream
+		update_option( 'ec_option_beanstream_merchant_id', $_POST['ec_option_beanstream_merchant_id'] );
+		update_option( 'ec_option_beanstream_api_passcode', $_POST['ec_option_beanstream_api_passcode'] );
 		//Braintree
 		update_option( 'ec_option_braintree_merchant_id', $_POST['ec_option_braintree_merchant_id'] );
 		update_option( 'ec_option_braintree_public_key', $_POST['ec_option_braintree_public_key'] );
@@ -1935,7 +1964,7 @@ function ec_has_product( ){
 }
 
 function ec_has_custom_store_design( ){
-	if( get_option( 'ec_option_hide_design_help_video' ) )
+	if( get_option( 'ec_option_hide_design_help_video' ) || get_option( 'ec_option_design_saved' ) )
 		return true;
 	else
 		return false;
@@ -1967,7 +1996,7 @@ function ec_has_tax( ){
 function ec_has_shipping( ){
 	global $wpdb;
 	$results = $wpdb->get_results( "SELECT shippingrate_id FROM ec_shippingrate" );
-	if( empty( $results ) )
+	if( count( $results ) <= 0 && get_option( 'ec_option_use_shipping' ) )
 		return false;
 	else
 		return true;
@@ -2004,5 +2033,83 @@ function ec_easycart_add_pages( ){
 	if( !ec_is_account_page_setup( ) ){
 		ec_add_account_page( );
 	}
+}
+
+function ec_reset_store_permalinks( ){
+	
+	$db = new ec_db( );
+	$menulevel1_items = $db->get_menulevel1_items( );
+	$menulevel2_items = $db->get_menulevel2_items( );
+	$menulevel3_items = $db->get_menulevel3_items( );
+	$product_list = $db->get_product_list( "", "", "", "" );
+	$category_list = $db->get_category_list( );
+	$manufacturer_list = $db->get_manufacturer_list( );
+	
+	foreach( $menulevel1_items as $menu_item ){
+		// Add a post id
+		$post = array(	'post_content'	=> "[ec_store menuid=\"" . $menu_item->menulevel1_id . "\"]",
+						'post_status'	=> "publish",
+						'post_title'	=> $menu_item->menu1_name,
+						'post_type'		=> "ec_store"
+					  );
+		$post_id = wp_insert_post( $post );
+		$db->update_menu_post_id( $menu_item->menulevel1_id, $post_id );
+	}
+	
+	foreach( $menulevel2_items as $menu_item ){
+		// Add a post id
+		$post = array(	'post_content'	=> "[ec_store submenuid=\"" . $menu_item->menulevel2_id . "\"]",
+						'post_status'	=> "publish",
+						'post_title'	=> $menu_item->menu2_name,
+						'post_type'		=> "ec_store"
+					  );
+		$post_id = wp_insert_post( $post );
+		$db->update_submenu_post_id( $menu_item->menulevel2_id, $post_id );
+	}
+	
+	foreach( $menulevel3_items as $menu_item ){
+		// Add a post id
+		$post = array(	'post_content'	=> "[ec_store subsubmenuid=\"" . $menu_item->menulevel3_id . "\"]",
+						'post_status'	=> "publish",
+						'post_title'	=> $menu_item->menu3_name,
+						'post_type'		=> "ec_store"
+					  );
+		$post_id = wp_insert_post( $post );
+		$db->update_subsubmenu_post_id( $menu_item->menulevel3_id, $post_id );
+	}
+
+	foreach( $product_list as $product_single ){
+		// Add a post id
+		$post = array(	'post_content'	=> "[ec_store modelnumber=\"" . $product_single['model_number'] . "\"]",
+						'post_status'	=> "publish",
+						'post_title'	=> $product_single['title'],
+						'post_type'		=> "ec_store"
+					  );
+		$post_id = wp_insert_post( $post );
+		$db->update_product_post_id( $product_single['product_id'], $post_id );
+	}
+
+	foreach( $manufacturer_list as $manufacturer_single ){
+		// Add a post id
+		$post = array(	'post_content'	=> "[ec_store manufacturerid=\"" . $manufacturer_single->manufacturer_id . "\"]",
+						'post_status'	=> "publish",
+						'post_title'	=> $manufacturer_single->name,
+						'post_type'		=> "ec_store"
+					  );
+		$post_id = wp_insert_post( $post );
+		$db->update_manufacturer_post_id( $manufacturer_single->manufacturer_id, $post_id );
+	}
+
+	foreach( $category_list as $category_single ){
+		// Add a post id
+		$post = array(	'post_content'	=> "[ec_store groupid=\"" . $category_single->category_id . "\"]",
+						'post_status'	=> "publish",
+						'post_title'	=> $category_single->category_name,
+						'post_type'		=> "ec_store"
+					  );
+		$post_id = wp_insert_post( $post );
+		$db->update_category_post_id( $category_single->category_id, $post_id );
+	}
+
 }
 ?>

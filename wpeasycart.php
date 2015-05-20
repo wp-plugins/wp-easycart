@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple ecommerce solution that installs into new or existing WordPress blogs. Customers purchase directly from your store! Get a full ecommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/3.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.0.29
+ * Version: 3.1.0
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.0.29
+ * @version 3.1.0
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,23 +20,62 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_0_29' );
+define( 'EC_CURRENT_VERSION', '3_1_0' );
 define( 'EC_CURRENT_DB', '1_30' );
-define( 'EC_UPGRADE_DB', '34' );
+define( 'EC_UPGRADE_DB', '35' );
 
-if( !defined( "EC_QB_PLUGIN_DIRECTORY" ) )
-	define( 'EC_QB_PLUGIN_DIRECTORY', 'wp-easycart-quickbooks' );
+add_action( 'init', 'wpeasycat_start_session', 1 );
+add_action( 'init', 'wpeasycart_load_startup', 1 );
+add_action( 'wp_logout', 'wpeasycart_end_session' );
+add_action( 'wp_login', 'wpeasycart_end_session' );
 
-require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
+function wpeasycat_start_session( ){
+    if( wpeasycart_config_is_session_started( ) === FALSE ){
+        session_start( );
+    }
+}
 
-// Setup Hook Structure
-ec_setup_hooks( );
+function wpeasycart_load_startup( ){
 
-// Check and add hooks
-if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/ec_hooks.php" ) )
-	include( WP_PLUGIN_DIR . "/wp-easycart-data/ec_hooks.php" );
+	require_once( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/ec_config.php' );
+	
+	// Setup Hook Structure
+	ec_setup_hooks( );
+	
+	// Check and add hooks
+	if( file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/ec_hooks.php" ) )
+		include( WP_PLUGIN_DIR . "/wp-easycart-data/ec_hooks.php" );
+}
+
+function wpeasycart_end_session( ){
+    session_destroy( );
+}
+
+function wpeasycart_config_is_session_started( ){
+
+	if( php_sapi_name( ) !== 'cli' ){
+		
+		if( version_compare( phpversion( ), '5.4.0', '>=' ) ){
+			return session_status( ) === PHP_SESSION_ACTIVE ? TRUE : FALSE;
+		
+		}else{
+			return session_id() === '' ? FALSE : TRUE;
+		}
+		
+	}
+	
+	return FALSE;
+
+}
 
 function ec_activate(){
+		
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_db.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_db_admin.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_language.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_setting.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_wpoption.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_wpoptionset.php' );
 	
 	if( !get_option( 'ec_option_db_version' ) ){
 		add_option( 'ec_option_db_new_version', EC_UPGRADE_DB );
@@ -129,6 +168,13 @@ function ec_activate(){
 }
 
 function ec_uninstall(){
+		
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_db.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_db_admin.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_language.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_setting.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_wpoption.php' );
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/core/ec_wpoptionset.php' );
 	
 	$mysqli = new ec_db();
 	
@@ -147,7 +193,7 @@ function ec_uninstall(){
 	delete_option( 'ec_option_db_new_version' );
 	
 	$data_dir = WP_PLUGIN_DIR . "/wp-easycart-data/";
-	if( !is_writable( $data_dir ) ){
+	if( is_dir( $data_dir ) && !is_writable( $data_dir ) ){
 		// Could not open the file, lets write it via ftp!
 		$ftp_server = $_POST['hostname'];
 		$ftp_user_name = $_POST['username'];
@@ -215,6 +261,8 @@ function load_ec_pre(){
 		update_option( 'ec_option_db_new_version', EC_UPGRADE_DB );
 	}
 	// END UPGRADE THE DB IF NEEDED
+	
+	update_option( 'ec_option_is_installed', '1' );
 	
 	// CREATE DATA FOLDER IF IT DOESN'T EXIST
 	if( !is_dir( WP_PLUGIN_DIR . "/wp-easycart-data/" ) ){
@@ -596,7 +644,52 @@ function load_ec_pre(){
 		update_option( 'ec_option_product_filter_7', '1' );
 	}
 	// END FIX FOR PRODUCT LIST DROP DOWN
-}
+	
+	// FIX FOR QUERY SPEED ISSUES NEED TO CREATE EXTRA CONNECTING TABLE
+	if( !get_option( 'ec_option_query_fix' ) ){
+		
+		global $wpdb;
+		$products = $wpdb->get_results( "SELECT ec_product.* FROM ec_product" );
+		foreach( $products as $product ){
+			
+			if( $product->menulevel1_id_1 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, menu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel1_id_1 ) );
+			
+			if( $product->menulevel2_id_1 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, menu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel2_id_1 ) );
+			
+			if( $product->menulevel3_id_1 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, menu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel3_id_1 ) );
+			
+			if( $product->menulevel1_id_2 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, submenu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel1_id_2 ) );
+			
+			if( $product->menulevel2_id_2 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, submenu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel2_id_2 ) );
+			
+			if( $product->menulevel3_id_2 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, submenu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel3_id_2 ) );
+				
+			if( $product->menulevel1_id_3 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, subsubmenu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel1_id_3 ) );
+			
+			if( $product->menulevel2_id_3 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, subsubmenu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel2_id_3 ) );
+			
+			if( $product->menulevel3_id_3 )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, subsubmenu_id ) VALUES( %d, %d )", $product->product_id, $product->menulevel3_id_3 ) );
+			
+			if( $product->manufacturer_id )
+				$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_atts( product_id, manufacturer_id ) VALUES( %d, %d )", $product->product_id, $product->manufacturer_id ) );
+		}
+		
+		update_option( 'ec_option_query_fix', 1 );
+		
+	}// CLOSE FIX FOR QUERY
+	
+	update_option( 'ec_option_is_installed', '1' );
+	
+} // CLOSE PRE FUNCTION
 
 function ec_custom_headers( ){
 	if( isset( $_GET['order_id'] ) && isset( $_GET['orderdetail_id'] ) && isset( $_GET['download_id'] ) && isset( $_SESSION['ec_email'] ) && isset( $_SESSION['ec_password'] ) ){
@@ -896,6 +989,7 @@ function ec_facebook_metadata() {
 		remove_action('wp_head', 'rel_canonical');
 		
 		//this method places to early, before html tags open
+		echo "\n";
 		echo "<meta property=\"og:title\" content=\"" . $prod_title . "\" />\n"; 
 		echo "<meta property=\"og:type\" content=\"product\" />\n";
 		echo "<meta property=\"og:description\" content=\"" . ec_short_string($prod_description, 300) . "\" />\n";
@@ -984,7 +1078,6 @@ function load_ec_store( $atts ){
 		'language' => 'NONE'
 	), $atts ) );
 	
-	$GLOBALS['language'] = new ec_language( $language );
 	$GLOBALS['ec_store_shortcode_options'] = array( $menuid, $submenuid, $subsubmenuid, $manufacturerid, $groupid, $modelnumber );
 	
 	ob_start();
@@ -1767,6 +1860,7 @@ function ec_ajax_redeem_coupon_code( ){
 	}
 	$db = new ec_db();
 	$coupon = $db->redeem_coupon_code( $coupon_code );
+	do_action( 'wpeasycart_cart_updated' );
 	// UPDATE COUPON CODE
 	$cart = new ec_cart( $coupon_code );
 	$order_totals = ec_get_order_totals( );
@@ -1824,6 +1918,7 @@ function ec_ajax_redeem_gift_card( ){
 	
 	$db = new ec_db();
 	$giftcard = $db->redeem_gift_card( $gift_card );
+	do_action( 'wpeasycart_cart_updated' );
 	// UPDATE GIFT CARD
 	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 	$order_totals = ec_get_order_totals( );
@@ -1997,6 +2092,7 @@ function ec_ajax_submit_newsletter_signup( ){
 add_action( 'wp_ajax_ec_ajax_save_page_options', 'ec_ajax_save_page_options' );
 function ec_ajax_save_page_options( ){
 	
+	update_option( 'ec_option_design_saved', 1 );
 	$db = new ec_db( );
 	$post_id = $_POST['post_id'];
 	foreach( $_POST as $key => $var ){
@@ -2018,6 +2114,7 @@ function ec_ajax_save_page_options( ){
 add_action( 'wp_ajax_ec_ajax_save_page_default_options', 'ec_ajax_save_page_default_options' );
 function ec_ajax_save_page_default_options( ){
 	
+	update_option( 'ec_option_design_saved', 1 );
 	$db = new ec_db( );
 	$post_id = $_POST['post_id'];
 	foreach( $_POST as $key => $var ){

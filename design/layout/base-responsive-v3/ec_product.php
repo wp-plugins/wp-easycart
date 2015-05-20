@@ -40,7 +40,7 @@ if( isset( $_GET['preview'] ) ){
 }
 
 // Show admin if logged in and not using Safari
-if( current_user_can( 'manage_options' ) && !$safari && !$is_preview )
+if( current_user_can( 'manage_options' ) && !$safari && !$is_preview && !get_option( 'ec_option_hide_live_editor' ) )
 	$admin_access = true;
 else
 	$admin_access = false;
@@ -75,7 +75,12 @@ if( $admin_access || $use_quickview ){ ?>
                 <div class="ec_product_quickview_content_data">
                     <h1 class="ec_product_quickview_content_title"><a href="<?php echo $product->get_product_link( ); ?>"><?php echo $product->title; ?></a></h1>
                     <div class="ec_product_quickview_content_divider"></div>
-                    <div class="ec_product_quickview_content_price"><?php if( $product->list_price > 0 ){ ?><span class="ec_list_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->list_price ); ?></span><?php }?><span class="ec_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->price ); ?></div>
+                    <?php if( ( $product->is_catalog_mode && get_option( 'ec_option_hide_price_seasonal' ) ) || 
+					  		  ( $product->is_inquiry_mode && get_option( 'ec_option_hide_price_inquiry' ) ) ){  // don't show price
+			  			  }else{ ?>
+                    <div class="ec_product_quickview_content_price"><?php if( $product->list_price > 0 ){ ?><span class="ec_list_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->list_price ); ?></span><?php }?><span class="ec_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->price ); if( $product->pricing_per_sq_foot ){ echo "/sq ft"; } ?></div>
+                    <?php }?>
+                    
                     <div class="ec_product_quickview_content_description"><?php echo $product->short_description; ?></div>
                     <?php if( isset( $product->pricetiers[0] ) && count( $product->pricetiers[0] ) > 1 ){ ?>
                     
@@ -104,7 +109,7 @@ if( $admin_access || $use_quickview ){ ?>
 						<?php }else if( $product->is_deconetwork ){ ?>
                         <div class="ec_product_quickview_content_add_to_cart"><a href="<?php echo $product->get_deconetwork_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_design_now' ); ?></a></div>
                         
-                        <?php }else if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation ) ){ ?>
+                        <?php }else if( ( $product->in_stock( ) || $product->allow_backorders ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation ) ){ ?>
                         <div class="ec_product_quickview_content_add_to_cart"><a href="<?php echo $product->get_product_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_select_options' ); ?></a></div>
                         
                         <?php }else if( $product->in_stock( ) && $product->is_subscription_item ){ ?>
@@ -141,7 +146,37 @@ if( $admin_access || $use_quickview ){ ?>
                              </tr>
                         </table>
                         
-                        <?php }else{ ?>
+                        <?php }else if( $product->allow_backorders ){ ?>
+						<div class="ec_details_option_row_error" id="ec_addtocart_quantity_exceeded_error_<?php echo $product->model_number; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_maximum_quantity' ); ?></div>
+            			<div class="ec_details_option_row_error" id="ec_addtocart_quantity_minimum_error_<?php echo $product->model_number; ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text1' ); ?> <?php echo $product->min_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text2' ); ?></div>
+                        
+                        <table class="ec_product_quickview_content_quantity">
+                        	<tr>
+                            	<td>
+                        			<input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $product->model_number; ?>', <?php echo $product->min_purchase_quantity; ?> );" />
+                            	</td>
+                                <td>
+                                    <input type="number" value="<?php if( $product->min_purchase_quantity > 0 ){ echo $product->min_purchase_quantity; }else{ echo '1'; } ?>" name="quantity" id="ec_quantity_<?php echo $product->model_number; ?>" autocomplete="off" step="1" min="<?php if( $product->min_purchase_quantity > 0 ){ echo $product->min_purchase_quantity; }else{ echo '1'; } ?>"<?php if( $product->show_stock_quantity ){ ?> max="1000000"<?php }?> class="ec_quantity" />
+                                </td>
+                                <td>
+                            		<input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $product->model_number; ?>', <?php echo $product->show_stock_quantity; ?>, 1000000 );" />
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td colspan="3">
+                                	<input type="button" value="BACKORDER" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', jQuery( document.getElementById( 'ec_quantity_<?php echo $product->model_number; ?>' ) ).val( ), <?php echo $product->show_stock_quantity; ?>, <?php echo $product->min_purchase_quantity; ?>, <?php echo $product->stock_quantity; ?> );" />
+                                    
+                                     <?php if( $product->show_stock_quantity || $product->use_optionitem_quantity_tracking ){ ?><div class="ec_details_stock_total"><span id="ec_details_stock_quantity">Out of Stock<?php if( $product->backorder_fill_date != "" ){ ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_backorder_until' ); ?> <?php echo $product->backorder_fill_date; ?><?php }?></span></div><?php }?>
+                                    
+                                    <?php if( $product->min_purchase_quantity > 1 ){ ?><div class="ec_details_min_purchase_quantity"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text1' ); ?> <?php echo $product->min_purchase_quantity; ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_minimum_quantity_text2' ); ?></div><?php }?>
+                                    
+                                    <?php if( $product->handling_price > 0 ){ ?><div class="ec_details_handling_fee"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice1' ); ?> <?php echo $GLOBALS['currency']->get_currency_display( $product->handling_price ); ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_handling_fee_notice2' ); ?></div><?php }?>
+                                    
+                                </td>
+                             </tr>
+                        </table>
+                            
+						<?php }else{ ?>
                         <div class="ec_out_of_stock"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_out_of_stock' ); ?></div>
                         <?php }?>
                         
@@ -281,13 +316,18 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
         <?php /////// START CONTENT AREA //// ?>
         <div class="ec_product_meta_type6">
         	<h3 class="ec_product_title"><a href="<?php echo $product->get_product_link( ); ?>" class="ec_image_link_cover"><?php echo $product->title; ?></a></h3>
+            <?php do_action( 'wpeasycart_after_product_title', $product ); ?>
         	<div class="ec_product_description"><?php echo $product->short_description; ?></div>
+            <?php if( ( $product->is_catalog_mode && get_option( 'ec_option_hide_price_seasonal' ) ) || 
+					  ( $product->is_inquiry_mode && get_option( 'ec_option_hide_price_inquiry' ) ) ){ // don't show price
+			  	  }else{ ?>
             <div class="ec_price_container">
 				<?php if( $product->list_price > 0 ){ ?>
                     <span class="ec_list_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->list_price ); ?></span>
                 <?php }?>
-                <span class="ec_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->price ); ?></span>
+                <span class="ec_price"><?php echo $GLOBALS['currency']->get_currency_display( $product->price ); if( $product->pricing_per_sq_foot ){ echo "/sq ft"; } ?></span>
             </div>
+            <?php }?>
             
             <?php if( $admin_access || $use_quickview ){ ?>
         	<div class="ec_product_quickview_container"><span class="ec_product_quickview"<?php if( !$use_quickview ){ echo " style='display:none;'"; } ?>><input type="button" onclick="ec_product_show_quick_view_link( '<?php echo $product->model_number; ?>' );" value="<?php echo $GLOBALS['language']->get_text( 'product_page', 'product_quick_view' ); ?>" /> </span></div>
@@ -302,7 +342,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
 			<?php }else if( $product->is_deconetwork ){ ?>
 			<div class="ec_product_quickview_content_add_to_cart"><a href="<?php echo $product->get_deconetwork_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_design_now' ); ?></a></div>
 			
-			<?php }else if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation || $product->min_purchase_quantity > 1 ) ){ ?>
+			<?php }else if( ( $product->in_stock( ) || $product->allow_backorders ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation || $product->min_purchase_quantity > 1 ) ){ ?>
             <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_product_link( ); ?>" target="_self"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_select_options' ); ?></a></span></div>
             
             <?php }else if( $product->in_stock( ) && $product->is_subscription_item ){ ?>
@@ -310,23 +350,35 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
             
             <?php }else if( $product->in_stock( ) ){ ?>
             <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_add_to_cart_link( ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', 1 ); return false;">+ <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?></a></span></div>
-            <?php }else{ ?>
+           
+            <?php }else if( $product->allow_backorders ){ ?>
+			<div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_add_to_cart_link( ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', 1 ); return false;">BACKORDER NOW</a></span></div>
+            
+             <div class="ec_out_of_stock ec_oos_type_6"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_out_of_stock' ); ?><?php if( $product->backorder_fill_date != "" ){ ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_backorder_until' ); ?> <?php echo $product->backorder_fill_date; ?><?php }?></div>
+            
+			<?php }else{ ?>
             <div class="ec_out_of_stock ec_oos_type_6"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_out_of_stock' ); ?></div>
             <?php }?>
         </div>
         
         <h3 class="ec_product_title_type<?php echo $product_type; ?>"><a href="<?php echo $product->get_product_link( ); ?>" class="ec_image_link_cover"><?php echo $product->title; ?></a></h3>
+        <?php do_action( 'wpeasycart_after_product_title', $product ); ?>
         <?php if( $show_rating && $product->get_rating( ) > 0 ){ 
 			$average = $product->get_rating( );
 		?>
         <div class="ec_product_stars_type<?php echo $product_type; ?>" title="Rated <?php echo number_format( floatval( $average ), 2 ); ?> out of 5"><span><?php $product->display_product_stars(); ?></span></div>
         <?php }?>
+        
+		<?php if( ( $product->is_catalog_mode && get_option( 'ec_option_hide_price_seasonal' ) ) || 
+					  ( $product->is_inquiry_mode && get_option( 'ec_option_hide_price_inquiry' ) ) ){ // don't show price
+			  }else{ ?>
         <div class="ec_price_container_type<?php echo $product_type; ?>">
 			<?php if( $product->list_price > 0 ){ ?>
         		<span class="ec_list_price_type<?php echo $product_type; ?>"><?php echo $GLOBALS['currency']->get_currency_display( $product->list_price ); ?></span>
        		<?php }?>
-        	<span class="ec_price_type<?php echo $product_type; ?>"><?php echo $GLOBALS['currency']->get_currency_display( $product->price ); ?></span>
+        	<span class="ec_price_type<?php echo $product_type; ?>"><?php echo $GLOBALS['currency']->get_currency_display( $product->price ); if( $product->pricing_per_sq_foot ){ echo "/sq ft"; } ?></span>
         </div>
+        <?php }?>
         
         <?php if( get_option( 'ec_option_display_as_catalog' ) ){
 		// Show nothing
@@ -337,7 +389,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
 		<?php }else if( $product->is_deconetwork ){ ?>
         <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_deconetwork_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_design_now' ); ?></a></span></div>
         
-        <?php }else if( $product->in_stock( ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation || $product->min_purchase_quantity > 1 ) ){ ?>
+        <?php }else if( ( $product->in_stock( ) || $product->allow_backorders ) && ( $product->has_options( ) || $product->is_giftcard || $product->is_inquiry_mode || $product->is_donation || $product->min_purchase_quantity > 1 ) ){ ?>
         <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_product_link( ); ?>"><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_select_options' ); ?></a></span></div>
         
         <?php }else if( $product->in_stock( ) && $product->is_subscription_item ){ ?>
@@ -345,7 +397,13 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
         
 		<?php }else if( $product->in_stock( ) ){ ?>
         <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_add_to_cart_link( ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', 1 ); return false;">+ <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?></a></span></div>
-        <?php }else{ ?>
+        
+		<?php }else if( $product->allow_backorders ){ ?>
+        <div class="ec_product_addtocart_container"><span class="ec_product_addtocart"><a href="<?php echo $product->get_add_to_cart_link( ); ?>" onclick="ec_add_to_cart( '<?php echo $product->product_id; ?>', '<?php echo $product->model_number; ?>', 1 ); return false;">BACKORDER NOW</a></span></div>
+        
+        <div class="ec_out_of_stock ec_oos_type_1"<?php if( $product_type == 6 ){ echo ' style="display:none;"'; } ?>><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_out_of_stock' ); ?><?php if( $product->backorder_fill_date != "" ){ ?> <?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_backorder_until' ); ?> <?php echo $product->backorder_fill_date; ?><?php }?></div>
+        
+		<?php }else{ ?>
         <div class="ec_out_of_stock ec_oos_type_1"<?php if( $product_type == 6 ){ echo ' style="display:none;"'; } ?>><?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_out_of_stock' ); ?></div>
         <?php }?>
         <?php if( $admin_access || $use_quickview ){ ?>

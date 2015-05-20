@@ -46,7 +46,7 @@ final class ec_taxcloud{
 			$api_key = get_option( 'ec_option_tax_cloud_api_key' );
 			$cart_id = $_SESSION['ec_cart_id'];
 			
-			$cartitems = $this->get_tax_cloud_cartitems( $cartpage->order_totals->shipping_total );
+			$cartitems = $this->get_tax_cloud_cartitems( $cartpage->order_totals->shipping_total, $cartpage->order_totals->discount_total );
 			$origin = $this->get_tax_cloud_origin( );
 			$destination = $this->get_tax_cloud_destination( $cartpage->user );
 			
@@ -272,17 +272,25 @@ final class ec_taxcloud{
 		}
 	}
 	
-	private function get_tax_cloud_cartitems( $shipping_total ){
+	private function get_tax_cloud_cartitems( $shipping_total, $discount_total ){
 		
 		global $wpdb;
 		$cart = $wpdb->get_results( $wpdb->prepare( "SELECT ec_tempcart.quantity, ec_product.price, ec_product.model_number, ec_product.TIC FROM ec_tempcart LEFT JOIN ec_product ON ec_product.product_id = ec_tempcart.product_id WHERE ec_tempcart.session_id = %s AND ec_product.is_taxable", $_SESSION['ec_cart_id'] ) );
+		
+		$cart = new ec_cart( $_SESSION['ec_cart_id'] );
 		$cartitems = array( );
-		for( $i=0; $i<count( $cart ); $i++ ){
+		// Return empty array if no cart items exist.
+		if( count( $cart->cart ) == 0 )
+			return $cartitems;
+			
+		$discount_per_item = $discount_total / count( $cart->cart );
+		
+		for( $i=0; $i<count( $cart->cart ); $i++ ){
 			$cartitems[] = array(	"Index"		=> $i,
-									"TIC"		=> $cart[$i]->TIC,
-									"ItemID"	=> $cart[$i]->model_number,
-									"Price"		=> $cart[$i]->price,
-									"Qty"		=> $cart[$i]->quantity
+									"TIC"		=> $cart->cart[$i]->TIC,
+									"ItemID"	=> $cart->cart[$i]->model_number,
+									"Price"		=> $cart->cart[$i]->unit_price - ( $discount_per_item / $cart->cart[$i]->quantity ),
+									"Qty"		=> $cart->cart[$i]->quantity
 								 );
 		}
 		if( $shipping_total > 0 ){
@@ -292,6 +300,7 @@ final class ec_taxcloud{
 									'Price' 	=> $shipping_total, 
 									'Qty' 		=> 1 );
 		}
+		
 		return $cartitems;
 		
 	}

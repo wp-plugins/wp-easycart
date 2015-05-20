@@ -339,7 +339,7 @@ class ec_admin_orders{
 	function refundorder( $order_id, $is_full_refund, $refund_amount, $order_gateway ){
 		
 		// Get order charge info
-		$order = $this->db->get_row( $this->db->prepare( "SELECT affirm_charge_id, stripe_charge_id, order_notes, refund_total, grand_total FROM ec_order WHERE order_id = %d", $order_id ) );
+		$order = $this->db->get_row( $this->db->prepare( "SELECT affirm_charge_id, stripe_charge_id, order_notes, refund_total, grand_total, gateway_transaction_id FROM ec_order WHERE order_id = %d", $order_id ) );
 		
 		// First refund order
 		$result = false;
@@ -351,6 +351,14 @@ class ec_admin_orders{
 		}else if( $order_gateway == "stripe" ){
 			$gateway = new ec_stripe( );
 			$result = $gateway->refund_charge( $order->stripe_charge_id, $refund_amount );
+		
+		}else if( $order_gateway == "authorize" ){
+			$gateway = new ec_authorize( );
+			$result = $gateway->refund_charge( $order->gateway_transaction_id, $refund_amount );
+		
+		}else if( $order_gateway == "beanstream" ){
+			$gateway = new ec_beanstream( );
+			$result = $gateway->refund_charge( $order->gateway_transaction_id, $refund_amount );
 		}
 		
 		if( $result ){	// If goes through successfully, update order and return true

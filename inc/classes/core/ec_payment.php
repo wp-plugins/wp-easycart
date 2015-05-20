@@ -74,6 +74,7 @@ class ec_payment{
 		
 		if( 	$this->payment_type    == "affirm" 			)			$gateway = new ec_affirm( );
 		else if($this->proccess_method == "authorize"		)			$gateway = new ec_authorize();
+		else if($this->proccess_method == "beanstream"		)			$gateway = new ec_beanstream();
 		else if($this->proccess_method == "braintree"		)			$gateway = new ec_braintree();
 		else if($this->proccess_method == "chronopay"		)			$gateway = new ec_chronopay();
 		else if($this->proccess_method == "eway"			)			$gateway = new ec_eway();

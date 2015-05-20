@@ -176,7 +176,7 @@ else
 	$is_preview_holder = false;
 
 // Show admin if logged in and not using Safari
-if( $is_admin && !$safari && !$is_preview )
+if( $is_admin && !$safari && !$is_preview && !get_option( 'ec_option_hide_live_editor' ) )
 	$admin_access = true;
 else
 	$admin_access = false;
@@ -202,9 +202,9 @@ if( $is_preview_holder && $is_admin ){ ?>
 	</div>
 </div>
 
-<?php }else if( $admin_access && !$safari && !$is_preview && !isset( $GLOBALS['ec_live_editor_loaded'] ) ){ 
+<?php }else if( $admin_access && !$safari && !$is_preview && ( !isset( $GLOBALS['ec_live_editor_loaded'] ) || $GLOBALS['ec_live_editor_loaded'] == "loaded" ) ){ 
 
-$GLOBALS['ec_live_editor_loaded'] = true;
+$GLOBALS['ec_live_editor_loaded'] = "loaded";
 
 ?>
 

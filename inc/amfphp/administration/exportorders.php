@@ -52,10 +52,10 @@ if( !empty( $users ) ){
 		$data = "";
 		
 		if( $alldata == 'true' ){
-			$sql = "SELECT ec_orderdetail.*, ec_order.*, billing_country.name_cnt as billing_country_name, shipping_country.name_cnt as shipping_country_name FROM ec_order LEFT OUTER JOIN ec_orderdetail ON (ec_order.order_id = ec_orderdetail.order_id) LEFT JOIN ec_country as billing_country ON billing_country.iso2_cnt = ec_order.billing_country LEFT JOIN ec_country as shipping_country ON shipping_country.iso2_cnt = ec_order.shipping_country ORDER BY ec_order.order_id ASC";	
+			$sql = "SELECT ec_orderdetail.*, ec_order.*, billing_country.name_cnt as billing_country_name, shipping_country.name_cnt as shipping_country_name, ec_orderstatus.order_status FROM ec_order LEFT OUTER JOIN ec_orderdetail ON (ec_order.order_id = ec_orderdetail.order_id) LEFT JOIN ec_country as billing_country ON billing_country.iso2_cnt = ec_order.billing_country LEFT JOIN ec_country as shipping_country ON shipping_country.iso2_cnt = ec_order.shipping_country LEFT JOIN ec_orderstatus ON ec_orderstatus.status_id = ec_order.orderstatus_id ORDER BY ec_order.order_id ASC";	
 		
 		}else{
-			$sql = "SELECT ec_orderdetail.*, ec_order.*, billing_country.name_cnt as billing_country_name, shipping_country.name_cnt as shipping_country_name FROM ec_order LEFT OUTER JOIN ec_orderdetail ON ( ec_order.order_id = ec_orderdetail.order_id ) LEFT JOIN ec_country as billing_country ON billing_country.iso2_cnt = ec_order.billing_country LEFT JOIN ec_country as shipping_country ON shipping_country.iso2_cnt = ec_order.shipping_country WHERE ec_order.order_date >= '" . date_format( $startdate, 'Y-m-d' ) . "' AND ec_order.order_date <= '" . date_format( $enddate, 'Y-m-d' ) . "' ORDER BY ec_order.order_id ASC";
+			$sql = "SELECT ec_orderdetail.*, ec_order.*, billing_country.name_cnt as billing_country_name, shipping_country.name_cnt as shipping_country_name, ec_orderstatus.order_status FROM ec_order LEFT OUTER JOIN ec_orderdetail ON ( ec_order.order_id = ec_orderdetail.order_id ) LEFT JOIN ec_country as billing_country ON billing_country.iso2_cnt = ec_order.billing_country LEFT JOIN ec_country as shipping_country ON shipping_country.iso2_cnt = ec_order.shipping_country LEFT JOIN ec_orderstatus ON ec_orderstatus.status_id = ec_order.orderstatus_id WHERE ec_order.order_date >= '" . date_format( $startdate, 'Y-m-d' ) . "' AND ec_order.order_date <= '" . date_format( $enddate, 'Y-m-d' ) . "' ORDER BY ec_order.order_id ASC";
 		
 		}
 		

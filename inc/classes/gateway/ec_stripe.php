@@ -596,6 +596,11 @@ class ec_stripe extends ec_gateway{
 	
 	private function get_update_subscription_data( $product, $user, $card, $coupon, $prorate, $trial_end, $quantity ){
 		
+		if( $prorate == 0 )
+			$prorate = "false";
+		else if( $prorate == 1 )
+			$prorate = "true";
+		
 		if( $card != NULL ){
 			$card_array = array("number" 				=> $card->card_number,
 								"exp_month"				=> $card->expiration_month,

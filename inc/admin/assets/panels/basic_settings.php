@@ -94,6 +94,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_input"><select name="ec_option_enable_newsletter_popup" style="width:100px;"><option value="0"<?php if( get_option('ec_option_enable_newsletter_popup') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_enable_newsletter_popup') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Hide Live Design Editor from Admin</em>If you turn this on, you will not be able to edit the design of your site from page to page. This is great to turn on if you want to lock in your store design or if you are having difficulties with the browser displaying the high number of elements required for the live editor.</span></a></span>
+    <span class="ec_setting_row_label">Hide Live Design Editor from Admin:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_hide_live_editor" style="width:100px;"><option value="0"<?php if( get_option('ec_option_hide_live_editor') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_hide_live_editor') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_status_header"><div class="ec_status_header_text">Currency Display: <?php echo $GLOBALS['currency']->get_currency_display( 1999.990 ); ?></div></div>
@@ -388,6 +394,24 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
               	</select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Hide Price for Seasonal Mode Products</em>By turning this on, you can hide the price for any seasonal mode products.</span></a></span>
+    <span class="ec_setting_row_label">Hide Price for Seasonal Mode Products:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_hide_price_seasonal" id="select">
+                  <option value="0" <?php if (get_option('ec_option_hide_price_seasonal') == 0) echo ' selected'; ?>>No</option>
+                  <option value="1" <?php if (get_option('ec_option_hide_price_seasonal') == 1) echo ' selected'; ?>>Yes</option>
+              	</select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Hide Price for Inquiry Mode Products</em>By turning this on, you can hide the price for any inquiry mode products.</span></a></span>
+    <span class="ec_setting_row_label">Hide Price for Inquiry Mode Products:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_hide_price_inquiry" id="select">
+                  <option value="0" <?php if (get_option('ec_option_hide_price_inquiry') == 0) echo ' selected'; ?>>No</option>
+                  <option value="1" <?php if (get_option('ec_option_hide_price_inquiry') == 1) echo ' selected'; ?>>Yes</option>
+              	</select></span>
+</div>
+
 <a id="cart-settings"></a>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
@@ -513,6 +537,12 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Email on Receipt</em>If enabled, your email receipts will include the email address of the customer on the receipt.</span></a></span>
     <span class="ec_setting_row_label">Show Email on Receipt:</span>
     <span class="ec_setting_row_input"><select name="ec_option_show_email_on_receipt" style="width:100px;"><option value="0"<?php if( get_option('ec_option_show_email_on_receipt') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_show_email_on_receipt') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Tax Shipping</em>If enabled, tax will be collected for shipping (does not apply to tax cloud, which automatically determines if shipping should be taxed on a stated to state basis).</span></a></span>
+    <span class="ec_setting_row_label">Tax Shipping:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_collect_tax_on_shipping" style="width:100px;"><option value="0"<?php if( get_option('ec_option_collect_tax_on_shipping') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_collect_tax_on_shipping') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
 </div>
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>

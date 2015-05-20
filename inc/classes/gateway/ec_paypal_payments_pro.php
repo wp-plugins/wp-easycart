@@ -31,6 +31,10 @@ class ec_paypal_payments_pro extends ec_gateway{
 			$card_type = "Amex";
 		else if( $this->credit_card->payment_method == "discover" )
 			$card_type = "Discover";
+			
+		$tax_total = number_format( $this->order_totals->tax_total + $this->order_totals->duty_total + $this->order_totals->gst_total + $this->order_totals->pst_total + $this->order_totals->hst_total, 2, '.', '' );
+		if( !$this->tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order_totals->vat_total, 2, '.', '' );
 		
 		$paypal_payments_pro_data = array(	"METHOD"			=> "DoDirectPayment",
 											"VERSION"			=> $paypal_payments_pro_version,
@@ -44,7 +48,7 @@ class ec_paypal_payments_pro extends ec_gateway{
 											"AMT" 				=> number_format( $this->order_totals->grand_total, 2, '.', '' ),
 											"ITEMAMT"			=> number_format( $this->order_totals->sub_total, 2, '.', '' ),
 											"SHIPPINGAMT"		=> number_format( $this->order_totals->shipping_total, 2, '.', '' ),
-											"TAXAMT"			=> number_format( $this->order_totals->tax_total, 2, '.', '' ),
+											"TAXAMT"			=> $tax_total,
 											"SHIPDISCAMT"		=> "-" . number_format( $this->order_totals->discount_total, 2, '.', '' ),
 											"CURRENCYCODE"		=> $paypal_payments_pro_currency,
 											

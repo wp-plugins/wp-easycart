@@ -395,6 +395,18 @@
 				"product_details_your_price":{
 					"title":"Your Price:",
 					"value":"你的售價："
+				},
+				"product_details_backorder_until":{
+					"title":"Backorder UNTIL date, until",
+					"value":"直到"
+				},
+				"product_details_backordered":{
+					"title":"BACKORDERED until date",
+					"value":"補購"
+				},
+				"product_details_backordered_message":{
+					"title":"Backordered message in cart",
+					"value":"你的購物車中有些項目是目前缺貨和缺貨。"
 				}
 			}
 		},
@@ -2169,6 +2181,70 @@
 				"account_orders_details_your_codes":{
 					"title":"Account, Orders Details, Your Codes",
 					"value":"你的編碼："
+				},
+				"complete_payment":{
+					"title":"Account, Orders Details, Complete Payment",
+					"value":"完成訂單支付:"
+				},
+				"order_status_status_not_found":{
+					"title":"Account, Orders Status, Status Not Found",
+					"value":"狀態未找到"
+				},
+				"order_status_order_shipped":{
+					"title":"Account, Orders Status, Order Shipped",
+					"value":"訂單出貨"
+				},
+				"order_status_order_confirmed":{
+					"title":"Account, Orders Status, Order Confirmed",
+					"value":"為了確認"
+				},
+				"order_status_order_on_hold":{
+					"title":"Account, Orders Status, Order on Hold",
+					"value":"為了保持狀態"
+				},
+				"order_status_order_started":{
+					"title":"Account, Orders Status, Order Started",
+					"value":"開始訂購"
+				},
+				"order_status_card_approved":{
+					"title":"Account, Orders Status, Card Approved",
+					"value":"卡認證"
+				},
+				"order_status_card_denied":{
+					"title":"Account, Orders Status, Card Denied",
+					"value":"拒絕卡"
+				},
+				"order_status_third_party_pending":{
+					"title":"Account, Orders Status, Third Party Pending",
+					"value":"第三方待定"
+				},
+				"order_status_third_party_error":{
+					"title":"Account, Orders Status, Third Party Error",
+					"value":"第三方錯誤"
+				},
+				"order_status_third_party_approved":{
+					"title":"Account, Orders Status, Third Party Approved",
+					"value":"第三方認證"
+				},
+				"order_status_ready_for_pickup":{
+					"title":"Account, Orders Status, Ready for Pickup",
+					"value":"準備皮卡"
+				},
+				"order_status_pending_approval":{
+					"title":"Account, Orders Status, Pending Approval",
+					"value":"待批准"
+				},
+				"order_status_direct_deposit_pending":{
+					"title":"Account, Orders Status, Direct Deposit Pending",
+					"value":"直接存款待定"
+				},
+				"order_status_direct_deposit_received":{
+					"title":"Account, Orders Status, Direct Deposit Received",
+					"value":"直接收到的存款"
+				},
+				"order_status_refunded_order":{
+					"title":"Account, Orders Status, Refunded Order",
+					"value":"退還訂購"
 				}
 			}
 		},

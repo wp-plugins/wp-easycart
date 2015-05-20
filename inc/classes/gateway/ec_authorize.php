@@ -17,21 +17,10 @@ class ec_authorize extends ec_gateway{
 		
 		$transaction_type = "AUTH_CAPTURE";
 		$expiration_date = $this->credit_card->expiration_month . '/' . $this->credit_card->get_expiration_year( 4 );
-		
-		/*
-		$line_items = "";
-		for( $i=0; $i<count($this->cart->cart); $i++ ){
 			
-			if( $i != 0)
-				$line_items .= "&";
-				
-			$line_items .= 	$this->cart->cart[$i]->product_id . "<|>" . 
-							$this->cart->cart[$i]->title . "<|><|>" . 
-							$this->cart->cart[$i]->quantity . "<|>" . 
-							$this->cart->cart[$i]->unit_price . "<|>" . 
-							$this->cart->cart[$i]->is_taxable; 	
-		}
-		*/
+		$tax_total = number_format( $this->order_totals->tax_total + $this->order_totals->gst_total + $this->order_totals->pst_total + $this->order_totals->hst_total, 2, '.', '' );
+		if( !$this->tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order_totals->vat_total, 2, '.', '' );
 		
 		$authorize_values = array(
 		  "x_login"							=> $authorize_login_id,
@@ -48,7 +37,7 @@ class ec_authorize extends ec_gateway{
 		  "x_version"						=> "3.1",
 		  "x_delim_char"					=> ",",
 		  "x_method"						=> "CC",
-		  "x_tax"							=> $this->order_totals->tax_total,
+		  "x_tax"							=> $tax_total,
 		  "x_duty"							=> $this->order_totals->duty_total,
 		  "x_freight"						=> $this->order_totals->shipping_total,
 		  "x_first_name"					=> $this->user->billing->first_name,
@@ -92,9 +81,12 @@ class ec_authorize extends ec_gateway{
 		$response_code = substr( $response_body, 1-1, 1 );
 		$response_sub_code = substr( $response_body, 2-1, 1 );
 		
-		if( $response_code == 1 )
+		$response_array = explode( ',', $response_body );
+		
+		if( $response_code == 1 ){
+			$this->mysqli->update_order_transaction_id( $this->order_id, $response_array[6] );
 			$this->is_success = true;
-		else
+		}else
 			$this->is_success = false;
 		
 		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "Authorize", $response_body );
@@ -102,6 +94,90 @@ class ec_authorize extends ec_gateway{
 		if( !$this->is_success )
 			$this->error_message = $this->get_error_message( $response_code, $response_reason_code );
 			
+	}
+	
+	public function refund_charge( $gateway_transaction_id, $refund_amount ){
+		
+		if( get_option( 'ec_option_authorize_developer_account' ) )
+			$gateway_url = "https://apitest.authorize.net/xml/v1/request.api";
+		else
+			$gateway_url = "https://api.authorize.net/xml/v1/request.api";
+		
+		$gateway_headers = $this->get_gateway_headers( );
+		
+		$authorize_login_id 		= 		get_option( 'ec_option_authorize_login_id' );
+		$authorize_trans_key 		= 		get_option( 'ec_option_authorize_trans_key' );
+		$authorize_test_mode 		= 		get_option( 'ec_option_authorize_test_mode' );
+		$authorize_currency_code 	= 		get_option( 'ec_option_authorize_currency_code' );
+		
+		global $wpdb;
+		$order = $wpdb->get_row( $wpdb->prepare( "SELECT ec_order.creditcard_digits, ec_order.order_id, ec_order.grand_total FROM ec_order WHERE ec_order.gateway_transaction_id = %s", $gateway_transaction_id ) );
+		
+		$xml_refund = '<?xml version="1.0" encoding="utf-8"?>
+					<createTransactionRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+					 	<merchantAuthentication>
+					 		<name>' . $authorize_login_id . '</name>
+					 		<transactionKey>' .  $authorize_trans_key . '</transactionKey>
+					 	</merchantAuthentication>
+						<refId>' . $order->order_id . '</refId>
+					 	<transactionRequest>
+					 		<transactionType>refundTransaction</transactionType>
+					 		<amount>' . number_format( $refund_amount, 2, '.', '' ) . '</amount>
+					 		<payment>
+					 			<creditCard>
+					 				<cardNumber>' . $order->creditcard_digits . '</cardNumber>
+									<expirationDate>1220</expirationDate>
+					 			</creditCard>
+					 		</payment>
+					 		<refTransId>' . $gateway_transaction_id . '</refTransId>
+					 	</transactionRequest>
+					</createTransactionRequest>';
+					
+		$xml_void = '<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+					<merchantAuthentication>
+						<name>' . $authorize_login_id . '</name>
+						<transactionKey>' .  $authorize_trans_key . '</transactionKey>
+					</merchantAuthentication>
+					<refId>' . $order->order_id . '</refId>
+				 	<transactionRequest>
+						<transactionType>voidTransaction</transactionType>
+						<refTransId>' . $gateway_transaction_id . '</refTransId>
+				   	</transactionRequest>
+				</createTransactionRequest>';
+		
+		$request = new WP_Http;
+		$response = $request->request( $gateway_url, array( 'method' => 'POST', 'body' => $xml_refund, 'headers' => $gateway_headers ) );
+		if( is_wp_error( $response ) ){
+			$this->error_message = $response->get_error_message();
+			return false;
+		}else{
+			$xml = simplexml_load_string( $response['body'] );
+			$this->mysqli->insert_response( $order->order_id, 1, "Authorize Refund", print_r( $response, true ) );
+			
+			if( $xml->messages->resultCode == "Error" ){
+				
+				if( $refund_amount == $order->grand_total ){ // Trying to do full refund, so we can allow void
+					// Likely this transaction has not been settled, simply void this.
+					$response = $request->request( $gateway_url, array( 'method' => 'POST', 'body' => $xml_void, 'headers' => $gateway_headers ) );
+					if( is_wp_error( $response ) ){
+						$this->error_message = $response->get_error_message();
+						return false;
+					}else{
+						$xml = simplexml_load_string( $response['body'] );
+						$this->mysqli->insert_response( $order->order_id, 1, "Authorize Void", print_r( $response, true ) );
+						if( $xml->messages->resultCode == "Ok" ){
+							return true;
+						}else{
+							return false;
+						}
+					}
+				}else{
+					return false;
+				}
+			}else{
+				return true;
+			}
+		}
 	}
 	
 	private function get_error_message( $response_code, $response_reason_code ){

@@ -394,6 +394,18 @@
 				"product_details_your_price":{
 					"title":"Your Price:",
 					"value":"Τιμή σας:"
+				},
+				"product_details_backorder_until":{
+					"title":"Backordered UNTIL date, until",
+					"value":"μέχρι"
+				},
+				"product_details_backordered":{
+					"title":"BACKORDERED until date",
+					"value":"λίστα αναμονής"
+				},
+				"product_details_backordered_message":{
+					"title":"Backordered message in cart",
+					"value":"Ορισμένα αντικείμενα στο καλάθι σας υπάρχουν εξαντληθεί και έχουν λίστα αναμονής."
 				}
 			}
 		},
@@ -2168,6 +2180,70 @@
 				"account_orders_details_your_codes":{
 					"title":"Account, Orders Details, Your Codes",
 					"value":"Κώδικες σας:"
+				},
+				"complete_payment":{
+					"title":"Account, Orders Details, Complete Payment",
+					"value":"Ολοκλήρωση Εντολής Πληρωμής:"
+				},
+				"order_status_status_not_found":{
+					"title":"Account, Orders Status, Status Not Found",
+					"value":"Κατάσταση παραγγελίας Not Found"
+				},
+				"order_status_order_shipped":{
+					"title":"Account, Orders Status, Order Shipped",
+					"value":"Παραγγελία αποσταλεί"
+				},
+				"order_status_order_confirmed":{
+					"title":"Account, Orders Status, Order Confirmed",
+					"value":"παραγγελία επιβεβαιώνεται"
+				},
+				"order_status_order_on_hold":{
+					"title":"Account, Orders Status, Order on Hold",
+					"value":"Παραγγελία σε αναμονή"
+				},
+				"order_status_order_started":{
+					"title":"Account, Orders Status, Order Started",
+					"value":"Παραγγελία Ξεκινώντας"
+				},
+				"order_status_card_approved":{
+					"title":"Account, Orders Status, Card Approved",
+					"value":"κάρτα Εγκρίθηκε"
+				},
+				"order_status_card_denied":{
+					"title":"Account, Orders Status, Card Denied",
+					"value":"κάρτα Άρνηση"
+				},
+				"order_status_third_party_pending":{
+					"title":"Account, Orders Status, Third Party Pending",
+					"value":"Τρίτων εκκρεμότητα"
+				},
+				"order_status_third_party_error":{
+					"title":"Account, Orders Status, Third Party Error",
+					"value":"Τρίτων σφάλματος"
+				},
+				"order_status_third_party_approved":{
+					"title":"Account, Orders Status, Third Party Approved",
+					"value":"Τρίτους εγκεκριμένους"
+				},
+				"order_status_ready_for_pickup":{
+					"title":"Account, Orders Status, Ready for Pickup",
+					"value":"Έτοιμοι για Παραλαβή"
+				},
+				"order_status_pending_approval":{
+					"title":"Account, Orders Status, Pending Approval",
+					"value":"Εν αναμονή της έγκρισης"
+				},
+				"order_status_direct_deposit_pending":{
+					"title":"Account, Orders Status, Direct Deposit Pending",
+					"value":"Άμεση Κατάθεση σε εκκρεμότητα"
+				},
+				"order_status_direct_deposit_received":{
+					"title":"Account, Orders Status, Direct Deposit Received",
+					"value":"Άμεση Κατάθεση Ελήφθη"
+				},
+				"order_status_refunded_order":{
+					"title":"Account, Orders Status, Refunded Order",
+					"value":"Επιστροφή χρημάτων Παραγγελία"
 				}
 			}
 		},

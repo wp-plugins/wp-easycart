@@ -8,6 +8,9 @@ class ec_order_totals{
 	public $shipping_total;												// FLOAT 11,2
 	public $duty_total;													// FLOAT 11,2
 	public $vat_total;													// FLOAT 11,2
+	public $gst_total;													// FLOAT 11,2
+	public $pst_total;													// FLOAT 11,2
+	public $hst_total;													// FLOAT 11,2
 	public $discount_total;												// FLOAT 11,2
 	public $grand_total;												// FLOAT 11,2
 	
@@ -23,6 +26,9 @@ class ec_order_totals{
 		$this->tax_total = number_format( $tax->tax_total, 2, '.', '' );
 		$this->duty_total = number_format( $tax->duty_total, 2, '.', '' );
 		$this->vat_total = number_format( $tax->vat_total, 2, '.', '' );
+		$this->gst_total = number_format( $tax->gst, 2, '.', '' );
+		$this->pst_total = number_format( $tax->pst, 2, '.', '' );
+		$this->hst_total = number_format( $tax->hst, 2, '.', '' );
 		if( strtolower(substr( $discount->coupon_code, 0, 3 ) ) == "vat" ){
 			// Found a likely VAT Free Coupon, do a check to make sure it is valid
 			$mysqli = new ec_db( );
@@ -38,9 +44,9 @@ class ec_order_totals{
 	
 	private function get_grand_total( $tax ){
 		if( $tax->vat_included ){
-			return $this->sub_total + $this->shipping_total + $this->tax_total + $this->duty_total - $this->discount_total;
+			return $this->sub_total + $this->shipping_total + $this->tax_total + $this->gst_total + $this->pst_total + $this->hst_total + $this->duty_total - $this->discount_total;
 		}else{
-			return $this->sub_total + $this->shipping_total + $this->tax_total + $this->duty_total + $this->vat_total - $this->discount_total;
+			return $this->sub_total + $this->shipping_total + $this->tax_total + $this->gst_total + $this->pst_total + $this->hst_total + $this->duty_total + $this->vat_total - $this->discount_total;
 		}
 	}
 	

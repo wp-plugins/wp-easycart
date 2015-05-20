@@ -14,27 +14,6 @@ if( class_exists('memcached') ){ // Prevents activation error on servers without
 	}
 }
 
-function ec_config_is_session_started( ){
-
-	if( php_sapi_name( ) !== 'cli' ){
-		
-		if( version_compare( phpversion( ), '5.4.0', '>=' ) ){
-			return session_status( ) === PHP_SESSION_ACTIVE ? TRUE : FALSE;
-		
-		}else{
-			return session_id() === '' ? FALSE : TRUE;
-		}
-		
-	}
-	
-	return FALSE;
-
-}
-
-// Start the session
-if( ec_config_is_session_started( ) === FALSE )
-	session_start();
-
 // If register globals is on we need to do some custom work to fix session problems
 if( ini_get( 'register_globals' ) ){
     foreach( $_SESSION as $key=>$value ){
@@ -81,6 +60,8 @@ if( get_option( 'ec_option_use_affirm' ) ){
 
 if( get_option( 'ec_option_payment_process_method' ) == 'authorize' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_authorize.php' );
+}else if( get_option( 'ec_option_payment_process_method' ) == 'beanstream' ){
+	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_beanstream.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'braintree' ){
 	include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/inc/classes/gateway/ec_braintree.php' );
 }else if( get_option( 'ec_option_payment_process_method' ) == 'chronopay' ){

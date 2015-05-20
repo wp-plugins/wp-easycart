@@ -128,6 +128,19 @@ class ec_cart{
 		$this->calculate_parcel( );
 	}
 	
+	// Check for a backordered item
+	public function has_backordered_item( ){
+		
+		for( $i=0; $i<count( $this->cart ); $i++ ){
+			
+			if( $this->cart[$i]->stock_quantity <= 0 && $this->cart[$i]->allow_backorders )
+				return true;
+			
+		}
+		
+		return false;
+	}
+	
 	// Process Adding Item to cart
 	public function process_add_to_cart($sessionid, $productid, $quantity, $option1, $option2, $option3, $option4, $option5, $message, $to_name, $from_name ){
 		if( $this->is_duplicate($productid, $option1, $option2, $option3, $option4, $option5) )
