@@ -118,6 +118,11 @@
             <?php }?>
             </span></td>
         </tr>
+        <tr>
+          <td><span class='style22'><?php echo htmlspecialchars( $order->user_email, ENT_QUOTES ); ?></span></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
       </table></td>
   </tr>
   <tr>
