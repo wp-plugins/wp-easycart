@@ -104,6 +104,14 @@
 				"product_page_restricted_line_3":{
 					"title":"Restricted Product Line 2 Post Link",
 					"value":". Puede ser necesario que su cuenta sea verificada antes de que usted será capaz de acceder a la tienda."
+				},
+				"product_page_start_trial_1":{
+					"title":"Start Your Trial Text Part 1",
+					"value":"Comience su prueba de"
+				},
+				"product_page_start_trial_2":{
+					"title":"Start Your Trial Text Part 2",
+					"value":"días hoy!"
 				}
 			}
 		},
@@ -406,6 +414,14 @@
 				"product_details_backordered_message":{
 					"title":"Backordered message in cart",
 					"value":"Algunos artículos en su carrito Actualmente fuera de stock y en pedido pendiente."
+				},
+				"product_details_vat_included":{
+					"title":"Including VAT",
+					"value":"incluido"
+				},
+				"product_details_vat_excluded":{
+					"title":"Excluding VAT",
+					"value":"excluidos"
 				}
 			}
 		},
@@ -1244,6 +1260,10 @@
 				"cart_shipping_method_please_select_one":{
 					"title":"Cart, Shipping please select one",
 					"value":"Por favor, seleccione un método de envío"
+				},
+				"cart_shipping_update_shipping":{
+					"title":"Cart, Update Shipping",
+					"value":"actualización del envío"
 				}
 			}
 		},
@@ -1547,6 +1567,31 @@
 				"cart_giftcard_receipt_message":{
 					"title":"Cart, Gift Card Message",
 					"value":"Usted puede redimir su tarjeta de regalo durante el pago en"
+				}
+			}
+		},
+		"subscription_trial":{
+			"label":"Subscription Trial Email",
+			"options":{
+				"trial_message_1":{
+					"title":"Subscription Trial Part 1",
+					"value":"Gracias por registrarte! Su prueba de"
+				},
+				"trial_message_2":{
+					"title":"Subscription Trial Part 2",
+					"value":"días, de"
+				},
+				"trial_message_3":{
+					"title":"Subscription Trial Part 3",
+					"value":"ha comenzado! Si tiene cualquier pregunta o preocupación durante su periodo de prueba, por favor póngase en contacto con nosotros, estamos encantados de ayudarle."
+				},
+				"trial_message_4":{
+					"title":"Subscription Trial Part 4",
+					"value":"Esperamos que se quede con nosotros, pero si usted decide que esto no es para ti, cancelamos cualquier momento antes de la finalización de su periodo de prueba para evitar ser acusado por acceder a su cuenta, haciendo clic administrar suscripciones, viendo su suscripción y cancelación de la página de detalles."
+				},
+				"trial_message_link":{
+					"title":"View Subscription Information",
+					"value":"Ver información de suscripción"
 				}
 			}
 		},
@@ -2454,6 +2499,10 @@
 				"missing_inquiry_options":{
 					"title":"Store, Missing Inquiry Options",
 					"value":"Faltan opciones de consulta"
+				},
+				"session_expired":{
+					"title":"Store, Session Expired",
+					"value":"Su sesión ha caducado, por favor, introduzca su información de pago y envío de nuevo para completar su pedido."
 				}
 			}
 		},

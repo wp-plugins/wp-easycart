@@ -170,6 +170,10 @@ function ec_admin_save_cart_options( ){
 
 <section class="ec_cart_page">
 
+	<?php if( $product->is_subscription_item && $product->trial_period_days > 0 ){ ?>
+    <div class="ec_cart_success"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_start_trial_1' ); ?> <?php echo $product->trial_period_days; ?> <?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_start_trial_2' ); ?></div>
+    <?php }?>
+
 	<div class="ec_cart_left">
     
     	<?php $this->display_subscription_form_start( $product->model_number ); ?>

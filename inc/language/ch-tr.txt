@@ -104,6 +104,14 @@
 				"product_page_restricted_line_3":{
 					"title":"Restricted Product Line 2 Post Link",
 					"value":"很抱歉，你的賬戶需先確認，才能登入。"
+				},
+				"product_page_start_trial_1":{
+					"title":"Start Your Trial Text Part 1",
+					"value":"開始你的"
+				},
+				"product_page_start_trial_2":{
+					"title":"Start Your Trial Text Part 2",
+					"value":"天免費試用！"
 				}
 			}
 		},
@@ -407,6 +415,14 @@
 				"product_details_backordered_message":{
 					"title":"Backordered message in cart",
 					"value":"你的購物車中有些項目是目前缺貨和缺貨。"
+				},
+				"product_details_vat_included":{
+					"title":"Including VAT",
+					"value":"包括"
+				},
+				"product_details_vat_excluded":{
+					"title":"Excluding VAT",
+					"value":"排除"
 				}
 			}
 		},
@@ -1245,6 +1261,10 @@
 				"cart_shipping_method_please_select_one":{
 					"title":"Cart, Shipping please select one",
 					"value":"請選取送貨方式"
+				},
+				"cart_shipping_update_shipping":{
+					"title":"Cart, Update Shipping",
+					"value":"更新送貨"
 				}
 			}
 		},
@@ -1548,6 +1568,31 @@
 				"cart_giftcard_receipt_message":{
 					"title":"Cart, Gift Card Message",
 					"value":"你可於結賬時兌換你的禮卷"
+				}
+			}
+		},
+		"subscription_trial":{
+			"label":"Subscription Trial Email",
+			"options":{
+				"trial_message_1":{
+					"title":"Subscription Trial Part 1",
+					"value":"謝謝您註冊！你"
+				},
+				"trial_message_2":{
+					"title":"Subscription Trial Part 2",
+					"value":"天免費的試用"
+				},
+				"trial_message_3":{
+					"title":"Subscription Trial Part 3",
+					"value":"現已開始！如果你有你的審判過程中有任何問題或疑慮，請與我們聯繫，我們非常樂意提供幫助。"
+				},
+				"trial_message_4":{
+					"title":"Subscription Trial Part 4",
+					"value":"我們希望您與我們堅持的，但如果你決定這是不是適合你，取消之前，你的審判，以防止通過登錄到您的帳戶，單擊管理訂閱，查看您的訂閱，取消對被指控的結束隨時詳細信息頁面。"
+				},
+				"trial_message_link":{
+					"title":"View Subscription Information",
+					"value":"查看訂閱信息"
 				}
 			}
 		},
@@ -2455,6 +2500,10 @@
 				"missing_inquiry_options":{
 					"title":"Store, Missing Inquiry Options",
 					"value":"遺漏查詢選項"
+				},
+				"session_expired":{
+					"title":"Store, Session Expired",
+					"value":"您的會話已過期，請重新輸入您的結賬信息以完成訂單。"
 				}
 			}
 		},

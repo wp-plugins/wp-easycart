@@ -343,6 +343,12 @@ class ec_filter{
 			
 		}
 		
+		if( $leave_out != 7 ){
+	
+			if( isset( $_GET['optionitem_id'] ) )					$ret_string .= "&amp;optionitem_id=" . $_GET['optionitem_id'];
+			
+		}
+		
 		return $ret_string;
 		
 	}

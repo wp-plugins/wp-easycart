@@ -342,6 +342,14 @@ class ec_db{
 				
 				";
 		
+		if( isset( $_GET['optionitem_id'] ) ){
+			
+			$sql1 .= $this->mysqli->prepare( "JOIN ec_optionitemquantity ON ( ec_optionitemquantity.product_id = product.product_id AND ( ec_optionitemquantity.optionitem_id_1 = %d OR ec_optionitemquantity.optionitem_id_2 = %d OR ec_optionitemquantity.optionitem_id_3 = %d OR ec_optionitemquantity.optionitem_id_4 = %d OR ec_optionitemquantity.optionitem_id_5 = %d ) AND ec_optionitemquantity.quantity > 0 )
+			
+			", $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'] );
+			
+		}
+		
 		$sql2 = "SELECT
 		
 					product.*,
@@ -365,6 +373,14 @@ class ec_db{
 					LEFT JOIN ec_review ON ( ec_review.product_id = product.product_id AND ec_review.approved = 1 )
 				
 				";
+				
+		if( isset( $_GET['optionitem_id'] ) ){
+			
+			$sql2 .= $this->mysqli->prepare( "JOIN ec_optionitemquantity ON ( ec_optionitemquantity.product_id = product.product_id AND ( ec_optionitemquantity.optionitem_id_1 = %d OR ec_optionitemquantity.optionitem_id_2 = %d OR ec_optionitemquantity.optionitem_id_3 = %d OR ec_optionitemquantity.optionitem_id_4 = %d OR ec_optionitemquantity.optionitem_id_5 = %d ) AND ec_optionitemquantity.quantity > 0 )
+			
+			", $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'] );
+			
+		}
 				
 		$group_query = " GROUP BY product.product_id ";
 				
@@ -3015,7 +3031,7 @@ class ec_db{
 	}
 	
 	public function insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_code, $order_notes, $option1_name, $option2_name, $option3_name, $option4_name, $option5_name, $option1_label, $option2_label, $option3_label, $option4_label, $option5_label ){
-		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, creditcard_digits, subscription_id, order_customer_notes, billing_company_name, shipping_company_name, billing_address_line_2, shipping_address_line_2) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s)";
+		$sql = "INSERT INTO ec_order( user_id, user_email, user_level, orderstatus_id, sub_total, grand_total, promo_code, billing_first_name, billing_last_name, billing_address_line_1, billing_city, billing_state, billing_country, billing_zip, billing_phone, shipping_first_name, shipping_last_name, shipping_address_line_1, shipping_city, shipping_state, shipping_country, shipping_zip, shipping_phone, payment_method, creditcard_digits, subscription_id, order_customer_notes, billing_company_name, shipping_company_name, billing_address_line_2, shipping_address_line_2, order_gateway) VALUES( %d, %s, %s, %d, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %d, %s, %s, %s, %s, %s, 'stripe')";
 		$this->mysqli->query( $this->mysqli->prepare( $sql, $user->user_id, $user->email, $user->user_level, 6, $product->price + $product->subscription_signup_fee, $product->price + $product->subscription_signup_fee, $coupon_code, $user->billing->first_name, $user->billing->last_name, $user->billing->address_line_1, $user->billing->city, $user->billing->state, $user->billing->country, $user->billing->zip, $user->billing->phone, $user->shipping->first_name, $user->shipping->last_name, $user->shipping->address_line_1, $user->shipping->city, $user->shipping->state, $user->shipping->country, $user->shipping->zip, $user->shipping->phone, $card->payment_method, $card->get_last_four( ), $subscription_id, $order_notes, $user->billing->company_name, $user->shipping->company_name, $user->billing->address_line_2, $user->shipping->address_line_2 ) );
 		
 		$order_id = $this->mysqli->insert_id;
@@ -3059,12 +3075,12 @@ class ec_db{
 	}
 	
 	public function get_subscriptions( $user_id ){
-		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.user_id, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id, ec_product.membership_page FROM ec_subscription LEFT JOIN ec_product ON ec_subscription.product_id = ec_product.product_id WHERE ec_subscription.user_id = %d";
+		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.user_id, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id, ec_product.trial_period_days, ec_product.membership_page FROM ec_subscription LEFT JOIN ec_product ON ec_subscription.product_id = ec_product.product_id WHERE ec_subscription.user_id = %d";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $user_id ) );
 	}
 	
 	public function get_subscription_row( $subscription_id ){
-		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.user_id, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id, ec_product.membership_page FROM ec_subscription LEFT JOIN ec_product ON ec_subscription.product_id = ec_product.product_id WHERE ec_subscription.subscription_id = %d";
+		$sql = "SELECT ec_subscription.subscription_id, ec_subscription.subscription_type, ec_subscription.subscription_status, ec_subscription.title, ec_subscription.user_id, ec_subscription.email, ec_subscription.first_name, ec_subscription.last_name, ec_subscription.user_country, ec_subscription.product_id, ec_subscription.model_number, ec_subscription.price, ec_subscription.payment_length, ec_subscription.payment_period, ec_subscription.start_date, ec_subscription.last_payment_date, ec_subscription.next_payment_date, ec_subscription.number_payments_completed, ec_subscription.paypal_txn_id, ec_subscription.paypal_txn_type, ec_subscription.paypal_subscr_id, ec_subscription.paypal_username, ec_subscription.paypal_password, ec_subscription.stripe_subscription_id, ec_product.trial_period_days, ec_product.membership_page FROM ec_subscription LEFT JOIN ec_product ON ec_subscription.product_id = ec_product.product_id WHERE ec_subscription.subscription_id = %d";
 		return $this->mysqli->get_row( $this->mysqli->prepare( $sql, $subscription_id ) );
 	}
 	

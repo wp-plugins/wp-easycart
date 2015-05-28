@@ -721,6 +721,71 @@ class ec_product{
 		
 	}
 	
+	/* Display the product pricing with and without vat */
+	public function display_product_pricing_no_vat( ){
+		
+		$price = $GLOBALS['currency']->convert_price( $this->price );
+		$list_price = $GLOBALS['currency']->convert_price( $this->list_price );
+		
+		$tax_price = new ec_tax( $price, $price, $price, "", "" );
+		$tax_list_price = new ec_tax( $list_price, $list_price, $list_price, "", "" );
+		
+		if( $tax_price->vat_included ){ // remove vat from price
+			$price = $price - $tax_price->vat_total;
+			$list_price = $list_price - $tax_list_price->vat_total;
+		}
+		
+		$p_arr = explode( ".", $list_price );
+		$p_cents = "";
+		$p_dollar = "";
+		if( count( $p_arr ) > 0 ){
+			$p_dollar = $p_arr[0];
+		}
+		
+		if( count( $p_arr ) > 1 ){
+			$p_cents = $p_arr[1];
+		}
+		$p_cent = $GLOBALS['currency']->format_cents( $p_cents );
+		
+		if( $this->list_price != "0.000" )
+			echo "<span class=\"ec_product_old_price\">" . $GLOBALS['currency']->get_currency_display( $list_price ) . "</span></span><span class=\"ec_product_sale_price\">" . $GLOBALS['currency']->get_currency_display( $price ) . "</span> " . $GLOBALS['language']->get_text( 'product_details', 'product_details_vat_excluded' ) . " VAT";
+		else
+			echo "<span class=\"ec_product_price\">" . $GLOBALS['currency']->get_currency_display( $price ) . "</span> " . $GLOBALS['language']->get_text( 'product_details', 'product_details_vat_excluded' ) . " VAT";
+		
+	}
+	
+	public function display_product_pricing_vat( ){
+		
+		$price = $GLOBALS['currency']->convert_price( $this->price );
+		$list_price = $GLOBALS['currency']->convert_price( $this->list_price );
+		
+		$tax_price = new ec_tax( $price, $price, $price, "", "" );
+		$tax_list_price = new ec_tax( $list_price, $list_price, $list_price, "", "" );
+		
+		if( $tax_price->vat_added ){ // remove vat from price
+			$price = $price + $tax_price->vat_total;
+			$list_price = $list_price + $tax_list_price->vat_total;
+		}
+		
+		$p_arr = explode( ".", $list_price );
+		$p_cents = "";
+		$p_dollar = "";
+		if( count( $p_arr ) > 0 ){
+			$p_dollar = $p_arr[0];
+		}
+		
+		if( count( $p_arr ) > 1 ){
+			$p_cents = $p_arr[1];
+		}
+		$p_cent = $GLOBALS['currency']->format_cents( $p_cents );
+		
+		if( $this->list_price != "0.000" )
+			echo "<span class=\"ec_product_old_price\">" . $GLOBALS['currency']->get_currency_display( $list_price ) . "</span><span class=\"ec_product_sale_price\">" . $GLOBALS['currency']->get_currency_display( $price ) . "</span> " . $GLOBALS['language']->get_text( 'product_details', 'product_details_vat_included' ) . " " . number_format( $tax_price->vat_rate_default, 0, '', '' ) . "% VAT";
+		else
+			echo "<span class=\"ec_product_price\">" . $GLOBALS['currency']->get_currency_display( $price ) . "</span> " . $GLOBALS['language']->get_text( 'product_details', 'product_details_vat_included' ) . " " . number_format( $tax_price->vat_rate_default, 0, '', '' ) . "% VAT";
+		
+	}
+	
 	/* Display the percentage number for the discount percentage */
 	public function display_product_discount_percentage( ){
 		if( $this->list_price != "0.00" )				echo round( 100 - ( ( $this->price / $this->list_price ) * 100 ) );

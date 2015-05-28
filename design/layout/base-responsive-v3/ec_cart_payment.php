@@ -455,7 +455,7 @@
     
     <?php if( get_option( 'ec_option_use_shipping' ) && $this->cart->shipping_subtotal > 0 ){ ?>
     <div class="ec_cart_header ec_top">
-        <?php echo $GLOBALS['language']->get_text( 'cart_shipping_method', 'cart_shipping_method_title' ); ?>
+        <?php echo $GLOBALS['language']->get_text( 'cart_shipping_information', 'cart_shipping_information_title' ); ?>
     </div>
     
     <div class="ec_cart_input_row">
@@ -507,7 +507,7 @@
     </div>
     
     <div class="ec_cart_button_row">
-        <input type="submit" value="Update Shipping" class="ec_cart_button" />
+        <input type="submit" value="<?php $GLOBALS['language']->get_text( 'cart_shipping_method', 'cart_shipping_update_shipping' ); ?>" class="ec_cart_button" />
     </div>
     <?php $this->display_page_two_form_end( ); ?>
     <?php } // Close if for shipping ?>

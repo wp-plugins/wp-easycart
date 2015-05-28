@@ -104,6 +104,14 @@
 				"product_page_restricted_line_3":{
 					"title":"Restricted Product Line 2 Post Link",
 					"value":". Ο λογαριασμός σας μπορεί να χρειαστεί να ελεγχθεί πριν θα είναι σε θέση να έχουν πρόσβαση στο κατάστημα."
+				},
+				"product_page_start_trial_1":{
+					"title":"Start Your Trial Text Part 1",
+					"value":"Ξεκινήστε"
+				},
+				"product_page_start_trial_2":{
+					"title":"Start Your Trial Text Part 2",
+					"value":"ημέρες δωρεάν δοκιμή σας σήμερα!"
 				}
 			}
 		},
@@ -406,6 +414,14 @@
 				"product_details_backordered_message":{
 					"title":"Backordered message in cart",
 					"value":"Ορισμένα αντικείμενα στο καλάθι σας υπάρχουν εξαντληθεί και έχουν λίστα αναμονής."
+				},
+				"product_details_vat_included":{
+					"title":"Including VAT",
+					"value":"περιλαμβάνονται"
+				},
+				"product_details_vat_excluded":{
+					"title":"Excluding VAT",
+					"value":"αποκλείονται"
 				}
 			}
 		},
@@ -1244,6 +1260,10 @@
 				"cart_shipping_method_please_select_one":{
 					"title":"Cart, Shipping please select one",
 					"value":"Παρακαλώ επιλέξτε μια μέθοδο αποστολής"
+				},
+				"cart_shipping_update_shipping":{
+					"title":"Cart, Update Shipping",
+					"value":"Ενημέρωση Αποστολής"
 				}
 			}
 		},
@@ -1547,6 +1567,31 @@
 				"cart_giftcard_receipt_message":{
 					"title":"Cart, Gift Card Message",
 					"value":"Μπορείτε να εξαργυρώσετε δώρο κάρτα σας κατά την ολοκλήρωση της παραγγελίας στο"
+				}
+			}
+		},
+		"subscription_trial":{
+			"label":"Subscription Trial Email",
+			"options":{
+				"trial_message_1":{
+					"title":"Subscription Trial Part 1",
+					"value":"Σας ευχαριστούμε για την εγγραφή σας!"
+				},
+				"trial_message_2":{
+					"title":"Subscription Trial Part 2",
+					"value":"ημερών σας δωρεάν δοκιμή της"
+				},
+				"trial_message_3":{
+					"title":"Subscription Trial Part 3",
+					"value":"έχει ήδη αρχίσει! Αν έχετε οποιεσδήποτε απορίες ή ανησυχίες κατά τη διάρκεια της δίκης σας, παρακαλούμε επικοινωνήστε μαζί μας, είμαστε στην ευχάριστη θέση να βοηθήσει."
+				},
+				"trial_message_4":{
+					"title":"Subscription Trial Part 4",
+					"value":"Ελπίζουμε να κολλήσει μαζί μας, αλλά αν αποφασίσετε αυτό δεν είναι για εσάς, να ακυρώσει οποιαδήποτε στιγμή πριν από το τέλος της δίκης σας για να αποτρέψετε φορτίζεται, συνδεθείτε στο λογαριασμό σας, κάνοντας κλικ διαχειριστείτε τις συνδρομές, που βλέπουν την εγγραφή σας, και την ακύρωση σχετικά με την σελίδα με τις λεπτομέρειες."
+				},
+				"trial_message_link":{
+					"title":"View Subscription Information",
+					"value":"Δείτε Πληροφορίες Συνδρομών"
 				}
 			}
 		},
@@ -2454,6 +2499,10 @@
 				"missing_inquiry_options":{
 					"title":"Store, Missing Inquiry Options",
 					"value":"Λείπει Επιλογές μήνυμά σας"
+				},
+				"session_expired":{
+					"title":"Store, Session Expired",
+					"value":"Η συνεδρία σας έχει λήξει, παρακαλώ εισάγετε ξανά την ολοκλήρωση της παραγγελίας στοιχεία σας για να ολοκληρώσετε την παραγγελία σας."
 				}
 			}
 		},

@@ -82,7 +82,7 @@ class ec_admin_productimporter{
 		}
 		$this->headers = fgetcsv( $file );
 		
-		for( $i=0; $i<count( $this->headers ) && $i<count($valid_headers); $i++ ){
+		for( $i=0; $i<count( $this->headers ); $i++ ){
 			
 			if( $this->headers[$i] == "product_id" ){ // do not add product id to list
 				$this->product_id_index = $i;
@@ -132,7 +132,7 @@ class ec_admin_productimporter{
 		
 		$first = true;
 		
-		for( $i=0; $i<count( $this->headers ) && $i<count($valid_headers); $i++ ){
+		for( $i=0; $i<count( $this->headers ); $i++ ){
 			
 			if( $i != $this->product_id_index && $i != $this->post_id_index ){ // Skip rows with product id and post id
 				if( !$first ){
@@ -150,7 +150,7 @@ class ec_admin_productimporter{
 		
 		$first = true;
 		
-		for( $i=0; $i<count( $this->headers ) && $i<count($valid_headers); $i++ ){
+		for( $i=0; $i<count( $this->headers ); $i++ ){
 			if( $i != $this->product_id_index && $i != $this->post_id_index ){ // Skip rows with product id and post id
 				if( !$first )
 					$insert_sql .= ",";

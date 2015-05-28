@@ -104,6 +104,14 @@
 				"product_page_restricted_line_3":{
 					"title":"Restricted Product Line 2 Post Link",
 					"value":". Votre compte peut avoir besoin d'être vérifiée avant d'être en mesure d'accéder à la boutique."
+				},
+				"product_page_start_trial_1":{
+					"title":"Start Your Trial Text Part 1",
+					"value":"Commencez votre essai gratuit de"
+				},
+				"product_page_start_trial_2":{
+					"title":"Start Your Trial Text Part 2",
+					"value":"jours aujourd'hui!"
 				}
 			}
 		},
@@ -406,6 +414,14 @@
 				"product_details_backordered_message":{
 					"title":"Backordered message in cart",
 					"value":"Quelques articles dans votre panier sont actuellement en rupture de stock et en rupture de stock."
+				},
+				"product_details_vat_included":{
+					"title":"Including VAT",
+					"value":"inclus"
+				},
+				"product_details_vat_excluded":{
+					"title":"Excluding VAT",
+					"value":"exclu"
 				}
 			}
 		},
@@ -1244,6 +1260,10 @@
 				"cart_shipping_method_please_select_one":{
 					"title":"Cart, Shipping please select one",
 					"value":"S'il vous plaît sélectionner un mode de livraison"
+				},
+				"cart_shipping_update_shipping":{
+					"title":"Cart, Update Shipping",
+					"value":"Mise à jour de port"
 				}
 			}
 		},		
@@ -1547,6 +1567,31 @@
 				"cart_giftcard_receipt_message":{
 					"title":"Cart, Gift Card Message",
 					"value":"Vous pouvez échanger votre carte-cadeau lors de votre commande à"
+				}
+			}
+		},
+		"subscription_trial":{
+			"label":"Subscription Trial Email",
+			"options":{
+				"trial_message_1":{
+					"title":"Subscription Trial Part 1",
+					"value":"Merci pour votre inscription! Votre essai gratuit de"
+				},
+				"trial_message_2":{
+					"title":"Subscription Trial Part 2",
+					"value":"jours de"
+				},
+				"trial_message_3":{
+					"title":"Subscription Trial Part 3",
+					"value":"a maintenant commencé! Si vous avez des questions ou des préoccupations au cours de votre période d'essai, s'il vous plaît nous contacter, nous sommes heureux de vous aider."
+				},
+				"trial_message_4":{
+					"title":"Subscription Trial Part 4",
+					"value":"Nous espérons que vous restez avec nous, mais si vous décidez ce ne est pas pour vous, annulons tout temps avant la fin de votre période d'essai pour éviter d'être chargée en vous connectant à votre compte, en cliquant gérer les abonnements, l'affichage de votre abonnement, et l'annulation de la détails page."
+				},
+				"trial_message_link":{
+					"title":"View Subscription Information",
+					"value":"Voir Renseignements sur les abonnements"
 				}
 			}
 		},
@@ -2454,6 +2499,10 @@
 				"missing_inquiry_options":{
 					"title":"Store, Missing Inquiry Options",
 					"value":"Manque d'options d'enquête"
+				},
+				"session_expired":{
+					"title":"Store, Session Expired",
+					"value":"Votre session a expiré, s'il vous plaît entrer de nouveau vos informations caisse pour compléter votre commande."
 				}
 			}
 		},

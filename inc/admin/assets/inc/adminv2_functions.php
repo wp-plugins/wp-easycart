@@ -1305,6 +1305,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_customer_review_show_user_name', $_POST['ec_option_customer_review_show_user_name'] );
 	update_option( 'ec_option_hide_price_seasonal', $_POST['ec_option_hide_price_seasonal'] );
 	update_option( 'ec_option_hide_price_inquiry', $_POST['ec_option_hide_price_inquiry'] );
+	update_option( 'ec_option_show_multiple_vat_pricing', $_POST['ec_option_show_multiple_vat_pricing'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
@@ -1538,6 +1539,7 @@ function ec_update_payment_info( ){
 		update_option( 'ec_option_paypal_email', $_POST['ec_option_paypal_email'] );
 		update_option( 'ec_option_paypal_currency_code', $_POST['ec_option_paypal_currency_code'] );
 		update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
+		update_option( 'ec_option_paypal_charset', $_POST['ec_option_paypal_charset'] );
 		update_option( 'ec_option_paypal_use_sandbox', $_POST['ec_option_paypal_use_sandbox'] );
 		update_option( 'ec_option_paypal_weight_unit', $_POST['ec_option_paypal_weight_unit'] );
 		update_option( 'ec_option_paypal_collect_shipping', $_POST['ec_option_paypal_collect_shipping'] );	

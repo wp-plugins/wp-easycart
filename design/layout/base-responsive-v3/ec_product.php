@@ -73,6 +73,11 @@ if( $admin_access || $use_quickview ){ ?>
                     <img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" />
                 </div>
                 <div class="ec_product_quickview_content_data">
+                    
+					<?php if( $product->is_subscription_item && $product->trial_period_days > 0 ){ ?>
+                    <div class="ec_product_quickview_trial_notice"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_start_trial_1' ); ?> <?php echo $product->trial_period_days; ?> <?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_start_trial_2' ); ?></div>
+                    <?php }?>
+                    
                     <h1 class="ec_product_quickview_content_title"><a href="<?php echo $product->get_product_link( ); ?>"><?php echo $product->title; ?></a></h1>
                     <div class="ec_product_quickview_content_divider"></div>
                     <?php if( ( $product->is_catalog_mode && get_option( 'ec_option_hide_price_seasonal' ) ) || 
@@ -378,6 +383,10 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
        		<?php }?>
         	<span class="ec_price_type<?php echo $product_type; ?>"><?php echo $GLOBALS['currency']->get_currency_display( $product->price ); if( $product->pricing_per_sq_foot ){ echo "/sq ft"; } ?></span>
         </div>
+        <?php }?>
+        
+        <?php if( $product->is_subscription_item && $product->trial_period_days > 0 ){ ?>
+        <div class="ec_product_quickview_trial_notice"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_start_trial_1' ); ?> <?php echo $product->trial_period_days; ?> <?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_start_trial_2' ); ?></div>
         <?php }?>
         
         <?php if( get_option( 'ec_option_display_as_catalog' ) ){

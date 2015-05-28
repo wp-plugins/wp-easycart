@@ -835,6 +835,150 @@ function ec_custom_downloads( ){
 			
 		}
 		
+	}else if( current_user_can( 'manage_options' ) && isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && isset( $_GET['ec_action'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "google-merchant" && $_GET['ec_action'] == "download-google-csv" ){
+	
+		global $wpdb;
+		$products = $wpdb->get_results( "SELECT ec_product.product_id, ec_product.model_number, ec_product.title, ec_product.price, ec_product.list_price, ec_manufacturer.name as manufacturer_name FROM ec_product LEFT JOIN ec_manufacturer ON ec_manufacturer.manufacturer_id = ec_product.manufacturer_id ORDER BY ec_product.title ASC" );
+		
+		$data = 'product_id,model_number,title,price,sale_price,brand,google_product_category,product_type,condition,gtin,mpn,identifier_exists,gender,age_group,size_type,size_system,item_group_id,color,material,pattern,size,weight_type,shipping_label';
+		
+		$data .= "\n";
+		
+		foreach( $products as $product ){ 
+			
+			$attributes_result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ec_product_google_attributes WHERE product_id = %d", $product->product_id ) );
+			
+			if( $attributes_result ){
+				$attributes = json_decode( $attributes_result->attribute_value, true );
+			
+			}else{
+				$attributes = array( 	"google_product_category" => "None Selected",
+										"product_type" => "",
+										"condition" => "",
+										"gtin" => "",
+										"mpn" => "",
+										"identifier_exists" => "",
+										"gender" => "",
+										"age_group" => "",
+										"size_type" => "",
+										"size_system" => "",
+										"item_group_id" => "",
+										"color" => "",
+										"material" => "",
+										"pattern" => "",
+										"size" => "",
+										"weight_type" => "lb",
+										"shipping_label" => "" );
+			
+			}
+			
+			$data .= '"' . str_replace( '"', '""', $product->product_id ) . '","' . str_replace( '"', '""', $product->model_number ) . '","' . str_replace( '"', '""', $product->title ) . '","' . str_replace( '"', '""', $product->price ) . '","' . str_replace( '"', '""', $product->list_price ) . '","' . str_replace( '"', '""', $product->manufacturer_name ) . '"';
+			foreach( $attributes as $attribute ){
+				$data .= ',"' . str_replace( '"', '""', $attribute ) . '"';
+			}
+		
+			$data .= "\n";
+			
+		}
+		
+		
+		
+		header("Content-type: text/csv; charset=UTF-8");
+		header("Content-Transfer-Encoding: binary"); 
+		header("Content-Disposition: attachment; filename=google-feed.csv");
+		header("Pragma: no-cache");
+		header("Expires: 0");
+	
+		echo $data;
+		
+		die( );
+		
+	}else if( current_user_can( 'manage_options' ) && isset( $_GET['page'] ) && isset( $_GET['ec_page'] ) && isset( $_GET['ec_panel'] ) && isset( $_GET['ec_action'] ) && $_GET['page'] == "ec_adminv2" && $_GET['ec_page'] == "store-setup" && $_GET['ec_panel'] == "google-merchant" && $_GET['ec_action'] == "upload-google-csv" ){
+		
+		global $wpdb;
+		
+		$file = fopen( $_FILES['csv_file']['tmp_name'], "r" );
+		
+		$headers = fgetcsv( $file );
+		
+		if( $headers[0] != "product_id" ){
+			
+			echo "You must upload a CSV with the first column product_id";
+			die( );
+		
+		}else if( count( $headers ) != 23 ){
+			
+			echo "You must have 23 columns in your CSV file. You should download and add content, do not delete columns or rows.";
+			die( );
+		
+		}else{
+		
+			$line_number = 1;
+			$eof_reached = false;
+		
+			while( !feof( $file ) && !$eof_reached ){ // each time through, run up to the limit of items until eof hit.
+				
+				$row = fgetcsv( $file );
+			
+				if( strlen( trim( $row[0] ) ) <= 0 ){ // checking for file with extra rows that are empty
+					$eof_reached = true;
+				
+				}else{
+					
+					if( count( $row ) != 23 ){
+						
+						echo "Something went wrong when processing line " . $line_number . ". Please ensure you have data in all 23 columns to continue.";
+						die( );
+						
+					}else{
+				
+						// Save your Google Merchant Product Options
+						$attribute_array = array( 	"google_product_category" 	=> $row[6],
+													"product_type" 				=> $row[7],
+													"condition" 				=> $row[8],
+													"gtin" 						=> $row[9],
+													"mpn" 						=> $row[10],
+													"identifier_exists" 		=> $row[11],
+													"gender" 					=> $row[12],
+													"age_group" 				=> $row[13],
+													"size_type" 				=> $row[14],
+													"size_system" 				=> $row[15],
+													"item_group_id" 			=> $row[16],
+													"color" 					=> $row[17],
+													"material" 					=> $row[18],
+													"pattern" 					=> $row[19],
+													"size" 						=> $row[20],
+													"weight_type" 				=> $row[21],
+													"shipping_label" 			=> $row[22] );
+													
+						$attribute_json = json_encode( $attribute_array );
+						
+						$product = $wpdb->get_row( $wpdb->prepare( "SELECT ec_product.product_id FROM ec_product WHERE ec_product.product_id = %d", $row[0] ) );
+						if( $product ){
+							$wpdb->query( $wpdb->prepare( "DELETE FROM ec_product_google_attributes WHERE product_id = %d", $row[0] ) );
+							$wpdb->query( $wpdb->prepare( "INSERT INTO ec_product_google_attributes(product_id, attribute_value) VALUES( %d, %s )", $row[0], $attribute_json ) );
+						}else{
+							
+							echo "No product found with product_id " . $row[0] . " on line " . $line_number;
+							die( );
+							
+						}
+				
+					}// close row check
+				
+					$line_number++;
+					
+				} // close end of file check
+				
+			} // close while loop
+			
+			
+			fclose( $file );
+			
+		}
+		
+		header( "location:admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=google-merchant&ec_success=google-import-complete" );
+	
 	}// Close if/else to decide which action to take
 	
 }

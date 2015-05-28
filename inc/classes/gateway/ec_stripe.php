@@ -26,7 +26,7 @@ class ec_stripe extends ec_gateway{
 		}
 	}
 	
-	function get_gateway_response( $gateway_url ){
+	function get_gateway_response( $gateway_url, $gateway_data="", $gateway_headers=array() ){
 		
 		$response = $this->insert_charge( $this->order_totals, $this->user, $this->credit_card, $this->order_id );
 		$this->handle_gateway_response( $response );
@@ -92,6 +92,8 @@ class ec_stripe extends ec_gateway{
 		$data = $this->get_refund_charge_data( $charge_id, $amount );
 		$response = $this->call_stripe( "https://api.stripe.com/v1/charges/" . $charge_id . "/refund", $data );
 		$json = json_decode( $response );
+		
+		$this->mysqli->insert_response( 0, 0, "Stripe Refund", print_r( $json, true ) );
 		
 		if( !isset( $json->error ) )
 			return true;

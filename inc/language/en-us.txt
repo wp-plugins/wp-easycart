@@ -104,6 +104,14 @@
 				"product_page_restricted_line_3":{
 					"title":"Restricted Product Line 2 Post Link",
 					"value":". Your account may need to be verified before you will be able to access the store."
+				},
+				"product_page_start_trial_1":{
+					"title":"Start Your Trial Text Part 1",
+					"value":"Start Your"
+				},
+				"product_page_start_trial_2":{
+					"title":"Start Your Trial Text Part 2",
+					"value":"Day Free Trial Today!"
 				}
 			}
 		},
@@ -406,6 +414,14 @@
 				"product_details_backordered_message":{
 					"title":"Backordered message in cart",
 					"value":"Some items in your cart are currently out of stock and on backorder."
+				},
+				"product_details_vat_included":{
+					"title":"Including VAT",
+					"value":"Including"
+				},
+				"product_details_vat_excluded":{
+					"title":"Excluding VAT",
+					"value":"Excluding"
 				}
 			}
 		},
@@ -1244,6 +1260,10 @@
 				"cart_shipping_method_please_select_one":{
 					"title":"Cart, Shipping please select one",
 					"value":"Please select a shipping method"
+				},
+				"cart_shipping_update_shipping":{
+					"title":"Cart, Update Shipping",
+					"value":"Update Shipping"
 				}
 			}
 		},
@@ -1547,6 +1567,31 @@
 				"cart_giftcard_receipt_message":{
 					"title":"Cart, Gift Card Message",
 					"value":"You can redeem your gift card during checkout at"
+				}
+			}
+		},
+		"subscription_trial":{
+			"label":"Subscription Trial Email",
+			"options":{
+				"trial_message_1":{
+					"title":"Subscription Trial Part 1",
+					"value":"Thank you for signing up! Your"
+				},
+				"trial_message_2":{
+					"title":"Subscription Trial Part 2",
+					"value":"day free trial of"
+				},
+				"trial_message_3":{
+					"title":"Subscription Trial Part 3",
+					"value":"has now started! If you have any questions or concerns during your trial, please contact us, we are happy to help."
+				},
+				"trial_message_4":{
+					"title":"Subscription Trial Part 4",
+					"value":"We hope you stick with us, but if you decide this isn't for you, cancel any time prior to the end of your trial to prevent being charged by logging into your account, clicking manage subscriptions, viewing your subscription, and cancelling on the details page."
+				},
+				"trial_message_link":{
+					"title":"View Subscription Information",
+					"value":"View Subscription Information"
 				}
 			}
 		},
@@ -2454,6 +2499,10 @@
 				"missing_inquiry_options":{
 					"title":"Store, Missing Inquiry Options",
 					"value":"Missing Inquiry Options"
+				},
+				"session_expired":{
+					"title":"Store, Session Expired",
+					"value":"Your session has expired, please enter your checkout information again to complete your order."
 				}
 			}
 		},

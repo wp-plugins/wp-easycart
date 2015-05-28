@@ -10,6 +10,7 @@ class ec_subscription{
 	private $created;									// date created in UNIX timestamp format
 	private $amount;									// 12.00 format
 	private $product_id;								// id of the product
+	private $trial_period_days;							// days of the trial
 	private $bill_length;								// length of bill cycle, e.g. 4
 	private $bill_period;								// period type (D, W, M, Y)
 	private $status;									// Active, Suspended, or Canceled
@@ -131,6 +132,43 @@ class ec_subscription{
 			
 		}else{
 			do_action( 'wpeasycart_custom_subscription_order_email', get_option( 'ec_option_order_from_email' ), $user->email, get_option( 'ec_option_bcc_email_addresses' ), $GLOBALS['language']->get_text( "cart_success", "cart_payment_receipt_title" ) . " " . $order->order_id, $message );
+			
+		}
+		
+	}
+	
+	public function send_trial_start_email( $user ){
+		
+		$email_logo_url = get_option( 'ec_option_email_logo' ) . "' alt='" . get_bloginfo( "name" );
+	 	
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = "Content-Type: text/html; charset=utf-8";
+		$headers[] = "From: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "Reply-To: " . get_option( 'ec_option_order_from_email' );
+		$headers[] = "X-Mailer: PHP/".phpversion();
+		
+		ob_start();
+        if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription_trial_start_email.php' ) )	
+			include WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_cart_subscription_trial_start_email.php';
+		else
+			include WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_latest_layout' ) . '/ec_cart_subscription_trial_start_email.php';
+			
+        $message = ob_get_clean();
+		
+		$email_send_method = get_option( 'ec_option_use_wp_mail' );
+		$email_send_method = apply_filters( 'wpeasycart_email_method', $email_send_method );
+		
+		if( $email_send_method == "1" ){
+			wp_mail( $user->email, "Your Trial Has Started", $message, implode("\r\n", $headers) );
+			wp_mail( get_option( 'ec_option_bcc_email_addresses' ), "Your Trial Has Started", $message, implode("\r\n", $headers) );
+		
+		}else if( $email_send_method == "0" ){
+			mail( $user->email, "Your Trial Has Started", $message, implode("\r\n", $headers) );
+			mail( get_option( 'ec_option_bcc_email_addresses' ), "Your Trial Has Started", $message, implode("\r\n", $headers) );
+			
+		}else{
+			do_action( 'wpeasycart_custom_subscription_order_email', get_option( 'ec_option_order_from_email' ), $user->email, get_option( 'ec_option_bcc_email_addresses' ), "Your Trial Has Started", $message );
 			
 		}
 		
@@ -284,6 +322,7 @@ class ec_subscription{
 		$this->title = $db_row->title;
 		$this->amount = $db_row->price;
 		$this->product_id = $db_row->product_id;
+		$this->trial_period_days = $db_row->trial_period_days;
 		$this->bill_length = $db_row->payment_length;
 		$this->bill_period = $db_row->payment_period;
 		$this->status = $db_row->subscription_status;

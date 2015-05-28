@@ -104,6 +104,14 @@
 				"product_page_restricted_line_3":{
 					"title":"Restricted Product Line 2 Post Link",
 					"value":". Ihr Konto kann überprüft werden muss, bevor Sie in der Lage sein, um den Laden zu gelangen."
+				},
+				"product_page_start_trial_1":{
+					"title":"Start Your Trial Text Part 1",
+					"value":"Beginnen Sie Ihren"
+				},
+				"product_page_start_trial_2":{
+					"title":"Start Your Trial Text Part 2",
+					"value":"Tage kostenlose Testversion!"
 				}
 			}
 		},
@@ -406,6 +414,14 @@
 				"product_details_backordered_message":{
 					"title":"Backordered message in cart",
 					"value":"Manche Artikel im Warenkorb sind zur Zeit auf Bestellung und wird nachgeliefert."
+				},
+				"product_details_vat_included":{
+					"title":"Including VAT",
+					"value":"inbegriffen"
+				},
+				"product_details_vat_excluded":{
+					"title":"Excluding VAT",
+					"value":"ausgeschlossen"
 				}
 			}
 		},
@@ -1244,6 +1260,10 @@
 				"cart_shipping_method_please_select_one":{
 					"title":"Cart, Shipping please select one",
 					"value":"Bitte wählen Sie eine Versandart"
+				},
+				"cart_shipping_update_shipping":{
+					"title":"Cart, Update Shipping",
+					"value":"Update Versand"
 				}
 			}
 		},
@@ -1547,6 +1567,31 @@
 				"cart_giftcard_receipt_message":{
 					"title":"Cart, Gift Card Message",
 					"value":"Sie können Ihre Geschenkkarte bei der Kasse an einlösen"
+				}
+			}
+		},
+		"subscription_trial":{
+			"label":"Subscription Trial Email",
+			"options":{
+				"trial_message_1":{
+					"title":"Subscription Trial Part 1",
+					"value":"Vielen Dank für Ihre Anmeldung! Ihr"
+				},
+				"trial_message_2":{
+					"title":"Subscription Trial Part 2",
+					"value":"Tage kostenlose Testversion von"
+				},
+				"trial_message_3":{
+					"title":"Subscription Trial Part 3",
+					"value":"hat nun begonnen! Wenn Sie irgendwelche Fragen oder Interessen während Ihrer Studie haben, kontaktieren Sie uns, wir sind glücklich zu helfen."
+				},
+				"trial_message_4":{
+					"title":"Subscription Trial Part 4",
+					"value":"Wir hoffen, dass Sie mit uns bleiben, aber wenn Sie sich entscheiden, dies nicht für Sie, jederzeit vor dem Ende Ihrer Testversion zu verhindern, indem Sie sich in Ihren Account ein, Klick-Abonnements verwalten, betrachten Sie Ihr Abonnement, und Abbrechen auf die geladene Abbrechen Info-Seite."
+				},
+				"trial_message_link":{
+					"title":"View Subscription Information",
+					"value":"Ansicht Subscription Information"
 				}
 			}
 		},
@@ -2454,6 +2499,10 @@
 				"missing_inquiry_options":{
 					"title":"Store, Missing Inquiry Options",
 					"value":"Fehlende Anfrage Optionen"
+				},
+				"session_expired":{
+					"title":"Store, Session Expired",
+					"value":"Ihre Sitzung ist abgelaufen, geben Sie bitte Ihre Informationen wieder Kasse, um Ihre Bestellung abzuschließen."
 				}
 			}
 		},

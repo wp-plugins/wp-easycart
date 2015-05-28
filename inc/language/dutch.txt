@@ -104,6 +104,14 @@
 				"product_page_restricted_line_3":{
 					"title":"Restricted Product Line 2 Post Link",
 					"value":". Uw account moet mogelijk worden gecontroleerd voordat u in staat om toegang te krijgen tot de winkel zal zijn."
+				},
+				"product_page_start_trial_1":{
+					"title":"Start Your Trial Text Part 1",
+					"value":"Begin uw"
+				},
+				"product_page_start_trial_2":{
+					"title":"Start Your Trial Text Part 2",
+					"value":"dagen gratis op proef vandaag!"
 				}
 			}
 		},
@@ -406,6 +414,14 @@
 				"product_details_backordered_message":{
 					"title":"Backordered message in cart",
 					"value":"Sommige items in uw winkelwagen zijn momenteel uit voorraad leverbaar en op bestelling."
+				},
+				"product_details_vat_included":{
+					"title":"Including VAT",
+					"value":"inclusief"
+				},
+				"product_details_vat_excluded":{
+					"title":"Excluding VAT",
+					"value":"uitgesloten"
 				}
 			}
 		},
@@ -1244,6 +1260,10 @@
 				"cart_shipping_method_please_select_one":{
 					"title":"Cart, Shipping please select one",
 					"value":"Selecteer een verzendmethode"
+				},
+				"cart_shipping_update_shipping":{
+					"title":"Cart, Update Shipping",
+					"value":"Bijwerken Shipping"
 				}
 			}
 		},
@@ -1547,6 +1567,31 @@
 				"cart_giftcard_receipt_message":{
 					"title":"Cart, Gift Card Message",
 					"value":"U kunt uw gift card bij de kassa af te lossen op"
+				}
+			}
+		},
+		"subscription_trial":{
+			"label":"Subscription Trial Email",
+			"options":{
+				"trial_message_1":{
+					"title":"Subscription Trial Part 1",
+					"value":"Bedankt voor uw inschrijving! Uw"
+				},
+				"trial_message_2":{
+					"title":"Subscription Trial Part 2",
+					"value":"dagen gratis trial van"
+				},
+				"trial_message_3":{
+					"title":"Subscription Trial Part 3",
+					"value":"is nu begonnen! Als u nog vragen of opmerkingen tijdens de proefperiode, neem dan contact met ons op, we zijn blij om te helpen."
+				},
+				"trial_message_4":{
+					"title":"Subscription Trial Part 4",
+					"value":"We hopen dat u zich bij ons, maar als u besluit dit niet voor u, annuleert elk moment voorafgaand aan het einde van de proefperiode om te voorkomen dat in rekening worden gebracht door in te loggen op uw account beheren abonnementen te klikken, het bekijken van uw abonnement, en annuleren van de detailpagina."
+				},
+				"trial_message_link":{
+					"title":"View Subscription Information",
+					"value":"Bekijk Abonnementsgegevens"
 				}
 			}
 		},
@@ -2454,6 +2499,10 @@
 				"missing_inquiry_options":{
 					"title":"Store, Missing Inquiry Options",
 					"value":"Missing Inquiry Opties"
+				},
+				"session_expired":{
+					"title":"Store, Session Expired",
+					"value":"Uw sessie is verlopen, gelieve uw kassa gegevens opnieuw in te voeren om uw bestelling te voltooien."
 				}
 			}
 		},

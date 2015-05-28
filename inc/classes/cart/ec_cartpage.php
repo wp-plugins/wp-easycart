@@ -242,7 +242,8 @@ class ec_cartpage{
 							  "user_insert_error" => $GLOBALS['language']->get_text( "ec_errors", "user_insert_error" ),
 							  "subscription_added_failed" => $GLOBALS['language']->get_text( "ec_errors", "subscription_added_failed" ),
 							  "subscription_failed" => $GLOBALS['language']->get_text( "ec_errors", "subscription_failed" ),
-							  "invalid_address" => $GLOBALS['language']->get_text( "ec_errors", "invalid_address" )  
+							  "invalid_address" => $GLOBALS['language']->get_text( "ec_errors", "invalid_address" ),
+							  "session_expired" => $GLOBALS['language']->get_text( "ec_errors", "session_expired" )  
 							);
 		if( isset( $_GET['ec_cart_error'] ) ){
 			echo "<div class=\"ec_cart_error\"><div>" . $error_notes[ $_GET['ec_cart_error'] ] . "</div></div>";
@@ -2316,7 +2317,11 @@ class ec_cartpage{
 	
 	private function process_submit_order(){
 		
-		if( !$this->validate_submit_order_data( ) ){
+		if( !isset( $_SESSION['ec_email'] ) ){
+			
+			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=session_expired" );
+			
+		}else if( !$this->validate_submit_order_data( ) ){
 			
 			header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_info&ec_cart_error=invalid_address" );
 			
@@ -3202,20 +3207,27 @@ class ec_cartpage{
 										$coupon_promocode_id = "";
 										if( isset( $coupon_row ) )
 											$coupon_promocode_id = $coupon_row->promocode_id;
-										$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );
+										
 										$this->mysqli->update_user_default_card( $user, $card );
-										
-										// Affiliate Insert
-										$referral_id = "";
-										if( class_exists( "Affiliate_WP" ) )
-											$referral_id = $this->add_affiliatewp_subscription_order( $order_id, $user, $product );
-										
 										$subscription = new ec_subscription( $subscription_row );
-										$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-										$order = new ec_orderdisplay( $order_row );
-										$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
-										$subscription->send_email_receipt( $user, $order, $order_details );
-										$this->mysqli->update_product_stock( $product->product_id, 1 );
+										
+										if( $product->trial_period_days > 0 ){
+											
+											$subscription->send_trial_start_email( $user );
+											
+										}else{
+											$order_id = $this->mysqli->insert_subscription_order( $product, $user, $card, $subscription_id, $coupon_promocode_id, $order_notes, $this->subscription_option1_name, $this->subscription_option2_name, $this->subscription_option3_name, $this->subscription_option4_name, $this->subscription_option5_name, $this->subscription_option1_label, $this->subscription_option2_label, $this->subscription_option3_label, $this->subscription_option4_label, $this->subscription_option5_label );	
+											// Affiliate Insert
+											$referral_id = "";
+											if( class_exists( "Affiliate_WP" ) )
+												$referral_id = $this->add_affiliatewp_subscription_order( $order_id, $user, $product );
+											
+											$order_row = $this->mysqli->get_order_row( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+											$order = new ec_orderdisplay( $order_row );
+											$order_details = $this->mysqli->get_order_details( $order_id, $_SESSION['ec_email'], $_SESSION['ec_password'] );
+											$subscription->send_email_receipt( $user, $order, $order_details );
+											$this->mysqli->update_product_stock( $product->product_id, 1 );
+										}
 										
 										// Unset Variables Entered
 										unset( $_SESSION['ec_subscription_option1'] );
@@ -3271,7 +3283,13 @@ class ec_cartpage{
 										$_SESSION['ec_cart_id'] = $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)] . $vals[rand(0, 25)];
 										setcookie( 'ec_cart_id', $_SESSION['ec_cart_id'], time( ) + ( 3600 * 24 * 30 ) );
 										
-										header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );	
+										if( $product->trial_period_days > 0 ){
+											header( "location: " . $this->account_page . $this->permalink_divider . "ec_page=subscription_details&subscription_id=" . $subscription_id );
+										
+										}else{
+											header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $order_id );
+										
+										}
 									
 									}else{
 										header( "location: " . $this->cart_page . $this->permalink_divider . "ec_page=subscription_info&subscription=" . $model_number . "&ec_cart_error=subscription_failed" );	

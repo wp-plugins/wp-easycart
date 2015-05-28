@@ -323,7 +323,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 </div>
 
 <div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Quebec Tax</em>This option allows you to collect the 5% GST + 5% PST when shipping to Quebec customers.</span></a></span>
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Quebec Tax</em>This option allows you to collect the 5% GST + 9.975% PST when shipping to Quebec customers.</span></a></span>
     <span class="ec_setting_row_label">Collect Quebec Tax:</span>
     <span class="ec_setting_row_input">
     	<select name="ec_option_collect_quebec_tax" style="width:200px;">
@@ -357,23 +357,23 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
-<div class="ec_admin_page_title">Tax Cloud Setup</div>
-<div class="ec_adin_page_intro">If you want to get the best possible tax rates, Tax Cloud is your solution! If you enter API credentials here, the tax rates entered will be ignored and the Tax Cloud provided rate will be used at all times.</div>
+<div class="ec_admin_page_title">TaxCloud Setup</div>
+<div class="ec_adin_page_intro">If you want to get the best possible tax rates, TaxCloud is your solution! If you enter API credentials here, US customers will receive tax rates from TaxCloud and orders placed will be entered into the TaxCloud system to allow you to automatically submit tax payments.</div>
 
 <div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>API ID</em>This is the API ID provided by your Tax Cloud account.</span></a></span>
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>API ID</em>This is the API ID provided by your TaxCloud account.</span></a></span>
     <span class="ec_setting_row_label">API ID:</span>
     <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_api_id" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_api_id'); ?>" /></span>
 </div>
 
 <div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>API Key</em>This is the API Key provided by your Tax Cloud account.</span></a></span>
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>API Key</em>This is the API Key provided by your TaxCloud account.</span></a></span>
     <span class="ec_setting_row_label">API Key:</span>
     <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_api_key" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_api_key'); ?>" /></span>
 </div>
 
 <div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>USPS ID</em>This is your USPS user ID, required by tax cloud to use their service.</span></a></span>
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>USPS ID</em>This is your USPS user ID, required by TaxCloud to use their service.</span></a></span>
     <span class="ec_setting_row_label">USPS ID:</span>
     <span class="ec_setting_row_input"><input type="text" name="ec_option_tax_cloud_usps_id" style="width:350px;" value="<?php echo get_option('ec_option_tax_cloud_usps_id'); ?>" /></span>
 </div>

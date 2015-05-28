@@ -264,6 +264,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_collect_tax_on_shipping');			array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_show_multiple_vat_pricing');			array_push($this->wp_option_defaults, '0' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		
 		// Payment Options
 		array_push($this->wp_option_names, 'ec_option_use_direct_deposit');					array_push($this->wp_option_defaults, '1' );
@@ -433,6 +435,8 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_paypal_email');						array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_paypal_currency_code');				array_push($this->wp_option_defaults, 'usd' );
+																							array_push($this->wp_option_groups, 'ec-payment-group');
+		array_push($this->wp_option_names, 'ec_option_paypal_charset');						array_push($this->wp_option_defaults, 'UTF-8' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');
 		array_push($this->wp_option_names, 'ec_option_paypal_lc');							array_push($this->wp_option_defaults, 'en' );
 																							array_push($this->wp_option_groups, 'ec-payment-group');

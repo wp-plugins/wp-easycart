@@ -5,6 +5,7 @@ class ec_paypal extends ec_third_party{
 		$paypal_use_sandbox = get_option( 'ec_option_paypal_use_sandbox' );
 		$paypal_email = get_option( 'ec_option_paypal_email' );
 		$paypal_currency_code = get_option( 'ec_option_paypal_currency_code' );
+		$paypal_charset = get_option( 'ec_option_paypal_charset' );
 		$paypal_lc = get_option( 'ec_option_paypal_lc' );
 		$paypal_weight_unit = get_option( 'ec_option_paypal_weight_unit' );
 		
@@ -35,6 +36,7 @@ class ec_paypal extends ec_third_party{
 			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"1\" />";
 		}
 		echo "<input name=\"lc\" id=\"lc\" type=\"hidden\" value=\"" . $paypal_lc . "\" />";
+		echo "<input name=\"charset\" id=\"charset\" type=\"hidden\" value=\"" . $paypal_charset . "\" />";
 		echo "<input name=\"rm\" id=\"rm\" type=\"hidden\" value=\"2\" />";
 		echo "<input name=\"notify_url\" id=\"notify_url\" type=\"hidden\" value=\"".  plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/paypal_payment_complete.php" ) ."\" />";
 		echo "<input type=\"hidden\" name=\"return\" value=\"". $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order_id . "\" />";
@@ -65,6 +67,7 @@ class ec_paypal extends ec_third_party{
 		$paypal_use_sandbox = get_option( 'ec_option_paypal_use_sandbox' );
 		$paypal_email = get_option( 'ec_option_paypal_email' );
 		$paypal_currency_code = get_option( 'ec_option_paypal_currency_code' );
+		$paypal_charset = get_option( 'ec_option_paypal_charset' );
 		$paypal_lc = get_option( 'ec_option_paypal_lc' );
 		$paypal_weight_unit = get_option( 'ec_option_paypal_weight_unit' );
 		
@@ -197,6 +200,7 @@ class ec_paypal extends ec_third_party{
 			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"1\" />";
 		}
 		echo "<input name=\"lc\" id=\"lc\" type=\"hidden\" value=\"" . $paypal_lc . "\" />";
+		echo "<input name=\"charset\" id=\"charset\" type=\"hidden\" value=\"" . $paypal_charset . "\" />";
 		echo "<input name=\"rm\" id=\"rm\" type=\"hidden\" value=\"2\" />";
 		echo "<input name=\"notify_url\" id=\"notify_url\" type=\"hidden\" value=\"".  plugins_url( EC_PLUGIN_DIRECTORY . "/inc/scripts/paypal_payment_complete.php" ) ."\" />";
 		echo "<input type=\"hidden\" name=\"return\" value=\"". $this->cart_page . $this->permalink_divider . "ec_page=checkout_success&order_id=" . $this->order_id . "\" />";

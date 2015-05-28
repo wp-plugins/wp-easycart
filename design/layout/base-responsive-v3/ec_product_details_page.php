@@ -204,7 +204,11 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
 <?php /* END INQUIRY OPTIONS */ ?>
 
 <section class="ec_product_details_page"><?php if( $this->product->has_promotion_text( ) ){ ?>
-	<div class="ec_cart_success"><div><?php $this->product->display_promotion_text( ); ?></div></div><?php }?><?php 
+	<div class="ec_cart_success"><div><?php $this->product->display_promotion_text( ); ?></div></div><?php }?>
+	<?php if( $this->product->is_subscription_item && $this->product->trial_period_days > 0 ){ ?>
+    <div class="ec_cart_success"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_start_trial_1' ); ?> <?php echo $this->product->trial_period_days; ?> <?php echo $GLOBALS['language']->get_text( 'product_page', 'product_page_start_trial_2' ); ?></div>
+    <?php }?>
+	<?php 
 	/* START PRODUCT BREADCRUMBS */ 
 	?><?php if( get_option( 'ec_option_show_breadcrumbs' ) ){ ?>
 	<h4 class="ec_details_breadcrumbs" id="ec_breadcrumbs_type1">
@@ -248,7 +252,13 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
 			<?php }?>
         	<?php if( ( $this->product->is_catalog_mode && get_option( 'ec_option_hide_price_seasonal' ) ) || 
 					  ( $this->product->is_inquiry_mode && get_option( 'ec_option_hide_price_inquiry' ) ) ){ // NO PRICE SHOWN
-			}else{ ?>
+			
+			}else if( $this->product->vat_rate > 0  && get_option( 'ec_option_show_multiple_vat_pricing' ) ){ ?>
+            
+            <div class="ec_details_price"><?php $this->product->display_product_pricing_no_vat( ); ?></div>
+        	<div class="ec_details_price"><?php $this->product->display_product_pricing_vat( ); ?></div>
+        	
+			<?php }else{ ?>
         	<div class="ec_details_price"><?php $this->product->display_product_list_price(); ?><?php $this->product->display_price(); ?></div>
         	<?php }?>
         	<div class="ec_details_clear"></div>
@@ -394,7 +404,13 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
             <div class="ec_title_divider"></div>
             <?php if( ( $this->product->is_catalog_mode && get_option( 'ec_option_hide_price_seasonal' ) ) || 
 					  ( $this->product->is_inquiry_mode && get_option( 'ec_option_hide_price_inquiry' ) ) ){ // NO PRICE SHOWN
-			}else{ ?>
+			
+			}else if( $this->product->vat_rate > 0  && get_option( 'ec_option_show_multiple_vat_pricing' ) ){ ?>
+            
+            <div class="ec_details_price"><?php $this->product->display_product_pricing_no_vat( ); ?></div>
+        	<div class="ec_details_price"><?php $this->product->display_product_pricing_vat( ); ?></div>
+        	
+			<?php }else{ ?>
             <div class="ec_details_price"><?php $this->product->display_product_list_price(); ?><?php $this->product->display_price(); ?></div>
             <?php }?>
             <?php if( $this->product->use_customer_reviews ){ ?>
@@ -777,7 +793,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
 				<?php /* INQUIRY BUTTON */ ?>
 				<?php }else if( $this->product->is_inquiry_mode ){ ?>
                 <div class="ec_details_add_to_cart">
-                	<input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquire' ); ?>" onclick="return ec_details_show_inquiry_form( );" style="margin-left:0px !important;" />
+                	<input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_inquire' ); ?>" <?php if( $this->product->inquiry_url == "" ){ ?>onclick="return ec_details_show_inquiry_form( );" <?php }?>style="margin-left:0px !important;" />
                 </div>
                 
                 <?php /* DecoNetwork BUTTON */ ?>
@@ -1775,7 +1791,7 @@ function ec_details_advanced_adjust_price( ){
 		if( jQuery( document.getElementById( 'ec_option_' + option_id + '_sub_height' ) ).length )
 			var sub_height = jQuery( document.getElementById( 'ec_option_' + option_id + '_sub_height' ) ).val( );
 		if( width != "" && height != "" )
-			sq_footage = ec_details_get_sq_footage( width, sub_width, height, sub_height );	
+			sq_footage = ec_details_get_sq_footage( width, sub_width, height, sub_height ) * Number( jQuery( document.getElementById( 'ec_quantity' ) ).val( ) );	
 	} );
 	var new_price = ec_details_format_money( ( base_price + Number( checkbox_adj ) + Number( combo_adj ) + Number( date_adj ) + Number( file_adj ) + Number( swatch_adj ) + Number( grid_adj ) + Number( radio_adj ) + Number( text_adj ) + Number( textarea_adj ) ) * sq_footage );
 	var order_price = Number( checkbox_add ) + Number( combo_add ) + Number( date_add ) + Number( file_add ) + Number( swatch_add ) + Number( grid_add ) + Number( radio_add ) + Number( text_add ) + Number( textarea_add );

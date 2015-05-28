@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.2.2
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.1.1 =
+* New Feature - New Color Filter for basic swatch type option sets. You can now filter products by those that have a specific color in stock. This option requires that you use the option item quantity tracking option with swatches.
+* New Feature - You can now display pricing in the product details including and excluding VAT.
+* New Feature - Stripe subscriptions with free trials now send a custom email for trial started with the order email sent once the trial ends.
+* Fix - Chinese language with PayPal needed the charset option to work correctly, PayPal charset is now available when using PayPal Standard.
+* Fix - Product import/export corrections made to improve overall usability.
+* Fix - Google Merchant Feed system was limited by number of post variables. This has been corrected to allow a CSV download and CSV upload to quickly create your Google Merchant XML file.
 = 3.1.0 =
 * Fresh version number! Lots of new great features to come!
 * Speed Improvement - Speed increase by improving the DB indexing and improved session handling with load time increase of nearly 12x.

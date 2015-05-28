@@ -412,6 +412,15 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
               	</select></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Vat Included and Excluded Prices</em>By turning this on, if you are using VAT, the user will see the price of the product with and without VAT.</span></a></span>
+    <span class="ec_setting_row_label">Show Vat Included and Excluded Prices:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_multiple_vat_pricing" id="select">
+                  <option value="0" <?php if (get_option('ec_option_show_multiple_vat_pricing') == 0) echo ' selected'; ?>>No</option>
+                  <option value="1" <?php if (get_option('ec_option_show_multiple_vat_pricing') == 1) echo ' selected'; ?>>Yes</option>
+              	</select></span>
+</div>
+
 <a id="cart-settings"></a>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
