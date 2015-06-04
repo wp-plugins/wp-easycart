@@ -42,6 +42,7 @@ class ec_authorize extends ec_gateway{
 		  "x_freight"						=> $this->order_totals->shipping_total,
 		  "x_first_name"					=> $this->user->billing->first_name,
 		  "x_last_name"						=> $this->user->billing->last_name,
+		  "x_company"						=> $this->user->billing->company_name,
 		  "x_address"						=> $this->user->billing->address_line_1,
 		  "x_city"							=> $this->user->billing->city,
 		  "x_state"							=> $this->user->billing->state,

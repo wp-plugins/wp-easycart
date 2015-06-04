@@ -31,8 +31,12 @@ $users = $wpdb->get_results( $wpdb->prepare( $user_sql, $requestID ) );
 if( !empty( $users ) ){
 	
 	$data = "";
-	$sql = "SELECT * FROM ec_product ORDER BY ec_product.product_id ASC";
-	$results = $wpdb->get_results( $sql, ARRAY_A );
+	$setnum = 1;
+	if( isset( $_GET['setnum'] ) )
+		$setnum = $_GET['setnum'];
+	$total = $wpdb->get_var( "SELECT COUNT( ec_product.product_id ) as total FROM ec_product" );
+	$sql = "SELECT * FROM ec_product ORDER BY ec_product.product_id ASC LIMIT %d, 500";
+	$results = $wpdb->get_results( $wpdb->prepare( $sql, ( $setnum-1 )*500 ), ARRAY_A );
 	
 	if( count( $results ) > 0 ){
 		
@@ -76,13 +80,47 @@ if( !empty( $users ) ){
 		}
 	}
 	
-	header("Content-type: text/csv; charset=UTF-8");
-	header("Content-Transfer-Encoding: binary"); 
-	header("Content-Disposition: attachment; filename=products.csv");
-	header("Pragma: no-cache");
-	header("Expires: 0");
-
-	echo $data;
+	if( $total > ( $setnum * 500 ) ){ // More files to generate
+		
+		file_put_contents( "productexport" . $setnum . ".csv", $data );
+		header( "location:productexport.php?reqID=" . $_GET['reqID'] . "&setnum=" . ($setnum+1) );
+		
+	}else if( $total > 500 ){ // Combine and zip generate files
+		
+		file_put_contents( "productexport" . $setnum . ".csv", $data );
+		$files = array( );
+		for( $i=1; $i<=$setnum; $i++ ){
+			$files[] = "productexport" . $i . ".csv";
+		}
+		$zipname = 'productexport-' . date( 'Y-m-d' ) . '.zip';
+		$zip = new ZipArchive;
+		$zip->open($zipname, ZipArchive::CREATE);
+		foreach ($files as $file) {
+		  $zip->addFile($file);
+		}
+		$zip->close();
+		
+		header('Content-Type: application/zip');
+		header('Content-disposition: attachment; filename='.$zipname);
+		header('Content-Length: ' . filesize($zipname));
+		readfile($zipname);
+		
+		for( $i=1; $i<=$setnum; $i++ ){
+			unlink( "productexport" . $i . ".csv" );
+		}
+		unlink( $zipname );
+		
+	}else{ // Download a single file
+	
+		header("Content-type: text/csv; charset=UTF-8");
+		header("Content-Transfer-Encoding: binary"); 
+		header("Content-Disposition: attachment; filename=products.csv");
+		header("Pragma: no-cache");
+		header("Expires: 0");
+		
+		echo $data;
+		
+	}
 	
 }else{
 

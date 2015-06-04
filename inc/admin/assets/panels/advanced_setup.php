@@ -199,7 +199,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <div class="ec_admin_page_title">Canada Taxation Options</div>
-<div class="ec_adin_page_intro">In order to make setup for taxation in Canada easier, we have added a few options here to make setup quick and easy. Please select the options below to collect appropriate taxes for Candian purchases. Please be sure to enable the advanced state display on this page for best results.</div>
+<div class="ec_adin_page_intro">In order to make setup for taxation in Canada easier, we have added a few options here to make setup quick and easy. Please select the provinces/territories below that you wish to tax on by checking the box to the left. If you have multiple user roles (excluding admin) you can apply different rates to each role. Please be sure to enable the advanced state display on this page for best results.</div>
 
 <div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Enable Easy Canada Tax</em>This option allows you to collect Canadian tax at the standard rates and display them properly during checkout.</span></a></span>
@@ -212,148 +212,159 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
     </span>
 </div>
 
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Alberta Tax</em>This option allows you to collect the 5% GST when shipping to Alberta customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Alberta Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_alberta_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_alberta_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_alberta_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
+<?php 
+$canada_tax_options = get_option('ec_option_canada_tax_options');
+$user_roles = $wpdb->get_results( "SELECT ec_role.* FROM ec_role WHERE ec_role.role_label != 'admin'" ); ?>
+<?php foreach( $user_roles as $role ){ ?>
 
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect British Columbia Tax</em>This option allows you to collect the 5% GST + 7% PST when shipping to British Columbia customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect British Columbia Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_british_columbia_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_british_columbia_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_british_columbia_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
+<hr style="float:left; width:100%; margin:25px 0;" />
+<h2>Tax Rates for <?php echo ucwords( $role->role_label ); ?></h2>
 
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Manitoba Tax</em>This option allows you to collect the 5% GST + 8% PST when shipping to Manitoba customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Manitoba Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_manitoba_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_manitoba_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_manitoba_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
+<table class="wp-list-table widefat fixed striped">
+	
+    <thead>
+        <tr>
+            <td class="manage-column column-cb check-column">
+            </td>
+            <td class="manage-column column-title sortable">
+            	<a><span>Province/Territory</span></a>
+            </td>
+            <td class="manage-column column-role sortable">
+            	<a><span>User Role</span></a>
+            </td>
+            <td class="manage-column column-gst sortable">
+            	<a><span>GST</span></a>
+            </td>
+            <td class="manage-column column-pst sortable">
+            	<a><span>PST</span></a>
+            </td>
+            <td class="manage-column column-hst sortable">
+            	<a><span>HST</span></a>
+            </td>
+        </tr>
+	</thead>
+	<tbody>
+    	<tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_alberta_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_alberta_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Alberta</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_alberta_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_alberta_tax_' . $role->role_label . '_gst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_alberta_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_alberta_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_alberta_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_alberta_tax_' . $role->role_label . '_hst']; }else{ echo '0'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_british_columbia_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_british_columbia_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>British Columbia</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_british_columbia_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_british_columbia_tax_' . $role->role_label . '_gst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_british_columbia_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_british_columbia_tax_' . $role->role_label . '_pst']; }else{ echo '.07'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_british_columbia_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_british_columbia_tax_' . $role->role_label . '_hst']; }else{ echo '0'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_manitoba_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_manitoba_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Manitoba</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_manitoba_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_manitoba_tax_' . $role->role_label . '_gst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_manitoba_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_manitoba_tax_' . $role->role_label . '_pst']; }else{ echo '.08'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_manitoba_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_manitoba_tax_' . $role->role_label . '_hst']; }else{ echo '0'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_new_brunswick_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_new_brunswick_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>New Brunswick</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_new_brunswick_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_new_brunswick_tax_' . $role->role_label . '_gst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_new_brunswick_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_new_brunswick_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_new_brunswick_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_new_brunswick_tax_' . $role->role_label . '_hst']; }else{ echo '.13'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_newfoundland_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_newfoundland_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Newfoundland and Labrador</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_newfoundland_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_newfoundland_tax_' . $role->role_label . '_gst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_newfoundland_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_newfoundland_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_newfoundland_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_newfoundland_tax_' . $role->role_label . '_hst']; }else{ echo '.13'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_northwest_territories_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_northwest_territories_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Northwest Territories</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_northwest_territories_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_northwest_territories_tax_' . $role->role_label . '_gst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_northwest_territories_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_northwest_territories_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_northwest_territories_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_northwest_territories_tax_' . $role->role_label . '_hst']; }else{ echo '0'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_nova_scotia_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_nova_scotia_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Nova Scotia</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_nova_scotia_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_nova_scotia_tax_' . $role->role_label . '_gst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_nova_scotia_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_nova_scotia_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_nova_scotia_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_nova_scotia_tax_' . $role->role_label . '_hst']; }else{ echo '.15'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_nunavut_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_nunavut_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Nunavut</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_nunavut_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_nunavut_tax_' . $role->role_label . '_gst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_nunavut_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_nunavut_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_nunavut_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_nunavut_tax_' . $role->role_label . '_hst']; }else{ echo '0'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_ontario_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_ontario_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Ontario</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_ontario_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_ontario_tax_' . $role->role_label . '_gst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_ontario_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_ontario_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_ontario_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_ontario_tax_' . $role->role_label . '_hst']; }else{ echo '.13'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_prince_edward_island_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_prince_edward_island_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Prince Edward Island</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_prince_edward_island_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_prince_edward_island_tax_' . $role->role_label . '_gst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_prince_edward_island_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_prince_edward_island_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_prince_edward_island_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_prince_edward_island_tax_' . $role->role_label . '_hst']; }else{ echo '.14'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_quebec_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_quebec_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Quebec</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_quebec_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_quebec_tax_' . $role->role_label . '_gst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".00001" name="ec_canada_tax[ec_option_quebec_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_quebec_tax_' . $role->role_label . '_pst']; }else{ echo '.09975'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_quebec_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_quebec_tax_' . $role->role_label . '_hst']; }else{ echo '0'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_saskatchewan_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_saskatchewan_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Saskatchewan</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_saskatchewan_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_saskatchewan_tax_' . $role->role_label . '_gst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_saskatchewan_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_saskatchewan_tax_' . $role->role_label . '_pst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_saskatchewan_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_saskatchewan_tax_' . $role->role_label . '_hst']; }else{ echo '0'; } ?>" /></td>
+        </tr>
+        
+        <tr>
+            <td><input type="checkbox" name="ec_canada_tax[ec_option_collect_yukon_tax_<?php echo $role->role_label; ?>]" value="1"<?php if( $canada_tax_options && isset( $canada_tax_options['ec_option_collect_yukon_tax_' . $role->role_label] ) ){ echo ' checked="checked"'; } ?> /></td>
+            <td>Yukon</td>
+            <td><?php echo ucwords( $role->role_label ); ?></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_yukon_tax_<?php echo $role->role_label; ?>_gst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_yukon_tax_' . $role->role_label . '_gst']; }else{ echo '.05'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_yukon_tax_<?php echo $role->role_label; ?>_pst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_yukon_tax_' . $role->role_label . '_pst']; }else{ echo '0'; } ?>" /></td>
+            <td><input type="number" step=".01" name="ec_canada_tax[ec_option_yukon_tax_<?php echo $role->role_label; ?>_hst]" value="<?php if( $canada_tax_options ){ echo $canada_tax_options['ec_option_yukon_tax_' . $role->role_label . '_hst']; }else{ echo '0'; } ?>" /></td>
+        </tr>
+    </tbody>
 
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect New Brunswick Tax</em>This option allows you to collect the 13% HST when shipping to New Brunswick customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect New Brunswick Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_new_brunswick_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_new_brunswick_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_new_brunswick_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
+</table>
 
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Newfoundland and Labrador Tax</em>This option allows you to collect the 13% HST when shipping to Newfoundland and Labrador customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Newfoundland and Labrador Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_newfoundland_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_newfoundland_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_newfoundland_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Northwest Territories Tax</em>This option allows you to collect the 5% GST when shipping to Northwest Territories customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Northwest Territories Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_northwest_territories_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_northwest_territories_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_northwest_territories_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Nova Scotia Tax</em>This option allows you to collect the 15% HST when shipping to Nova Scotia customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Nova Scotia Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_nova_scotia_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_nova_scotia_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_nova_scotia_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Nunavut Tax</em>This option allows you to collect the 5% GST when shipping to Nunavut customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Nunavut Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_nunavut_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_nunavut_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_nunavut_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Ontario Tax</em>This option allows you to collect the 13% HST when shipping to Ontario customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Ontario Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_ontario_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_ontario_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_ontario_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Prince Edward Island Tax</em>This option allows you to collect the 14% HST when shipping to Prince Edward Island customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Prince Edward Island Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_prince_edward_island_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_prince_edward_island_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_prince_edward_island_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Quebec Tax</em>This option allows you to collect the 5% GST + 9.975% PST when shipping to Quebec customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Quebec Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_quebec_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_quebec_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_quebec_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Saskatchewan Tax</em>This option allows you to collect the 5% GST + 5% PST when shipping to Saskatchewan customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Saskatchewan Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_saskatchewan_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_saskatchewan_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_saskatchewan_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
-
-<div class="ec_setting_row">
-	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Collect Yukon Tax</em>This option allows you to collect the 5% GST when shipping to Yukon customers.</span></a></span>
-    <span class="ec_setting_row_label">Collect Yukon Tax:</span>
-    <span class="ec_setting_row_input">
-    	<select name="ec_option_collect_yukon_tax" style="width:200px;">
-        	<option value="0"<?php if( get_option('ec_option_collect_yukon_tax') == "0" ){ echo " selected=\"selected\""; }?>>DO NOT Collect</option>
-            <option value="1"<?php if( get_option('ec_option_collect_yukon_tax') == "1" ){ echo " selected=\"selected\""; }?>>Collect Tax</option>
-        </select>
-    </span>
-</div>
+<?php }?>
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 

@@ -798,6 +798,15 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
                 
                 <?php /* DecoNetwork BUTTON */ ?>
 				<?php }else if( $this->product->is_deconetwork ){ ?>
+                <?php if( get_option( 'ec_option_deconetwork_allow_blank_products' ) ){ // Custom option to have both add to cart and design now ?>
+                    
+                <div class="ec_details_quantity"<?php if( $has_quantity_grid ){ ?> style="display:none;"<?php }?>><input type="button" value="-" class="ec_minus" onclick="ec_minus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->min_purchase_quantity; ?> );" /><input type="number" value="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" name="ec_quantity" id="ec_quantity" autocomplete="off" step="1" min="<?php if( $this->product->min_purchase_quantity > 0 ){ echo $this->product->min_purchase_quantity; }else{ echo '1'; } ?>" class="ec_quantity"<?php if( $this->product->show_stock_quantity || $this->product->max_purchase_quantity > 0 ){ ?> max="<?php if( $this->product->max_purchase_quantity > 0 ){ echo $this->product->max_purchase_quantity; }else{ echo $this->product->stock_quantity; } ?>"<?php }?> /><input type="button" value="+" class="ec_plus" onclick="ec_plus_quantity( '<?php echo $this->product->model_number; ?>', <?php echo $this->product->show_stock_quantity; ?>, <?php echo $this->product->min_purchase_quantity; ?>, <?php if( $this->product->max_purchase_quantity > 0 ){ echo $this->product->max_purchase_quantity; }else{ echo $this->product->stock_quantity; } ?> );" /></div>
+                <div class="ec_details_add_to_cart ec_deconetwork_custom_space">
+                    <input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'product_details', 'product_details_add_to_cart' ); ?>" onclick="return ec_details_add_to_cart( );"<?php if( $has_quantity_grid ){ ?> style="margin-left:0px !important;"<?php }?> />
+                </div>
+                    
+                <?php }?>
+                
                 <div class="ec_details_add_to_cart">
                 	<a href="<?php echo $this->product->get_deconetwork_link( ); ?>" style="margin-left:0px !important;"><?php echo $GLOBALS['language']->get_text( 'product_page', 'product_design_now' ); ?></a>
                 </div>
@@ -1479,6 +1488,8 @@ jQuery( '.ec_details_option_row.ec_option_type_dimensions2 > .ec_details_option_
 	ec_details_advanced_adjust_price( );
 } );
 function ec_details_base_adjust_price( ){
+	if( jQuery( document.getElementById( 'ec_base_price' ) ).length == 0 )
+		return;
 	var base_price = Number( jQuery( document.getElementById( 'ec_base_price' ) ).html( ) );
 	var option1_price_adj = 0;
 	var option2_price_adj = 0;
@@ -1584,6 +1595,8 @@ function ec_details_base_adjust_price( ){
 	}
 }
 function ec_details_advanced_adjust_price( ){	
+	if( jQuery( document.getElementById( 'ec_base_price' ) ).length == 0 )
+		return;
 	var base_price = Number( jQuery( document.getElementById( 'ec_base_price' ) ).html( ) );
 	// Get a quantity in case we need to use in calculating price
 	var current_quantity = 1;

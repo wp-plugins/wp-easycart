@@ -342,11 +342,11 @@ class ec_db{
 				
 				";
 		
-		if( isset( $_GET['optionitem_id'] ) ){
+		if( isset( $_GET['ec_optionitem_id'] ) ){
 			
 			$sql1 .= $this->mysqli->prepare( "JOIN ec_optionitemquantity ON ( ec_optionitemquantity.product_id = product.product_id AND ( ec_optionitemquantity.optionitem_id_1 = %d OR ec_optionitemquantity.optionitem_id_2 = %d OR ec_optionitemquantity.optionitem_id_3 = %d OR ec_optionitemquantity.optionitem_id_4 = %d OR ec_optionitemquantity.optionitem_id_5 = %d ) AND ec_optionitemquantity.quantity > 0 )
 			
-			", $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'] );
+			", $_GET['ec_optionitem_id'], $_GET['ec_optionitem_id'], $_GET['ec_optionitem_id'], $_GET['ec_optionitem_id'], $_GET['ec_optionitem_id'] );
 			
 		}
 		
@@ -374,11 +374,11 @@ class ec_db{
 				
 				";
 				
-		if( isset( $_GET['optionitem_id'] ) ){
+		if( isset( $_GET['ec_optionitem_id'] ) ){
 			
 			$sql2 .= $this->mysqli->prepare( "JOIN ec_optionitemquantity ON ( ec_optionitemquantity.product_id = product.product_id AND ( ec_optionitemquantity.optionitem_id_1 = %d OR ec_optionitemquantity.optionitem_id_2 = %d OR ec_optionitemquantity.optionitem_id_3 = %d OR ec_optionitemquantity.optionitem_id_4 = %d OR ec_optionitemquantity.optionitem_id_5 = %d ) AND ec_optionitemquantity.quantity > 0 )
 			
-			", $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'], $_GET['optionitem_id'] );
+			", $_GET['ec_optionitem_id'], $_GET['ec_optionitem_id'], $_GET['ec_optionitem_id'], $_GET['ec_optionitem_id'], $_GET['ec_optionitem_id'] );
 			
 		}
 				
@@ -3188,17 +3188,20 @@ class ec_db{
 		
 		$order_id = $this->mysqli->insert_id;
 		
-		$this->mysqli->insert( 	'ec_orderdetail',
-						array(	'order_id'		=> $order_id,
-								'product_id'	=> $subscription->product_id,
-								'title'			=> $subscription->title,
-								'model_number'	=> $subscription->model_number,
-								'order_date'	=> 'NOW( )',
-								'unit_price'	=> $subscription->price,
-								'total_price'	=> $subscription->price,
-								'quantity'		=> 1,
-								'image1'		=> $subscription->image1 ),
-						array( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s' ) );
+		foreach( $webhook_data->lines->data as $sub_row ){
+			$this->mysqli->insert( 	'ec_orderdetail',
+							array(	'order_id'		=> $order_id,
+									'product_id'	=> $subscription->product_id,
+									'title'			=> $sub_row->plan->name,
+									'model_number'	=> $subscription->model_number,
+									'order_date'	=> 'NOW( )',
+									'unit_price'	=> ( $sub_row->amount / 100 ),
+									'total_price'	=> ( $sub_row->amount / 100 ),
+									'quantity'		=> 1,
+									'image1'		=> $subscription->image1 ),
+							array( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%d', '%s' ) );
+							
+		}
 		
 		return $order_id;
 		

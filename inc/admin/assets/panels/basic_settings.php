@@ -89,6 +89,13 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 </div>
 
 <div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Hide Cart Icon for Empty Cart</em>If you use the cart icon in your menu, this option allows you to hide the icon when nothing is in the cart.</span></a></span>
+    <span class="ec_setting_row_label">Hide Cart Icon for Empty Cart:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_hide_cart_icon_on_empty" style="width:100px;"><option value="0"<?php if( get_option('ec_option_hide_cart_icon_on_empty') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_hide_cart_icon_on_empty') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
+
+<div class="ec_setting_row">
 	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Newsletter Popup on Site</em>If you turn this on, a user will be prompted to sign up for your newsletter subscription list when they visit your site. Their sign up is tracked by session and cookie through their browser, so once they sign up or hide the box, they will not be shown it again.</span></a></span>
     <span class="ec_setting_row_label">Show Newsletter Popup on Site:</span>
     <span class="ec_setting_row_input"><select name="ec_option_enable_newsletter_popup" style="width:100px;"><option value="0"<?php if( get_option('ec_option_enable_newsletter_popup') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_enable_newsletter_popup') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
@@ -418,6 +425,15 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_input"><select name="ec_option_show_multiple_vat_pricing" id="select">
                   <option value="0" <?php if (get_option('ec_option_show_multiple_vat_pricing') == 0) echo ' selected'; ?>>No</option>
                   <option value="1" <?php if (get_option('ec_option_show_multiple_vat_pricing') == 1) echo ' selected'; ?>>Yes</option>
+              	</select></span>
+</div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Deconetwork Allow Blank Item Purchase</em>By turning this on, a customer can purchase a Deconetwork product without custom designing it.</span></a></span>
+    <span class="ec_setting_row_label">Deconetwork Allow Blank Item Purchase:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_deconetwork_allow_blank_products" id="select">
+                  <option value="0" <?php if (get_option('ec_option_deconetwork_allow_blank_products') == 0) echo ' selected'; ?>>No</option>
+                  <option value="1" <?php if (get_option('ec_option_deconetwork_allow_blank_products') == 1) echo ' selected'; ?>>Yes</option>
               	</select></span>
 </div>
 

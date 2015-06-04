@@ -270,7 +270,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
             </div>
             <?php }
 			
-			if( $iphone || $ipad || $admin_access || $product->image_hover_type == 4 ){ ?>
+			if( $iphone || $ipad || $admin_access || $product->image_hover_type == 4 || is_nan( $product->image_hover_type ) || $product->image_hover_type < 1 || $product->image_hover_type > 10 ){ ?>
             	<div class="ec_single_none_container"<?php if( !$iphone && !$ipad && $product->image_hover_type != 4 ){ ?> style="display:none;"<?php }?>>
 					<?php $product->display_product_image_set( "medium", "ec_image_", "" ); ?>
 				</div>
@@ -315,8 +315,8 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
                 <img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" />
             </div>
 			<?php } ?>
-            
-		</div>
+        
+        </div>
         
         <?php /////// START CONTENT AREA //// ?>
         <div class="ec_product_meta_type6">

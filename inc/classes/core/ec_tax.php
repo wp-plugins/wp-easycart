@@ -277,67 +277,154 @@ class ec_tax{
 			// Calculate Canada Tax
 			if( $this->easy_canada_tax_enabled && $this->shipping_country == "CA" ){
 				
-				if( $this->collect_alberta && $this->shipping_state == "AB" ){
-					$this->gst = $this->taxable_subtotal * .05;
-					$this->gst_rate = 5;
+				$canada_tax_options = get_option( 'ec_option_canada_tax_options' );
+				$user = new ec_user( '' );
+				$user_level = $user->user_level;
+				if( $user_level == 'admin' || $user->user_level == "" )
+					$user_level = 'shopper';
+				
+				if( $canada_tax_options ){ // New Version of Canada Tax
+				
+					$this->gst_rate = 0;
+					$this->pst_rate = 0;
+					$this->hst_rate = 0;
+				
+					if( isset( $canada_tax_options['ec_option_collect_alberta_tax_' . $user_level] ) && $this->shipping_state == "AB" ){
+						$this->gst_rate = $canada_tax_options['ec_option_alberta_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_alberta_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_alberta_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_british_columbia_tax_' . $user_level] ) && $this->shipping_state == "BC" ){
+						$this->gst_rate = $canada_tax_options['ec_option_british_columbia_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_british_columbia_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_british_columbia_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_manitoba_tax_' . $user_level] ) && $this->shipping_state == "MB" ){
+						$this->gst_rate = $canada_tax_options['ec_option_manitoba_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_manitoba_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_manitoba_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_new_brunswick_tax_' . $user_level] ) && $this->shipping_state == "NF" ){
+						$this->gst_rate = $canada_tax_options['ec_option_new_brunswick_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_new_brunswick_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_new_brunswick_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_newfoundland_tax_' . $user_level] ) && $this->shipping_state == "NB" ){
+						$this->gst_rate = $canada_tax_options['ec_option_newfoundland_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_newfoundland_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_newfoundland_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_northwest_territories_tax_' . $user_level] ) && $this->shipping_state == "NS" ){
+						$this->gst_rate = $canada_tax_options['ec_option_northwest_territories_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_northwest_territories_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_northwest_territories_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_nova_scotia_tax_' . $user_level] ) && $this->shipping_state == "NT" ){
+						$this->gst_rate = $canada_tax_options['ec_option_nova_scotia_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_nova_scotia_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_nova_scotia_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_nunavut_tax_' . $user_level] ) && $this->shipping_state == "NU" ){
+						$this->gst_rate = $canada_tax_options['ec_option_nunavut_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_nunavut_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_nunavut_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_ontario_tax_' . $user_level] ) && $this->shipping_state == "ON" ){
+						$this->gst_rate = $canada_tax_options['ec_option_ontario_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_ontario_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_ontario_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_prince_edward_island_tax_' . $user_level] ) && $this->shipping_state == "PE" ){
+						$this->gst_rate = $canada_tax_options['ec_option_prince_edward_island_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_prince_edward_island_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_prince_edward_island_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_quebec_tax_' . $user_level] ) && $this->shipping_state == "QC" ){
+						$this->gst_rate = $canada_tax_options['ec_option_quebec_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_quebec_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_quebec_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_saskatchewan_tax_' . $user_level] ) && $this->shipping_state == "SK" ){
+						$this->gst_rate = $canada_tax_options['ec_option_saskatchewan_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_saskatchewan_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_saskatchewan_tax_' . $user_level . '_hst'] * 100;
+						
+					}else if( isset( $canada_tax_options['ec_option_collect_yukon_tax_' . $user_level] ) && $this->shipping_state == "YT" ){
+						$this->gst_rate = $canada_tax_options['ec_option_yukon_tax_' . $user_level . '_gst'] * 100;
+						$this->pst_rate = $canada_tax_options['ec_option_yukon_tax_' . $user_level . '_pst'] * 100;
+						$this->hst_rate = $canada_tax_options['ec_option_yukon_tax_' . $user_level . '_hst'] * 100;
+						
+					}
 					
-				}else if( $this->collect_british_columbia && $this->shipping_state == "BC" ){
-					$this->gst = $this->taxable_subtotal * .05;
-					$this->gst_rate = 5;
-					$this->pst = $this->taxable_subtotal * .07;
-					$this->pst_rate = 7;
+					$this->gst = $this->taxable_subtotal * ( $this->gst_rate / 100 );
+					$this->pst = $this->taxable_subtotal * ( $this->pst_rate / 100 );
+					$this->hst = $this->taxable_subtotal * ( $this->hst_rate / 100 );
 					
-				}else if( $this->collect_manitoba && $this->shipping_state == "MB" ){
-					$this->gst = $this->taxable_subtotal * .05;
-					$this->gst_rate = 5;
-					$this->pst = $this->taxable_subtotal * .08;
-					$this->pst_rate = 8;
+				}else{ // old canada tax
+				
+					if( $this->collect_alberta && $this->shipping_state == "AB" ){
+						$this->gst = $this->taxable_subtotal * .05;
+						$this->gst_rate = 5;
+						
+					}else if( $this->collect_british_columbia && $this->shipping_state == "BC" ){
+						$this->gst = $this->taxable_subtotal * .05;
+						$this->gst_rate = 5;
+						$this->pst = $this->taxable_subtotal * .07;
+						$this->pst_rate = 7;
+						
+					}else if( $this->collect_manitoba && $this->shipping_state == "MB" ){
+						$this->gst = $this->taxable_subtotal * .05;
+						$this->gst_rate = 5;
+						$this->pst = $this->taxable_subtotal * .08;
+						$this->pst_rate = 8;
+						
+					}else if( $this->collect_newfoundland && $this->shipping_state == "NF" ){
+						$this->hst = $this->taxable_subtotal * .13;
+						$this->hst_rate = 13;
+						
+					}else if( $this->collect_new_brunswick && $this->shipping_state == "NB" ){
+						$this->hst = $this->taxable_subtotal * .13;
+						$this->hst_rate = 13;
+						
+					}else if( $this->collect_nova_scotia && $this->shipping_state == "NS" ){
+						$this->hst = $this->taxable_subtotal * .15;
+						$this->hst_rate = 15;
+						
+					}else if( $this->collect_northwest_territories && $this->shipping_state == "NT" ){
+						$this->gst = $this->taxable_subtotal * .05;
+						$this->gst_rate = 5;
+						
+					}else if( $this->collect_nunavut && $this->shipping_state == "NU" ){
+						$this->gst = $this->taxable_subtotal * .05;
+						$this->gst_rate = 5;
+						
+					}else if( $this->collect_ontario && $this->shipping_state == "ON" ){
+						$this->hst = $this->taxable_subtotal * .13;
+						$this->hst_rate = 13;
+						
+					}else if( $this->collect_prince_edward_island && $this->shipping_state == "PE" ){
+						$this->hst = $this->taxable_subtotal * .14;
+						$this->hst_rate = 14;
+						
+					}else if( $this->collect_quebec && $this->shipping_state == "QC" ){
+						$this->gst = $this->taxable_subtotal * .05;
+						$this->gst_rate = 5;
+						$this->pst = $this->taxable_subtotal * .09975;
+						$this->pst_rate = 9.975;
+						
+					}else if( $this->collect_saskatchewan && $this->shipping_state == "SK" ){
+						$this->gst = $this->taxable_subtotal * .05;
+						$this->gst_rate = 5;
+						$this->pst = $this->taxable_subtotal * .05;
+						$this->pst_rate = 5;
+						
+					}else if( $this->collect_yukon && $this->shipping_state == "YT" ){
+						$this->gst = $this->taxable_subtotal * .05;
+						$this->gst_rate = 5;
+						
+					}
 					
-				}else if( $this->collect_newfoundland && $this->shipping_state == "NF" ){
-					$this->hst = $this->taxable_subtotal * .13;
-					$this->hst_rate = 13;
-					
-				}else if( $this->collect_new_brunswick && $this->shipping_state == "NB" ){
-					$this->hst = $this->taxable_subtotal * .13;
-					$this->hst_rate = 13;
-					
-				}else if( $this->collect_nova_scotia && $this->shipping_state == "NS" ){
-					$this->hst = $this->taxable_subtotal * .15;
-					$this->hst_rate = 15;
-					
-				}else if( $this->collect_northwest_territories && $this->shipping_state == "NT" ){
-					$this->gst = $this->taxable_subtotal * .05;
-					$this->gst_rate = 5;
-					
-				}else if( $this->collect_nunavut && $this->shipping_state == "NU" ){
-					$this->gst = $this->taxable_subtotal * .05;
-					$this->gst_rate = 5;
-					
-				}else if( $this->collect_ontario && $this->shipping_state == "ON" ){
-					$this->hst = $this->taxable_subtotal * .13;
-					$this->hst_rate = 13;
-					
-				}else if( $this->collect_prince_edward_island && $this->shipping_state == "PE" ){
-					$this->hst = $this->taxable_subtotal * .14;
-					$this->hst_rate = 14;
-					
-				}else if( $this->collect_quebec && $this->shipping_state == "QC" ){
-					$this->gst = $this->taxable_subtotal * .05;
-					$this->gst_rate = 5;
-					$this->pst = $this->taxable_subtotal * .09975;
-					$this->pst_rate = 9.975;
-					
-				}else if( $this->collect_saskatchewan && $this->shipping_state == "SK" ){
-					$this->gst = $this->taxable_subtotal * .05;
-					$this->gst_rate = 5;
-					$this->pst = $this->taxable_subtotal * .05;
-					$this->pst_rate = 5;
-					
-				}else if( $this->collect_yukon && $this->shipping_state == "YT" ){
-					$this->gst = $this->taxable_subtotal * .05;
-					$this->gst_rate = 5;
-					
-				}
+				}// Close different types of canada tax
 				
 			} // Close Canada Taxation Check
 			

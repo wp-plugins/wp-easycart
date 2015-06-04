@@ -1239,6 +1239,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_show_menu_cart_icon', $_POST['ec_option_show_menu_cart_icon'] );
 	if( isset( $_POST['ec_option_cart_menu_id'] ) )
 	update_option( 'ec_option_cart_menu_id', implode( '***', $_POST['ec_option_cart_menu_id'] ) );
+	update_option( 'ec_option_hide_cart_icon_on_empty', $_POST['ec_option_hide_cart_icon_on_empty'] );
 	update_option( 'ec_option_enable_newsletter_popup', $_POST['ec_option_enable_newsletter_popup'] );
 	update_option( 'ec_option_hide_live_editor', $_POST['ec_option_hide_live_editor'] );
 	
@@ -1306,6 +1307,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_hide_price_seasonal', $_POST['ec_option_hide_price_seasonal'] );
 	update_option( 'ec_option_hide_price_inquiry', $_POST['ec_option_hide_price_inquiry'] );
 	update_option( 'ec_option_show_multiple_vat_pricing', $_POST['ec_option_show_multiple_vat_pricing'] );
+	update_option( 'ec_option_deconetwork_allow_blank_products', $_POST['ec_option_deconetwork_allow_blank_products'] );
 	
 	// Account Page Display Options
 	update_option( 'ec_option_require_account_address', $_POST['ec_option_require_account_address'] );
@@ -1348,20 +1350,75 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_tax_cloud_zip', $_POST['ec_option_tax_cloud_zip'] );
 	update_option( 'ec_option_tax_cloud_usps_id', $_POST['ec_option_tax_cloud_usps_id'] );
 	
+	$canada_tax_options = $_POST['ec_canada_tax'];
+	
 	update_option( 'ec_option_enable_easy_canada_tax', $_POST['ec_option_enable_easy_canada_tax'] );
-	update_option( 'ec_option_collect_alberta_tax', $_POST['ec_option_collect_alberta_tax'] );
-	update_option( 'ec_option_collect_british_columbia_tax', $_POST['ec_option_collect_british_columbia_tax'] );
-	update_option( 'ec_option_collect_manitoba_tax', $_POST['ec_option_collect_manitoba_tax'] );
-	update_option( 'ec_option_collect_new_brunswick_tax', $_POST['ec_option_collect_new_brunswick_tax'] );
-	update_option( 'ec_option_collect_newfoundland_tax', $_POST['ec_option_collect_newfoundland_tax'] );
-	update_option( 'ec_option_collect_northwest_territories_tax', $_POST['ec_option_collect_northwest_territories_tax'] );
-	update_option( 'ec_option_collect_nova_scotia_tax', $_POST['ec_option_collect_nova_scotia_tax'] );
-	update_option( 'ec_option_collect_nunavut_tax', $_POST['ec_option_collect_nunavut_tax'] );
-	update_option( 'ec_option_collect_ontario_tax', $_POST['ec_option_collect_ontario_tax'] );
-	update_option( 'ec_option_collect_prince_edward_island_tax', $_POST['ec_option_collect_prince_edward_island_tax'] );
-	update_option( 'ec_option_collect_quebec_tax', $_POST['ec_option_collect_quebec_tax'] );
-	update_option( 'ec_option_collect_saskatchewan_tax', $_POST['ec_option_collect_saskatchewan_tax'] );
-	update_option( 'ec_option_collect_yukon_tax', $_POST['ec_option_collect_yukon_tax'] );
+	update_option( 'ec_option_canada_tax_options', $canada_tax_options );
+	
+	if( isset( $canada_tax_options['ec_option_collect_alberta_tax_shopper'] ) )
+		update_option( 'ec_option_collect_alberta_tax', 1 );
+	else
+		update_option( 'ec_option_collect_alberta_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_british_columbia_tax_shopper'] ) )
+		update_option( 'ec_option_collect_british_columbia_tax', 1 );
+	else
+		update_option( 'ec_option_collect_british_columbia_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_manitoba_tax_shopper'] ) )
+		update_option( 'ec_option_collect_manitoba_tax', 1 );
+	else
+		update_option( 'ec_option_collect_manitoba_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_new_brunswick_tax_shopper'] ) )
+		update_option( 'ec_option_collect_new_brunswick_tax', 1 );
+	else
+		update_option( 'ec_option_collect_new_brunswick_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_newfoundland_tax_shopper'] ) )
+		update_option( 'ec_option_collect_newfoundland_tax', 1 );
+	else
+		update_option( 'ec_option_collect_newfoundland_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_northwest_territories_tax_shopper'] ) )
+		update_option( 'ec_option_collect_northwest_territories_tax', 1 );
+	else
+		update_option( 'ec_option_collect_northwest_territories_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_nova_scotia_tax_shopper'] ) )
+		update_option( 'ec_option_collect_nova_scotia_tax', 1 );
+	else
+		update_option( 'ec_option_collect_nova_scotia_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_nunavut_tax_shopper'] ) )
+		update_option( 'ec_option_collect_nunavut_tax', 1 );
+	else
+		update_option( 'ec_option_collect_nunavut_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_ontario_tax_shopper'] ) )
+		update_option( 'ec_option_collect_ontario_tax', 1 );
+	else
+		update_option( 'ec_option_collect_ontario_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_prince_edward_island_tax_shopper'] ) )
+		update_option( 'ec_option_collect_prince_edward_island_tax', 1 );
+	else
+		update_option( 'ec_option_collect_prince_edward_island_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_quebec_tax_shopper'] ) )
+		update_option( 'ec_option_collect_quebec_tax', 1 );
+	else
+		update_option( 'ec_option_collect_quebec_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_saskatchewan_tax_shopper'] ) )
+		update_option( 'ec_option_collect_saskatchewan_tax', 1 );
+	else
+		update_option( 'ec_option_collect_saskatchewan_tax', 0 );
+	
+	if( isset( $canada_tax_options['ec_option_collect_yukon_tax_shopper'] ) )
+		update_option( 'ec_option_collect_yukon_tax', 1 );
+	else
+		update_option( 'ec_option_collect_yukon_tax', 0 );
 	
 	do_action( 'wpeasycart_admin_process_advanced_options' );
 	

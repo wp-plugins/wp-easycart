@@ -1,6 +1,7 @@
 <?php $this->display_page_three_form_start( ); ?>
 <div class="ec_cart_left">
     
+    <?php if( $this->order_totals->grand_total > 0 ){ ?>
     <div class="ec_cart_header ec_top">
         <?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_payment_method' ); ?>
     </div>
@@ -193,7 +194,9 @@
     </div>
     <?php }?>
     
-    <div class="ec_cart_header">
+    <?php } //close if/else check for free order ?>
+    
+    <div class="ec_cart_header<?php if( $this->order_totals->grand_total <= 0 ){ ?> ec_top<?php }?>">
         <?php echo $GLOBALS['language']->get_text( 'cart_payment_information', 'cart_payment_information_review_title' )?>
     </div>
     
@@ -507,7 +510,7 @@
     </div>
     
     <div class="ec_cart_button_row">
-        <input type="submit" value="<?php $GLOBALS['language']->get_text( 'cart_shipping_method', 'cart_shipping_update_shipping' ); ?>" class="ec_cart_button" />
+        <input type="submit" value="<?php echo $GLOBALS['language']->get_text( 'cart_shipping_method', 'cart_shipping_update_shipping' ); ?>" class="ec_cart_button" />
     </div>
     <?php $this->display_page_two_form_end( ); ?>
     <?php } // Close if for shipping ?>

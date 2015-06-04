@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.2.2
-Stable tag: 3.1.1
+Stable tag: 3.1.2
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,19 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.1.2 =
+* New Feature - New basic setting to hide the cart icon in your menu (if using this option) when the cart is empty.
+* Improvement - Export product system breaks exported CSV files into 500 product groups and downloads them into a single zip file. This prevents server time outs on export and on import.
+* Improvement - Stores with large number of products could have issues with the shortcode editor so to improve this functionality select boxes turn to input boxes when large number of products exists.
+* Improvement - Free orders no longer require the user to select a payment method.
+* Improvement - Canada taxation advanced option area now allows you to customize the rates for each province/territory and for each non-admin user role. This gives a merchant the freedom, for example, to charge no PST for wholesaler users.
+* Improvement - Stripe subscriptions with prorate on now give the user detailed line item information on each bill, allowing you and the customer to see the upgrade and downgrade prorated amounts.
+* Improvement - Authorize.net now collects the user's company name during processing (if available).
+* New Option - New basic option for Deconetwork users that allow them to give the customer the option to add to cart or design the product at the Deconetwork.
+* Fix - PayPal Standard cart items with one-time price adjustment options now split that adjustment over the line items in the cart in order to properly display the total.
+* Fix - In case of import error, image hover effect checks and if the value is invalid, shows the no hover effect option.
+* Fix - Color widget variable name changed to prevent conflict with option item images.
+* Fix - Store access limited notice was not translated, although only visible in limited instances, has been corrected.
 = 3.1.1 =
 * New Feature - New Color Filter for basic swatch type option sets. You can now filter products by those that have a specific color in stock. This option requires that you use the option item quantity tracking option with swatches.
 * New Feature - You can now display pricing in the product details including and excluding VAT.

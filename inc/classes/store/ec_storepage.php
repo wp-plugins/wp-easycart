@@ -391,7 +391,7 @@ class ec_storepage{
 		else if( file_exists( WP_PLUGIN_DIR . '/' . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_product_restricted.php' ) )
 			include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . '/design/layout/' . get_option('ec_option_latest_layout') . '/ec_product_restricted.php' );
 		else
-			echo "<div>NOT ALLOWED TO ACCESS</div>";
+			echo "<div>" . $GLOBALS['language']->get_text( 'product_page', 'product_page_restricted_line_1' ) . "</div>";
 		
 	}
 	

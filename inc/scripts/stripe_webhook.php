@@ -105,7 +105,7 @@ if( isset( $json->type ) && isset( $json->data ) ){
 			$stripe_charge_id = $webhook_data->charge;
 			$subscription = $mysqli->get_stripe_subscription( $stripe_subscription_id );
 			
-			$mysqli->insert_response( 0, 1, "STRIPE Subscription", print_r( $subscription, true ) );
+			$mysqli->insert_response( 0, 1, "STRIPE Subscription", print_r( $webhook_data, true ) );
 			
 			if( $subscription && $subscription->last_payment_date == $payment_timestamp ){
 				$mysqli->update_stripe_order( $subscription->subscription_id, $stripe_charge_id );

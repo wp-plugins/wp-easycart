@@ -1405,7 +1405,7 @@ function ec_print_editor_product_details( ){
 		echo "<div class=\"ec_editor_select_row\"><input type=\"button\" value=\"BACK\" class=\"ec_editor_button backlink\"></div>";
 		echo "<div class=\"ec_editor_error\" id=\"ec_productdetails_error\"><span>Please Select a Product</span></div>";
 		echo "<div class=\"ec_editor_help_text\">This shortcode displays a single product's details on the specified page.</div>";
-		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Product:</span><span class=\"ec_editor_select_row_input\">";
+		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Product Model Number:</span><span class=\"ec_editor_select_row_input\">";
 		ec_print_productdetails_select( 'ec_editor_productdetails_select' );
 		echo "</div>";
 		echo "<div class=\"ec_editor_submit_row\"><span class=\"ec_editor_select_row_input\"><input type=\"button\" value=\"ADD SHORTCODE\" id=\"ec_add_productdetails\" class=\"ec_editor_button\"></span></div>";
@@ -1417,18 +1417,31 @@ function ec_print_editor_product_details( ){
 
 // Print all main menu items in a select box
 function ec_print_productdetails_select( $id ){
-	echo "<select class=\"ec_editor_select_box\" id=\"" . $id . "\">";
+	
+	global $wpdb;
 	$db = new ec_db( );
-	$products = $db->get_product_list( "", " ORDER BY product.title", "", "" );
-	if( count( $products ) > 0 ){
-		echo "<option value=\"0\">Select a Product</option>";
-		for( $i=0; $i<count( $products ); $i++ ){
-			echo "<option value=\"" . $products[$i]['model_number'] . "\">" . $products[$i]['title'] . "</option>";
-		}
+	$total = $wpdb->get_var( "SELECT COUNT( ec_product.product_id ) as total FROM ec_product" );
+	
+	if( $total > 500 ){
+		
+		echo "<input type=\"text\" class=\"ec_editor_select_box\" id=\"" . $id . "\">";
+		
 	}else{
-		echo "<option value=\"0\">No Products Exist</option>";
+		
+		echo "<select class=\"ec_editor_select_box\" id=\"" . $id . "\">";
+		$products = $db->get_product_list( "", " ORDER BY product.title", "", "" );
+		if( count( $products ) > 0 ){
+			echo "<option value=\"0\">Select a Product</option>";
+			for( $i=0; $i<count( $products ); $i++ ){
+				echo "<option value=\"" . $products[$i]['model_number'] . "\">" . $products[$i]['title'] . "</option>";
+			}
+		}else{
+			echo "<option value=\"0\">No Products Exist</option>";
+		}
+		echo "</select>";
+		
 	}
-	echo "</select>";
+	
 }
 
 /***********************************************************************************
@@ -1440,7 +1453,7 @@ function ec_print_editor_single_product( ){
 		echo "<div class=\"ec_editor_select_row\"><input type=\"button\" value=\"BACK\" class=\"ec_editor_button backlink\"></div>";
 		echo "<div class=\"ec_editor_error\" id=\"ec_single_product_error\"><span>Please Select a Product</span></div>";
 		echo "<div class=\"ec_editor_help_text\">This shortcode displays a single product with a view details button.</div>";
-		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Product:</span><span class=\"ec_editor_select_row_input\">";
+		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Product ID:</span><span class=\"ec_editor_select_row_input\">";
 		ec_print_product_select( 'ec_editor_single_product_select' );
 		echo "</div>";
 		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Display Type:</span><span class=\"ec_editor_select_row_input\">";
@@ -1453,18 +1466,31 @@ function ec_print_editor_single_product( ){
 
 // Print all main menu items in a select box
 function ec_print_product_select( $id ){
-	echo "<select class=\"ec_editor_select_box\" id=\"" . $id . "\">";
+	
+	global $wpdb;
 	$db = new ec_db( );
-	$products = $db->get_product_list( "", " ORDER BY product.title", "", "" );
-	if( count( $products ) > 0 ){
-		echo "<option value=\"0\">Select a Product</option>";
-		for( $i=0; $i<count( $products ); $i++ ){
-			echo "<option value=\"" . $products[$i]['product_id'] . "\">" . $products[$i]['title'] . "</option>";
-		}
+	$total = $wpdb->get_var( "SELECT COUNT( ec_product.product_id ) as total FROM ec_product" );
+	
+	if( $total > 500 ){
+		
+		echo "<input type=\"text\" class=\"ec_editor_select_box\" id=\"" . $id . "\">";
+		
 	}else{
-		echo "<option value=\"0\">No Products Exist</option>";
+		
+		echo "<select class=\"ec_editor_select_box\" id=\"" . $id . "\">";
+		$products = $db->get_product_list( "", " ORDER BY product.title", "", "" );
+		if( count( $products ) > 0 ){
+			echo "<option value=\"0\">Select a Product</option>";
+			for( $i=0; $i<count( $products ); $i++ ){
+				echo "<option value=\"" . $products[$i]['product_id'] . "\">" . $products[$i]['title'] . "</option>";
+			}
+		}else{
+			echo "<option value=\"0\">No Products Exist</option>";
+		}
+		echo "</select>";
+		
 	}
-	echo "</select>";
+	
 }
 
 // Print the display types available for the product display
@@ -1535,7 +1561,7 @@ function ec_print_editor_add_to_cart( ){
 		echo "<div class=\"ec_editor_select_row\"><input type=\"button\" value=\"BACK\" class=\"ec_editor_button backlink\"></div>";
 		echo "<div class=\"ec_editor_error\" id=\"ec_add_to_cart_error\"><span>Please Select a Product</span></div>";
 		echo "<div class=\"ec_editor_help_text\">This shortcode displays an add to cart button (with options if attached) of a single product.</div>";
-		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Product:</span><span class=\"ec_editor_select_row_input\">";
+		echo "<div class=\"ec_editor_select_row\"><span class=\"ec_editor_select_row_label\">Product ID:</span><span class=\"ec_editor_select_row_input\">";
 		ec_print_product_select( 'ec_editor_add_to_cart_product_select' );
 		echo "</div>";
 		echo "<div class=\"ec_editor_submit_row\"><span class=\"ec_editor_select_row_input\"><input type=\"button\" value=\"ADD SHORTCODE\" id=\"ec_add_add_to_cart\" class=\"ec_editor_button\"></span></div>";
