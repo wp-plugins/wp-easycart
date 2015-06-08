@@ -91,7 +91,7 @@ if( !empty( $users ) ){
 			
 			$optionlist = '';
 			foreach( $option_results as $option_row ){
-				$optionlist .= $optionrow->option_value . ', ';
+				$optionlist .= $option_row->option_value . ', ';
 			}
 			$line .= $optionlist . "\t";
 	
