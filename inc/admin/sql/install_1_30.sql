@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS `ec_address` (
   `company_name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Company name relating to this address.',
   PRIMARY KEY (`address_id`),
   UNIQUE KEY `address_id` (`address_id`),
-  KEY `ec_address_idx1` (`address_id`) USING BTREE,
-  KEY `ec_address_idx2` (`user_id`) USING BTREE
+  KEY `ec_address_idx1` (`address_id`) ,
+  KEY `ec_address_idx2` (`user_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=56 AVG_ROW_LENGTH=88 CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_affiliate_rule` (
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `ec_affiliate_rule` (
 	`rule_recurring` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'This applies to subscriptions and turns commssion on or off when renewing a subscription each month.',
 	PRIMARY KEY (`affiliate_rule_id`),
 	UNIQUE KEY `affiliate_rule_id` (`affiliate_rule_id`),
-    KEY `ec_affiliate_rule_idx1` (`affiliate_rule_id`) USING BTREE
+    KEY `ec_affiliate_rule_idx1` (`affiliate_rule_id`) 
 ) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_affiliate_rule_to_affiliate` (
@@ -37,9 +37,9 @@ CREATE TABLE IF NOT EXISTS `ec_affiliate_rule_to_affiliate` (
   `affiliate_id` varchar(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Connects this to the affiliate ID in the applicable affiliate plugin.',
   PRIMARY KEY (`rule_to_account_id`),
   UNIQUE KEY `rule_to_account_id` (`rule_to_account_id`),
-  KEY `ec_affiliate_rule_to_affiliate_idx1` (`rule_to_account_id`) USING BTREE,
-  KEY `ec_affiliate_rule_to_affiliate_idx2` (`affiliate_rule_id`) USING BTREE,
-  KEY `ec_affiliate_rule_to_affiliate_idx3` (`affiliate_id`) USING BTREE
+  KEY `ec_affiliate_rule_to_affiliate_idx1` (`rule_to_account_id`) ,
+  KEY `ec_affiliate_rule_to_affiliate_idx2` (`affiliate_rule_id`) ,
+  KEY `ec_affiliate_rule_to_affiliate_idx3` (`affiliate_id`) 
 ) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_affiliate_rule_to_product` (
@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS `ec_affiliate_rule_to_product` (
   `product_id` int(11) NOT NULL DEFAULT '0' COMMENT 'Connects this to the ec_product table.',
   PRIMARY KEY (`rule_to_product_id`),
   UNIQUE KEY `rule_to_product_id` (`rule_to_product_id`),
-  KEY `ec_affiliate_rule_to_product_idx1` (`rule_to_product_id`) USING BTREE,
-  KEY `ec_affiliate_rule_to_product_idx2` (`affiliate_rule_id`) USING BTREE,
-  KEY `ec_affiliate_rule_to_product_idx3` (`product_id`) USING BTREE
+  KEY `ec_affiliate_rule_to_product_idx1` (`rule_to_product_id`) ,
+  KEY `ec_affiliate_rule_to_product_idx2` (`affiliate_rule_id`) ,
+  KEY `ec_affiliate_rule_to_product_idx3` (`product_id`) 
 ) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_category` (
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `ec_category` (
   `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.',
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `CategoryID` (`category_id`),
-  KEY `ec_category_idx1` (`category_id`) USING BTREE
+  KEY `ec_category_idx1` (`category_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=3 AVG_ROW_LENGTH=32 CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_categoryitem` (
@@ -68,9 +68,9 @@ CREATE TABLE IF NOT EXISTS `ec_categoryitem` (
   `product_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Relates the ec_categoryitem table to the ec_product table.',
   PRIMARY KEY (`categoryitem_id`),
   UNIQUE KEY `CategoryItemID` (`categoryitem_id`),
-  KEY `ec_categoryitem_idx1` (`product_id`) USING BTREE,
-  KEY `ec_categoryitem_idx2` (`category_id`) USING BTREE,
-  KEY `ec_categoryitem_idx3` (`categoryitem_id`) USING BTREE
+  KEY `ec_categoryitem_idx1` (`product_id`) ,
+  KEY `ec_categoryitem_idx2` (`category_id`) ,
+  KEY `ec_categoryitem_idx3` (`categoryitem_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=27 AVG_ROW_LENGTH=13 ROW_FORMAT=FIXED CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 COMMENT=''
 ;
 CREATE TABLE `ec_code` (
@@ -80,9 +80,9 @@ CREATE TABLE `ec_code` (
   `orderdetail_id` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 'Once sold, the orderdetail_id that owns this code.',
   PRIMARY KEY (`code_id`),
   UNIQUE KEY `code_id` (`code_id`),
-  KEY `ec_code_idx1` (`code_id`) USING BTREE,
-  KEY `ec_code_idx2` (`product_id`) USING BTREE,
-  KEY `ec_code_idx3` (`orderdetail_id`) USING BTREE
+  KEY `ec_code_idx1` (`code_id`) ,
+  KEY `ec_code_idx2` (`product_id`) ,
+  KEY `ec_code_idx3` (`orderdetail_id`) 
 ) ENGINE=MyISAM CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8
 ;
 CREATE TABLE IF NOT EXISTS `ec_country` (
@@ -93,9 +93,9 @@ CREATE TABLE IF NOT EXISTS `ec_country` (
   `sort_order` INTEGER(11) NOT NULL COMMENT 'User assigned order of countries for drop down menus.',
   `vat_rate_cnt` float(9,3) NOT NULL DEFAULT '0.000' COMMENT 'User assigned value for VAT based on purchaser shipping country.',
   PRIMARY KEY (`id_cnt`),
-  KEY `ec_country_idx1` (`id_cnt`) USING BTREE,
-  KEY `ec_country_idx2` (`iso2_cnt`) USING BTREE,
-  KEY `ec_country_idx3` (`iso3_cnt`) USING BTREE
+  KEY `ec_country_idx1` (`id_cnt`) ,
+  KEY `ec_country_idx2` (`iso2_cnt`) ,
+  KEY `ec_country_idx3` (`iso3_cnt`) 
 )ENGINE=MyISAM AUTO_INCREMENT=244 AVG_ROW_LENGTH=30 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_customfield` (
@@ -126,9 +126,9 @@ CREATE TABLE IF NOT EXISTS `ec_download` (
   `amazon_key` VARCHAR(1024) NOT NULL DEFAULT '' COMMENT 'The file name used on the Amazon S3 Server.',
   PRIMARY KEY (`download_id`),
   UNIQUE KEY `download_id` (`download_id`),
-  KEY `ec_download_idx1` (`download_id`) USING BTREE,
-  KEY `ec_download_idx2` (`order_id`) USING BTREE,
-  KEY `ec_download_idx3` (`product_id`) USING BTREE
+  KEY `ec_download_idx1` (`download_id`) ,
+  KEY `ec_download_idx2` (`order_id`) ,
+  KEY `ec_download_idx3` (`product_id`) 
 )ENGINE=MyISAM AVG_ROW_LENGTH=124 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_giftcard` (
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `ec_giftcard` (
   `message` TEXT COLLATE utf8_general_ci COMMENT 'Message displayed when a gift card is used.',
   PRIMARY KEY (`giftcard_id`),
   UNIQUE KEY `giftcard_id` (`giftcard_id`),
-  KEY `ec_giftcard_idx1` (`giftcard_id`) USING BTREE
+  KEY `ec_giftcard_idx1` (`giftcard_id`) 
 )ENGINE=MyISAM AVG_ROW_LENGTH=47 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_manufacturer` (
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `ec_manufacturer` (
   `clicks` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Count of the number of times this manufacturer has a product viewed.',
   `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.',
   PRIMARY KEY (`manufacturer_id`),
-  KEY `ec_manufacturer_idx1` (`manufacturer_id`) USING BTREE
+  KEY `ec_manufacturer_idx1` (`manufacturer_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=15 AVG_ROW_LENGTH=24 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_menulevel1` (
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `ec_menulevel1` (
   `banner_image` varchar(512) NOT NULL DEFAULT '',
   `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.',
   PRIMARY KEY (`menulevel1_id`),
-  KEY `ec_menulevel1_idx1` (`menulevel1_id`) USING BTREE
+  KEY `ec_menulevel1_idx1` (`menulevel1_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=24 AVG_ROW_LENGTH=30 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_menulevel2` (
@@ -173,8 +173,8 @@ CREATE TABLE IF NOT EXISTS `ec_menulevel2` (
   `banner_image` varchar(512) NOT NULL DEFAULT '',
   `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.',
   PRIMARY KEY (`menulevel2_id`),
-  KEY `ec_menulevel2_idx1` (`menulevel2_id`) USING BTREE,
-  KEY `ec_menulevel2_idx2` (`menulevel1_id`) USING BTREE
+  KEY `ec_menulevel2_idx1` (`menulevel2_id`) ,
+  KEY `ec_menulevel2_idx2` (`menulevel1_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=48 AVG_ROW_LENGTH=30 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_menulevel3` (
@@ -188,8 +188,8 @@ CREATE TABLE IF NOT EXISTS `ec_menulevel3` (
   `banner_image` varchar(512) NOT NULL DEFAULT '',
   `post_id` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'Post ID to connect the product to the WordPress custom post type structure.',
   PRIMARY KEY (`menulevel3_id`),
-  KEY `ec_menulevel3_idx1` (`menulevel3_id`) USING BTREE,
-  KEY `ec_menulevel3_idx2` (`menulevel2_id`) USING BTREE
+  KEY `ec_menulevel3_idx1` (`menulevel3_id`) ,
+  KEY `ec_menulevel3_idx2` (`menulevel2_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=38 AVG_ROW_LENGTH=38 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_option` (
@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `ec_option` (
   `option_error_text` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Text displayed when option required and no value selected.',
   PRIMARY KEY (`option_id`),
   UNIQUE KEY (`option_id`),
-  KEY `ec_option_idx2` (`option_id`) USING BTREE
+  KEY `ec_option_idx2` (`option_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=13 AVG_ROW_LENGTH=40 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_option_to_product` (
@@ -212,9 +212,9 @@ CREATE TABLE IF NOT EXISTS `ec_option_to_product` (
   `option_order` INTEGER(11) NOT NULL DEFAULT '0' COMMENT 'The order value to order these options',
   PRIMARY KEY (`option_to_product_id`),
   UNIQUE KEY (`option_to_product_id`),
-  KEY `ec_option_to_product_idx2` (`option_to_product_id`) USING BTREE,
-  KEY `ec_option_to_product_idx3` (`option_id`) USING BTREE,
-  KEY `ec_option_to_product_idx4` (`product_id`) USING BTREE
+  KEY `ec_option_to_product_idx2` (`option_to_product_id`) ,
+  KEY `ec_option_to_product_idx3` (`option_id`) ,
+  KEY `ec_option_to_product_idx4` (`product_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=28 CHARACTER SET'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_optionitem` (
@@ -252,9 +252,9 @@ CREATE TABLE IF NOT EXISTS `ec_optionitemimage` (
   `image4` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Filename referencing the fourth image.',
   `image5` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Filename referencing the fifth image.',
   PRIMARY KEY (`optionitemimage_id`),
-  KEY `ec_optionitemimage_idx1` (`optionitemimage_id`) USING BTREE,
-  KEY `ec_optionitemimage_idx2` (`optionitem_id`) USING BTREE,
-  KEY `ec_optionitemimage_idx3` (`product_id`) USING BTREE
+  KEY `ec_optionitemimage_idx1` (`optionitemimage_id`) ,
+  KEY `ec_optionitemimage_idx2` (`optionitem_id`) ,
+  KEY `ec_optionitemimage_idx3` (`product_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=184 AVG_ROW_LENGTH=85 CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_optionitemquantity` (
@@ -268,12 +268,12 @@ CREATE TABLE IF NOT EXISTS `ec_optionitemquantity` (
   `quantity` INTEGER(11) NOT NULL DEFAULT 0 COMMENT 'The amount left in stock for this group of ids.',
   PRIMARY KEY (`optionitemquantity_id`),
   UNIQUE KEY `OptionItemQuantityID` (`optionitemquantity_id`),
-  KEY `ec_optionitemquantity_idx1` (`product_id`) USING BTREE,
-  KEY `ec_optionitemquantity_idx2` (`optionitem_id_1`) USING BTREE,
-  KEY `ec_optionitemquantity_idx3` (`optionitem_id_2`) USING BTREE,
-  KEY `ec_optionitemquantity_idx4` (`optionitem_id_3`) USING BTREE,
-  KEY `ec_optionitemquantity_idx5` (`optionitem_id_4`) USING BTREE,
-  KEY `ec_optionitemquantity_idx6` (`optionitem_id_5`) USING BTREE
+  KEY `ec_optionitemquantity_idx1` (`product_id`) ,
+  KEY `ec_optionitemquantity_idx2` (`optionitem_id_1`) ,
+  KEY `ec_optionitemquantity_idx3` (`optionitem_id_2`) ,
+  KEY `ec_optionitemquantity_idx4` (`optionitem_id_3`) ,
+  KEY `ec_optionitemquantity_idx5` (`optionitem_id_4`) ,
+  KEY `ec_optionitemquantity_idx6` (`optionitem_id_5`) 
 )ENGINE=MyISAM AUTO_INCREMENT=30922 AVG_ROW_LENGTH=23 CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_order` (
@@ -348,9 +348,9 @@ CREATE TABLE IF NOT EXISTS `ec_order` (
   `gateway_transaction_id` VARCHAR(512) NOT NULL DEFAULT '' COMMENT 'The transaction id to be used for refunds in purchases other than Stripe and PayPal.',
   PRIMARY KEY (`order_id`),
   UNIQUE KEY `order_id` (`order_id`),
-  KEY `ec_order_idx1` (`order_id`) USING BTREE,
-  KEY `ec_order_idx2` (`user_id`) USING BTREE,
-  KEY `ec_order_idx3` (`giftcard_id`) USING BTREE
+  KEY `ec_order_idx1` (`order_id`) ,
+  KEY `ec_order_idx2` (`user_id`) ,
+  KEY `ec_order_idx3` (`giftcard_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=1771 AVG_ROW_LENGTH=225 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_order_option` (
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `ec_order_option` (
   `optionitem_allow_download` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'Gives the ability to disallow a download via option set.',
   PRIMARY KEY (`order_option_id`),
   UNIQUE KEY (`order_option_id`),
-  KEY `ec_order_option_idx2` (`orderdetail_id`) USING BTREE
+  KEY `ec_order_option_idx2` (`orderdetail_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=22 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_orderdetail` (
@@ -424,10 +424,10 @@ CREATE TABLE IF NOT EXISTS `ec_orderdetail` (
   `subscription_signup_fee` FLOAT(15,3) NOT NULL DEFAULT '0.000' COMMENT 'Paid during signup with a subscription fee.',
   PRIMARY KEY (`orderdetail_id`),
   UNIQUE KEY (`orderdetail_id`),
-  KEY `ec_orderdetail_idx2` (`orderdetail_id`) USING BTREE,
-  KEY `ec_orderdetail_idx3` (`order_id`) USING BTREE,
-  KEY `ec_orderdetail_idx4` (`product_id`) USING BTREE,
-  KEY `ec_orderdetail_idx5` (`giftcard_id`) USING BTREE
+  KEY `ec_orderdetail_idx2` (`orderdetail_id`) ,
+  KEY `ec_orderdetail_idx3` (`order_id`) ,
+  KEY `ec_orderdetail_idx4` (`product_id`) ,
+  KEY `ec_orderdetail_idx5` (`giftcard_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=1349 AVG_ROW_LENGTH=130 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_orderstatus` (
@@ -436,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `ec_orderstatus` (
   `is_approved` TINYINT(1) DEFAULT 0 COMMENT 'If 1, then this status is a recognized approved order status for downloads and giftcard type purchases.',
   PRIMARY KEY (`status_id`),
   UNIQUE KEY `status_id` (`status_id`),
-  KEY `ec_orderstatus_idx1` (`status_id`) USING BTREE
+  KEY `ec_orderstatus_idx1` (`status_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=16 AVG_ROW_LENGTH=32 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_pageoption` (
@@ -472,8 +472,8 @@ CREATE TABLE IF NOT EXISTS `ec_pricetier` (
   `quantity` INTEGER(11) NOT NULL DEFAULT 10 COMMENT 'The quantity required in the cart to activate the new price.',
   PRIMARY KEY (`pricetier_id`),
   UNIQUE KEY `PriceTierID` (`pricetier_id`),
-  KEY `ec_pricetier_idx1` (`pricetier_id`) USING BTREE,
-  KEY `ec_pricetier_idx2` (`product_id`) USING BTREE
+  KEY `ec_pricetier_idx1` (`pricetier_id`) ,
+  KEY `ec_pricetier_idx2` (`product_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=35 AVG_ROW_LENGTH=17 ROW_FORMAT=FIXED CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_product` (
@@ -583,15 +583,15 @@ CREATE TABLE IF NOT EXISTS `ec_product` (
   PRIMARY KEY (`product_id`),
   UNIQUE KEY `product_id` (`product_id`),
   UNIQUE KEY `model_number` (`model_number`),
-  KEY `ec_product_idx20` (`menulevel1_id_1`,`menulevel2_id_1`,`menulevel3_id_1`) USING BTREE,
-  KEY `ec_product_idx1` (`menulevel1_id_2`,`menulevel2_id_2`,`menulevel3_id_2`) USING BTREE,
-  KEY `ec_product_idx2` (`menulevel1_id_3`,`menulevel2_id_3`,`menulevel3_id_3`) USING BTREE,
-  KEY `ec_product_idx10` (`manufacturer_id`) USING BTREE,
-  KEY `ec_product_idx11` (`option_id_1`) USING BTREE,
-  KEY `ec_product_idx12` (`option_id_2`) USING BTREE,
-  KEY `ec_product_idx13` (`option_id_3`) USING BTREE,
-  KEY `ec_product_idx14` (`option_id_4`) USING BTREE,
-  KEY `ec_product_idx15` (`option_id_5`) USING BTREE,
+  KEY `ec_product_idx20` (`menulevel1_id_1`,`menulevel2_id_1`,`menulevel3_id_1`) ,
+  KEY `ec_product_idx1` (`menulevel1_id_2`,`menulevel2_id_2`,`menulevel3_id_2`) ,
+  KEY `ec_product_idx2` (`menulevel1_id_3`,`menulevel2_id_3`,`menulevel3_id_3`) ,
+  KEY `ec_product_idx10` (`manufacturer_id`) ,
+  KEY `ec_product_idx11` (`option_id_1`) ,
+  KEY `ec_product_idx12` (`option_id_2`) ,
+  KEY `ec_product_idx13` (`option_id_3`) ,
+  KEY `ec_product_idx14` (`option_id_4`) ,
+  KEY `ec_product_idx15` (`option_id_5`) ,
   FULLTEXT KEY `Title` (`title`),
   FULLTEXT KEY `Description` (`description`),
   FULLTEXT KEY `ModelNumber` (`model_number`)
@@ -603,7 +603,7 @@ CREATE TABLE IF NOT EXISTS `ec_product_google_attributes` (
   `attribute_value` TEXT COLLATE utf8_general_ci COMMENT 'json data stored here to use with product in google merchant feed.',
   PRIMARY KEY (`product_google_attribute_id`),
   UNIQUE KEY `product_google_attribute_id` (`product_google_attribute_id`),
-  KEY `ec_product_google_attributes_idx1` (`product_id`) USING BTREE
+  KEY `ec_product_google_attributes_idx1` (`product_id`) 
 ) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_promocode` (
@@ -629,8 +629,8 @@ CREATE TABLE IF NOT EXISTS `ec_promocode` (
   `expiration_date` DATETIME DEFAULT NULL COMMENT 'Gives the merchant the ability to set an expiration date.',
   PRIMARY KEY (`promocode_id`),
   UNIQUE KEY `promoID` (`promocode_id`),
-  KEY `ec_promocode_idx1` (`manufacturer_id`) USING BTREE,
-  KEY `ec_promocode_idx2` (`product_id`) USING BTREE
+  KEY `ec_promocode_idx1` (`manufacturer_id`) ,
+  KEY `ec_promocode_idx2` (`product_id`) 
 )ENGINE=MyISAM AVG_ROW_LENGTH=147 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_promotion` (
@@ -660,15 +660,15 @@ CREATE TABLE IF NOT EXISTS `ec_promotion` (
   `limit` INTEGER(11) NOT NULL DEFAULT 3 COMMENT 'The limit to how many items can be redeemed for this promotion.',
   PRIMARY KEY (`promotion_id`),
   UNIQUE KEY `PromotionID` (`promotion_id`),
-  KEY `ec_promotion_idx1` (`product_id_1`) USING BTREE,
-  KEY `ec_promotion_idx2` (`product_id_2`) USING BTREE,
-  KEY `ec_promotion_idx3` (`product_id_3`) USING BTREE,
-  KEY `ec_promotion_idx4` (`manufacturer_id_1`) USING BTREE,
-  KEY `ec_promotion_idx5` (`manufacturer_id_2`) USING BTREE,
-  KEY `ec_promotion_idx6` (`manufacturer_id_3`) USING BTREE,
-  KEY `ec_promotion_idx7` (`category_id_1`) USING BTREE,
-  KEY `ec_promotion_idx8` (`category_id_2`) USING BTREE,
-  KEY `ec_promotion_idx9` (`category_id_3`) USING BTREE
+  KEY `ec_promotion_idx1` (`product_id_1`) ,
+  KEY `ec_promotion_idx2` (`product_id_2`) ,
+  KEY `ec_promotion_idx3` (`product_id_3`) ,
+  KEY `ec_promotion_idx4` (`manufacturer_id_1`) ,
+  KEY `ec_promotion_idx5` (`manufacturer_id_2`) ,
+  KEY `ec_promotion_idx6` (`manufacturer_id_3`) ,
+  KEY `ec_promotion_idx7` (`category_id_1`) ,
+  KEY `ec_promotion_idx8` (`category_id_2`) ,
+  KEY `ec_promotion_idx9` (`category_id_3`) 
 )ENGINE=MyISAM AUTO_INCREMENT=19 AVG_ROW_LENGTH=76 CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' DEFAULT CHARSET=utf8 COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_response` (
@@ -679,7 +679,7 @@ CREATE TABLE IF NOT EXISTS `ec_response` (
   `response_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'The response time.',
   `response_text` TEXT COLLATE utf8_general_ci COMMENT 'The response from the gateway.',
   PRIMARY KEY (`response_id`),
-  KEY `ec_response_idx1` (`order_id`) USING BTREE
+  KEY `ec_response_idx1` (`order_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=146 AVG_ROW_LENGTH=198 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_review` (
@@ -694,8 +694,8 @@ CREATE TABLE IF NOT EXISTS `ec_review` (
   PRIMARY KEY (`review_id`),
   UNIQUE KEY `review_id` (`review_id`),
   KEY `product_id` (`product_id`),
-  KEY `ec_review_idx1` (`review_id`) USING BTREE,
-  KEY `ec_review_idx2` (`user_id`) USING BTREE
+  KEY `ec_review_idx1` (`review_id`) ,
+  KEY `ec_review_idx2` (`user_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=82 AVG_ROW_LENGTH=99 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_role` (
@@ -704,7 +704,7 @@ CREATE TABLE IF NOT EXISTS `ec_role` (
   `admin_access` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `role_id` (`role_id`),
-  KEY `ec_role_idx1` (`role_label`) USING BTREE
+  KEY `ec_role_idx1` (`role_label`) 
 )ENGINE=MyISAM AUTO_INCREMENT=3 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_roleaccess` (
@@ -713,7 +713,7 @@ CREATE TABLE IF NOT EXISTS `ec_roleaccess` (
   `admin_panel` varchar(20) COLLATE utf8_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`roleaccess_id`),
   UNIQUE KEY `roleaccess_id` (`roleaccess_id`),
-  KEY `ec_roleaccess_idx1` (`role_label`) USING BTREE
+  KEY `ec_roleaccess_idx1` (`role_label`) 
 )ENGINE=MyISAM AUTO_INCREMENT=100 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_roleprice` (
@@ -723,8 +723,8 @@ CREATE TABLE IF NOT EXISTS `ec_roleprice` (
   `role_price` float(15,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`roleprice_id`),
   UNIQUE KEY `roleprice_id` (`roleprice_id`),
-  KEY `ec_roleprice_idx1` (`product_id`) USING BTREE,
-  KEY `ec_roleprice_idx2` (`role_label`) USING BTREE
+  KEY `ec_roleprice_idx1` (`product_id`) ,
+  KEY `ec_roleprice_idx2` (`role_label`) 
 )ENGINE=MyISAM AUTO_INCREMENT=3 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci'
 ;
 CREATE TABLE IF NOT EXISTS `ec_setting` (
@@ -810,7 +810,7 @@ CREATE TABLE IF NOT EXISTS `ec_shippingrate` (
   `free_shipping_at` FLOAT(15,3) NOT NULL DEFAULT '-1.000' COMMENT 'This is a subtotal price at which a live or method based rate gives the customer free shipping.',
   PRIMARY KEY (`shippingrate_id`),
   UNIQUE KEY `shippingrate_id` (`shippingrate_id`),
-  KEY `ec_shippingrate_idx1` (`zone_id`) USING BTREE
+  KEY `ec_shippingrate_idx1` (`zone_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=51 AVG_ROW_LENGTH=30 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_state` (
@@ -863,8 +863,8 @@ CREATE TABLE IF NOT EXISTS `ec_subscription` (
   `stripe_subscription_id` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'If subscription created with Stripe, Stripe ID here.',
   PRIMARY KEY (`subscription_id`),
   UNIQUE KEY `ec_subscription_idx1` (`subscription_id`),
-  KEY `ec_subscription_idx2` (`user_id`) USING BTREE,
-  KEY `ec_subscription_idx3` (`product_id`) USING BTREE
+  KEY `ec_subscription_idx2` (`user_id`) ,
+  KEY `ec_subscription_idx3` (`product_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_subscription_plan` (
@@ -895,10 +895,10 @@ CREATE TABLE IF NOT EXISTS `ec_taxrate` (
   `duty_exempt_country_code` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'The country that will be exempt from a customs export duty tax.',
   PRIMARY KEY (`taxrate_id`),
   UNIQUE KEY `taxrate_id` (`taxrate_id`),
-  KEY `ec_taxrate_idx1` (`state_code`) USING BTREE,
-  KEY `ec_taxrate_idx2` (`country_code`) USING BTREE,
-  KEY `ec_taxrate_idx3` (`vat_country_code`) USING BTREE,
-  KEY `ec_taxrate_idx4` (`duty_exempt_country_code`) USING BTREE
+  KEY `ec_taxrate_idx1` (`state_code`) ,
+  KEY `ec_taxrate_idx2` (`country_code`) ,
+  KEY `ec_taxrate_idx3` (`vat_country_code`) ,
+  KEY `ec_taxrate_idx4` (`duty_exempt_country_code`) 
 )ENGINE=MyISAM AUTO_INCREMENT=65 AVG_ROW_LENGTH=44 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_tempcart` (
@@ -933,13 +933,13 @@ CREATE TABLE IF NOT EXISTS `ec_tempcart` (
   `gift_card_email` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'The value of the gift card email if needed.',
   PRIMARY KEY (`tempcart_id`),
   UNIQUE KEY `ec_tempcart_idx1` (`tempcart_id`),
-  KEY `ec_tempcart_idx2` (`session_id`) USING BTREE,
-  KEY `ec_tempcart_idx3` (`product_id`) USING BTREE,
-  KEY `ec_tempcart_idx4` (`optionitem_id_1`) USING BTREE,
-  KEY `ec_tempcart_idx5` (`optionitem_id_2`) USING BTREE,
-  KEY `ec_tempcart_idx6` (`optionitem_id_3`) USING BTREE,
-  KEY `ec_tempcart_idx7` (`optionitem_id_4`) USING BTREE,
-  KEY `ec_tempcart_idx8` (`optionitem_id_5`) USING BTREE
+  KEY `ec_tempcart_idx2` (`session_id`) ,
+  KEY `ec_tempcart_idx3` (`product_id`) ,
+  KEY `ec_tempcart_idx4` (`optionitem_id_1`) ,
+  KEY `ec_tempcart_idx5` (`optionitem_id_2`) ,
+  KEY `ec_tempcart_idx6` (`optionitem_id_3`) ,
+  KEY `ec_tempcart_idx7` (`optionitem_id_4`) ,
+  KEY `ec_tempcart_idx8` (`optionitem_id_5`) 
 )ENGINE=MyISAM AUTO_INCREMENT=1074 AVG_ROW_LENGTH=68 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_tempcart_optionitem` (
@@ -952,10 +952,10 @@ CREATE TABLE IF NOT EXISTS `ec_tempcart_optionitem` (
   `optionitem_model_number` VARCHAR(128) NOT NULL DEFAULT '' COMMENT 'Model number extension that gets added to product model number if selected.',
   PRIMARY KEY (`tempcart_optionitem_id`),
   UNIQUE KEY `ec_tempcart_optionitem_idx1` (`tempcart_optionitem_id`),
-  KEY `ec_tempcart_optionitem_idx2` (`tempcart_id`) USING BTREE,
-  KEY `ec_tempcart_optionitem_idx3` (`option_id`) USING BTREE,
-  KEY `ec_tempcart_optionitem_idx4` (`optionitem_id`) USING BTREE,
-  KEY `ec_tempcart_optionitem_idx5` (`session_id`) USING BTREE
+  KEY `ec_tempcart_optionitem_idx2` (`tempcart_id`) ,
+  KEY `ec_tempcart_optionitem_idx3` (`option_id`) ,
+  KEY `ec_tempcart_optionitem_idx4` (`optionitem_id`) ,
+  KEY `ec_tempcart_optionitem_idx5` (`session_id`) 
 )ENGINE=MyISAM AUTO_INCREMENT=133 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_timezone` (
@@ -990,9 +990,9 @@ CREATE TABLE IF NOT EXISTS `ec_user` (
   UNIQUE KEY `email_2` (`email`),
   KEY `Email` (`email`),
   KEY `Password` (`password`),
-  KEY `ec_user_idx1` (`default_billing_address_id`) USING BTREE,
-  KEY `ec_user_idx2` (`default_shipping_address_id`) USING BTREE,
-  KEY `ec_user_idx3` (`user_level`) USING BTREE
+  KEY `ec_user_idx1` (`default_billing_address_id`) ,
+  KEY `ec_user_idx2` (`default_shipping_address_id`) ,
+  KEY `ec_user_idx3` (`user_level`) 
 )ENGINE=MyISAM AUTO_INCREMENT=44 AVG_ROW_LENGTH=98 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' DEFAULT CHARSET=utf8 COMMENT=''
 ;
 CREATE TABLE IF NOT EXISTS `ec_webhook` (
@@ -1016,9 +1016,9 @@ CREATE TABLE IF NOT EXISTS `ec_zone_to_location` (
   `code_sta` VARCHAR(50) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Connects this table to the ec_state table.',
   PRIMARY KEY (`zone_to_location_id`),
   UNIQUE KEY `ec_zone_to_location_idx1` (`zone_to_location_id`),
-  KEY `ec_zone_to_location_idx2` (`zone_id`) USING BTREE,
-  KEY `ec_zone_to_location_idx3` (`iso2_cnt`) USING BTREE,
-  KEY `ec_zone_to_location_idx4` (`code_sta`) USING BTREE
+  KEY `ec_zone_to_location_idx2` (`zone_id`) ,
+  KEY `ec_zone_to_location_idx3` (`iso2_cnt`) ,
+  KEY `ec_zone_to_location_idx4` (`code_sta`) 
 )ENGINE=MyISAM AUTO_INCREMENT=257 CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' DEFAULT CHARSET=utf8
 ;
 INSERT INTO `ec_setting` (`setting_id`, `site_url`, `reg_code`, `storeversion`, `storetype`, `storepage`, `cartpage`, `accountpage`, `timezone`, `shipping_method`, `shipping_expedite_rate`, `shipping_handling_rate`, 
