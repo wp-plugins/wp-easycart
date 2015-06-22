@@ -1801,6 +1801,15 @@ class ec_db{
 	
 	public function remove_order( $order_id ){
 		$this->mysqli->query( $this->mysqli->prepare( "DELETE FROM ec_order WHERE order_id = %d", $order_id ) );
+		
+		$coupon_code = "";
+		if( isset( $_SESSION['ec_couponcode'] ) )
+			$coupon_code = $_SESSION['ec_couponcode'];
+		
+		// If coupon used, update usage numbers
+		if( $coupon_code != "" ){
+			$this->mysqli->query( $this->mysqli->prepare( "UPDATE ec_promocode SET times_redeemed = times_redeemed - 1 WHERE ec_promocode.promocode_id = %s", $coupon_code ) );
+		}
 	}
 	
 	public function insert_address( $first_name, $last_name, $address_line_1, $address_line_2, $city, $state, $zip, $country, $phone, $company_name = "" ){
@@ -3642,6 +3651,17 @@ class ec_db{
 	
 	public function get_total_cart_items_by_product_id( $product_id, $session_id ){
 		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT SUM( ec_tempcart.quantity ) FROM ec_tempcart WHERE ec_tempcart.product_id = %d AND ec_tempcart.session_id = %s", $product_id, $session_id ) );
+	}
+	
+	public function get_total_cart_items_with_grid_by_product_id( $product_id, $option_id, $session_id ){
+		return $this->mysqli->get_var( $this->mysqli->prepare( "SELECT SUM( ec_tempcart_optionitem.optionitem_value ) 
+				FROM ec_tempcart_optionitem 
+				LEFT JOIN ec_tempcart 
+				ON ec_tempcart.tempcart_id = ec_tempcart_optionitem.tempcart_id 
+				WHERE ec_tempcart.session_id = %s 
+				AND ec_tempcart.product_id = %d 
+				AND ec_tempcart_optionitem.tempcart_id = ec_tempcart.tempcart_id
+				AND ec_tempcart_optionitem.option_id = %d", $session_id, $product_id, $option_id ) );
 	}
 	
 }

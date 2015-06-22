@@ -31,6 +31,13 @@ else
 	$quick_view = get_option( 'ec_option_default_quick_view' );
 
 // DISPLAY WIDTH SETUP
+if( isset( $this->page_options->dynamic_image_sizing ) )  
+	$dynamic_sizing = $this->page_options->dynamic_image_sizing;
+else if( get_option( 'ec_option_default_dynamic_sizing' ) )
+	$dynamic_sizing = get_option( 'ec_option_default_dynamic_sizing' );
+else
+	$dynamic_sizing = true;
+	
 if( isset( $this->page_options->columns_smartphone ) )  
 	$display_width_smartphone = (100/$this->page_options->columns_smartphone) . "%";
 else if( get_option( 'ec_option_default_smartphone_columns' ) )
@@ -283,6 +290,18 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
     
     <div style="float:left; width:100%; margin-top:10px; height:40px; color:#900; font-size:12px; font-family:Arial,sans-serif;">Colors will be applied after saving and refreshing the page.</div>
     
+    <div>    	
+        <div>Dynamic Image Sizing:</div>
+        <div>
+        	<select name="ec_page_option_dynamic_image_sizing" id="ec_page_option_dynamic_image_sizing">
+                <option value="0"<?php if( !$dynamic_sizing ){ echo " selected='selected'"; }?>>No</option>
+                <option value="1"<?php if( $dynamic_sizing ){ echo " selected='selected'"; }?>>Yes</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="ec_non_dynamic_sizing"<?php if( $dynamic_sizing ){ ?> style="display:none;"<?php }?>>
+    
     <div style="clear:both; position:relative;">    	
         <div class="ec_responsive_left">&#65513;</div>
         <div class="ec_responsive_right">&#65515;</div>
@@ -361,6 +380,8 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
         
         <div><strong>Image Height:</strong></div>
         <div><input name="ec_page_options_image_height_desktop" id="ec_page_options_image_height_desktop" type="number" value="<?php echo str_replace( "px", "", $image_height_desktop ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+    </div>
+    
     </div>
     
     <div style="clear:both;"></div>

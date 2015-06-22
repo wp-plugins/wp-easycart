@@ -25,6 +25,13 @@ else
 	$quick_view = get_option( 'ec_option_default_quick_view' );
 
 // DISPLAY WIDTH SETUP
+if( isset( $page_options->dynamic_image_sizing ) )  
+	$dynamic_sizing = $page_options->dynamic_image_sizing;
+else if( get_option( 'ec_option_default_dynamic_sizing' ) )
+	$dynamic_sizing = get_option( 'ec_option_default_dynamic_sizing' );
+else
+	$dynamic_sizing = true;
+
 if( isset( $page_options->columns_smartphone ) )  
 	$display_width_smartphone = (100/$page_options->columns_smartphone) . "%";
 else if( get_option( 'ec_option_default_smartphone_columns' ) )
@@ -237,6 +244,12 @@ jQuery( document ).ready( function( ){
 <?php
 ////////////////////////////////////////////////////////////////////////
 ?>
+<?php if( $dynamic_sizing ){ ?>
+.ec_image_container_none, .ec_image_container_none > div, .ec_image_container_none > div > div{ height:auto !important; min-height:inherit !important; }
+.ec_image_container_border, .ec_image_container_border > div, .ec_image_container_border > div > div{ height:auto !important; min-height:inherit !important; }
+.ec_image_container_shadow, .ec_image_container_shadow > div, .ec_image_container_shadow > div > div{ height:auto !important; min-height:inherit !important; }
+.ec_image_container_none > div > div > img, .ec_image_container_border > div > div > img, .ec_image_container_shadow > div > div > img{ float:left; }
+<?php }?>
 .ec_product_type1 .ec_product_addtocart{ background-color:<?php echo $color1; ?>; border-bottom-color:<?php echo $color2; ?>; }
 .ec_product_type1 .ec_product_addtocart:hover{ background-color:<?php echo $color2; ?>; border-bottom-color:<?php echo $color1; ?>; }
 .ec_product_type1 .ec_product_quickview > input:hover{ background:<?php echo $color1; ?>; background-color:<?php echo $color1; ?>; }

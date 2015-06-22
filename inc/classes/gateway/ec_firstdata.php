@@ -100,11 +100,13 @@ class ec_firstdata extends ec_gateway{
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $gateway_string );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $gateway_headers );
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0); // Work Around for Godaddy + First Data SSL Issue
+		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0); // Work Around for Godaddy + First Data SSL Issue
 		
 		// Getting results
 		$response = curl_exec( $ch );
-		if( curl_errno( $ch ) ){
-			$this->error_message = curl_error( $ch );
+		if( $response === false ){
+			$this->mysqli->insert_response( 0, 1, "FIRST DATA CURL ERROR", curl_error( $ch ) );
 			curl_close( $ch );
 			return false;
 		}else{

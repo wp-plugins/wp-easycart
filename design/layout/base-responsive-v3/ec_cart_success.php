@@ -41,6 +41,9 @@
 	
 
 </script>
+
+<?php do_action( 'wpeasycart_success_page_content_top', $order_id, $order ); ?>
+
 <h2 class="ec_cart_success_title"><?php echo $GLOBALS['language']->get_text( 'cart_success', 'cart_success_thank_you_title' ); ?></h2>
 
 <hr />

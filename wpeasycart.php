@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple ecommerce solution that installs into new or existing WordPress blogs. Customers purchase directly from your store! Get a full ecommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/3.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.1.2
+ * Version: 3.1.3
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.1.2
+ * @version 3.1.3
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,7 +20,7 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_1_2' );
+define( 'EC_CURRENT_VERSION', '3_1_3' );
 define( 'EC_CURRENT_DB', '1_30' );
 define( 'EC_UPGRADE_DB', '35' );
 
@@ -106,6 +106,12 @@ function ec_activate(){
 	//SETUP BASIC LANGUAGE SETTINGS
 	$language = new ec_language( );
 	$language->update_language_data( ); //Do this to update the database if a new language is added
+	
+	//SET DEFAULTS FOR NEW USERS, DO NOT EFFECT EXISTING CUSTOMERS
+	if( !get_option( 'ec_option_is_installed' ) )
+		update_option( 'ec_option_default_dynamic_sizing', 1 );
+	else
+		update_option( 'ec_option_default_dynamic_sizing', 0 );
 	
 	//WE BLOCK THIS FROM THE ec_config.php TO PREVENT OUTPUT ON ACTIVATION, INCLUDE HERE...
 	update_option( 'ec_option_is_installed', '1' );
@@ -805,8 +811,13 @@ function ec_css_loader_v3( ){
 function ec_js_loader_v3( ){
 		
 	if( current_user_can( 'manage_options' ) ){
-		wp_enqueue_script( 'jquery-ui-draggable' );
-		wp_enqueue_script( 'jquery-ui-sortable' );
+		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ) ){
+			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ), 
+				array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-sortable' ), EC_CURRENT_VERSION );
+		}else{
+			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/live-editor.js' ), 
+				array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-sortable' ), EC_CURRENT_VERSION );
+		}
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ) ){
 			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ), array( 'jquery' ), EC_CURRENT_VERSION );
 		}else{
@@ -1164,20 +1175,18 @@ function load_ec_product( $atts ){
 		$products = $mysqli->get_product_list( $product_where, "", "", "" );
 	}
 	if( count( $products ) > 0 ){
-		echo "<div style=\"float:left; width:100%;\"><div class=\"ec_product_added_to_cart\"><div class=\"ec_product_added_icon\"></div><a href=\"" . $cart_page . "\" title=\"View Cart\">" . $GLOBALS['language']->get_text( "product_page", "product_view_cart" ) . "</a> " . $GLOBALS['language']->get_text( "product_page", "product_product_added_note" ) . "</div><div id=\"ec_current_media_size\"></div><ul class=\"ec_productlist_ul\" style=\"list-style:none; margin: 0px; float:left; width:100%; min-height:" . $minheight . ";\">";
 		
-		if( !file_exists( WP_PLUGIN_DIR . "/wp-easycart-data/design/theme/" . get_option( 'ec_option_base_theme' ) . "/admin_panel.php" ) ){
-			$cart_page_id = get_option('ec_option_cartpage');
-			if( function_exists( 'icl_object_id' ) ){
-				$cart_page_id = icl_object_id( $cart_page_id, 'page', true, ICL_LANGUAGE_CODE );
-			}
-			$cart_page = get_permalink( $cart_page_id );
-			if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
-				$https_class = new WordPressHTTPS( );
-				$cart_page = $https_class->makeUrlHttps( $cart_page );
-			}
-			
+		$cart_page_id = get_option('ec_option_cartpage');
+		if( function_exists( 'icl_object_id' ) ){
+			$cart_page_id = icl_object_id( $cart_page_id, 'page', true, ICL_LANGUAGE_CODE );
 		}
+		$cart_page = get_permalink( $cart_page_id );
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$cart_page = $https_class->makeUrlHttps( $cart_page );
+		}
+		
+		echo "<div style=\"float:left; width:100%;\"><div class=\"ec_product_added_to_cart\"><div class=\"ec_product_added_icon\"></div><a href=\"" . $cart_page . "\" title=\"View Cart\">" . $GLOBALS['language']->get_text( "product_page", "product_view_cart" ) . "</a> " . $GLOBALS['language']->get_text( "product_page", "product_product_added_note" ) . "</div><div id=\"ec_current_media_size\"></div><ul class=\"ec_productlist_ul\" style=\"list-style:none; margin: 0px; float:left; width:100%; min-height:" . $minheight . ";\">";
 		
 		for( $prod_index=0; $prod_index<count( $products ); $prod_index++ ){
 			$product = new ec_product( $products[$prod_index], 0, 0, 1 );
@@ -2244,6 +2253,46 @@ function ec_ajax_save_cart_options( ){
 	
 }
 
+add_action( 'wp_ajax_ec_ajax_get_dynamic_cart_menu', 'ec_ajax_get_dynamic_cart_menu' );
+function ec_ajax_get_dynamic_cart_menu( ){
+	
+	$cart = new ec_cart( $_SESSION['ec_cart_id'] );
+	if( !get_option( 'ec_option_hide_cart_icon_on_empty' ) || $cart->total_items > 0 ){
+	
+		// Get Cart Page Link
+		$cartpageid = get_option('ec_option_cartpage');
+		if( function_exists( 'icl_object_id' ) ){
+			$cartpageid = icl_object_id( $cartpageid, 'page', true, ICL_LANGUAGE_CODE );
+		}
+		$cartpage = get_permalink( $cartpageid );
+		if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
+			$https_class = new WordPressHTTPS( );
+			$cartpage = $https_class->makeUrlHttps( $cartpage );
+		}
+		
+		// Check for correct Label
+		if( $cart->total_items != 1 ){
+			$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label_plural' );
+		}else{
+			$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label' );
+		}
+		
+		// Then display to user
+		if( $cart->total_items > 0 ){
+			$items = '<a href="' . $cartpage . '"><span class="dashicons dashicons-cart" style="vertical-align:middle; margin-top:-5px; margin-right:5px;"></span> ' . ' ( <span class="ec_menu_cart_text"><span class="ec_cart_items_total">' . $cart->total_items . '</span> ' . $items_label . ' <span class="ec_cart_price_total">' . $GLOBALS['currency']->get_currency_display( $cart->subtotal ) . '</span></span> )</a>';
+		
+		}else{
+			$items = '<a href="' . $cartpage . '"><span class="dashicons dashicons-cart" style="vertical-align:middle; margin-top:-5px; margin-right:5px;"></span> ' . ' ( <span class="ec_menu_cart_text"><span class="ec_cart_items_total">' . $cart->total_items . '</span> ' . $items_label . ' <span class="ec_cart_price_total"></span></span> )</a>';
+		}
+		
+		echo $items;
+		
+	}
+	
+	die( );
+	
+}
+
 // Helper function for AJAX calls in cart.
 function ec_get_order_totals( ){
 	$user_email = "";
@@ -2618,43 +2667,12 @@ function ec_dwolla_verify_signature( $proposedSignature, $checkoutId, $amount ){
 }
 
 add_filter( 'wp_nav_menu_items', 'ec_custom_cart_in_menu', 10, 2 );
-
 function ec_custom_cart_in_menu ( $items, $args ) {
 	
 	$ids = explode( '***', get_option( 'ec_option_cart_menu_id' ) );
 	if( get_option( 'ec_option_show_menu_cart_icon' ) && ( in_array( substr( $args->menu_id, 0, -5 ), $ids ) || in_array( $args->theme_location, $ids ) ) ){
 	
-		$cart = new ec_cart( $_SESSION['ec_cart_id'] );
-		
-		if( !get_option( 'ec_option_hide_cart_icon_on_empty' ) || $cart->total_items > 0 ){
-		
-			$cartpageid = get_option('ec_option_cartpage');
-		
-			if( function_exists( 'icl_object_id' ) ){
-				$cartpageid = icl_object_id( $cartpageid, 'page', true, ICL_LANGUAGE_CODE );
-			}
-			
-			$cartpage = get_permalink( $cartpageid );
-					
-			if( class_exists( "WordPressHTTPS" ) && isset( $_SERVER['HTTPS'] ) ){
-				$https_class = new WordPressHTTPS( );
-				$cartpage = $https_class->makeUrlHttps( $cartpage );
-			}
-			
-			if( $cart->total_items != 1 ){
-				$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label_plural' );
-			}else{
-				$items_label = $GLOBALS['language']->get_text( 'cart', 'cart_menu_icon_label' );
-			}
-			
-			if( $cart->total_items > 0 ){
-				$items .= '<li><a href="' . $cartpage . '"><span class="dashicons dashicons-cart" style="vertical-align:middle; margin-top:-5px; margin-right:5px;"></span> ' . ' ( <span class="ec_menu_cart_text"><span class="ec_cart_items_total">' . $cart->total_items . '</span> ' . $items_label . ' <span class="ec_cart_price_total">' . $GLOBALS['currency']->get_currency_display( $cart->subtotal ) . '</span></span> )</a></li>';
-			
-			}else{
-				$items .= '<li><a href="' . $cartpage . '"><span class="dashicons dashicons-cart" style="vertical-align:middle; margin-top:-5px; margin-right:5px;"></span> ' . ' ( <span class="ec_menu_cart_text"><span class="ec_cart_items_total">' . $cart->total_items . '</span> ' . $items_label . ' <span class="ec_cart_price_total"></span></span> )</a></li>';
-			}
-			
-		}
+		$items .= '<li class="ec_menu_mini_cart"></li>';
 		
 	}
 	

@@ -1208,6 +1208,8 @@ function ec_print_editor( ){
 	echo "</div>";
 	echo "</div>";
 	echo "<div class=\"ec_editor_overlay\" id=\"ec_editor_bg\"></div>";
+	echo "<script>jQuery( document.getElementById( 'ec_editor_window' ) ).appendTo( document.body );</script>";
+	echo "<script>jQuery( document.getElementById( 'ec_editor_bg' ) ).appendTo( document.body );</script>";
 }
 
 // Shortcode Menu

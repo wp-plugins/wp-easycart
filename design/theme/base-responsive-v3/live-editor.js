@@ -221,6 +221,7 @@ function ec_admin_save_page_options( post_id ){
 		post_id: post_id,
 		product_type: jQuery( document.getElementById( 'ec_page_options_product_type' ) ).val( ),
 		use_quickview: jQuery( document.getElementById( 'ec_page_options_quick_view' ) ).val( ),
+		dynamic_image_sizing: jQuery( document.getElementById( 'ec_page_option_dynamic_image_sizing' ) ).val( ),
 		columns_smartphone: jQuery( document.getElementById( 'ec_page_options_columns_smartphone' ) ).val( ),
 		image_height_smartphone: jQuery( document.getElementById( 'ec_page_options_image_height_smartphone' ) ).val( ) + 'px',
 		columns_tablet: jQuery( document.getElementById( 'ec_page_options_columns_tablet' ) ).val( ),
@@ -251,6 +252,8 @@ function ec_admin_set_default_page_options( post_id ){
 	var data = {
 		action: 'ec_ajax_save_page_default_options',
 		post_id: post_id,
+		
+		dynamic_image_sizing: jQuery( document.getElementById( 'ec_page_option_dynamic_image_sizing' ) ).val( ),
 		
 		ec_option_details_main_color: jQuery( document.getElementById( 'ec_option_details_main_color' ) ).val( ),
 		ec_option_details_second_color: jQuery( document.getElementById( 'ec_option_details_second_color' ) ).val( ),
@@ -910,5 +913,18 @@ jQuery( document ).ready( function( ){
 			
 		}
 	);
+	
+	jQuery( document.getElementById( 'ec_page_option_dynamic_image_sizing' ) ).change( function( ){
+		
+		if( jQuery( this ).val( ) == '1' ){
+			jQuery( document.getElementById( 'ec_non_dynamic_sizing' ) ).hide( );
+			
+		}else{
+			jQuery( document.getElementById( 'ec_non_dynamic_sizing' ) ).show( );
+			
+			
+		}
+		
+	} );
 
 } );

@@ -285,6 +285,16 @@ function ec_update_color_preview( color ){
         </span>
     </div>
     
+    <div class="ec_colorizer_row" style="float:left">
+        <span class="ec_colorizer_row_label">Use Dynamic Images: </span>
+        <span class="ec_colorizer_row_input">
+        	<select name="ec_option_default_dynamic_sizing" id="ec_option_default_dynamic_sizing">
+            	<option value="1"<?php if( get_option( 'ec_option_default_dynamic_sizing' ) == '1' ){ echo " selected='selected'"; }?>>On</option>
+            	<option value="0"<?php if( get_option( 'ec_option_default_dynamic_sizing' ) == '0' ){ echo " selected='selected'"; }?>>Off</option>
+        	</select>
+        </span>
+    </div>
+    
     <div class="ec_admin_page_title" style="margin:30px 0 15px 0; font-size:14px;">Default Product Responsive Desktop Options</div>
     <div class="ec_colorizer_row" style="float:left">
         <span class="ec_colorizer_row_label">Columns: </span>

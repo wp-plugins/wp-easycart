@@ -153,20 +153,20 @@ class ec_language{
 	/************************************************************/
 	
 	public function update_language_data( ){
+		
 		if( isset( $_POST['isupdate'] ) ){
-			foreach( $this->languages as $language ){
-				$key1 = $language;
-				foreach( $this->language_data->{$language}->options as $language_section ){
-					$key2 = key( $this->language_data->{$language}->options );
-					foreach( $language_section->options as $language_item ){
-						$key3 = key( $language_section->options );
-						if( isset( $_POST['ec_' . $key1 . "_" . $key2 . "_" . $key3] ) ){
-							$language_item->value = htmlspecialchars( stripslashes( $_POST['ec_' . $key1 . "_" . $key2 . "_" . $key3] ), ENT_QUOTES, "UTF-8" );
-						}
-					}	
-				}
+
+			$language_file = $_POST['file_name'];
+			$language_section = $_POST['key_section'];
+			
+			foreach( $_POST['ec_language_field'] as $key => $value ){
+				
+				$this->language_data->{$language_file}->options->{$language_section}->options->{$key}->value = htmlspecialchars( stripslashes( $value ), ENT_QUOTES, "UTF-8" );
+				
 			}
+			
 		}
+		
 		$file_names = $this->get_language_file_list( );
 		foreach( $file_names as $file_name ){
 			if( in_array( $file_name, $this->languages ) )
@@ -224,7 +224,8 @@ class ec_language{
 	// Adds a new language file to the language data heap.
 	// Returns: NULL
 	private function add_new_language_file( $file_name ){
-		$this->language_data->{$file_name} = $this->get_language_file_decoded( $file_name . ".txt" );	
+		if( !isset( $this->language_data->{$file_name} ) )
+			$this->language_data->{$file_name} = $this->get_language_file_decoded( $file_name . ".txt" );	
 	}
 	
 	// Updates the language_data wordpress option

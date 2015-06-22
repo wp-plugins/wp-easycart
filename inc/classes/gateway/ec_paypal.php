@@ -13,23 +13,36 @@ class ec_paypal extends ec_third_party{
 		if( $paypal_use_sandbox )			$paypal_request = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 		else								$paypal_request = "https://www.paypal.com/cgi-bin/webscr";
 		
+		$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
+		$tax_total = number_format( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total, 2 );
+		if( !$tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order->vat_total, 2 );
+		
 		echo "<form action=\"" . $paypal_request . "\" method=\"post\">";
 		echo "<input name=\"cmd\" id=\"cmd\" type=\"hidden\" value=\"_cart\" />";
 		echo "<input name=\"upload\" id=\"upload\" type=\"hidden\" value=\"1\" />";
 		echo "<input name=\"custom\" id=\"custom\" type=\"hidden\" value=\"" . $this->order_id . "\" />";
 		echo "<input name=\"bn\" id=\"bn\" type=\"hidden\" value=\"LevelFourDevelopmentLLC_Cart\" />";
 		echo "<input name=\"business\" id=\"business\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $paypal_email ) . "\" />";
-		echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $paypal_currency_code . "\" />";
-		echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
-		echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . number_format($this->order->discount_total, 2) . "\" />";
-		$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
-		$tax_total = number_format( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total, 2 );
-		if( !$tax->vat_included )
-			$tax_total = number_format( $tax_total + $this->order->vat_total, 2 );
-		echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . $tax_total . "\" />";
+		if( get_option( 'ec_option_paypal_use_selected_currency' ) ){
+			$selected_currency = $paypal_currency_code;
+			if( isset( $_SESSION['ec_convert_to'] ) ){
+				$selected_currency = $_SESSION['ec_convert_to'];
+			}
+			echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $selected_currency . "\" />";
+			echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price( $this->order->shipping_total ) . "\" />";
+			echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price( $this->order->discount_total ) . "\" />";
+			echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price( $tax_total ) . "\" />";
+			echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price( $this->order->sub_total ) . "\" />";
+		}else{
+			echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $paypal_currency_code . "\" />";
+			echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
+			echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . number_format($this->order->discount_total, 2) . "\" />";
+			echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . $tax_total . "\" />";
+			echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
+		}
 		echo "<input name=\"weight_cart\" id=\"weight_cart\" type=\"hidden\" value=\"" . $this->order->order_weight . "\" />";
 		echo "<input name=\"weight_unit\" id=\"weight_unit\" type=\"hidden\" value=\"" . $paypal_weight_unit . "\" />";
-		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
 		if( get_option( 'ec_option_paypal_collect_shipping' ) ){
 			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"2\" />";
 		}else{
@@ -56,7 +69,11 @@ class ec_paypal extends ec_third_party{
 		for( $i = 0; $i<count( $this->order_details ); $i++ ){
 			$paypal_counter = $i+1;
 			echo "<input name=\"item_name_" . $paypal_counter . "\" id=\"item_name_" . $paypal_counter . "\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order_details[$i]->title ) . "\" />";
-			echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . number_format( ( $this->order_details[$i]->total_price/$this->order_details[$i]->quantity ), 2 ) . "\" />";
+			if( get_option( 'ec_option_paypal_use_selected_currency' ) ){
+				echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price(  ( $this->order_details[$i]->total_price/$this->order_details[$i]->quantity ) ) . "\" />";
+			}else{
+				echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . number_format( ( $this->order_details[$i]->total_price/$this->order_details[$i]->quantity ), 2 ) . "\" />";
+			}
 			echo "<input name=\"quantity_".$paypal_counter . "\" id=\"quantity_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $this->order_details[$i]->quantity . "\" />";
 			echo "<input name=\"shipping_" . $paypal_counter . "\" id=\"shipping_" . $paypal_counter."\" type=\"hidden\" value=\"0.00\" />";
 			echo "<input name=\"shipping2_" . $paypal_counter . "\" id=\"shipping2_" . $paypal_counter . "\" type=\"hidden\" value=\"0.00\" />";
@@ -74,6 +91,11 @@ class ec_paypal extends ec_third_party{
 		//this is actionscript version in flash
 		if( $paypal_use_sandbox )			$paypal_request = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 		else								$paypal_request = "https://www.paypal.com/cgi-bin/webscr";
+		
+		$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
+		$tax_total = number_format( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total, 2 );
+		if( !$tax->vat_included )
+			$tax_total = number_format( $tax_total + $this->order->vat_total, 2 );
 		
 		echo "<style>
 		.ec_third_party_loader{ display:block !important; position:absolute; top:50%; left:50%; }
@@ -183,17 +205,25 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"custom\" id=\"custom\" type=\"hidden\" value=\"" . $this->order_id . "\" />";
 		echo "<input name=\"bn\" id=\"bn\" type=\"hidden\" value=\"LevelFourDevelopmentLLC_Cart\" />";
 		echo "<input name=\"business\" id=\"business\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $paypal_email ) . "\" />";
-		echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $paypal_currency_code . "\" />";
-		echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
-		echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . number_format($this->order->discount_total, 2) . "\" />";
-		$tax = new ec_tax( 0.00, 0.00, 0.00, $this->order->billing_state, $this->order->billing_country );
-		$tax_total = number_format( $this->order->tax_total + $this->order->duty_total + $this->order->gst_total + $this->order->pst_total + $this->order->hst_total, 2 );
-		if( !$tax->vat_included )
-			$tax_total = number_format( $tax_total + $this->order->vat_total, 2 );
-		echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . $tax_total . "\" />";
+		if( get_option( 'ec_option_paypal_use_selected_currency' ) ){
+			$selected_currency = $paypal_currency_code;
+			if( isset( $_SESSION['ec_convert_to'] ) ){
+				$selected_currency = $_SESSION['ec_convert_to'];
+			}
+			echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $selected_currency . "\" />";
+			echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price( $this->order->shipping_total ) . "\" />";
+			echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price( $this->order->discount_total ) . "\" />";
+			echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price( $tax_total ) . "\" />";
+			echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price( $this->order->sub_total ) . "\" />";
+		}else{
+			echo "<input name=\"currency_code\" id=\"currency_code\" type=\"hidden\" value=\"" . $paypal_currency_code . "\" />";
+			echo "<input name=\"handling_cart\" id=\"handling_cart\" type=\"hidden\" value=\"" . number_format($this->order->shipping_total, 2) . "\" />";
+			echo "<input name=\"discount_amount_cart\" id=\"discount_amount_cart\" type=\"hidden\" value=\"" . number_format($this->order->discount_total, 2) . "\" />";
+			echo "<input name=\"tax_cart\" id=\"tax_cart\" type=\"hidden\" value=\"" . $tax_total . "\" />";
+			echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
+		}
 		echo "<input name=\"weight_cart\" id=\"weight_cart\" type=\"hidden\" value=\"" . $this->order->order_weight . "\" />";
 		echo "<input name=\"weight_unit\" id=\"weight_unit\" type=\"hidden\" value=\"" . $paypal_weight_unit . "\" />";
-		echo "<input name=\"amount\" id=\"amount\" type=\"hidden\" value=\"" . number_format($this->order->sub_total, 2) . "\" />";
 		if( get_option( 'ec_option_paypal_collect_shipping' ) ){
 			echo "<input name=\"no_shipping\" id=\"no_shipping\" type=\"hidden\" value=\"2\" />";
 		}else{
@@ -220,7 +250,11 @@ class ec_paypal extends ec_third_party{
 		for( $i = 0; $i<count( $this->order_details ); $i++ ){
 			$paypal_counter = $i+1;
 			echo "<input name=\"item_name_" . $paypal_counter . "\" id=\"item_name_" . $paypal_counter . "\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order_details[$i]->title ) . "\" />";
-			echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . number_format( ( $this->order_details[$i]->total_price/$this->order_details[$i]->quantity ), 2 ) . "\" />";
+			if( get_option( 'ec_option_paypal_use_selected_currency' ) ){
+				echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price(  ( $this->order_details[$i]->total_price/$this->order_details[$i]->quantity ) ) . "\" />";
+			}else{
+				echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . number_format( ( $this->order_details[$i]->total_price/$this->order_details[$i]->quantity ), 2 ) . "\" />";
+			}
 			echo "<input name=\"quantity_".$paypal_counter . "\" id=\"quantity_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $this->order_details[$i]->quantity . "\" />";
 			echo "<input name=\"shipping_" . $paypal_counter . "\" id=\"shipping_" . $paypal_counter."\" type=\"hidden\" value=\"0.00\" />";
 			echo "<input name=\"shipping2_" . $paypal_counter . "\" id=\"shipping2_" . $paypal_counter . "\" type=\"hidden\" value=\"0.00\" />";

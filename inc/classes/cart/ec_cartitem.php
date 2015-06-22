@@ -281,6 +281,8 @@ class ec_cartitem{
 			$this->advanced_options[$adv_index]->optionitem_value = $GLOBALS['language']->convert_text( $this->advanced_options[$adv_index]->optionitem_value );
 		}
 		
+		$grid_id = 0;
+		
 		if( $this->use_advanced_optionset ){
 			
 			foreach( $this->advanced_options as $advanced_option ){
@@ -293,6 +295,8 @@ class ec_cartitem{
 					$this->orderdetails_model_number = $this->orderdetails_model_number . '-' . $advanced_option->optionitem_model_number;
 				
 				if( $advanced_option->option_type == "grid" ){
+					
+					$grid_id = $advanced_option->option_id;
 					
 					if( $advanced_option->optionitem_price != 0 ){
 						$grid_price_change = $grid_price_change + ( $advanced_option->optionitem_price * $advanced_option->optionitem_value ); 
@@ -378,7 +382,13 @@ class ec_cartitem{
 		}else if( isset( $roleprice ) ){
 			$this->unit_price = $roleprice + $options_price;
 		}else if( count( $this->pricetiers ) > 0 ){
-			$total_items = $this->mysqli->get_total_cart_items_by_product_id( $this->product_id, $_SESSION['ec_cart_id'] );
+			
+			if( $grid_id == 0 )
+				$total_items = $this->mysqli->get_total_cart_items_by_product_id( $this->product_id, $_SESSION['ec_cart_id'] );
+			else{
+				$total_items = $this->mysqli->get_total_cart_items_with_grid_by_product_id( $this->product_id, $grid_id, $_SESSION['ec_cart_id'] );
+			}
+			
 			$this->unit_price = $cartitem_data->price + $options_price;
 			for( $i=0; $i<count( $this->pricetiers ); $i++ ){
 				if( $total_items >= $this->pricetiers[$i][1] ){

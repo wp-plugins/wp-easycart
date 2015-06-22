@@ -1244,7 +1244,6 @@ jQuery( '.ec_details_tab' ).click( function( ){
 		jQuery( '.ec_details_customer_reviews_tab' ).show( );
 	else
 		jQuery( '.ec_details_' + jQuery( this ).attr( 'data-tab-id' ) + '_tab' ).show( );
-	
 } );
 jQuery( '.ec_details_swatches > li.ec_option1' ).click( function( ){
 	if( jQuery( this ).hasClass( 'ec_active' ) ){

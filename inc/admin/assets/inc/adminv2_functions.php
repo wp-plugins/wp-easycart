@@ -1524,6 +1524,7 @@ function ec_update_colors( ){
 		update_option( 'ec_option_default_product_image_hover_type', $_POST['ec_option_default_product_image_hover_type'] );
 		update_option( 'ec_option_default_product_image_effect_type', $_POST['ec_option_default_product_image_effect_type'] );
 		update_option( 'ec_option_default_quick_view', $_POST['ec_option_default_quick_view'] );
+		update_option( 'ec_option_default_dynamic_sizing', $_POST['ec_option_default_dynamic_sizing'] );
 		
 		// Product Columns and Image Height
 		update_option( 'ec_option_default_desktop_columns', $_POST['ec_option_default_desktop_columns'] );
@@ -1595,6 +1596,7 @@ function ec_update_payment_info( ){
 		//PayPal Standard
 		update_option( 'ec_option_paypal_email', $_POST['ec_option_paypal_email'] );
 		update_option( 'ec_option_paypal_currency_code', $_POST['ec_option_paypal_currency_code'] );
+		update_option( 'ec_option_paypal_use_selected_currency', $_POST['ec_option_paypal_use_selected_currency'] );
 		update_option( 'ec_option_paypal_lc', $_POST['ec_option_paypal_lc'] );
 		update_option( 'ec_option_paypal_charset', $_POST['ec_option_paypal_charset'] );
 		update_option( 'ec_option_paypal_use_sandbox', $_POST['ec_option_paypal_use_sandbox'] );

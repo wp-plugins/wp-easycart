@@ -65,7 +65,7 @@ if( !empty( $users ) ){
 				if( !$first )
 					$data .= ',';
 			
-				$data .= '"' . str_replace( '"', '""', $value ) . '"';
+				$data .= '"' . str_replace( '"', '""', iconv( "UTF-8", "ISO-8859-2", $value ) ) . '"';
 				
 				$first = false;
 			
@@ -114,7 +114,7 @@ if( !empty( $users ) ){
 	
 		header("Content-type: text/csv; charset=UTF-8");
 		header("Content-Transfer-Encoding: binary"); 
-		header("Content-Disposition: attachment; filename=products.csv");
+		header("Content-Disposition: attachment; filename=product-export-" . date( 'Y-m-d' ). ".csv");
 		header("Pragma: no-cache");
 		header("Expires: 0");
 		

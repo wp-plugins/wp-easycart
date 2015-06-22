@@ -26,6 +26,12 @@
             <option value="THB" <?php if (get_option('ec_option_paypal_currency_code') == 'THB') echo ' selected'; ?>>Thai Baht</option>
             <option value="TRY" <?php if (get_option('ec_option_paypal_currency_code') == 'TRY') echo ' selected'; ?>>Turkish Lira</option>
           </select></span></div>
+          
+    <div class="ec_payment_type_row"><span class="ec_payment_type_row_label">Use Currency Selected by Widget:</span><span class="ec_payment_type_row_input"><select name="ec_option_paypal_use_selected_currency" id="ec_option_paypal_use_selected_currency">
+            <option value="1" <?php if (get_option('ec_option_paypal_use_selected_currency') == 1) echo ' selected'; ?>>Yes</option>
+            <option value="0" <?php if (get_option('ec_option_paypal_use_selected_currency') == 0) echo ' selected'; ?>>No</option>
+          </select></span></div>
+          
     <div class="ec_payment_type_row"><span class="ec_payment_type_row_label">PayPal Language Code:</span><span class="ec_payment_type_row_input"><select name="ec_option_paypal_lc" id="ec_option_paypal_lc">
             <option value="US" <?php if (get_option('ec_option_paypal_lc') == 'US') echo ' selected'; ?>>United States</option>
             <option value="AU" <?php if (get_option('ec_option_paypal_lc') == 'AU') echo ' selected'; ?>>Australia</option>

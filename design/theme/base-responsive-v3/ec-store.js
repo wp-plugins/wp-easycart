@@ -91,6 +91,14 @@ jQuery( document ).ready( function( ){
 	jQuery( document.getElementById( 'ec_card_number' ) ).keydown( function( ){
 		ec_show_cc_type( ec_get_card_type( jQuery( document.getElementById( 'ec_card_number' ) ).val( ) ) )
 	} );
+	// Load cart menu, updates over possible cached value
+	var data = {
+		action: 'ec_ajax_get_dynamic_cart_menu'
+	};
+	
+	jQuery.ajax({url: ajax_object.ajax_url, type: 'post', data: data, success: function( data ){ 
+		jQuery( '.ec_menu_mini_cart' ).html( data );
+	} } );
 });
 
 function ec_product_show_quick_view_link( modelnum ){

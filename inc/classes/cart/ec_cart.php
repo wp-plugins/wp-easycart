@@ -125,6 +125,11 @@ class ec_cart{
 				$this->shippable_total_items = $this->shippable_total_items + $this->cart[$i]->quantity;
 		}
 		
+		$this->taxable_subtotal = $this->taxable_subtotal - $this->cart_promo_discount;
+		
+		if( $this->taxable_subtotal < 0 )
+			$this->taxable_subtotal = 0;
+		
 		$this->calculate_parcel( );
 	}
 	

@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, mcommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.2.2
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,23 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.1.3 =
+* New Feature - PayPal Standard, you can now allow checkouts that process in the currency that the user selects from your currency widget.
+* New Feature - You can now link downloads to absolute link by starting the file name with http:// or https://.
+* New Feature - You can now choose to show images per page or by default with dynamic sizing. This allows you to fit the product box to the image if images are different sizes.
+* New Action - wpeasycart_success_page_content_top, which allows you to inject js or other content at the top of the order success page.
+* Fix - Cart discount promotion with taxes were not based on discounted total, this has been corrected.
+* Fix - Checkout final button could be hit more than once on some servers.
+* Fix - Import/export of products with special characters improved.
+* Fix - Enqueue of admin jQuery extensions corrected to load correctly in more instances.
+* Fix - Shortcode editor was sometimes hidden from the screen because of location in the DOM on some websites, moving to the body using jQuery fixes this issue.
+* Fix - Grid quantity advanced option + price tears was calculating pricing incorrectly.
+* Fix - Advanced language editor simplified to work with more servers more consistently.
+* Fix - Menu Cart now loads through AJAX in order to work properly with caching plugins.
+* Fix - Previous CSS adjustment for shortcode editor to be compatible with DIVI theme was no longer working, updated admin editor css to improve usability.
+* Fix - Language system upgraded to ensure the language database entry is not overwritten on plugin update. This seemed to be occurring in a very small number of sites.
+* Fix - Coupon codes with live processing, if the order failed the times redeemed was still increasing by 1.
+* Fix - Subscription Payment failed notice email file was missing. This has been added to the system.
 = 3.1.2 =
 * New Feature - New basic setting to hide the cart icon in your menu (if using this option) when the cart is empty.
 * Improvement - Export product system breaks exported CSV files into 500 product groups and downloads them into a single zip file. This prevents server time outs on export and on import.
