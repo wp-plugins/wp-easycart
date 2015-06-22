@@ -302,6 +302,7 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
 			
 			if( ( $admin_access || $product->image_hover_type == 9 ) && !$ipad && !$iphone ){ ?>
         	<div class="ec_slide_container"<?php if( $product->image_hover_type != 9 ){ ?> style="display:none;"<?php }?>>
+				<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_auto_sizer_3" alt="<?php echo $product->title; ?>" />
             	<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_front_3" alt="<?php echo $product->title; ?>" />
 				<img src="<?php echo $product->get_second_image_url( ); ?>" class="ec_image_back_3" alt="<?php echo $product->title; ?>" />
             </div>

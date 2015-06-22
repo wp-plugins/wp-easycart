@@ -248,7 +248,10 @@ jQuery( document ).ready( function( ){
 .ec_image_container_none, .ec_image_container_none > div, .ec_image_container_none > div > div{ height:auto !important; min-height:inherit !important; }
 .ec_image_container_border, .ec_image_container_border > div, .ec_image_container_border > div > div{ height:auto !important; min-height:inherit !important; }
 .ec_image_container_shadow, .ec_image_container_shadow > div, .ec_image_container_shadow > div > div{ height:auto !important; min-height:inherit !important; }
+.ec_image_container_none > div > a > img, .ec_image_container_border > div > a > img, .ec_image_container_shadow > div > a > img{ float:left; }
+.ec_image_container_none > div > img, .ec_image_container_border > div > img, .ec_image_container_shadow > div > img{ float:left; }
 .ec_image_container_none > div > div > img, .ec_image_container_border > div > div > img, .ec_image_container_shadow > div > div > img{ float:left; }
+.ec_image_container_none > div > div > div > img, .ec_image_container_border > div > div > div > img, .ec_image_container_shadow > div > div > div > img{ float:left; }
 <?php }?>
 .ec_product_type1 .ec_product_addtocart{ background-color:<?php echo $color1; ?>; border-bottom-color:<?php echo $color2; ?>; }
 .ec_product_type1 .ec_product_addtocart:hover{ background-color:<?php echo $color2; ?>; border-bottom-color:<?php echo $color1; ?>; }
