@@ -36,7 +36,7 @@ class ec_currency{
 						break;
 					}
 				}
-			}
+			}else{ $this->symbol = $this->get_currency_symbol( $to ); }
 		}
 	}
 	
@@ -199,7 +199,7 @@ class ec_currency{
 							 'ZWD' => 'Z$'
 							);
 							
-		return $currencies[$currency_code];
+		return $currency_code . " " . $currencies[$currency_code];
 	}
 	
 	public function get_symbol( ){

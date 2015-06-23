@@ -42,7 +42,11 @@
 
 .ec_admin_preview_button{ margin-bottom:10px; font-family:'Monda',Arial,sans-serif !important; font-weight:normal !important; text-transform:uppercase; font-size:12px !important; text-align:left; color:#FFF !important; line-height:1.1em; text-align:center !important; padding:6px 8px; background:#333; }
 .ec_admin_preview_button > a{ position:relative; color:inherit !important; font-weight:inherit; text-decoration:none !important;  }
-.ec_admin_preview_button:hover{ background:#6FA240; color:#FFF; }
+.ec_admin_preview_button:hover{ background:#719430; color:#FFF; }
+
+.ec_admin_view_more_button{ float:left; margin-top:15px; font-family:'Monda',Arial,sans-serif !important; font-weight:normal !important; text-transform:uppercase; font-size:12px !important; text-align:left; color:#FFF !important; line-height:1.1em; text-align:center !important; padding:6px 8px; background:#333; }
+.ec_admin_view_more_button > a{ position:relative; color:inherit !important; font-weight:inherit; text-decoration:none !important;  }
+.ec_admin_view_more_button:hover{ background:#719430; color:#FFF; }
 
 .ec_slideout_editor > form{ margin-bottom:20px; padding:0; border:0; font-size:100%; font:inherit; vertical-align:baseline; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box; display:block; overflow:hidden; }
 .ec_responsive_left{ text-align:center !important; left:0px; border-left:none; position:absolute; top:20px; margin-top:-23px; width:25px; height:35px; line-height:32px !important; cursor:pointer; z-index:680; -webkit-transition: all .2s ease-in-out; -moz-transition: all .2s ease-in-out; -o-transition: all .2s ease-in-out; transition: all .2s ease-in-out; color:#333; }

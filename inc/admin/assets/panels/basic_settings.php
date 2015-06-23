@@ -160,6 +160,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 </div>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
+<a name="product"></a>
 <div class="ec_status_header"><div class="ec_status_header_text">Store Page Display Options</div></div>
 
 <div class="ec_setting_row">
@@ -246,6 +247,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
+<a name="product-details"></a>
 <div class="ec_status_header"><div class="ec_status_header_text">Product Details Page Display Options</div></div>
 
 <div class="ec_setting_row">
@@ -440,6 +442,7 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
 <a id="cart-settings"></a>
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
+<a name="cart"></a>
 <div class="ec_status_header"><div class="ec_status_header_text">Cart Page Display Options</div></div>
 
 <div class="ec_setting_row">

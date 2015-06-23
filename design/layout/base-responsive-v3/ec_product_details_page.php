@@ -6,15 +6,7 @@ if( isset( $this->page_options->video_viewed ) || get_option( 'ec_option_hide_de
 	$show_video = true;
 }
 
-// Check for Safari/Admin //
-$ua = $_SERVER["HTTP_USER_AGENT"];
-$safariorchrome = strpos($ua, 'Safari') ? true : false;
-$chrome = strpos($ua, 'Chrome') ? true : false;
-if( $safariorchrome && !$chrome )
-	$safari = true;
-else
-	$safari = false;
-
+// Check for iPhone/iPad/Admin
 $ipad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
 $iphone = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
 
@@ -48,7 +40,7 @@ if( $is_preview_holder && $is_admin ){ ?>
 			<iframe src="<?php the_permalink( ); ?>?model_number=<?php echo $this->product->model_number; ?>&amp;preview=true" width="100%" height="100%" id="ec_admin_preview_iframe"></iframe>
 		</div>
 	</div>
-</div><?php }else if( $is_admin && !$safari && !$is_preview ){ ?>
+</div><?php }else if( $is_admin && !$is_preview ){ ?>
 <div class="ec_admin_video_container" id="ec_admin_video_container"<?php if( !$show_video ){ ?> style="display:none;"<?php }?>>
 	<div class="ec_admin_video_content">
 		<div class="ec_admin_video_padding">
@@ -124,6 +116,10 @@ if( $is_preview_holder && $is_admin ){ ?>
     </select></div>
     
     <div><input type="button" value="APPLY AND SAVE" onclick="ec_admin_save_product_details_options( ); return false;" /></div>
+    
+    <div class="ec_admin_view_more_button">
+    	<a href="<?php echo get_admin_url( ); ?>admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-settings#product-details" target="_blank" title="More Options">View More Display Options</a>
+    </div>
     
 </div>
 <div id="ec_current_media_size"></div>
@@ -962,7 +958,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
         	
 			<?php 
 			// START CONTENT EDITING SECTION
-			if( $is_admin && !$safari && !$is_preview && substr( $this->product->description, 0, 3 ) != "[ec" ){ ?>
+			if( $is_admin && !$is_preview && substr( $this->product->description, 0, 3 ) != "[ec" ){ ?>
             <div class="ec_details_edit_buttons">
             	<div class="ec_details_edit_button" id="ec_details_edit_description"><input type="button" value="Edit Description" onclick="ec_admin_show_description_editor( );" /></div>
         		<div class="ec_details_edit_button" id="ec_details_save_description"><input type="button" value="Save Description" onclick="ec_admin_save_description_editor( );" /></div>
@@ -997,7 +993,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
         
         	<?php 
 			// START CONTENT EDITING SECTION
-			if( $is_admin && !$safari && !$is_preview && substr( $this->product->specifications, 0, 3 ) != "[ec" ){ ?>
+			if( $is_admin && !$is_preview && substr( $this->product->specifications, 0, 3 ) != "[ec" ){ ?>
             <div class="ec_details_edit_buttons">
             	<div class="ec_details_edit_button" id="ec_details_edit_specifications"><input type="button" value="Edit Specifications" onclick="ec_admin_show_specifications_editor( );" /></div>
         		<div class="ec_details_edit_button" id="ec_details_save_specifications"><input type="button" value="Save Specifications" onclick="ec_admin_save_specifications_editor( );" /></div>
@@ -2513,7 +2509,7 @@ function ec_submit_product_review( ){
 		jQuery( document.getElementById( 'ec_details_review_error' ) ).show( );
 	}
 }
-</script><?php if( $is_admin && !$safari && !$is_preview ){ ?>
+</script><?php if( $is_admin && !$is_preview ){ ?>
 <script>
 function ec_admin_show_description_editor( ){
 	jQuery( '.ec_details_description_content' ).hide( );

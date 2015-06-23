@@ -93,38 +93,10 @@ function ec_admin_update_image_hover_effect( model_number ){
 	ec_admin_change_made( model_number );
 	
 	var selected_val = jQuery( document.getElementById( 'ec_product_image_hover_type_' + model_number ) ).val( );
+	var hover_classes = Array( '', 'ec_flip_container', 'ec_fade_container', 'ec_single_fade_container', 'ec_single_none_container', 'ec_single_grow_container', 'ec_single_shrink_container', 'ec_single_btw_container', 'ec_single_brighten_container', 'ec_slide_container', 'ec_flipbook' );
 	
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_flip_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_fade_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_fade_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_none_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_grow_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_shrink_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_btw_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_brighten_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_slide_container' ).hide( );
-	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_flipbook' ).hide( );
-	
-	if( selected_val == '1' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_flip_container' ).show( );
-	else if( selected_val == '2' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_fade_container' ).show( );
-	else if( selected_val == '3' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_fade_container' ).show( );
-	else if( selected_val == '4' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_none_container' ).show( );
-	else if( selected_val == '5' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_grow_container' ).show( );
-	else if( selected_val == '6' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_shrink_container' ).show( );
-	else if( selected_val == '7' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_btw_container' ).show( );
-	else if( selected_val == '8' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_single_brighten_container' ).show( );
-	else if( selected_val == '9' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_slide_container' ).show( );
-	else if( selected_val == '10' )
-		jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_flipbook' ).show( );
+	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_product_image_display_type ' ).removeClass( 'ec_flip_container' ).removeClass( 'ec_fade_container' ).removeClass( 'ec_single_fade_container' ).removeClass( 'ec_single_none_container' ).removeClass( 'ec_single_grow_container' ).removeClass( 'ec_single_shrink_container' ).removeClass( 'ec_single_btw_container' ).removeClass( 'ec_single_brighten_container' ).removeClass( 'ec_slide_container' ).removeClass( 'ec_flipbook' );
+	jQuery( document.getElementById( 'ec_product_image_' + model_number ) ).find( '.ec_product_image_display_type ' ).addClass( hover_classes[ selected_val ] );
 	
 }
 
@@ -917,11 +889,12 @@ jQuery( document ).ready( function( ){
 	jQuery( document.getElementById( 'ec_page_option_dynamic_image_sizing' ) ).change( function( ){
 		
 		if( jQuery( this ).val( ) == '1' ){
-			jQuery( document.getElementById( 'ec_non_dynamic_sizing' ) ).hide( );
+			jQuery( '.ec_non_dynamic_sizing' ).hide( );
+			jQuery( '.ec_dynamic_image_height' ).addClass( 'dynamic_height_rule' );
 			
 		}else{
-			jQuery( document.getElementById( 'ec_non_dynamic_sizing' ) ).show( );
-			
+			jQuery( '.ec_non_dynamic_sizing' ).show( );
+			jQuery( '.ec_dynamic_image_height' ).removeClass( 'dynamic_height_rule' );
 			
 		}
 		

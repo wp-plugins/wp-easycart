@@ -1,6 +1,11 @@
 <?php 
 
 // DISPLAY OPTIONS //   
+if( isset( $product->page_options->dynamic_image_sizing ) )
+	$dynamic_image_sizing = $product->page_options->dynamic_image_sizing;
+else
+	$dynamic_image_sizing = get_option( 'ec_option_default_dynamic_sizing' );
+	
 if( isset( $product->page_options->product_type ) )
 	$product_type = $product->page_options->product_type;
 else
@@ -18,15 +23,7 @@ else
 	
 $show_rating = $product->use_customer_reviews;
 
-// Check for Safari
-$ua = $_SERVER["HTTP_USER_AGENT"];
-$safariorchrome = strpos($ua, 'Safari') ? true : false;
-$chrome = strpos($ua, 'Chrome') ? true : false;
-if( $safariorchrome && !$chrome )
-	$safari = true;
-else
-	$safari = false;
-
+// Check for iPad or iPhone
 $ipad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
 $iphone = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
 
@@ -39,8 +36,8 @@ if( isset( $_GET['preview'] ) ){
 	$is_preview = false;
 }
 
-// Show admin if logged in and not using Safari
-if( current_user_can( 'manage_options' ) && !$safari && !$is_preview && !get_option( 'ec_option_hide_live_editor' ) )
+// Show admin if logged in and not using preview
+if( current_user_can( 'manage_options' ) && !$is_preview && !get_option( 'ec_option_hide_live_editor' ) )
 	$admin_access = true;
 else
 	$admin_access = false;
@@ -70,7 +67,7 @@ if( $admin_access || $use_quickview ){ ?>
                     <div class="ec_flipbook_left">&#65513;</div>
                     <div class="ec_flipbook_right">&#65515;</div>
                     <?php }?>
-                    <img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" />
+                    <img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" class="ec_flipbook_image" />
                 </div>
                 <div class="ec_product_quickview_content_data">
                     
@@ -242,80 +239,39 @@ jQuery( document.getElementById( "ec_product_quickview_container_<?php echo $pro
 	<div style="padding:0px; margin:auto; vertical-align:middle;<?php if( $product_type == 0 ){ ?> display:none;<?php }?>" class="ec_product_type<?php echo $product_type; ?>" id="ec_product_image_<?php echo $product->model_number; ?>">
     	
         <?php ///////////////// IMAGE HOLDER///////////// ?>
-        <div id="ec_product_image_effect_<?php echo $product->model_number; ?>" class="ec_image_container_<?php echo $product->image_effect_type; ?>">
+        <div id="ec_product_image_effect_<?php echo $product->model_number; ?>" class="ec_image_container_<?php echo $product->image_effect_type; ?> ec_dynamic_image_height<?php if( $dynamic_image_sizing ){ ?> dynamic_height_rule<?php }?>">
         	
         	<a href="<?php echo $product->get_product_link( ); ?>" class="ec_image_link_cover"></a>
         
-        	<?php if( ( $admin_access || $product->image_hover_type == 1 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_flip_container"<?php if( $product->image_hover_type != 1 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_flipper">
-					<div class="ec_image_front"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-					<div class="ec_image_back"><img src="<?php echo $product->get_second_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-        		</div>
-            </div>
-            <?php }
-			
-			if( ( $admin_access || $product->image_hover_type == 2 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_fade_container"<?php if( $product->image_hover_type != 2 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_fadder">
-					<div class="ec_image_front_2"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-					<div class="ec_image_back_2"><img src="<?php echo $product->get_second_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-        		</div>
-            </div>
-            <?php }
-			
-			if( ( $admin_access || $product->image_hover_type == 3 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_single_fade_container"<?php if( $product->image_hover_type != 3 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_fade"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-            </div>
-            <?php }
-			
-			if( $iphone || $ipad || $admin_access || $product->image_hover_type == 4 || is_nan( $product->image_hover_type ) || $product->image_hover_type < 1 || $product->image_hover_type > 10 ){ ?>
-            	<div class="ec_single_none_container"<?php if( !$iphone && !$ipad && $product->image_hover_type != 4 ){ ?> style="display:none;"<?php }?>>
-					<?php $product->display_product_image_set( "medium", "ec_image_", "" ); ?>
-				</div>
-            <?php } 
-			
-			if( ( $admin_access || $product->image_hover_type == 5 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_single_grow_container"<?php if( $product->image_hover_type != 5 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_grow"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-            </div>
-            <?php } 
-			
-			if( ( $admin_access || $product->image_hover_type == 6 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_single_shrink_container"<?php if( $product->image_hover_type != 6 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_shrink"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-            </div>
-            <?php } 
-			
-			if( ( $admin_access || $product->image_hover_type == 7 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_single_btw_container"<?php if( $product->image_hover_type != 7 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_btw"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-            </div>
-            <?php }
-			
-			if( ( $admin_access || $product->image_hover_type == 8 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_single_brighten_container"<?php if( $product->image_hover_type != 8 ){ ?> style="display:none;"<?php }?>>
-            	<div class="ec_single_brighten"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
-            </div>
-            <?php }
-			
-			if( ( $admin_access || $product->image_hover_type == 9 ) && !$ipad && !$iphone ){ ?>
-        	<div class="ec_slide_container"<?php if( $product->image_hover_type != 9 ){ ?> style="display:none;"<?php }?>>
-				<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_auto_sizer_3" alt="<?php echo $product->title; ?>" />
-            	<img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_front_3" alt="<?php echo $product->title; ?>" />
-				<img src="<?php echo $product->get_second_image_url( ); ?>" class="ec_image_back_3" alt="<?php echo $product->title; ?>" />
-            </div>
-            <?php }
-			
-			if( ( $admin_access || $product->image_hover_type == 10 ) && !$ipad && !$iphone ){ ?>
-        	
-            <div class="ec_flipbook"<?php if( $product->image_hover_type != 10 ){ ?> style="display:none;"<?php }?> data-image-list="<?php if( $product->images->use_optionitem_images ){ for( $i=0; $i<count( $product->images->imageset ); $i++ ){ if( $i > 0 ){ echo ","; } echo plugins_url( "/wp-easycart-data/products/pics1/" . $product->images->imageset[$i]->image1 ); } }else{ echo $product->get_first_image_url( ); if( trim( $product->images->image2 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics2/" . $product->images->image2 ); } if( trim( $product->images->image3 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics3/" . $product->images->image3 ); } if( trim( $product->images->image4 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics4/" . $product->images->image4 ); } if( trim( $product->images->image5 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics5/" . $product->images->image5 ); } } ?>">
+        	<?php ///////////////// IMAGE OPTIONS /////////////////////// ?>
+            <?php
+			$image_types = array( '', 'ec_flip_container', 'ec_fade_container', 'ec_single_fade_container', 'ec_single_none_container', 'ec_single_grow_container', 'ec_single_shrink_container', 'ec_single_btw_container', 'ec_single_brighten_container', 'ec_slide_container', 'ec_flipbook' );
+			?>
+            <div class="ec_product_image_display_type <?php if( $product->image_hover_type > 0 && $product->image_hover_type < 11 ){ echo $image_types[ $product->image_hover_type ]; }else{ echo $image_types[4]; } ?> ec_dynamic_image_height<?php if( $dynamic_image_sizing ){ ?> dynamic_height_rule<?php }?>"<?php if( $admin_access || $product->image_hover_type == 10 ){ ?> data-image-list="<?php if( $product->images->use_optionitem_images ){ for( $i=0; $i<count( $product->images->imageset ); $i++ ){ if( $i > 0 ){ echo ","; } echo plugins_url( "/wp-easycart-data/products/pics1/" . $product->images->imageset[$i]->image1 ); } }else{ echo $product->get_first_image_url( ); if( trim( $product->images->image2 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics2/" . $product->images->image2 ); } if( trim( $product->images->image3 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics3/" . $product->images->image3 ); } if( trim( $product->images->image4 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics4/" . $product->images->image4 ); } if( trim( $product->images->image5 ) != "" ){ echo "," . plugins_url( "/wp-easycart-data/products/pics5/" . $product->images->image5 ); } } ?>"<?php }?>>
+            	
+                <?php if( $admin_access || $product->image_hover_type == 10 ){ ?>
             	<div class="ec_flipbook_left">&#65513;</div>
-                <div style="" class="ec_flipbook_right">&#65515;</div>
-                <img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" />
+                <div class="ec_flipbook_right">&#65515;</div>
+                <img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" class="ec_flipbook_image" />
+                <?php }?>
+                
+                <?php if( $admin_access || $product->image_hover_type != 10 ){ ?>
+                <div class="ec_dynamic_image_height ec_product_image_container <?php if( $dynamic_image_sizing ){ ?> dynamic_height_rule<?php }?>">
+					
+                	<?php if( $admin_access || $product->image_hover_type == 9 ){ ?>
+                    <img src="<?php echo $product->get_first_image_url( ); ?>" class="ec_image_auto_sizer" alt="<?php echo $product->title; ?>" />
+            		<?php }?>
+                
+                	<div class="ec_dynamic_image_height ec_product_image_1 <?php if( $dynamic_image_sizing ){ ?> dynamic_height_rule<?php }?>"><img src="<?php echo $product->get_first_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
+					
+                    <?php if( $admin_access || $product->image_hover_type == 1 || $product->image_hover_type == 2 || $product->image_hover_type == 9 ){ ?>
+                    <div class="ec_dynamic_image_height ec_product_image_2 <?php if( $dynamic_image_sizing ){ ?> dynamic_height_rule<?php }?>"><img src="<?php echo $product->get_second_image_url( ); ?>" alt="<?php echo $product->title; ?>" /></div>
+                    <?php }?>
+                    
+        		</div>
+                <?php }?>
+            
             </div>
-			<?php } ?>
         
         </div>
         

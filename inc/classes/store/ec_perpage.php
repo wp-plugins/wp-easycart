@@ -58,7 +58,7 @@ class ec_perpage{
 	private function get_current_url( ){
 		$page_url = 'http';
 		if( isset( $_SERVER["HTTPS"] ) && $_SERVER["HTTPS"] == "on" ){
-			$pageURL .= "s";
+			$page_url .= "s";
 		}
 		
 		$page_url .= "://";

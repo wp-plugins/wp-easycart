@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, mcommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.2.2
-Stable tag: 3.1.4
+Stable tag: 3.1.5
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.1.5 =
+* New Feature - Live editor now works in the Safari browser!
+* Improvement - Speed improvements in the store with the live editor, less content loading at a time for the admin.
+* Improvement - Linking now included from product, product details, and cart pages to the basic settings that apply to these pages.
 = 3.1.4 =
 * Fixes for some random display errors added in version 3.1.3
 * New Feature - PayPal Standard, you can now allow checkouts that process in the currency that the user selects from your currency widget.

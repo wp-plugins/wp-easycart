@@ -2,7 +2,7 @@
 jQuery( document ).ready( function( ){
 	jQuery( '.ec_flipbook_left' ).click( 
 		function( event ){
-			var current_image = jQuery( event.target ).parent( ).find( 'img' ).attr( 'src' );
+			var current_image = jQuery( event.target ).parent( ).find( 'img.ec_flipbook_image' ).attr( 'src' );
 			var image_list_string = jQuery( event.target ).parent( ).data( 'image-list' );
 			var image_list = image_list_string.split( ',' );
 			var prev = image_list[image_list.length - 1]; 
@@ -13,12 +13,12 @@ jQuery( document ).ready( function( ){
 					prev = image_list[i]; 
 				} 
 			}
-			jQuery( event.target ).parent( ).find( 'img' ).attr( 'src', prev );
+			jQuery( event.target ).parent( ).find( 'img.ec_flipbook_image' ).attr( 'src', prev );
 		}
 	);
 	jQuery( '.ec_flipbook_right' ).click( 
 		function( event ){
-			var current_image = jQuery( event.target ).parent( ).find( 'img' ).attr( 'src' );
+			var current_image = jQuery( event.target ).parent( ).find( 'img.ec_flipbook_image' ).attr( 'src' );
 			var image_list_string = jQuery( event.target ).parent( ).data( 'image-list' );
 			var image_list = image_list_string.split( ',' );
 			var prev = image_list[0]; 
@@ -29,7 +29,7 @@ jQuery( document ).ready( function( ){
 					prev = image_list[i]; 
 				} 
 			}
-			jQuery( event.target ).parent( ).find( 'img' ).attr( 'src', prev );
+			jQuery( event.target ).parent( ).find( 'img.ec_flipbook_image' ).attr( 'src', prev );
 		}
 	);
 	jQuery( document.getElementById( 'ec_cart_billing_country' ) ).change( function( ){

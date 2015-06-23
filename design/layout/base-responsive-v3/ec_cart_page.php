@@ -6,15 +6,7 @@ if( isset( $this->page_options->video_viewed ) || get_option( 'ec_option_hide_de
 	$show_video = true;
 }
 
-// Check for Safari/Admin //
-$ua = $_SERVER["HTTP_USER_AGENT"];
-$safariorchrome = strpos($ua, 'Safari') ? true : false;
-$chrome = strpos($ua, 'Chrome') ? true : false;
-if( $safariorchrome && !$chrome )
-	$safari = true;
-else
-	$safari = false;
-
+// Check for iPhone/iPad/Admin
 $ipad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
 $iphone = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPhone');
 
@@ -50,7 +42,7 @@ if( $is_preview_holder && $is_admin ){ ?>
 	</div>
 </div>
 
-<?php }else if( $is_admin && !$safari && !$is_preview && !isset( $GLOBALS['ec_live_editor_loaded'] ) ){ 
+<?php }else if( $is_admin && !$is_preview && !isset( $GLOBALS['ec_live_editor_loaded'] ) ){ 
 
 $GLOBALS['ec_live_editor_loaded'] = true;
 
@@ -138,7 +130,9 @@ $GLOBALS['ec_live_editor_loaded'] = true;
     
     <div><input type="button" value="APPLY AND SAVE" onclick="ec_admin_save_cart_options( ); return false;" /></div>
     
-    <div class="ec_editor_link_row"><a href="<?php echo get_admin_url( ); ?>admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-settings#cart-settings" target="_blank">Edit Basic Cart Settings</a></div>
+    <div class="ec_admin_view_more_button">
+    	<a href="<?php echo get_admin_url( ); ?>admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-settings#cart" target="_blank" title="More Options">View More Display Options</a>
+    </div>
     
 </div>
 <script>function ec_admin_save_cart_options( ){

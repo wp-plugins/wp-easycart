@@ -158,15 +158,7 @@ else
 
 // DISPLAY OPTIONS //
 
-// Check for Safari/Admin //
-$ua = $_SERVER["HTTP_USER_AGENT"];
-$safariorchrome = strpos($ua, 'Safari') ? true : false;
-$chrome = strpos($ua, 'Chrome') ? true : false;
-if( $safariorchrome && !$chrome )
-	$safari = true;
-else
-	$safari = false;
-
+// Check for iPhone/iPad/Admin
 $ipad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
 
 $is_admin = current_user_can( 'manage_options' );
@@ -182,8 +174,8 @@ if( isset( $_GET['previewholder'] ) )
 else
 	$is_preview_holder = false;
 
-// Show admin if logged in and not using Safari
-if( $is_admin && !$safari && !$is_preview && !get_option( 'ec_option_hide_live_editor' ) )
+// Show admin if logged in and not using preview
+if( $is_admin && !$is_preview && !get_option( 'ec_option_hide_live_editor' ) )
 	$admin_access = true;
 else
 	$admin_access = false;
@@ -209,7 +201,7 @@ if( $is_preview_holder && $is_admin ){ ?>
 	</div>
 </div>
 
-<?php }else if( $admin_access && !$safari && !$is_preview && ( !isset( $GLOBALS['ec_live_editor_loaded'] ) || $GLOBALS['ec_live_editor_loaded'] == "loaded" ) ){ 
+<?php }else if( $admin_access && !$is_preview && ( !isset( $GLOBALS['ec_live_editor_loaded'] ) || $GLOBALS['ec_live_editor_loaded'] == "loaded" ) ){ 
 
 $GLOBALS['ec_live_editor_loaded'] = "loaded";
 
@@ -291,7 +283,7 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
     <div style="float:left; width:100%; margin-top:10px; height:40px; color:#900; font-size:12px; font-family:Arial,sans-serif;">Colors will be applied after saving and refreshing the page.</div>
     
     <div>    	
-        <div>Dynamic Image Sizing:</div>
+        <div>Dynamic Image Height:</div>
         <div>
         	<select name="ec_page_option_dynamic_image_sizing" id="ec_page_option_dynamic_image_sizing">
                 <option value="0"<?php if( !$dynamic_sizing ){ echo " selected='selected'"; }?>>No</option>
@@ -299,8 +291,6 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
             </select>
         </div>
     </div>
-    
-    <div id="ec_non_dynamic_sizing"<?php if( $dynamic_sizing ){ ?> style="display:none;"<?php }?>>
     
     <div style="clear:both; position:relative;">    	
         <div class="ec_responsive_left">&#65513;</div>
@@ -318,9 +308,13 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
                 <option value="5"<?php if( $columns_smartphone == '5' ){ echo " selected='selected'"; }?>>5 Columns</option>
         </select></div>
         
-        <div><strong>Image Height:</strong></div>
-        <div><input name="ec_page_options_image_height_smartphone" id="ec_page_options_image_height_smartphone" type="number" value="<?php echo str_replace( "px", "", $image_height_smartphone ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
-    </div>
+        <div class="ec_non_dynamic_sizing"<?php if( $dynamic_sizing ){ ?> style="display:none;"<?php }?>>
+    
+            <div><strong>Image Height:</strong></div>
+                <div><input name="ec_page_options_image_height_smartphone" id="ec_page_options_image_height_smartphone" type="number" value="<?php echo str_replace( "px", "", $image_height_smartphone ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+            </div>
+            
+		</div>
     
     <div id="ec_responsive_tablet">
         <div class="ec_admin_page_size">iPhone Size - Landscape</div>
@@ -333,8 +327,13 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
                 <option value="5"<?php if( $columns_tablet == '5' ){ echo " selected='selected'"; }?>>5 Columns</option>
         </select></div>
         
-        <div><strong>Image Height:</strong></div>
-        <div><input name="ec_page_options_image_height_tablet" id="ec_page_options_image_height_tablet" type="number" value="<?php echo str_replace( "px", "", $image_height_tablet ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+        <div class="ec_non_dynamic_sizing"<?php if( $dynamic_sizing ){ ?> style="display:none;"<?php }?>>
+    
+            <div><strong>Image Height:</strong></div>
+        	<div><input name="ec_page_options_image_height_tablet" id="ec_page_options_image_height_tablet" type="number" value="<?php echo str_replace( "px", "", $image_height_tablet ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+            
+        </div>
+            
     </div>
     
     <div id="ec_responsive_tablet_wide">
@@ -348,8 +347,13 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
                 <option value="5"<?php if( $columns_tablet_wide == '5' ){ echo " selected='selected'"; }?>>5 Columns</option>
         </select></div>
         
-        <div><strong>Image Height:</strong></div>
-        <div><input name="ec_page_options_image_height_tablet_wide" id="ec_page_options_image_height_tablet_wide" type="number" value="<?php echo str_replace( "px", "", $image_height_tablet_wide ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+        <div class="ec_non_dynamic_sizing"<?php if( $dynamic_sizing ){ ?> style="display:none;"<?php }?>>
+    
+            <div><strong>Image Height:</strong></div>
+        	<div><input name="ec_page_options_image_height_tablet_wide" id="ec_page_options_image_height_tablet_wide" type="number" value="<?php echo str_replace( "px", "", $image_height_tablet_wide ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+            
+        </div>
+        
     </div>
     
     <div id="ec_responsive_laptop">
@@ -363,8 +367,13 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
                 <option value="5"<?php if( $columns_laptop == '5' ){ echo " selected='selected'"; }?>>5 Columns</option>
         </select></div>
         
-        <div><strong>Image Height:</strong></div>
-        <div><input name="ec_page_options_image_height_laptop" id="ec_page_options_image_height_laptop" type="number" value="<?php echo str_replace( "px", "", $image_height_laptop ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+        <div class="ec_non_dynamic_sizing"<?php if( $dynamic_sizing ){ ?> style="display:none;"<?php }?>>
+    
+            <div><strong>Image Height:</strong></div>
+        	<div><input name="ec_page_options_image_height_laptop" id="ec_page_options_image_height_laptop" type="number" value="<?php echo str_replace( "px", "", $image_height_laptop ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+            
+        </div>
+        
     </div>
     
     <div id="ec_responsive_desktop">
@@ -378,16 +387,23 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
                 <option value="5"<?php if( $columns_desktop == '5' ){ echo " selected='selected'"; }?>>5 Columns</option>
         </select></div>
         
-        <div><strong>Image Height:</strong></div>
-        <div><input name="ec_page_options_image_height_desktop" id="ec_page_options_image_height_desktop" type="number" value="<?php echo str_replace( "px", "", $image_height_desktop ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
-    </div>
+        <div class="ec_non_dynamic_sizing"<?php if( $dynamic_sizing ){ ?> style="display:none;"<?php }?>>
     
+            <div><strong>Image Height:</strong></div>
+        	<div><input name="ec_page_options_image_height_desktop" id="ec_page_options_image_height_desktop" type="number" value="<?php echo str_replace( "px", "", $image_height_desktop ); ?>" style="width:110px; float:left;" /><span style="line-height:30px; margin-left:10px; font-weight:bold; font-size:12px;">px</span></div>
+            
+        </div>
+        
     </div>
     
     <div style="clear:both;"></div>
     
 	<div><input type="submit" value="SAVE" onclick="ec_admin_save_page_options( '<?php  global $post; echo $post->ID; ?>' ); return false;" /></div>
     <div><input type="submit" value="SET AS DEFAULT" onclick="ec_admin_set_default_page_options( '<?php  global $post; echo $post->ID; ?>' ); return false;" /></div>
+    
+    <div class="ec_admin_view_more_button">
+    	<a href="<?php echo get_admin_url( ); ?>admin.php?page=ec_adminv2&ec_page=store-setup&ec_panel=basic-settings#product" target="_blank" title="More Options">View More Display Options</a>
+    </div>
     
     <div class="ec_admin_help_link"><a href="http://wpeasycart.com/videos/v3_feature_demo.mp4" target="_blank">Need Help? Click to Watch our Help Video</a></div>
     
@@ -512,14 +528,7 @@ function ec_admin_reorder_products( ids ){
 
 <?php }?>
 
-<?php 
-// NOTICE FOR ADMIN USERS IN SAFARI FOR DESKTOP //
-if( $safari && $is_admin && !$ipad ){ ?>
-<div class="ec_safari_notice">The live editing tools are available in Chrome, Firefox, or Internet Explorer. Please switch to one of these to use the editor.</div>
-<?php }
-
-// START MAIN CONTENT FOR PRODUCT PAGE //
-?>
+<?php // START MAIN CONTENT FOR PRODUCT PAGE // ?>
 
 <section class="ec_product_page" id="ec_product_page">
 	<?php if( $this->has_products( ) ){ ?>
@@ -527,7 +536,7 @@ if( $safari && $is_admin && !$ipad ){ ?>
 	
 		<?php 
 		// REORDER BUTTON IF ADMIN USER
-        if( $admin_access && !$safari ){ ?>
+        if( $admin_access ){ ?>
         <div class="ec_product_admin_reorder_button_holder"><div class="ec_product_admin_reorder_button" onclick="ec_admin_show_product_sorter( );">Re-Order Products</div></div>
         <?php }?>
         
