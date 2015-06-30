@@ -29,7 +29,7 @@ class ec_ups{
 		$this->shipper_url = "https://www.ups.com/ups.app/xml/Rate";
 	}
 	
-	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight ){
+	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight, $length = 1, $width = 1, $height = 1, $declared_value = 0, $cart = array( ) ){
 		if( $weight == 0 )
 		return "0.00";
 		
@@ -39,7 +39,7 @@ class ec_ups{
 		if( !$destination_zip )
 			$destination_zip = $this->ups_ship_from_zip;
 		
-		$shipper_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
+		$shipper_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 		$request = new WP_Http;
 		$response = $request->request( $this->shipper_url, array( 'method' => 'POST', 'body' => $shipper_data ) );
 		if( is_wp_error( $response ) ){
@@ -51,7 +51,7 @@ class ec_ups{
 		
 	}
 	
-	public function get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value = 0 ){
+	public function get_all_rates( $destination_zip, $destination_country, $weight, $length = 1, $width = 1, $height = 1, $declared_value = 0, $cart = array( ) ){
 		if( $weight == 0 )
 		return "0.00";
 		
@@ -61,7 +61,7 @@ class ec_ups{
 		if( !$destination_zip )
 			$destination_zip = $this->ups_ship_from_zip;
 		
-		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value );
+		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 		$request = new WP_Http;
 		$response = $request->request( $this->shipper_url, array( 'method' => 'POST', 'body' => $shipper_data ) );
 		if( is_wp_error( $response ) ){
@@ -73,14 +73,14 @@ class ec_ups{
 		
 	}
 	
-	public function get_rate_test( $ship_code, $destination_zip, $destination_country, $weight ){
+	public function get_rate_test( $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10, $declared_value = 0, $cart = array( ) ){
 		if( $weight == 0 )
 		return "0.00";
 		
 		if( !$destination_country )
 			$destination_country = $this->ups_country_code;
 		
-		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, 10, 10, 10 );
+		$shipper_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 		$request = new WP_Http;
 		$response = $request->request( $this->shipper_url, array( 'method' => 'POST', 'body' => $shipper_data ) );
 		if( is_wp_error( $response ) ){
@@ -92,7 +92,7 @@ class ec_ups{
 		
 	}
 	
-	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight ){
+	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight, $length = 1, $width = 1, $height = 1, $declared_value = 0, $cart = array( ) ){
 		$shipper_data = "<?xml version=\"1.0\"?>
 			<AccessRequest xml:lang=\"en-US\">
 				<AccessLicenseNumber>$this->ups_access_license_number</AccessLicenseNumber>
@@ -135,7 +135,34 @@ class ec_ups{
 				</ShipFrom>
 				<Service>
 					<Code>$ship_code</Code>
-				</Service>
+				</Service>";
+				
+				if( get_option( 'ec_option_ship_items_seperately' ) && count( $cart ) > 0 ){
+					
+					foreach( $cart as $cartitem ){
+						
+						for( $i=0; $i<$cartitem->quantity; $i++ ){
+						
+						$shipper_data .= "
+				<Package>
+					<PackagingType>
+						<Code>02</Code>
+					</PackagingType>
+					<PackageWeight>
+						<UnitOfMeasurement>
+							<Code>$this->ups_weight_type</Code>
+						</UnitOfMeasurement>
+						<Weight>" . $cartitem->weight . "</Weight>
+					</PackageWeight>
+				</Package>";
+				
+						}
+						
+					}
+					
+				}else{
+				
+				$shipper_data .= "
 				<Package>
 					<PackagingType>
 						<Code>02</Code>
@@ -146,13 +173,16 @@ class ec_ups{
 						</UnitOfMeasurement>
 						<Weight>$weight</Weight>
 					</PackageWeight>
-				</Package>
+				</Package>";
+				
+				}
+			$shipper_data .= "
 			</Shipment>
 			</RatingServiceSelectionRequest>";
 		return $shipper_data;
 	}
 	
-	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight = 1, $length = 1, $width = 1, $height = 1, $declared_value = 0 ){
+	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight = 1, $length = 1, $width = 1, $height = 1, $declared_value = 0, $cart = array( ) ){
 		$shipper_data = "<?xml version=\"1.0\"?>
 			<AccessRequest xml:lang=\"en-US\">
 				<AccessLicenseNumber>$this->ups_access_license_number</AccessLicenseNumber>
@@ -197,7 +227,50 @@ class ec_ups{
 								<PostalCode>$this->ups_ship_from_zip</PostalCode>
 							<CountryCode>$this->ups_country_code</CountryCode>
 						</Address>
-					</ShipFrom>
+					</ShipFrom>";
+					
+					if( get_option( 'ec_option_ship_items_seperately' ) && count( $cart ) > 0 ){
+					
+					foreach( $cart as $cart_item ){
+						for( $i=0; $i<$cart_item->quantity; $i++ ){
+					$shipper_data .= "
+					<Package>
+						<PackagingType>
+							<Code>02</Code>
+						</PackagingType>
+						<PackageWeight>
+							<UnitOfMeasurement>
+								<Code>$this->ups_weight_type</Code>
+							</UnitOfMeasurement>
+							<Weight>" . $cart_item->weight . "</Weight>
+						</PackageWeight>
+						<Dimensions>
+							<UnitOfMeasurement>
+								<Code>";
+	
+								if( $this->ups_weight_type == 'LBS' ){
+									$shipper_data .= "IN";
+								}else{
+									$shipper_data .= "CM";
+								}
+	
+								$shipper_data .= "</Code>
+							</UnitOfMeasurement>
+							<Length>" . $cart_item->length . "</Length>
+							<Width>" . $cart_item->width . "</Width>
+							<Height>" . $cart_item->height . "</Height>
+						</Dimensions>
+						<PackageServiceOptions>
+							<CurrencyCode>" . get_option( 'ec_option_base_currency' ) . "</CurrencyCode>
+							<MonetaryValue>" . $cart_item->unit_price . "</MonetaryValue>
+						</PackageServiceOptions>
+					</Package>";
+						}
+					}
+					
+					}else{
+						
+					$shipper_data .= "
 					<Package>
 						<PackagingType>
 							<Code>02</Code>
@@ -229,6 +302,9 @@ class ec_ups{
 							<MonetaryValue>$declared_value</MonetaryValue>
 						</PackageServiceOptions>
 					</Package>";
+					
+					}
+					
 					if( $this->ups_negotiated_rates ){
 					$shipper_data .= "
 					<RateInformation>
@@ -263,7 +339,7 @@ class ec_ups{
 		$xml = new SimpleXMLElement($result);
 		
 		for( $i=0; $i<count( $xml->RatedShipment ); $i++ ){
-			$rates[] = array( 'rate_code' => $xml->RatedShipment[$i]->Service->Code[0][0], 'rate' => number_format( floatval( $xml->RatedShipment[$i]->TotalCharges->MonetaryValue ) * $this->ups_conversion_rate, 2, ".", "," ), 'delivery_days' =>  $xml->RatedShipment[$i]->GuaranteedDaysToDelivery );
+			$rates[] = array( 'rate_code' => (string) $xml->RatedShipment[$i]->Service->Code[0][0], 'rate' => number_format( floatval( $xml->RatedShipment[$i]->TotalCharges->MonetaryValue ) * $this->ups_conversion_rate, 2, ".", "," ), 'delivery_days' =>  (string) $xml->RatedShipment[$i]->GuaranteedDaysToDelivery );
 		}
 		
 		return $rates;

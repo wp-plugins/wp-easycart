@@ -69,6 +69,7 @@ class ec_paypal extends ec_third_party{
 		for( $i = 0; $i<count( $this->order_details ); $i++ ){
 			$paypal_counter = $i+1;
 			echo "<input name=\"item_name_" . $paypal_counter . "\" id=\"item_name_" . $paypal_counter . "\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order_details[$i]->title ) . "\" />";
+			echo "<input name=\"item_number_" . $paypal_counter . "\" id=\"item_number_" . $paypal_counter . "\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order_details[$i]->model_number ) . "\" />";
 			if( get_option( 'ec_option_paypal_use_selected_currency' ) ){
 				echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price(  ( $this->order_details[$i]->total_price/$this->order_details[$i]->quantity ) ) . "\" />";
 			}else{
@@ -250,6 +251,7 @@ class ec_paypal extends ec_third_party{
 		for( $i = 0; $i<count( $this->order_details ); $i++ ){
 			$paypal_counter = $i+1;
 			echo "<input name=\"item_name_" . $paypal_counter . "\" id=\"item_name_" . $paypal_counter . "\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order_details[$i]->title ) . "\" />";
+			echo "<input name=\"item_number_" . $paypal_counter . "\" id=\"item_number_" . $paypal_counter . "\" type=\"hidden\" value=\"" . str_replace( '"', '&quot;', $this->order_details[$i]->model_number ) . "\" />";
 			if( get_option( 'ec_option_paypal_use_selected_currency' ) ){
 				echo "<input name=\"amount_" . $paypal_counter . "\" id=\"amount_" . $paypal_counter . "\" type=\"hidden\" value=\"" . $GLOBALS['currency']->convert_price(  ( $this->order_details[$i]->total_price/$this->order_details[$i]->quantity ) ) . "\" />";
 			}else{
@@ -397,6 +399,7 @@ class ec_paypal extends ec_third_party{
 		echo "<input name=\"email\" id=\"email\" type=\"hidden\" value=\"" . htmlspecialchars( $user->email, ENT_QUOTES ) . "\" />";
 		
 		echo "<input name=\"item_name\" id=\"item_name\" type=\"hidden\" value=\"" . htmlspecialchars( $product->title, ENT_QUOTES ) . "\" />";
+		echo "<input name=\"item_number\" id=\"item_number\" type=\"hidden\" value=\"" . htmlspecialchars( $product->model_number, ENT_QUOTES ) . "\" />";
 		
 		if( $product->subscription_signup_fee > 0 ){
 			echo "<input name=\"a1\" id=\"a1\" type=\"hidden\" value=\"" . number_format( $product->subscription_signup_fee + $product->price, 2 ) . "\" />";

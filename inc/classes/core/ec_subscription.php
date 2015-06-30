@@ -305,6 +305,8 @@ class ec_subscription{
 			$ret_string .= "s";
 		}
 		
+		$ret_string = apply_filters( 'wp_easycart_subscription_price_formatting', $ret_string );
+		
 		return $ret_string;
 		
 	}

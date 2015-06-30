@@ -188,7 +188,7 @@ input[type="radio"]{ -webkit-appearance:radio; }
 .ec_product_type1 .ec_seasonal_mode{ text-align:center; width:100%; font-family:'Monda',Arial,sans-serif; font-weight:bold; font-size:12px; color:#222222; margin:10px 0px; text-shadow:none; }
 
 /* Quick View Type 1 */
-.ec_product_type1 .ec_product_quickview > input{ font-family:'Monda',Arial,sans-serif; font-size:13px; position:absolute; opacity:0; width:60%; left:20%; text-align:center; padding:5px 15px; border-radius:20px; background:#000 !important; background-color:#000 !important; color:#FFF !important; top:25%; cursor:pointer; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; z-index:670; color:#FFF; text-decoration:none; border:none; font-weight:normal; text-transform:none; text-shadow:none; border:none; border:none; border-top:none; border-left:none; border-right:none; border-bottom:none; box-shadow:none; height:inherit !important; }
+.ec_product_type1 .ec_product_quickview > input{ font-family:'Monda',Arial,sans-serif; font-size:13px; position:absolute !important; opacity:0; width:60%; left:20%; text-align:center; padding:5px 15px; border-radius:20px; background:#000 !important; background-color:#000 !important; color:#FFF !important; top:25%; cursor:pointer; -webkit-transition: opacity .3s ease-in-out; -moz-transition: opacity .3s ease-in-out; -o-transition: opacity .3s ease-in-out; transition: opacity .3s ease-in-out; z-index:670; color:#FFF; text-decoration:none; border:none; font-weight:normal; text-transform:none; text-shadow:none; border:none; border:none; border-top:none; border-left:none; border-right:none; border-bottom:none; box-shadow:none; height:inherit !important; }
 .ec_product_type1 .ec_product_quickview > input:hover{ background:#222222; background-color:#666666; color:#FFF; border:none; border-top:none; border-left:none; border-right:none; border-bottom:none; box-shadow:none; }
 .ec_product_type1 .ec_product_quickview > input:focus, .ec_product_type1 .ec_product_quickview > input:active{ outline:none; box-shadow:none; }
 
@@ -1371,7 +1371,7 @@ ul.ec_menu_vertical span{ float:right; }
 .ec_specialswidget .ec_product_sale_price .cent{ font-size:16px; }
 
 /* Currency Widget */
-.ec_currencywidget select{ border-color:#e1e1e1; background-color:#f8f8f8; color:#919191; -webkit-appearance:none; border:1px solid #e1e1e1; outline:none; font:13px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; color:#777; margin:0; display:block; max-width:100%; background:#FFF; padding:8px 6px; line-height:1.1em; }
+.ec_currencywidget select{ border-color:#e1e1e1; background-color:#f8f8f8; color:#919191; -webkit-appearance:none; border:1px solid #e1e1e1; outline:none; font:13px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; color:#777; margin:0; display:block; max-width:100%; background:#FFF; padding:8px 6px; line-height:1.1em; height:inherit !important; }
 
 /* Newsletter Popup */
 .ec_newsletter_container{ position:fixed; top:0; left:0; height:100%; width:100%; background:rgba(0,0,0,.75); box-sizing:border-box; z-index:99999; text-align:center; }

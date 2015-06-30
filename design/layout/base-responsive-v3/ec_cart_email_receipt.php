@@ -483,11 +483,11 @@
 
             </td>
 
-            <td width='80' align='center' class='style22'><?php echo $this->cart->cart[$i]->quantity; ?></td>
+            <td width='65' align='center' class='style22'><?php echo $this->cart->cart[$i]->quantity; ?></td>
 
-            <td width='91' align='center' class='style22'><?php echo $unit_price; ?></td>
+            <td width='90' align='center' class='style22'><?php echo $unit_price; ?></td>
 
-            <td align='center' class='style22'><?php echo $total_price; ?></td>
+            <td width='90' align='center' class='style22'><?php echo $total_price; ?></td>
 
         </tr>
 

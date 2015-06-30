@@ -27,10 +27,8 @@ else
 // DISPLAY WIDTH SETUP
 if( isset( $page_options->dynamic_image_sizing ) )  
 	$dynamic_sizing = $page_options->dynamic_image_sizing;
-else if( get_option( 'ec_option_default_dynamic_sizing' ) )
-	$dynamic_sizing = get_option( 'ec_option_default_dynamic_sizing' );
 else
-	$dynamic_sizing = true;
+	$dynamic_sizing = get_option( 'ec_option_default_dynamic_sizing' );
 
 if( isset( $page_options->columns_smartphone ) )  
 	$display_width_smartphone = (100/$page_options->columns_smartphone) . "%";

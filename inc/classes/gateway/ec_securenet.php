@@ -60,7 +60,7 @@ class ec_securenet extends ec_gateway{
 		$headr = array();
 		$headr[] = 'Authorization: Basic ' . $api_base64_encoded;
 		$headr[] = 'Content-Type: application/json';
-		$headr[] = "Content-length: " . strlen( json_encode( $gateway_data ) ) . "\r\n";
+		$headr[] = "Content-length: " . strlen( json_encode( $gateway_data ) );
 		$headr[] = json_encode( $gateway_data );
 		
 		$ch = curl_init( );
@@ -69,11 +69,11 @@ class ec_securenet extends ec_gateway{
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headr );
 		curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'POST' );
 		$response = curl_exec($ch);
+		if( $response === false )
+			$this->mysqli->insert_response( 0, 1, "SecureNet CURL ERROR", curl_error( $ch ) );
 		curl_close ($ch);
 		
-		$response_data = json_decode( $response ); 
-		
-		$this->handle_gateway_response( $response_data );
+		$this->handle_gateway_response( $response );
 		
 		if( $this->is_success ){
 			return true;
@@ -92,7 +92,9 @@ class ec_securenet extends ec_gateway{
 			
 	}
 	
-	function handle_gateway_response( $response ){
+	function handle_gateway_response( $response_data ){
+		
+		$response = json_decode( $response_data ); 
 		
 		$status = $response->result;
 		$failure_message = $response->message;
@@ -102,7 +104,7 @@ class ec_securenet extends ec_gateway{
 		else
 			$this->is_success = 0;
 		
-		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "SecureNet", print_r( $response, true ) );
+		$this->mysqli->insert_response( $this->order_id, !$this->is_success, "SecureNet", $response_data );
 		
 		if( !$this->is_success )
 			$this->error_message = $failure_message;

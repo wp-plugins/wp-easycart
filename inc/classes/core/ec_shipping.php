@@ -31,16 +31,20 @@ class ec_shipping{
 	private $destination_zip;									// VARCHAR
 	private $destination_country;								// VARCHAR(2)
 	
+	private $cart;												// Array of ec_cartitem
+	
 	public $shipping_method;									// shipping_method option
 	
 	public $shipping_promotion_text;							// TEXT
 	
 	private $freeshipping;										// Boolean
 	
-	function __construct( $subtotal, $weight, $quantity = 1, $display_type = 'RADIO', $freeshipping = false, $length = 1, $width = 1, $height = 1 ){
+	function __construct( $subtotal, $weight, $quantity = 1, $display_type = 'RADIO', $freeshipping = false, $length = 1, $width = 1, $height = 1, $cart = array( ) ){
 		$this->mysqli = new ec_db();
 		$this->ec_setting = new ec_setting();
 		$this->shipping_method = $this->ec_setting->get_shipping_method( );
+		
+		$this->cart = $cart;
 		
 		$email_user = "";
 		if( isset( $_SESSION['ec_email'] ) )
@@ -305,7 +309,7 @@ class ec_shipping{
 					$rate = "FREE";
 					
 				else{
-					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
+					$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal, $this->cart );
 					$service_days = $this->shipper->get_service_days( $this->live_based[$i][3], $this->live_based[$i][0] );
 				}
 				
@@ -508,7 +512,7 @@ class ec_shipping{
 							$rate = $this->live_based[$i][4];
 						return "<div id=\"" . $this->live_based[$i][0] . "\"> " . $this->live_based[$i][1] . " " . $GLOBALS['currency']->get_currency_display( $rate ) . "</div>";
 					}else
-						$rate = doubleval( $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal ) ) + doubleval( $this->handling );
+						$rate = doubleval( $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal, $this->cart ) ) + doubleval( $this->handling );
 					
 					return $this->get_live_based_div( $i, $rate + $this->handling );
 				}
@@ -652,7 +656,7 @@ class ec_shipping{
 					}else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
 						$rate = "FREE";
 					else
-						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
+						$rate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal, $this->cart );
 					
 				}else{
 				
@@ -662,7 +666,7 @@ class ec_shipping{
 					else if( $this->live_based[$i][5] > 0 && $this->subtotal >= $this->live_based[$i][5] ) // Shipping free at rate
 						$subrate = 0; // If user is over free shipping limit, return 0 all the time!
 					else
-						$subrate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal );
+						$subrate = $this->shipper->get_rate( $this->live_based[$i][3], $this->live_based[$i][0], $this->destination_zip, $this->destination_country, $this->weight, $this->length, $this->width, $this->height, $this->subtotal, $this->cart );
 					
 					if( $subrate != "ERROR" && floatval( $subrate ) < $lowest ){
 						$lowest = floatval( $subrate );

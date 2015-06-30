@@ -96,7 +96,12 @@ class ec_canadapost{
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlRequest);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		$response = curl_exec($curl); // Execute REST Request
+		if( $response === false ){
+			$db = new ec_db( );
+			$db->insert_response( 0, 1, "CANADA POST CURL ERROR", curl_error( $curl ) );
+		}
 		curl_close($curl);
 		
 		if( $is_test )
@@ -173,7 +178,12 @@ class ec_canadapost{
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlRequest);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		$response = curl_exec($curl); // Execute REST Request
+		if( $response === false ){
+			$db = new ec_db( );
+			$db->insert_response( 0, 1, "CANADA POST CURL ERROR", curl_error( $curl ) );
+		}
 		curl_close($curl);
 		
 		return $this->process_all_rates_response( $response );

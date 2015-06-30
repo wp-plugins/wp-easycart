@@ -628,17 +628,23 @@ class ec_product{
 			
 			if( $this->is_subscription_item ){
 				
-				echo "/";
+				$ret_string = "";
+				
+				$ret_string .= "/";
 				
 				if( $this->subscription_bill_length > 1 ){
 					
-					echo $this->subscription_bill_length . " " . $this->get_subscription_period_name( ) . "s";
+					$ret_string .= $this->subscription_bill_length . " " . $this->get_subscription_period_name( ) . "s";
 					
 				}else{
 					
-					echo $this->get_subscription_period_name( );
+					$ret_string .= $this->get_subscription_period_name( );
 					
 				}
+				
+				$ret_string = apply_filters( 'wp_easycart_subscription_price_formatting', $ret_string );
+				
+				echo $ret_string;
 				
 			}
 			
@@ -656,6 +662,8 @@ class ec_product{
 		}else{
 			$ret_string .= $this->get_subscription_period_name( );
 		}
+		
+		$ret_string = $GLOBALS['currency']->get_currency_display( $this->price ) . apply_filters( 'wp_easycart_subscription_price_formatting', $ret_string );
 		
 		return $ret_string;
 		

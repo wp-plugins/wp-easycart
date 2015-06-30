@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, mcommerce, WordPress shopping cart, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.2.2
-Stable tag: 3.1.5
+Stable tag: 3.1.6
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,12 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.1.6 =
+* New Feature - You can now turn on the advanced option to 'ship all items in separate boxes'. This applies to live shipping (USPS and UPS) and changes the calculation so that they system assumes each item is shipped in its own box.
+* New Feature - PayPal Standard now passed the model number and displays on PayPal and in your account on purchase.
+* Fix - Width added to the total price in email receipt to allow for proper spacing in the line item pricing area.
+* Fix - Dynamic image sizing set to off to start to make for easier setup.
+* Fix - Product import now checks for correct pricing formatting and valid model numbers.
 = 3.1.5 =
 * New Feature - Live editor now works in the Safari browser!
 * Improvement - Speed improvements in the store with the live editor, less content loading at a time for the admin.

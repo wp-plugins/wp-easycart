@@ -1427,3 +1427,13 @@ function ec_details_show_inquiry_form( ){
 function ec_details_hide_inquiry_popup( ){
 	jQuery( '.ec_details_inquiry_popup' ).fadeOut( 'fast' );
 }
+
+function ec_details_show_image_popup( model_number ){
+	jQuery( document.getElementById( 'ec_details_large_popup_' + model_number ) ).show( );
+	jQuery( 'html' ).css( 'overflow', 'hidden' );
+}
+
+function ec_details_hide_large_popup( model_number ){
+	jQuery( document.getElementById( 'ec_details_large_popup_' + model_number ) ).hide( );
+	jQuery( 'html' ).css( 'overflow', 'scroll' );
+}

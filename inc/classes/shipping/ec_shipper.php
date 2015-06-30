@@ -77,11 +77,11 @@
 		
 		}
 		
-		public function get_rate( $ship_company, $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10, $declared_value = 0 ){
+		public function get_rate( $ship_company, $ship_code, $destination_zip, $destination_country, $weight, $length = 10, $width = 10, $height = 10, $declared_value = 0, $cart = array( ) ){
 			if( $ship_company == "ups" ){
 				if( count( $this->ups_data ) <= 0 ){
 					// get the rates
-					$this->ups_data = $this->ups->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value );
+					$this->ups_data = $this->ups->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 				}
 				
 				// Loop through and return the correct rate.
@@ -96,14 +96,12 @@
 			}else if( $ship_company == "usps" ){
 				if( count( $this->usps_data ) <= 0 ){
 					// get the rates
-					$this->usps_data = $this->usps->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height );
+					$this->usps_data = $this->usps->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 				}
 				
 				// Loop through and return the correct rate.
-				for( $i=0; $i<count( $this->usps_data ); $i++ ){
-					if( isset( $this->usps_data[$i]['rate_code'] ) && $this->usps_data[$i]['rate_code'] == $ship_code ){
-						return $this->usps_data[$i]['rate'];
-					}
+				if( isset( $this->usps_data[$ship_code] ) ){
+					return $this->usps_data[$ship_code]['rate'];
 				}
 				
 				return "ERROR";
@@ -111,7 +109,7 @@
 			}else if( $ship_company == "fedex" ){
 				if( count( $this->fedex_data ) <= 0 ){
 					// get the rates
-					$this->fedex_data = $this->fedex->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height );
+					$this->fedex_data = $this->fedex->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 				}
 				
 				// Loop through and return the correct rate.
@@ -129,7 +127,7 @@
 			}else if( $ship_company == "auspost" ){
 				if( count( $this->auspost_data ) <= 0 ){
 					// get the rates
-					$this->auspost_data = $this->auspost->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height );
+					$this->auspost_data = $this->auspost->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 				}
 				
 				// Loop through and return the correct rate.
@@ -158,7 +156,7 @@
 			}else if( $ship_company == "canadapost" ){
 				if( count( $this->canadapost_data ) <= 0 ){
 					// get the rates
-					$this->canadapost_data = $this->canadapost->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height );
+					$this->canadapost_data = $this->canadapost->get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 				}
 				
 				// Loop through and return the correct rate.

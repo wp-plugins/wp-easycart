@@ -64,7 +64,9 @@
     	
         <div class="ec_cart_header ec_top"><?php echo $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_title' )?></div>
         
-        <div class="ec_cart_input_row">
+        <?php do_action( 'wpeasycart_account_links' ); ?>
+
+		<div class="ec_cart_input_row">
 
 			<?php $this->display_billing_information_link( $GLOBALS['language']->get_text( 'account_navigation', 'account_navigation_billing_information' ) ); ?>
 

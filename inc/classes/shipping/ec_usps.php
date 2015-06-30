@@ -14,7 +14,7 @@ class ec_usps{
 		$this->shipper_url = "http://production.shippingapis.com/ShippingAPI.dll";
 	}
 		
-	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight ){
+	public function get_rate( $ship_code, $destination_zip, $destination_country, $weight, $length = 1, $width = 1, $height = 1, $declared_value = 0, $cart = array( ) ){
 		
 		if( $weight == 0 )
 			return "0.00";
@@ -86,7 +86,7 @@ class ec_usps{
 									
 		$rate_type = strtoupper( $ship_code );
 		$rate_code = $rate_codes[$rate_type];
-		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
+		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 		
 		
 		$ch = curl_init(); //initiate the curl session 
@@ -106,7 +106,7 @@ class ec_usps{
 		
 	}
 		
-	public function get_all_rates( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+	public function get_all_rates( $destination_zip, $destination_country, $weight, $length = 1, $width = 1, $height = 1, $declared_value = 0, $cart = array( )){
 		
 		if( strlen( $destination_zip ) <= 0 )
 			$destination_zip = $this->usps_ship_from_zip;
@@ -130,7 +130,7 @@ class ec_usps{
 		if( !$destination_zip || $destination_zip == "" )
 			$destination_zip = $this->usps_ship_from_zip;
 		
-		$ship_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height );
+		$ship_data = $this->get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 		
 		
 		$ch = curl_init(); //initiate the curl session 
@@ -150,7 +150,7 @@ class ec_usps{
 		
 	}
 	
-	public function get_rate_test( $ship_code, $destination_zip, $destination_country, $weight ){
+	public function get_rate_test( $ship_code, $destination_zip, $destination_country, $weight, $length = 1, $width = 1, $height = 1, $declared_value = 0, $cart = array( ) ){
 		
 		if( $weight == 0 )
 			return "0.00";
@@ -219,7 +219,7 @@ class ec_usps{
 							
 		$rate_type = strtoupper( $ship_code );
 		$rate_code = $rate_codes[$rate_type];
-		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight );
+		$ship_data = $this->get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value, $cart );
 		
 		$ch = curl_init(); //initiate the curl session 
 		curl_setopt($ch, CURLOPT_URL, $this->shipper_url); //set to url to post to
@@ -238,7 +238,7 @@ class ec_usps{
 		
 	}
 	
-	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight, $height = 1, $width = 1, $length = 1 ){
+	private function get_shipper_data( $ship_code, $destination_zip, $destination_country, $weight, $height = 1, $width = 1, $length = 1, $declared_value = 0, $cart = array( ) ){
 				
 		$lbs = floor( $weight );
 		$ounces = floor( 16 * ( $weight - $lbs  ) );
@@ -288,7 +288,59 @@ class ec_usps{
 		
 			$this->use_international = false;
 			$shipper_data = "<RateV4Request USERID='" . $this->usps_user_name . "' >
-							<Revision/>
+							<Revision/>";
+			
+			if( get_option( 'ec_option_ship_items_seperately' ) && count( $cart ) > 0 ){
+				
+			$item_ids = array( '1ST', '2ND', '3RD' );
+				
+			foreach( $cart as $cartitem ){
+				
+			$lbs = floor( $cartitem->weight );
+			$ounces = floor( 16 * ( $cartitem->weight - $lbs  ) );
+				
+			$length = ceil( $cartitem->length );
+			if( $length <= 0 )
+				$length = 1;
+			$width = ceil( $cartitem->width );
+			if( $width <= 0 )
+				$width = 1;
+			$height = ceil( $cartitem->height );
+			if( $height <= 0 )
+				$height = 1;
+						
+			for( $j=0; $j<$cartitem->quantity; $j++ ){		
+			$shipper_data .= "
+							<Package ID='";
+							if( $i<3 ){
+								$shipper_data .= $item_ids[$i];
+							}else{
+								$shipper_data .= ($i+1) . "TH";
+							}
+			$shipper_data .= "' >
+								<Service>" . $ship_code . "</Service>
+								<ZipOrigination>" . $this->usps_ship_from_zip . "</ZipOrigination>
+								<ZipDestination>" . $destination_zip . "</ZipDestination>
+								<Pounds>" . $lbs . "</Pounds>
+								<Ounces>" . $ounces . "</Ounces>
+								<Container>RECTANGULAR</Container>
+								<Size>LARGE</Size>
+								<Width>" . $width . "</Width>
+								<Length>" . $length . "</Length>
+								<Height>" . $height . "</Height>
+								<Machinable>true</Machinable>
+							</Package>";			
+			
+			$i++;
+			
+			}// close quantity loop
+			
+			$i++;
+			
+			}// close cart items loop
+			
+			}else{
+			$shipper_data .= "
 							<Package ID='1ST' >
 								<Service>" . $ship_code . "</Service>
 								<ZipOrigination>" . $this->usps_ship_from_zip . "</ZipOrigination>
@@ -301,7 +353,10 @@ class ec_usps{
 								<Length>" . $length . "</Length>
 								<Height>" . $height . "</Height>
 								<Machinable>true</Machinable>
-							</Package>
+							</Package>";
+			}
+			
+			$shipper_data .= "
 						</RateV4Request>";
 						
 		}
@@ -309,7 +364,7 @@ class ec_usps{
 		return $shipper_data;
 	}
 	
-	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height ){
+	private function get_all_rates_shipper_data( $destination_zip, $destination_country, $weight, $length, $width, $height, $declared_value = 0, $cart = array( ) ){
 				
 		$lbs = floor( $weight );
 		$ounces = floor( 16 * ( $weight - $lbs  ) );
@@ -359,7 +414,58 @@ class ec_usps{
 		
 			$this->use_international = false;
 			$shipper_data = "<RateV4Request USERID='" . $this->usps_user_name . "' >
-							<Revision/>
+							<Revision/>";
+			
+			if( get_option( 'ec_option_ship_items_seperately' ) && count( $cart ) > 0 ){
+				
+			$item_ids = array( '1ST', '2ND', '3RD' );
+			
+			$i=0;
+				
+			foreach( $cart as $cartitem ){
+				
+			$lbs = floor( $cartitem->weight );
+			$ounces = floor( 16 * ( $cartitem->weight - $lbs  ) );
+				
+			$length = ceil( $cartitem->length );
+			if( $length <= 0 )
+				$length = 1;
+			$width = ceil( $cartitem->width );
+			if( $width <= 0 )
+				$width = 1;
+			$height = ceil( $cartitem->height );
+			if( $height <= 0 )
+				$height = 1;
+				
+			for( $j=0; $j<$cartitem->quantity; $j++ ){		
+			$shipper_data .= "
+							<Package ID='";
+							if( $i<3 ){
+								$shipper_data .= $item_ids[$i];
+							}else{
+								$shipper_data .= ($i+1) . "TH";
+							}
+			$shipper_data .= "' >
+								<Service>ALL</Service>
+								<ZipOrigination>" . $this->usps_ship_from_zip . "</ZipOrigination>
+								<ZipDestination>" . $destination_zip . "</ZipDestination>
+								<Pounds>" . $lbs . "</Pounds>
+								<Ounces>" . $ounces . "</Ounces>
+								<Container>RECTANGULAR</Container>
+								<Size>LARGE</Size>
+								<Width>" . $width . "</Width>
+								<Length>" . $length . "</Length>
+								<Height>" . $height . "</Height>
+								<Machinable>true</Machinable>
+							</Package>";	
+			$i++;
+			
+			}// close quantity loop
+			
+			}// close cart items loop
+			
+			}else{
+			$shipper_data .= "
 							<Package ID='1ST' >
 								<Service>ALL</Service>
 								<ZipOrigination>" . $this->usps_ship_from_zip . "</ZipOrigination>
@@ -372,7 +478,10 @@ class ec_usps{
 								<Length>" . $length . "</Length>
 								<Height>" . $height . "</Height>
 								<Machinable>true</Machinable>
-							</Package>
+							</Package>";
+			}
+			
+			$shipper_data .= "
 						</RateV4Request>";
 						
 		}
@@ -449,15 +558,26 @@ class ec_usps{
 									"0" =>  "FIRST CLASS"
 								);
 								
+			foreach( $xml->Package as $package ){
 			
-			for( $i=0; $i<count( $xml->Package->Postage ); $i++ ){
-				$rate_id = $xml->Package->Postage[$i]['CLASSID'];
-				if( isset( $rate_codes[ strval( $rate_id ) ] ) ){
-					$rates[] = array( 'rate_code' => $rate_codes[ strval( $rate_id ) ], 'rate' => $xml->Package->Postage[$i]->Rate );
+				$count = 0;
+				for( $i=0; $i<count( $package->Postage ); $i++ ){
+					
+					$rate_id = $package->Postage[$i]['CLASSID'];
+					if( isset( $rate_codes[ strval( $rate_id ) ] ) ){
+						
+						if( isset( $rates[$rate_codes[ strval( $rate_id )]] ) && isset( $rates[$rate_codes[ strval( $rate_id )]]['rate'] ) ){
+							$rates[$rate_codes[ strval( $rate_id )]]['rate'] = $rates[$rate_codes[ strval( $rate_id )]]['rate'] + (float) $package->Postage[$i]->Rate;
+						}else{
+							$rates[$rate_codes[ strval( $rate_id )]] = array( 'rate_code' => (string) $rate_codes[ strval( $rate_id ) ], 'rate' => (float) $package->Postage[$i]->Rate );
+							$count++;
+						}
+					}
+					
 				}
-			
-			}
 				
+			}
+			
 		}
 		
 		return $rates;

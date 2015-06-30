@@ -25,6 +25,8 @@ class ec_admin_productimporter{
 	private $post_id_index;
 	private $model_number_index;
 	private $title_index;
+	private $price_index;
+	private $list_price_index;
 	private $activate_in_store_index;
 	private $headers;
 	private $limit;
@@ -98,6 +100,12 @@ class ec_admin_productimporter{
 			
 			}else if($this->headers[$i] == "title" ){ // use to check for errors
 				$this->title_index = $i;
+			
+			}else if($this->headers[$i] == "price" ){ // use to check for errors
+				$this->price_index = $i;
+			
+			}else if($this->headers[$i] == "list_price" ){ // use to check for errors
+				$this->list_price_index = $i;
 			
 			}else if( !in_array( $this->headers[$i], $valid_headers ) ){ // error, invalid column
 				return "You have an invalid column header at column " . $i . " (value " . $this->headers[$i] . "), please remove or correct the label of that column to continue.";
@@ -205,7 +213,15 @@ class ec_admin_productimporter{
 						$update_vals = array( );
 						for( $j=0; $j<count( $rows[$i] ); $j++ ){
 							if( $j != $this->product_id_index && $j != $this->post_id_index ){
-								$update_vals[] = utf8_encode( $rows[$i][$j] );
+								if( $j == $this->price_index || $j == $this->list_price_index ){
+									$update_vals[] = utf8_encode( str_replace( ',', '', $rows[$i][$j] ) );
+								}else if( $j == $this->model_number_index ){
+									$chars = "!@#$%^&*()+={}[]|\'\";:,<.>/?`~*";
+									$pattern = "/[".preg_quote($chars, "/")."]/";
+									$update_vals[] = utf8_encode( preg_replace( $pattern, "", $rows[$i][$j] ) );
+								}else{
+									$update_vals[] = utf8_encode( $rows[$i][$j] );
+								}
 							}
 						}
 						$update_vals[] = $product_id; // Add product id last for the update
@@ -239,7 +255,15 @@ class ec_admin_productimporter{
 						$insert_vals = array( );
 						for( $j=0; $j<count( $rows[$i] ); $j++ ){
 							if( $j != $this->product_id_index && $j != $this->post_id_index ){
-								$insert_vals[] = utf8_encode( $rows[$i][$j] );
+								if( $j == $this->price_index || $j == $this->list_price_index ){
+									$insert_vals[] = utf8_encode( str_replace( ',', '', $rows[$i][$j] ) );
+								}else if( $j == $this->model_number_index ){
+									$chars = "!@#$%^&*()+={}[]|\'\";:,<.>/?`~*";
+									$pattern = "/[".preg_quote($chars, "/")."]/";
+									$insert_vals[] = utf8_encode( preg_replace( $pattern, "", $rows[$i][$j] ) );
+								}else{
+									$insert_vals[] = utf8_encode( $rows[$i][$j] );
+								}
 							}
 						}
 						

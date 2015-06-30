@@ -1337,6 +1337,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_restrict_store', implode( '***', $_POST['ec_option_restrict_store'] ) );
 	update_option( 'ec_option_use_custom_post_theme_template', $_POST['ec_option_use_custom_post_theme_template'] );
 	update_option( 'ec_option_send_signup_email', $_POST['ec_option_send_signup_email'] );
+	update_option( 'ec_option_ship_items_seperately', $_POST['ec_option_ship_items_seperately'] );
 	update_option( 'ec_option_amazon_key', $_POST['ec_option_amazon_key'] );
 	update_option( 'ec_option_amazon_secret', $_POST['ec_option_amazon_secret'] );
 	update_option( 'ec_option_amazon_bucket', $_POST['ec_option_amazon_bucket'] );

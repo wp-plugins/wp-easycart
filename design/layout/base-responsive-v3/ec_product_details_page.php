@@ -262,7 +262,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
         <?php /* END MOBILE SIZED CONTENT REGION */ ?>
         <?php /* START PRODUCT IMAGES AREA */ ?>
         <div class="ec_details_images">
-        	<div class="ec_details_main_image"<?php if( get_option( 'ec_option_show_large_popup' ) ){?> onclick="ec_details_show_image_popup( );"<?php }else{ ?> style="cursor:inherit;"<?php }?>><img src="<?php echo $this->product->get_first_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
+        	<div class="ec_details_main_image"<?php if( get_option( 'ec_option_show_large_popup' ) ){?> onclick="ec_details_show_image_popup( '<?php echo $this->product->model_number; ?>' );"<?php }else{ ?> style="cursor:inherit;"<?php }?>><img src="<?php echo $this->product->get_first_image_url( ); ?>" alt="<?php echo $this->product->title; ?>" /></div>
             
 			<?php /* START MAIN IMAGE THUMBNAILS */ ?>
             <?php /* START DISPLAY FOR OPTION ITEM IMAGES USEAGE */ ?>
@@ -306,7 +306,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
             
             <?php /* START PRODUCT IMAGES POPUP AREA */ ?>
             <?php if( get_option( 'ec_option_show_large_popup' ) ){?>
-            <div class="ec_details_large_popup">
+            <div class="ec_details_large_popup" id="ec_details_large_popup_<?php echo $this->product->model_number; ?>">
             	<div class="ec_details_large_popup_content">
                 	<div class="ec_details_large_popup_padding">
                     	<div class="ec_details_large_popup_holder">
@@ -337,7 +337,7 @@ jQuery( '.ec_details_inquiry_popup' ).appendTo( document.body );
                             </div>
                             <?php }?>
                             <?php /* END POPUP THUMBNAIL SETUP */ ?>
-                            <div class="ec_details_large_popup_close"><input type="button" onclick="ec_details_hide_large_popup( );" value="x"></div>
+                            <div class="ec_details_large_popup_close"><input type="button" onclick="ec_details_hide_large_popup( '<?php echo $this->product->model_number; ?>' );" value="x"></div>
                         </div>
                     </div>
                 </div>
@@ -1198,14 +1198,6 @@ jQuery( '.ec_details_large_popup_thumbnail' ).click( function( e ){
 	jQuery( '.ec_details_large_popup_main' ).find( 'img' ).attr( 'src', src );
 	jQuery( '.ec_details_magbox_image' ).css( 'background', 'url( "' + src + '" ) no-repeat' );
 });
-function ec_details_show_image_popup( ){
-	jQuery( '.ec_details_large_popup' ).show( );
-	jQuery( 'html' ).css( 'overflow', 'hidden' );
-}
-function ec_details_hide_large_popup( ){
-	jQuery( '.ec_details_large_popup' ).hide( );
-	jQuery( 'html' ).css( 'overflow', 'scroll' );
-}
 jQuery( '.ec_minus' ).click( function( ){
 	if( Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) > 0 && 
 		Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) > Number( jQuery( this ).parent( ).find( '.ec_quantity' ).attr( 'min' ) )
