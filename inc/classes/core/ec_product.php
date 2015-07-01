@@ -655,8 +655,7 @@ class ec_product{
 	
 	public function get_price_formatted( ){
 		
-		$ret_string = "";
-		$ret_string .= $GLOBALS['currency']->get_currency_display( $this->price ) . "/"; 
+		$ret_string = "/"; 
 		if( $this->subscription_bill_length > 1 ){
 			$ret_string .= $this->subscription_bill_length . " " . $this->get_subscription_period_name( ) . "s";
 		}else{
