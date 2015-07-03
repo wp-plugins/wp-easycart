@@ -1995,7 +1995,7 @@ class ec_db{
 	}
 	
 	public function insert_order_option( $orderdetail_id, $tempcart_id, $advanced_option ){
-		$sql = "INSERT INTO ec_order_option(orderdetail_id, option_name, optionitem_name, option_type, option_value, option_price_change, optionitem_allow_download) VALUES(%d, %s, %s, %s, %s, %s, %d)";
+		$sql = "INSERT INTO ec_order_option(orderdetail_id, option_name, optionitem_name, option_type, option_value, option_price_change, optionitem_allow_download, option_label) VALUES(%d, %s, %s, %s, %s, %s, %d, %s)";
 		// Set the display text for an option item price adjustment
 		$optionitem_price = ""; 
 		if( $advanced_option->optionitem_price > 0 ){ 
@@ -2022,7 +2022,7 @@ class ec_db{
 			}
 		}
 		
-		$this->mysqli->query( $this->mysqli->prepare( $sql, $orderdetail_id, $advanced_option->option_name, $advanced_option->optionitem_name, $advanced_option->option_type, $option_value, $optionitem_price, $advanced_option->optionitem_allow_download ) );
+		$this->mysqli->query( $this->mysqli->prepare( $sql, $orderdetail_id, $advanced_option->option_name, $advanced_option->optionitem_name, $advanced_option->option_type, $option_value, $optionitem_price, $advanced_option->optionitem_allow_download, $advanced_option->option_label ) );
 	}
 	
 	public function insert_response( $order_id, $is_error, $processor, $response_text ){
@@ -2950,7 +2950,7 @@ class ec_db{
 	}
 	
 	public function get_order_options( $orderdetail_id ){
-		$sql = "SELECT ec_order_option.option_name, ec_order_option.optionitem_name, ec_order_option.option_type, ec_order_option.option_value, ec_order_option.option_price_change, ec_order_option.optionitem_allow_download FROM ec_order_option WHERE ec_order_option.orderdetail_id = %d";
+		$sql = "SELECT ec_order_option.option_name, ec_order_option.option_label, ec_order_option.optionitem_name, ec_order_option.option_type, ec_order_option.option_value, ec_order_option.option_price_change, ec_order_option.optionitem_allow_download FROM ec_order_option WHERE ec_order_option.orderdetail_id = %d";
 		return $this->mysqli->get_results( $this->mysqli->prepare( $sql, $orderdetail_id ) );
 	}
 	

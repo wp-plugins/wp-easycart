@@ -362,6 +362,7 @@ CREATE TABLE IF NOT EXISTS `ec_order_option` (
   `option_value` TEXT COLLATE utf8_general_ci NOT NULL COMMENT 'The value of this selected option.',
   `option_price_change` VARCHAR(128) COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'The display value for a price change on this option.',
   `optionitem_allow_download` TINYINT(1) NOT NULL DEFAULT 1 COMMENT 'Gives the ability to disallow a download via option set.',
+  `option_label` VARCHAR(128) NOT NULL DEFAULT '' COMMENT 'Passes the option label from the front end to store with each order.',
   PRIMARY KEY (`order_option_id`),
   UNIQUE KEY (`order_option_id`),
   KEY `ec_order_option_idx2` (`orderdetail_id`) 

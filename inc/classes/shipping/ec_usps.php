@@ -532,11 +532,11 @@ class ec_usps{
 					$min_rate = $service->Postage;
 				
 				if( (string)$service->attributes()->ID == "1" ){
-					$rates[] = array( 'rate_code' => "EXPRESS", 'rate' => $service->Postage );
+					$rates["EXPRESS"] = array( 'rate_code' => "EXPRESS", 'rate' => $service->Postage );
 				}else if( (string)$service->attributes()->ID == "2" ){
-					$rates[] = array( 'rate_code' => "PRIORITY", 'rate' => $service->Postage );
+					$rates["PRIORITY"] = array( 'rate_code' => "PRIORITY", 'rate' => $service->Postage );
 				}else if( (string)$service->attributes()->ID == "15" ){
-					$rates[] = array( 'rate_code' => "FIRST CLASS", 'rate' => $service->Postage );
+					$rates["FIRST CLASS"] = array( 'rate_code' => "FIRST CLASS", 'rate' => $service->Postage );
 				}
 				
 			}

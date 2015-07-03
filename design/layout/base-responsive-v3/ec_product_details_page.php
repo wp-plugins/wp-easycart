@@ -1204,7 +1204,7 @@ jQuery( '.ec_minus' ).click( function( ){
 	){
 		jQuery( this ).parent( ).find( '.ec_quantity' ).val( Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) - 1 )
 	}
-	ec_details_advanced_adjust_price( );
+	<?php if( $this->product->use_advanced_optionset ){ ?>ec_details_advanced_adjust_price( );<?php }else{ ?>ec_details_base_adjust_price( );<?php }?>
 } );
 jQuery( '.ec_plus' ).click( function( ){
 	if( !jQuery( this ).parent( ).find( '.ec_quantity' ).attr( 'max' ) || 
@@ -1212,13 +1212,13 @@ jQuery( '.ec_plus' ).click( function( ){
 	){
 		jQuery( this ).parent( ).find( '.ec_quantity' ).val( Number( jQuery( this ).parent( ).find( '.ec_quantity' ).val( ) ) + 1 )
 	}
-	ec_details_advanced_adjust_price( );
+	<?php if( $this->product->use_advanced_optionset ){ ?>ec_details_advanced_adjust_price( );<?php }else{ ?>ec_details_base_adjust_price( );<?php }?>
 } );
 jQuery( document.getElementById( 'ec_quantity' ) ).change( function( ){
-	ec_details_advanced_adjust_price( );
+	<?php if( $this->product->use_advanced_optionset ){ ?>ec_details_advanced_adjust_price( );<?php }else{ ?>ec_details_base_adjust_price( );<?php }?>
 } );
 jQuery( document.getElementById( 'ec_donation_amount' ) ).change( function( ){
-	ec_details_base_adjust_price( );
+	<?php if( $this->product->use_advanced_optionset ){ ?>ec_details_advanced_adjust_price( );<?php }else{ ?>ec_details_base_adjust_price( );<?php }?>
 } );
 jQuery( '.ec_details_tab' ).click( function( ){
 	jQuery( '.ec_details_tab' ).removeClass( 'ec_active' );

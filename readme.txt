@@ -3,7 +3,7 @@ Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, mcommerce, wordpress shopping cart,  wordpress ecommerce, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
 Tested up to: 4.2.2
-Stable tag: 3.1.7
+Stable tag: 3.1.8
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,10 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.1.8 =
+* Fix - USPS International shipping issue fixed.
+* Fix - Product details now correctly shows price adjustments for basic price adjustment option sets.
+* Improvement - Now passing through the option label with selected options in the order.
 = 3.1.7 =
 * Fix - Conflict of easy plugin install script with other uses of the same script is now fixed.
 * New Feature - You can now turn on the advanced option to 'ship all items in separate boxes'. This applies to live shipping (USPS and UPS) and changes the calculation so that they system assumes each item is shipped in its own box.
