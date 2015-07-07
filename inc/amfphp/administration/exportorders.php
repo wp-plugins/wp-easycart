@@ -25,8 +25,8 @@ $requestID = "-1";
 if( isset( $_GET['reqID'] ) )
 	$requestID = $_GET['reqID'];
 	
-if( isset( $_GET['beginningdate'] ) ){
- 	$startdate = $_GET['beginningdate'];
+if( isset( $_GET['startdate'] ) ){
+ 	$startdate = $_GET['startdate'];
 	$startdate = new DateTime( $startdate );
 }
 
