@@ -61,6 +61,8 @@ class ec_wpoptionset{
 		array_push($this->wp_option_names, 'ec_option_currency_decimal_places');			array_push($this->wp_option_defaults, '2' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');																					
 		array_push($this->wp_option_names, 'ec_option_currency_thousands_seperator');		array_push($this->wp_option_defaults, ',' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');																					
+		array_push($this->wp_option_names, 'ec_option_show_currency_code');					array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_default_store_filter');				array_push($this->wp_option_defaults, '0' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');

@@ -67,12 +67,22 @@ class ec_subscription{
 		echo $this->title;
 	}
 	
-	public function display_next_bill_date( $format ){
-		echo gmdate( $format, $this->next_payment );
+	public function display_next_bill_date( $date_format = "" ){
+		if( $date_format == "" ){
+			$date_format = get_option('date_format');
+			echo gmdate( $date_format, strtotime( $this->next_payment ) );
+		}else{
+			echo gmdate( $date_format, strtotime( $this->next_payment ) );
+		}
 	}
 	
-	public function display_last_bill_date( $format ){
-		echo gmdate( $format, $this->last_billed );
+	public function display_last_bill_date( $date_format = "" ){
+		if( $date_format == "" ){
+			$date_format = get_option('date_format');
+			echo gmdate( $date_format, strtotime( $this->last_billed ) );
+		}else{
+			echo gmdate( $date_format, strtotime( $this->last_billed ) );
+		}
 	}
 	
 	public function display_price( ){
@@ -229,7 +239,12 @@ class ec_subscription{
 		return $this->stripe_subscription_id;
 	}
 	
-	public function display_past_payments( $date_format ){
+	public function display_past_payments( $date_format = "" ){
+		
+		if( $date_format == "" ){
+			$date_format = get_option( 'date_format' ) . " " . get_option( 'time_format' );
+		}
+		
 		if( $this->past_payments ){
 			foreach( $this->past_payments as $payment ){
 				echo date( $date_format, strtotime( $payment->order_date ) ) . " | " . $GLOBALS['currency']->get_currency_display( $payment->grand_total ) . " | <a href=\"" . $this->account_page . $this->permalink_divider . "ec_page=order_details&order_id=" . $payment->order_id . "\">View Order</a>";

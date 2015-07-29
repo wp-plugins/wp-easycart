@@ -43,7 +43,7 @@
 			"options":{
 				"product_quick_view":{
 					"title":"Product Quick View Label",
-					"value":"快速瀏覽"
+					"value":"預覽"
 				},
 				"product_design_now":{
 					"title":"Product Design Now Label",
@@ -51,7 +51,7 @@
 				},
 				"product_no_results":{
 					"title":"Product Page No Results",
-					"value":"對不起，找不到你搜尋的商品。"
+					"value":"抱歉，沒有你搜尋的商品，請嘗試其他關鍵字。"
 				},
 				"product_items_per_page":{
 					"title":"Product Page Items per Page",
@@ -75,11 +75,11 @@
 				},
 				"product_results":{
 					"title":"Product Page Num Results",
-					"value":"搜尋結果"
+					"value":"個搜尋結果"
 				},
 				"product_view_cart":{
 					"title":"Product Page View Cart",
-					"value":"查看購物籃"
+					"value":"前往付款"
 				},
 				"product_product_added_note":{
 					"title":"Product Page Added to Cart Note",
@@ -87,11 +87,11 @@
 				},
 				"product_product_view_per_page":{
 					"title":"Product Page View in Per Page",
-					"value":"查看"
+					"value":"每頁查看數量"
 				},
 				"product_page_restricted_line_1":{
 					"title":"Restricted Product Line 1",
-					"value":"本網店不接受[開放獲取]（OPEN ACCESS）"
+					"value":"本網站的部份內容需要登入賬戶後才能檢視，請註冊新賬戶或登入現有賬戶。"
 				},
 				"product_page_restricted_line_2":{
 					"title":"Restricted Product Line 2 Prior to Link",
@@ -117,7 +117,7 @@
 		},
 
 		"quick_view":{
-			"label":"快速瀏覽",
+			"label":"預覽商品",
 			"options":{
 				"quick_view_gift_card_message":{
 					"title":"Gift Card Message Title",
@@ -141,7 +141,7 @@
 				},
 				"quick_view_add_to_cart":{
 					"title":"Add to Cart Button",
-					"value":"放入購品籃"
+					"value":"放入購物籃"
 				},
 				"quick_view_select_options":{
 					"title":"Select Options Button",
@@ -206,7 +206,7 @@
 				},
 				"product_details_description":{
 					"title":"Description Title",
-					"value":"描述"
+					"value":"商品詳情"
 				},
 				"product_details_customer_reviews":{
 					"title":"Customer Reviews Title",
@@ -214,7 +214,7 @@
 				},
 				"product_details_specifications":{
 					"title":"Specifications Title",
-					"value":"規格"
+					"value":"商品規格"
 				},
 				"product_details_customer_rating":{
 					"title":"Customer Rating",
@@ -230,11 +230,11 @@
 				},
 				"product_details_review_no_reviews":{
 					"title":"Product Details, Customer Reviews, No Reviews",
-					"value":"暫時未有顧客評語，搶先發你的表評語！"
+					"value":"暫時未有評語，搶先發表你的意見！"
 				},
 				"product_details_add_to_cart":{
 					"title":"Add to Cart button text",
-					"value":"放入購品籃"
+					"value":"放入購物籃"
 				},
 				"product_details_select_options":{
 					"title":"Select Options Button",
@@ -242,7 +242,7 @@
 				},
 				"product_details_out_of_stock":{
 					"title":"Out of Stock Text",
-					"value":"暫時沽清"
+					"value":"經已售完，多謝支持！"
 				},
 				"product_details_sign_up_now":{
 					"title":"Sign Up Now Text",
@@ -322,7 +322,7 @@
 				},
 				"product_details_home_link":{
 					"title":"Home Breadcrumbs Link",
-					"value":"居所"
+					"value":"首頁"
 				},
 				"product_details_store_link":{
 					"title":"Store Breadcrumbs Link",
@@ -358,11 +358,11 @@
 				},
 				"product_details_missing_option":{
 					"title":"Store Missing Option",
-					"value":"遺漏選項："
+					"value":"請先選取商品的"
 				},
 				"product_details_maximum_quantity":{
 					"title":"Store Maximum Quantity Exceeded",
-					"value":"超過最多購買數量"
+					"value":"購買數量多過存貨數量，請重選。"
 				},
 				"product_details_one_time_addition1":{
 					"title":"Store One Time Addition 1",
@@ -374,7 +374,7 @@
 				},
 				"product_details_left_in_stock":{
 					"title":"Store Left in Stock",
-					"value":"剩餘存貨"
+					"value":"（存貨數量）"
 				},
 				"product_details_categories":{
 					"title":"Store Categories",
@@ -390,11 +390,11 @@
 				},
 				"product_details_tier_buy":{
 					"title":"Tiered Pricing buy x at y",
-					"value":"購買"
+					"value":"選購"
 				},
 				"product_details_tier_buy_at":{
 					"title":"Tiered Pricing buy x at y",
-					"value":"未改"
+					"value":"個或以上，減至每個"
 				},
 				"product_details_gift_card_error":{
 					"title":"Gift Card Option Error Text",
@@ -402,7 +402,7 @@
 				},
 				"product_details_your_price":{
 					"title":"Your Price:",
-					"value":"你的售價："
+					"value":"現售："
 				},
 				"product_details_backorder_until":{
 					"title":"Backorder UNTIL date, until",
@@ -463,11 +463,11 @@
 				},
 				"product_details_add_a_review_for":{
 					"title":"Store Add a Review",
-					"value":"增加評語"
+					"value":"發表評語"
 				},
 				"product_details_your_review_title":{
 					"title":"Store Review title",
-					"value":"你的評語標題"
+					"value":"你的標題"
 				},
 				"product_details_your_review_rating":{
 					"title":"Store Review Rating",
@@ -479,19 +479,19 @@
 				},
 				"product_details_your_review_submit":{
 					"title":"Store Review Submit",
-					"value":"提交評語"
+					"value":"發表"
 				},
 				"product_details_review_submitted_button":{
 					"title":"Product Details Review Submitted Button",
-					"value":"你的評語已提交,多謝你的意見。"
+					"value":"你的評語已提交，多謝你的意見。"
 				},
 				"product_details_submitting_review":{
 					"title":"Store Submitting Review",
-					"value":"你的評語正在提交中，麻煩稍等一會。"
+					"value":"你的評語正在提交中，請稍等一會。"
 				},
 				"product_details_review_submitted":{
 					"title":"Store Review Submitted",
-					"value":"你的評語已成功提交，多謝你的意見。"
+					"value":"你的評語已提交，多謝你的意見。"
 				},
 				"product_details_review_log_in_first":{
 					"title":"Log in to Review",
@@ -503,7 +503,7 @@
 				},
 				"review_error":{
 					"title":"Store Review Error Missing Data",
-					"value":"出現錯誤，麻煩你同時提供評語的題目、評分及內容。"
+					"value":"請你同時提供標題、評分及評語，謝謝！"
 				}
 			}
 		},
@@ -512,27 +512,27 @@
 			"options":{
 				"cart_title":{
 					"title":"Checkout Cart Title",
-					"value":"購物籃"
+					"value":"購物籃清單"
 				},
 				"cart_checkout_details_title":{
 					"title":"Checkout Details Title",
-					"value":"賬單詳情"
+					"value":"訂單資料"
 				},
 				"cart_submit_payment_title":{
 					"title":"Submit Payment Title",
-					"value":"付款"
+					"value":"訂單資料"
 				},
 				"your_cart_title":{
 					"title":"Your Cart Title",
-					"value":"你的購物籃"
+					"value":"購物籃清單"
 				},
 				"cart_empty_cart":{
 					"title":"Checkout, Empty Cart Message",
-					"value":"你的購物籃沒有商品。"
+					"value":"你的購物籃暫時未有商品。"
 				},
 				"cart_checkout":{
 					"title":"Checkout Page, Checkout Button",
-					"value":"賬單"
+					"value":"前往付款"
 				},
 				"cart_continue_shopping":{
 					"title":"Checkout Page, Continue Shopping Link",
@@ -568,7 +568,7 @@
 				},
 				"cart_item_update_button":{
 					"title":"Cart Item, Update Button",
-					"value":"更新"
+					"value":"更新數量"
 				},
 				"cart_item_remove_button":{
 					"title":"Cart Item, Remove Button",
@@ -645,7 +645,7 @@
 				},
 				"cart_notice_billing_city":{
 					"title":"Cart, Notice, Billing, City",
-					"value":"城市"
+					"value":"縣市"
 				},
 				"cart_notice_billing_state":{
 					"title":"Cart, Notice, Billing, State",
@@ -661,7 +661,7 @@
 				},
 				"cart_notice_billing_phone":{
 					"title":"Cart, Notice, Billing, Phone",
-					"value":"電話"
+					"value":"聯絡電話"
 				},
 				"cart_notice_shipping_first_name":{
 					"title":"Cart, Notice, Shipping, First Name",
@@ -677,7 +677,7 @@
 				},
 				"cart_notice_shipping_city":{
 					"title":"Cart, Notice, Shipping, City",
-					"value":"城市"
+					"value":"縣市"
 				},
 				"cart_notice_shipping_state":{
 					"title":"Cart, Notice, Shipping, State",
@@ -693,7 +693,7 @@
 				},
 				"cart_notice_shipping_phone":{
 					"title":"Cart, Notice, Shipping, Phone",
-					"value":"電話"
+					"value":"聯絡電話"
 				},
 				"cart_notice_contact_first_name":{
 					"title":"Cart, Notice, Contact First Name",
@@ -769,7 +769,7 @@
 				},
 				"cart_notice_please_enter_valid":{
 					"title":"Cart, Notice, Please Enter Valid",
-					"value":"請輸有效的"
+					"value":"請輸入有效的"
 				},
 				"cart_notice_emails_do_not_match":{
 					"title":"Cart, Notice, Email Do Not Match",
@@ -781,7 +781,7 @@
 				},
 				"cart_notice_checkout_details_errors":{
 					"title":"Cart, Notice, Checkout Details Errors",
-					"value":"麻煩修正賬單中的錯處"
+					"value":"麻煩修正上方有問題的地方"
 				},
 				"cart_notice_payment_accept_terms":{
 					"title":"Cart, Notice, Please Accept Terms",
@@ -789,7 +789,7 @@
 				},
 				"cart_notice_payment_correct_errors":{
 					"title":"Cart, Notice, Payment Correct Errors",
-					"value":"麻煩修正賬單資料的錯處"
+					"value":"麻煩修正上方有問題的地方"
 				}
 			}
 		},
@@ -864,7 +864,7 @@
 			}
 		},
 		"cart_estimate_shipping":{
-			"label":"購物籃 - 送貨資料",
+			"label":"購物籃 – 預計送貨資料",
 			"options":{
 				"cart_estimate_shipping_title":{
 					"title":"Cart, Estimate Shipping Title",
@@ -917,15 +917,15 @@
 			}
 		},
 		"cart_totals":{
-			"label":"購物籃 - 總計",
+			"label":"購物籃 – 內容",
 			"options":{
 				"cart_totals_title":{
 					"title":"Cart, Cart Totals Title",
-					"value":"購物籃總計"
+					"value":"款項"
 				},
 				"cart_totals_subtotal":{
 					"title":"Cart, Cart Totals, Subtotal",
-					"value":"購物籃小計"
+					"value":"小計"
 				},
 				"cart_totals_shipping":{
 					"title":"Cart, Cart Totals, Shipping",
@@ -953,7 +953,7 @@
 				},
 				"cart_totals_label":{
 					"title":"Cart Totals Label",
-					"value":"購物籃總計"
+					"value":"款項"
 				}
 			}
 		},
@@ -966,7 +966,7 @@
 				},
 				"cart_login_sub_title":{
 					"title":"Cart, Login Sub Title",
-					"value":"請登入，以檢視賬戶資料。"
+					"value":"請登入，以檢視閣下的賬戶資料。"
 				},
 				"cart_login_email_label":{
 					"title":"Cart, Login, Email Label",
@@ -990,7 +990,7 @@
 				},
 				"cart_login_account_information_text":{
 					"title":"Cart, Login Complete Text",
-					"value":"你現在檢視為 "
+					"value":"你的登入賬戶為："
 				},
 				"cart_login_account_a_guest_text":{
 					"title":"Cart, Login Complete, a guest",
@@ -998,7 +998,7 @@
 				},
 				"cart_login_account_information_text2":{
 					"title":"Cart, Login Complete Text Part 2",
-					"value":"檢視另一個賬戶。"
+					"value":"可以更換登入賬戶名稱。"
 				},
 				"cart_login_account_information_logout_link":{
 					"title":"Cart, Login Complete, Logout Link",
@@ -1049,11 +1049,11 @@
 			}
 		},
 		"cart_billing_information":{
-			"label":"購物籃 - 賬單資料",
+			"label":"購物籃 – 客戶資料",
 			"options":{
 				"cart_billing_information_title":{
 					"title":"Cart, Billing Information Title",
-					"value":"賬單資料"
+					"value":"賬戶資料"
 				},
 				"cart_billing_information_first_name":{
 					"title":"Cart, Billing, First Name Label",
@@ -1073,23 +1073,23 @@
 				},
 				"cart_billing_information_city":{
 					"title":"Cart, Billing, City Label",
-					"value":"地區"
+					"value":"縣市"
 				},
 				"cart_billing_information_state":{
 					"title":"Cart, Billing, State Label",
-					"value":"城市"
+					"value":"省份"
 				},
 				"cart_billing_information_select_state":{
 					"title":"Cart, Billing, Default No State Selected",
-					"value":"選取城市"
+					"value":"請選取省份"
 				},
 				"cart_billing_information_select_province":{
 					"title":"Cart, Billing, Default No Province Selected",
-					"value":"選取省份"
+					"value":"請選取省份"
 				},
 				"cart_billing_information_select_county":{
 					"title":"Cart, Billing, Default No County Selected",
-					"value":"選取國家"
+					"value":"請選取國家"
 				},
 				"cart_billing_information_select_other":{
 					"title":"Cart, Billing, Default None Selected",
@@ -1101,7 +1101,7 @@
 				},
 				"cart_billing_information_select_country":{
 					"title":"Cart, Billing, Country Menu, Default None Selected",
-					"value":"選取國家"
+					"value":"請選取國家"
 				},
 				"cart_billing_information_zip":{
 					"title":"Cart, Billing, Zip Label",
@@ -1109,7 +1109,7 @@
 				},
 				"cart_billing_information_phone":{
 					"title":"Cart, Billing, Phone Label",
-					"value":"電話"
+					"value":"聯絡電話"
 				},
 				"cart_billing_information_ship_to_this":{
 					"title":"Cart, Billing, Use Billing Radio",
@@ -1142,7 +1142,7 @@
 				},
 				"cart_shipping_information_address":{
 					"title":"Cart, Shipping, Address Label",
-					"value":"地址"
+					"value":"送貨地址"
 				},
 				"cart_shipping_information_address2":{
 					"title":"Cart, Shipping, Address 2 Label",
@@ -1150,23 +1150,23 @@
 				},
 				"cart_shipping_information_city":{
 					"title":"Cart, Shipping, City Label",
-					"value":"地區"
+					"value":"縣市"
 				},
 				"cart_shipping_information_state":{
 					"title":"Cart, Shipping, State Label",
-					"value":"城市"
+					"value":"省份"
 				},
 				"cart_shipping_information_select_state":{
 					"title":"Cart, Shipping, Default No State Selected",
-					"value":"選取城市"
+					"value":"請選取省份"
 				},
 				"cart_shipping_information_select_province":{
 					"title":"Cart, Shipping, Default No Province Selected",
-					"value":"撰擇省份"
+					"value":"請撰擇省份"
 				},
 				"cart_shipping_information_select_county":{
 					"title":"Cart, Shipping, Default No County Selected",
-					"value":"選取國家"
+					"value":"請選取國家"
 				},
 				"cart_shipping_information_select_other":{
 					"title":"Cart, Shipping, Default None Selected",
@@ -1178,7 +1178,7 @@
 				},
 				"cart_shipping_information_select_country":{
 					"title":"Cart, Shipping, Country Menu, Default None Selected",
-					"value":"選取國家"
+					"value":"請選取國家"
 				},
 				"cart_shipping_information_zip":{
 					"title":"Cart, Shipping, Zip Label",
@@ -1186,7 +1186,7 @@
 				},
 				"cart_shipping_information_phone":{
 					"title":"Cart, Shipping, Phone Label",
-					"value":"電話"
+					"value":"聯絡電話"
 				},
 				"cart_shipping_information_company_name":{
 					"title":"Cart, Shipping, Company Name Label",
@@ -1219,7 +1219,7 @@
 				},
 				"cart_contact_information_create_account":{
 					"title":"Cart, Contact Information, Create Account Label",
-					"value":"註冊賬戶"
+					"value":"使用以上資料註冊賬戶"
 				},
 				"cart_contact_information_password":{
 					"title":"Cart, Contact Information, Password Label",
@@ -1239,7 +1239,7 @@
 				},
 				"cart_contact_information_continue_payment":{
 					"title":"Cart, Contact Information, Continue to Payment",
-					"value":"繼續付款"
+					"value":"預覽訂單"
 				},
 				"cart_contact_information_continue_shipping":{
 					"title":"Cart, Contact Information, Continue to Shipping",
@@ -1346,7 +1346,7 @@
 				},
 				"cart_payment_information_checkout_text":{
 					"title":"Cart, Payment Information, Checkout Text",
-					"value":"當你提交訂單時，即代表你同意本網站的條款、細則及個人私隱政策。當你提交訂單後，結賬程序便會完成及不能再作修改。多謝你選購我們的商品，請再次光臨！"
+					"value":"當你提交訂單，即代表你同意本網站的私隱條款及政策和銷售條款及免責聲明。當你提交訂單後，結賬程序便會完成及不能再作修改。多謝你的選購，歡迎再次光臨！"
 				},
 				"cart_payment_information_review_checkout_text":{
 					"title":"Cart, Payment Information, Review Checkout Text",
@@ -1366,7 +1366,7 @@
 				},
 				"cart_payment_information_order_notes_title":{
 					"title":"Cart, Payment Information, Customer Notes Title",
-					"value":"備註訂單"
+					"value":"備註"
 				},
 				"cart_payment_information_order_notes_message":{
 					"title":"Cart, Payment Information, Customer Notes Message",
@@ -1374,31 +1374,31 @@
 				},
 				"cart_payment_information_review_title":{
 					"title":"Cart, Review Cart Title",
-					"value":"複查購物籃"
+					"value":"購物籃清單"
 				},
 				"cart_payment_information_edit_cart_link":{
 					"title":"Cart, edit cart items link",
-					"value":"修改購物籃商品"
+					"value":"更改購物籃內容"
 				},
 				"cart_payment_information_edit_billing_link":{
 					"title":"Cart, edit billing link",
-					"value":"修改付款地址"
+					"value":"更改賬戶資料"
 				},
 				"cart_payment_information_edit_shipping_link":{
 					"title":"Cart, edit shipping link",
-					"value":"修改送貨地址"
+					"value":"更改送貨地址"
 				},
 				"cart_payment_information_edit_shipping_method_link":{
 					"title":"Cart, edit shipping link",
-					"value":"修改送貨方式"
+					"value":"更改送貨方式"
 				},
 				"cart_payment_review_totals_title":{
 					"title":"Cart, Review Total Title",
-					"value":"複查購物籃總數"
+					"value":"款項"
 				},
 				"cart_payment_review_agree":{
 					"title":"Cart, Review Agree Text",
-					"value":"我同意本網站的條款及細則。"
+					"value":"我同意以上內容。"
 				}
 			}
 		},
@@ -1423,15 +1423,15 @@
 				},
 				"cart_payment_complete_line_2":{
 					"title":"Cart, Payment Complete, Line 2",
-					"value":"多謝你的訂單！你的參考編號是："
+					"value":"多謝你的選購！你的訂單號碼是："
 				},
 				"cart_payment_complete_line_3":{
 					"title":"Cart, Payment Complete, Line 3",
-					"value":"以下是你的訂單摘要，你可以登入賬戶查閱訂單狀況和詳細資料。"
+					"value":"以下是你的訂單內容，你可以登入賬戶查閱訂單狀況和詳細資料。"
 				},
 				"cart_payment_complete_line_4":{
 					"title":"Cart, Payment Complete, Line 4",
-					"value":"請保留以作為訂單的記錄！"
+					"value":"請保留此資料以作為訂購記錄。"
 				},
 				"cart_payment_complete_line_5":{
 					"title":"Cart, Payment Complete, Line 5",
@@ -1443,7 +1443,7 @@
 				},
 				"cart_payment_complete_to_view_order":{
 					"title":"Cart, Payment Complete, To View Order",
-					"value":"檢視你的訂單"
+					"value":"以檢視你的訂單"
 				},
 				"cart_payment_complete_billing_label":{
 					"title":"Cart, Payment Complete, Billing Label",
@@ -1463,15 +1463,15 @@
 				},
 				"cart_payment_complete_details_header_3":{
 					"title":"Cart, Payment Complete, Header 3",
-					"value":"價格"
+					"value":"單價"
 				},
 				"cart_payment_complete_details_header_4":{
 					"title":"Cart, Payment Complete, Header 4",
-					"value":"額外費用"
+					"value":"合計"
 				},
 				"cart_payment_complete_order_totals_subtotal":{
 					"title":"Cart, Payment Complete, Subtotal",
-					"value":"小計"
+					"value":"商品金額"
 				},
 				"cart_payment_complete_order_totals_shipping":{
 					"title":"Cart, Payment Complete, Shipping",
@@ -1495,31 +1495,31 @@
 				},
 				"cart_payment_complete_order_totals_grand_total":{
 					"title":"Cart, Payment Complete, Order Total",
-					"value":"訂單總數"
+					"value":"訂單總額"
 				},
 				"cart_payment_complete_bottom_line_1":{
 					"title":"Cart, Payment Complete, Bottom Line 1",
-					"value":"請細閱你的訂單。如有問題，請盡快與我們聯絡。希望閣下滿意我們的服務及喜歡選購的商品。"
+					"value":"請細閱你的訂單。如有問題，請盡快與我們聯絡。希望閣下滿意我們的服務及喜歡選購的商品和服務。"
 				},
 				"cart_payment_complete_bottom_line_2":{
 					"title":"Cart, Payment Complete, Bottom Line 2",
-					"value":"付款完成，多謝選購！"
+					"value":"付款程序已經完成，多謝選購！"
 				},
 				"cart_success_thank_you_title":{
 					"title":"Cart, Payment Complete, Thank You Title",
-					"value":"歡迎再光臨"
+					"value":"付款已完成，請繼續選購！"
 				},
 				"cart_success_order_number_is":{
 					"title":"Cart, Payment Complete, Your Order Number",
-					"value":"訂單編號："
+					"value":"訂單號碼："
 				},
 				"cart_success_will_receive_email":{
 					"title":"Cart, Payment Complete, Will receive email",
-					"value":"你將會收到電郵以確認"
+					"value":"訂單資料已寄到閣下的電郵地址："
 				},
 				"cart_success_print_receipt_text":{
 					"title":"Cart, Payment Complete, Print Receipt Link Text",
-					"value":"列印收據"
+					"value":"列印訂單資料"
 				},
 				"cart_success_save_order_text":{
 					"title":"Cart, Payment Complete, Save Your Info",
@@ -1605,7 +1605,7 @@
 				},
 				"account_login_sub_title":{
 					"title":"Account, Login Sub Title",
-					"value":"請登入，以使用賬戶資料。"
+					"value":"請登入，以使用閣下的賬戶資料。"
 				},
 				"account_login_email_label":{
 					"title":"Account, Login, Email Label",
@@ -1637,15 +1637,15 @@
 				},
 				"account_new_user_title":{
 					"title":"Account, Login, New User Title",
-					"value":"新用"
+					"value":"新用戶"
 				},
 				"account_new_user_sub_title":{
 					"title":"Account, Login, New User Sub Title",
-					"value":"未曾註冊？請點擊以下按鈕"
+					"value":"請點擊以下按鈕進行註冊。"
 				},
 				"account_new_user_message":{
 					"title":"Account, Login, New User Message",
-					"value":"未有賬戶？註冊賬戶以獲取本網站最大的便利。"
+					"value":"註冊後，你可保留賬戶資料供下次使用，節省重新輸入的時間。"
 				},
 				"account_new_user_button":{
 					"title":"Account, Login, New User Button",
@@ -1658,7 +1658,7 @@
 			"options":{
 				"account_forgot_password_title":{
 					"title":"Account, Retrieve Password Title",
-					"value":"找回你的密碼"
+					"value":"請輸入你登記的電郵地址，以便我們重發密碼給你。"
 				},
 				"account_forgot_password_email_label":{
 					"title":"Account, Retrieve Password Email Label",
@@ -1666,7 +1666,7 @@
 				},
 				"account_forgot_password_button":{
 					"title":"Account, Retrieve Password Button",
-					"value":"找回密碼"
+					"value":"重發密碼"
 				}
 			}
 		},
@@ -1688,11 +1688,11 @@
 			}
 		},
 		"account_register":{
-			"label":"賬戶 - 註冊用戶",
+			"label":"賬戶 - 註冊賬戶",
 			"options":{
 				"account_register_title":{
 					"title":"Account, Register Title",
-					"value":"註冊用戶"
+					"value":"註冊賬戶"
 				},
 				"account_register_first_name":{
 					"title":"Account, Register, First Name Label",
@@ -1716,11 +1716,11 @@
 				},
 				"account_register_subscribe":{
 					"title":"Account, Register, Subscribe Text",
-					"value":"你想加入我們的電郵名單嗎？"
+					"value":"你想加入我們的電郵名單以接收最新資訊嗎？"
 				},
 				"account_register_button":{
 					"title":"Account, Register Button",
-					"value":"註冊用戶"
+					"value":"註冊賬戶"
 				},
 				"account_billing_information_user_notes":{
 					"title":"Account, Billing, User Notes",
@@ -1728,7 +1728,7 @@
 				},
 				"account_register_email_title":{
 					"title":"Account, Register Email Title",
-					"value":"新EasyCart註冊用戶"
+					"value":"新EasyCart註冊賬戶"
 				},
 				"account_register_email_message":{
 					"title":"Account, Register Email Message",
@@ -1737,15 +1737,15 @@
 			}
 		},
 		"account_navigation":{
-			"label":"賬戶 - 導航",
+			"label":"賬戶 - 導覽",
 			"options":{
 				"account_navigation_title":{
 					"title":"Account, Navigation Title",
-					"value":"賬戶導航"
+					"value":"更改賬戶內容"
 				},
 				"account_navigation_basic_inforamtion":{
 					"title":"Account, Navigation, Basic Information Link",
-					"value":"基本資料"
+					"value":"更改個人資料"
 				},
 				"account_navigation_orders":{
 					"title":"Account, Navigation, View Orders Link",
@@ -1773,11 +1773,11 @@
 				},
 				"account_navigation_billing_information":{
 					"title":"Account, Navigation, Billing Link",
-					"value":"付款資料"
+					"value":"更改賬戶資料"
 				},
 				"account_navigation_shipping_information":{
 					"title":"Account, Navigation, Shipping Link",
-					"value":"送貨資料"
+					"value":"更改送貨資料"
 				}
 			}
 		},
@@ -1831,11 +1831,11 @@
 			}
 		},
 		"account_personal_information":{
-			"label":"賬戶 - 修改個人資料",
+			"label":"賬戶 – 更改個人資料",
 			"options":{
 				"account_personal_information_title":{
 					"title":"Account, Personal Information Title",
-					"value":"個人資料"
+					"value":"更改個人資料"
 				},
 				"account_personal_information_sub_title":{
 					"title":"Account, Personal Information Sub Title",
@@ -1868,15 +1868,15 @@
 			}
 		},
 		"account_password":{
-			"label":"賬戶 - 修改密碼",
+			"label":"賬戶 - 更改密碼",
 			"options":{
 				"account_password_title":{
 					"title":"Account, Password Title",
-					"value":"修改你的密碼"
+					"value":"更改密碼"
 				},
 				"account_password_sub_title":{
 					"title":"Account, Password Sub Title",
-					"value":"請注意：密碼修改後，即時生效，你只能用新密碼登入賬戶。"
+					"value":"請注意：密碼更改後，即時生效，你只能用新密碼登入賬戶。"
 				},
 				"account_password_current_password":{
 					"title":"Account, Password, Current Password Label",
@@ -1905,11 +1905,11 @@
 			}
 		},
 		"account_billing_information":{
-			"label":"賬戶 - 修改付款資料",
+			"label":"賬戶 – 更改賬戶資料",
 			"options":{
 				"account_billing_information_title":{
 					"title":"Account, Billing Information Title",
-					"value":"付款資料"
+					"value":"更改賬戶資料"
 				},
 				"account_billing_information_first_name":{
 					"title":"Account, Billing Information, First Name Label",
@@ -1929,7 +1929,7 @@
 				},
 				"account_billing_information_city":{
 					"title":"Account, Billing Information, City Label",
-					"value":"城市"
+					"value":"縣市"
 				},
 				"account_billing_information_state":{
 					"title":"Account, Billing Information, State Label",
@@ -1937,7 +1937,7 @@
 				},
 				"account_billing_information_default_no_state":{
 					"title":"Account, Billing Information, No State Label",
-					"value":"選取省份"
+					"value":"請選取省份"
 				},
 				"account_billing_information_zip":{
 					"title":"Account, Billing Information, Zip Label",
@@ -1949,11 +1949,11 @@
 				},
 				"account_billing_information_default_no_country":{
 					"title":"Account, Billing Information, No Country Label",
-					"value":"選取國家"
+					"value":"請選取國家"
 				},
 				"account_billing_information_phone":{
 					"title":"Account, Billing Information, Phone Label",
-					"value":"電話"
+					"value":"聯絡電話"
 				},
 				"account_billing_information_update_button":{
 					"title":"Account, Billing Information, Update Button",
@@ -1982,7 +1982,7 @@
 				},
 				"account_shipping_information_address":{
 					"title":"Account, Shipping Information, Address Label",
-					"value":"地址"
+					"value":"送貨地址"
 				},
 				"account_shipping_information_address2":{
 					"title":"Account, Shipping Information, Address 2 Label",
@@ -1990,7 +1990,7 @@
 				},
 				"account_shipping_information_city":{
 					"title":"Account, Shipping Information, City Label",
-					"value":"城市"
+					"value":"縣市"
 				},
 				"account_shipping_information_state":{
 					"title":"Account, Shipping Information, State Label",
@@ -1998,7 +1998,7 @@
 				},
 				"account_shipping_information_default_no_state":{
 					"title":"Account, Shipping Information, No State Label",
-					"value":"選取省份"
+					"value":"請選取省份"
 				},
 				"account_shipping_information_zip":{
 					"title":"Account, Shipping Information, Zip Label",
@@ -2010,11 +2010,11 @@
 				},
 				"account_shipping_information_default_no_country":{
 					"title":"Account, Shipping Information, No Country Label",
-					"value":"選取國家"
+					"value":"請選取國家"
 				},
 				"account_shipping_information_phone":{
 					"title":"Account, Shipping Information, Phone Label",
-					"value":"電話"
+					"value":"聯絡電話"
 				},
 				"account_shipping_information_update_button":{
 					"title":"Account, Shipping Information, Update Button",
@@ -2371,7 +2371,7 @@
 			"options":{
 				"login_failed":{
 					"title":"Account, User Login Failed",
-					"value":"登入名稱或密碼不正確。"
+					"value":"電郵地址或密碼不正確，請重新輸入。"
 				},
 				"register_email_error":{
 					"title":"Account Registration Email In Use Error",
@@ -2379,7 +2379,7 @@
 				},
 				"no_reset_email_found":{
 					"title":"No Email Found Error",
-					"value":"你輸入的電郵地址未有登記。The email address you entered was not found."
+					"value":"你輸入的電郵地址未有登記，你可以用這電郵地址登記新賬戶，或重新輸入已登記的電郵地址。"
 				},
 				"personal_information_update_error":{
 					"title":"Account, updating personal info error",
@@ -2512,23 +2512,23 @@
 			"options":{
 				"personal_information_updated":{
 					"title":"Account Personal Information Update Success",
-					"value":"你的個人資料已經成功更新。"
+					"value":"你的個人資料已經更新。"
 				},
 				"password_updated":{
 					"title":"Account Personal Information Update Success",
-					"value":"你的密碼已經成功更新。"
+					"value":"你的密碼已經更新。"
 				},
 				"billing_information_updated":{
 					"title":"Account Billing Update Success",
-					"value":"你的付款資料已經成功更新。"
+					"value":"你的付款資料已經更新。"
 				},
 				"shipping_information_updated":{
 					"title":"Account Shipping Update Success",
-					"value":"你的送貨資料已經成功更新。"
+					"value":"你的送貨資料已經更新。"
 				},
 				"reset_email_sent":{
 					"title":"Account Email Sent Success",
-					"value":"你的新密碼已經寄到你的電郵。"
+					"value":"新密碼已發送到你的電郵，請查看。如你沒有收到電郵，請聯絡我們。"
 				},
 				"cart_account_created":{
 					"title":"Cart, Create Account, Account Created Success Text",
@@ -2540,7 +2540,7 @@
 				},
 				"store_added_to_cart":{
 					"title":"Store, Added Item to Cart",
-					"value":"你已經成功放入[prod_title]到購物籃。"
+					"value":"商品已經放入購物籃，謝謝選購！"
 				},
 				"activation_success":{
 					"title":"Account, Activation Success",
@@ -2552,7 +2552,7 @@
 				},
 				"subscription_updated":{
 					"title":"Account, Subscription Updated",
-					"value":"你的訂閱資料已經成功更新。"
+					"value":"你的訂閱資料已經更新。"
 				},
 				"subscription_canceled":{
 					"title":"Account, Subscription Canceled",
@@ -2560,15 +2560,15 @@
 				},
 				"inquiry_sent":{
 					"title":"Store, Inquiry Sent",
-					"value":"你的商品查詢已經成功發出。"
+					"value":"你的商品查詢已經發出。"
 				},
 				"add_to_cart_success":{
 					"title":"Store, Added to Cart",
-					"value":"已經成功加入購物籃"
+					"value":"已經放入購物籃"
 				},
 				"adding_to_cart":{
 					"title":"Store, Adding to Cart",
-					"value":"加入購物籃..."
+					"value":"放入購物籃..."
 				}
 			}
 		},
@@ -2625,7 +2625,7 @@
 				},
 				"shipping_total_price":{
 					"title":"Total Price Label",
-					"value":"額外費用"
+					"value":"合計"
 				},
 				"shipping_final_note1":{
 					"title":"Shipping Emailer Final Note Line 1",
@@ -2697,7 +2697,7 @@
 			}
 		},
 		"language_code":{
-			"label":"Language Code",
+			"label":"語言設定",
 			"options":{
 				"code":{
 					"title":"Do Not Change",

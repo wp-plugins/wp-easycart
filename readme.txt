@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, mcommerce, wordpress shopping cart,  wordpress ecommerce, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
-Tested up to: 4.2.2
-Stable tag: 3.1.9
+Tested up to: 4.2.3
+Stable tag: 3.1.10
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,18 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.1.10 =
+* New Feature - You can now turn on a currency option (basic options) to show the currency code in the price display, e.g. USD $19.99 or CAD $29.99 with the code determined by the selected currency display.
+* Improvement - Forgot password link now available in the returning customers section during checkout.
+* Improvement - Search widget now breaks apart search terms to return more results to the user.
+* Improvement - Added product options information to the cart checkout pages in order to improve consistency throughout the checkout process.
+* Improvement - Unless you have a custom layout file for account orders and subscriptions, the date format will now be that of the WordPress global settings in your WordPress admin -> settings. This can be overriden if needed in a custom layout file by providing the date/time format to the date display functions.
+* Fix - Updated Authorize.net endpoint to go to the newer, more reliable services (secure2 and api2 URLs).
+* Fix - Those that have free products that are shipped at a cost now allow shipping to be applied to the free order subtotal.
+* Fix - Promotions that give a percentage off at a specific price, when used in multiple, was not always selecting the highest discount.
+* Fix - Donation widget is now working again (may require custom CSS for sizing with side bar) and now uses the weight of the product as the goal value. This widget only shows up on product details pages of donation type products.
+* Fix - Forgot password email was not translated properly and has been corrected.
+* Fix - Security fix made.
 = 3.1.9 =
 * Fix - Admin version notice system fixed to prevent update notice when software is up to date.
 = 3.1.8 =

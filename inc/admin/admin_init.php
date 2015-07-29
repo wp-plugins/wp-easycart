@@ -35,7 +35,7 @@ function ec_install_admin_notice() {
 			update_option( 'ec_option_hide_admin_notice', '1' );
 		}
 		
-		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && version_compare( EC_AD_CURRENT_VERSION, "3.0.20" ) < 0 ){
+		if( is_plugin_active( "wp-easycart-admin/wpeasycart-admin.php" ) && version_compare( EC_AD_CURRENT_VERSION, "3.0.21" ) < 0 ){
 			?>
 			<div class="error">
 				<p>A new version of the WP EasyCart Admin is now available, please update for best results!</p>

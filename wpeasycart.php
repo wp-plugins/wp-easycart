@@ -4,7 +4,7 @@
  * Plugin URI: http://www.wpeasycart.com
  * Description: The WordPress Shopping Cart by WP EasyCart is a simple ecommerce solution that installs into new or existing WordPress blogs. Customers purchase directly from your store! Get a full ecommerce platform in WordPress! Sell products, downloadable goods, gift cards, clothing and more! Now with WordPress, the powerful features are still very easy to administrate! If you have any questions, please view our website at <a href="http://www.wpeasycart.com" target="_blank">WP EasyCart</a>.  <br /><br /><strong>*** UPGRADING? Please be sure to backup your plugin, or follow our upgrade instructions at <a href="http://www.wpeasycart.com/docs/3.0.0/index/upgrading.php" target="_blank">WP EasyCart Upgrading</a> ***</strong>
  
- * Version: 3.1.9
+ * Version: 3.1.10
  * Author: Level Four Development, llc
  * Author URI: http://www.wpeasycart.com
  *
@@ -12,7 +12,7 @@
  * Each site requires a license for live use and must be purchased through the WP EasyCart website.
  *
  * @package wpeasycart
- * @version 3.1.9
+ * @version 3.1.10
  * @author WP EasyCart <sales@wpeasycart.com>
  * @copyright Copyright (c) 2012, WP EasyCart
  * @link http://www.wpeasycart.com
@@ -20,16 +20,16 @@
  
 define( 'EC_PUGIN_NAME', 'WP EasyCart');
 define( 'EC_PLUGIN_DIRECTORY', 'wp-easycart');
-define( 'EC_CURRENT_VERSION', '3_1_9' );
+define( 'EC_CURRENT_VERSION', '3_1_10' );
 define( 'EC_CURRENT_DB', '1_30' );
 define( 'EC_UPGRADE_DB', '36' );
 
-add_action( 'init', 'wpeasycat_start_session', 1 );
+add_action( 'init', 'wpeasycart_start_session', 1 );
 add_action( 'init', 'wpeasycart_load_startup', 1 );
 add_action( 'wp_logout', 'wpeasycart_end_session' );
 add_action( 'wp_login', 'wpeasycart_end_session' );
 
-function wpeasycat_start_session( ){
+function wpeasycart_start_session( ){
     if( wpeasycart_config_is_session_started( ) === FALSE ){
         session_start( );
     }
@@ -806,26 +806,17 @@ function ec_js_loader_v3( ){
 		
 	if( current_user_can( 'manage_options' ) ){
 		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ) ){
-			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ), 
-				array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-sortable' ), EC_CURRENT_VERSION );
+			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-draggable', 'jquery-ui-sortable' ), EC_CURRENT_VERSION );
 		}else{
-			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/live-editor.js' ), 
-				array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-sortable' ), EC_CURRENT_VERSION );
+			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/live-editor.js' ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-draggable', 'jquery-ui-sortable' ), EC_CURRENT_VERSION );
 		}
-		if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ) ){
-			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/live-editor.js' ), array( 'jquery' ), EC_CURRENT_VERSION );
-		}else{
-			wp_enqueue_script( 'wpeasycart_admin_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/live-editor.js' ), array( 'jquery' ), EC_CURRENT_VERSION );
-		}
-		wp_enqueue_script( 'wpeasycart_admin_js' );
 	}
 	
 	if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.js' ) ){
-		wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.js' ), array( 'jquery' ) );
+		wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart-data/design/theme/' . get_option( 'ec_option_base_theme' ) . '/ec-store.js' ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), EC_CURRENT_VERSION );
 	}else{
-		wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/ec-store.js' ), array( 'jquery' ) );
+		wp_enqueue_script( 'wpeasycart_js', plugins_url( 'wp-easycart/design/theme/' . get_option( 'ec_option_latest_theme' ) . '/ec-store.js' ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-accordion' ), EC_CURRENT_VERSION );
 	}
-	wp_enqueue_script( 'wpeasycart_js' );
 
 }
 

@@ -218,7 +218,7 @@ class ec_shipping{
 	private function get_price_based_shipping_options( $standard_text, $express_text ){
 		if( count( $this->price_based ) > 0 ){
 			for( $i=0; $i<count($this->price_based); $i++){
-				if( $this->subtotal > $this->price_based[$i][0] )
+				if( $this->subtotal >= $this->price_based[$i][0] )
 					return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->price_based[$i][1] );
 			}
 		}else{
@@ -280,7 +280,7 @@ class ec_shipping{
 	private function get_percentage_based_shipping_options( $standard_text, $express_text ){
 		if( count( $this->percentage_based ) > 0 ){
 			for( $i=0; $i<count($this->percentage_based); $i++){
-				if( $this->subtotal > $this->percentage_based[$i][0] )
+				if( $this->subtotal >= $this->percentage_based[$i][0] )
 					return $this->get_single_shipping_price_content( $standard_text, $express_text, $this->subtotal * ( $this->percentage_based[$i][1] / 100 ) );
 			}
 		}else{
@@ -564,7 +564,7 @@ class ec_shipping{
 		$rate = "ERROR";
 		if( $this->shipping_method == "price" ){
 			for( $i=0; $i<count( $this->price_based ); $i++ ){
-				if( $this->subtotal > $this->price_based[$i][0] ){
+				if( $this->subtotal >= $this->price_based[$i][0] ){
 					$rate = $this->price_based[$i][1];
 					break;
 				}
@@ -629,7 +629,7 @@ class ec_shipping{
 			
 		}else if( $this->shipping_method == "percentage" ){
 			for( $i=0; $i<count( $this->percentage_based ); $i++ ){
-				if( $this->subtotal > $this->percentage_based[$i][0] ){
+				if( $this->subtotal >= $this->percentage_based[$i][0] ){
 					$rate = ( $this->subtotal * ( $this->percentage_based[$i][1] / 100 ) );
 					break;
 				}

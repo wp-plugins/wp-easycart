@@ -289,8 +289,14 @@ class ec_orderdisplay{
 		echo $this->currency->get_currency_display( $this->grand_total );
 	}
 	
-	public function display_order_date( $date_format ){
-		echo date( $date_format, strtotime( $this->order_date ) );	
+	public function display_order_date( $date_format = "" ){
+		if( $date_format == "" ){
+			$date_format = get_option('date_format');
+			$time_format = get_option('time_format');
+			echo date( $date_format . " " . $time_format, strtotime( $this->order_date ) );
+		}else{
+			echo date( $date_format, strtotime( $this->order_date ) );
+		}
 	}
 	
 	public function display_order_id( ){

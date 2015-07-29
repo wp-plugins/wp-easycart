@@ -2,7 +2,7 @@
 
 	<div class="ec_account_order_line_column1"><?php $order->display_order_id( ); ?></div>
 
-	<div class="ec_account_order_line_column2"><?php $order->display_order_date( 'M d, Y g:i A' ); ?></div>
+	<div class="ec_account_order_line_column2"><?php $order->display_order_date( ); ?></div>
 
 	<div class="ec_account_order_line_column3"><?php $order->display_grand_total( ); ?></div>
 

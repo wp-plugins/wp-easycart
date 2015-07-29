@@ -41,12 +41,12 @@ if( isset( $_COOKIE['ec_newsletter_popup'] ) && !isset( $_SESSION['ec_newsletter
 if( isset( $_POST['ec_language_conversion'] ) ){
 	$_SESSION['ec_translate_to'] = $_POST['ec_language_conversion'];
 }else if( isset( $_GET['eclang'] ) ){
-	$_SESSION['ec_translate_to'] = $_GET['eclang'];
+	$_SESSION['ec_translate_to'] = htmlspecialchars( $_GET['eclang'], ENT_QUOTES );
 }
 	
 // Currency Conversion Check
 if( isset( $_POST['ec_currency_conversion'] ) ){
-	$_SESSION['ec_convert_to'] = $_POST['ec_currency_conversion'];
+	$_SESSION['ec_convert_to'] = htmlspecialchars( $_POST['ec_currency_conversion'], ENT_QUOTES );
 }
 
 // LIVE GATEWAY CLASSES

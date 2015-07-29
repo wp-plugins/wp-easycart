@@ -33,10 +33,15 @@ class ec_donationwidget extends WP_Widget{
 			$post_id = $post->ID;
 		else
 			$post_id = 0;
+			
+		if( isset( $_GET['model_number'] ) )
+			$model_number = $_GET['model_number'];
+		else
+			$model_number = "";
 		
 		// Now with post_id try and find a matching product
 		$db = new ec_db( );
-		$products = $db->get_product_list( sprintf( " WHERE product.post_id = %d", $post_id ), "", "", "" );
+		$products = $db->get_product_list( sprintf( " WHERE product.post_id = %d OR product.model_number = '%s'", $post_id, $model_number ), "", "", "" );
 		
 		if( count( $products ) > 0 && $products[0]["is_donation"]  ){
 			extract( $args );
@@ -74,19 +79,21 @@ class ec_donationwidget extends WP_Widget{
 			$donation_order_total = $db->get_donation_order_total( $products[0]['model_number'] );
 		
 			$raised_total = $GLOBALS['currency']->get_currency_display( $donation_order_total );
-			$goal_total = $GLOBALS['currency']->get_currency_display( $products[0]['specifications'] );
+			$goal_total = $GLOBALS['currency']->get_currency_display( $products[0]['weight'] );
 			if( $donation_order_total == 0 )
 				$percent_used = 0;
 			else
-				$percent_used = $donation_order_total / $products[0]['specifications'];
+				$percent_used = $donation_order_total / $products[0]['weight'];
 		
 			if( $percent_used > 1 )
 				$percent_used = 1;
 			
 			if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_donation_widget.php' ) )	
 				include( WP_PLUGIN_DIR . "/wp-easycart-data/design/layout/" . get_option( 'ec_option_base_layout' ) . "/ec_donation_widget.php");
-			else if( file_exists( WP_PLUGIN_DIR . '/wp-easycart-data/design/layout/' . get_option( 'ec_option_base_layout' ) . '/ec_donation_widget.php' ) )	
+			
+			else if( file_exists( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_latest_layout' ) . '/ec_donation_widget.php' ) )	
 				include( WP_PLUGIN_DIR . "/" . EC_PLUGIN_DIRECTORY . "/design/layout/" . get_option( 'ec_option_latest_layout' ) . "/ec_donation_widget.php");
+			
 			else
 				echo "Could not find the donation widget layout file.";
 			echo "<div style=\"clear:both\"></div>";

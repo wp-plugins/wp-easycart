@@ -19,11 +19,14 @@ class ec_currency{
 		$this->decimal_symbol = get_option( 'ec_option_currency_decimal_symbol' );
 		$this->decimal_length = get_option( 'ec_option_currency_decimal_places' );
 		$this->grouping_symbol = get_option( 'ec_option_currency_thousands_seperator' );
+		$this->currency_code = get_option( 'ec_option_base_currency' );
+		$this->show_currency_code = get_option( 'ec_option_show_currency_code' );
 		$this->conversion_rate = 1.000;
 		
 		if( isset( $_SESSION['ec_convert_to'] ) ){
 			$from = strtoupper( get_option( 'ec_option_base_currency' ) );
 			$to = strtoupper( $_SESSION['ec_convert_to'] );
+			$this->currency_code = $to;
 			if( $to != $from ){
 				//Set Symbol
 				$this->symbol = $this->get_currency_symbol( $to );
@@ -42,6 +45,9 @@ class ec_currency{
 	
 	public function get_currency_display( $amount ){
 		$display_amount = '';
+		
+		if( $this->show_currency_code )
+			$display_amount .= $this->currency_code . ' ';
 		
 		if( $amount < 0 && $this->negative_location )
 			$display_amount .= '-';
@@ -199,7 +205,7 @@ class ec_currency{
 							 'ZWD' => 'Z$'
 							);
 							
-		return $currency_code . " " . $currencies[$currency_code];
+		return $currencies[$currency_code];
 	}
 	
 	public function get_symbol( ){

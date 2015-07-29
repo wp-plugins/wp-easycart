@@ -158,6 +158,13 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "basic-settings" && isset
     <span class="ec_setting_row_label">Currency Grouping Symbol:</span>
     <span class="ec_setting_row_input"><input name="ec_option_currency_thousands_seperator" type="text" value="<?php echo get_option('ec_option_currency_thousands_seperator'); ?>" size="1" style="width:40px;" /></span>
 </div>
+
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Show Currency Code in Display</em>This option will make the display in the format of USD $19.99 or EUR $29.99, which will switch with the currency conversion widget.</span></a></span>
+    <span class="ec_setting_row_label">Show Currency Code in Display:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_show_currency_code" style="width:100px;"><option value="0"<?php if( get_option('ec_option_show_currency_code') == "0" ){ echo " selected=\"selected\""; }?>>Off</option><option value="1"<?php if( get_option('ec_option_show_currency_code') == "1" ){ echo " selected=\"selected\""; }?>>On</option></select></span>
+</div>
+
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 
 <a name="product"></a>

@@ -538,7 +538,7 @@ class ec_cartpage{
 	
 	public function display_page_one_form_start(){
 		$next_page = "checkout_shipping";
-		if( !get_option( 'ec_option_use_shipping' ) || $this->cart->weight == 0 )
+		if( !get_option( 'ec_option_use_shipping' ) || $this->order_totals->shipping_total <= 0 )
 			$next_page = "checkout_payment";
 		
 		echo "<form action=\"" . $this->cart_page . $this->permalink_divider . "ec_page=" . $next_page . "\" method=\"POST\">";

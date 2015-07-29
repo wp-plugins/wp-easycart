@@ -70,7 +70,7 @@ class ec_securenet extends ec_gateway{
 		curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'POST' );
 		$response = curl_exec($ch);
 		if( $response === false )
-			$this->mysqli->insert_response( 0, 1, "SecureNet CURL ERROR", curl_error( $ch ) );
+			$this->mysqli->insert_response( $this->order_id, 0, "SecureNet CURL ERROR", curl_error( $ch ) );
 		curl_close ($ch);
 		
 		$this->handle_gateway_response( $response );
@@ -88,7 +88,7 @@ class ec_securenet extends ec_gateway{
 		if( get_option( 'ec_option_securenet_use_sandbox' ) )
 			return "https://gwapi.demo.securenet.com/api/Payments/Charge";
 		else
-			return "https://certify.securenet.com/api/Payments/Charge";
+			return "https://gwapi.securenet.com/api/Payments/Charge";
 			
 	}
 	

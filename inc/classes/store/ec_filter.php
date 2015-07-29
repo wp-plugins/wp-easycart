@@ -371,8 +371,17 @@ class ec_filter{
 				$ret_string .= $wpdb->prepare( " AND ( product.menulevel1_id_3 = %s OR product.menulevel2_id_3 = %s OR product.menulevel3_id_3 = %s )", $this->get_subsubmenu_id( ), $this->get_subsubmenu_id( ), $this->get_subsubmenu_id( ) );
 			
 			if( $this->search != "" ){
-				$search_clean = $this->mysqli->clean_search( '%' . $this->search . '%' );
-				$ret_string .= " AND ( product.title LIKE " . $search_clean . " OR product.model_number LIKE " . $search_clean . " OR manufacturer.name LIKE " . $search_clean . " OR product.description LIKE " . $search_clean . " OR ec_menulevel1.name LIKE " . $search_clean . "  OR ec_menulevel2.name LIKE " . $search_clean . "  OR ec_menulevel3.name LIKE " . $search_clean . " ) ";
+				$exploded_search = explode( ' ', $this->search );
+				$ret_string .= " AND (";
+				$item_num = 0;
+				foreach( $exploded_search as $search_item ){
+					$search_clean = $this->mysqli->clean_search( '%' . $search_item . '%' );
+					if( $item_num > 0 )
+						$ret_string .= " OR";
+					$ret_string .= " ( product.title LIKE " . $search_clean . " OR product.model_number LIKE " . $search_clean . " OR manufacturer.name LIKE " . $search_clean . " OR product.description LIKE " . $search_clean . " OR ec_menulevel1.name LIKE " . $search_clean . "  OR ec_menulevel2.name LIKE " . $search_clean . "  OR ec_menulevel3.name LIKE " . $search_clean . " ) ";
+					$item_num++;
+				}
+				$ret_string .= " )";
 				
 			}
 			

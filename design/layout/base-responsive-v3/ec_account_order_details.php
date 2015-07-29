@@ -14,7 +14,7 @@
         
         <div class="ec_cart_input_row"><strong><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_order_number' )?></strong> <?php $this->order->display_order_id( ); ?></div>
 
-        <div class="ec_cart_input_row"><strong><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_order_date' )?></strong> <?php $this->order->display_order_date( 'M d, Y g:i A' ); ?></div>
+        <div class="ec_cart_input_row"><strong><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_order_date' )?></strong> <?php $this->order->display_order_date( ); ?></div>
 
         <div class="ec_cart_input_row"><strong><?php echo $GLOBALS['language']->get_text( 'account_order_details', 'account_orders_details_order_status' )?></strong> <?php $this->order->display_order_status( ); ?></div>
 

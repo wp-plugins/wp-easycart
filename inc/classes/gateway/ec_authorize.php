@@ -72,7 +72,7 @@ class ec_authorize extends ec_gateway{
 		if( $is_developer_account )							
 			return "https://test.authorize.net/gateway/transact.dll";
 		else														
-			return "https://secure.authorize.net/gateway/transact.dll";
+			return "https://secure2.authorize.net/gateway/transact.dll";
 	}
 	
 	function handle_gateway_response( $response ){
@@ -102,7 +102,7 @@ class ec_authorize extends ec_gateway{
 		if( get_option( 'ec_option_authorize_developer_account' ) )
 			$gateway_url = "https://apitest.authorize.net/xml/v1/request.api";
 		else
-			$gateway_url = "https://api.authorize.net/xml/v1/request.api";
+			$gateway_url = "https://api2.authorize.net/xml/v1/request.api";
 		
 		$gateway_headers = $this->get_gateway_headers( );
 		

@@ -148,7 +148,7 @@ if( $this->should_display_cart( ) ){
             <div class="ec_cart_price_row_total" id="ec_cart_tax"><?php echo $this->get_tax_total( ); ?></div>
         </div>
         <?php }?>
-        <?php if( get_option( 'ec_option_use_shipping' ) && $this->cart->shipping_subtotal > 0 ){ ?>
+        <?php if( get_option( 'ec_option_use_shipping' ) && $this->order_totals->shipping_total > 0 ){ ?>
         <div class="ec_cart_price_row">
         	<div class="ec_cart_price_row_label"><?php echo $GLOBALS['language']->get_text( 'cart_totals', 'cart_totals_shipping' )?></div>
             <div class="ec_cart_price_row_total" id="ec_cart_shipping"><?php echo $this->get_shipping_total( ); ?></div>
@@ -228,7 +228,7 @@ if( $this->should_display_cart( ) ){
         <?php }?>
         
         <?php if( get_option( 'ec_option_use_estimate_shipping' ) ){ ?>
-        	<?php if( get_option( 'ec_option_use_shipping' ) && $this->cart->shipping_subtotal > 0 ){ ?>
+        	<?php if( get_option( 'ec_option_use_shipping' ) && $this->order_totals->shipping_total > 0 ){ ?>
         	<div class="ec_cart_header">
         		<?php echo $GLOBALS['language']->get_text( 'cart_estimate_shipping', 'cart_estimate_shipping_button' )?>
         	</div>

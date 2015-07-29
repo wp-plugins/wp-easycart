@@ -1251,6 +1251,7 @@ function ec_save_basic_settings( ){
 	update_option( 'ec_option_currency_decimal_symbol', $_POST['ec_option_currency_decimal_symbol'] );
 	update_option( 'ec_option_currency_decimal_places', $_POST['ec_option_currency_decimal_places'] );
 	update_option( 'ec_option_currency_thousands_seperator', $_POST['ec_option_currency_thousands_seperator'] );
+	update_option( 'ec_option_show_currency_code', $_POST['ec_option_show_currency_code'] );
 	
 	// Store Page Display Options
 	update_option( 'ec_option_product_layout_type', $_POST['ec_option_product_layout_type'] );

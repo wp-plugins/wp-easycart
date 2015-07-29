@@ -502,10 +502,10 @@ function ec_update_shipping_view( ){
 }
 
 function ec_cart_toggle_login( ){
-	if( jQuery( document.getElementById( 'ec_user_login_form' ) ).is( ':visible' ) ){
-		jQuery( document.getElementById( 'ec_user_login_form' ) ).hide( );
-	}else{
+	if( jQuery( document.getElementById( 'ec_login_selector' ) ).is( ':checked' ) ){
 		jQuery( document.getElementById( 'ec_user_login_form' ) ).show( );
+	}else{
+		jQuery( document.getElementById( 'ec_user_login_form' ) ).hide( );
 	}
 }
 

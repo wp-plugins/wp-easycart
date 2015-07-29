@@ -4,10 +4,10 @@
 <?php if( $this->subscription->has_membership_page( ) ){ ?><div class="ec_account_subscription_row"><?php $this->subscription->display_membership_page_link( $GLOBALS['language']->get_text( "cart_success", "cart_payment_complete_line_5" ) ); ?></div><?php } ?>
 
 
-<?php if( !$this->subscription->is_canceled( ) ){ ?><div class="ec_account_subscription_row"><b><?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'subscription_details_next_billing' ); ?>:</b> <?php $this->subscription->display_next_bill_date( "n/d/Y" ); ?></div><?php }?>
+<?php if( !$this->subscription->is_canceled( ) ){ ?><div class="ec_account_subscription_row"><b><?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'subscription_details_next_billing' ); ?>:</b> <?php $this->subscription->display_next_bill_date( ); ?></div><?php }?>
 
 
-<div class="ec_account_subscription_row"><b><?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'subscription_details_last_payment' ); ?>:</b> <?php $this->subscription->display_last_bill_date( "n/d/Y" ); ?></div>
+<div class="ec_account_subscription_row"><b><?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'subscription_details_last_payment' ); ?>:</b> <?php $this->subscription->display_last_bill_date( ); ?></div>
 
 
 <div class="ec_account_subscription_row"><?php $this->subscription->display_price( ); ?></div>
@@ -222,7 +222,7 @@
 
 <h3><?php echo $GLOBALS['language']->get_text( 'account_subscriptions', 'subscription_details_past_payments' ); ?></h3>
 
-<div class="ec_account_subscriptions_past_payments"><?php $this->subscription->display_past_payments( 'M d, Y g:i A' ); ?></div>
+<div class="ec_account_subscriptions_past_payments"><?php $this->subscription->display_past_payments( ); ?></div>
 
 <?php if( !$this->subscription->is_canceled( ) ){ ?>
 
