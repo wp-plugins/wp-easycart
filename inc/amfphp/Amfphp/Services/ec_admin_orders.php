@@ -28,7 +28,8 @@ class ec_admin_orders{
 	}//ec_admin_orders
 	
 	public function _getMethodRoles( $methodName ){
-	   if( $methodName == 'updateorderaddresses' ) 					return array( 'admin' );	
+	   if( $methodName == 'updateorderinfo' ) 						return array( 'admin' );	
+	   else if( $methodName == 'updateorderaddresses' ) 			return array( 'admin' );	
 	   else if( $methodName == 'getorders' ) 						return array( 'admin' );
 	   else if( $methodName == 'getorderdetailsadvancedoptions' ) 	return array( 'admin' );
 	   else if( $methodName == 'getorderdetails' ) 					return array( 'admin' );
@@ -43,6 +44,35 @@ class ec_admin_orders{
 	   else  														return null;
 	   
 	}//_getMethodRoles
+
+	function updateorderinfo($orderid, $orderinfo) {
+		//convert object to array
+		$orderinfo = (array)$orderinfo;
+		
+		//get previous order notes
+		$sql = "SELECT ec_order.order_notes FROM ec_order WHERE ec_order.order_id = %d";
+		$results = $this->db->get_results( $this->db->prepare( $sql, $orderid ) );
+		
+		$old_order_notes = (string)$results[0]->order_notes;
+		$new_order_notes = $old_order_notes .  PHP_EOL .  PHP_EOL . "***** Order Information Updated:  " . date("M d, Y") . " *****". PHP_EOL;
+			  
+		//first, edit the data
+		$editedsql = "UPDATE ec_order SET ec_order.order_weight = %s, ec_order.promo_code = %s, ec_order.giftcard_id = %s, ec_order.grand_total = %s, ec_order.tax_total = %s, ec_order.shipping_total = %s, ec_order.discount_total = %s, ec_order.vat_total = %s, ec_order.duty_total = %s, ec_order.order_notes = %s WHERE ec_order.order_id = %d";
+		
+		$this->db->query( $this->db->prepare( $editedsql, $orderinfo['orderweight'], $orderinfo['couponcode'], $orderinfo['giftcard'], $orderinfo['ordertotal'], $orderinfo['tax'], $orderinfo['shipping'], $orderinfo['discounts'], $orderinfo['vat'], $orderinfo['duty'], $new_order_notes, $orderid ) ); 
+		
+
+		//then, just get the new order information and return
+		$sql = "SELECT ec_orderdetail.*, ec_order.*, ec_orderstatus.order_status, UNIX_TIMESTAMP(ec_order.order_date) AS order_date,  ec_download.date_created, ec_download.download_count FROM (((ec_order LEFT JOIN ec_orderdetail ON ec_orderdetail.order_id = ec_order.order_id) LEFT JOIN ec_download ON ec_orderdetail.download_key = ec_download.download_id) LEFT JOIN ec_orderstatus ON ec_order.orderstatus_id = ec_orderstatus.status_id) WHERE ec_order.order_id = %d ORDER BY ec_orderdetail.product_id";
+		  
+		$results = $this->db->get_results( $this->db->prepare( $sql, $orderid ) );
+		
+		if( count( $results ) > 0 ){
+			 return($results);
+		}else{
+			return array( "error" );
+		}
+	} 
 
 
 	function updateorderaddresses($orderid, $addressinfo) {
