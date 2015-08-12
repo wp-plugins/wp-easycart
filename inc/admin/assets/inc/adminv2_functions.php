@@ -1342,6 +1342,7 @@ function ec_update_advanced_setup( ){
 	update_option( 'ec_option_amazon_key', $_POST['ec_option_amazon_key'] );
 	update_option( 'ec_option_amazon_secret', $_POST['ec_option_amazon_secret'] );
 	update_option( 'ec_option_amazon_bucket', $_POST['ec_option_amazon_bucket'] );
+	update_option( 'ec_option_amazon_bucket_region', $_POST['ec_option_amazon_bucket_region'] );
 	update_option( 'ec_option_deconetwork_url', $_POST['ec_option_deconetwork_url'] );
 	update_option( 'ec_option_deconetwork_password', $_POST['ec_option_deconetwork_password'] );
 	update_option( 'ec_option_tax_cloud_api_id', $_POST['ec_option_tax_cloud_api_id'] );

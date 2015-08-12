@@ -450,7 +450,7 @@ $GLOBALS['ec_live_editor_loaded'] = "loaded";
         <?php }?>
         </ul>
         <div class="ec_products_sortable_button_container">
-        	<div class="ec_products_sortable_save_button" onclick="ec_admin_save_product_order( '<?php echo $post->ID; ?>' );">Save Changes</div><div class="ec_products_sortable_cancel_button" onclick="ec_admin_cancel_save_product_order( );">Cancel</div>
+        	<div class="ec_products_sortable_save_button" data-post-id="<?php echo $post->ID; ?>">Save Changes</div><div class="ec_products_sortable_cancel_button">Cancel</div>
         </div>
     </div>
 </div>
@@ -535,7 +535,7 @@ function ec_admin_reorder_products( ids ){
 		<?php 
 		// REORDER BUTTON IF ADMIN USER
         if( $admin_access ){ ?>
-        <div class="ec_product_admin_reorder_button_holder"><div class="ec_product_admin_reorder_button" onclick="ec_admin_show_product_sorter( );">Re-Order Products</div></div>
+        <div class="ec_product_admin_reorder_button_holder"><div class="ec_product_admin_reorder_button">Re-Order Products</div></div>
         <?php }?>
         
         <?php if( $this->has_banner( ) ){ ?>

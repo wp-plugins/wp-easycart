@@ -2,8 +2,8 @@
 Contributors: levelfourdevelopment
 Tags: cart, shopping cart, ecommerce, mcommerce, wordpress shopping cart,  wordpress ecommerce, Paypal shopping cart, PayPal ecommerce, WP easycart, easycart, sell, selling, sell products, online shop, shop, e-commerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, affiliatewp, mymail, mymail newsletter, e-shop, compact cart, coupon, discount
 Requires at least: 3.8
-Tested up to: 4.2.3
-Stable tag: 3.1.10
+Tested up to: 4.2.4
+Stable tag: 3.1.11
 License: WP EasyCart License
 License URI: http://www.wpeasycart.com/terms-and-conditions/
 Donate Link: http://www.wpeasycart.com
@@ -119,6 +119,13 @@ Simply go to the widgets page, and drag over the widget corresponding to the fil
 
 == Changelog ==
 NOTE: ALWAYS BACKUP THE products and design FOLDERS IN YOUR PLUGIN.
+= 3.1.11 =
+* Improvement - A common error for the video shortcode is to enter the youtube watch URL instead of the embed URL, which is now automatically corrected to prevent errors.
+* Fix - CSS for video display has been updated to keep proper dimensions on display.
+* Fix - For those using shippable and non-shippable products with shipping override live rates, we corrected the shipping price to 0.00 based on no shippable items in the cart.
+* Fix - Item is VAT taxable option was not working properly.
+* Fix - Amazon S3 for users in Frankfurt region now using V4 credentials (not valid with V2). In addition, all other users should now be moved up to V4 if region is selected in the Amazon S3 setup.
+* Fix - Live editor, product sorter, and side menu accordion would occasionally conflict to cause problems (theme dependent) and not work correctly.
 = 3.1.10 =
 * New Feature - You can now turn on a currency option (basic options) to show the currency code in the price display, e.g. USD $19.99 or CAD $29.99 with the code determined by the selected currency display.
 * Improvement - Forgot password link now available in the returning customers section during checkout.

@@ -172,6 +172,22 @@ if( isset( $_GET['ec_panel'] ) && $_GET['ec_panel'] == "advanced-setup" && isset
     <span class="ec_setting_row_input"><input type="text" name="ec_option_amazon_bucket" style="width:350px;" value="<?php echo get_option('ec_option_amazon_bucket'); ?>" /></span>
 </div>
 
+<div class="ec_setting_row">
+	<span class="ec_setting_row_help"><a href="#" class="ec_tooltip"><img src="<?php echo plugins_url('wp-easycart/inc/admin/assets/images/help_icon.png' ); ?>" alt="" width="25" height="25" /><span class="ec_custom ec_help"><img src="<?php echo plugins_url( 'wp-easycart/inc/admin/assets/images/help.png' ); ?>" alt="Help" height="48" width="48" /><em>Amazon Download Bucket Location</em>With the newest configuration, Amazon requires that you select the region of your bucket, more information here http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region.</span></a></span>
+    <span class="ec_setting_row_label">Amazon Download Bucket Region:</span>
+    <span class="ec_setting_row_input"><select name="ec_option_amazon_bucket_region" style="width:200px;">
+    		<option value=""<?php if( get_option('ec_option_amazon_bucket_region') == "" ){ echo " selected=\"selected\""; }?>>None Selected</option>
+        	<option value="us-east-1"<?php if( get_option('ec_option_amazon_bucket_region') == "us-east-1" ){ echo " selected=\"selected\""; }?>>US Standard</option>
+        	<option value="us-west-2"<?php if( get_option('ec_option_amazon_bucket_region') == "us-west-2" ){ echo " selected=\"selected\""; }?>>US West (Oregon)</option>
+        	<option value="us-west-1"<?php if( get_option('ec_option_amazon_bucket_region') == "us-west-1" ){ echo " selected=\"selected\""; }?>>US West (N. California)</option>
+        	<option value="eu-west-1"<?php if( get_option('ec_option_amazon_bucket_region') == "eu-west-1" ){ echo " selected=\"selected\""; }?>>EU (Ireland)</option>
+        	<option value="eu-central-1"<?php if( get_option('ec_option_amazon_bucket_region') == "eu-central-1" ){ echo " selected=\"selected\""; }?>>EU (Frankfurt)</option>
+        	<option value="ap-southeast-1"<?php if( get_option('ec_option_amazon_bucket_region') == "ap-southeast-1" ){ echo " selected=\"selected\""; }?>>Asia Pacific (Singapore)</option>
+        	<option value="ap-southeast-2"<?php if( get_option('ec_option_amazon_bucket_region') == "ap-southeast-2" ){ echo " selected=\"selected\""; }?>>Asia Pacific (Sydney)</option>
+        	<option value="ap-northeast-1"<?php if( get_option('ec_option_amazon_bucket_region') == "ap-northeast-1" ){ echo " selected=\"selected\""; }?>>Asia Pacific (Tokyo)</option>
+        	<option value="sa-east-1"<?php if( get_option('ec_option_amazon_bucket_region') == "sa-east-1" ){ echo " selected=\"selected\""; }?>>South America (Sao Paulo)</option>
+        </select></span>
+</div>
 
 <div class="ec_save_changes_row"><input type="submit" value="SAVE CHANGES" class="ec_save_changes_button" /></div>
 

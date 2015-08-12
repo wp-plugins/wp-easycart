@@ -19,6 +19,8 @@ class ec_order_totals{
 		$this->handling_total = number_format( $cart->get_handling_total( ), 2, '.', '' );
 		$shipping_price = doubleval( $shipping->get_shipping_price( ) ) + $this->handling_total;
 		$this->shipping_total = number_format( $shipping_price, 2, '.', '' );
+		if( $cart->shippable_total_items <= 0 )
+			$this->shipping_total = 0 + $this->handling_total;
 		$this->tax_total = number_format( $tax->tax_total, 2, '.', '' );
 		$this->duty_total = number_format( $tax->duty_total, 2, '.', '' );
 		$this->vat_total = number_format( $tax->vat_total, 2, '.', '' );

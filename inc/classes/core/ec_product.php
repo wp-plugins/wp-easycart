@@ -1272,7 +1272,7 @@ class ec_product{
 		$content = preg_replace( "/\[eciconlistitem title='(.*?)' icon='(.*?)' position='(.*?)' link='(.*?)'\](.*?)\[\/eciconlistitem\]/", "<div class='ec_special_iconlist_item'><div class='ec_special_icon_list dashicons dashicons-$2'><a href='$4'>$2</a></div><div class='ec_special_iconlist_content'><h3>$1</h3><span>$5</span></div></div>", $content );
 		
 		// Replace [ecvideo]URL[/ecvideo] shortcode
-		$content = preg_replace( "/\[ecvideo\](.*?)\[\/ecvideo\]/", "<div class='ec_special_video' itemprop='video' itemtype='https://schema.org/VideoObject'><div class='ec_special_videowrap'><iframe width='1500' height='844' src='$1?feature=oembed&amp;wmode=opaque' frameborder='0' allowfullscreen=''></iframe></div></div>", $content );
+		$content = preg_replace( "/\[ecvideo\](.*?)\[\/ecvideo\]/", "<div class='ec_special_video' itemprop='video' itemtype='https://schema.org/VideoObject'><div class='ec_special_videowrap'><iframe width='1500' height='844' src='$1?feature=oembed&amp;wmode=opaque' frameborder='0' allowfullscreen=''></iframe></div></div>", preg_replace( "/\[ecvideo\]http[s]*:\/\/[www.]*youtube.com[\/]*\?watch=(.*?)\[\/ecvideo\]/", "[ecvideo]https://www.youtube.com/embed/$1[/ecvideo]", $content ) );
 		
 		// Replace [ecimage]URL[/ecimage] shortcode
 		$content = preg_replace( "/\[ecimage alignment='(.*?)' link='(.*?)'\](.*?)\[\/ecimage\]/", "<div class='ec_special_image'><img src='$3' /></div>", $content );

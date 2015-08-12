@@ -1055,8 +1055,8 @@ function ec_cart_shipping_method_change( ){
 	
 }
 
-jQuery(document).ready(function() {
-    jQuery(".ec_menu_vertical").accordion({
+jQuery( document ).ready( function( $ ){
+    $( ".ec_menu_vertical" ).accordion({
         accordion:true,
         speed: 500,
         closedSign: '[+]',

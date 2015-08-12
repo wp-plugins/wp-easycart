@@ -85,9 +85,9 @@ class ec_cartpage{
 		// Duty (Based on Product Price) - already calculated in tax
 		// Get Total Without VAT, used only breifly
 		if( get_option( 'ec_option_no_vat_on_shipping' ) ){
-			$total_without_vat_or_discount = $this->cart->subtotal + $this->tax->tax_total + $this->tax->duty_total;
+			$total_without_vat_or_discount = $this->cart->vat_subtotal + $this->tax->tax_total + $this->tax->duty_total;
 		}else{
-			$total_without_vat_or_discount = $this->cart->subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
+			$total_without_vat_or_discount = $this->cart->vat_subtotal + $this->shipping->get_shipping_price( ) + $this->tax->tax_total + $this->tax->duty_total;
 		}
 		//If a discount used, and no vatable subtotal, we need to set to 0
 		if( $total_without_vat_or_discount < 0 )

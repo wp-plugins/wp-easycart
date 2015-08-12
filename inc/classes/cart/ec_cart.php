@@ -18,6 +18,7 @@ class ec_cart{
 	public $width;											// FLOAT 15,3
 	public $height;											// FLOAT 15,3
 	public $total_items;									// INT
+	public $shippable_total_items;							// INT
 	
 	public $cart_promo_discount;							// FLOAT
 	public $cart_total_promotion;							// TEXT

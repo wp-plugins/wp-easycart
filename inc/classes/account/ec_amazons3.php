@@ -4,10 +4,23 @@ class ec_amazons3{
 
 	public function download_file( $file_name ){
 		
+		if( get_option( 'ec_option_amazon_bucket_region' ) ){
 		$client = Aws\S3\S3Client::factory(array(
-			'key' 		=> get_option( 'ec_option_amazon_key' ),
-			'secret' 	=> get_option( 'ec_option_amazon_secret' )
+			'region'  => utf8_encode( get_option( 'ec_option_amazon_bucket_region' ) ),
+    		'credentials' => array(
+				'key' 		=> utf8_encode( get_option( 'ec_option_amazon_key' ) ),
+				'secret' 	=> utf8_encode( get_option( 'ec_option_amazon_secret' ) )
+			)
 		));
+		}else{
+		$client = Aws\S3\S3Client::factory(array(
+			'region'  => '',
+    		'credentials' => array(
+				'key' 		=> utf8_encode( get_option( 'ec_option_amazon_key' ) ),
+				'secret' 	=> utf8_encode( get_option( 'ec_option_amazon_secret' ) )
+			)
+		));	
+		}
 		
 		$command = $client->getCommand('GetObject', array(
 			'Bucket' => get_option( 'ec_option_amazon_bucket' ),
@@ -27,10 +40,23 @@ class ec_amazons3{
 		
 		$returnArray = array( );
 		
+		if( get_option( 'ec_option_amazon_bucket_region' ) ){
 		$client = Aws\S3\S3Client::factory(array(
-			'key' 		=> get_option( 'ec_option_amazon_key' ),
-			'secret' 	=> get_option( 'ec_option_amazon_secret' )
+			'region'  => utf8_encode( get_option( 'ec_option_amazon_bucket_region' ) ),
+    		'credentials' => array(
+				'key' 		=> utf8_encode( get_option( 'ec_option_amazon_key' ) ),
+				'secret' 	=> utf8_encode( get_option( 'ec_option_amazon_secret' ) )
+			)
 		));
+		}else{
+		$client = Aws\S3\S3Client::factory(array(
+			'region'  => '',
+    		'credentials' => array(
+				'key' 		=> utf8_encode( get_option( 'ec_option_amazon_key' ) ),
+				'secret' 	=> utf8_encode( get_option( 'ec_option_amazon_secret' ) )
+			)
+		));	
+		}
 		
 		$result = $client->listObjects( array( 'Bucket' => get_option( 'ec_option_amazon_bucket' ) ) );
 

@@ -178,6 +178,8 @@ class ec_wpoptionset{
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_amazon_bucket');						array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
+		array_push($this->wp_option_names, 'ec_option_amazon_bucket_region');				array_push($this->wp_option_defaults, '' );
+																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_deconetwork_url');					array_push($this->wp_option_defaults, '' );
 																							array_push($this->wp_option_groups, 'ec-store-setup-group');
 		array_push($this->wp_option_names, 'ec_option_deconetwork_password');				array_push($this->wp_option_defaults, '' );
