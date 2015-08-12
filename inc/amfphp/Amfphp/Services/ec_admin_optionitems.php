@@ -274,6 +274,9 @@ class ec_admin_optionitems{
 		$sql = "UPDATE ec_product SET ec_product.option_id_1 = %d, ec_product.option_id_2 = %d, ec_product.option_id_3 = %d, ec_product.option_id_4 = %d, ec_product.option_id_5 = %d WHERE ec_product.product_id = %d";
 		$this->db->query( $this->db->prepare( $sql, $option1, $option2, $option3, $option4, $option5, $productid ) );
 		
+		$sql = "DELETE FROM ec_optionitemimage WHERE ec_optionitemimage.product_id = %d";
+		$this->db->query( $this->db->prepare( $sql, $productid ) );
+		
 		return array( "success" );
 		
 	}//updateoptionvalues
